@@ -186,7 +186,7 @@
                             <span style="color:white;"> List of Events*</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i>
                         </accordion-heading>
                         <div class="row" style="overflow-x:scroll;margin-left:20px">
-                             <div class="input-group">
+                            <div class="input-group">
                                 <span class="input-group-addon">Selected Messages:</span>
                                 <span ng-repeat="event in eventList" class="label label-primary">{{event.name}}^{{event.parentStructId}} <i class="fa fa-times" aria-hidden="true" ng-click="trackSelections(false, event)"></i></span>
                             </div>
@@ -221,165 +221,294 @@
     </script>
     <script type="text/ng-template" id="MessageEventsNode.html">
         <tr tt-node is-branch="node.type === 'message'">
-             <td class=""  style="width:300px;color:black"><span ng-bind="::node.name" ng-show="node.type === 'message'" style="margin-left : 7px;"></span></td>
+            <td class="" style="width:300px;color:black"><span ng-bind="::node.name" ng-show="node.type === 'message'" style="margin-left : 7px;"></span></td>
             <td class="" style="width:300px;color:black">
 
                 <input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-checked="isChecked(node)" ng-click="trackSelections(bool, node)"></input><span ng-show="node.type === 'event'" ng-bind="::node.name" style="margin-left : 7px;"></span>
             </td>
 
-            <td class="" style="width:585px;color:black" ng-bind="::node.description"></td>
 
-    </tr>
+            <td class="" style="width:585px;color:black" ng-bind="::node.description "></td>
 
+        </tr>
+
+    </script>
+
+    <script type="text/ng-template" id="DeleteProfileComponentCtrl.html ">
+        <div class="modal-header ">
+            <h3 class="modal-title ">Delete Confirmation
+        </h3>
+        </div>
+        <div class="modal-body ">
+
+            <p>Are you sure you want to delete the Profile Component:"{{profileComponentToDelete.name}} " ? This operation is irreversible</p>
+        </div>
+</div>
+<div class="modal-footer ">
+    <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
+                class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
+        </button>
+    <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
+                class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
+        </button>
+    <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+        <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
+    </div>
+</div>
+</div>
 </script>
-<script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Delete Confirmation
+<script type="text/ng-template" id="CantDeletePcCtrl.html ">
+    <div class="modal-header ">
+        <h3 class="modal-title ">Can't Delete Profile Component
         </h3>
     </div>
-    <div class="modal-body">
+    <div class="modal-body ">
 
-        <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}}"  ? This operation is irreversible</p>
+        <p>Profile Component:"{{profileComponent.name}} " cannot be deleted because it is applied in the following Conformance Profiles: </p>
+        <span ng-repeat="msg in profileComponent.appliedTo" style="margin-left:100px;"> {{msg.name}}<br/></span>
+
     </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
+                class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
-                class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+
+        <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
         </div>
     </div>
     </div>
 </script>
-<script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Close Confirmation
+<script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html ">
+    <div class="modal-header ">
+        <h3 class="modal-title ">Delete Confirmation
         </h3>
     </div>
-    <div class="modal-body">
-        <p>You currently have unsaved changes. Are you sure you want to close the igdocument ? All unsaved changes will
-            be lost</p>
+    <div class="modal-body ">
+
+        <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}} " ? This operation is irreversible</p>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
+                class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
-                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
+        <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
+                class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
         </button>
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
-                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
+        <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
+        </div>
+    </div>
+    </div>
+</script>
+<script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html ">
+    <div class="modal-header ">
+        <h3 class="modal-title ">Close Confirmation
+        </h3>
+    </div>
+    <div class="modal-body ">
+        <p>You currently have unsaved changes. Are you sure you want to close the igdocument ? All unsaved changes will be lost</p>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
+                class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
         </button>
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+        <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="discardChangesAndClose() "><span><i
+                class="fa fa-times-circle fa-fw ">&nbsp; </i>Discard Changes</span>
+        </button>
+        <button class="btn btn-raised btn-primary btn-sm " ng-disabled="loading " ng-click="saveChangesAndClose() "><span><i
+                class="fa fa-check-circle fa-fw ">&nbsp; </i>Apply Changes</span>
+        </button>
+        <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
         </div>
     </div>
 </script>
-<script type="text/ng-template" id="ConfirmIGDocumentOpenCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Open Confirmation
+<script type="text/ng-template " id="ConfirmIGDocumentOpenCtrl.html ">
+    <div class="modal-header ">
+        <h3 class="modal-title ">Open Confirmation
         </h3>
     </div>
-    <div class="modal-body">
-        <p>You currently have an open IG document with unsaved changes. Are you sure you want to open the IG document ?
-            All unsaved changes will be lost</p>
+    <div class="modal-body ">
+        <p>You currently have an open IG document with unsaved changes. Are you sure you want to open the IG document ? All unsaved changes will be lost</p>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
+                class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
-                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
+        <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="discardChangesAndOpen() "><span><i
+                class="fa fa-times-circle fa-fw ">&nbsp; </i>Discard Changes</span>
         </button>
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
-                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
+        <button class="btn btn-raised btn-primary btn-sm " ng-disabled="loading " ng-click="saveChangesAndOpen() "><span><i
+                class="fa fa-check-circle fa-fw ">&nbsp; </i>Apply Changes</span>
         </button>
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+        <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
         </div>
     </div>
 </script>
-<script type="text/ng-template" id="RichTextCtrl.html">
-    <div class="modal-header modal-wide">
-        <h3 class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
+<script type="text/ng-template " id="RichTextCtrl.html ">
+    <div class="modal-header modal-wide ">
+        <h3 class="modal-title ">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
             {{editorTarget.title}}</h3>
     </div>
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-md-12">
-                <div ng-if="!editorTarget.disabled">
-                    <textarea rows="10" froala="froalaEditorOptions" style="width:100%;" autofocus ng-model="editorTarget.obj[editorTarget.key]"
-                              id="globalEditor" name="content" ng-change="recordChanged()"></textarea>
+    <div class="modal-body ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div ng-if="!editorTarget.disabled ">
+                    <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus ng-model="editorTarget.obj[editorTarget.key] " id="globalEditor " name="content " ng-change="recordChanged() "></textarea>
                 </div>
-                <div ng-if="editorTarget.disabled" style="width:100%;">
-                    <div froala-view="editorTarget.obj[editorTarget.key]"></div>
+                <div ng-if="editorTarget.disabled " style="width:100%; ">
+                    <div froala-view="editorTarget.obj[editorTarget.key] "></div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-primary btn-md" ng-click="close()"><span><i class="fa fa-times fa-fw">
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-primary btn-md " ng-click="close() "><span><i class="fa fa-times fa-fw ">
             &nbsp; </i>Close</span>
         </button>
     </div>
 </script>
 
-<script type="text/ng-template" id="SelectMessagesForExportCtrl.html">
-    <div class="page-header">
-        <h2 class="modal-title">Export XML</h2>
+<script type="text/ng-template " id="SelectMessagesForExportCtrl.html ">
+    <div class="page-header ">
+        <h2 class="modal-title ">Export XML</h2>
     </div>
-    <div class="modal-body">
-        <form class="form-horizontal" novalidate>
-            <div class="row">
-                <div class="col-md-12">
-                    <h4 class="modal-title">Select Export Format</h4>
+    <div class="modal-body ">
+        <form class="form-horizontal " novalidate>
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <h4 class="modal-title ">Select Export Format</h4>
                 </div>
-                <div class="col-md-12">
-                    <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat='Validation'"
-                               ng-class="{ 'active':xmlFormat==='Validation' }">
+                <div class="col-md-12 ">
+                    <div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">
+                        <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Validation' " ng-class="{ 'active':xmlFormat==='Validation' } ">
                             NIST
                             Validation Format
                         </label>
-                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat='Display'"
-                               ng-class="{ 'active':xmlFormat==='Display' }">
+                        <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Display' " ng-class="{ 'active':xmlFormat==='Display' } ">
                              NIST
                             Display Format
                         </label>
-                        <label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat='Gazelle'"
-                               ng-class="{ 'active':xmlFormat==='Gazelle' }">
+                        <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Gazelle' " ng-class="{ 'active':xmlFormat==='Gazelle' } ">
                            Gazelle
                             Format
                         </label>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <h4 class="modal-title">Select Conformance Profile(s)</h4>
+                <div class="col-md-12 ">
+                    <h4 class="modal-title ">Select Conformance Profile(s)</h4>
 
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-fix-header table-condensed conformance-profiles-table">
+                    <div class="table-responsive ">
+                        <table class="table table-striped table-bordered table-fix-header table-condensed conformance-profiles-table ">
                             <thead>
-                            <tr class="tbl-header">
-                                <th style="width:30px">&nbsp;</th>
-                                <th style="width:150px">ID</th>
-                                <th style="width:300px">Name</th>
-                                <th style="width:420px">Description</th>
-                            </tr>
+                                <tr class="tbl-header ">
+                                    <th style="width:30px ">&nbsp;</th>
+                                    <th style="width:150px ">ID</th>
+                                    <th style="width:300px ">Name</th>
+                                    <th style="width:420px ">Description</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id">
-                                <td style="width:30px">
-                                    <input type="checkbox" ng-model="bool"
-                                           ng-change="trackSelections(bool, message.id)">
-                                </td>
-                                <td style="width:150px">{{message.identifier}}</td>
-                                <td style="width:300px">{{message.name}}</td>
-                                <td style="width:405px">{{message.description}}</td>
-                            </tr>
+                                <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id ">
+                                    <td style="width:30px ">
+                                        <input type="checkbox " ng-model="bool " ng-change="trackSelections(bool, message.id) ">
+                                    </td>
+                                    <td style="width:150px ">{{message.identifier}}</td>
+                                    <td style="width:300px ">{{message.name}}</td>
+                                    <td style="width:405px ">{{message.description}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===n ull || selectedMessagesIDs===n ull || selectedMessagesIDs.length===0 " ng-click="exportAsZIPforSelectedMessages() "><span><i class="fa fa-download fa-fw "></i>Export</span>
+        </button>
+        <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
+                class="fa fa-times fa-fw ">&nbsp; </i>Close</span></button>
+        <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template " id="AddHL7TableOpenCtrl.html ">
+    <div class="modal-header modal-wide ">
+        <div class="form-inline ">
+            <span class="header4 ">Add HL7 Tables</span>
+        </div>
+    </div>
+    <div class="modal-body ">
+        <form class="form-horizontal " novalidate>
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">
+                        <label class="btn btn-raised btn-info btn-xs " ng-click="selectedHL7Version=vr; loadTablesByVersion(vr) " ng-class="{ 'active':vr===selectedHL7Version} " ng-repeat="vr in hl7Versions ">
+                                <input type="radio " ng-value="vr " ng-model="$parent.selectedHL7Version ">{{vr}}</input>
+                            </label>
+                    </div>
+                </div>
+                <div class="col-md-6 " ng-show="selectedHL7Version !=='' ">
+                    <div ng-show="loading " style="text-align:center ">
+                        <i class="fa fa-spinner fa-pulse fa-2x "></i>
+                    </div>
+                    <div ng-show="!loading " class="igl-table ">
+                        <h5>Tables for {{source}} {{selectedHL7Version}}</h5>
+                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset ">
+                            <thead>
+                                <tr class="tbl-header ">
+                                    <th>Binding Identifier</th>
+                                    <th>Name</th>
+                                    <th/>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input ng-model="search.bindingIdentifier " class="form-control " placeholder="by id ">
+                                    </th>
+                                    <th>
+                                        <input ng-model="search.name " class="form-control " placeholder="by name ">
+                                    </th>
+                                    <th/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="table in hl7Tables | orderBy: 'bindingIdentifier' | filter:search:strict ">
+                                    <td>{{table.bindingIdentifier}}</td>
+                                    <td>{{table.name}}</td>
+                                    <td><a class="pointer " ng-click="addTable(table) "><i class="fa fa-plus fa-fw "></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6 " ng-show="selectedTables.length> 0">
+                    <div class="igl-table">
+                        <h5>Selected tables</h5>
+                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                            <thead>
+                                <tr>
+                                    <th>Binding Identifier</th>
+                                    <th>Name</th>
+                                    <th>HL7 Version</th>
+                                    <th/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="table in selectedTables">
+                                    <td>{{table.bindingIdentifier}}</td>
+                                    <td>{{table.name}}</td>
+                                    <td>{{table.hl7Version}}</td>
+                                    <td><a class="pointer" ng-click="deleteTable(table)"><i
+                                            class="fa fa-times fa-fw"></i></a></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -388,105 +517,13 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-raised btn-primary btn-sm"
-                ng-disabled="xmlFormat==='' || xmlFormat===n ull || selectedMessagesIDs===n ull || selectedMessagesIDs.length===0"
-                ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw"></i>Export</span>
-        </button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="AddHL7TableOpenCtrl.html">
-    <div class="modal-header modal-wide">
-        <div class="form-inline">
-            <span class="header4">Add HL7 Tables</span>
-        </div>
-    </div>
-        <div class="modal-body">
-            <form class="form-horizontal" novalidate>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                            <label class="btn btn-raised btn-info btn-xs"
-                                   ng-click="selectedHL7Version=vr; loadTablesByVersion(vr)"
-                                   ng-class="{ 'active':vr===selectedHL7Version}" ng-repeat="vr in hl7Versions">
-                                <input type="radio" ng-value="vr" ng-model="$parent.selectedHL7Version">{{vr}}</input>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-6" ng-show="selectedHL7Version !==''">
-                        <div ng-show="loading" style="text-align:center">
-                            <i class="fa fa-spinner fa-pulse fa-2x"></i>
-                        </div>
-                        <div ng-show="!loading" class="igl-table">
-                            <h5>Tables for {{source}} {{selectedHL7Version}}</h5>
-                            <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                                <thead>
-                                <tr class="tbl-header">
-                                    <th>Binding Identifier</th>
-                                    <th>Name</th>
-                                    <th/>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <input ng-model="search.bindingIdentifier" class="form-control" placeholder="by id">
-                                    </th>
-                                    <th>
-                                        <input ng-model="search.name" class="form-control" placeholder="by name">
-                                    </th>
-                                    <th/>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="table in hl7Tables | orderBy: 'bindingIdentifier' | filter:search:strict">
-                                    <td>{{table.bindingIdentifier}}</td>
-                                    <td>{{table.name}}</td>
-                                    <td><a class="pointer" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-md-6" ng-show="selectedTables.length> 0">
-                <div class="igl-table">
-                    <h5>Selected tables</h5>
-                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                        <thead>
-                            <tr>
-                                <th>Binding Identifier</th>
-                                <th>Name</th>
-                                <th>HL7 Version</th>
-                                <th/>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="table in selectedTables">
-                                <td>{{table.bindingIdentifier}}</td>
-                                <td>{{table.name}}</td>
-                                <td>{{table.hl7Version}}</td>
-                                <td><a class="pointer" ng-click="deleteTable(table)"><i
-                                            class="fa fa-times fa-fw"></i></a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-</div>
-</div>
-</form>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-raised btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="save()"><span><i
+        <button class="btn btn-raised btn-primary btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="save()"><span><i
                     class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-    <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length > 0" ng-disabled="loading" ng-click="cancel()"><span><i
                     class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-    <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading" ng-click="cancel()"><span><i
+        <button class="btn btn-raised btn-warning btn-sm" ng-show="selectedTables.length === 0" ng-disabled="loading" ng-click="cancel()"><span><i
                     class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-</div>
+    </div>
 </script>
 
 <script type="text/ng-template" id="AddCSVTableOpenCtrl.html">
@@ -548,27 +585,27 @@
                 <h5>Preloaded PHINVADs Tables</h5>
                 <table st-safe-src="preloadedPhinvadsTables" st-table="displayCollection" class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                     <thead>
-                    <tr>
-                        <th colspan="3">
-                            <input st-search placeholder="Search" class="input-sm form-control" type="search" />
-                        </th>
-                    </tr>
-                    <tr>
-                        <th st-sort="bindingIdentifier">Binding Identifier</th>
-                        <th>Name</th>
-                        <th/>
-                    </tr>
+                        <tr>
+                            <th colspan="3">
+                                <input st-search placeholder="Search" class="input-sm form-control" type="search" />
+                            </th>
+                        </tr>
+                        <tr>
+                            <th st-sort="bindingIdentifier">Binding Identifier</th>
+                            <th>Name</th>
+                            <th/>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="table in displayCollection">
-                        <td>{{::table.bindingIdentifier}}</td>
-                        <td>{{::table.name}}</td>
-                        <td>
-                            <a ng-if="!isAlreadyIn(table) && !isAlreadySelected(table)" class="pointer" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
-                            <span ng-if="isAlreadyIn(table)">Added</span>
-                            <span ng-if="isAlreadySelected(table)">Selected</span>
-                        </td>
-                    </tr>
+                        <tr ng-repeat="table in displayCollection">
+                            <td>{{::table.bindingIdentifier}}</td>
+                            <td>{{::table.name}}</td>
+                            <td>
+                                <a ng-if="!isAlreadyIn(table) && !isAlreadySelected(table)" class="pointer" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
+                                <span ng-if="isAlreadyIn(table)">Added</span>
+                                <span ng-if="isAlreadySelected(table)">Selected</span>
+                            </td>
+                        </tr>
                     </tbody>
                     <tr style="float:center !important;">
                         <td colspan="6" class="text-center" style="float:center !important;">
@@ -584,18 +621,18 @@
                 <h5>Selected tables</h5>
                 <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                     <thead>
-                    <tr>
-                        <th>Binding Identifier</th>
-                        <th>Name</th>
-                        <th/>
-                    </tr>
+                        <tr>
+                            <th>Binding Identifier</th>
+                            <th>Name</th>
+                            <th/>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="table in selectedTables">
-                        <td>{{::table.bindingIdentifier}}</td>
-                        <td>{{::table.name}}</td>
-                        <td><a class="pointer" ng-click="deleteTable(table)"><i class="fa fa-times fa-fw"></i></a></td>
-                    </tr>
+                        <tr ng-repeat="table in selectedTables">
+                            <td>{{::table.bindingIdentifier}}</td>
+                            <td>{{::table.name}}</td>
+                            <td><a class="pointer" ng-click="deleteTable(table)"><i class="fa fa-times fa-fw"></i></a></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -613,199 +650,203 @@
 </div>
 <script type="text/ng-template" id="AddDatatypeDlg.html">
 
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Add Data Type</h3>
-            </div>
-            <form name="addDT">
-                <div class="modal-body">
-                            <div class="container" style="margin-bottom: 20px;margin-top: 10px">
-                                    <div class="row" style="padding-top:10px">
-                                       <tabset>
-                                            <tab>
-                                                <tab-heading>HL7 Datatypes</tab-heading>
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Add Data Type</h3>
+        </div>
+        <form name="addDT">
+            <div class="modal-body">
+                <div class="container" style="margin-bottom: 20px;margin-top: 10px">
+                    <div class="row" style="padding-top:10px">
+                        <tabset>
+                            <tab>
+                                <tab-heading>HL7 Datatypes</tab-heading>
 
 
 
-                                                <div class="col-md-6">
-                                                    <div class="btn-group btn-group-sm " data-toggle="buttons">
-                                                        <label class="btn btn-raised btn-info btn-xs"
-                                                            ng-click="setVersion(vr)"
-                                                            ng-class="{ 'active':vr===version1}" ng-repeat="vr in versions">
+                                <div class="col-md-6">
+                                    <div class="btn-group btn-group-sm " data-toggle="buttons">
+                                        <label class="btn btn-raised btn-info btn-xs" ng-click="setVersion(vr)" ng-class="{ 'active':vr===version1}" ng-repeat="vr in versions">
                                                             <input type="radio" ng-value="vr" ng-model="version1">{{vr}}</input>
                                                         </label>
-                                                    </div>
-                                                    <div ng-show="loading" style="text-align:center">
-                                                        <i class="fa fa-spinner fa-pulse fa-2x"></i>
-                                                    </div>
+                                    </div>
+                                    <div ng-show="loading" style="text-align:center">
+                                        <i class="fa fa-spinner fa-pulse fa-2x"></i>
+                                    </div>
 
 
 
-                                                    <div class="igl-table">
+                                    <div class="igl-table">
 
-                                                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                                                            <input ng-model="search.name" class="form-control" placeholder="by name">
-                                                            <thead>
-                                                            <tr>
+                                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                                            <input ng-model="search.name" class="form-control" placeholder="by name">
+                                            <thead>
+                                                <tr>
 
-                                                                <th>Name</th>
-                                                                <th>As is</th>
-                                                                <th>As Flavor</th>
+                                                    <th>Name</th>
+                                                    <th>As is</th>
+                                                    <th>As Flavor</th>
 
-                                                            </tr>
+                                                </tr>
 
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr ng-repeat="datatype in hl7Datatypes | orderBy: 'name' | filter:search:strict">
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="datatype in hl7Datatypes | orderBy: 'name' | filter:search:strict">
 
-                                                                <td>{{datatype.name}}</td>
-                                                                <td><a class="pointer" ng-show="!checkExist(datatype)" ng-click="addDt(datatype)"><i class="fa fa-plus fa-fw"></i></a>
-                                                                    <p ng-show="checkExist(datatype)">Selected</p>
-                                                                </td>
-                                                                <td><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </tab>
-                                            <tab>
-                                                <tab-heading>Master Datatypes</tab-heading>
+                                                    <td>{{datatype.name}}</td>
+                                                    <td><a class="pointer" ng-show="!checkExist(datatype)" ng-click="addDt(datatype)"><i class="fa fa-plus fa-fw"></i></a>
+                                                        <p ng-show="checkExist(datatype)">Selected</p>
+                                                    </td>
+                                                    <td><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab>
+                                <tab-heading>Master Datatypes</tab-heading>
 
-                                                <div class="col-md-6">
-                                                    <div ng-show="loading" style="text-align:center">
-                                                        <i class="fa fa-spinner fa-pulse fa-2x"></i>
-                                                    </div>
-                                                    <select ng-model="masLib" class="form-control" ng-change="selectMasterDtLib(masLib)" ng-options="masLib.metaData.name for masLib in masterLib track by masLib.id">
+                                <div class="col-md-6">
+                                    <div ng-show="loading" style="text-align:center">
+                                        <i class="fa fa-spinner fa-pulse fa-2x"></i>
+                                    </div>
+                                    <select ng-model="masLib" class="form-control" ng-change="selectMasterDtLib(masLib)" ng-options="masLib.metaData.name for masLib in masterLib track by masLib.id">
                                                        <option value="" disabled selected>Choose a Master Library</option>
                                                     </select>
-                                                    <div ng-show="masLib" class="igl-table">
+                                    <div ng-show="masLib" class="igl-table">
 
-                                                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                                                            <input ng-model="search.name" class="form-control" placeholder="by name">
-                                                            <thead>
-                                                            <tr class="tbl-header">
+                                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                                            <input ng-model="search.name" class="form-control" placeholder="by name">
+                                            <thead>
+                                                <tr class="tbl-header">
 
-                                                                <th>Name</th>
-                                                                <th>Version</th>
-                                                                <th>As is</th>
-                                                                <th>As Flavor</th>
+                                                    <th>Name</th>
+                                                    <th>Version</th>
+                                                    <th>As is</th>
+                                                    <th>As Flavor</th>
 
-                                                            </tr>
+                                                </tr>
 
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr ng-repeat="datatype in masterDatatypes | orderBy: 'name' | filter:search:strict">
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="datatype in masterDatatypes | orderBy: 'name' | filter:search:strict">
 
-                                                                <td>{{datatype.label}}</td>
-                                                                <td>{{datatype.hl7Version}}</td>
-                                                                <td><a class="pointer" ng-show="!checkExist(datatype)" ng-click="addDt(datatype)"><i class="fa fa-plus fa-fw"></i></a>
-                                                                    <p ng-show="checkExist(datatype)">Selected</p>
-                                                                </td>
-                                                                <td><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                                                    <td>{{datatype.label}}</td>
+                                                    <td>{{datatype.hl7Version}}</td>
+                                                    <td><a class="pointer" ng-show="!checkExist(datatype)" ng-click="addDt(datatype)"><i class="fa fa-plus fa-fw"></i></a>
+                                                        <p ng-show="checkExist(datatype)">Selected</p>
+                                                    </td>
+                                                    <td><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
 
-                                            </tab>
-                                            <tab>
-                                                <tab-heading>User Datatypes</tab-heading>
-                                                <div class="col-md-6">
-                                                    <div ng-show="loading" style="text-align:center">
-                                                        <i class="fa fa-spinner fa-pulse fa-2x"></i>
-                                                    </div>
-                                                    <select ng-model="usrLib" class="form-control"  ng-change="selectUserDtLib(usrLib)" ng-options="usrLib.metaData.name for usrLib in userDtLib track by usrLib.id">
+                            </tab>
+                            <tab>
+                                <tab-heading>User Datatypes</tab-heading>
+                                <div class="col-md-6">
+                                    <div ng-show="loading" style="text-align:center">
+                                        <i class="fa fa-spinner fa-pulse fa-2x"></i>
+                                    </div>
+                                    <select ng-model="usrLib" class="form-control" ng-change="selectUserDtLib(usrLib)" ng-options="usrLib.metaData.name for usrLib in userDtLib track by usrLib.id">
                                                         <option value="" disabled selected>Choose a User Library</option>
                                                         <!--<option ng-repeat="usrLib in userDtLib" value='{{usrLib}}'> {{usrLib.metaData.name}}</option>-->
                                                     </select>
-                                                    <div ng-show="usrLib" class="igl-table">
+                                    <div ng-show="usrLib" class="igl-table">
 
-                                                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                                                            <input ng-model="search.name" class="form-control" placeholder="by name">
-                                                            <thead>
-                                                            <tr class="tbl-header">
+                                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                                            <input ng-model="search.name" class="form-control" placeholder="by name">
+                                            <thead>
+                                                <tr class="tbl-header">
 
-                                                                <th>Name</th>
-                                                                <th>Version</th>
-                                                                <!--<th>As is</th>-->
-                                                                <th>As Flavor</th>
+                                                    <th>Name</th>
+                                                    <th>Version</th>
+                                                    <!--<th>As is</th>-->
+                                                    <th>As Flavor</th>
 
-                                                            </tr>
+                                                </tr>
 
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr ng-repeat="datatype in userDatatypes | orderBy: 'name' | filter:search:strict">
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="datatype in userDatatypes | orderBy: 'name' | filter:search:strict">
 
-                                                                <td>{{datatype.label}}</td>
-                                                                <td>{{datatype.hl7Version}}
-                                                                <!--<td><a class="pointer" ng-show="!checkExist(datatype)" ng-click="addDt(datatype)"><i class="fa fa-plus fa-fw"></i></a>
+                                                    <td>{{datatype.label}}</td>
+                                                    <td>{{datatype.hl7Version}}
+                                                        <!--<td><a class="pointer" ng-show="!checkExist(datatype)" ng-click="addDt(datatype)"><i class="fa fa-plus fa-fw"></i></a>
                                                                     <p ng-show="checkExist(datatype)">Selected</p>
                                                                 </td>-->
-                                                                <td><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-
-                                            </tab>
-                                       </tabset>
-
-
-
-
-
-                                        <div class="col-md-6" ng-show="selectedDatatypes.length> 0">
-                                                        <div class="igl-table">
-                                                            <h5>Selected Data Types</h5>
-                                                            <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Name</th>
-                                                                        <th>Ext</th>
-                                                                        <th>Version</th>
-
-                                                                        <th/>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr ng-repeat="dt in selectedDatatypes">
-                                                                        <td>{{dt.name}}</td>
-                                                                        <td><span ng-show="!edit">{{dt.ext}}</span>
-                                                                            <a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.scope!=='MASTER'" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
-                                                                            <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext"/>
-                                                                            <a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
-                                                                            <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
-                                                                            <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>
-                                                                        </td>
-                                                                        <td>{{dt.hl7Version}}</td>
-
-                                                                        <td><a class="pointer" ng-click="deleteDt(dt)"><i
-                                                                                    class="fa fa-times fa-fw"></i></a></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                        </div>
+                                                        <td><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
+                                                        </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
+                                </div>
 
+                            </tab>
+                        </tabset>
+
+
+
+
+
+                        <div class="col-md-6" ng-show="selectedDatatypes.length> 0">
+                            <div class="igl-table">
+                                <h5>Selected Data Types</h5>
+                                <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Ext</th>
+                                            <th>Version</th>
+
+                                            <th/>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="dt in selectedDatatypes">
+                                            <td>{{dt.name}}</td>
+                                            <td><span ng-show="!edit">{{dt.ext}}</span>
+                                                <a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.scope!=='MASTER'" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
+                                                <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext" />
+                                                <a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
+                                                <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
+                                                <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>
+                                            </td>
+                                            <td>{{dt.hl7Version}}</td>
+
+                                            <td><a class="pointer" ng-click="deleteDt(dt)"><i
+                                                                                    class="fa fa-times fa-fw"></i></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-
+                        </div>
+                    </div>
 
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
+            </div>
+    </div>
+
+
+    </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
                     </button>
-                    <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0"><i class="fa fa-check fa-fw"></i>Add
+        <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0"><i class="fa fa-check fa-fw"></i>Add
                     </button>
-                </div>
-            </form>
-         </div>
+    </div>
+    </form>
+    </div>
 </script>
 <script type="text/ng-template" id="AddSegmentDlg.html">
     <div>
@@ -815,7 +856,7 @@
             </div>
 
             <!--<form name="addSeg" id="addSeg">-->
-                <!--<div class="modal-body">
+            <!--<div class="modal-body">
 
                     <div class="container" style="margin-bottom: 20px;margin-top: 20px">
                         <div class="row flavor-seach-box">
@@ -834,82 +875,81 @@
                         </div>
                     </div>
                 </div>-->
-                 <form class="form-horizontal" novalidate>
+            <form class="form-horizontal" novalidate>
                 <div class="modal-body">
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-                                            <label class="btn btn-raised btn-info btn-xs"
-                                                ng-click="setVersion(vr)"
-                                                ng-class="{ 'active':vr===version1}" ng-repeat="vr in versions">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                                <label class="btn btn-raised btn-info btn-xs" ng-click="setVersion(vr)" ng-class="{ 'active':vr===version1}" ng-repeat="vr in versions">
                                                 <input type="radio" ng-value="vr" ng-model="version1">{{vr}}</input>
                                             </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6" ng-show="version1 !==''">
-                                        <div ng-show="loading" style="text-align:center">
-                                            <i class="fa fa-spinner fa-pulse fa-2x"></i>
-                                        </div>
-                                        <div ng-show="!loading" class="igl-table">
-                                            <h5>Segments for {{version1}}</h5>
-                                            <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                                                <input ng-model="search.name" class="form-control" placeholder="by name">
-                                                <thead>
-                                                <tr>
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-show="version1 !==''">
+                            <div ng-show="loading" style="text-align:center">
+                                <i class="fa fa-spinner fa-pulse fa-2x"></i>
+                            </div>
+                            <div ng-show="!loading" class="igl-table">
+                                <h5>Segments for {{version1}}</h5>
+                                <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                                    <input ng-model="search.name" class="form-control" placeholder="by name">
+                                    <thead>
+                                        <tr>
 
-                                                    <th>Name</th>
-                                                    <th>As is</th>
-                                                    <th>As Flavor</th>
+                                            <th>Name</th>
+                                            <th>As is</th>
+                                            <th>As Flavor</th>
 
-                                                </tr>
+                                        </tr>
 
-                                                </thead>
-                                                <tbody>
-                                                <tr ng-repeat="segment in hl7Segments | orderBy: 'name' | filter:search:strict">
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="segment in hl7Segments | orderBy: 'name' | filter:search:strict">
 
-                                                    <td>{{segment.name}}</td>
-                                                    <td><a class="pointer" ng-show="!checkExist(segment)" ng-click="addseg(segment)"><i class="fa fa-plus fa-fw"></i></a>
-                                                        <p ng-show="checkExist(segment)">Selected</p>
-                                                    </td>
-                                                    <td><a class="pointer" ng-click="addsegFlv(segment)"><i class="fa fa-plus fa-fw"></i></a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6" ng-show="selectedSegments.length> 0">
-                                                    <div class="igl-table">
-                                                        <h5>Selected Segments</h5>
-                                                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Name</th>
-                                                                    <th>Ext</th>
-                                                                    <th>HL7 Version</th>
-                                                                    <th/>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr ng-repeat="seg in selectedSegments">
-                                                                    <td>{{seg.name}}</td>
-                                                                    <td><span ng-show="!edit">{{seg.ext}}</span>
-                                                                        <a class="pointer" ng-show="!edit && seg.ext!==null" ng-click="edit=true;checkExt(seg)"><i class="fa fa-pencil fa-fw"></i></a>
-                                                                        <input ng-show="edit" ng-change="checkExt(seg)" ng-model="seg.ext"/>
-                                                                        <a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
-                                                                        <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
-                                                                        <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>
-                                                                    </td>
-                                                                    <td>{{seg.hl7Version}} </td>
-                                                                    <td><a class="pointer" ng-click="deleteSeg(seg)"><i
+                                            <td>{{segment.name}}</td>
+                                            <td><a class="pointer" ng-show="!checkExist(segment)" ng-click="addseg(segment)"><i class="fa fa-plus fa-fw"></i></a>
+                                                <p ng-show="checkExist(segment)">Selected</p>
+                                            </td>
+                                            <td><a class="pointer" ng-click="addsegFlv(segment)"><i class="fa fa-plus fa-fw"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-show="selectedSegments.length> 0">
+                            <div class="igl-table">
+                                <h5>Selected Segments</h5>
+                                <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Ext</th>
+                                            <th>HL7 Version</th>
+                                            <th/>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="seg in selectedSegments">
+                                            <td>{{seg.name}}</td>
+                                            <td><span ng-show="!edit">{{seg.ext}}</span>
+                                                <a class="pointer" ng-show="!edit && seg.ext!==null" ng-click="edit=true;checkExt(seg)"><i class="fa fa-pencil fa-fw"></i></a>
+                                                <input ng-show="edit" ng-change="checkExt(seg)" ng-model="seg.ext" />
+                                                <a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
+                                                <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
+                                                <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>
+                                            </td>
+                                            <td>{{seg.hl7Version}} </td>
+                                            <td><a class="pointer" ng-click="deleteSeg(seg)"><i
                                                                                 class="fa fa-times fa-fw"></i></a></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                    </div>
-                                </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
@@ -919,33 +959,34 @@
                     <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedSegments.length===0"><i class="fa fa-check"></i>Add
                     </button>
                 </div>
-                 </form>
+            </form>
             <!--</form>-->
         </div>
     </div>
 </script>
 
 <script type="text/ng-template" id="ShareIGDocumentModal.html">
-	<div>
-		<div class="modal-header">
-			<h3 class="modal-title">Share IG Document</h3> </div>
-		<div class="modal-body">
-			<div class="container" style="margin-bottom: 20px;margin-top: 20px">
-				<div class="row" ng-if="error != null">
-					<div class="col-md-12">
-						<span ng-bind="error" style="color: red;"></span>
-					</div>
-				</div>
 
-				<div class="row" ng-if="igdocumentSelected.shareParticipants.length > 0">
-					<div class="col-md-12">
-						<h5>Shared with</h5>
-						<div class="table-responsive">
-							<table class="table">
-								<tbody>
-									<tr ng-repeat="participant in igdocumentSelected.shareParticipants">
-										<td><i>{{participant.fullname}} ({{participant.username}})</i></td>
-										<td>
+    <div>
+        <div class="modal-header">
+            <h3 class="modal-title">Share IG Document</h3> </div>
+        <div class="modal-body">
+            <div class="container" style="margin-bottom: 20px;margin-top: 20px">
+                <div class="row" ng-if="error != null">
+                    <div class="col-md-12">
+                        <span ng-bind="error" style="color: red;"></span>
+                    </div>
+                </div>
+
+                <div class="row" ng-if="igdocumentSelected.shareParticipants.length > 0">
+                    <div class="col-md-12">
+                        <h5>Shared with</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr ng-repeat="participant in igdocumentSelected.shareParticipants">
+                                        <td><i>{{participant.fullname}} ({{participant.username}})</i></td>
+                                        <td>
                                             <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="!participant.pendingApproval"><i class="fa fa-times"></i> Remove</button>
                                             <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request</button>
                                             <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="participant.pendingApproval"><i class="fa fa-times"></i> Cancel</button>
@@ -953,36 +994,36 @@
                                         <td>
                                             {{participant.permission}}
                                         </td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
 
-				<div class="row">
-					<div class="col-md-8">
-						<tags-input ng-model="tags" key-property="id" display-property="username" placeholder="Find user" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">
-							<auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
-						</tags-input>
-					</div>
-					<div class="col-md-4">
-						<ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
-							<ui-select-match>{{$select.selected}}</ui-select-match>
-							<ui-select-choices repeat="item in itemArray | filter: $select.search">
-								<div ng-bind-html="item | highlight: $select.search"></div>
-							</ui-select-choices>
-						</ui-select>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i> Cancel </button>
-				<button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="tags.length === 0"><i class="fa fa-check"></i>Share</button>
-			</div>
-		</div>
-	</div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <tags-input ng-model="tags" key-property="id" display-property="username" placeholder="Find user" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">
+                            <auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
+                        </tags-input>
+                    </div>
+                    <div class="col-md-4">
+                        <ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
+                            <ui-select-match>{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="item in itemArray | filter: $select.search">
+                                <div ng-bind-html="item | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i> Cancel </button>
+                <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="tags.length === 0"><i class="fa fa-check"></i>Share</button>
+            </div>
+        </div>
+    </div>
 </script>
 
 <script type="text/ng-template" id="autocomplete-template">
@@ -995,4 +1036,246 @@
         <span ng-bind-html="$highlight($getDisplayText())"></span>
         <span>({{data.fullname}})</span>
     </div>
+</script>
+
+
+
+<script type="text/ng-template" id="createProfileComponent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Create Profile Component</h3>
+    </div>
+    <form role="form">
+        <div class="modal-body">
+            <div class="row">
+
+                <div>
+                    <div class="form-group control-group" style="text-align:right">
+                        <label class="col-md-2 control-label">Name*</label>
+                        <div class="controls col-md-10">
+                            <input class="form-control" type="text" name="name" ng-model="name" required>
+                        </div>
+                    </div>
+                    <div class="form-group control-group" style="text-align:right">
+                        <label class="col-md-2 control-label">Description</label>
+                        <div class="controls col-md-10">
+                            <input class="form-control" type="text" ng-model="description">
+
+                        </div>
+                    </div>
+                    <div class="form-group control-group" style="text-align:right">
+                        <label class="col-md-2 control-label">Comment</label>
+                        <div class="controls col-md-10">
+                            <textarea rows="3" cols="20" name="comment" id="comment" class="form-control" ng-model="comment" />
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            </button>
+            <button type="submit" ng-disabled="!name" class="btn btn-raised btn-info btn-sm" ng-click="create()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Create</span>
+            </button>
+        </div>
+    </form>
+</script>
+
+
+<script type="text/ng-template" id="createCompositeMessage.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Create Composite Profile</h3>
+    </div>
+    <form role="form">
+        <div class="modal-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h5>Core Profiles</h5>
+                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset table-fixed">
+                        <thead>
+                            <tr class="tbl-header">
+                                <th>Choose Core Profile</th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="baseProfile in baseProfiles">
+                                <td>
+                                    <a ng-show="baseProfile.id!==baseP.id" ng-click="selectBaseProfile(baseProfile)"><i class="fa fa-plus fa-fw"></i></a> {{baseProfile.name}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h5>Profile Components</h5>
+                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset table-fixed">
+                        <thead>
+                            <tr class="tbl-header">
+                                <th>Choose profiles Components</th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="pc in pcs">
+                                <td>
+                                    <a ng-show="!checkExist(pc)" ng-click="selectPC(pc)"><i class="fa fa-plus fa-fw"></i></a> {{pc.name}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Composite Profile</h5>
+                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+
+                        <thead>
+                            <tr class="tbl-header">
+                                <th class="col-md-3">Core Profile</th>
+                                <th ng-repeat="pc in pcList">Profile Component {{pc.position}}</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-md-3" ng-model="baseP">
+                                    {{baseP.name}}
+                                </td>
+                                <td ng-repeat="pc in pcList">{{pc.name}}
+                                    <a ng-click="removePc(pc)"><i class="fa fa-remove fa-fw"></i></a>
+                                </td>
+
+                            </tr>
+                        </tbody>
+
+
+
+                    </table>
+                    <!--<div style="border:10px;" data-drop="true" data-jqyoui-options ng-model="composite" jqyoui-droppable style='height:50px;'>
+                        <div data-drag="false" data-jqyoui-options ng-model="composite" jqyoui-draggable>{{composite.name}}</div>
+                    </div>-->
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            </button>
+            <button class="btn btn-raised btn-info btn-sm" ng-click="create()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Create</span>
+            </button>
+        </div>
+    </form>
+</script>
+
+
+<script type="text/ng-template" id="createCompositeMessageWithDrag.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Create Composite Profile</h3>
+    </div>
+    <form role="form">
+        <div class="modal-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h5>Base Profiles</h5>
+                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset ">
+                        <thead>
+                            <tr class="tbl-header">
+                                <th>Choose Base Profile</th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat=" baseProfile in baseProfiles">
+                                <td ng-model="baseProfile" data-drag="true" jqyoui-draggable="{index: {{$index}}, onStart:'start(baseProfile)',onDrop:'dropBase:(baseProfile)'}" data-jqyoui-options="{revert: 'invalid'}">
+                                    {{baseProfile.name}}
+                                </td>
+                            </tr>
+                        </tbody>
+
+
+
+                    </table>
+                    <!--<div data-drag="true" ng-repeat="baseProfile in baseProfiles" data-jqyoui-options="{revert: 'invalid'}" ng-model="base" jqyoui-draggable="{animate:true}">{{baseProfile.name}}</div>-->
+
+
+                </div>
+                <div class="col-md-6">
+                    <h5>Profile Components</h5>
+                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset table-fixed">
+                        <thead>
+                            <tr class="tbl-header">
+                                <th>Choose profiles Components</th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="pc in pcs">
+                                <td ng-model="profileC" data-drag="true" jqyoui-draggable="{animate:true}" data-jqyoui-options="{revert: 'invalid'}">
+                                    {{pc.name}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Composite Profile</h5>
+                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+
+                        <thead>
+                            <tr class="tbl-header">
+                                <th class="col-md-6">Base Profile</th>
+                                <th class="col-md-3">Profile Component</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-md-6" ng-model="compositeMessage" data-drop="true" data-jqyoui-options="baseProfileOption" jqyoui-droppable="{onDrop:'myCallback(event,ui)'}">
+                                    {{compositeMessage.name}}
+                                </td>
+                                <td class="col-md-3" ng-model="pcList" data-drop="true" data-jqyoui-options jqyoui-droppable="{onDrop:'myCallback(event,ui)'}"></td>
+
+                            </tr>
+                        </tbody>
+
+
+
+                    </table>
+                    <!--<div style="border:10px;" data-drop="true" data-jqyoui-options ng-model="composite" jqyoui-droppable style='height:50px;'>
+                        <div data-drag="false" data-jqyoui-options ng-model="composite" jqyoui-draggable>{{composite.name}}</div>
+                    </div>-->
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            </button>
+            <button type="submit" ng-disabled="!name" class="btn btn-raised btn-info btn-sm" ng-click="create()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Create</span>
+            </button>
+        </div>
+    </form>
 </script>

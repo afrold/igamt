@@ -2317,6 +2317,35 @@ table.conformance-profiles-table td {
 	margin-bottom: 0px !important;
 }
 
+.table-fixed thead {
+//   width: 100%;
+}
+.table-fixed tbody {
+  height: 230px;
+  overflow-y: auto;
+//   width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+  display: block;
+}
+.table-fixed tbody td, .table-fixed thead > tr> th {
+//   float: left;
+//   border-bottom-width: 0;
+}
+.select-change {
+	cursor: pointer;
+	background-color: yellow;
+}
+.input-change {
+	
+	background-color: yellow !important;
+}
+.highlight-composite {
+	
+	background-color: blue !important;
+}
+
+
 ul.search-result > li > a:hover {
 	background-color: cornflowerblue;
 }
@@ -2463,6 +2492,7 @@ input[type="file"] {
 	font-size: 14px;
 	font-style: italic;
 }
+
 
 #nested-table{
 	margin-bottom: 0px;

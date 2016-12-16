@@ -1,15 +1,15 @@
 <style id="antiClickjack">
-body {
-    display: none !important;
-}
+    body {
+        display: none !important;
+    }
 </style>
 <script type="text/javascript">
-if (self === top) {
-    var antiClickjack = document.getElementById("antiClickjack");
-    antiClickjack.parentNode.removeChild(antiClickjack);
-} else {
-    top.location = self.location;
-}
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
 </script>
 <!-- <!-- Fixed navbar -->
 <div class="navbar navbar-default navbar-static-top" role="navigation">
@@ -21,7 +21,7 @@ if (self === top) {
                 </div>
             </div>
             <!--<div id="appsubtitle">-->
-                <!--<div msg key="app.subtitle"></div>-->
+            <!--<div msg key="app.subtitle"></div>-->
             <!--</div>-->
         </a>
         <!--<div id="userInfo" ng-show="isAuthenticated()">-->
@@ -47,7 +47,7 @@ if (self === top) {
             <li class="nav-header" ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
             <li class="nav-header" ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
 
-         </ul>
+        </ul>
 
         <ul class="nav navbar-nav navbar-right" style="margin-right: 15px">
             <li class="dropdown clear-fix" ng-show="isAuthenticated()" ng-class="isActive('/useraccount') || isActive('/transport-settings')">

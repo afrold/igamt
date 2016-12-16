@@ -44,9 +44,15 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
   private DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
 
   private Messages messages = new Messages();
+  private CompositeMessages compositeMessages=new CompositeMessages();
 
-  @DBRef
+  
+
+@DBRef
   private TableLibrary tableLibrary = new TableLibrary();
+  
+  @DBRef
+  private ProfileComponentLibrary profileComponentLibrary = new ProfileComponentLibrary();
 
   private Long accountId;
 
@@ -118,6 +124,13 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
   public void setMessages(Messages messages) {
     this.messages = messages;
   }
+  public CompositeMessages getCompositeMessages() {
+		return compositeMessages;
+	}
+
+	public void setCompositeMessages(CompositeMessages compositeMessages) {
+		this.compositeMessages = compositeMessages;
+	}
 
   public String getConstraintId() {
     return constraintId;
@@ -194,13 +207,14 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
     HashMap<String, Datatype> dtRecords = new HashMap<String, Datatype>();
     HashMap<String, Segment> segRecords = new HashMap<String, Segment>();
     HashMap<String, Table> tabRecords = new HashMap<String, Table>();
+    HashMap<String, ProfileComponent> pcRecords = new HashMap<String, ProfileComponent>();
+
 
     clonedProfile.setChanges(changes);
     clonedProfile.setComment(comment);
     clonedProfile.setDatatypeLibrary(datatypeLibrary.clone(dtRecords, tabRecords));
     // clonedProfile.setSegmentLibrary(segmentLibrary.clone(segRecords, dtRecords, tabRecords));
     clonedProfile.setTableLibrary(tableLibrary.clone(tabRecords));
-
     clonedProfile.setMessages(messages.clone(dtRecords, segRecords, tabRecords));
     clonedProfile.setMetaData(metaData.clone());
     clonedProfile.setUsageNote(usageNote);
@@ -213,13 +227,22 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
     return clonedProfile;
   }
 
-  public void merge(Profile p) {
+  public ProfileComponentLibrary getProfileComponentLibrary() {
+	return profileComponentLibrary;
+}
+
+public void setProfileComponentLibrary(ProfileComponentLibrary profileComponentLibrary) {
+	this.profileComponentLibrary = profileComponentLibrary;
+}
+
+public void merge(Profile p) {
     // Note: merge is used for creation of new profiles do we don't consider
     // constraints and annotations
     // in each profile, there is one message library with one message
     this.tableLibrary.merge(p.getTableLibrary());
     this.datatypeLibrary.merge(p.getDatatypeLibrary());
     this.segmentLibrary.merge(p.getSegmentLibrary());
+    this.profileComponentLibrary.merge(p.getProfileComponentLibrary());
 
     for (Message m : p.getMessages().getChildren()) {
       this.messages.addMessage(m);
