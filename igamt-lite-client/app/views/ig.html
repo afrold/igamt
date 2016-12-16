@@ -389,7 +389,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-raised btn-primary btn-sm"
-                ng-disabled="xmlFormat==='' || xmlFormat===n ull || selectedMessagesIDs===n ull || selectedMessagesIDs.length===0"
+                ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0"
                 ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw"></i>Export</span>
         </button>
         <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
@@ -984,7 +984,6 @@
 		</div>
 	</div>
 </script>
-
 <script type="text/ng-template" id="autocomplete-template">
     <div class="autocomplete-template">
         <div class="share_left-panel">
