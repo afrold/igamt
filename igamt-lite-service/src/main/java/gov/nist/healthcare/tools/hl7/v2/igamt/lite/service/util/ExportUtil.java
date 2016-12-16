@@ -182,14 +182,14 @@ public class ExportUtil {
         tidy.setDropEmptyParas(true);
         tidy.setCharEncoding(org.w3c.tidy.Configuration.UTF8);
         tidy.setXHTML(true);
-        tidy.setShowWarnings(true); // to hide errors
-        tidy.setQuiet(false); // to hide warning
+        tidy.setShowWarnings(false); // to hide errors
+        tidy.setQuiet(true); // to hide warning
         tidy.setMakeClean(true);
         tidy.setTidyMark(false);
         tidy.setHideEndTags(false);
+        tidy.setBreakBeforeBR(true);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         tidy.parseDOM(html, outputStream);
-        tidy.setBreakBeforeBR(true);
         return outputStream;
     }
 
