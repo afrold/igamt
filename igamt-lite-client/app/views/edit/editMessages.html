@@ -95,10 +95,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
-                                        <label class="col-md-2 control-label">Definition Text</label>
+                                        <label class="col-md-2 control-label">Usage Note</label>
                                         <div class="controls col-md-10">
                                             <div ng-show="!viewSettings.tableReadonly">
-                                                <textarea froala="froalaEditorOptions" ng-model="message.usageNote" name="text" id="text" ng-change="setDirty()"></textarea>
+                                                <textarea froala="froalaEditorOptions" ng-model="message.usageNote" name="usageNote" id="text" ng-change="setDirty()"></textarea>
                                             </div>
                                             <div ng-show="viewSettings.tableReadonly">
                                                 <div class="fr-view">
@@ -125,6 +125,21 @@
                                 </tab-heading>
                                 <div class="el-def" style="margin-top: 5px">
                                     <accordion>
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isFifthOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div ng-show="!viewSettings.tableReadonly">
+                                                    <textarea froala="froalaEditorOptions" ng-model="message.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
+                                                </div>
+                                                <div ng-show="viewSettings.tableReadonly">
+                                                    <div class="fr-view">
+                                                        <div froala-view="message.defPreText"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
                                                 <span style="color:white;"> Conformance Profile Definition</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
@@ -165,13 +180,26 @@
                                                             <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Data Type</th>
                                                             <th class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set</th>
                                                             <th class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">Predicate</th>
-                                                            <th class="col-md-1" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement</th>
                                                             <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">Definition Text</th>
                                                             <th class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">Comment</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody></tbody>
                                                 </table>
+                                            </div>
+                                        </div>
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isSixOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div ng-show="!viewSettings.tableReadonly">
+                                                    <textarea froala="froalaEditorOptions" ng-model="message.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
+                                                </div>
+                                                <div ng-show="viewSettings.tableReadonly">
+                                                    <div class="fr-view">
+                                                        <div froala-view="message.defPostText"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
@@ -193,13 +221,17 @@
                                                             <thead>
                                                                 <tr class="tbl-header">
                                                                     <th st-sort="constraintId" class="col-md-2">ID</th>
-                                                                    <th class="col-md-10">Description</th>
+                                                                    <th class="col-md-9">Description</th>
+                                                                    <th class="col-md-1">Action</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr ng-repeat="c in displayed">
                                                                     <td class="col-md-2">{{c.constraintId}}</td>
                                                                     <td class="col-md-10">{{c.description}}</td>
+                                                                    <td class="col-md-1" align="center">
+                                                                        <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatement(c, node)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+                                                                    </td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -373,8 +405,6 @@
          </td>
         <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
          </td>
-        <td class="col-md-1 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-         </td>
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
          </td>
         <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
@@ -469,20 +499,6 @@
                 </div>
             </div>
 
-        </td>
-
-        <td class="col-md-1 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <!--<div>-->
-                <!--<div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true)">-->
-                    <!--<a ng-click="manageConformanceStatement(node, message)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false"-->
-                        <!--tooltip-placement="left"></a>-->
-                <!--</div>-->
-                <!--<div ng-hide="filteredConstraints.length">-->
-                    <!--<a ng-click="manageConformanceStatement(node, message)" class="point">-->
-                        <!--<span><i class="fa fa-plus fa-fw"></i></span>-->
-                    <!--</a>-->
-                <!--</div>-->
-            <!--</div>-->
         </td>
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
 
@@ -585,20 +601,6 @@
             </div>
         </td>
 
-        <td class="col-md-1 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <div>
-                <div ng-repeat="constraint in filteredConstraints=( message.conformanceStatements | filter:{constraintTarget:node.path}:true)">
-                    <a ng-click="manageConformanceStatement(node, message)" class="point" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger
-                        tooltip-animation="false" tooltip-placement="left"></a>
-                </div>
-                <!--<div ng-hide="filteredConstraints.length">-->
-                    <!--<a ng-click="manageConformanceStatement(node, message)" class="point">-->
-                        <!--<span><i class="fa fa-plus fa-fw"></i></span>-->
-                    <!--</a>-->
-                <!--</div>-->
-            </div>
-        </td>
-
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
          </td>
 
@@ -625,11 +627,8 @@
             <span tooltip-html="getFieldNodeName(node.obj)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node.obj)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
         </td>
         <td class="col-md-1 col-fixed-80">
-            <span>{{::node.obj.usage}}</span>
-            <span ng-repeat="p in parentsMap[node.obj.id].predicates  | filter:{constraintTarget:node.obj.position + '[1]'}:true">
-                ({{::p.trueUsage}}/{{::p.falseUsage}})
-            </span>
-            <span ng-show="findPredicateByPath(node.path)">({{::findPredicateByPath(node.path).trueUsage}}/{{::findPredicateByPath(node.path).falseUsage}})</span>
+            <span>{{node.obj.usage}}</span>
+            <span ng-show="findPredicateByPath(node.path)">({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})</span>
          </td>
         <td class="col-md-1 col-fixed-100">
             <span>[{{::node.obj.min}},{{::node.obj.max}}]</span>
@@ -667,13 +666,6 @@
                 </div>
             </div>
         </td>
-        <td class="col-md-1" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <div>
-                <p ng-repeat="constraint in parentsMap[node.obj.id].conformanceStatements  | filter:{constraintTarget:node.obj.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
-                    ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-                </p>
-            </div>
-        </td>
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-show="node.obj.text !=='' && node.obj.text !==null" ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
                 <i class="fa fa-eye fa-fw" ></i>
@@ -700,11 +692,8 @@
             </span>
         </td>
         <td class="col-md-1 col-fixed-80">
-            <span>{{::node.obj.usage}}</span>
-            <span ng-repeat="p in parentsMap[node.obj.id].predicates  | filter:{constraintTarget:node.obj.position + '[1]'}:true">
-                ({{::p.trueUsage}}/{{::p.falseUsage}})
-            </span>
-            <span ng-show="findPredicateByPath(node.path)">({{::findPredicateByPath(node.path).trueUsage}}/{{::findPredicateByPath(node.path).falseUsage}})</span>
+            <span>{{node.obj.usage}}</span>
+            <span ng-show="findPredicateByPath(node.path)">({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})</span>
          </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
@@ -746,11 +735,6 @@
                 </div>
             </div>
         </td>
-        <td class="col-md-1" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <div>
-                <p ng-repeat="constraint in parentsMap[node.obj.id].conformanceStatements | filter:{constraintTarget:node.obj.position + '[1]'}:true" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></p>
-            </div>
-        </td>
 
         <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-show="node.obj.text !=='' && node.obj.text !==null" ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
@@ -785,8 +769,6 @@
         <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
          </td>
         <td class="col-md-2 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
-         </td>
-        <td class="col-md-3 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
          </td>
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
          </td>
@@ -831,13 +813,6 @@
                     tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
-        </td>
-        <td class="col-md-3 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <!--<div>-->
-                <!--<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)" tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"-->
-                    <!--ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">-->
-                <!--</p>-->
-            <!--</div>-->
         </td>
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
          </td>
@@ -889,13 +864,6 @@
                     tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
-        </td>
-        <td class="col-md-1 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-            <!--<div>-->
-                <!--<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true) " tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"-->
-                    <!--ng-bind-html="getConstraintAsId(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left">-->
-                <!--</p>-->
-            <!--</div>-->
         </td>
         <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <div>-</div>

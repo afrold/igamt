@@ -2478,3 +2478,38 @@ input[type="file"] {
 @keyframes blinker {
 	50% { opacity: 0; }
 }
+
+.upload_thumbnail {
+	max-width: 200px;
+	max-height: 150px;
+	line-height: 20px;
+}
+
+.vertical-align {
+  display: flex;
+  flex-direction: row;
+}
+
+.vertical-align > [class^="col-"],
+.vertical-align > [class*=" col-"] {
+  display: flex;
+  align-items: center;     /* Align the flex-items vertically */
+  justify-content: center; /* Optional, to align inner flex-items
+                              horizontally within the column  */
+}
+
+.upload_drop {
+  height: 152px;
+  margin-left: 17px;
+  margin-right: 15px;
+	border: 2px #f1f1f1 dashed;
+	border-radius: 5px;
+}
+
+.upload_drop_hover {
+	background-color: #5CB85C;
+}
+
+.upload_button {
+	margin-top: 0;
+}

@@ -6,15 +6,25 @@
         <xsl:value-of select="@Comment"/>
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
             <xsl:element name="p">
-                <xsl:element name="h4"><xsl:text>Definition text</xsl:text></xsl:element>
+                <xsl:element name="h4"><xsl:text>Usage note</xsl:text></xsl:element>
                 <xsl:value-of disable-output-escaping="yes"
                               select="Text[@Type='UsageNote']"/>
             </xsl:element>
         </xsl:if>
-        <xsl:element name="p">
+        <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
+            <xsl:call-template name="definitionText">
+                <xsl:with-param name="type">
+                    <xsl:text>pre</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
+        <!-- <xsl:element name="p"> -->
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="summary">
+                    <xsl:value-of select="@Description"></xsl:value-of>
                 </xsl:attribute>
                 <xsl:element name="col">
                     <xsl:attribute name="width">
@@ -78,8 +88,8 @@
                     </xsl:for-each>
                 </xsl:element>
             </xsl:element>
-            <xsl:if test="count(./Constraints/Constraint[@Type='cs'])+count(./MessageGroup/Constraint[@Type='cs']) &gt; 0">
-                <xsl:element name="p">
+            <xsl:if test="count(./Constraint[@Type='cs'])+count(./Elt/Constraint[@Type='cs']) &gt; 0">
+                <xsl:element name="h4">
                     <xsl:text>Conformance statements</xsl:text>
                 </xsl:element>
                 <xsl:for-each select="Constraints">
@@ -114,8 +124,8 @@
                     </xsl:if>
                 </xsl:for-each>
             </xsl:if>
-            <xsl:if test="count(./Constraints/Constraint[@Type='pre'])+count(./MessageGroup/Constraint[@Type='pre']) &gt; 0">
-                <xsl:element name="p">
+            <xsl:if test="count(./Constraint[@Type='pre'])+count(./Elt/Constraint[@Type='pre']) &gt; 0">
+                <xsl:element name="h4">
                     <xsl:text>Conditional predicates</xsl:text>
                 </xsl:element>
                 <xsl:for-each select="Constraints">
@@ -150,9 +160,12 @@
                     </xsl:if>
                 </xsl:for-each>
             </xsl:if>
-        </xsl:element>
-        <xsl:value-of disable-output-escaping="yes"
-                      select="./Text[@Type='UsageNote']"/>
-        <br></br>
+        <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+            <xsl:call-template name="definitionText">
+                <xsl:with-param name="type">
+                    <xsl:text>post</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
     </xsl:template>
 </xsl:stylesheet>
