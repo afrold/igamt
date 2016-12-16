@@ -38,7 +38,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -153,7 +152,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 	@Override
 	public String serializeIGDocumentToXML(IGDocument igdoc) {
-			String xml = serializationService.serializeIGDocument(igdoc).toXML();
+			String xml = serializationService.serializeIGDocument(igdoc, true).toXML();
 			return xml;
 		//return serializeIGDocumentToDoc(igdoc).toXML();
 	}

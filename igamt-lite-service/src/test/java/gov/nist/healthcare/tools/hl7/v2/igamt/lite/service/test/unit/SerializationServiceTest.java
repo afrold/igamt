@@ -40,7 +40,8 @@ public class SerializationServiceTest {
     public void testSerializeIGDocument(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         assertTrue(igDocument!=null);
-        Document document = serializationService.serializeIGDocument(igDocument);
+        Document document = serializationService.serializeIGDocument(igDocument,
+            true);
         String xmlDocument = document.toXML();
         System.out.println(xmlDocument);
     }

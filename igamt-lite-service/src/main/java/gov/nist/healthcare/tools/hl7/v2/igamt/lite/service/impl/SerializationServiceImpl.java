@@ -44,8 +44,9 @@ import java.util.UUID;
 
     @Autowired SerializeTableService serializeTableService;
 
-    @Override public Document serializeDatatypeLibrary(IGDocument igDocument) {
-        return serializeIGDocument(igDocument);
+    @Override public Document serializeDatatypeLibrary(IGDocument igDocument,
+        boolean includeSegmentsInMessage) {
+        return serializeIGDocument(igDocument, includeSegmentsInMessage);
     }
 
     @Override public Document serializeElement(SerializableElement element) {
@@ -54,7 +55,8 @@ import java.util.UUID;
         return serializableStructure.serializeStructure();
     }
 
-    @Override public Document serializeIGDocument(IGDocument igDocument) {
+    @Override public Document serializeIGDocument(IGDocument igDocument,
+        boolean includeSegmentsInMessage) {
         SerializableStructure serializableStructure = new SerializableStructure();
         SerializableMetadata serializableMetadata =
             new SerializableMetadata(igDocument.getMetaData(),
@@ -90,7 +92,8 @@ import java.util.UUID;
             serializableSections.getRootSections().appendChild(textElement);
         }
         //Message Serialization
-        SerializableSection messageSection = this.serializeMessages(profile);
+        SerializableSection messageSection = this.serializeMessages(profile,
+            includeSegmentsInMessage);
         profileSection.addSection(messageSection);
 
         //Segments serialization
@@ -174,7 +177,7 @@ import java.util.UUID;
 
 
 
-    private SerializableSection serializeMessages(Profile profile) {
+    private SerializableSection serializeMessages(Profile profile, boolean includeSegmentsInMessage) {
         String id = profile.getMessages().getId();
         String position = String.valueOf(profile.getMessages().getSectionPosition());
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
@@ -194,7 +197,7 @@ import java.util.UUID;
 
         for (Message message : profile.getMessages().getChildren()) {
             SerializableMessage serializableMessage =
-                serializeMessageService.serializeMessage(message, prefix, true);
+                serializeMessageService.serializeMessage(message, prefix, includeSegmentsInMessage);
             messageSection.addSection(serializableMessage);
         }
         return messageSection;

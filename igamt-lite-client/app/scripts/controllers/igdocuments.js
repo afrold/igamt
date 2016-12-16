@@ -880,6 +880,12 @@ angular.module('igl')
             }
         };
 
+        $scope.exportAsWithLayout = function(format,layout) {
+            if ($rootScope.igdocument != null) {
+                IgDocumentService.exportAsWithLayout($rootScope.igdocument, format,layout);
+            }
+        };
+
         $scope.exportDelta = function(id, format) {
             blockUI.start();
             var form = document.createElement("form");
@@ -2887,7 +2893,7 @@ angular.module('igl').controller('CustomExportCtrl', function ($scope, $modalIns
       $scope.selectedType = {};
       $scope.exportType = [{
         type: "XML",
-        layout:["Layout 1", "Layout 2"]
+        layout:[]
       }, {
         type: "Word",
         layout:["Layout 1", "Layout 2"]
@@ -2900,6 +2906,17 @@ angular.module('igl').controller('CustomExportCtrl', function ($scope, $modalIns
 
 
       $scope.ok = function () {
+          if($scope.selectedType.type){
+            if($scope.selectedType.type === "XML"){
+                $scope.exportAs($scope.selectedType.type);
+            } else {
+                if($scope.selectedLayout){
+                    $scope.exportAsWithLayout($scope.selectedType.type,$scope.selectedLayout);
+                } else {
+                    $scope.exportAs($scope.selectedType.type);
+                }
+            }
+          }
           $modalInstance.close();
       };
       $scope.cancel = function () {

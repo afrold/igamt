@@ -55,12 +55,13 @@ public class ExportServiceImpl implements ExportService {
     @Autowired
     private ProfileSerialization profileSerializationService;
 
-    @Override public InputStream exportIGDocumentAsDocx(IGDocument igDocument) throws IOException {
+    @Override public InputStream exportIGDocumentAsDocx(IGDocument igDocument,
+        boolean includeSegmentsInMessage) throws IOException {
         if (igDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(
                 DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD);
             return exportUtil.exportAsDocxFromXml(
-                serializationService.serializeIGDocument(igDocument).toXML(),
+                serializationService.serializeIGDocument(igDocument, includeSegmentsInMessage).toXML(),
                 GLOBAL_STYLESHEET, exportParameters, igDocument.getProfile(),
                 igDocument.getMetaData());
         } else {
@@ -68,10 +69,12 @@ public class ExportServiceImpl implements ExportService {
         }
     }
 
-    @Override public InputStream exportIGDocumentAsHtml(IGDocument igDocument) throws IOException {
+    @Override public InputStream exportIGDocumentAsHtml(IGDocument igDocument,
+        boolean includeSegmentsInMessage) throws IOException {
             if (igDocument != null) {
                 ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML);
-                return exportUtil.exportAsHtmlFromXsl(serializationService.serializeIGDocument(igDocument).toXML(),
+                return exportUtil.exportAsHtmlFromXsl(serializationService.serializeIGDocument(igDocument,
+                    includeSegmentsInMessage).toXML(),
                     GLOBAL_STYLESHEET, exportParameters);
             } else {
                 return new NullInputStream(1L);

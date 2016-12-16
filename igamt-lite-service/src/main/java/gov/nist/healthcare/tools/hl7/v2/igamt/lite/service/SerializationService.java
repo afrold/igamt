@@ -17,7 +17,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
  * Created by Maxence Lefort on 12/7/16.
  */
 public interface SerializationService {
-    public nu.xom.Document serializeIGDocument(IGDocument igDocument);
-    public nu.xom.Document serializeDatatypeLibrary(IGDocument igDocument);
+    public nu.xom.Document serializeIGDocument(IGDocument igDocument,
+        boolean includeSegmentsInMessage);
+    public nu.xom.Document serializeDatatypeLibrary(IGDocument igDocument,
+        boolean includeSegmentsInMessage);
     public nu.xom.Document serializeElement(SerializableElement element);
 }

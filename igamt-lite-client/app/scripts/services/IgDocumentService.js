@@ -38,6 +38,27 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
             blockUI.stop();
         },
 
+        exportAsWithLayout: function(igDocument, format, layout) {
+            blockUI.start();
+            var form = document.createElement("form");
+            form.action = $rootScope.api('api/igdocuments/' + igDocument.id + '/export/' + format);
+            form.method = "POST";
+            form.target = "_blank";
+            var layoutParameter = document.createElement("input");
+            layoutParameter.type = "text";
+            layoutParameter.name = "layout";
+            layoutParameter.value = layout;
+            form.appendChild(layoutParameter);
+            var csrfInput = document.createElement("input");
+            csrfInput.name = "X-XSRF-TOKEN";
+            csrfInput.value = $cookies['XSRF-TOKEN'];
+            form.appendChild(csrfInput);
+            form.style.display = 'none';
+            document.body.appendChild(form);
+            form.submit();
+            blockUI.stop();
+        },
+
         addMessage: function(igId, child) {
             var delay = $q.defer();
             $http.post('api/igdocuments/' + igId + '/addMessage', child).then(function(response) {
