@@ -1865,6 +1865,18 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $
 angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootScope, $http, IgDocumentService, blockUI) {
     $scope.saving = false;
     $scope.saved = false;
+    $scope.uploader = {};
+
+    $scope.successUpload = function($file, $message, $data) {
+      $scope.editForm.$dirty = true;
+      var link = JSON.parse($message);
+      $rootScope.metaData.coverPicture = link.link;
+    };
+
+    $scope.removeCover = function() {
+      $scope.editForm.$dirty = true;
+      $rootScope.metaData.coverPicture = null;
+    };
 
     $scope.save = function() {
         $scope.saving = true;
@@ -1898,6 +1910,7 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function($scope, $rootS
         blockUI.start();
         $scope.editForm.$dirty = false;
         $scope.editForm.$setPristine();
+        $scope.uploader.flow.cancel();
         $rootScope.clearChanges();
         $rootScope.metaData = angular.copy($rootScope.igdocument.metaData);
         blockUI.stop();
@@ -2346,7 +2359,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
     function($scope, $rootScope, $modalInstance, hl7Version, datatypes, masterLib, userDtLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http) {
 
         //$scope.hl7Version = hl7Version;
-        //$scope.hl7Datatypes = datatypes;        
+        //$scope.hl7Datatypes = datatypes;
 
         $scope.newDts = [];
         $scope.checkedExt = true;
@@ -3112,24 +3125,24 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalI
             console.log(error);
         });
 
-    };
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-    $scope.tags = [];
-    $scope.selectedItem = {
-        selected: "VIEW"
-    };
-    $scope.itemArray = ["VIEW"];
+	};
+	$scope.cancel = function () {
+		$modalInstance.dismiss('cancel');
+	};
+	$scope.tags = [];
+	$scope.selectedItem = {
+		selected: "VIEW"
+	};
+	$scope.itemArray = ["VIEW"];
 
-    $scope.tags = [];
-    $scope.loadUsernames = function($query) {
-        return userList.filter(function(user) {
-            return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
-        });
-    };
+	$scope.tags = [];
+	$scope.loadUsernames = function ($query) {
+		return userList.filter(function (user) {
+			return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
+		});
+	};
 
-    $scope.unshare = function(shareParticipant) {
+    $scope.unshare = function (shareParticipant) {
         $scope.loading = false;
         IgDocumentService.unshare($scope.igdocumentSelected.id, shareParticipant.id).then(function(res) {
             var indexOfId = $scope.igdocumentSelected.shareParticipantIds.indexOf(shareParticipant.id);

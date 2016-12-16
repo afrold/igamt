@@ -63,7 +63,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.NodeFactory;
@@ -166,23 +166,23 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
 			elmMetaData.addAttribute(new Attribute("Date", ""));
 		} else {
-			elmMetaData.addAttribute(new Attribute("Name", !ExportUtil.str(metadata.getTitle()).equals("")
-					? ExportUtil.str(metadata.getTitle()) : "No Title Info"));
-			elmMetaData.addAttribute(new Attribute("OrgName", !ExportUtil.str(metadata.getOrgName()).equals("")
-					? ExportUtil.str(metadata.getOrgName()) : "No Org Info"));
-			elmMetaData.addAttribute(new Attribute("Version", !ExportUtil.str(metadata.getVersion()).equals("")
-					? ExportUtil.str(metadata.getVersion()) : "No Version Info"));
+			elmMetaData.addAttribute(new Attribute("Name", !SerializationUtil.str(metadata.getTitle()).equals("")
+					? SerializationUtil.str(metadata.getTitle()) : "No Title Info"));
+			elmMetaData.addAttribute(new Attribute("OrgName", !SerializationUtil.str(metadata.getOrgName()).equals("")
+					? SerializationUtil.str(metadata.getOrgName()) : "No Org Info"));
+			elmMetaData.addAttribute(new Attribute("Version", !SerializationUtil.str(metadata.getVersion()).equals("")
+					? SerializationUtil.str(metadata.getVersion()) : "No Version Info"));
 			elmMetaData.addAttribute(
 					new Attribute("Date", dateUpdated != null ? DateUtils.format(dateUpdated) : "No Date Info"));
 
 			if (profile.getMetaData().getSpecificationName() != null
 					&& !profile.getMetaData().getSpecificationName().equals(""))
 				elmMetaData.addAttribute(new Attribute("SpecificationName",
-						ExportUtil.str(profile.getMetaData().getSpecificationName())));
+						SerializationUtil.str(profile.getMetaData().getSpecificationName())));
 			if (profile.getMetaData().getStatus() != null && !profile.getMetaData().getStatus().equals(""))
-				elmMetaData.addAttribute(new Attribute("Status", ExportUtil.str(profile.getMetaData().getStatus())));
+				elmMetaData.addAttribute(new Attribute("Status", SerializationUtil.str(profile.getMetaData().getStatus())));
 			if (profile.getMetaData().getTopics() != null && !profile.getMetaData().getTopics().equals(""))
-				elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(profile.getMetaData().getTopics())));
+				elmMetaData.addAttribute(new Attribute("Topics", SerializationUtil.str(profile.getMetaData().getTopics())));
 		}
 		e.appendChild(elmMetaData);
 

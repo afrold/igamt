@@ -10,13 +10,16 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UploadImageFile
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.HttpUtil;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -93,7 +96,7 @@ public class FileStorageController {
 			throw new UploadImageFileException(e);
 		}
 	}
-
+	
 	@ResponseBody
 	@RequestMapping(value = "/file", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> getByName(

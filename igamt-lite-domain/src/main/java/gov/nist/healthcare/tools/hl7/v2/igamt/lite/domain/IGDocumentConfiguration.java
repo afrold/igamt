@@ -27,6 +27,7 @@ public class IGDocumentConfiguration {
   private Set<String> tableContentDefinitions = new HashSet<String>();
   private Set<String> tableExtensibilities = new HashSet<String>();
   private Set<String> constraintVerbs = new HashSet<String>();
+  private Set<String> conditionalConstraintVerbs = new HashSet<String>();
   private Set<String> constraintTypes = new HashSet<String>();
   private Set<String> predefinedFormats = new HashSet<String>();
   private Set<String> statuses = new HashSet<String>();
@@ -136,5 +137,13 @@ public class IGDocumentConfiguration {
   public void setConditionalUsage(Set<String> conditionalUsage) {
     this.conditionalUsage = conditionalUsage;
   }
+
+public Set<String> getConditionalConstraintVerbs() {
+	return conditionalConstraintVerbs;
+}
+
+public void setConditionalConstraintVerbs(Set<String> conditionalConstraintVerbs) {
+	this.conditionalConstraintVerbs = conditionalConstraintVerbs;
+}
 
 }
