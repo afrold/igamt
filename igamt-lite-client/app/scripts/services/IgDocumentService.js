@@ -140,31 +140,42 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
 
             return delay.promise;
         },
-        share:function(igDocId,shareParticipantIds){
+        share: function(igDocId, shareParticipantIds) {
             var delay = $q.defer();
-            $http.post('api/igdocuments/' + igDocId + '/share', shareParticipantIds).then(function (response) {
+            $http.post('api/igdocuments/' + igDocId + '/share', shareParticipantIds).then(function(response) {
                 delay.resolve(response.data);
-            }, function (error) {
+            }, function(error) {
                 delay.reject(error);
             });
             return delay.promise;
         },
-        unshare: function(igDocId, participantId){
+        unshare: function(igDocId, participantId) {
             var delay = $q.defer();
-            $http.post('api/igdocuments/' + igDocId + '/unshare', participantId).then(function (response) {
+            $http.post('api/igdocuments/' + igDocId + '/unshare', participantId).then(function(response) {
                 delay.resolve(response.data);
-             }, function (error) {
+            }, function(error) {
                 delay.reject(error);
             });
             return delay.promise;
         },
-        updateDate: function(igdocument){
+        saveProfileComponent: function(id, pc) {
             var delay = $q.defer();
-            $http.post('api/igdocuments/' + igdocument.id + '/updateDate').then(function (response) {
-               var resu =  response.data;
-               igdocument.dateUpdated = resu;
-               delay.resolve(resu);
-            }, function (error) {
+            $http.post('api/igdocuments/' + id + '/profile/profilecomponent/save', pc).then(function(response) {
+                var saveResponse = angular.fromJson(response.data);
+                delay.resolve(saveResponse);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+
+        },
+        updateDate: function(igdocument) {
+            var delay = $q.defer();
+            $http.post('api/igdocuments/' + igdocument.id + '/updateDate').then(function(response) {
+                var resu = response.data;
+                igdocument.dateUpdated = resu;
+                delay.resolve(resu);
+            }, function(error) {
                 delay.reject(error);
             });
             return delay.promise;

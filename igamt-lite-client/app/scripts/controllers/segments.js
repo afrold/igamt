@@ -102,6 +102,18 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     };
 
+    $scope.deleteConformanceStatementFromList = function (c){
+        $rootScope.segment.conformanceStatements.splice($rootScope.segment.conformanceStatements.indexOf(c), 1);
+
+        $scope.setDirty();
+    };
+
+    $scope.deletePredicateFromList = function (p){
+        $rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf(p), 1);
+
+        $scope.setDirty();
+    };
+
     $scope.AddBindingForSegment = function(segment) {
         var modalInstance = $modal.open({
             templateUrl: 'AddBindingForSegment.html',
@@ -1692,7 +1704,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
             name: ""
         },
         hide: false,
-        added:"yes",
+        added: "yes",
         id: "",
         itemNo: "",
         max: "",
@@ -1916,11 +1928,24 @@ angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInsta
 
 });
 angular.module('igl').controller('EditVSCtrl', function($scope, $modalInstance, valueSets, field, $rootScope, SegmentService, blockUI) {
-
+    console.log("field");
+    console.log(field);
     $scope.vsChanged = false;
     $scope.field = field;
-    $scope.vs = angular.copy(field.tables);
-    $scope.tableList = angular.copy(field.tables);;
+    if (field.attributes) {
+        if (field.attributes.tables && field.attributes.tables.length > 0) {
+            $scope.vs = angular.copy(field.attributes.tables);
+            $scope.tableList = angular.copy(field.attributes.tables);
+        } else {
+            $scope.vs = [];
+            $scope.tableList = [];
+        }
+
+    } else {
+        $scope.vs = angular.copy(field.tables);
+        $scope.tableList = angular.copy(field.tables);
+    }
+
     $scope.loadVS = function($query) {
 
 
@@ -1958,7 +1983,13 @@ angular.module('igl').controller('EditVSCtrl', function($scope, $modalInstance, 
         blockUI.start();
 
         $scope.vsChanged = false;
-        field.tables = $scope.tableList;
+        if (field.attributes) {
+            field.attributes.tables = $scope.tableList;
+        } else {
+            field.tables = $scope.tableList;
+        }
+
+
 
         blockUI.stop();
 
