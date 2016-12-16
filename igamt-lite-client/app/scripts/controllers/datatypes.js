@@ -1477,7 +1477,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         $modalInstance.close();
     };
 });
-angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
+angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope, $q) {
     $scope.selectedNode = selectedNode;
     $scope.constraintType = 'Plain';
     $scope.constraints = [];
@@ -1503,27 +1503,23 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
         current.pathInfoSet.push(pathInfo);
 
-        if(current.type == 'segment'){
-            var seg = current;
-            for(var i in seg.fields){
-                var f = seg.fields[i];
-                f.pathInfoSet = angular.copy(current.pathInfoSet);
+        if(current.type == 'datatype'){
+            var dt = current;
+            for(var i in dt.components){
+                var c = dt.components[i];
+                c.pathInfoSet = angular.copy(current.pathInfoSet);
 
-                var childPositionNumber = f.position;
-                var childLocationName = f.position;
-                var childNodeName = f.name;
+                var childPositionNumber = c.position;
+                var childLocationName = c.position;
+                var childNodeName = c.name;
                 var childInstanceNumber = "1";
                 var childisInstanceNumberEditable = false;
-                if(f.max != '1') {
-                    childInstanceNumber = '*';
-                    childisInstanceNumberEditable = true;
-                }
-                var child = angular.copy($rootScope.datatypesMap[f.datatype.id]);
+                var child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
                 child.id = new ObjectId().toString();
-                f.child = child;
-                $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
+                c.child = child;
+                $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
-        }else if(current.type == 'field' || current.type == 'component'){
+        }else if(current.type == 'component'){
             var dt = current.child;
             for(var i in dt.components){
                 var c = dt.components[i];
@@ -1642,7 +1638,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
             }
 
             $scope.newConstraint.position_1 = positionPath.substr(1);
-            $scope.newConstraint.location_1 = $rootScope.segment.name + '-' + locationPath.substr(1);
+            $scope.newConstraint.location_1 = $rootScope.datatype.name + '.' + locationPath.substr(1);
         }
     };
 
@@ -1663,7 +1659,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
             }
 
             $scope.newConstraint.position_2 = positionPath.substr(1);
-            $scope.newConstraint.location_2 = $rootScope.segment.name + '-' + locationPath.substr(1);
+            $scope.newConstraint.location_2 = $rootScope.datatype.name + '.' + locationPath.substr(1);
         }
     };
 
