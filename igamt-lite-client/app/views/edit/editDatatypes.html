@@ -324,7 +324,7 @@
                                                                     {{c.description}}
                                                                 </td>
                                                                 <td class="col-md-1" align="center">
-                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatementFromList(c);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -365,7 +365,7 @@
                                                                     {{p.falseUsage}}
                                                                 </td>
                                                                 <td class="col-md-1" align="center">
-                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.predicates.splice(datatype.predicates.indexOf(p), 1);" ng-disabled="viewSettings.tableReadonly"><span><i
+                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="deletePredicateFromList(p);" ng-disabled="viewSettings.tableReadonly"><span><i
                                 class="fa fa-trash fa-fw">
                             &nbsp; </i>Del</span>
                         </button>
