@@ -1,19 +1,29 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="/rendering/templates/profile/component.xsl"/>
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
+    <xsl:import href="/rendering/templates/profile/definitionText.xsl"/>
     <xsl:template match="Datatype">
-        <xsl:if test="count(Text[@Type='PurposeAndUse']) &gt; 0">
+        <xsl:if test="not(@PurposeAndUse='')">
             <xsl:element name="p">
+                <xsl:element name="h4"><xsl:text>Purpose and Use</xsl:text></xsl:element>
                 <xsl:value-of disable-output-escaping="yes"
-                              select="Text[@Type='PurposeAndUse']"/>
+                              select="@PurposeAndUse"/>
             </xsl:element>
         </xsl:if>
         <xsl:value-of select="@Comment"></xsl:value-of>
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
             <xsl:element name="p">
+                <xsl:element name="h4"><xsl:text>Usage note</xsl:text></xsl:element>
                 <xsl:value-of disable-output-escaping="yes"
                               select="Text[@Type='UsageNote']"/>
             </xsl:element>
+        </xsl:if>
+        <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
+            <xsl:call-template name="definitionText">
+                <xsl:with-param name="type">
+                    <xsl:text>pre</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
         </xsl:if>
         <xsl:element name="p">
             <xsl:element name="table">
@@ -104,30 +114,28 @@
             </xsl:element>
         </xsl:element>
         <xsl:if test="count(./Constraint) &gt; 0">
-            <xsl:if test="normalize-space($inlineConstraintsVar) = 'false'">
-                <xsl:call-template name="Constraint">
-                    <xsl:with-param name="title">
-                        <xsl:text>Conformance statements</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="constraintMode">
-                        <xsl:text>standalone</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="type">
-                        <xsl:text>cs</xsl:text>
-                    </xsl:with-param>
-                </xsl:call-template>
-                <xsl:call-template name="Constraint">
-                    <xsl:with-param name="title">
-                        <xsl:text>Conditional predicates</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="constraintMode">
-                        <xsl:text>standalone</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="type">
-                        <xsl:text>pre</xsl:text>
-                    </xsl:with-param>
-                </xsl:call-template>
-            </xsl:if>
+            <xsl:call-template name="Constraint">
+                <xsl:with-param name="title">
+                    <xsl:text>Conformance statements</xsl:text>
+                </xsl:with-param>
+                <xsl:with-param name="constraintMode">
+                    <xsl:text>standalone</xsl:text>
+                </xsl:with-param>
+                <xsl:with-param name="type">
+                    <xsl:text>cs</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
+            <xsl:call-template name="Constraint">
+                <xsl:with-param name="title">
+                    <xsl:text>Conditional predicates</xsl:text>
+                </xsl:with-param>
+                <xsl:with-param name="constraintMode">
+                    <xsl:text>standalone</xsl:text>
+                </xsl:with-param>
+                <xsl:with-param name="type">
+                    <xsl:text>pre</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
         </xsl:if>
         <xsl:if test="count(./Component/Text[@Type='Text']) &gt; 0">
             <xsl:element name="h4">
@@ -146,22 +154,12 @@
                 </xsl:if>
             </xsl:for-each>
         </xsl:if>
-        <xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
-            <xsl:element name="h4">
-                <xsl:text>Post-definition:</xsl:text>
-            </xsl:element>
-            <xsl:if test="count(./Text[@Type='Text']) &gt; 0">
-                <xsl:element name="p">
-                    <xsl:element name="u">
-                        <xsl:value-of select="./Text[@Type='Name']"/>
-                        <xsl:text>:</xsl:text>
-                    </xsl:element>
-                    <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']"/>
-                </xsl:element>
-            </xsl:if>
-            <xsl:element name="p">
-                <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text2']"/>
-            </xsl:element>
+        <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+            <xsl:call-template name="definitionText">
+                <xsl:with-param name="type">
+                    <xsl:text>post</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
         </xsl:if>
     </xsl:template>
 
