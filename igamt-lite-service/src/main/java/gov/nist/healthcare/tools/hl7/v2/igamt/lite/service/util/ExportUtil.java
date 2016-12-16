@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
@@ -17,6 +18,8 @@ import org.docx4j.openpackaging.parts.WordprocessingML.AlternativeFormatInputPar
 import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.CTAltChunk;
 import org.docx4j.wml.ObjectFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
@@ -98,15 +102,7 @@ public class ExportUtil {
             // .. content type
             wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");*/
 
-            Tidy tidy = new Tidy();
-            tidy.setWraplen(Integer.MAX_VALUE);
-            tidy.setXHTML(true);
-            tidy.setShowWarnings(false); // to hide errors
-            tidy.setQuiet(true); // to hide warning
-            tidy.setMakeClean(true);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            tidy.parse(IOUtils.toInputStream(html), baos);
-            html = baos.toString();
+            html = cleanHtml(IOUtils.toInputStream(html)).toString();
             XHTMLImporterImpl xHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
             wordMLPackage.getMainDocumentPart().getContent().addAll(xHTMLImporter.convert(html, null));
 
@@ -136,14 +132,8 @@ public class ExportUtil {
 
         try {
             File tmpHtmlFile = doTransformToTempHtml(xmlString,xslPath,exportParameters);
-            Tidy tidy = new Tidy();
-            tidy.setWraplen(Integer.MAX_VALUE);
-            tidy.setXHTML(true);
-            tidy.setShowWarnings(false); // to hide errors
-            tidy.setQuiet(true); // to hide warning
-            tidy.setMakeClean(true);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            tidy.parseDOM(FileUtils.openInputStream(tmpHtmlFile), outputStream);
+            
+            ByteArrayOutputStream outputStream = cleanHtml(FileUtils.openInputStream(tmpHtmlFile));
             return new ByteArrayInputStream(outputStream.toByteArray());
 
         } catch (TransformerException | IOException e) {
@@ -166,10 +156,11 @@ public class ExportUtil {
 
 
     private File doTransformToTempHtml(String xmlString,String xslPath, ExportParameters exportParameters) throws IOException, TransformerException {
-        File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
+//    	File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
+    	File tmpHtmlFile = new File("temp_" + UUID.randomUUID().toString() + ".html");
         // Generate xml file containing profile
-        File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
-        // File tmpXmlFile = new File("temp" + UUID.randomUUID().toString() + ".xml");
+//        File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
+        File tmpXmlFile = new File("temp_" + UUID.randomUUID().toString() + ".xml");
         FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
         TransformerFactory factoryTf = TransformerFactory.newInstance();
         factoryTf.setURIResolver(new XsltIncludeUriResover());
@@ -183,6 +174,23 @@ public class ExportUtil {
         }
         transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
         return tmpHtmlFile;
+    }
+    
+    private ByteArrayOutputStream cleanHtml(InputStream html){     	
+        Tidy tidy = new Tidy();
+        tidy.setWraplen(Integer.MAX_VALUE);
+        tidy.setDropEmptyParas(true);
+        tidy.setCharEncoding(org.w3c.tidy.Configuration.UTF8);
+        tidy.setXHTML(true);
+        tidy.setShowWarnings(true); // to hide errors
+        tidy.setQuiet(false); // to hide warning
+        tidy.setMakeClean(true);
+        tidy.setTidyMark(false);
+        tidy.setHideEndTags(false);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        tidy.parseDOM(html, outputStream);
+        tidy.setBreakBeforeBR(true);
+        return outputStream;
     }
 
 
