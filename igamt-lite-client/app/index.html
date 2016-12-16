@@ -112,7 +112,7 @@
     </script>
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit confirm-on-leave block-ui="main">
-<div id="wrapper">
+<div id="wrapper" flow-prevent-drop>
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
@@ -139,7 +139,7 @@
     <div ng-include="'views/templates.html'"></div>
  	<div ng-include="'views/edit/editDatatypes.html'"></div>
  	<div ng-include="'views/edit/editDatatypeInLibrary.html'"></div>
- 	
+
     <ng-include src="'views/edit/editDocument.html'"></ng-include>
     <ng-include src="'views/edit/editSegments.html'"></ng-include>
     <ng-include src="'views/edit/editMessages.html'"></ng-include>
@@ -224,6 +224,8 @@
     <script src="bower_components/angular-object-diff/dist/angular-object-diff.js"></script>
     <script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
     <script src="bower_components/angularjs-slider/dist/rzslider.js"></script>
+    <script src="bower_components/flow.js/dist/flow.js"></script>
+    <script src="bower_components/ng-flow/dist/ng-flow.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js scripts/modules.js -->

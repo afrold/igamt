@@ -49,7 +49,7 @@
 			/*font-family: 'Cairo', sans-serif;*/
 			font-family: RobotoDraft, Roboto, sans-serif;
 		}
-		
+
 		* {
 			/*font-family: 'Cairo', sans-serif;*/
 			font-family: RobotoDraft, Roboto, sans-serif;
@@ -58,7 +58,7 @@
 </head>
 
 <body ng-controller="MainCtrl" ng-init="init()" window-exit confirm-on-leave block-ui="main">
-	<div id="wrapper">
+	<div id="wrapper" flow-prevent-drop>
 		<div ng-include="'views/header.html'"></div>
 		<!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
