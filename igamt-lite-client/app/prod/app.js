@@ -70,6 +70,9 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .when('/ig', {
             templateUrl: 'views/ig.html'
         })
+        .when('/profileComponent', {
+            templateUrl: 'views/profileComponent.html'
+        })
         .when('/compare', {
             templateUrl: 'views/compare.html'
         })

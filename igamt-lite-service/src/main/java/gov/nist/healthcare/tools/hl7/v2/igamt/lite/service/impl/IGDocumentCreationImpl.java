@@ -41,6 +41,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
@@ -56,6 +57,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepositor
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
@@ -66,6 +68,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageEventFactory;
 
 @Service
 public class IGDocumentCreationImpl implements IGDocumentCreationService {
+
 
 	private Logger log = LoggerFactory.getLogger(IGDocumentCreationImpl.class);
 
@@ -92,6 +95,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	@Autowired
 	private TableRepository tableRepository;
+  @Autowired
+  private ProfileComponentLibraryRepository profileComponentLibraryRepository;
 
 	@Autowired
 	private MessageEventFactory messageEventFactory;
@@ -193,10 +198,14 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		tabTarget.setSectionContents(dSource.getProfile().getTableLibrary().getSectionContents());
 		tabTarget.setSectionDescription(dSource.getProfile().getTableLibrary().getSectionDescription());
 		tabTarget.setSectionPosition(dSource.getProfile().getTableLibrary().getSectionPosition());
+    ProfileComponentLibrary profileComponentLibrary=new ProfileComponentLibrary();
+
 		pTarget.setMessages(msgsTarget);
 		pTarget.setSegmentLibrary(sgtsTarget);
 		pTarget.setDatatypeLibrary(dtsTarget);
 		pTarget.setTableLibrary(tabTarget);
+    pTarget.setProfileComponentLibrary(profileComponentLibrary);
+
 
 		addSections(dSource, dTarget);
 		addMessages(msgEvts, dSource.getProfile(), pTarget);
@@ -205,6 +214,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		segmentLibraryRepository.save(sgtsTarget);
 		datatypeLibraryRepository.save(dtsTarget);
 		tableLibraryRepository.save(tabTarget);
+    profileComponentLibraryRepository.save(profileComponentLibrary);
+
 		igdocumentRepository.save(dTarget);
 		return dTarget;
 	}
