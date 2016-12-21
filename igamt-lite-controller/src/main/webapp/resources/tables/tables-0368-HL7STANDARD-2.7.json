@@ -1,0 +1,192 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507101",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0368",
+  "name" : "0368",
+  "description" : "Remote Control Command",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507102",
+    "value" : "AB",
+    "label" : "Abort",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507103",
+    "value" : "CL",
+    "label" : "Clear",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507104",
+    "value" : "CN",
+    "label" : "Clear Notification",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507105",
+    "value" : "DI",
+    "label" : "Disable Sending Events",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507106",
+    "value" : "EN",
+    "label" : "Enable Sending Events",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507107",
+    "value" : "ES",
+    "label" : "Emergency -stop",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507108",
+    "value" : "EX",
+    "label" : "Execute (command specified in field Parameters (ST) 01394)",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507109",
+    "value" : "IN",
+    "label" : "Initialize/Initiate",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550710a",
+    "value" : "LC",
+    "label" : "Local Control Request",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550710b",
+    "value" : "LK",
+    "label" : "Lock",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550710c",
+    "value" : "LO",
+    "label" : "Load",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550710d",
+    "value" : "PA",
+    "label" : "Pause",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550710e",
+    "value" : "RC",
+    "label" : "Remote Control Request",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550710f",
+    "value" : "RE",
+    "label" : "Resume",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507110",
+    "value" : "SA",
+    "label" : "Sampling",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507111",
+    "value" : "SU",
+    "label" : "Setup",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507112",
+    "value" : "TT",
+    "label" : "Transport To",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507113",
+    "value" : "UC",
+    "label" : "Unlock",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507114",
+    "value" : "UN",
+    "label" : "Unload",
+    "codeSystem" : "HL70368",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

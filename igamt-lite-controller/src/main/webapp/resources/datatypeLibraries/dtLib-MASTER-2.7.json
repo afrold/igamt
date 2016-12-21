@@ -1,0 +1,79 @@
+{
+    "type": "datatypeLibraryDocument",
+    "sectionPosition": null,
+    "sectionTitle": "Default title",
+    "sectionDescription": "Default description",
+    "sectionContents": "Default contents",
+    "id": "58208e9ad4c6859b90dfb3ff",
+    "accountId": 45,
+    "ext": null,
+    "metaData": {
+        "name": "ssss",
+        "orgName": "ssss",
+        "version": null,
+        "hl7Version": null,
+        "date": "November 07, 2016",
+        "description": "",
+        "ext": null,
+        "datatypeLibId": "e037166d-de12-459a-9859-9ab3c8ee5290"
+    },
+    "scope": "MASTER",
+    "datatypeLibrary": {
+        "type": "datatypelibrary",
+        "sectionPosition": null,
+        "sectionTitle": "Default title",
+        "sectionDescription": "Default description",
+        "sectionContents": "Default contents",
+        "id": "58208e9ad4c6859b90dfb3fd",
+        "accountId": 45,
+        "ext": null,
+        "metaData": {
+            "name": "ssss",
+            "orgName": "NIST",
+            "version": null,
+            "hl7Version": null,
+            "date": "November 07, 2016",
+            "description": "",
+            "ext": null,
+            "datatypeLibId": "d21bd4fa-e785-415b-804a-ac6a2d4b7254"
+        },
+        "scope": "MASTER",
+        "children": [
+           
+        ]
+    },
+    "tableLibrary": {
+        "type": "tablelibrary",
+        "sectionPosition": null,
+        "sectionTitle": "Default title",
+        "sectionDescription": "Default description",
+        "sectionContents": "Default contents",
+        "id": "58208e9ad4c6859b90dfb3fe",
+        "accountId": 45,
+        "ext": null,
+        "valueSetLibraryIdentifier": null,
+        "status": null,
+        "valueSetLibraryVersion": null,
+        "organizationName": null,
+        "description": null,
+        "dateCreated": null,
+        "profileName": "",
+        "metaData": {
+            "name": "ssss",
+            "orgName": "NIST",
+            "version": null,
+            "hl7Version": null,
+            "date": "November 07, 2016",
+            "description": "",
+            "ext": null,
+            "tableLibId": "c3c810ee-3197-4667-9f1f-e66791280353"
+        },
+        "scope": "MASTER",
+        "children": [
+            
+        ],
+        "tables": [
+           
+        ]
+    }
+}

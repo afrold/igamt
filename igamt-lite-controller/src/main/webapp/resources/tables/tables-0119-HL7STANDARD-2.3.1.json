@@ -1,0 +1,444 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4461c5",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0119",
+  "name" : "0119",
+  "description" : "Order control codes and their meaning",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461c6",
+    "value" : "AF",
+    "label" : "Order refill request approval (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461c7",
+    "value" : "CA",
+    "label" : "Cancel order request (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461c8",
+    "value" : "CH",
+    "label" : "Child order (O01/ORU)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461c9",
+    "value" : "CN",
+    "label" : "Combined result (R01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461ca",
+    "value" : "CR",
+    "label" : "Canceled as requested (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461cb",
+    "value" : "DC",
+    "label" : "Discontinue order request (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461cc",
+    "value" : "DE",
+    "label" : "Data errors (O01/O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461cd",
+    "value" : "DF",
+    "label" : "Order refill request denied (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461ce",
+    "value" : "DR",
+    "label" : "Discontinued as requested (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461cf",
+    "value" : "FU",
+    "label" : "Order refilled, unsolicited (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461d0",
+    "value" : "HD",
+    "label" : "Hold order request (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461d1",
+    "value" : "HR",
+    "label" : "On hold as requested (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461d2",
+    "value" : "LI",
+    "label" : "Link order to patient care problem or goal",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461d3",
+    "value" : "NA",
+    "label" : "Number assigned (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461d4",
+    "value" : "NW",
+    "label" : "New order (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461d5",
+    "value" : "OC",
+    "label" : "Order canceled (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461d6",
+    "value" : "OD",
+    "label" : "Order discontinued (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461d7",
+    "value" : "OE",
+    "label" : "Order released (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461d8",
+    "value" : "OF",
+    "label" : "Order refilled as requested (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461d9",
+    "value" : "OH",
+    "label" : "Order held (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461da",
+    "value" : "OK",
+    "label" : "Order accepted & OK (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461db",
+    "value" : "OR",
+    "label" : "Released as requested",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461dc",
+    "value" : "PA",
+    "label" : "Parent order (O01/ORU)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461dd",
+    "value" : "RE",
+    "label" : "Observations to follow (O01/R01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461de",
+    "value" : "RF",
+    "label" : "Refill order request (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461df",
+    "value" : "RL",
+    "label" : "Release previous hold (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461e0",
+    "value" : "RO",
+    "label" : "Replacement order (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461e1",
+    "value" : "RP",
+    "label" : "Order replace request (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461e2",
+    "value" : "RQ",
+    "label" : "Replaced as requested (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461e3",
+    "value" : "RR",
+    "label" : "Request received (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461e4",
+    "value" : "RU",
+    "label" : "Replaced unsolicited (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461e5",
+    "value" : "SC",
+    "label" : "Status changed (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461e6",
+    "value" : "SN",
+    "label" : "Send order number (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461e7",
+    "value" : "SR",
+    "label" : "Response to send order status request (O02(Q06)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461e8",
+    "value" : "SS",
+    "label" : "Send order status request (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461e9",
+    "value" : "UA",
+    "label" : "Unable to accept order (O02/ORR)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461ea",
+    "value" : "UC",
+    "label" : "Unable to cancel (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461eb",
+    "value" : "UD",
+    "label" : "Unable to discontinue (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461ec",
+    "value" : "UF",
+    "label" : "Unable to refill (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461ed",
+    "value" : "UH",
+    "label" : "Unable to put on hold (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461ee",
+    "value" : "UM",
+    "label" : "Unable to replace (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461ef",
+    "value" : "UN",
+    "label" : "Unlink order from patient care problem or goal",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461f0",
+    "value" : "UR",
+    "label" : "Unable to release (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461f1",
+    "value" : "UX",
+    "label" : "Unable to change (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461f2",
+    "value" : "XO",
+    "label" : "Change order request (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461f3",
+    "value" : "XR",
+    "label" : "Changed as requested (O02)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4461f4",
+    "value" : "XX",
+    "label" : "Order changed, unsol. (O01)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

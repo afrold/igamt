@@ -1,0 +1,93 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65506f9c",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0373",
+  "name" : "0373",
+  "description" : "Treatment",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f9d",
+    "value" : "ACID",
+    "label" : "Acidification",
+    "codeSystem" : "HL70373",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f9e",
+    "value" : "ALK",
+    "label" : "Alkalization",
+    "codeSystem" : "HL70373",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506f9f",
+    "value" : "DEFB",
+    "label" : "Defibrination",
+    "codeSystem" : "HL70373",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fa0",
+    "value" : "FILT",
+    "label" : "Filtration",
+    "codeSystem" : "HL70373",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fa1",
+    "value" : "LDLP",
+    "label" : "LDL Precipitation",
+    "codeSystem" : "HL70373",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fa2",
+    "value" : "NEUT",
+    "label" : "Neutralization",
+    "codeSystem" : "HL70373",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fa3",
+    "value" : "RECA",
+    "label" : "Recalification",
+    "codeSystem" : "HL70373",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fa4",
+    "value" : "UFIL",
+    "label" : "Ultrafiltration",
+    "codeSystem" : "HL70373",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

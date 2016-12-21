@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd4406ab",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0017",
+  "name" : "0017",
+  "description" : "Transaction Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.17",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406ac",
+    "value" : "AJ",
+    "label" : "Adjustment",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406ad",
+    "value" : "CD",
+    "label" : "Credit",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406ae",
+    "value" : "CG",
+    "label" : "Charge",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406af",
+    "value" : "CO",
+    "label" : "Co-payment",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406b0",
+    "value" : "PY",
+    "label" : "Payment",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

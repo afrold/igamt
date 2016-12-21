@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b8e5",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0103",
+  "name" : "0103",
+  "description" : "Processing ID",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.103",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b8e6",
+    "value" : "D",
+    "label" : "Debugging",
+    "codeSystem" : "HL70103",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b8e7",
+    "value" : "P",
+    "label" : "Production",
+    "codeSystem" : "HL70103",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b8e8",
+    "value" : "T",
+    "label" : "Training",
+    "codeSystem" : "HL70103",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

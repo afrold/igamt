@@ -1,0 +1,255 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd4406b1",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0259",
+  "name" : "0259",
+  "description" : "Modality",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.259",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406b2",
+    "value" : "AS",
+    "label" : "Angioscopy",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406b3",
+    "value" : "BS",
+    "label" : "Biomagnetic imaging",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406b4",
+    "value" : "CD",
+    "label" : "Color flow Doppler",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406b5",
+    "value" : "CP",
+    "label" : "Colposcopy",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406b6",
+    "value" : "CR",
+    "label" : "Computed radiography",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406b7",
+    "value" : "CS",
+    "label" : "Cystoscopy",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406b8",
+    "value" : "CT",
+    "label" : "Computed tomography",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406b9",
+    "value" : "DD",
+    "label" : "Duplex Doppler",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406ba",
+    "value" : "DG",
+    "label" : "Diapanography",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406bb",
+    "value" : "DM",
+    "label" : "Digital microscopy",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406bc",
+    "value" : "EC",
+    "label" : "Echocardiography",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406bd",
+    "value" : "ES",
+    "label" : "Endoscopy",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406be",
+    "value" : "FA",
+    "label" : "Fluorescein angiography",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406bf",
+    "value" : "FS",
+    "label" : "Fundoscopy",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406c0",
+    "value" : "LP",
+    "label" : "Laparoscopy",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406c1",
+    "value" : "LS",
+    "label" : "Laser surface scan",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406c2",
+    "value" : "MA",
+    "label" : "Magnetic resonance angiography",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406c3",
+    "value" : "MS",
+    "label" : "Magnetic resonance spectroscopy",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406c4",
+    "value" : "NM",
+    "label" : "Nuclear Medicine (radioisotope study)",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406c5",
+    "value" : "OT",
+    "label" : "Other",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406c6",
+    "value" : "PT",
+    "label" : "Positron emission tomography (PET)",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406c7",
+    "value" : "RF",
+    "label" : "Radio fluoroscopy",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406c8",
+    "value" : "ST",
+    "label" : "Single photon emission computed tomography (SPECT)",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406c9",
+    "value" : "TG",
+    "label" : "Thermography",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406ca",
+    "value" : "US",
+    "label" : "Ultrasound",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406cb",
+    "value" : "XA",
+    "label" : "X-ray Angiography",
+    "codeSystem" : "HL70259",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

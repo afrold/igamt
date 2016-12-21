@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507b95",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0909",
+  "name" : "0909",
+  "description" : "Patient Results Release Categorization Scheme",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507b96",
+    "value" : "SID",
+    "label" : "Share In1 Day -<p>Share result regardless of reference/therapeutic range after 1 or more business day as agreed to by the systems in play.",
+    "codeSystem" : "HL70909",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507b97",
+    "value" : "SIDC",
+    "label" : "Share in 1 Day Conditionally -<p>Share result in reference ranges/therapeutic with patient after 1 or more business day as agreed to by the systems in play.<p>Withhold result out of reference/therapeutic range until physician release",
+    "codeSystem" : "HL70909",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507b98",
+    "value" : "SIMM",
+    "label" : "Share Immediately -<p>Share result with patient immediately",
+    "codeSystem" : "HL70909",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507b99",
+    "value" : "STBD",
+    "label" : "Share To Be Determined -<p>Category to be determined",
+    "codeSystem" : "HL70909",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507b9a",
+    "value" : "SWNL",
+    "label" : "Share Within Normal Limits -<p>Share result in reference/therapeutic range with patient immediately<p>Share result out of reference/therapeutic ranges with patient after 1 or more business day as agreed to by the systems in play.",
+    "codeSystem" : "HL70909",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507b9b",
+    "value" : "SWTH",
+    "label" : "Share Withhold -<p>Withhold result regardless of reference/therapeutic ranges",
+    "codeSystem" : "HL70909",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440a85",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0294",
+  "name" : "0294",
+  "description" : "Time selection criteria parameter class codes",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.294",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440a86",
+    "value" : "Fri",
+    "label" : "An indicator that Friday is or is not preferred for the day on which the appointment will occur.",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440a87",
+    "value" : "Mon",
+    "label" : "An indicator that Monday is or is not preferred for the day on which the appointment will occur.",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440a88",
+    "value" : "Prefend",
+    "label" : "An indicator that there is a preferred end time for the appointment request, service or resource.",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440a89",
+    "value" : "Prefstart",
+    "label" : "An indicator that there is a preferred start time for the appointment request, service or resource.",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440a8a",
+    "value" : "Sat",
+    "label" : "An indicator that Saturday is or is not preferred for the day on which the appointment will occur.",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440a8b",
+    "value" : "Sun",
+    "label" : "An indicator that Sunday is or is not preferred for the day on which the appointment will occur.",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440a8c",
+    "value" : "Thu",
+    "label" : "An indicator that Thursday is or is not preferred for the day on which the appointment will occur.",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440a8d",
+    "value" : "Tue",
+    "label" : "An indicator that Tuesday is or is not preferred for the day on which the appointment will occur.",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440a8e",
+    "value" : "Wed",
+    "label" : "An indicator that Wednesday is or is not preferred for the day on which the appointment will occur.",
+    "codeSystem" : "HL70294",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

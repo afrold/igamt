@@ -1,0 +1,226 @@
+<style id="antiClickjack">body {
+        display: none !important;
+    }</style> <script type="text/javascript">if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }</script> <script type="text/ng-template" id="EditDocumentMetadata.html"><div ng-controller="DocumentMetaDataCtrl" ng-init="init()">
+        <div class="row" style="margin-left:0px; margin-right: 10px">
+            <div ng-show="metaData !== null">
+                    <div class="page-header" style="margin-bottom: 20px">
+                        <span class="header4">IG Document Metadata</span>
+            <span class="pull-right">
+         <button title="Save Changes" class="btn btn-raised btn-sm btn-success"
+                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                 ng-hide="viewSettings.tableReadonly"
+                 ng-click="save()">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </button>
+
+                <!--<button ng-show="editForm.$invalid" title="The data you entered are invalid. Please fix data before saving" class="btn btn-raised btn-sm btn-primary"-->
+                        <!--ng-disabled="editForm.$invalid || !editForm.$dirty"-->
+                        <!--ng-hide="viewSettings.tableReadonly"-->
+                        <!--ng-click="save()">-->
+                    <!--<span><i class="fa fa-check fa-fw"></i> Save</span>-->
+                <!--</button>-->
+
+                         <button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                                 ng-disabled="!editForm.$dirty"
+                                 ng-hide="viewSettings.tableReadonly"
+                                 ng-click="reset()">
+                             <span><i class="fa fa-times fa-fw"></i>Reset</span>
+                         </button>
+    </span>
+                    </div>
+
+
+                    <div class="form-group control-group"
+                         ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+                        <label class="col-md-2 control-label">Title*</label>
+
+                        <div class="controls col-md-10">
+                            <input class="form-control" type="text" ng-disabled="viewSettings.tableReadonly"
+                                   ng-change="setDirty()"
+                                   name="title"
+                                   ng-model="metaData.title"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="form-group control-group"
+                         ng-class="{'igl-has-error has-feedback' : editForm.subTitle.$invalid}">
+                        <label class="col-md-2 control-label">Sub-Title</label>
+
+                        <div class="controls col-md-10">
+                            <input class="form-control" type="text" name="subTitle"
+                                   ng-disabled="viewSettings.tableReadonly"
+                                   ng-change="setDirty()"
+                                   ng-model="metaData.subTitle"
+                                   >
+                        </div>
+                    </div>
+
+
+                    <div class="form-group control-group"
+                         ng-class="{'igl-has-error has-feedback' : editForm.orgName.$invalid}">
+                        <label class="col-md-2 control-label">Organization</label>
+
+                        <div class="controls col-md-10">
+                            <input class="form-control" type="text" name="orgName"
+                                   ng-disabled="viewSettings.tableReadonly"
+                                   ng-change="setDirty()"
+                                   ng-model="metaData.orgName"
+                                   >
+                        </div>
+                    </div>
+
+                    <div class="form-group control-group"
+                         ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}">
+                        <label class="col-md-2 control-label">Extension</label>
+
+                        <div class="controls col-md-10">
+                            <input class="form-control" type="text" name="ext" ng-disabled="viewSettings.tableReadonly"
+                                   ng-change="setDirty()"
+                                   ng-model="metaData.ext">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error has-feedback' : editForm.specificationName.$invalid}">
+                    <label class="col-md-2 control-label">Specification</label>
+
+                    <div class="controls col-md-10">
+                        <input class="form-control" type="text" name="specificationName"
+                               ng-disabled="viewSettings.tableReadonly"
+                               ng-change="setDirty()"
+                               ng-model="metaData.specificationName"
+                               >
+                    </div>
+                </div>
+
+                <div class="form-group control-group" ng-disabled="viewSettings.tableReadonly"
+                     ng-class="{'igl-has-error has-feedback' : editForm.status.$invalid}">
+                    <label class="col-md-2 control-label">Status</label>
+
+                    <div class="controls col-md-10">
+                        <input class="form-control" type="text" name="status"
+                               ng-disabled="viewSettings.tableReadonly"
+                               ng-change="setDirty()"
+                               ng-model="metaData.status"
+                               >
+                    </div>
+                </div>
+                <div class="form-group control-group" ng-disabled="viewSettings.tableReadonly"
+                     ng-class="{'igl-has-error' : editForm.topics.$invalid}">
+                    <label class="col-md-2 control-label">Topics</label>
+
+                    <div class="controls col-md-10">
+                        <input class="form-control" type="text" name="topics"
+                               ng-disabled="viewSettings.tableReadonly"
+                               ng-change="setDirty()"
+                               ng-model="metaData.topics"
+                               >
+                    </div>
+                </div>
+
+
+                <div class="form-group control-group">
+                    <label class="col-md-2 control-label">Date Updated</label>
+
+                    <div class="controls col-md-10">
+                         <span
+                               class="form-control">{{igdocument.dateUpdated | date:dateFormat}}</span>
+                    </div>
+                </div>
+
+
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error has-feedback' : editForm.date.$invalid}">
+                    <label class="col-md-2 control-label">HL7 Version*</label>
+
+                    <div class="controls col-md-10">
+                        <input type="text" name="version" disabled
+                             
+                               class="form-control" ng-model="igdocument.profile.metaData.hl7Version" required>
+                    </div>
+                </div>
+
+
+
+            </div>
+     </div></script> <script type="text/ng-template" id="EditProfileMetadata.html"><div class="row" style="margin-left:0px; margin-right: 10px"  ng-show="metaData !== null">
+            <div class="page-header" style="margin-bottom: 20px">
+                <span class="header4">Message Infrastructure</span>
+            <span class="pull-right">
+         <button title="Save Changes" type="button" class="btn btn-raised btn-md btn-primary"
+                 ng-disabled="editForm.$invalid || editForm.$pristine"
+                 ng-hide="viewSettings.tableReadonly"
+                 ng-click="save()">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </button>
+                         <button title="Cancel Changes" type="button" class="btn btn-raised btn-md btn-warning"
+                                 ng-hide="viewSettings.tableReadonly"
+                                 ng-disabled="editForm.$pristine"
+                                 ng-click="reset()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                         </button>
+    </span>
+
+            </div>
+
+            <div ng-controller="ProfileMetaDataCtrl">
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error has-feedback' : editForm.type.$invalid }">
+                    <label class="col-md-2 control-label">Type</label>
+
+                    <div class="controls col-md-10">
+                        <select class="form-control" ng-disabled="true"
+                                name="type"
+                                ng-change="setDirty()"
+                                ng-model="metaData.type">
+                            <option value="HL7">HL7</option>
+                            <option value="Constrainable">Constrainable</option>
+                            <option value="Implementation">Implementation</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group control-group"
+                 ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
+                <label class="col-md-2 control-label">HL7 Version</label>
+
+                <div class="controls col-md-10">
+                    <select class="form-control" ng-disabled="true"
+                            name="type"
+                            ng-change="setDirty()"
+                            ng-model="metaData.hl7Version">
+                        <option value="2.1">2.1</option>
+                        <option value="2.2">2.2</option>
+                        <option value="2.3">2.3</option>
+                        <option value="2.3.1">2.3.1</option>
+                        <option value="2.4">2.4</option>
+                        <option value="2.5">2.5</option>
+                        <option value="2.5.1">2.5.1</option>
+                        <option value="2.6">2.6</option>
+                        <option value="2.7">2.7</option>
+                        <option value="2.7.1">2.7.1</option>
+                        <option value="2.8.1">2.8.1</option>
+                        <option value="2.8.2">2.8.2</option>
+                    </select>
+                </div>
+            </div>
+
+            <!--<div class="form-group control-group"-->
+                 <!--ng-class="{'igl-has-error has-feedback' : editForm.schemaVersion.$invalid}">-->
+                <!--<label class="col-md-2 control-label">Schema Version</label>-->
+
+                <!--<div class="col-md-10">-->
+                    <!--<input type="text" name="schemaVersion" ng-disabled="true"-->
+                           <!--ng-change="setDirty()"-->
+                           <!--class="form-control" ng-model="metaData.schemaVersion" required>-->
+                <!--</div>-->
+            <!--</div>-->
+             </div></script>

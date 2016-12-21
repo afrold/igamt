@@ -1,0 +1,93 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443d62",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0348",
+  "name" : "0348",
+  "description" : "Special program indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d63",
+    "value" : "01",
+    "label" : "EPSDT-CHAP",
+    "codeSystem" : "HL70348",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d64",
+    "value" : "02",
+    "label" : "Physically handicapped children's program",
+    "codeSystem" : "HL70348",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d65",
+    "value" : "03",
+    "label" : "Special federal funding",
+    "codeSystem" : "HL70348",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d66",
+    "value" : "04",
+    "label" : "Family planning",
+    "codeSystem" : "HL70348",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d67",
+    "value" : "05",
+    "label" : "Disability",
+    "codeSystem" : "HL70348",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d68",
+    "value" : "06",
+    "label" : "PPV/Medicare 100% payment",
+    "codeSystem" : "HL70348",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d69",
+    "value" : "07",
+    "label" : "Induced abortion-danger to life",
+    "codeSystem" : "HL70348",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d6a",
+    "value" : "08",
+    "label" : "Induced abortion victim rape/incest",
+    "codeSystem" : "HL70348",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

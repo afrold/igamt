@@ -1,0 +1,93 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550dc63",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0122",
+  "name" : "0122",
+  "description" : "Charge type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.122",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc64",
+    "value" : "CH",
+    "label" : "Charge",
+    "codeSystem" : "HL70122",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc65",
+    "value" : "CO",
+    "label" : "Contract",
+    "codeSystem" : "HL70122",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc66",
+    "value" : "CR",
+    "label" : "Credit",
+    "codeSystem" : "HL70122",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc67",
+    "value" : "DP",
+    "label" : "Department",
+    "codeSystem" : "HL70122",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc68",
+    "value" : "GR",
+    "label" : "Grant",
+    "codeSystem" : "HL70122",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc69",
+    "value" : "NC",
+    "label" : "No Charge",
+    "codeSystem" : "HL70122",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc6a",
+    "value" : "PC",
+    "label" : "Professional",
+    "codeSystem" : "HL70122",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550dc6b",
+    "value" : "RS",
+    "label" : "Research",
+    "codeSystem" : "HL70122",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

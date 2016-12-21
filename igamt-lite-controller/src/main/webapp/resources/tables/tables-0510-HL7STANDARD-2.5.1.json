@@ -1,0 +1,120 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e425",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0510",
+  "name" : "0510",
+  "description" : "Blood Product Dispense Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.510",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e426",
+    "value" : "CR",
+    "label" : "Released into inventory for general availability",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e427",
+    "value" : "DS",
+    "label" : "Dispensed to patient location",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e428",
+    "value" : "PT",
+    "label" : "Presumed transfused (dispensed and not returned)",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e429",
+    "value" : "RA",
+    "label" : "Returned unused/no longer needed",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e42a",
+    "value" : "RD",
+    "label" : "Reserved and ready to dispense",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e42b",
+    "value" : "RE",
+    "label" : "Released (no longer allocated for the patient)",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e42c",
+    "value" : "RI",
+    "label" : "Received into inventory (for specified patient)",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e42d",
+    "value" : "RL",
+    "label" : "Returned unused/keep linked to patient for possible use later",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e42e",
+    "value" : "RQ",
+    "label" : "Request to dispense blood product",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e42f",
+    "value" : "RS",
+    "label" : "Reserved (ordered and product allocated for the patient)",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e430",
+    "value" : "WA",
+    "label" : "Wasted (product no longer viable)",
+    "codeSystem" : "HL70510",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

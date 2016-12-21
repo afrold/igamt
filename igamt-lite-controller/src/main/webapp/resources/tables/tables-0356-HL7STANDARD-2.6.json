@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b9ee",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0356",
+  "name" : "0356",
+  "description" : "Alternate character set handling scheme",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.356",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b9ef",
+    "value" : "<null>",
+    "label" : "This is the default, indicating that there is no character set switching occurring in this message.",
+    "codeSystem" : "HL70356",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b9f0",
+    "value" : "2.3",
+    "label" : "The character set switching mode specified in HL7 2.5, section 2.7.2, \"Escape sequences supporting multiple character sets\" and section 2.A.46, \"XPN - extended person name\".",
+    "codeSystem" : "HL70356",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b9f1",
+    "value" : "ISO 2022-1994",
+    "label" : "This standard is titled \"Information Technology - Character Code Structure and Extension Technique\". .",
+    "codeSystem" : "HL70356",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

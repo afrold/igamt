@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b3cb",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0315",
+  "name" : "0315",
+  "description" : "Living Will Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.315",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3cc",
+    "value" : "F",
+    "label" : "Yes, patient has a living will but it is not on file",
+    "codeSystem" : "HL70315",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3cd",
+    "value" : "I",
+    "label" : "No, patient does not have a living will but information was provided",
+    "codeSystem" : "HL70315",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3ce",
+    "value" : "N",
+    "label" : "No, patient does not have a living will and no information was provided",
+    "codeSystem" : "HL70315",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3cf",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70315",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3d0",
+    "value" : "Y",
+    "label" : "Yes, patient has a living will",
+    "codeSystem" : "HL70315",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

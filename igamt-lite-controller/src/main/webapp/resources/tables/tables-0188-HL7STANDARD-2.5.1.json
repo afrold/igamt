@@ -1,0 +1,30 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e3a6",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0188",
+  "name" : "0188",
+  "description" : "Operator ID",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.188",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e3a7",
+    "value" : "...",
+    "label" : "no suggested values",
+    "codeSystem" : "HL70188",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,354 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4470d0",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0162",
+  "name" : "0162",
+  "description" : "Route of Administration",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470d1",
+    "value" : "AP",
+    "label" : "Apply Externally",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470d2",
+    "value" : "B",
+    "label" : "Buccal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470d3",
+    "value" : "DT",
+    "label" : "Dental",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470d4",
+    "value" : "EP",
+    "label" : "Epidural",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470d5",
+    "value" : "ET",
+    "label" : "Endotrachial Tube (Used primarily for respiratory therapy and anesthesia delivery)",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470d6",
+    "value" : "GTT",
+    "label" : "Gastronomy Tube",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470d7",
+    "value" : "GU",
+    "label" : "GU Irrigant",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470d8",
+    "value" : "IA",
+    "label" : "Intra-arterial",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470d9",
+    "value" : "IB",
+    "label" : "Intrabursal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470da",
+    "value" : "IC",
+    "label" : "Intracardiac",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470db",
+    "value" : "ICV",
+    "label" : "Intracervical (uterus)",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470dc",
+    "value" : "ID",
+    "label" : "Intradermal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470dd",
+    "value" : "IH",
+    "label" : "Inhalation",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470de",
+    "value" : "IMR",
+    "label" : "Immerse (Soak) Body Part",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470df",
+    "value" : "MM",
+    "label" : "Mucous Membrane",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470e0",
+    "value" : "NG",
+    "label" : "Nasogastric",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470e1",
+    "value" : "NP",
+    "label" : "Nasal Prongs (Used primarily for respiratory therapy and anesthesia delivery)",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470e2",
+    "value" : "NS",
+    "label" : "Nasal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470e3",
+    "value" : "NT",
+    "label" : "Nasotrachial Tube",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470e4",
+    "value" : "OP",
+    "label" : "Ophthalmic",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470e5",
+    "value" : "OT",
+    "label" : "Otic",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470e6",
+    "value" : "OTH",
+    "label" : "Other/Miscellaneous",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470e7",
+    "value" : "PF",
+    "label" : "Perfusion",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470e8",
+    "value" : "PO",
+    "label" : "Oral",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470e9",
+    "value" : "PR",
+    "label" : "Rectal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470ea",
+    "value" : "RM",
+    "label" : "Rebreather Mask (Used primarily for respiratory therapy and anesthesia delivery)",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470eb",
+    "value" : "SC",
+    "label" : "Subcutaneous",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470ec",
+    "value" : "SD",
+    "label" : "Soaked Dressing",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470ed",
+    "value" : "SL",
+    "label" : "Sublingual",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470ee",
+    "value" : "TD",
+    "label" : "Transdermal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470ef",
+    "value" : "TL",
+    "label" : "Translingual",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470f0",
+    "value" : "TP",
+    "label" : "Topical",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470f1",
+    "value" : "TRA",
+    "label" : "Tracheostomy (Used primarily for respiratory therapy and anesthesia delivery)",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470f2",
+    "value" : "UR",
+    "label" : "Urethral",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470f3",
+    "value" : "VG",
+    "label" : "Vaginal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470f4",
+    "value" : "VM",
+    "label" : "Ventimask",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470f5",
+    "value" : "WND",
+    "label" : "Wound",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

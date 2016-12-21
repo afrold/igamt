@@ -1,0 +1,174 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550a9dd",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0376",
+  "name" : "0376",
+  "description" : "Special Handling Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.376",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9de",
+    "value" : "AMB",
+    "label" : "Ambient temperature",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9df",
+    "value" : "C37",
+    "label" : "Body temperature",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9e0",
+    "value" : "CAMB",
+    "label" : "Critical ambient temperature",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9e1",
+    "value" : "CATM",
+    "label" : "Protect from air",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9e2",
+    "value" : "CFRZ",
+    "label" : "Critical frozen temperature",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9e3",
+    "value" : "CREF",
+    "label" : "Critical refrigerated temperature",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9e4",
+    "value" : "DFRZ",
+    "label" : "Deep frozen",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9e5",
+    "value" : "DRY",
+    "label" : "Dry",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9e6",
+    "value" : "FRZ",
+    "label" : "Frozen temperature",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9e7",
+    "value" : "MTLF",
+    "label" : "Metal Free",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9e8",
+    "value" : "NTR",
+    "label" : "Liquid nitrogen",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9e9",
+    "value" : "PRTL",
+    "label" : "Protect from light",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9ea",
+    "value" : "PSA",
+    "label" : "Do not shake",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9eb",
+    "value" : "PSO",
+    "label" : "No shock",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9ec",
+    "value" : "REF",
+    "label" : "Refrigerated temperature",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9ed",
+    "value" : "UFRZ",
+    "label" : "Ultra frozen",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9ee",
+    "value" : "UPR",
+    "label" : "Upright",
+    "codeSystem" : "HL70376",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

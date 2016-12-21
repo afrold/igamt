@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447dd2",
+  "hl7Version" : "2.2",
+  "libIds" : [ "573dd23bd4c6ca828c2970f5" ],
+  "bindingIdentifier" : "0175",
+  "name" : "0175",
+  "description" : "MASTER FILE IDENTIFIER CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dd3",
+    "value" : "CDM",
+    "label" : "Charge description master file (see chapter 6, appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dd4",
+    "value" : "OM1",
+    "label" : "Observation text master file (i.e., Lab) (see Chapter 7, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dd5",
+    "value" : "OM2",
+    "label" : "Observation text master file (i.e., Lab) (see Chapter 7, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dd6",
+    "value" : "OM3",
+    "label" : "Observation text master file (i.e., Lab) (see Chapter 7, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dd7",
+    "value" : "OM4",
+    "label" : "Observation text master file (i.e., Lab) (see Chapter 7, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dd8",
+    "value" : "OM5",
+    "label" : "Observation text master file (i.e., Lab) (see Chapter 7, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dd9",
+    "value" : "OM6",
+    "label" : "Observation text master file (i.e., Lab) (see Chapter 7, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dda",
+    "value" : "PRA",
+    "label" : "Practitioner master file (see chapter 8, appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ddb",
+    "value" : "STF",
+    "label" : "Staff master file (see chapter 8, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

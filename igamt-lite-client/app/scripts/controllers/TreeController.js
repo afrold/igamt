@@ -636,7 +636,7 @@ angular
 
                                                   ['Export CSV',
                                                          function ($itemScope) {
-                                                             $rootScope.exportCSVForTable($itemScope.table);
+                                                             $scope.exportCSVForTable($itemScope.table);
 
                                                          }
                                                      ],
@@ -709,7 +709,7 @@ angular
                 ],
                 null, ['Export CSV',
                     function ($itemScope) {
-                        $rootScope.exportCSVForTable($itemScope.table);
+                        $scope.exportCSVForTable($itemScope.table);
 
                     }
                 ],
@@ -1310,31 +1310,38 @@ angular
                 $scope.$emit('event:openDatatype', $rootScope.datatype);
             };
 
-            $rootScope.editDataType = function (data) {
-
-                console.log("editDataType");
-
-                // Find share participants
-          			if (data.shareParticipantIds && data.shareParticipantIds.length > 0) {
-          					data.shareParticipantIds.forEach(function (participant) {
-          							$http.get('api/shareparticipant', { params: { id: participant.accountId } })
-          									.then(
-          									function (response) {
-          											participant.username = response.data.username;
-          											participant.fullname = response.data.fullname;
-
-                                // Proceed with next
-                                editDatatypeNext(data);
-          									},
-          									function (error) {
-          											console.log(error);
-          									}
-          									);
-          					});
-          			} else {
-                  editDatatypeNext(data);
-                }
-
+            $scope.editDatatype = function(data) {
+            	console.log(data);
+              // Find share participants
+              if (data.shareParticipantIds && data.shareParticipantIds.length > 0) {
+            	  
+            	  console.log(data.shareParticipantIds);
+            	  var listOfIds= _.map(data.shareParticipantIds, function(element){ 
+            		  if(element.id){
+            		  return element.id;}
+            		  else if(element.accountId){
+            			 return element.accountId;
+            		  }
+            	  
+            	  
+            	  
+            	  });
+            	  console.log(listOfIds);
+                      $http.get('api/shareparticipants', { params: { ids: listOfIds} })
+                          .then(
+                          function (response) {
+                        	  data.shareParticipantIds=angular.fromJson(response.data);
+                              //Proceed with next
+                              $scope.editDatatypeNext(data);
+                          },
+                          function (error) {
+                              console.log(error);
+                          }
+                          );
+                  
+              } else {
+                $scope.editDatatypeNext(data);
+              }
 
             };
 
