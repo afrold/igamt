@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriUtils;
 
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
@@ -84,6 +85,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
@@ -99,6 +101,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.EventWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
@@ -106,6 +110,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
+import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfilePreLib;
 
 @RestController
 @RequestMapping("/igdocuments")
@@ -593,20 +598,14 @@ public class IGDocumentController extends CommonController {
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
-  @RequestMapping(value = "/{id}/export/html/{layout}", method = RequestMethod.POST, produces = "text/html",
+  @RequestMapping(value = "/{id}/export/html", method = RequestMethod.POST, produces = "text/html",
       consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportHtml(@PathVariable("id") String id, @PathVariable("layout") String layout, HttpServletRequest request,
+  public void exportHtml(@PathVariable("id") String id, HttpServletRequest request,
       HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
     log.info("Exporting as html file IGDcoument with id=" + id);
     IGDocument d = this.findIGDocument(id);
     InputStream content = null;
-    boolean includeSegmentsInMessage = false;
-    if(layout!=null&&!layout.isEmpty()){
-      if(layout.equals("Verbose")){
-        includeSegmentsInMessage = true;
-      }
-    }
-    content = exportService.exportIGDocumentAsHtml(d, includeSegmentsInMessage);
+    content = exportService.exportIGDocumentAsHtml(d);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
@@ -696,21 +695,15 @@ public class IGDocumentController extends CommonController {
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
-  @RequestMapping(value = "/{id}/export/docx/{layout}", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/export/docx", method = RequestMethod.POST,
       produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportDocx(@PathVariable("id") String id, @PathVariable("layout") String layout, HttpServletRequest request,
+  public void exportDocx(@PathVariable("id") String id, HttpServletRequest request,
       HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
     log.info("Exporting as docx file profile with id=" + id);
     IGDocument d = findIGDocument(id);
     InputStream content = null;
-    boolean includeSegmentsInMessage = false;
-    if(layout!=null&&!layout.isEmpty()){
-      if(layout.equals("Verbose")){
-        includeSegmentsInMessage = true;
-      }
-    }
-    content = exportService.exportIGDocumentAsDocx(d, includeSegmentsInMessage);
+    content = exportService.exportIGDocumentAsDocx(d);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",

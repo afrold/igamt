@@ -82,10 +82,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	@Autowired
 	private TableService tableService;
 
-		@Autowired
-		private SerializationUtil serializationUtil;
-
-		@Override
+	@Override
 	public Constraints deserializeXMLToConformanceStatements(String xmlConstraints) {
 		if (xmlConstraints != null) {
 			Document conformanceContextDoc = this.stringToDom(xmlConstraints);
@@ -169,23 +166,23 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
 			elmMetaData.addAttribute(new Attribute("Date", ""));
 		} else {
-			elmMetaData.addAttribute(new Attribute("Name", !serializationUtil.str(metadata.getTitle()).equals("")
-					? serializationUtil.str(metadata.getTitle()) : "No Title Info"));
-			elmMetaData.addAttribute(new Attribute("OrgName", !serializationUtil.str(metadata.getOrgName()).equals("")
-					? serializationUtil.str(metadata.getOrgName()) : "No Org Info"));
-			elmMetaData.addAttribute(new Attribute("Version", !serializationUtil.str(metadata.getVersion()).equals("")
-					? serializationUtil.str(metadata.getVersion()) : "No Version Info"));
+			elmMetaData.addAttribute(new Attribute("Name", !SerializationUtil.str(metadata.getTitle()).equals("")
+					? SerializationUtil.str(metadata.getTitle()) : "No Title Info"));
+			elmMetaData.addAttribute(new Attribute("OrgName", !SerializationUtil.str(metadata.getOrgName()).equals("")
+					? SerializationUtil.str(metadata.getOrgName()) : "No Org Info"));
+			elmMetaData.addAttribute(new Attribute("Version", !SerializationUtil.str(metadata.getVersion()).equals("")
+					? SerializationUtil.str(metadata.getVersion()) : "No Version Info"));
 			elmMetaData.addAttribute(
 					new Attribute("Date", dateUpdated != null ? DateUtils.format(dateUpdated) : "No Date Info"));
 
 			if (profile.getMetaData().getSpecificationName() != null
 					&& !profile.getMetaData().getSpecificationName().equals(""))
 				elmMetaData.addAttribute(new Attribute("SpecificationName",
-						serializationUtil.str(profile.getMetaData().getSpecificationName())));
+						SerializationUtil.str(profile.getMetaData().getSpecificationName())));
 			if (profile.getMetaData().getStatus() != null && !profile.getMetaData().getStatus().equals(""))
-				elmMetaData.addAttribute(new Attribute("Status", serializationUtil.str(profile.getMetaData().getStatus())));
+				elmMetaData.addAttribute(new Attribute("Status", SerializationUtil.str(profile.getMetaData().getStatus())));
 			if (profile.getMetaData().getTopics() != null && !profile.getMetaData().getTopics().equals(""))
-				elmMetaData.addAttribute(new Attribute("Topics", serializationUtil.str(profile.getMetaData().getTopics())));
+				elmMetaData.addAttribute(new Attribute("Topics", SerializationUtil.str(profile.getMetaData().getTopics())));
 		}
 		e.appendChild(elmMetaData);
 

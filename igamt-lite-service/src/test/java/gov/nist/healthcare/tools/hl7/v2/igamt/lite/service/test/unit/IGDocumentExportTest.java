@@ -1,7 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -50,7 +52,7 @@ public class IGDocumentExportTest {
             }
             if(htmlFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, true), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -65,8 +67,7 @@ public class IGDocumentExportTest {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    true), wordFile);
+                FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();

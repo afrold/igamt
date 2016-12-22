@@ -32,12 +32,12 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +77,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstrai
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import nu.xom.Attribute;
 import nu.xom.Document;
@@ -98,9 +103,6 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 	@Autowired
 	private FileStorageService fileStorageService;
-
-		@Autowired
-		private SerializationService serializationService;
 
 	public File serializeProfileToFile(Profile profile) throws UnsupportedEncodingException {
 		File out;
@@ -152,9 +154,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 
 	@Override
 	public String serializeIGDocumentToXML(IGDocument igdoc) {
-			String xml = serializationService.serializeIGDocument(igdoc, true).toXML();
-			return xml;
-		//return serializeIGDocumentToDoc(igdoc).toXML();
+		return serializeIGDocumentToDoc(igdoc).toXML();
 	}
 
 	@Override
@@ -240,7 +240,7 @@ public class Serialization4ExportImpl implements IGDocumentSerialization {
 				elmMetaData.addAttribute(new Attribute("Status", metaDataObj.getStatus()));
 			if (metaDataObj.getTopics() != null)
 				elmMetaData.addAttribute(new Attribute("Topics", metaDataObj.getTopics()));
-			if (metaDataObj.getHl7Version() != null)
+			if (metaDataObj.getVersion() != null)
 				elmMetaData.addAttribute(new Attribute("HL7Version", metaDataObj.getHl7Version()));
 		}
 		return elmMetaData;
