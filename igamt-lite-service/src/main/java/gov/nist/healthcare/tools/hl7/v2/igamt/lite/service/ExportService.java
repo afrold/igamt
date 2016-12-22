@@ -23,8 +23,8 @@ import java.io.InputStream;
 @Service
 public interface ExportService {
 
-    InputStream exportIGDocumentAsDocx(IGDocument igDocument, boolean includeSegmentsInMessage) throws IOException;
-    InputStream exportIGDocumentAsHtml(IGDocument igDocument, boolean includeSegmentsInMessage) throws IOException;
+    InputStream exportIGDocumentAsDocx(IGDocument igDocument) throws IOException;
+    InputStream exportIGDocumentAsHtml(IGDocument igDocument) throws IOException;
     InputStream exportIGDocumentAsXml(IGDocument igDocument) throws IOException;
     InputStream exportDatatypeLibraryDocumentAsHtml(DatatypeLibraryDocument datatypeLibraryDocument);
     InputStream exportDatatypeLibraryDocumentAsDocx(DatatypeLibraryDocument datatypeLibraryDocument);

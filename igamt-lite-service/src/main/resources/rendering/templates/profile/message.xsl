@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:include href="/rendering/templates/profile/messageSegment.xsl"/>
+    <xsl:include href="/rendering/templates/profile/element.xsl"/>
     <xsl:include href="/rendering/templates/profile/constraint.xsl"/>
-    <xsl:template match="Message">
+    <xsl:template match="MessageDisplay">
         <xsl:value-of select="@Comment"/>
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
             <xsl:element name="p">
@@ -82,33 +82,31 @@
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="tbody">
-                    <xsl:for-each select="MessageSegment">
-                        <xsl:call-template name="messageSegment">
+                    <xsl:for-each select="Elt">
+                        <xsl:call-template name="element">
                         </xsl:call-template>
                     </xsl:for-each>
                 </xsl:element>
             </xsl:element>
+        <!-- </xsl:element> -->
             <xsl:if test="count(./Constraint[@Type='cs'])+count(./Elt/Constraint[@Type='cs']) &gt; 0">
                 <xsl:element name="h4">
                     <xsl:text>Conformance statements</xsl:text>
                 </xsl:element>
-                <xsl:for-each select="Constraints">
-                    <xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
-                        <xsl:call-template name="Constraint">
-                            <xsl:with-param name="title">
-                                <xsl:text>Message:</xsl:text>
-                            </xsl:with-param>
-                            <xsl:with-param name="constraintMode">
-                                <xsl:text>standalone</xsl:text>
-                            </xsl:with-param>
-                            <xsl:with-param name="type">
-                                <xsl:text>cs</xsl:text>
-                            </xsl:with-param>
-                        </xsl:call-template>
-                    </xsl:if>
-                </xsl:for-each>
 
-                <xsl:for-each select="MessageSegment">
+                <xsl:call-template name="Constraint">
+                    <xsl:with-param name="title">
+                        <xsl:text>Message:</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="constraintMode">
+                        <xsl:text>standalone</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="type">
+                        <xsl:text>cs</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+
+                <xsl:for-each select="Elt">
                     <xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
                         <xsl:call-template name="Constraint">
                             <xsl:with-param name="title">
@@ -128,23 +126,20 @@
                 <xsl:element name="h4">
                     <xsl:text>Conditional predicates</xsl:text>
                 </xsl:element>
-                <xsl:for-each select="Constraints">
-                    <xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
-                        <xsl:call-template name="Constraint">
-                            <xsl:with-param name="title">
-                                <xsl:text>Message:</xsl:text>
-                            </xsl:with-param>
-                            <xsl:with-param name="constraintMode">
-                                <xsl:text>standalone</xsl:text>
-                            </xsl:with-param>
-                            <xsl:with-param name="type">
-                                <xsl:text>pre</xsl:text>
-                            </xsl:with-param>
-                        </xsl:call-template>
-                    </xsl:if>
-                </xsl:for-each>
 
-                <xsl:for-each select="MessageGroup">
+                <xsl:call-template name="Constraint">
+                    <xsl:with-param name="title">
+                        <xsl:text>Message:</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="constraintMode">
+                        <xsl:text>standalone</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="type">
+                        <xsl:text>pre</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+
+                <xsl:for-each select="Elt">
                     <xsl:if test="count(./Constraint[@Type='pre']) &gt; 0">
                         <xsl:call-template name="Constraint">
                             <xsl:with-param name="title">
