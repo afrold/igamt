@@ -3428,3 +3428,41 @@
         </td>
     </tr>
 </script>
+
+<script type="text/ng-template" id="CustomExportModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Custom Export
+        </h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <span>Export Type:</span>
+                <ui-select ng-model="selectedType.selected">
+                    <ui-select-match placeholder="Select type...">{{$select.selected.type}}</ui-select-match>
+                    <ui-select-choices repeat="item in exportType | filter: $select.search">
+                        <div ng-bind-html="item.type | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="col-md-6" ng-if="selectedType.selected">
+                <span>Layout:</span>
+                <ui-select ng-model="selectedLayout.selected">
+                    <ui-select-match placeholder="Select layout...">{{$select.selected}}</ui-select-match>
+                    <ui-select-choices repeat="item in selectedType.selected.layout | filter: $select.search">
+                        <div ng-bind-html="item | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span>
+          <i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-success btn-sm" ng-click="ok()"><span>
+          <i class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
+        </button>
+    </div>
+</script>
