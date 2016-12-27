@@ -1371,7 +1371,7 @@ angular
                 $scope.$emit('event:openDatatype', $rootScope.datatype);
             };
 
-            $scope.editDatatype = function(data) {
+            $rootScope.editDatatype = function(data) {
             	console.log(data);
               // Find share participants
               if (data.shareParticipantIds && data.shareParticipantIds.length > 0) {
@@ -1393,7 +1393,7 @@ angular
                           function (response) {
                         	  data.shareParticipantIds=angular.fromJson(response.data);
                               //Proceed with next
-                              $scope.editDatatypeNext(data);
+                          editDatatypeNext(data);
                           },
                           function (error) {
                               console.log(error);
@@ -1401,7 +1401,7 @@ angular
                           );
                   
               } else {
-                $scope.editDatatypeNext(data);
+              editDatatypeNext(data);
               }
 
             };

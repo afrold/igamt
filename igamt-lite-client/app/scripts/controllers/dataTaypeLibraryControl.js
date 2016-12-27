@@ -23,7 +23,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.linksForData = [];
         $rootScope.linksForTables = [];
         $scope.AllUnchanged=[];
-
+        $scope.tabs = [{active: true}, {active: false}, {active: false}];
         // list of segment level predicates of
         $rootScope.segmentConformanceStatements = []; // list of segment level
 
@@ -75,8 +75,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.datatypeListView = null;
         $scope.added = [];
         $scope.accordi = { metaData: false, definition: true, dtList: true, dtDetails: false };
-        $scope.DTLibList = true;
-        $scope.DTLibDetails = false;
+        $rootScope.DTLibList = true;
+        $rootScope.DTLibDetails = false;
         //      $scope.forms.datatypeForm = {};
         $scope.tableWidth = null;
         // $rootScope.datatypeLibrary = "";
@@ -110,7 +110,17 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     	DatatypeLibraryDocumentSvc.getMatrix().then(function(result){
     			$scope.matrix= result;
     	});
-
+    	$scope.make_active = function(x) {
+    		
+    		for(i=0; i<$scope.tabs.length;i++){
+    			if(i==x){
+    				$scope.tabs[i].active = true;
+    			}else{
+    				$scope.tabs[i].active=false;
+    			}
+    		}
+    	    
+    	};
     	$scope.getColor= function(index){
     		if(index===undefined){
     			return "";
@@ -222,17 +232,17 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         }
         $scope.selectDTLibTab = function(value) {
             if (value === 1) {
-                $scope.DTLibList = false;
-                $scope.DTLibDetails = true;
+                $rootScope.DTLibList = false;
+                $rootScope.DTLibDetails = true;
                 $scope.evolution=false;
             } else if(value===0) {
-                $scope.DTLibList = true;
-                $scope.DTLibDetails = false;
+                $rootScope.DTLibList = true;
+                $rootScope.DTLibDetails = false;
                 $scope.evolution=false;
             }else{
             	$scope.evolution=true;
-            	 $scope.DTLibList = false;
-                 $scope.DTLibDetails = false;
+            	 $rootScope.DTLibList = false;
+                 $rootScope.DTLibDetails = false;
             }
         };
 
@@ -310,7 +320,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         }
 
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
-
+        	blockUI.start();
+        	$timeout(function () {
         	$rootScope.libraryDoc= datatypeLibraryDocument;
             $rootScope.accountId=datatypeLibraryDocument.accountId;
         	$scope.viewSettings.setTableReadonly(readOnly);
@@ -358,7 +369,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $rootScope.datatype=null;
             $rootScope.filteringModeON = false;
             $rootScope.initMaps();
-            $scope.selectDTLibTab(1);
+            $scope.make_active(1);
             //DTLibDetails=true;
             $rootScope.datatypes = [];
             $rootScope.datatypesMap = {};
@@ -372,12 +383,15 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                         $scope.loadVersionAndUseInfo().then(function(){
                             $scope.loadDatatypes().then(function() {
             		                $scope.loadTables().then(function() {
-
+            		                	$scope.make_active(1);
+            		                	blockUI.stop();
                         }, function() {});
             	    })
             }, function() {});
                  });
-
+        	 }, function () {
+        		 
+        	 });
 
         };
 
@@ -1017,25 +1031,45 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }
         };
 
+//
+//        $scope.loadDatatypes = function() {
+//            var delay = $q.defer();
+//            $rootScope.datatypeLibrary.type = "datatypes";
+//            var dtIds = [];
+//            for (var i = 0; i < $rootScope.datatypeLibrary.children.length; i++) {
+//                dtIds.push($rootScope.datatypeLibrary.children[i].id);
+//                //console.log(0)
+//            }
+//            DatatypeService.get(dtIds).then(function(result) {
+//                console.log("==========Adding Datatypes from their IDS============");
+//                $rootScope.datatypes = result;
+//                console.log(result);
+//                angular.forEach(result, function(datatype) {
+//                    $rootScope.datatypesMap[datatype.id] = datatype;
+//                });
+//                delay.resolve(true);
+//
+//            }, function(error) {
+//                $rootScope.msg().text = "DatatypesLoadFailed";
+//                $rootScope.msg().type = "danger";
+//                $rootScope.msg().show = true;
+//                delay.reject(false);
+//
+//            });
+//            return delay.promise;
+//        };
 
-        $scope.loadDatatypes = function() {
+        $scope.loadDatatypes = function () {
             var delay = $q.defer();
             $rootScope.datatypeLibrary.type = "datatypes";
-            var dtIds = [];
-            for (var i = 0; i < $rootScope.datatypeLibrary.children.length; i++) {
-                dtIds.push($rootScope.datatypeLibrary.children[i].id);
-                //console.log(0)
-            }
-            DatatypeService.get(dtIds).then(function(result) {
-                console.log("==========Adding Datatypes from their IDS============");
-                $rootScope.datatypes = result;
-                console.log(result);
-                angular.forEach(result, function(datatype) {
-                    $rootScope.datatypesMap[datatype.id] = datatype;
-                });
+            DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.datatypeLibrary.id).then(function (children) {
+                $rootScope.datatypes = children;
+                $rootScope.datatypesMap = {};
+                angular.forEach(children, function (child) {
+                    this[child.id] = child;
+                }, $rootScope.datatypesMap);
                 delay.resolve(true);
-
-            }, function(error) {
+            }, function (error) {
                 $rootScope.msg().text = "DatatypesLoadFailed";
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
@@ -1044,7 +1078,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             });
             return delay.promise;
         };
-
         $scope.loadVersionAndUseInfo = function() {
             var delay = $q.defer();
             var dtIds = [];
@@ -1069,31 +1102,55 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             });
             return delay.promise;
         };
-        $scope.loadTables = function() {
+//        $scope.loadTables = function() {
+//            var delay = $q.defer();
+//            //$scope.tableLibrary.type = "tables";
+//            var tableIds = [];
+//            console.log($scope.tableLibrary);
+//            for (var i = 0; i < $scope.tableLibrary.children.length; i++) {
+//                tableIds.push($scope.tableLibrary.children[i].id);
+//            }
+//
+//
+//            TableService.findAllByIds(tableIds).then(function(tables) {
+//                $rootScope.tables = tables;
+//                angular.forEach(tables, function(table) {
+//                    $rootScope.tablesMap[table.id] = table;
+//                });
+//                console.log($rootScope.tablesMap);
+//
+//            }, function(error) {
+//                $rootScope.msg().text = "TablesLoadFailed";
+//                $rootScope.msg().type = "danger";
+//                $rootScope.msg().show = true;
+//                delay.reject(false);
+//            });
+//
+//            return delay.promise;
+//        };
+        
+        $scope.loadTables = function () {
             var delay = $q.defer();
-            //$scope.tableLibrary.type = "tables";
-            var tableIds = [];
-            console.log($scope.tableLibrary);
-            for (var i = 0; i < $scope.tableLibrary.children.length; i++) {
-                tableIds.push($scope.tableLibrary.children[i].id);
-            }
+            $rootScope.tableLibrary.type = "tables";
 
 
-            TableService.findAllByIds(tableIds).then(function(tables) {
-                $rootScope.tables = tables;
-                angular.forEach(tables, function(table) {
-                    $rootScope.tablesMap[table.id] = table;
-                });
-                console.log($rootScope.tablesMap);
 
-            }, function(error) {
+
+            TableLibrarySvc.getTablesByLibrary($rootScope.tableLibrary.id).then(function (children) {
+                $rootScope.tables = children;
+                $rootScope.tablesMap = {};
+                angular.forEach(children, function (child) {
+                    this[child.id] = child;
+                }, $rootScope.tablesMap);
+                delay.resolve(true);
+            }, function (error) {
                 $rootScope.msg().text = "TablesLoadFailed";
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
                 delay.reject(false);
             });
-
             return delay.promise;
+
         };
 
         $scope.openRichTextDlg = function(obj, key, title, disabled) {
@@ -1705,7 +1762,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 $scope.hl7Version = standard.hl7Version;
                 DatatypeLibraryDocumentSvc.create(standard.hl7Version, scope, standard.name, standard.ext).then(function(result) {
                     console.log(result.data);
-                    $scope.datatypeLibsStruct.push(result.data);
+
                     //angular.forEach($scope.datatypeLibrariesConfig, function(lib) {});
                     $scope.editLibrary(result.data, false);
 
@@ -1781,6 +1838,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }).result.then(function(standard) {
                 $scope.hl7Version = standard.hl7Version;
                 DatatypeLibraryDocumentSvc.create(standard.hl7Version, scope, standard.name, standard.ext,standard.description,standard.orgName).then(function(result) {
+                    $scope.datatypeLibsStruct.push(result.data);
                     angular.forEach($scope.datatypeLibrariesConfig, function(lib) {
                         if (lib.type === scope) {
                             $scope.datatypeLibrariesConfig.selectedType = lib;

@@ -1686,7 +1686,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                             angular.forEach(dts, function(dt){
                             DatatypeService.merge($rootScope.datatypesMap[dt.id], dt);
                                              });
-                                                $rootScope.editDataType(dest);
+                                                $rootScope.editDatatype(dest);
 
                                                 CloneDeleteSvc.deleteDatatype(source);
                                            });

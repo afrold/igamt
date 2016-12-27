@@ -61,6 +61,7 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
 
         return $http.post(
             'api/datatype-library-document/save', angular.toJson(datatypeLibrary)).then(function (response) {
+            	 blockUI.stop();
                 return angular.fromJson(response.data)
                 
             });
@@ -69,7 +70,7 @@ angular.module('igl').factory('DatatypeLibraryDocumentSvc', function ($q, $http,
     	 var delay = $q.defer();
 
         $http.post('api/datatype-library-document/getAllDatatypesName').then(function (response) {
-                delay.resolve(response.data);
+                delay.resolve(angular.fromJson(response.data));
             
             } , function(error) {
                     //console.log("DatatypeService.save error=" + error);
