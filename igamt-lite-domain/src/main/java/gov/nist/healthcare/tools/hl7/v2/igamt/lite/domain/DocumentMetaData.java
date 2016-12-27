@@ -6,6 +6,7 @@ public class DocumentMetaData extends MetaData implements java.io.Serializable, 
 
   private static final long serialVersionUID = 1L;
 
+  private String coverPicture;
   private String subTitle;
   private String title;
   private String status;
@@ -76,5 +77,13 @@ public class DocumentMetaData extends MetaData implements java.io.Serializable, 
 
   public void setSubTitle(String subTitle) {
     this.subTitle = subTitle;
+  }
+
+  public String getCoverPicture() {
+	return coverPicture;
+  }
+
+  public void setCoverPicture(String coverPicture) {
+	this.coverPicture = coverPicture;
   }
 }

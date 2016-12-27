@@ -30,3 +30,5 @@ igamt-lite-service/DTL_*.xml
 igamt-lite-service/DTL_*.html
 igamt-lite-service/DTL_*.docx
 data/db/
+igamt-lite-acmgt/bin
+igamt-lite-resource/bin

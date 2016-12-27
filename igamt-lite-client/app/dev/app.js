@@ -29,7 +29,7 @@ var app = angular
         'dndLists',
         'froala',
         'ui-notification',
-        'ngMockE2E', 
+        'ngMockE2E',
         'ui.tree',
         'blockUI',
         'ds.objectDiff',
@@ -38,7 +38,8 @@ var app = angular
         //'ngMaterial',
         'pageslide-directive',
         'rzModule',
-		'ui.select'
+		    'ui.select',
+        'flow'
     ]);
 
 var

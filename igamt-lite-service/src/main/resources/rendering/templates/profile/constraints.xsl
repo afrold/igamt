@@ -2,8 +2,7 @@
 
     <xsl:template match="Constraints">
         <xsl:if test="count(./Constraint) &gt; 0">
-            <xsl:element name="p">
-                <xsl:element name="strong">
+                <xsl:element name="b">
                     <xsl:element name="u">
                         <xsl:value-of
                                 select="@title"/>
@@ -14,6 +13,9 @@
                     <xsl:attribute name="class">
                         <xsl:text>contentTable</xsl:text>
                     </xsl:attribute>
+	                <xsl:attribute name="summary">
+	                    <xsl:value-of select="@Type"></xsl:value-of>
+	                </xsl:attribute>
                     <xsl:choose>
                         <xsl:when test="@Type='ConformanceStatement'">
                             <xsl:call-template name="conformanceStatementHeader"/>
@@ -34,9 +36,7 @@
                         </xsl:for-each>
                     </xsl:element>
                 </xsl:element>
-            </xsl:element>
         </xsl:if>
-
     </xsl:template>
 
 </xsl:stylesheet>

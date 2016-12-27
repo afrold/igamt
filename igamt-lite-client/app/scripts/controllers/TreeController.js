@@ -10,11 +10,14 @@ angular
         '$cookies',
         'DatatypeLibrarySvc',
         '$modal',
+        'CompositeMessageService',
+        'PcService',
 
-        function ($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies,DatatypeLibrarySvc,$modal) {
+        function ($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies,DatatypeLibrarySvc,$modal,CompositeMessageService,PcService) {
 
             $scope.collapsedata = false;
             $scope.collapsePcs = true;
+            $scope.collapseprofilecomponent = false;
             $scope.collapsemessage = false;
             $scope.collapsesegment = false;
             $scope.collapsetable = false;
@@ -93,9 +96,12 @@ angular
                 $scope.collapsesegment = !$scope.collapsesegment;
 
             };
-
+            
             $rootScope.switchermsg = function () {
                 $scope.collapsemessage = !$scope.collapsemessage;
+            };
+            $rootScope.switcherpc = function() {
+                $scope.collapseprofilecomponent = !$scope.collapseprofilecomponent;
             };
 
             $rootScope.switcherdata = function () {
@@ -803,6 +809,61 @@ angular
                 }]
             ];
 
+            $scope.ProfileComponentsRootOption = [
+
+                                                  ['Create Profile Component', function($itemScope) {
+                                                      if ($rootScope.hasChanges()) {
+
+                                                          $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                              $scope.createProfileComponent();
+                                                          });
+                                                      } else {
+                                                          $scope.createProfileComponent();
+                                                      }
+
+                                                  }]
+                                              ];
+                                              $scope.CompositeMessagesRootOption = [
+                                                  ['Create Composite Profile', function($itemScope) {
+                                                      if ($rootScope.hasChanges()) {
+
+                                                          $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                              $scope.createCompositeMessage();
+                                                          });
+                                                      } else {
+                                                          $scope.createCompositeMessage();
+                                                      }
+
+                                                  }]
+                                              ];
+
+                                              $scope.ProfileComponentsOption = [
+
+                                                  ['Delete', function($itemScope) {
+
+                                                      PcService.getPc($itemScope.pc.id).then(function(profileComponent) {
+                                                          console.log(profileComponent);
+                                                          if (profileComponent.appliedTo === null || (profileComponent.appliedTo && profileComponent.appliedTo.length === 0)) {
+                                                              if ($rootScope.hasChanges()) {
+                                                                  $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                                                      $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
+                                                                  });
+                                                              } else {
+                                                                  $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
+                                                              }
+                                                          } else {
+                                                              //can't delete because it's used
+                                                              console.log("notHEEEEEEEREEEE");
+                                                              $rootScope.cantDeletePc(profileComponent);
+
+                                                          }
+
+                                                      });
+
+
+
+                                                  }]
+                                              ];
 
 
             $scope.ValueSetRootOptions = [
@@ -1413,6 +1474,54 @@ angular
                 }
 
             };
+            
+            function processEditPC(pc) {
+                console.log("================================");
+                console.log(pc);
+                PcService.getPc(pc.id).then(function(profileC) {
+                    console.log("HEEEERE");
+                    console.log(profileC);
+                    $scope.Activate(pc.id);
+                    $rootScope.profileComponent = profileC;
+                    $scope.$emit('event:openPc');
+                });
+
+            };
+            function processEditCM(cm) {
+                console.log("================================");
+                console.log(cm);
+                CompositeMessageService.getCm(cm.id).then(function(compositeM) {
+                    console.log("HEEEERE");
+                    console.log(compositeM);
+                    $scope.Activate(cm.id);
+                    $rootScope.compositeMessage = compositeM;
+                    $scope.$emit('event:openCm');
+                });
+
+            };
+            $rootScope.editPC = function(pc) {
+
+                if ($rootScope.hasChanges()) {
+                    $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        processEditPC(pc);
+                    });
+                } else {
+                    processEditPC(pc);
+                }
+
+            };
+            $rootScope.editCM = function(cm) {
+
+                if ($rootScope.hasChanges()) {
+                    $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        processEditCM(cm);
+                    });
+                } else {
+                    processEditCM(cm);
+                }
+
+            };
+            
 
             function processEditProfile() {
                 $scope.Activate("Message Infrastructure");

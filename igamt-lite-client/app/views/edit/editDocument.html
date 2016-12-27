@@ -39,9 +39,56 @@
                                  ng-click="reset()">
                              <span><i class="fa fa-times fa-fw"></i>Reset</span>
                          </button>
-    </span>
+                    </span>
                     </div>
 
+                    <div class="form-group control-group vertical-align" ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}" ng-if="!viewSettings.tableReadonly" flow-init flow-name="uploader.flow" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()" flow-file-success="successUpload($file, $message, $data)">
+                        <div class="col-md-2" style="justify-content: flex-end;">
+                          <label class="control-label">Export Cover Picture</label>
+                        </div>
+
+                        <div class="col-md-10 upload_drop" flow-drop flow-drag-enter="class='upload_drop_hover'" flow-drag-leave="class=''" ng-class="class">
+
+                              <div class="col-md-5">
+                                <span class="btn btn-raised btn-sm btn-primary upload_button" ng-hide="$flow.files.length || metaData.coverPicture" flow-btn flow-attrs="{accept:'image/*'}" tooltip="Only PNG,GIF,JPG files allowed.">Select image</span>
+                                <span class="btn btn-raised btn-sm btn-primary upload_button" ng-show="$flow.files.length || metaData.coverPicture" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
+                                <span class="btn btn-raised btn-sm btn-danger upload_button" ng-show="$flow.files.length || metaData.coverPicture"
+                                   ng-click="$flow.cancel();removeCover()">
+                                  Remove
+                                </span>
+                                <span ng-hide="$flow.files.length || metaData.coverPicture"><b>OR</b> Drag And Drop your images here</span>
+                              </div>
+                            <div class="col-md-5">
+                              <div class="upload_thumbnail" ng-hide="$flow.files.length || metaData.coverPicture">
+                                <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image" />
+                              </div>
+                              <div class="upload_thumbnail" ng-show="$flow.files.length">
+                                <img flow-img="$flow.files[0]" style="max-height: 150px;" />
+                              </div>
+                              <div class="upload_thumbnail" ng-show="metaData.coverPicture && !$flow.files.length">
+                                <img ng-src="{{metaData.coverPicture}}" style="max-height: 150px;" />
+                              </div>
+                            </div>
+                      </div>
+
+                    </div>
+
+                    <div class="form-group control-group vertical-align" ng-if="viewSettings.tableReadonly">
+                      <div class="col-md-2" style="justify-content: flex-end;">
+                        <label class="control-label">Export Cover Picture</label>
+                      </div>
+
+                      <div class="col-md-10">
+                        <div class="col-md-5">
+                          <div class="upload_thumbnail" ng-show="metaData.coverPicture">
+                            <img ng-src="{{metaData.coverPicture}}" style="max-height: 150px;" />
+                          </div>
+                          <div class="upload_thumbnail" ng-hide="metaData.coverPicture">
+                            <span>No cover picture</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     <div class="form-group control-group"
                          ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
@@ -150,7 +197,7 @@
 
                     <div class="controls col-md-10">
                         <input type="text" name="version" disabled
-                             
+
                                class="form-control" ng-model="igdocument.profile.metaData.hl7Version" required>
                     </div>
                 </div>
