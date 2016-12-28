@@ -183,12 +183,10 @@
         <xsl:for-each select="Field">
             <xsl:sort select="@Position" data-type="number"></xsl:sort>
             <xsl:if test="count(Text) &gt; 0">
-                <xsl:element name="p">
-                    <xsl:element name="b">
-                        <xsl:value-of select="concat(../@Name,' - ',./@Position,' ',./@Name,'(',./@Datatype,')')" />
-                    </xsl:element>
-                    <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
-                </xsl:element>
+	            <xsl:element name="b">
+	                <xsl:value-of select="concat(../@Name,' - ',./@Position,' : ',./@Name,'(',./@Datatype,')')" />
+	            </xsl:element>
+	            <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
             </xsl:if>
         </xsl:for-each>
         <xsl:element name="br"/>

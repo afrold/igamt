@@ -351,7 +351,7 @@
                                                                     {{c.description}}
                                                                 </td>
                                                                 <td class="col-md-1" align="center">
-                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.conformanceStatements.splice(datatype.conformanceStatements.indexOf(c), 1);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatementFromList(c);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -365,6 +365,7 @@
                                             <accordion-heading>
                                                 <span style="color:white;">Conditional Predicates</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
+
                                                 <div class="col-md-12 igl-page-header">
 
                                                     <span class="pull-right">
@@ -375,6 +376,7 @@
                                                                     &nbsp; </i>Add Predicate</span></button>
                                                     </span>
                                                 </div>
+
                                                 <div class="col-md-12">
                                                     <span ng-hide="datatype.predicates.length > 0">No conditional predicate</span>
                                                     <table st-table="displayed" st-safe-src="datatype.predicates" class="table table-striped table-bordered" ng-show="datatype.predicates.length > 0">
@@ -402,7 +404,7 @@
                                                                     {{p.falseUsage}}
                                                                 </td>
                                                                 <td class="col-md-1" align="center">
-                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="datatype.predicates.splice(datatype.predicates.indexOf(p), 1);" ng-disabled="viewSettings.tableReadonly"><span><i
+                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="deletePredicateFromList(p);" ng-disabled="viewSettings.tableReadonly"><span><i
                                 class="fa fa-trash fa-fw">
                             &nbsp; </i>Del</span>
                         </button>
