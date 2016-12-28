@@ -186,6 +186,10 @@ angular.module('igl')
                 //$rootScope.datatypes = result;
                 console.log(result);
                 $scope.availbleVersionOfDt=result;
+                if($scope.dynamicDt_Evolution){
+                
+                }
+                
             }, function(error) {
                 $rootScope.msg().text = "DatatypesLoadFailed";
                 $rootScope.msg().type = "danger";
@@ -233,6 +237,7 @@ angular.module('igl')
                 $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), [], [], [], []);
                 console.log("$scope.dataList");
                 console.log($scope.dataList);
+                $scope.hideEvolution=false;
                 $rootScope.clearChanges();
                 $scope.cleanState();
                 $scope.loadingSelection = false;
@@ -388,7 +393,7 @@ angular.module('igl')
 
                 });
                 modalInstance.result.then(function() {
-                    $rootScope.editDataType(datatype);
+                    $rootScope.editDatatype(datatype);
                 });
 
             });
@@ -2295,6 +2300,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
 
     $rootScope.$on('event:initDatatype', function(event) {
         console.log("$scope.isDeltaCalled");
+        $scope.getAllVersionsOfDT($rootScope.datatype.id);
         console.log($scope.isDeltaCalled);
         if ($scope.isDeltaCalled) {
             $scope.initt();

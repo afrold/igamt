@@ -538,7 +538,7 @@
             <div ng-show="table !== null" id="executionPanel">
                 <div class="row" style="margin-left:0px; margin-right: 20px">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Value Set: {{table.bindingIdentifier}}</span> <span class="version-badge-label" ng-if="table.publicationVersion">v{{table.publicationVersion}}</span></span>
+                        <span class="header4">Value Set: {{table.bindingIdentifier}}</span> <span class="version-badge-label" ng-if="versionAndUseMap[table.id].publicationVersion">v{{versionAndUseMap[table.id].publicationVersion}}</span></span>
 
                         <span class="pull-right" ng-if="!typeOfSharing">
 

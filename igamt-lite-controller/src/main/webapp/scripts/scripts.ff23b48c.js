@@ -21231,7 +21231,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             }).result.then(function(standard) {
                 $scope.hl7Version = standard.hl7Version;
                 DatatypeLibraryDocumentSvc.create(standard.hl7Version, scope, standard.name, standard.ext,standard.description,standard.orgName).then(function(result) {
-                    console.log("aqui estamos");
                     $scope.datatypeLibsStruct.push(result.data);
                     angular.forEach($scope.datatypeLibrariesConfig, function(lib) {
                         if (lib.type === scope) {
@@ -22601,6 +22600,10 @@ angular.module('igl')
                 //$rootScope.datatypes = result;
                 console.log(result);
                 $scope.availbleVersionOfDt=result;
+                if($scope.dynamicDt_Evolution){
+                
+                }
+                
             }, function(error) {
                 $rootScope.msg().text = "DatatypesLoadFailed";
                 $rootScope.msg().type = "danger";
@@ -22648,6 +22651,7 @@ angular.module('igl')
                 $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), [], [], [], []);
                 console.log("$scope.dataList");
                 console.log($scope.dataList);
+                $scope.hideEvolution=false;
                 $rootScope.clearChanges();
                 $scope.cleanState();
                 $scope.loadingSelection = false;
@@ -22803,7 +22807,7 @@ angular.module('igl')
 
                 });
                 modalInstance.result.then(function() {
-                    $rootScope.editDataType(datatype);
+                    $rootScope.editDatatype(datatype);
                 });
 
             });
@@ -24710,6 +24714,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
 
     $rootScope.$on('event:initDatatype', function(event) {
         console.log("$scope.isDeltaCalled");
+        $scope.getAllVersionsOfDT($rootScope.datatype.id);
         console.log($scope.isDeltaCalled);
         if ($scope.isDeltaCalled) {
             $scope.initt();
@@ -32872,7 +32877,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
                 });
                 modalInstance.result.then(function() {
-                    $rootScope.editDataType(datatype);
+                    $rootScope.editDatatype(datatype);
                 });
 
 
@@ -36672,7 +36677,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
             });
             modalInstance.result.then(function() {
-                $rootScope.editDataType(datatype);
+                $rootScope.editDatatype(datatype);
             });
 
 
