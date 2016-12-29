@@ -1,6 +1,6 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:template name="element">
+	<xsl:template name="messageSegment">
 		<xsl:element name="tr">
 			<xsl:attribute name="class">
                 <xsl:text>contentTr</xsl:text>
