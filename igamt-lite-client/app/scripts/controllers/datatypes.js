@@ -184,6 +184,9 @@ angular.module('igl')
         $scope.getAllVersionsOfDT=function(id){
         	$scope.checked={};
         	var ancestors=[];
+        	if(!$rootScope.versionAndUseMap[id]){
+        		return "";
+        	}
         	if($rootScope.versionAndUseMap[id].ancestors&& $rootScope.versionAndUseMap[id].ancestors.length>0){
             	var ancestors= $rootScope.versionAndUseMap[id].ancestors;
 

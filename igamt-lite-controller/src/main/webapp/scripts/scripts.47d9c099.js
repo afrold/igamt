@@ -22451,6 +22451,20 @@ angular.module('igl')
             };
 
         };
+
+    $scope.deleteConformanceStatementFromList = function (c){
+        $rootScope.datatype.conformanceStatements.splice($rootScope.datatype.conformanceStatements.indexOf(c), 1);
+
+        $scope.setDirty();
+    };
+
+    $scope.deletePredicateFromList = function (p){
+        $rootScope.datatype.predicates.splice($rootScope.datatype.predicates.indexOf(p), 1);
+
+        $scope.setDirty();
+    };
+
+
         $scope.changeDatatypeLink = function(datatypeLink) {
             datatypeLink.isChanged = true;
 
@@ -22523,7 +22537,7 @@ angular.module('igl')
         };
         $scope.testCall = function() {
             console.log($rootScope.references);
-        }
+        };
 
         $scope.deletePredicate = function(position, datatype) {
             var modalInstance = $modal.open({
@@ -22584,6 +22598,9 @@ angular.module('igl')
         $scope.getAllVersionsOfDT=function(id){
         	$scope.checked={};
         	var ancestors=[];
+        	if(!$rootScope.versionAndUseMap[id]){
+        		return "";
+        	}
         	if($rootScope.versionAndUseMap[id].ancestors&& $rootScope.versionAndUseMap[id].ancestors.length>0){
             	var ancestors= $rootScope.versionAndUseMap[id].ancestors;
 
@@ -24172,7 +24189,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         });
         angular.copy($scope.tempComformanceStatements, $rootScope.datatype.conformanceStatements);
         $rootScope.recordChanged();
-        $modalInstance.close();
+        $modalInstance.close($rootScope.datatype);
     };
 });
 
@@ -33478,9 +33495,11 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
                 }
             });
             modalInstance.result.then(function(message) {
-                $rootScope.message = message;
-                $scope.findAllGlobalConstraints();
-                $scope.setDirty();
+                if(message){
+                    $rootScope.message = message;
+                    $scope.findAllGlobalConstraints();
+                    $scope.setDirty();
+                }
             }, function() {});
         };
 
@@ -33500,9 +33519,12 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
                 }
             });
             modalInstance.result.then(function(message) {
-                $rootScope.message = message;
-                $scope.findAllGlobalConstraints();
-                $scope.setDirty();
+                if(message){
+                    $rootScope.message = message;
+                    $scope.findAllGlobalConstraints();
+                    $scope.setDirty();
+                }
+
             }, function() {});
         };
 
@@ -34814,7 +34836,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalI
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $modalInstance.dismiss();
     };
 
     $scope.saveclose = function() {
@@ -35154,7 +35176,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $modalInstance.dismiss();
     };
 
     $scope.saveclose = function() {
@@ -36514,6 +36536,18 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         $scope.editableField = field.id;
         $scope.fieldName = field.name;
 
+    };
+
+    $scope.deleteConformanceStatementFromList = function (c){
+        $rootScope.segment.conformanceStatements.splice($rootScope.segment.conformanceStatements.indexOf(c), 1);
+
+        $scope.setDirty();
+    };
+
+    $scope.deletePredicateFromList = function (p){
+        $rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf(p), 1);
+
+        $scope.setDirty();
     };
 
     $scope.AddBindingForSegment = function(segment) {
