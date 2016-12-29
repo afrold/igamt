@@ -986,6 +986,12 @@ angular.module('igl')
             }
         };
 
+        $scope.exportAsWithLayout = function(format,layout) {
+            if ($rootScope.igdocument != null) {
+                IgDocumentService.exportAsWithLayout($rootScope.igdocument, format, layout);
+            }
+        };
+
         $scope.exportDelta = function (id, format) {
             blockUI.start();
             var form = document.createElement("form");
