@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550a5bd",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0128",
+  "name" : "0128",
+  "description" : "Allergy Severity",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.128",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5be",
+    "value" : "MI",
+    "label" : "Mild",
+    "codeSystem" : "HL70128",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5bf",
+    "value" : "MO",
+    "label" : "Moderate",
+    "codeSystem" : "HL70128",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5c0",
+    "value" : "SV",
+    "label" : "Severe",
+    "codeSystem" : "HL70128",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5c1",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70128",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

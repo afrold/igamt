@@ -1,0 +1,101 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.3.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd239d4c6ca828c295f8f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd446787",
+  "label" : "BLG",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "When to Charge",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "40",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd446058",
+      "bindingIdentifier" : "0100",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44628a",
+      "name" : "CCD",
+      "ext" : null,
+      "label" : "CCD"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446788",
+    "itemNo" : "00234",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Charge Type",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "50",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd4458c2",
+      "bindingIdentifier" : "0122",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446205",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd446789",
+    "itemNo" : "00235",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Account ID",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "100",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446247",
+      "name" : "CX",
+      "ext" : null,
+      "label" : "CX"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44678a",
+    "itemNo" : "00236",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd239d4c6ca828c295c0e",
+    "mappings" : [ ]
+  },
+  "name" : "BLG",
+  "description" : "BLG - billing segment",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

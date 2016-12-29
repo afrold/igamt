@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4482c6",
+  "hl7Version" : "2.1",
+  "libIds" : [ "573dd23bd4c6ca828c297296" ],
+  "bindingIdentifier" : "0016",
+  "name" : "0016",
+  "description" : "ISOLATION",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482c7",
+    "value" : "0",
+    "label" : "Antibiotic Resistance Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482c8",
+    "value" : "1",
+    "label" : "Blood and Needle Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482c9",
+    "value" : "3",
+    "label" : "Neutropenic Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482ca",
+    "value" : "5",
+    "label" : "Respiratory Isolation",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482cb",
+    "value" : "6",
+    "label" : "Secretion/Excretion Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482cc",
+    "value" : "8",
+    "label" : "Wound and skin Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482cd",
+    "value" : "9",
+    "label" : "Precautions",
+    "codeSystem" : "HL70016",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

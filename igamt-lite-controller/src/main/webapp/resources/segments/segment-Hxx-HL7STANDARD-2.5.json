@@ -1,0 +1,25 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.5",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd234d4c6ca828c292647" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd441b5e",
+  "label" : "Hxx",
+  "fields" : [ ],
+  "dynamicMapping" : {
+    "id" : "573dd234d4c6ca828c29173f",
+    "mappings" : [ ]
+  },
+  "name" : "Hxx",
+  "description" : "any HL7 segment",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

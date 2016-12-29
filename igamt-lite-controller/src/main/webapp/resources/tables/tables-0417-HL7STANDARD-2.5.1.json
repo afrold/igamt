@@ -1,0 +1,138 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e4d3",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0417",
+  "name" : "0417",
+  "description" : "Tissue Type Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.417",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4d4",
+    "value" : "0",
+    "label" : "No tissue expected",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4d5",
+    "value" : "1",
+    "label" : "Insufficient Tissue",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4d6",
+    "value" : "2",
+    "label" : "Not abnormal",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4d7",
+    "value" : "3",
+    "label" : "Abnormal-not categorized",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4d8",
+    "value" : "4",
+    "label" : "Mechanical abnormal",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4d9",
+    "value" : "5",
+    "label" : "Growth alteration",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4da",
+    "value" : "6",
+    "label" : "Degeneration & necrosis",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4db",
+    "value" : "7",
+    "label" : "Non-acute inflammation",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4dc",
+    "value" : "8",
+    "label" : "Non-malignant neoplasm",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4dd",
+    "value" : "9",
+    "label" : "Malignant neoplasm",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4de",
+    "value" : "B",
+    "label" : "Basal cell carcinoma",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4df",
+    "value" : "C",
+    "label" : "Carcinoma-unspecified type",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4e0",
+    "value" : "G",
+    "label" : "Additional tissue required",
+    "codeSystem" : "HL70417",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

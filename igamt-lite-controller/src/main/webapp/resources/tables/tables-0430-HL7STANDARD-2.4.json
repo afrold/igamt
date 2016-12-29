@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443b00",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0430",
+  "name" : "0430",
+  "description" : "Mode of arrival code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b01",
+    "value" : "A",
+    "label" : "Ambulance",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b02",
+    "value" : "C",
+    "label" : "Car",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b03",
+    "value" : "F",
+    "label" : "On foot",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b04",
+    "value" : "H",
+    "label" : "Helicopter",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b05",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b06",
+    "value" : "P",
+    "label" : "Public Transport",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b07",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

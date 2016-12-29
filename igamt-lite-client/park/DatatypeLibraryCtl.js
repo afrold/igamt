@@ -6,7 +6,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
       $scope.datatypeLibsStruct = [];
       $scope.datatypeLibStruct = null;
-      $scope.datatypesBrevis = []; 
+      $scope.datatypesBrevis = [];
 			$scope.datatypeStruct = null;
 			$scope.loadingSelection = true;
 			$scope.publishSelections = [];
@@ -14,7 +14,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 	    $scope.viewSettings = ViewSettings;
       $scope.metaDataView = null;
       $scope.datatypeListView = null;
- 
+
 	    $scope.tableWidth = null;
       $scope.datatypeLibrary = "";
       $scope.hl7Version = null;
@@ -23,7 +23,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
       $scope.datatypeLibrariesConfig = {};
       $scope.datatypeLibrariesConfig.selectedType
 	  $scope.admin = userInfoService.isAdmin();
-      
+
       $scope.datatypeLibraryTypes = [
                                 { name: "Browse Master data type libraries", type: 'MASTER', visible :  $scope.admin,
                                 },
@@ -96,7 +96,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 				});
 				DatatypeLibrarySvc.save($scope.datatypeLibStruct);
 			};
-			
+
 			$scope.cancel = function() {
 				console.log("canceled");
 			};
@@ -120,7 +120,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			            $scope.loadingSelection = false;
 				}, 100);
 			};
-			
+
 			$scope.deleteLibrary = function(datatypeLibrary) {
 				DatatypeLibrarySvc.delete_($scope.datatypeLibStruct.id);
 			}
@@ -131,13 +131,29 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 			console.log("saved datatype=" + JSON.stringify(datatype));
 		});
 	};
-	
+
     $scope.editDatatype = function(datatype) {
       $scope.datatypeView = "EditDatatypeLibraryDatatype.html";
+
+			// Find share participants
+			if (datatype.shareParticipantIds && datatype.shareParticipantIds.length > 0) {
+					datatype.shareParticipantIds.forEach(function (participant) {
+							$http.get('api/shareparticipant', { params: { id: participant.accountId } })
+									.then(
+									function (response) {
+											participant.username = response.data.username;
+											participant.fullname = response.data.fullname;
+									},
+									function (error) {
+											console.log(error);
+									}
+									);
+					});
+			}
 		console.log("edit datatype=" + JSON.stringify(datatype.label));
       if (datatype && datatype != null) {
         $scope.loadingSelection = true;
-        
+
         var queryId = null;
         if (datatype.oldId) {
         	queryId = datatype.oldId;
@@ -184,7 +200,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 		newDatatype.ext = newDatatype.ext + "-" + (Math.floor(Math.random() * 10000000) + 1);
 		$scope.datatypeLibStruct.children.push(newDatatype);
   	}
-  
+
  // $scope.copyDatatype = function(datatype) {
 // console.log("copy datatype=" + JSON.stringify(datatype.label));
 // DatatypeService.getOne(datatype.id).then(function (result) {

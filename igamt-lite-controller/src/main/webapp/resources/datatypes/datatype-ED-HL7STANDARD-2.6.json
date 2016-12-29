@@ -1,0 +1,132 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd22fd4c6ca828c28ca60" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550bb78",
+  "label" : "ED",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "Source Application",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "1027",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbc3",
+      "name" : "HD",
+      "ext" : null,
+      "label" : "HD"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bbe2"
+  }, {
+    "type" : "component",
+    "name" : "Type of Data",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "11",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b16d",
+      "bindingIdentifier" : "0834",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bbe3"
+  }, {
+    "type" : "component",
+    "name" : "Data Subtype",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "32",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550ae16",
+      "bindingIdentifier" : "0291",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bbe4"
+  }, {
+    "type" : "component",
+    "name" : "Encoding",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "6",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550af58",
+      "bindingIdentifier" : "0299",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bbe5"
+  }, {
+    "type" : "component",
+    "name" : "Data",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "*",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb6d",
+      "name" : "TX",
+      "ext" : null,
+      "label" : "TX"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bbe6"
+  } ],
+  "name" : "ED",
+  "description" : "Encapsulated Data",
+  "comment" : "",
+  "usageNote" : ""
+}

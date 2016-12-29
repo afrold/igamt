@@ -1,0 +1,39 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4471a9",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0169",
+  "name" : "0169",
+  "description" : "Reporting Priority",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471aa",
+    "value" : "C",
+    "label" : "Call back results",
+    "codeSystem" : "HL70169",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471ab",
+    "value" : "R",
+    "label" : "Rush reporting",
+    "codeSystem" : "HL70169",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

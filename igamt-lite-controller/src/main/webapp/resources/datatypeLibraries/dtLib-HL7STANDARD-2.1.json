@@ -1,0 +1,136 @@
+{
+  "type" : "datatypes",
+  "sectionPosition" : 2,
+  "sectionTitle" : "Datatypes",
+  "sectionDescription" : null,
+  "sectionContents" : null,
+  "id" : "573dd23bd4c6ca828c297295",
+  "accountId" : null,
+  "ext" : null,
+  "metaData" : {
+    "name" : "HL7 Standard 2.1",
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.1",
+    "date" : "May 19, 2016",
+    "ext" : null,
+    "datatypeLibId" : "1a3274a6-0c81-408a-86ff-63d4f617b068"
+  },
+  "scope" : "HL7STANDARD",
+  "children" : [ {
+    "id" : "565f3ab7d4c6e52cfd448419",
+    "name" : "CE_0057",
+    "ext" : "",
+    "label" : "CE_0057_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448418",
+    "name" : "CN",
+    "ext" : "",
+    "label" : "CN_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448417",
+    "name" : "CM",
+    "ext" : "",
+    "label" : "CM_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448423",
+    "name" : "CM_UNDEFINED",
+    "ext" : "",
+    "label" : "CM_UNDEFINED_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448412",
+    "name" : "ST",
+    "ext" : "",
+    "label" : "ST_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448422",
+    "name" : "TN",
+    "ext" : "",
+    "label" : "TN_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448411",
+    "name" : "COMP_ID_DIGIT",
+    "ext" : "",
+    "label" : "COMP_ID_DIGIT_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448421",
+    "name" : "TM",
+    "ext" : "",
+    "label" : "TM_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448420",
+    "name" : "SI",
+    "ext" : "",
+    "label" : "SI_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448416",
+    "name" : "CK",
+    "ext" : "",
+    "label" : "CK_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448427",
+    "name" : "TS",
+    "ext" : "",
+    "label" : "TS_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448426",
+    "name" : "NM",
+    "ext" : "",
+    "label" : "NM_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448415",
+    "name" : "TX",
+    "ext" : "",
+    "label" : "TX_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448425",
+    "name" : "PN",
+    "ext" : "",
+    "label" : "PN_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448414",
+    "name" : "AD",
+    "ext" : "",
+    "label" : "AD_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448424",
+    "name" : "ID",
+    "ext" : "",
+    "label" : "ID_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448413",
+    "name" : "CE",
+    "ext" : "",
+    "label" : "CE_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841b",
+    "name" : "CQ",
+    "ext" : "",
+    "label" : "CQ_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841a",
+    "name" : "COMP_QUANT",
+    "ext" : "",
+    "label" : "COMP_QUANT_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841f",
+    "name" : "COMP_ID_NAME",
+    "ext" : "",
+    "label" : "COMP_ID_NAME_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841e",
+    "name" : "DT",
+    "ext" : "",
+    "label" : "DT_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841d",
+    "name" : "SET_ID",
+    "ext" : "",
+    "label" : "SET_ID_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841c",
+    "name" : "FT",
+    "ext" : "",
+    "label" : "FT_"
+  } ]
+}

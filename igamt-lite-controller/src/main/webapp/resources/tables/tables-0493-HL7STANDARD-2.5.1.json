@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550d843",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0493",
+  "name" : "0493",
+  "description" : "Specimen Condition",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.493",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d844",
+    "value" : "AUT",
+    "label" : "Autolyzed",
+    "codeSystem" : "HL70493",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d845",
+    "value" : "CLOT",
+    "label" : "Clotted",
+    "codeSystem" : "HL70493",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d846",
+    "value" : "CON",
+    "label" : "Contaminated",
+    "codeSystem" : "HL70493",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d847",
+    "value" : "COOL",
+    "label" : "Cool",
+    "codeSystem" : "HL70493",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d848",
+    "value" : "FROZ",
+    "label" : "Frozen",
+    "codeSystem" : "HL70493",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d849",
+    "value" : "HEM",
+    "label" : "Hemolyzed",
+    "codeSystem" : "HL70493",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d84a",
+    "value" : "LIVE",
+    "label" : "Live",
+    "codeSystem" : "HL70493",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d84b",
+    "value" : "ROOM",
+    "label" : "Room temperature",
+    "codeSystem" : "HL70493",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d84c",
+    "value" : "SNR",
+    "label" : "Sample not received",
+    "codeSystem" : "HL70493",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

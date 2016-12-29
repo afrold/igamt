@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e79e",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0204",
+  "name" : "0204",
+  "description" : "Organizational name type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.204",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e79f",
+    "value" : "A",
+    "label" : "Alias name",
+    "codeSystem" : "HL70204",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7a0",
+    "value" : "D",
+    "label" : "Display name",
+    "codeSystem" : "HL70204",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7a1",
+    "value" : "L",
+    "label" : "Legal name",
+    "codeSystem" : "HL70204",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7a2",
+    "value" : "SL",
+    "label" : "Stock exchange listing name",
+    "codeSystem" : "HL70204",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

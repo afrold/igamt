@@ -2294,8 +2294,6 @@ table.conformance-profiles-table td {
 	overflow-y: auto;
 }
 
-.creation-modal-content {}
-
 .el-def {
 	margin-left: 5px
 }
@@ -2492,6 +2490,26 @@ input[type="file"] {
 	font-size: 14px;
 	font-style: italic;
 }
+.btn-group-raised .btn:not(.btn-link).active.btn-info, .btn-group-raised .btn:not(.btn-link):active.btn-info, .btn-group-raised .btn:not(.btn-link):focus.btn-info, .btn-group-raised .btn:not(.btn-link):hover.btn-info, .btn-group-raised .input-group-btn .btn:not(.btn-link).active.btn-info, .btn-group-raised .input-group-btn .btn:not(.btn-link):active.btn-info, .btn-group-raised .input-group-btn .btn:not(.btn-link):focus.btn-info, .btn-group-raised .input-group-btn .btn:not(.btn-link):hover.btn-info, .btn.btn-raised:not(.btn-link).active.btn-info, .btn.btn-raised:not(.btn-link):active.btn-info, .btn.btn-raised:not(.btn-link):focus.btn-info, .btn.btn-raised:not(.btn-link):hover.btn-info, .input-group-btn .btn.btn-raised:not(.btn-link).active.btn-info, .input-group-btn .btn.btn-raised:not(.btn-link):active.btn-info, .input-group-btn .btn.btn-raised:not(.btn-link):focus.btn-info, .input-group-btn .btn.btn-raised:not(.btn-link):hover.btn-info {
+    background-color: #01579b !important;
+}
+
+
+
+.selected1{
+background-color:#B5F7EC !important;
+}
+.selected2{
+background-color:#EDE1AF !important;
+}
+.choosed{
+	font-weight: bold;
+}
+.addDatatype .modal-dialog {
+	width: 80%;
+	height: 60%;
+}
+
 
 
 #nested-table{
@@ -2508,7 +2526,60 @@ input[type="file"] {
 @keyframes blinker {
 	50% { opacity: 0; }
 }
+.version-badge{
+	    font-size: 5px;
+    min-width: 0px;
+    display: inline-block;
+    min-width: 2px;
+    padding: 0px 0px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #131010;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    background-color: rgba(255,255,255,.84);
+    border-radius: 10px;
+}
+.version-badge-label{
+display: inline-block;
+    min-width: 2px;
+    padding: 3px 3px;
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255,255,255,.84);
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #777;
+    border-radius: 12px;
+}
 
+.badge{
+display: inline-block;
+	
+    padding: 3px 3px !important;
+
+}
+
+
+.table-fixed thead {
+//   width: 100%;
+}
+.table-fixed tbody {
+  height: 230px;
+  overflow-y: auto;
+//   width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+  display: block;
+}
+.table-fixed tbody td, .table-fixed thead > tr> th {
+//   float: left;
+//   border-bottom-width: 0;
+}
 .upload_thumbnail {
 	max-width: 200px;
 	max-height: 150px;

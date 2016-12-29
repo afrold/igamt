@@ -1,0 +1,149 @@
+
+.nav-tabs {
+    background:none;
+}
+
+
+.nav-tabs > li, .nav-tabs > li > a {
+    background: #29B6F6;
+}
+
+/*.nav-tabs {*/
+    /*border-color: #00a1b5;*/
+    /*border:1px;*/
+/*}*/
+
+.nav-tabs > li{
+    margin-right:3px;
+    border-top-left-radius:2px;
+    border-top-right-radius:2px;
+ }
+
+.nav-tabs > li.active {
+     background-color: #01579B;
+    /*border-color: #285e8e;*/
+}
+
+
+.nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
+     background-color: #01579B;
+}
+
+.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
+     background-color:  #01579B;
+}
+
+
+.nav > li.nav-header > a {
+    color:black;
+    font-weight: bold;
+}
+
+
+
+.navbar-collapse {
+    border-width: 0 0 0px;
+    background-color: #ffec9d;
+    color: black;
+}
+
+.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+    background-color: #ffcc00;
+}
+
+.navbar .nav > li > .dropdown-menu:after {
+    border-bottom: 6px solid #ffec9d;
+}
+
+.navbar-text > a {
+    color: black;
+}
+
+.navbar-text > a:hover {
+    color: black;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
+    background-color: #428bca;
+}
+
+
+.navbar-nav > li > a {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+
+.navbar {
+    min-height: 32px !important;
+}
+
+.nav-tabs > li > a {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+.nav-tabs {
+    min-height: 32px !important
+}
+
+.navbar {
+    margin-bottom: 0px;
+}
+
+.navbar {
+    color: black;
+    border-bottom: none;
+}
+
+.navbar .nav > .active > a, .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+    background-color: #ffcc00;
+}
+
+.nav > .active > a {
+    background-color: #ffcc00;
+}
+
+.nav > a {
+    background-color: #ffec9d;
+    color: black;
+}
+
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    background: white;
+}
+
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li >a:focus {
+    background: #01579B;
+}
+
+/*.btn-group-raised .btn.btn-primary, .btn-group-raised .input-group-btn .btn.btn-primary, .btn.btn-fab.btn-primary, .btn.btn-raised.btn-primary, .input-group-btn .btn.btn-fab.btn-primary, .input-group-btn .btn.btn-raised.btn-primary {*/
+    /*background-color: #81D4FA;*/
+    /*color: white;*/
+/*}*/
+
+/*.btn-group-raised .btn.btn-primary .active, .btn-group-raised .input-group-btn .btn.btn-primary .active, .btn.btn-fab.btn-primary.active, .btn.btn-raised.btn-primary.active, .input-group-btn .btn.btn-fab.btn-primary.active, .input-group-btn .btn.btn-raised.btn-primary.active {*/
+    /*background-color: #01579B;*/
+    /*color: white;*/
+/*}*/
+
+.igl-btn-choice {
+    background: #81D4FA;
+}
+
+.igl-btn-choice .active {
+    background:#01579B;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #01579B;
+}
+
+.nav-tabs > li {
+    margin-bottom: 0px;
+    height: 31px;
+}

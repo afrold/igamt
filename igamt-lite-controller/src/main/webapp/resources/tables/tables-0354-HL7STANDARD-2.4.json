@@ -1,0 +1,1533 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443e78",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0354",
+  "name" : "0354",
+  "description" : "Message structure",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e79",
+    "value" : "ACK",
+    "label" : "Varies",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e7a",
+    "value" : "ADR_A19",
+    "label" : "A19",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e7b",
+    "value" : "ADT_A01",
+    "label" : "A01, A04, A08, A13",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e7c",
+    "value" : "ADT_A02",
+    "label" : "A02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e7d",
+    "value" : "ADT_A03",
+    "label" : "A03",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e7e",
+    "value" : "ADT_A05",
+    "label" : "A05, A14, A28, A31",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e7f",
+    "value" : "ADT_A06",
+    "label" : "A06, A07",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e80",
+    "value" : "ADT_A09",
+    "label" : "A09, A10, A11, A12",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e81",
+    "value" : "ADT_A15",
+    "label" : "A15",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e82",
+    "value" : "ADT_A16",
+    "label" : "A16",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e83",
+    "value" : "ADT_A17",
+    "label" : "A17",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e84",
+    "value" : "ADT_A18",
+    "label" : "A18",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e85",
+    "value" : "ADT_A20",
+    "label" : "A20",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e86",
+    "value" : "ADT_A21",
+    "label" : "A21, A22, A23, A25, A26, A27, A29, A32, A33",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e87",
+    "value" : "ADT_A24",
+    "label" : "A24",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e88",
+    "value" : "ADT_A30",
+    "label" : "A30, A34, A35, A36, A46, A47, A48, A49",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e89",
+    "value" : "ADT_A37",
+    "label" : "A37",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e8a",
+    "value" : "ADT_A38",
+    "label" : "A38",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e8b",
+    "value" : "ADT_A39",
+    "label" : "A39, A40, A41, A42",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e8c",
+    "value" : "ADT_A43",
+    "label" : "A43, A44",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e8d",
+    "value" : "ADT_A45",
+    "label" : "A45",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e8e",
+    "value" : "ADT_A50",
+    "label" : "A50, A51",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e8f",
+    "value" : "ADT_A52",
+    "label" : "A52, A53, A55",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e90",
+    "value" : "ADT_A54",
+    "label" : "A54",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e91",
+    "value" : "ADT_A60",
+    "label" : "A60",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e92",
+    "value" : "ADT_A61",
+    "label" : "A61, A62",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e93",
+    "value" : "BAR_P01",
+    "label" : "P01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e94",
+    "value" : "BAR_P02",
+    "label" : "P02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e95",
+    "value" : "BAR_P05",
+    "label" : "P05",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e96",
+    "value" : "BAR_P06",
+    "label" : "P06",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e97",
+    "value" : "BAR_P10",
+    "label" : "P10",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e98",
+    "value" : "CRM_C01",
+    "label" : "C01, C02, C03, C04, C05, C06, C07, C08",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e99",
+    "value" : "CSU_C09",
+    "label" : "C09, C10, C11, C12",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e9a",
+    "value" : "DFT_P03",
+    "label" : "P03",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e9b",
+    "value" : "DOC_T12",
+    "label" : "T12",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e9c",
+    "value" : "DSR_P04",
+    "label" : "P04",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e9d",
+    "value" : "DSR_Q01",
+    "label" : "Q01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e9e",
+    "value" : "DSR_Q03",
+    "label" : "Q03",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e9f",
+    "value" : "EAC_U07",
+    "label" : "U07",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ea0",
+    "value" : "EAN_U09",
+    "label" : "U09",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ea1",
+    "value" : "EAR_U08",
+    "label" : "U08",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ea2",
+    "value" : "EDR_R07",
+    "label" : "R07",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ea3",
+    "value" : "EQQ_Q04",
+    "label" : "Q04",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ea4",
+    "value" : "ERP_R09",
+    "label" : "R09",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ea5",
+    "value" : "ESR_U02",
+    "label" : "U02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ea6",
+    "value" : "ESU_U01",
+    "label" : "U01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ea7",
+    "value" : "INR_U06",
+    "label" : "U06",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ea8",
+    "value" : "INU_U05",
+    "label" : "U05",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ea9",
+    "value" : "LSU_U12",
+    "label" : "U12, U13",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eaa",
+    "value" : "MDM_T01",
+    "label" : "T01, T03, T05, T07, T09, T11",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eab",
+    "value" : "MDM_T02",
+    "label" : "T02, T04, T06, T08, T10",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eac",
+    "value" : "MFD_MFA",
+    "label" : "MFA",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ead",
+    "value" : "MFK_M01",
+    "label" : "M01, M02, M03, M04, M05, M06, M07, M08, M09, M10, M11",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eae",
+    "value" : "MFN_M01",
+    "label" : "M01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eaf",
+    "value" : "MFN_M02",
+    "label" : "M02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eb0",
+    "value" : "MFN_M03",
+    "label" : "M03",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eb1",
+    "value" : "MFN_M04",
+    "label" : "M04",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eb2",
+    "value" : "MFN_M05",
+    "label" : "M05",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eb3",
+    "value" : "MFN_M06",
+    "label" : "M06",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eb4",
+    "value" : "MFN_M07",
+    "label" : "M07",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eb5",
+    "value" : "MFN_M08",
+    "label" : "M08",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eb6",
+    "value" : "MFN_M09",
+    "label" : "M09",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eb7",
+    "value" : "MFN_M10",
+    "label" : "M10",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eb8",
+    "value" : "MFN_M11",
+    "label" : "M11",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eb9",
+    "value" : "MFN_M12",
+    "label" : "M12",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eba",
+    "value" : "MFQ_M01",
+    "label" : "M01-M06",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ebb",
+    "value" : "MFR_M01",
+    "label" : "M01-M06",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ebc",
+    "value" : "NMD_N02",
+    "label" : "N02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ebd",
+    "value" : "NMQ_N01",
+    "label" : "N01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ebe",
+    "value" : "NMR_N01",
+    "label" : "N01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ebf",
+    "value" : "OMD_O03",
+    "label" : "O03",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ec0",
+    "value" : "OMG_O19",
+    "label" : "O19",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ec1",
+    "value" : "OML_O21",
+    "label" : "O21",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ec2",
+    "value" : "OMN_O07",
+    "label" : "O07",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ec3",
+    "value" : "OMP_O09",
+    "label" : "O09",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ec4",
+    "value" : "OMS_O05",
+    "label" : "O05",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ec5",
+    "value" : "ORD_O04",
+    "label" : "O04",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ec6",
+    "value" : "ORF_R04",
+    "label" : "R04",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ec7",
+    "value" : "ORG_O20",
+    "label" : "O20",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ec8",
+    "value" : "ORL_O22",
+    "label" : "O22",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ec9",
+    "value" : "ORM_O01",
+    "label" : "O01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eca",
+    "value" : "ORN_O08",
+    "label" : "O08",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ecb",
+    "value" : "ORP_O10",
+    "label" : "O10",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ecc",
+    "value" : "ORR_O02",
+    "label" : "O02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ecd",
+    "value" : "ORS_O06",
+    "label" : "O06",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ece",
+    "value" : "ORU_R01",
+    "label" : "R01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ecf",
+    "value" : "ORU_W01",
+    "label" : "W01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ed0",
+    "value" : "OSQ_Q06",
+    "label" : "Q06",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ed1",
+    "value" : "OSR_Q06",
+    "label" : "Q06",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ed2",
+    "value" : "OUL_R21",
+    "label" : "R21",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ed3",
+    "value" : "PEX_P07",
+    "label" : "P07, P08",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ed4",
+    "value" : "PGL_PC6",
+    "label" : "PC6, PC7, PC8",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ed5",
+    "value" : "PMU_B01",
+    "label" : "B01, B02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ed6",
+    "value" : "PMU_B03",
+    "label" : "B03",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ed7",
+    "value" : "PMU_B04",
+    "label" : "B04, B05",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ed8",
+    "value" : "PPG_PCG",
+    "label" : "PCG, PCH, PCJ",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ed9",
+    "value" : "PPP_PCB",
+    "label" : "PCB, PCC, PCD",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eda",
+    "value" : "PPR_PC1",
+    "label" : "PC1, PC2, PC3",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443edb",
+    "value" : "PPT_PCL",
+    "label" : "PCL",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443edc",
+    "value" : "PPV_PCA",
+    "label" : "PCA",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443edd",
+    "value" : "PRR_PC5",
+    "label" : "PC5",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ede",
+    "value" : "PTR_PCF",
+    "label" : "PCF",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443edf",
+    "value" : "QBP_Q11",
+    "label" : "Q11",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ee0",
+    "value" : "QBP_Q13",
+    "label" : "Q13",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ee1",
+    "value" : "QBP_Q15",
+    "label" : "Q15",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ee2",
+    "value" : "QBP_Q21",
+    "label" : "Q21, Q22, Q23, Q24, Q25",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ee3",
+    "value" : "QCK_Q02",
+    "label" : "Q02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ee4",
+    "value" : "QCN_J01",
+    "label" : "J01, J02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ee5",
+    "value" : "QRY_A19",
+    "label" : "A19",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ee6",
+    "value" : "QRY_PC4",
+    "label" : "PC4, PC9, PCE, PCK",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ee7",
+    "value" : "QRY_Q01",
+    "label" : "Q01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ee8",
+    "value" : "QRY_Q02",
+    "label" : "Q02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ee9",
+    "value" : "QRY_R02",
+    "label" : "R02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eea",
+    "value" : "QRY_T12",
+    "label" : "T12",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eeb",
+    "value" : "QSB_Q16",
+    "label" : "Q16",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eec",
+    "value" : "QVR_Q17",
+    "label" : "Q17",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eed",
+    "value" : "RAR_RAR",
+    "label" : "RAR",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eee",
+    "value" : "RAS_O17",
+    "label" : "O17",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eef",
+    "value" : "RCI_I05",
+    "label" : "I05",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ef0",
+    "value" : "RCL_I06",
+    "label" : "I06",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ef1",
+    "value" : "RDE_O11",
+    "label" : "O11",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ef2",
+    "value" : "RDR_RDR",
+    "label" : "RDR",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ef3",
+    "value" : "RDS_O13",
+    "label" : "O13",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ef4",
+    "value" : "RDY_K11",
+    "label" : "K11",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ef5",
+    "value" : "RDY_K15",
+    "label" : "K15",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ef6",
+    "value" : "REF_I12",
+    "label" : "I12, I13, I14, I15",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ef7",
+    "value" : "RER_RER",
+    "label" : "RER",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ef8",
+    "value" : "RGR_RGR",
+    "label" : "RGR",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ef9",
+    "value" : "RGV_O15",
+    "label" : "O15",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443efa",
+    "value" : "ROR_ROR",
+    "label" : "ROR",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443efb",
+    "value" : "RPA_I08",
+    "label" : "I08, I09. I10, 1II",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443efc",
+    "value" : "RPI_I01",
+    "label" : "I01, I04",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443efd",
+    "value" : "RPI_I04",
+    "label" : "I04",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443efe",
+    "value" : "RPL_I02",
+    "label" : "I02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443eff",
+    "value" : "RPR_I03",
+    "label" : "I03",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f00",
+    "value" : "RQA_I08",
+    "label" : "I08, I09, I10, I11",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f01",
+    "value" : "RQC_I05",
+    "label" : "I05, I06",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f02",
+    "value" : "RQI_I01",
+    "label" : "I01, I02, I03, I07",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f03",
+    "value" : "RQP_I04",
+    "label" : "I04",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f04",
+    "value" : "RQQ_Q09",
+    "label" : "Q09",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f05",
+    "value" : "RRA_O18",
+    "label" : "O18",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f06",
+    "value" : "RRD_O14",
+    "label" : "O14",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f07",
+    "value" : "RRE_O12",
+    "label" : "O12",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f08",
+    "value" : "RRG_O16",
+    "label" : "O16",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f09",
+    "value" : "RRI_I12",
+    "label" : "I12, I13, I14, I15",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f0a",
+    "value" : "RSP_K21",
+    "label" : "K21",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f0b",
+    "value" : "RSP_K22",
+    "label" : "K22",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f0c",
+    "value" : "RSP_K23",
+    "label" : "K23, K24",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f0d",
+    "value" : "RSP_K24",
+    "label" : "K24",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f0e",
+    "value" : "RSP_K25",
+    "label" : "K25",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f0f",
+    "value" : "RTB_K13",
+    "label" : "K13",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f10",
+    "value" : "SIU_S12",
+    "label" : "S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S26",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f11",
+    "value" : "SPQ_Q08",
+    "label" : "Q08",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f12",
+    "value" : "SQM_S25",
+    "label" : "S25",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f13",
+    "value" : "SQR_S25",
+    "label" : "S25",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f14",
+    "value" : "SRM_S01",
+    "label" : "S01, S02, S03, S04, S05, S06, S07, S08, S09, S10, S11",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f15",
+    "value" : "SRR_S01",
+    "label" : "S01, S02, S03, S04, S05, S06, S07, S08, S09, S10, S11",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f16",
+    "value" : "SSR_U04",
+    "label" : "U04",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f17",
+    "value" : "SSU_U03",
+    "label" : "U03",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f18",
+    "value" : "SUR_P09",
+    "label" : "P09",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f19",
+    "value" : "TBR_R08",
+    "label" : "R08",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f1a",
+    "value" : "TCU_U10",
+    "label" : "U10, U11",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f1b",
+    "value" : "UDM_Q05",
+    "label" : "Q05",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f1c",
+    "value" : "VQQ_Q07",
+    "label" : "Q07",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f1d",
+    "value" : "VXQ_V01",
+    "label" : "V01",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f1e",
+    "value" : "VXR_V03",
+    "label" : "V03",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f1f",
+    "value" : "VXU_V04",
+    "label" : "V04",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f20",
+    "value" : "VXX_V02",
+    "label" : "V02",
+    "codeSystem" : "HL70354",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

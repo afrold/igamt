@@ -1,0 +1,147 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443c93",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0211",
+  "name" : "0211",
+  "description" : "Alternate character sets",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c94",
+    "value" : "8859/1",
+    "label" : "The printable characters from the ISO 8859/1 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c95",
+    "value" : "8859/2",
+    "label" : "The printable characters from the ISO 8859/2 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c96",
+    "value" : "8859/3",
+    "label" : "The printable characters from the ISO 8859/3 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c97",
+    "value" : "8859/4",
+    "label" : "The printable characters from the ISO 8859/4 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c98",
+    "value" : "8859/5",
+    "label" : "The printable characters from the ISO 8859/5 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c99",
+    "value" : "8859/6",
+    "label" : "The printable characters from the ISO 8859/6 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c9a",
+    "value" : "8859/7",
+    "label" : "The printable characters from the ISO 8859/7 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c9b",
+    "value" : "8859/8",
+    "label" : "The printable characters from the ISO 8859/8 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c9c",
+    "value" : "8859/9",
+    "label" : "The printable characters from the ISO 8859/9 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c9d",
+    "value" : "ASCII",
+    "label" : "The printable 7-bit ASCII character set. (This is the default if this field is omitted)",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c9e",
+    "value" : "ISO IR14",
+    "label" : "Code for Information Exchange (one byte)(JIS X 0201-1976).  Note that the code contains a space, i.e. \"ISO IR14\".",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c9f",
+    "value" : "ISO IR159",
+    "label" : "Code of the supplementary Japanese Graphic Character set for information interchange (JIS X 0212-1990). Note that the code contains a space, i.e. \"ISO IR159\".",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ca0",
+    "value" : "ISO IR87",
+    "label" : "Code for the Japanese Graphic Character set for information interchange (JIS X 0208-1990), Note that the code contains a space, i.e. \"ISO IR87\".",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ca1",
+    "value" : "UNICODE",
+    "label" : "The world wide character standard from ISO/IEC 10646-1-19931",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

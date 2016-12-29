@@ -1,0 +1,39 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447481",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0102",
+  "name" : "0102",
+  "description" : "Delayed Acknowledgement Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447482",
+    "value" : "D",
+    "label" : "Message received, stored for later processing",
+    "codeSystem" : "HL70102",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447483",
+    "value" : "F",
+    "label" : "Acknowledgement after processing",
+    "codeSystem" : "HL70102",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

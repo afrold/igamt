@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b16d",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0834",
+  "name" : "0834",
+  "description" : "MIME Types",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.834",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b16e",
+    "value" : "application",
+    "label" : "Application data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b16f",
+    "value" : "audio",
+    "label" : "Audio data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b170",
+    "value" : "image",
+    "label" : "Image data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b171",
+    "value" : "model",
+    "label" : "Model data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b172",
+    "value" : "multipart",
+    "label" : "MIME multipart package",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b173",
+    "value" : "text",
+    "label" : "Text data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b174",
+    "value" : "video",
+    "label" : "Video data",
+    "codeSystem" : "HL70834",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507e44",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0309",
+  "name" : "0309",
+  "description" : "Coverage Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e45",
+    "value" : "B",
+    "label" : "Both hospital and physician",
+    "codeSystem" : "HL70309",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e46",
+    "value" : "H",
+    "label" : "Hospital/institutional",
+    "codeSystem" : "HL70309",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e47",
+    "value" : "P",
+    "label" : "Physician/professional",
+    "codeSystem" : "HL70309",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e48",
+    "value" : "RX",
+    "label" : "Pharmacy",
+    "codeSystem" : "HL70309",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

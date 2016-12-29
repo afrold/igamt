@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e00b",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0158",
+  "name" : "0158",
+  "description" : "Date/time selection qualifier",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.158",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e00c",
+    "value" : "1ST",
+    "label" : "First value within range",
+    "codeSystem" : "HL70158",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e00d",
+    "value" : "ALL",
+    "label" : "All values within the range",
+    "codeSystem" : "HL70158",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e00e",
+    "value" : "LST",
+    "label" : "Last value within the range",
+    "codeSystem" : "HL70158",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e00f",
+    "value" : "REV",
+    "label" : "All values within the range returned in reverse chronological order (This is the default if not otherwise specified.)",
+    "codeSystem" : "HL70158",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

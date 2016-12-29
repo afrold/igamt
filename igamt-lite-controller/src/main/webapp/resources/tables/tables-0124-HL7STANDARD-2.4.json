@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd4431a3",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0124",
+  "name" : "0124",
+  "description" : "Transportation mode",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431a4",
+    "value" : "CART",
+    "label" : "Cart - patient travels on cart or gurney",
+    "codeSystem" : "HL70124",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431a5",
+    "value" : "PORT",
+    "label" : "The examining device goes to patient's location",
+    "codeSystem" : "HL70124",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431a6",
+    "value" : "WALK",
+    "label" : "Patient walks to diagnostic service",
+    "codeSystem" : "HL70124",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431a7",
+    "value" : "WHLC",
+    "label" : "Wheelchair",
+    "codeSystem" : "HL70124",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

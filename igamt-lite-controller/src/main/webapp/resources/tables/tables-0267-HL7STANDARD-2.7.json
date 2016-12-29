@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507728",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0267",
+  "name" : "0267",
+  "description" : "Days of the Week",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507729",
+    "value" : "FRI",
+    "label" : "Friday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550772a",
+    "value" : "MON",
+    "label" : "Monday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550772b",
+    "value" : "SAT",
+    "label" : "Saturday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550772c",
+    "value" : "SUN",
+    "label" : "Sunday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550772d",
+    "value" : "THU",
+    "label" : "Thursday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550772e",
+    "value" : "TUE",
+    "label" : "Tuesday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550772f",
+    "value" : "WED",
+    "label" : "Wednesday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

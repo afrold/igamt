@@ -1,0 +1,74 @@
+<style id="antiClickjack">body {
+    display: none !important;
+}</style> <script type="text/javascript">if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }</script> <script type="text/ng-template" id="EditSections.html"><div ng-controller="SectionsListCtrl" ng-init="init()">
+             <div class="row" style="margin-left:0px; margin-right: 10px">
+                <div class="col-md-12 igl-page-header">
+
+                        <span class="pull-right">
+         <button title="Save Changes" type="submit" class="btn btn-raised btn-sm btn-success"
+                 ng-disabled="editForm.$invalid || editForm.$pristine"
+                 ng-click="save()"
+                 ng-hide="viewSettings.tableReadonly"
+                >
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </button>
+                         <button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                                 ng-hide="viewSettings.tableReadonly"
+                                 ng-disabled="editForm.$pristine"
+                                  ng-click="reset()">
+                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                         </button>
+    </span>
+                </div>
+
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+                    <label class="col-md-2 control-label">Title</label>
+                    <div class="col-md-10">
+                        <input type="text"
+                               ng-change="recordChanged()"
+                               name="title" id="title" class="form-control"
+                               ng-model="section.sectionTitle"
+                               required
+                               ng-disabled="viewSettings.tableReadonly || isFixedSectionTitle(section)"
+                               aria-describedby="helpBlock2"/>
+                    </div>
+                </div>
+
+
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error has-feedback' : editForm.content.$invalid}">
+                    <label class="col-md-2 control-label">Contents</label>
+
+                    <div class="col-md-10">
+                        <div ng-if="!viewSettings.tableReadonly">
+                            <textarea froala="froalaEditorOptions" ng-model="section.sectionContents"
+                                      id="content"
+                                      name="content" 
+                                      ng-change="setDirty()"></textarea>
+                        </div>
+                        <div ng-if="viewSettings.tableReadonly">
+                            <div class="fr-view">
+                                <div froala-view="section.sectionContents"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="form-group control-group">
+                     <label class="col-md-2 control-label">Date Updated</label>
+
+                     <div class="controls col-md-10">
+                                            <span
+                                                  class="form-control">{{section.dateUpdated | date:dateFormat}}</span>
+                     </div>
+                 </div>
+
+            </div>
+
+    </div></script>

@@ -1,0 +1,930 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447fb7",
+  "hl7Version" : "2.2",
+  "libIds" : [ "573dd23bd4c6ca828c2970f5" ],
+  "bindingIdentifier" : "0070",
+  "name" : "0070",
+  "description" : "SOURCE OF SPECIMEN",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fb8",
+    "value" : "ABLD",
+    "label" : "Arterielles Blut",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fb9",
+    "value" : "ABS",
+    "label" : "Abszeß",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fba",
+    "value" : "AMN",
+    "label" : "Fruchtwasser",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fbb",
+    "value" : "ASP",
+    "label" : "Aspirationssubstrat",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fbc",
+    "value" : "BBL",
+    "label" : "Blutkonserve",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fbd",
+    "value" : "BDY",
+    "label" : "Gesamter Körper",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fbe",
+    "value" : "BLD",
+    "label" : "Gesamtes Blut",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fbf",
+    "value" : "BON",
+    "label" : "Bone",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fc0",
+    "value" : "BPH",
+    "label" : "Basophile",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fc1",
+    "value" : "BRN",
+    "label" : "Burn",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fc2",
+    "value" : "BRO",
+    "label" : "Bronchial",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fc3",
+    "value" : "BRTH",
+    "label" : "Atemluft",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fc4",
+    "value" : "CALC",
+    "label" : "Steinchen, Konkrement",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fc5",
+    "value" : "CBLD",
+    "label" : "Nabelschnurblut",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fc6",
+    "value" : "CDM",
+    "label" : "Herzmuskel",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fc7",
+    "value" : "CNJT",
+    "label" : "Konjunktiven",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fc8",
+    "value" : "CNL",
+    "label" : "Kanüle",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fc9",
+    "value" : "COL",
+    "label" : "Kolostrum, Vormilch",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fca",
+    "value" : "CSF",
+    "label" : "Cerebral spinal fluid",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fcb",
+    "value" : "CTP",
+    "label" : "Catheter tip",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fcc",
+    "value" : "CUR",
+    "label" : "Curettagematerial",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fcd",
+    "value" : "CVM",
+    "label" : "Cervicalschleim",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fce",
+    "value" : "CVX",
+    "label" : "Cervix",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fcf",
+    "value" : "CYST",
+    "label" : "Cyst",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fd0",
+    "value" : "DRN",
+    "label" : "Drainage",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fd1",
+    "value" : "EAR",
+    "label" : "Ohr",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fd2",
+    "value" : "ELT",
+    "label" : "Elektrode",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fd3",
+    "value" : "ENDC",
+    "label" : "Endocard",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fd4",
+    "value" : "ENDM",
+    "label" : "Endometrium",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fd5",
+    "value" : "EOS",
+    "label" : "Eosinophile",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fd6",
+    "value" : "FIB",
+    "label" : "Fibroblasts",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fd7",
+    "value" : "FIST",
+    "label" : "Fistel",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fd8",
+    "value" : "FLT",
+    "label" : "Filter",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fd9",
+    "value" : "FLU",
+    "label" : "Körperflüssigkeit (unspezifiziert)",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fda",
+    "value" : "GAST",
+    "label" : "Gastric fluid/contents",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fdb",
+    "value" : "GEN",
+    "label" : "Genital",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fdc",
+    "value" : "GENC",
+    "label" : "Genitale - Cervix",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fdd",
+    "value" : "GENL",
+    "label" : "Wochenfluß / Lochien",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fde",
+    "value" : "GENV",
+    "label" : "Genitale - Vagina",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fdf",
+    "value" : "HAR",
+    "label" : "Hair",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fe0",
+    "value" : "IT",
+    "label" : "Intubation tube",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fe1",
+    "value" : "LAM",
+    "label" : "Lamella",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fe2",
+    "value" : "LN",
+    "label" : "Line",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fe3",
+    "value" : "LNA",
+    "label" : "Line arterial",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fe4",
+    "value" : "LNV",
+    "label" : "Line venous",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fe5",
+    "value" : "LYM",
+    "label" : "Lymphozyten",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fe6",
+    "value" : "MAC",
+    "label" : "Makrophagen",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fe7",
+    "value" : "MAR",
+    "label" : "Knochenmark",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fe8",
+    "value" : "MBLD",
+    "label" : "Menstrual blood",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fe9",
+    "value" : "MEC",
+    "label" : "Meconium",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fea",
+    "value" : "MILK",
+    "label" : "Breast milk",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447feb",
+    "value" : "MLK",
+    "label" : "Milk",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fec",
+    "value" : "NAIL",
+    "label" : "Nail",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fed",
+    "value" : "NOS",
+    "label" : "Nose (nasal passage)",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fee",
+    "value" : "ORH",
+    "label" : "Other",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fef",
+    "value" : "PER",
+    "label" : "Peritoneum",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ff0",
+    "value" : "PLAS",
+    "label" : "Plasma",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ff1",
+    "value" : "PLB",
+    "label" : "Plasma bag",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ff2",
+    "value" : "PLC",
+    "label" : "Placenta",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ff3",
+    "value" : "PLR",
+    "label" : "Pleural fluid (thoracentesis fld)",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ff4",
+    "value" : "PMN",
+    "label" : "Polymorphkernige Neutrophile",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ff5",
+    "value" : "PRT",
+    "label" : "Peritoneal fluid / ascites",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ff6",
+    "value" : "PUS",
+    "label" : "Eiter",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ff7",
+    "value" : "RBC",
+    "label" : "Erythrozyten",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ff8",
+    "value" : "SAL",
+    "label" : "Speichel",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ff9",
+    "value" : "SEM",
+    "label" : "Samenflüssigkeit",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ffa",
+    "value" : "SER",
+    "label" : "Serum",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ffb",
+    "value" : "SKM",
+    "label" : "Skelettmuskel",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ffc",
+    "value" : "SKN",
+    "label" : "Haut",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ffd",
+    "value" : "SNV",
+    "label" : "Synovialflüssigkeit",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ffe",
+    "value" : "SPRM",
+    "label" : "Spermien",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447fff",
+    "value" : "SPT",
+    "label" : "Sputum",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448000",
+    "value" : "SPTC",
+    "label" : "Sputum - Hustenauswurf",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448001",
+    "value" : "SPTT",
+    "label" : "Sputum - tracheal aspiriert",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448002",
+    "value" : "STL",
+    "label" : "Stuhl",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448003",
+    "value" : "STON",
+    "label" : "Steine",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448004",
+    "value" : "SWT",
+    "label" : "Schweiß",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448005",
+    "value" : "TEAR",
+    "label" : "Tränen",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448006",
+    "value" : "THRB",
+    "label" : "Thrombozyten",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448007",
+    "value" : "THRT",
+    "label" : "Rachen",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448008",
+    "value" : "TISB",
+    "label" : "Knochenmarksgewebe",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448009",
+    "value" : "TISC",
+    "label" : "Kürettagegewebe",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44800a",
+    "value" : "TISG",
+    "label" : "Gallenblasengewebe",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44800b",
+    "value" : "TISL",
+    "label" : "Lungengewebe",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44800c",
+    "value" : "TISP",
+    "label" : "Peritonealgewebe",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44800d",
+    "value" : "TISPL",
+    "label" : "Placentagewebe",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44800e",
+    "value" : "TISS",
+    "label" : "Gewebe",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44800f",
+    "value" : "TISU",
+    "label" : "Ulcusgewebe",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448010",
+    "value" : "ULC",
+    "label" : "Geschwür",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448011",
+    "value" : "UMB",
+    "label" : "Nabelschnurblut",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448012",
+    "value" : "UR",
+    "label" : "Urin",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448013",
+    "value" : "URC",
+    "label" : "Mittelstrahlurin",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448014",
+    "value" : "URT",
+    "label" : "Katheterurin",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448015",
+    "value" : "URTH",
+    "label" : "Urethra",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448016",
+    "value" : "VOM",
+    "label" : "Erbrochenes",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448017",
+    "value" : "WBC",
+    "label" : "Leukozyten",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448018",
+    "value" : "WICK",
+    "label" : "Wick",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448019",
+    "value" : "WND",
+    "label" : "Wunde",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44801a",
+    "value" : "WNDA",
+    "label" : "Wundabszeß",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44801b",
+    "value" : "WNDD",
+    "label" : "Wunddrainage",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44801c",
+    "value" : "WNDE",
+    "label" : "Wundexsudat",
+    "codeSystem" : "HL70070",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

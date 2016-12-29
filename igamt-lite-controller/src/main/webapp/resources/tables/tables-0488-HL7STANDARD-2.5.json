@@ -1,0 +1,399 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440445",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0488",
+  "name" : "0488",
+  "description" : "Specimen Collection Method",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.488",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440446",
+    "value" : "ANP",
+    "label" : "Plates, Anaerobic",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440447",
+    "value" : "BAP",
+    "label" : "Plates, Blood Agar",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440448",
+    "value" : "BCAE",
+    "label" : "Blood Culture, Aerobic Bottle",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440449",
+    "value" : "BCAN",
+    "label" : "Blood Culture, Anaerobic Bottle",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44044a",
+    "value" : "BCPD",
+    "label" : "Blood Culture, Pediatric Bottle",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44044b",
+    "value" : "BIO",
+    "label" : "Biopsy",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44044c",
+    "value" : "CAP",
+    "label" : "Capillary Specimen",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44044d",
+    "value" : "CATH",
+    "label" : "Catheterized",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44044e",
+    "value" : "CVP",
+    "label" : "Line, CVP",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44044f",
+    "value" : "EPLA",
+    "label" : "Environmental, Plate",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440450",
+    "value" : "ESWA",
+    "label" : "Environmental, Swab",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440451",
+    "value" : "FNA",
+    "label" : "Aspiration, Fine Needle",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440452",
+    "value" : "KOFFP",
+    "label" : "Plate, Cough",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440453",
+    "value" : "LNA",
+    "label" : "Line, Arterial",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440454",
+    "value" : "LNV",
+    "label" : "Line, Venous",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440455",
+    "value" : "MARTL",
+    "label" : "Martin-Lewis Agar",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440456",
+    "value" : "ML11",
+    "label" : "Mod. Martin-Lewis Agar",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440457",
+    "value" : "MLP",
+    "label" : "Plate, Martin-Lewis",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440458",
+    "value" : "NYP",
+    "label" : "Plate, New York City",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440459",
+    "value" : "PACE",
+    "label" : "Pace, Gen-Probe",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44045a",
+    "value" : "PIN",
+    "label" : "Pinworm Prep",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44045b",
+    "value" : "PNA",
+    "label" : "Aterial puncture",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44045c",
+    "value" : "PRIME",
+    "label" : "Pump Prime",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44045d",
+    "value" : "PUMP",
+    "label" : "Pump Specimen",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44045e",
+    "value" : "QC5",
+    "label" : "Quality Control For Micro",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44045f",
+    "value" : "SCLP",
+    "label" : "Scalp, Fetal Vein",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440460",
+    "value" : "SCRAPS",
+    "label" : "Scrapings",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440461",
+    "value" : "SHA",
+    "label" : "Shaving",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440462",
+    "value" : "SWA",
+    "label" : "Swab",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440463",
+    "value" : "SWD",
+    "label" : "Swab, Dacron tipped",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440464",
+    "value" : "TMAN",
+    "label" : "Transport Media, Anaerobic",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440465",
+    "value" : "TMCH",
+    "label" : "Transport Media, Chalamydia",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440466",
+    "value" : "TMM4",
+    "label" : "Transport Media, M4",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440467",
+    "value" : "TMMY",
+    "label" : "Transport Media, Mycoplasma",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440468",
+    "value" : "TMOT",
+    "label" : "Transport Media,",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440469",
+    "value" : "TMP",
+    "label" : "Plate, Thayer-Martin",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44046a",
+    "value" : "TMPV",
+    "label" : "Transport Media, PVA",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44046b",
+    "value" : "TMSC",
+    "label" : "Transport Media, Stool Culture",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44046c",
+    "value" : "TMUP",
+    "label" : "Transport Media, Ureaplasma",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44046d",
+    "value" : "TMVI",
+    "label" : "Transport Media, Viral",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44046e",
+    "value" : "VENIP",
+    "label" : "Venipuncture",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44046f",
+    "value" : "WOOD",
+    "label" : "Swab, Wooden Shaft",
+    "codeSystem" : "HL70488",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

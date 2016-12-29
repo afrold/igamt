@@ -1,0 +1,120 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550a64a",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0489",
+  "name" : "0489",
+  "description" : "Risk Codes",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.489",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a64b",
+    "value" : "AGG",
+    "label" : "Aggressive",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a64c",
+    "value" : "BHZ",
+    "label" : "Biohazard",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a64d",
+    "value" : "BIO",
+    "label" : "Biological",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a64e",
+    "value" : "COR",
+    "label" : "Corrosive",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a64f",
+    "value" : "ESC",
+    "label" : "Escape Risk",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a650",
+    "value" : "EXP",
+    "label" : "Explosive",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a651",
+    "value" : "IFL",
+    "label" : "MaterialDangerInflammable",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a652",
+    "value" : "INF",
+    "label" : "MaterialDangerInfectious",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a653",
+    "value" : "INJ",
+    "label" : "Injury Hazard",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a654",
+    "value" : "POI",
+    "label" : "Poison",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a655",
+    "value" : "RAD",
+    "label" : "Radioactive",
+    "codeSystem" : "HL70489",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -640,7 +640,7 @@
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}</span>
+            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}} <span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span></span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>
@@ -708,7 +708,7 @@
         </td>
 
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}</span>
+            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}<span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span> </span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>

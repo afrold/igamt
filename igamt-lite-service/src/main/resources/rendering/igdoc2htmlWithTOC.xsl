@@ -451,8 +451,6 @@
 		</tr>
 		
 		<xsl:if test="count(./Constraint) &gt; 0">
-			<xsl:choose>
-				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
 					<xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
 						<p>
 							<strong>
@@ -485,8 +483,6 @@
 							</table>
 						</p>
 					</xsl:if>
-				</xsl:when>
-			</xsl:choose>
 		</xsl:if>
 	</xsl:template>
 
@@ -561,8 +557,6 @@
 				</tbody>
 			</table>
 		</p>
-		<xsl:choose>
-			<xsl:when test="normalize-space($inlineConstraints) = 'false'">
 				<xsl:if test="count(Field//Constraint[@Type='cs']) &gt; 0">
 					<p>
 						<strong>
@@ -595,8 +589,6 @@
 						</table>
 					</p>
 				</xsl:if>
-			</xsl:when>
-		</xsl:choose>
 
 		<xsl:if test="count(./Text[@Type='Text2']) &gt; 0">
 			<h4>

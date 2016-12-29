@@ -52,7 +52,7 @@
                                             <input type="text" disabled name="identifier" class="form-control" ng-model="segment.name" ng-change="setDirty()" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.ext.$invalid}" ng-hide="segment.scope === 'HL7STANDARD'">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.ext.$invalid}" ng-hide="segment.scope === 'HL7STANDARD'">
                                         <label class="col-md-2 control-label">Extension</label>
                                         <div class="controls col-md-10">
                                             <input type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" class="form-control" ng-change="setDirty()" name="label" class="form-control" ng-model="segment.ext" required required aria-describedby="helpBlock2">
@@ -694,7 +694,7 @@
         <td class="col-md-1 col-fixed-80 emptyCol">
          </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            {{getDatatypeLabel(datatypesMap[node.datatype])}}
+            {{getDatatypeLabel(datatypesMap[node.datatype])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
         </td>
         <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
          </td>
@@ -825,7 +825,7 @@
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" class="form-inline">
             <a class="point" ng-show="editableDT!==node.id" ng-click="redirectDT(node.datatype)">
-        {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
+        {{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
     </a>
             <a ng-show="editableDT!==node.id" ng-click="editDT(node)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -835,7 +835,7 @@
             </a>
             <div ng-show="editableDT===node.id">
                 <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
-                    <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.id===datatype.id"> {{getDatatypeLabel(datatype)}} {{::datatype.hl7Version}}
+                    <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.id===datatype.id"> {{getDatatypeLabel(datatype)}} {{::datatype.hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
                     </option>
                     <option ng-click="otherDT(node)" value="" ng-show="node.added==='yes'"> Others
                 </select>
@@ -941,7 +941,7 @@
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> {{::node.confLength}} </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
             </span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
@@ -1012,7 +1012,7 @@
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
-                <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
+                <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span></span>
             </div>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
@@ -1088,7 +1088,7 @@
             </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}
+            <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
             </span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
@@ -1341,7 +1341,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="ref in references track by ref.id">
+                    <tr ng-repeat="ref in referencesForMenu track by ref.id">
                         <td>
                             <span>
 

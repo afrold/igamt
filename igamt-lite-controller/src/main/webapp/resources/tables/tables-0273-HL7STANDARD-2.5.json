@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd44086b",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0273",
+  "name" : "0273",
+  "description" : "Document Availability Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.273",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44086c",
+    "value" : "AV",
+    "label" : "Available for patient care",
+    "codeSystem" : "HL70273",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44086d",
+    "value" : "CA",
+    "label" : "Deleted",
+    "codeSystem" : "HL70273",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44086e",
+    "value" : "OB",
+    "label" : "Obsolete",
+    "codeSystem" : "HL70273",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44086f",
+    "value" : "UN",
+    "label" : "Unavailable for patient care",
+    "codeSystem" : "HL70273",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443b2b",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0325",
+  "name" : "0325",
+  "description" : "Location relationship ID",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b2c",
+    "value" : "ALI",
+    "label" : "Location Alias(es)",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b2d",
+    "value" : "DTY",
+    "label" : "Nearest  dietary location",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b2e",
+    "value" : "LAB",
+    "label" : "Nearest  lab",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b2f",
+    "value" : "LB2",
+    "label" : "Second nearest lab",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b30",
+    "value" : "PAR",
+    "label" : "Parent location",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b31",
+    "value" : "RX",
+    "label" : "Nearest  pharmacy",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b32",
+    "value" : "RX2",
+    "label" : "Second nearest pharmacy",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

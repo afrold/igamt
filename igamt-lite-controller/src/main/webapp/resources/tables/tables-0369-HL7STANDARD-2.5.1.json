@@ -1,0 +1,120 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550d935",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0369",
+  "name" : "0369",
+  "description" : "Specimen Role",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.369",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d936",
+    "value" : "B",
+    "label" : "Blind Sample",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d937",
+    "value" : "C",
+    "label" : "Calibrator, used for initial setting of calibration",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d938",
+    "value" : "E",
+    "label" : "Electronic QC, used with manufactured reference providing signals that simulate QC results",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d939",
+    "value" : "F",
+    "label" : "Specimen used for testing proficiency of the organization performing the testing (Filler)",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d93a",
+    "value" : "G",
+    "label" : "Group (where a specimen consists of multiple individual elements that are not individually identified)",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d93b",
+    "value" : "L",
+    "label" : "Pool (aliquots of individual specimens combined to form a single specimen representing all of the components.)",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d93c",
+    "value" : "O",
+    "label" : "Specimen used for testing Operator Proficiency",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d93d",
+    "value" : "P",
+    "label" : "Patient",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d93e",
+    "value" : "Q",
+    "label" : "Control specimen",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d93f",
+    "value" : "R",
+    "label" : "Replicate",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d940",
+    "value" : "V",
+    "label" : "Verifying Calibrator, used for periodic calibration checks",
+    "codeSystem" : "HL70369",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

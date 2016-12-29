@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b276",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0520",
+  "name" : "0520",
+  "description" : "Message waiting priority",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.520",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b277",
+    "value" : "H",
+    "label" : "High",
+    "codeSystem" : "HL70520",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b278",
+    "value" : "L",
+    "label" : "Low",
+    "codeSystem" : "HL70520",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b279",
+    "value" : "M",
+    "label" : "Medium",
+    "codeSystem" : "HL70520",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

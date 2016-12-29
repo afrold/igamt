@@ -5,8 +5,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -30,13 +32,18 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
   private String label;
 
   private String ext="";
-
+  
   private String purposeAndUse = "";
+ 
 
-  protected List<Component> components = new ArrayList<Component>();
+  
+
+protected List<Component> components = new ArrayList<Component>();
 
   private String name = "";
   private List<String> hl7versions=new ArrayList<String>(); 
+  
+  private Set<ShareParticipantPermission> shareParticipantIds = new HashSet<ShareParticipantPermission>();
 
   public List<String> getHl7versions() {
 	return hl7versions;
@@ -287,6 +294,14 @@ public boolean isTimeZoneOfDTM() {
 
 public void setTimeZoneOfDTM(boolean timeZoneOfDTM) {
 	this.timeZoneOfDTM = timeZoneOfDTM;
+}
+
+public Set<ShareParticipantPermission> getShareParticipantIds() {
+	return shareParticipantIds;
+}
+
+public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
+	this.shareParticipantIds = shareParticipantIds;
 }
   
   

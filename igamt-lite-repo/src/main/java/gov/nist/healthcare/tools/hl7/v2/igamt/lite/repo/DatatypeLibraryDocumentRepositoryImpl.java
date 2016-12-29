@@ -32,9 +32,9 @@ public class DatatypeLibraryDocumentRepositoryImpl implements DatatypeLibraryDoc
 
 		Criteria where = Criteria.where("scope").is(scope);
 
-		if (scope == SCOPE.USER) {
+
 			where.andOperator(Criteria.where("accountId").is(accountId));
-		}
+		
 
 		Query qry = Query.query(where);
 		List<DatatypeLibraryDocument> list = mongo.find(qry, DatatypeLibraryDocument.class);

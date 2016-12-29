@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 /**
@@ -28,24 +29,30 @@ public interface DatatypeOperations {
 
 	// List<Datatype> findFullDTsByLibIds(String dtLibId);
 
-	List<Datatype> findAll();
+	public List<Datatype> findAll();
 
-	Datatype findById(String id);
+	public Datatype findById(String id);
 
-	List<Datatype> findByIds(Set<String> ids);
+	public List<Datatype> findByIds(Set<String> ids);
 
-	List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
 	// List<Datatype> findDups(Datatype dt);
 
-	List<Datatype> findUserDatatypesByIds(Set<String> ids);
+	public List<Datatype> findUserDatatypesByIds(Set<String> ids);
 
-	List<Datatype> findByScope(String scope);
+	public List<Datatype> findByScope(String scope);
 
-	Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+	public List<Datatype> findShared(Long accountId);
 
-	Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope);
+	public Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+
+	public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope);
 
 	public Date updateDate(String id, Date date);
+
+	public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String scope);
+
+	public void updateStatus(String id, STATUS status);
 
 }

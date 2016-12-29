@@ -1,0 +1,120 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd44835a",
+  "hl7Version" : "2.1",
+  "libIds" : [ "573dd23bd4c6ca828c297296" ],
+  "bindingIdentifier" : "0076",
+  "name" : "0076",
+  "description" : "MESSAGE TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44835b",
+    "value" : "ACK",
+    "label" : "General Acknowledgment       CNT       II",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44835c",
+    "value" : "ARD",
+    "label" : "Ancillary RPT (display)      ANR       VII",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44835d",
+    "value" : "BAR",
+    "label" : "Add/change billing account   BLN       VI",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44835e",
+    "value" : "DSR",
+    "label" : "Display response             QRY       V",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44835f",
+    "value" : "MCF",
+    "label" : "Delayed acknowledgment       CNT       II",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448360",
+    "value" : "ORF",
+    "label" : "Observ. Result/record resp.  ANR       VII",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448361",
+    "value" : "ORM",
+    "label" : "Order                        ORD       IV",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448362",
+    "value" : "ORR",
+    "label" : "Order response message       ORD       IV",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448363",
+    "value" : "ORU",
+    "label" : "Observ. result/unsolicited   ANR       VII",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448364",
+    "value" : "OSQ",
+    "label" : "Order status query           ORD       IV",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448365",
+    "value" : "UDM",
+    "label" : "Unsolicited display          QRY       V",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

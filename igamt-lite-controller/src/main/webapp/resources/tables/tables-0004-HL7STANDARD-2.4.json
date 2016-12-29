@@ -1,0 +1,147 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443021",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0004",
+  "name" : "0004",
+  "description" : "Patient class",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443022",
+    "value" : "B",
+    "label" : "Obstetrics",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443023",
+    "value" : "C",
+    "label" : "Commercial Account",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443024",
+    "value" : "E",
+    "label" : "Emergency",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443025",
+    "value" : "I",
+    "label" : "Inpatient",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443026",
+    "value" : "N",
+    "label" : "Not Applicable",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443027",
+    "value" : "NS",
+    "label" : "nachstationär",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443028",
+    "value" : "O",
+    "label" : "Outpatient",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443029",
+    "value" : "P",
+    "label" : "Preadmit",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44302a",
+    "value" : "R",
+    "label" : "Recurring patient",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44302b",
+    "value" : "TK",
+    "label" : "tagesklinische Behandlung",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44302c",
+    "value" : "TS",
+    "label" : "teilstationäre Behandlung",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44302d",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44302e",
+    "value" : "V",
+    "label" : "vorstationär",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44302f",
+    "value" : "VS",
+    "label" : "vollstationäre Behandlung",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

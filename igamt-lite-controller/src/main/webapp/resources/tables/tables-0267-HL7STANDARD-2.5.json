@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd4408dd",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0267",
+  "name" : "0267",
+  "description" : "Days of the week",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.267",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408de",
+    "value" : "FRI",
+    "label" : "Friday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408df",
+    "value" : "MON",
+    "label" : "Monday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408e0",
+    "value" : "SAT",
+    "label" : "Saturday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408e1",
+    "value" : "SUN",
+    "label" : "Sunday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408e2",
+    "value" : "THU",
+    "label" : "Thursday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408e3",
+    "value" : "TUE",
+    "label" : "Tuesday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408e4",
+    "value" : "WED",
+    "label" : "Wednesday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

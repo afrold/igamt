@@ -1,0 +1,192 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd4431ba",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0363",
+  "name" : "0363",
+  "description" : "Assigning authority",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431bb",
+    "value" : "AUSDVA",
+    "label" : "Australia - Dept. of Veterans Affairs",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431bc",
+    "value" : "AUSHIC",
+    "label" : "Australia - Health Insurance Commission",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431bd",
+    "value" : "CANAB",
+    "label" : "Canada - Alberta",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431be",
+    "value" : "CANBC",
+    "label" : "Canada - British Columbia",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431bf",
+    "value" : "CANMB",
+    "label" : "Canada - Manitoba",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431c0",
+    "value" : "CANNB",
+    "label" : "Canada - New Brunswick",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431c1",
+    "value" : "CANNF",
+    "label" : "Canada - Newfoundland",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431c2",
+    "value" : "CANNS",
+    "label" : "Canada - Nova Scotia",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431c3",
+    "value" : "CANNT",
+    "label" : "Canada - Northwest Territories",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431c4",
+    "value" : "CANNU",
+    "label" : "Canada - Nanavut",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431c5",
+    "value" : "CANON",
+    "label" : "Canada - Ontario",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431c6",
+    "value" : "CANPE",
+    "label" : "Canada - Prince Edward Island",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431c7",
+    "value" : "CANQC",
+    "label" : "Canada - Quebec",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431c8",
+    "value" : "CANSK",
+    "label" : "Canada - Saskatchewan",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431c9",
+    "value" : "CANYT",
+    "label" : "Canada - Yukon Territories",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431ca",
+    "value" : "NLVWS",
+    "label" : "NL - Ministerie van Volksgezondheid, Welzijn en Sport",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431cb",
+    "value" : "USCDC",
+    "label" : "US Center for Disease Control",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431cc",
+    "value" : "USHCFA",
+    "label" : "US Healthcare Finance Authority",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4431cd",
+    "value" : "USSSA",
+    "label" : "US Social Security Administration",
+    "codeSystem" : "HL70363",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}
