@@ -1474,7 +1474,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     $scope.saveclose = function() {
         angular.copy($scope.tempComformanceStatements, $rootScope.datatype.conformanceStatements);
         $rootScope.recordChanged();
-        $modalInstance.close();
+        $modalInstance.close($rootScope.datatype);
     };
 });
 angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope, $q) {

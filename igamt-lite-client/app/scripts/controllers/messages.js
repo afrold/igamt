@@ -677,9 +677,11 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
                 }
             });
             modalInstance.result.then(function(message) {
-                $rootScope.message = message;
-                $scope.findAllGlobalConstraints();
-                $scope.setDirty();
+                if(message){
+                    $rootScope.message = message;
+                    $scope.findAllGlobalConstraints();
+                    $scope.setDirty();
+                }
             }, function() {});
         };
 
@@ -699,9 +701,12 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
                 }
             });
             modalInstance.result.then(function(message) {
-                $rootScope.message = message;
-                $scope.findAllGlobalConstraints();
-                $scope.setDirty();
+                if(message){
+                    $rootScope.message = message;
+                    $scope.findAllGlobalConstraints();
+                    $scope.setDirty();
+                }
+
             }, function() {});
         };
 
@@ -2013,7 +2018,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalI
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $modalInstance.dismiss();
     };
 
     $scope.saveclose = function() {
@@ -2353,7 +2358,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $modalInstance.dismiss();
     };
 
     $scope.saveclose = function() {
