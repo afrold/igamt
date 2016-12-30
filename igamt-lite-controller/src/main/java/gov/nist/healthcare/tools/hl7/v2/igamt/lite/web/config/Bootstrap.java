@@ -150,6 +150,9 @@ public class Bootstrap implements InitializingBean {
 	  
 //	  this.modifyMSH2Constraint();
 //	  createNewSectionIds();
+	 
+	 
+	 //correctProfileComp();
   }
 
   private void modifyCodeUsage() {

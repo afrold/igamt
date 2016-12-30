@@ -53,8 +53,7 @@ angular.module('igl').factory('CompareService',
             cmpMessage: function(msg1, msg2, dtList1, dtList2, segList1, segList2) {
                 var msg1 = CompareService.fMsg(JSON.parse(msg1), dtList1, segList1);
                 var msg2 = CompareService.fMsg(JSON.parse(msg2), dtList2, segList2)
-                console.log(msg1);
-                console.log(msg2);
+
                 var diff = ObjectDiff.diffOwnProperties(msg1, msg2);
                 var dataList = [];
                 if (diff.changed === "object change") {
@@ -69,14 +68,16 @@ angular.module('igl').factory('CompareService',
             cmpSegment: function(segment1, segment2, dtList1, dtList2, segList1, segList2) {
                 var seg1 = CompareService.fSegment(JSON.parse(segment1), dtList1, segList1);
                 var seg2 = CompareService.fSegment(JSON.parse(segment2), dtList2, segList2);
-                var diff = ObjectDiff.diffOwnProperties(seg1, seg2);
+                //var diff = ObjectDiff.diffOwnProperties(seg1, seg2);
+                var diff = ObjectDiff.diff(seg1, seg2);
+
+                console.log(diff);
                 var dataList = [];
                 if (diff.changed === "object change") {
                     var array = CompareService.objToArray(diff);
                     var arraySeg = CompareService.objToArray(array[1]);
                     CompareService.writettTable(arraySeg[0], dataList);
                 }
-                console.log("here Service");
                 console.log(dataList);
                 return dataList;
             },
@@ -108,8 +109,7 @@ angular.module('igl').factory('CompareService',
                 return dataList
             },
             fMsg: function(msg, datatypeList, segmentList) {
-                console.log("====");
-                console.log(segmentList);
+
                 var elements = []
                 var message = {
                     name: msg.name,
@@ -131,8 +131,7 @@ angular.module('igl').factory('CompareService',
                 if (segment.type === "segment") {
                     elements.push(segment);
                 }
-                console.log("elements==============");
-                console.log(elements);
+
                 return CompareService.fElements(elements, datatypeList, segmentList);
             },
             fDatatype: function(datatype, datatypeList, segmentList) {
@@ -141,14 +140,11 @@ angular.module('igl').factory('CompareService',
                 if (datatype.type === "datatype") {
                     elements.push(datatype);
                 }
-                console.log("fDatatype");
-                console.log(elements)
+
                 return CompareService.fElements(elements, datatypeList, segmentList);
             },
 
             fElements: function(elements, datatypeList, segmentList) {
-                console.log(elements);
-                console.log("elements");
 
                 var result = [];
                 for (var i = 0; i < elements.length; i++) {
@@ -265,8 +261,7 @@ angular.module('igl').factory('CompareService',
                             };
                         }
                         if (childArray.value.type.value === "field" || childArray.value.type.value === "component" || childArray.value.type.value === "datatype") {
-                            console.log("++++++++++++++++++++");
-                            console.log(childArray);
+
                             if (childArray.value.name.changed === "primitive change") {
                                 result.label = {
                                     element1: childArray.value.name.removed,
@@ -280,7 +275,6 @@ angular.module('igl').factory('CompareService',
                             if (childArray.value.name.changed === "equal") {
                                 result.label = {
                                     element: childArray.value.name.value,
-
                                 };
                             }
                             if (childArray.value.ext && childArray.value.ext.changed === "primitive change") {
@@ -435,6 +429,7 @@ angular.module('igl').factory('CompareService',
 
 
                             if (childArray.value.fields && childArray.value.fields.changed === "object change") {
+                                console.log(childArray.value.fields);
                                 result.fields = [];
                                 CompareService.objToArray(childArray.value.fields.value).forEach(function(childNode) {
                                     CompareService.writettTable(childNode, result.fields);
@@ -554,13 +549,201 @@ angular.module('igl').factory('CompareService',
                             element2: childArray.value.type.added
                         };
                     }
-                    dataArray.push(result);
 
 
+
+
+
+                } else if (childArray.changed === "added") {
+                    if (childArray.value.type === "field" || childArray.value.type === "component") {
+                        var empty = "";
+
+                        console.log("--HEEEEREE");
+                        console.log(childArray);
+                        result.position = {
+                            element: childArray.value.position,
+
+                        };
+                        result.type = {
+                            element2: childArray.value.type,
+
+                        };
+                        result.label = {
+                            element1: empty,
+                            element2: childArray.value.name
+                        };
+                        result.usage = {
+                            element1: empty,
+                            element2: childArray.value.usage
+                        };
+                        result.minCard = {
+                            element1: empty,
+                            element2: childArray.value.min
+                        };
+                        result.maxCard = {
+                            element1: empty,
+                            element2: childArray.value.max
+                        };
+                        result.minLength = {
+                            element1: empty,
+                            element2: childArray.value.minLength
+                        };
+                        result.maxLength = {
+                            element1: empty,
+                            element2: childArray.value.maxLength
+                        };
+                        result.confLength = {
+                            element1: empty,
+                            element2: childArray.value.confLength
+                        };
+                        result.datatype = {
+                            element1: empty,
+                            element2: childArray.value.datatype.label
+                        };
+                        var components = [];
+                        for (var i = 0; i < childArray.value.components.length; i++) {
+                            var component = {};
+                            component.position = {
+                                element: childArray.value.components[i].position,
+
+                            };
+                            component.type = {
+                                element2: childArray.value.components[i].type,
+
+                            };
+                            component.label = {
+                                element1: empty,
+                                element2: childArray.value.components[i].name
+                            };
+                            component.usage = {
+                                element1: empty,
+                                element2: childArray.value.components[i].usage
+                            };
+
+                            component.minLength = {
+                                element1: empty,
+                                element2: childArray.value.components[i].minLength
+                            };
+                            component.maxLength = {
+                                element1: empty,
+                                element2: childArray.value.components[i].maxLength
+                            };
+                            component.confLength = {
+                                element1: empty,
+                                element2: childArray.value.components[i].confLength
+                            };
+                            component.datatype = {
+                                element1: empty,
+                                element2: childArray.value.components[i].datatype.label
+                            };
+                            components.push(component);
+
+
+                        }
+                        console.log(components);
+                        result.components = components;
+
+
+                    }
+
+
+                } else if (childArray.changed === "removed") {
+                    var empty = "";
+                    if (childArray.value.type === "field" || childArray.value.type === "component") {
+                        console.log("--HEEEEREE");
+                        console.log(childArray);
+                        result.position = {
+                            element: childArray.value.position,
+
+                        };
+                        result.type = {
+                            element1: childArray.value.type,
+
+                        };
+                        result.label = {
+                            element2: empty,
+                            element1: childArray.value.name
+                        };
+                        result.usage = {
+                            element2: empty,
+                            element1: childArray.value.usage
+                        };
+                        result.minCard = {
+                            element2: empty,
+                            element1: childArray.value.min
+                        };
+                        result.maxCard = {
+                            element2: empty,
+                            element1: childArray.value.max
+                        };
+                        result.minLength = {
+                            element2: empty,
+                            element1: childArray.value.minLength
+                        };
+                        result.maxLength = {
+                            element2: empty,
+                            element1: childArray.value.maxLength
+                        };
+                        result.confLength = {
+                            element2: empty,
+                            element1: childArray.value.confLength
+                        };
+                        result.datatype = {
+                            element2: empty,
+                            element1: childArray.value.datatype.label
+                        };
+                        var components = [];
+                        for (var i = 0; i < childArray.value.components.length; i++) {
+                            console.log("tttttttttttt");
+                            var component = {};
+                            component.position = {
+                                element: childArray.value.components[i].position,
+
+                            };
+                            component.type = {
+                                element1: childArray.value.components[i].type,
+
+                            };
+                            component.label = {
+                                element2: empty,
+                                element1: childArray.value.components[i].name
+                            };
+                            component.usage = {
+                                element2: empty,
+                                element1: childArray.value.components[i].usage
+                            };
+
+                            component.minLength = {
+                                element2: empty,
+                                element1: childArray.value.components[i].minLength
+                            };
+                            component.maxLength = {
+                                element2: empty,
+                                element1: childArray.value.components[i].maxLength
+                            };
+                            component.confLength = {
+                                element2: empty,
+                                element1: childArray.value.components[i].confLength
+                            };
+                            component.datatype = {
+                                element2: empty,
+                                element1: childArray.value.components[i].datatype.label
+                            };
+                            components.push(component);
+
+
+                        }
+                        console.log(components);
+                        result.components = components;
+
+
+
+
+                    }
 
 
                 }
-
+                dataArray.push(result);
             },
 
 
