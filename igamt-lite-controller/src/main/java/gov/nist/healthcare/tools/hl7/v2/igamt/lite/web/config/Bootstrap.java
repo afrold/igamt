@@ -177,14 +177,14 @@ public class Bootstrap implements InitializingBean {
 	  List<Table> allTables = tableService.findAll();  
 	  for(Table t :allTables ){
 		  STATUS status = STATUS.PUBLISHED;
-		  if(t.getScope().equals(SCOPE.HL7STANDARD)){
-			  tableService.updateStatus(t.getId(),STATUS.PUBLISHED);
- 		
-		  }else if(!t.getScope().equals(SCOPE.HL7STANDARD) && !t.getStatus().equals(STATUS.PUBLISHED) ){
-			  
-			  tableService.updateStatus(t.getId(), STATUS.UNPUBLISHED);
-		  }
-	      
+      if(null != t && null != t.getScope() && null != t.getStatus()) {
+        if (t.getScope().equals(SCOPE.HL7STANDARD)) {
+          tableService.updateStatus(t.getId(), STATUS.PUBLISHED);
+        } else if (!t.getScope().equals(SCOPE.HL7STANDARD) && !t.getStatus()
+            .equals(STATUS.PUBLISHED)) {
+          tableService.updateStatus(t.getId(), STATUS.UNPUBLISHED);
+        }
+      }
 	  }
   }
   
@@ -192,13 +192,14 @@ public class Bootstrap implements InitializingBean {
 	  List<Datatype> allDts = datatypeService.findAll();  
 	  for(Datatype d :allDts ){
 		  STATUS status = STATUS.PUBLISHED;
-		  if(d.getScope().equals(SCOPE.HL7STANDARD)){
-			  datatypeService.updateStatus(d.getId(), STATUS.PUBLISHED);
-		  }else if(!d.getScope().equals(SCOPE.HL7STANDARD) && !d.getStatus().equals(STATUS.PUBLISHED) ){
-			  
-			  datatypeService.updateStatus(d.getId(), STATUS.UNPUBLISHED);
-		  }
- 		
+		  if(null != d && null != d.getScope() && null != d.getStatus()) {
+        if (d.getScope().equals(SCOPE.HL7STANDARD)) {
+          datatypeService.updateStatus(d.getId(), STATUS.PUBLISHED);
+        } else if (!d.getScope().equals(SCOPE.HL7STANDARD) && !d.getStatus()
+            .equals(STATUS.PUBLISHED)) {
+          datatypeService.updateStatus(d.getId(), STATUS.UNPUBLISHED);
+        }
+      }
 	  }
   }
   

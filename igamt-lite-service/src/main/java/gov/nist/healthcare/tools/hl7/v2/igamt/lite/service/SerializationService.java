@@ -1,11 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.io.InputStream;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -18,16 +14,12 @@ import java.io.InputStream;
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 11/01/16.
+ * Created by Maxence Lefort on 12/7/16.
  */
-@Service
-public interface ExportService {
-
-    InputStream exportIGDocumentAsDocx(IGDocument igDocument, boolean includeSegmentsInMessage) throws IOException;
-    InputStream exportIGDocumentAsHtml(IGDocument igDocument, boolean includeSegmentsInMessage) throws IOException;
-    InputStream exportIGDocumentAsXml(IGDocument igDocument) throws IOException;
-    InputStream exportDatatypeLibraryDocumentAsHtml(DatatypeLibraryDocument datatypeLibraryDocument);
-    InputStream exportDatatypeLibraryDocumentAsDocx(DatatypeLibraryDocument datatypeLibraryDocument);
-
-
+public interface SerializationService {
+    public nu.xom.Document serializeIGDocument(IGDocument igDocument,
+        boolean includeSegmentsInMessage);
+    public nu.xom.Document serializeDatatypeLibrary(IGDocument igDocument,
+        boolean includeSegmentsInMessage);
+    public nu.xom.Document serializeElement(SerializableElement element);
 }
