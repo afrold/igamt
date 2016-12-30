@@ -32,3 +32,10 @@ igamt-lite-service/DTL_*.docx
 data/db/
 igamt-lite-acmgt/bin
 igamt-lite-resource/bin
+pom.properties
+igamt-lite-controller/bin/src/main/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/web
+igamt-lite-controller/bin/src/main/resources
+igamt-lite-controller/bin/src/main/webapp/docs
+igamt-lite-controller/bin
+igamt-lite-controller/src/main/webapp
+igamt-lite-service
