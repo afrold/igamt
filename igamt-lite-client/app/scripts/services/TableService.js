@@ -82,6 +82,56 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
                 delay.reject(error);
             });
             return delay.promise;
+        },
+         publish: function(table) {
+                var delay = $q.defer();
+                table.accountId = userInfoService.getAccountID();
+                //table.status="PUBLISHED";
+                $http.post('api/tables/publish', table).then(function(response) {
+                    var saveResponse = angular.fromJson(response.data);
+                   
+                    delay.resolve(saveResponse);
+                }, function(error) {
+                    //console.log("DatatypeService.save error=" + error);
+                    delay.reject(error);
+                });
+                return delay.promise;
+        },
+        share:function(tableId,shareParticipantIds, accountId){
+            var delay = $q.defer();
+            $http.post('api/tables/' + tableId + '/share', {'accountId': accountId, 'participantsList': shareParticipantIds}).then(function (response) {
+                delay.resolve(response.data);
+            }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+        unshare: function(tableId, participantId){
+            var delay = $q.defer();
+            $http.post('api/tables/' + tableId + '/unshare', participantId).then(function (response) {
+                delay.resolve(response.data);
+             }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+        getSharedTables: function(){
+            var delay = $q.defer();
+            $http.get('api/tables/findShared').then(function (response) {
+                delay.resolve(response.data);
+             }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+        getPendingSharedTables: function(){
+            var delay = $q.defer();
+            $http.get('api/tables/findPendingShared').then(function (response) {
+                delay.resolve(response.data);
+             }, function (error) {
+                delay.reject(error);
+            });
+            return delay.promise;
         }
 
     };

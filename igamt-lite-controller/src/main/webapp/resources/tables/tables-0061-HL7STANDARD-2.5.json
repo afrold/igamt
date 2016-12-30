@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440bb8",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0061",
+  "name" : "0061",
+  "description" : "Check digit scheme",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.61",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bb9",
+    "value" : "ISO",
+    "label" : "ISO 7064: 1983",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bba",
+    "value" : "M10",
+    "label" : "Mod 10 algorithm",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bbb",
+    "value" : "M11",
+    "label" : "Mod 11 algorithm",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bbc",
+    "value" : "NPI",
+    "label" : "Check digit algorithm in the US National Provider Identifier",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

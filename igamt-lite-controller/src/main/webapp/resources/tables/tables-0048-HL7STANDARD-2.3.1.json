@@ -1,0 +1,327 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445c88",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0048",
+  "name" : "0048",
+  "description" : "What subject filter",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c89",
+    "value" : "ADV",
+    "label" : "Advice/diagnosis",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c8a",
+    "value" : "ANU",
+    "label" : "Nursing unit lookup (returns patients in beds, excluding empty beds)",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c8b",
+    "value" : "APA",
+    "label" : "Account number query, return matching visit",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c8c",
+    "value" : "APM",
+    "label" : "Medical record number query, returns visits for a medical record number",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c8d",
+    "value" : "APN",
+    "label" : "Patient name lookup",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c8e",
+    "value" : "APP",
+    "label" : "Physician lookup",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c8f",
+    "value" : "ARN",
+    "label" : "Nursing unit lookup (returns patients in beds, including empty beds)",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c90",
+    "value" : "CAN",
+    "label" : "Cancel.  Used to cancel a query",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c91",
+    "value" : "DEM",
+    "label" : "Demographics",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c92",
+    "value" : "FIN",
+    "label" : "Financial",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c93",
+    "value" : "GOL",
+    "label" : "Goals",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c94",
+    "value" : "MRI",
+    "label" : "Most recent inpatient",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c95",
+    "value" : "MRO",
+    "label" : "Most recent outpatient",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c96",
+    "value" : "NCK",
+    "label" : "Network clock",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c97",
+    "value" : "NSC",
+    "label" : "Network status change",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c98",
+    "value" : "NST",
+    "label" : "Network statistic",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c99",
+    "value" : "ORD",
+    "label" : "Order",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c9a",
+    "value" : "OTH",
+    "label" : "Other",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c9b",
+    "value" : "PRB",
+    "label" : "Problems",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c9c",
+    "value" : "PRO",
+    "label" : "Procedure",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c9d",
+    "value" : "RAR",
+    "label" : "Pharmacy administration information",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c9e",
+    "value" : "RDR",
+    "label" : "Pharmacy dispense information",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c9f",
+    "value" : "RER",
+    "label" : "Pharmacy encoded order information",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ca0",
+    "value" : "RES",
+    "label" : "Result",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ca1",
+    "value" : "RGR",
+    "label" : "Pharmacy give information",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ca2",
+    "value" : "ROR",
+    "label" : "Pharmacy prescription information",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ca3",
+    "value" : "SAL",
+    "label" : "All schedule related information, including open slots, booked slots, blocked slots",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ca4",
+    "value" : "SBK",
+    "label" : "Booked slots on the identified schedule",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ca5",
+    "value" : "SBL",
+    "label" : "Blocked slots on the identified schedule",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ca6",
+    "value" : "SOP",
+    "label" : "Open slots on the identified schedule",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ca7",
+    "value" : "SSA",
+    "label" : "Time slots available for a single appointment",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ca8",
+    "value" : "SSR",
+    "label" : "Time slots available for a recurring appointment",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ca9",
+    "value" : "STA",
+    "label" : "Status",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445caa",
+    "value" : "VXI",
+    "label" : "Vaccine Information",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -23,11 +24,12 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 
 /**
  * @author gcr1
@@ -72,13 +74,6 @@ public class DatatypeServiceImpl implements DatatypeService {
 	@Override
 	public Datatype save(Datatype datatype) {
 		log.info("DataypeServiceImpl.save=" + datatype.getId());
-		return save(datatype, DateUtils.getCurrentDate());
-	}
-
-	@Override
-	public Datatype save(Datatype datatype, Date date) {
-		log.info("DataypeServiceImpl.save=" + datatype.getId());
-		datatype.setDateUpdated(date);
 		return datatypeRepository.save(datatype);
 	}
 
@@ -119,6 +114,36 @@ public class DatatypeServiceImpl implements DatatypeService {
 	}
 
 	@Override
+	public List<Datatype> findShared(Long accountId) {
+		// TODO Auto-generated method stub
+		List<Datatype> datatypes = datatypeRepository.findShared(accountId);
+		List<Datatype> sharedWithAccount = new ArrayList<Datatype>();
+		for (Datatype d : datatypes) {
+			for (ShareParticipantPermission p : d.getShareParticipantIds()) {
+				if (p.getAccountId() == accountId && !p.isPendingApproval()) {
+					sharedWithAccount.add(d);
+				}
+			}
+		}
+		return sharedWithAccount;
+	}
+
+	@Override
+	public List<Datatype> findPendingShared(Long accountId) {
+		// TODO Auto-generated method stub
+		List<Datatype> datatypes = datatypeRepository.findShared(accountId);
+		List<Datatype> sharedWithAccount = new ArrayList<Datatype>();
+		for (Datatype d : datatypes) {
+			for (ShareParticipantPermission p : d.getShareParticipantIds()) {
+				if (p.getAccountId() == accountId && p.isPendingApproval()) {
+					sharedWithAccount.add(d);
+				}
+			}
+		}
+		return sharedWithAccount;
+	}
+
+	@Override
 	public Datatype findByNameAndVersionAndScope(String name, String version, String scope) {
 		// TODO Auto-generated method stub
 		return datatypeRepository.findByNameAndVersionAndScope(name, version, scope);
@@ -131,8 +156,24 @@ public class DatatypeServiceImpl implements DatatypeService {
 	}
 
 	@Override
+	public Datatype save(Datatype datatype, Date date) {
+		log.info("DataypeServiceImpl.save=" + datatype.getId());
+		datatype.setDateUpdated(date);
+		return datatypeRepository.save(datatype);
+	}
+
+	@Override
+	public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String string) {
+		return datatypeRepository.findAllByNameAndVersionsAndScope(name, versions, string);
+	}
+
+	@Override
 	public Date updateDate(String id, Date date) {
 		return datatypeRepository.updateDate(id, date);
 	}
 
+	@Override
+	public void updateStatus(String id, STATUS status) {
+		datatypeRepository.updateStatus(id, status);
+	}
 }

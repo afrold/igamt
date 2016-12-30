@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507d48",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0406",
+  "name" : "0406",
+  "description" : "Organization Unit Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d49",
+    "value" : "1",
+    "label" : "Hospital",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d4a",
+    "value" : "2",
+    "label" : "Physician Clinic",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d4b",
+    "value" : "3",
+    "label" : "Long Term Care",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d4c",
+    "value" : "4",
+    "label" : "Acute Care",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d4d",
+    "value" : "5",
+    "label" : "Other",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d4e",
+    "value" : "H",
+    "label" : "Home",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d4f",
+    "value" : "O",
+    "label" : "Office",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

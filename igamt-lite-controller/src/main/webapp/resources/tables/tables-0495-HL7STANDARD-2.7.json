@@ -1,0 +1,165 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc6550752d",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0495",
+  "name" : "0495",
+  "description" : "Body Site Modifier",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550752e",
+    "value" : "ANT",
+    "label" : "Anterior",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550752f",
+    "value" : "BIL",
+    "label" : "Bilateral",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507530",
+    "value" : "DIS",
+    "label" : "Distal",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507531",
+    "value" : "EXT",
+    "label" : "External",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507532",
+    "value" : "L",
+    "label" : "Left",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507533",
+    "value" : "LAT",
+    "label" : "Lateral",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507534",
+    "value" : "LLQ",
+    "label" : "Quadrant, Left Lower",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507535",
+    "value" : "LOW",
+    "label" : "Lower",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507536",
+    "value" : "LUQ",
+    "label" : "Quadrant, Left Upper",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507537",
+    "value" : "MED",
+    "label" : "Medial",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507538",
+    "value" : "POS",
+    "label" : "Posterior",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507539",
+    "value" : "PRO",
+    "label" : "Proximal",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550753a",
+    "value" : "R",
+    "label" : "Right",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550753b",
+    "value" : "RLQ",
+    "label" : "Quadrant, Right Lower",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550753c",
+    "value" : "RUQ",
+    "label" : "Quadrant, Right Upper",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550753d",
+    "value" : "UPP",
+    "label" : "Upper",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

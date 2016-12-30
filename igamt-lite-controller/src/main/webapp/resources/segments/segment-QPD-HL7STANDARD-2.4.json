@@ -1,0 +1,96 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.4",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd237d4c6ca828c294b3b" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd444571",
+  "label" : "QPD",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Message Query Name",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "250",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab6d4c6e52cfd443d07",
+      "bindingIdentifier" : "0471",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fd3",
+      "name" : "CE_0471",
+      "ext" : null,
+      "label" : "CE_0471"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444572",
+    "itemNo" : "01375",
+    "min" : 1,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Query Tag",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "32",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443f87",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444573",
+    "itemNo" : "00696",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "User Parameters (in successive fields)",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "256",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab6d4c6e52cfd443fcb",
+      "name" : "varies",
+      "ext" : null,
+      "label" : "varies"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab6d4c6e52cfd444574",
+    "itemNo" : "01435",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd237d4c6ca828c293caf",
+    "mappings" : [ ]
+  },
+  "name" : "QPD",
+  "description" : "Query Parameter Definition",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

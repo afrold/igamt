@@ -1,0 +1,111 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b644",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0202",
+  "name" : "0202",
+  "description" : "Telecommunication equipment type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.202",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b645",
+    "value" : "BP",
+    "label" : "Beeper",
+    "codeSystem" : "HL70202",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b646",
+    "value" : "CP",
+    "label" : "Cellular or Mobile Phone",
+    "codeSystem" : "HL70202",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b647",
+    "value" : "FX",
+    "label" : "Fax",
+    "codeSystem" : "HL70202",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b648",
+    "value" : "Internet",
+    "label" : "Internet Address",
+    "codeSystem" : "HL70202",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b649",
+    "value" : "MD",
+    "label" : "Modem",
+    "codeSystem" : "HL70202",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b64a",
+    "value" : "PH",
+    "label" : "Telephone",
+    "codeSystem" : "HL70202",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b64b",
+    "value" : "SAT",
+    "label" : "Satellite Phone",
+    "codeSystem" : "HL70202",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b64c",
+    "value" : "TDD",
+    "label" : "Telecommunications Device for the Deaf",
+    "codeSystem" : "HL70202",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b64d",
+    "value" : "TTY",
+    "label" : "Teletypewriter",
+    "codeSystem" : "HL70202",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b64e",
+    "value" : "X.400",
+    "label" : "X.400 email address",
+    "codeSystem" : "HL70202",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

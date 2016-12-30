@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655084d9",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0477",
+  "name" : "0477",
+  "description" : "Controlled Substance Schedule*",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084da",
+    "value" : "I",
+    "label" : "Schedule I",
+    "codeSystem" : "HL70477",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084db",
+    "value" : "II",
+    "label" : "Schedule II",
+    "codeSystem" : "HL70477",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084dc",
+    "value" : "III",
+    "label" : "Schedule III",
+    "codeSystem" : "HL70477",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084dd",
+    "value" : "IV",
+    "label" : "Schedule IV",
+    "codeSystem" : "HL70477",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084de",
+    "value" : "V",
+    "label" : "Schedule V",
+    "codeSystem" : "HL70477",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084df",
+    "value" : "VI",
+    "label" : "Schedule VI",
+    "codeSystem" : "HL70477",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

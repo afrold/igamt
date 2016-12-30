@@ -1,0 +1,111 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd44717d",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0291",
+  "name" : "0291",
+  "description" : "Subtype of Referenced Data",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44717e",
+    "value" : "BASIC",
+    "label" : "ISDN PCM audio data",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44717f",
+    "value" : "DICOM",
+    "label" : "Digital Imaging and Communications in Medicine",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447180",
+    "value" : "FAX",
+    "label" : "Facsimile data",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447181",
+    "value" : "GIF",
+    "label" : "Needs formal description",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447182",
+    "value" : "JOT",
+    "label" : "Electronic ink data (Jot 1.0 standard)",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447183",
+    "value" : "JPEG",
+    "label" : "Needs formal description",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447184",
+    "value" : "Octet-stream",
+    "label" : "Uninterpreted binary data",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447185",
+    "value" : "PICT",
+    "label" : "PICT format image data",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447186",
+    "value" : "PostScript",
+    "label" : "PostScript program",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447187",
+    "value" : "TIFF",
+    "label" : "TIFF image data",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,93 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550d871",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0370",
+  "name" : "0370",
+  "description" : "Container status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.370",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d872",
+    "value" : "I",
+    "label" : "Identified",
+    "codeSystem" : "HL70370",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d873",
+    "value" : "L",
+    "label" : "Left Equipment",
+    "codeSystem" : "HL70370",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d874",
+    "value" : "M",
+    "label" : "Missing",
+    "codeSystem" : "HL70370",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d875",
+    "value" : "O",
+    "label" : "In Process",
+    "codeSystem" : "HL70370",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d876",
+    "value" : "P",
+    "label" : "In Position",
+    "codeSystem" : "HL70370",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d877",
+    "value" : "R",
+    "label" : "Process Completed",
+    "codeSystem" : "HL70370",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d878",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70370",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d879",
+    "value" : "X",
+    "label" : "Container Unavailable",
+    "codeSystem" : "HL70370",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,21 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440670",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0021",
+  "name" : "0021",
+  "description" : "Bad Debt Agency Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.21",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

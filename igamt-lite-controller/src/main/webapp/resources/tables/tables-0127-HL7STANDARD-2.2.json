@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447be5",
+  "hl7Version" : "2.2",
+  "libIds" : [ "573dd23bd4c6ca828c2970f5" ],
+  "bindingIdentifier" : "0127",
+  "name" : "0127",
+  "description" : "ALLERGY TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447be6",
+    "value" : "DA",
+    "label" : "Drug Allergy",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447be7",
+    "value" : "FA",
+    "label" : "Food Allergy",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447be8",
+    "value" : "MA",
+    "label" : "Miscellaneous Allergy",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447be9",
+    "value" : "MC",
+    "label" : "Miscellaneous Contraindication",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

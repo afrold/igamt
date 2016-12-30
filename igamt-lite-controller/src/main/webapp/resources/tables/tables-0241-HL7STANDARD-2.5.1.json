@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550ea9e",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0241",
+  "name" : "0241",
+  "description" : "Patient Outcome",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.241",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550ea9f",
+    "value" : "D",
+    "label" : "Died",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550eaa0",
+    "value" : "F",
+    "label" : "Fully recovered",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550eaa1",
+    "value" : "N",
+    "label" : "Not recovering/unchanged",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550eaa2",
+    "value" : "R",
+    "label" : "Recovering",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550eaa3",
+    "value" : "S",
+    "label" : "Sequelae",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550eaa4",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550eaa5",
+    "value" : "W",
+    "label" : "Worsening",
+    "codeSystem" : "HL70241",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

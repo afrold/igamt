@@ -1,0 +1,93 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550e487",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0527",
+  "name" : "0527",
+  "description" : "Calendar alignment",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.527",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e488",
+    "value" : "DM",
+    "label" : "day of the month",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e489",
+    "value" : "DW",
+    "label" : "day of the week (begins with Monday)",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e48a",
+    "value" : "DY",
+    "label" : "day of the year",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e48b",
+    "value" : "HD",
+    "label" : "hour of the day",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e48c",
+    "value" : "MY",
+    "label" : "month of the year",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e48d",
+    "value" : "NH",
+    "label" : "minute of the hour",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e48e",
+    "value" : "SN",
+    "label" : "second of the minute",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e48f",
+    "value" : "WY",
+    "label" : "week of the year",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

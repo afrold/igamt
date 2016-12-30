@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd23bd4c6ca828c297295" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd44841b",
+  "label" : "CQ",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ ],
+  "name" : "CQ",
+  "description" : "composite quantity with units",
+  "comment" : "",
+  "usageNote" : ""
+}

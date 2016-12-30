@@ -1,0 +1,39 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507c61",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0615",
+  "name" : "0615",
+  "description" : "User Authentication Credential Type Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c62",
+    "value" : "KERB",
+    "label" : "Kerberos Service Ticket",
+    "codeSystem" : "HL70615",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c63",
+    "value" : "SAML",
+    "label" : "Authenticated User Identity Assertion",
+    "codeSystem" : "HL70615",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd22fd4c6ca828c28ca60" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550bba3",
+  "label" : "SI",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ ],
+  "name" : "SI",
+  "description" : "Sequence ID",
+  "comment" : "",
+  "usageNote" : ""
+}

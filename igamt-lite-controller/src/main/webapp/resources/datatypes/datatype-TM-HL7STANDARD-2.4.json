@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.4",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd237d4c6ca828c294b3c" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab6d4c6e52cfd443f97",
+  "label" : "TM",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ ],
+  "name" : "TM",
+  "description" : "time",
+  "comment" : "",
+  "usageNote" : ""
+}

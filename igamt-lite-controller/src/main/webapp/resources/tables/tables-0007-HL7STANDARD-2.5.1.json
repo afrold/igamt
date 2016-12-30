@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0fd4c623dc6550d941",
+  "hl7Version" : "2.5.1",
+  "libIds" : [ "573dd22cd4c6ca828c2899eb" ],
+  "bindingIdentifier" : "0007",
+  "name" : "0007",
+  "description" : "Admission Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.7",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d942",
+    "value" : "A",
+    "label" : "Accident",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d943",
+    "value" : "C",
+    "label" : "Elective",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d944",
+    "value" : "E",
+    "label" : "Emergency",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d945",
+    "value" : "L",
+    "label" : "Labor and Delivery",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d946",
+    "value" : "N",
+    "label" : "Newborn (Birth in healthcare facility)",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d947",
+    "value" : "R",
+    "label" : "Routine",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d948",
+    "value" : "U",
+    "label" : "Urgent",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

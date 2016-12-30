@@ -1,0 +1,189 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.3.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd239d4c6ca828c295f8f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd4469da",
+  "label" : "CTD",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "Contact Role",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "200",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445774",
+      "bindingIdentifier" : "0131",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446253",
+      "name" : "CE_0131",
+      "ext" : null,
+      "label" : "CE_0131"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4469db",
+    "itemNo" : "00196",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Contact Name",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "106",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44622a",
+      "name" : "XPN",
+      "ext" : null,
+      "label" : "XPN"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4469dc",
+    "itemNo" : "01165",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Contact Address",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "200",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44624b",
+      "name" : "XAD",
+      "ext" : null,
+      "label" : "XAD"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4469dd",
+    "itemNo" : "01166",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Contact Location",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "60",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446299",
+      "name" : "PL",
+      "ext" : null,
+      "label" : "PL"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4469de",
+    "itemNo" : "01167",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Contact Communication Information",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "100",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446283",
+      "name" : "XTN",
+      "ext" : null,
+      "label" : "XTN"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4469df",
+    "itemNo" : "01168",
+    "min" : 0,
+    "max" : "*"
+  }, {
+    "type" : "field",
+    "name" : "Preferred Method Of Contact",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "200",
+    "confLength" : "",
+    "table" : {
+      "id" : "565f3ab7d4c6e52cfd445ce9",
+      "bindingIdentifier" : "0185",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446208",
+      "name" : "CE_0185",
+      "ext" : null,
+      "label" : "CE_0185"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4469e0",
+    "itemNo" : "00684",
+    "min" : 0,
+    "max" : "1"
+  }, {
+    "type" : "field",
+    "name" : "Contact Identifiers",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "100",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd446297",
+      "name" : "PI",
+      "ext" : null,
+      "label" : "PI"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd4469e1",
+    "itemNo" : "01171",
+    "min" : 0,
+    "max" : "*"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd239d4c6ca828c295b52",
+    "mappings" : [ ]
+  },
+  "name" : "CTD",
+  "description" : "Contact Data",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

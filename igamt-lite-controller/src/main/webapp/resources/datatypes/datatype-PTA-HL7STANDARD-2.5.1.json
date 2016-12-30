@@ -1,0 +1,108 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.5.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd22cd4c6ca828c2899ea" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0fd4c623dc6550ecab",
+  "label" : "PTA",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "Policy Type",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "5",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550defe",
+      "bindingIdentifier" : "0147",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed49"
+  }, {
+    "type" : "component",
+    "name" : "Amount Class",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "9",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e2ef",
+      "bindingIdentifier" : "0193",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed4a"
+  }, {
+    "type" : "component",
+    "name" : "Money or Percentage Quantity",
+    "usage" : "X",
+    "minLength" : 0,
+    "maxLength" : "16",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecb2",
+      "name" : "NM",
+      "ext" : null,
+      "label" : "NM"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed4b"
+  }, {
+    "type" : "component",
+    "name" : "Money or Percentage",
+    "usage" : "R",
+    "minLength" : 0,
+    "maxLength" : "23",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ecdb",
+      "name" : "MOP",
+      "ext" : null,
+      "label" : "MOP"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed4c"
+  } ],
+  "name" : "PTA",
+  "description" : "Policy Type and Amount",
+  "comment" : "",
+  "usageNote" : ""
+}

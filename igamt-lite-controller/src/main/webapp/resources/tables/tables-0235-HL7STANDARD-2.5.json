@@ -1,0 +1,111 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd441540",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0235",
+  "name" : "0235",
+  "description" : "Report source",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.235",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441541",
+    "value" : "C",
+    "label" : "Clinical trial",
+    "codeSystem" : "HL70235",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441542",
+    "value" : "D",
+    "label" : "Database/registry/poison control center",
+    "codeSystem" : "HL70235",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441543",
+    "value" : "E",
+    "label" : "Distributor",
+    "codeSystem" : "HL70235",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441544",
+    "value" : "H",
+    "label" : "Health professional",
+    "codeSystem" : "HL70235",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441545",
+    "value" : "L",
+    "label" : "Literature",
+    "codeSystem" : "HL70235",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441546",
+    "value" : "M",
+    "label" : "Manufacturer/marketing authority holder",
+    "codeSystem" : "HL70235",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441547",
+    "value" : "N",
+    "label" : "Non-healthcare professional",
+    "codeSystem" : "HL70235",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441548",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70235",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441549",
+    "value" : "P",
+    "label" : "Patient",
+    "codeSystem" : "HL70235",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44154a",
+    "value" : "R",
+    "label" : "Regulatory agency",
+    "codeSystem" : "HL70235",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

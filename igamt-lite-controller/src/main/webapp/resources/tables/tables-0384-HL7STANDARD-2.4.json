@@ -1,0 +1,129 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443228",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0384",
+  "name" : "0384",
+  "description" : "Substance type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443229",
+    "value" : "CO",
+    "label" : "Control",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44322a",
+    "value" : "DI",
+    "label" : "Diluent",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44322b",
+    "value" : "LI",
+    "label" : "Measurable Liquid Item",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44322c",
+    "value" : "LW",
+    "label" : "Liquid Waste",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44322d",
+    "value" : "MR",
+    "label" : "Multiple Test Reagent (consumption cannot be tied to orders for single test)",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44322e",
+    "value" : "OT",
+    "label" : "Other",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44322f",
+    "value" : "PT",
+    "label" : "Pretreatment",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443230",
+    "value" : "PW",
+    "label" : "Purified Water",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443231",
+    "value" : "RC",
+    "label" : "Reagent Calibrator",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443232",
+    "value" : "SC",
+    "label" : "Countable Solid Item (e.g., Tip, etc.)",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443233",
+    "value" : "SR",
+    "label" : "Single Test Reagent",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443234",
+    "value" : "SW",
+    "label" : "Solid Waste",
+    "codeSystem" : "HL70384",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

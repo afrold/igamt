@@ -72,9 +72,21 @@
 						<button type="button" class="btn btn-raised btn-info btn-sm"> <i class="fa fa-download fa-fw"></i> Export </button>
 						<button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
 						<ul class="dropdown-menu igl-menu" role="menu">
-							<li><a class="point" ng-click="selectMessagesForExport(igdocument)">As XML</a></li>
-							<li><a class="point" ng-click="exportAs('docx')">As WORD</a></li>
-							<li><a class="point" ng-click="exportAs('html')">As HTML</a></li>
+							<li class="drop-accordian"><a class="point" ng-click="selectMessagesForExport(igdocument)">As XML</a>
+							</li>
+							<li class="drop-accordian"><a class="point" ng-click="$event.stopPropagation();wordDrop = !wordDrop">As WORD <span class="caret"><!-- --></span></a>
+								<ul class="drop-accordian-menu" ng-show="wordDrop">
+									<li><a class="point" ng-click="exportAsWithLayout('docx','Compact')">Compact</a></li>
+									<li><a class="point" ng-click="exportAsWithLayout('docx','Verbose')">Verbose</a></li>
+								</ul>
+							</li>
+							<li class="drop-accordian"><a class="point" ng-click="$event.stopPropagation();htmlDrop = !htmlDrop">As HTML <span class="caret"><!-- --></span></a>
+								<ul class="drop-accordian-menu" ng-show="htmlDrop">
+									<li><a class="point" ng-click="exportAsWithLayout('html','Compact')">Compact</a></li>
+									<li><a class="point" ng-click="exportAsWithLayout('html','Verbose')">Verbose</a></li>
+								</ul>
+							</li>
+							<!--li><a class="point" ng-click="customExportModal()">Advanced Export</a></li-->
 						</ul>
 					</div>
 					<button title="Close the IG Document" style="margin-top:0px" type="button" class="btn btn-raised btn-sm btn-warning" ng-click="close()"> <span><i class="fa fa-close fa-fw"></i>Close</span> </button>

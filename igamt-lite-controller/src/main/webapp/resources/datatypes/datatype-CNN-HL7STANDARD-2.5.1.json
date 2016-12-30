@@ -1,0 +1,251 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.5.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd22cd4c6ca828c2899ea" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0fd4c623dc6550ecb3",
+  "label" : "CNN",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "ID Number",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "15",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed5f"
+  }, {
+    "type" : "component",
+    "name" : "Family Name",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "50",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed60"
+  }, {
+    "type" : "component",
+    "name" : "Given Name",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "30",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed61"
+  }, {
+    "type" : "component",
+    "name" : "Second and Further Given Names or Initials Thereof",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "30",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed62"
+  }, {
+    "type" : "component",
+    "name" : "Suffix (e.g., JR or III)",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 5,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed63"
+  }, {
+    "type" : "component",
+    "name" : "Prefix (e.g., DR)",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 6,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed64"
+  }, {
+    "type" : "component",
+    "name" : "Degree (e.g., MD",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "5",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550eab7",
+      "bindingIdentifier" : "0360",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 7,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed65"
+  }, {
+    "type" : "component",
+    "name" : "Source Table",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "4",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e235",
+      "bindingIdentifier" : "0297",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 8,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed66"
+  }, {
+    "type" : "component",
+    "name" : "Assigning Authority   - Namespace ID",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550dc50",
+      "bindingIdentifier" : "0363",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec9e",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 9,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed67"
+  }, {
+    "type" : "component",
+    "name" : "Assigning Authority  - Universal ID",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "199",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550eccf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 10,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed68"
+  }, {
+    "type" : "component",
+    "name" : "Assigning Authority  - Universal ID Type",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "6",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0fd4c623dc6550e50d",
+      "bindingIdentifier" : "0301",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0fd4c623dc6550ec98",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 11,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0fd4c623dc6550ed69"
+  } ],
+  "name" : "CNN",
+  "description" : "Composite ID Number and Name Simplified",
+  "comment" : "",
+  "usageNote" : ""
+}

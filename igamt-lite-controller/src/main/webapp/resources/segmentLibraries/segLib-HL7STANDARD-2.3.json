@@ -1,0 +1,161 @@
+{
+  "type" : "segments",
+  "sectionPosition" : 1,
+  "sectionTitle" : "Segments and Field Descriptions",
+  "sectionDescription" : null,
+  "sectionContents" : null,
+  "id" : "573dd23ad4c6ca828c296b7c",
+  "accountId" : null,
+  "ext" : null,
+  "metaData" : {
+    "name" : null,
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.3",
+    "date" : "May 19, 2016",
+    "ext" : null,
+    "segmentLibId" : "64e87051-cc3f-4769-bfc1-c1366edcce16"
+  },
+  "scope" : "HL7STANDARD",
+  "children" : [ {
+    "id" : "565f3ab7d4c6e52cfd447a61",
+    "name" : "BLG",
+    "ext" : "",
+    "label" : "BLG_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a43",
+    "name" : "IN3",
+    "ext" : "",
+    "label" : "IN3_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a65",
+    "name" : "PD1",
+    "ext" : "",
+    "label" : "PD1_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447893",
+    "name" : "MFI",
+    "ext" : "",
+    "label" : "MFI_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447874",
+    "name" : "MFA",
+    "ext" : "",
+    "label" : "MFA_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4479eb",
+    "name" : "IN1",
+    "ext" : "",
+    "label" : "IN1_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478d5",
+    "name" : "ODT",
+    "ext" : "",
+    "label" : "ODT_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478d9",
+    "name" : "ODS",
+    "ext" : "",
+    "label" : "ODS_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478f2",
+    "name" : "OBX",
+    "ext" : "",
+    "label" : "OBX_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a79",
+    "name" : "NTE",
+    "ext" : "",
+    "label" : "NTE_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44787a",
+    "name" : "RXR",
+    "ext" : "",
+    "label" : "RXR_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44785d",
+    "name" : "RXO",
+    "ext" : "",
+    "label" : "RXO_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44787f",
+    "name" : "DG1",
+    "ext" : "",
+    "label" : "DG1_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44785b",
+    "name" : "ERR",
+    "ext" : "",
+    "label" : "ERR_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a72",
+    "name" : "RXC",
+    "ext" : "",
+    "label" : "RXC_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447847",
+    "name" : "ORC",
+    "ext" : "",
+    "label" : "ORC_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447947",
+    "name" : "AL1",
+    "ext" : "",
+    "label" : "AL1_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478de",
+    "name" : "MSH",
+    "ext" : "",
+    "label" : "MSH_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44789a",
+    "name" : "RQ1",
+    "ext" : "",
+    "label" : "RQ1_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447904",
+    "name" : "RQD",
+    "ext" : "",
+    "label" : "RQD_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a1d",
+    "name" : "PV2",
+    "ext" : "",
+    "label" : "PV2_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478a2",
+    "name" : "MSA",
+    "ext" : "",
+    "label" : "MSA_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4479a2",
+    "name" : "IN2",
+    "ext" : "",
+    "label" : "IN2_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44794e",
+    "name" : "PID",
+    "ext" : "",
+    "label" : "PID_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a5d",
+    "name" : "CTI",
+    "ext" : "",
+    "label" : "CTI_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44790f",
+    "name" : "GT1",
+    "ext" : "",
+    "label" : "GT1_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478a9",
+    "name" : "OBR",
+    "ext" : "",
+    "label" : "OBR_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44796d",
+    "name" : "PV1",
+    "ext" : "",
+    "label" : "PV1_"
+  } ]
+}

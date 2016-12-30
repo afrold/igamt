@@ -156,11 +156,11 @@ public class ExportUtil {
 
 
     private File doTransformToTempHtml(String xmlString,String xslPath, ExportParameters exportParameters) throws IOException, TransformerException {
-//    	File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
-    	File tmpHtmlFile = new File("temp_" + UUID.randomUUID().toString() + ".html");
+    	File tmpHtmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".html");
+//    	File tmpHtmlFile = new File("temp_" + UUID.randomUUID().toString() + ".html");
         // Generate xml file containing profile
-//        File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
-        File tmpXmlFile = new File("temp_" + UUID.randomUUID().toString() + ".xml");
+        File tmpXmlFile = File.createTempFile("temp" + UUID.randomUUID().toString(), ".xml");
+//        File tmpXmlFile = new File("temp_" + UUID.randomUUID().toString() + ".xml");
         FileUtils.writeStringToFile(tmpXmlFile, xmlString, Charset.forName("UTF-8"));
         TransformerFactory factoryTf = TransformerFactory.newInstance();
         factoryTf.setURIResolver(new XsltIncludeUriResover());
@@ -182,14 +182,14 @@ public class ExportUtil {
         tidy.setDropEmptyParas(true);
         tidy.setCharEncoding(org.w3c.tidy.Configuration.UTF8);
         tidy.setXHTML(true);
-        tidy.setShowWarnings(true); // to hide errors
-        tidy.setQuiet(false); // to hide warning
+        tidy.setShowWarnings(false); // to hide errors
+        tidy.setQuiet(true); // to hide warning
         tidy.setMakeClean(true);
         tidy.setTidyMark(false);
         tidy.setHideEndTags(false);
+        tidy.setBreakBeforeBR(true);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         tidy.parseDOM(html, outputStream);
-        tidy.setBreakBeforeBR(true);
         return outputStream;
     }
 

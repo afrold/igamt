@@ -1,0 +1,111 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b3f4",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0555",
+  "name" : "0555",
+  "description" : "Invoice Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.555",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3f5",
+    "value" : "BK",
+    "label" : "Block",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3f6",
+    "value" : "FN",
+    "label" : "Final",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3f7",
+    "value" : "FS",
+    "label" : "Fee for Service",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3f8",
+    "value" : "GP",
+    "label" : "Group",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3f9",
+    "value" : "IN",
+    "label" : "Information Only",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3fa",
+    "value" : "NP",
+    "label" : "Non Patient",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3fb",
+    "value" : "PA",
+    "label" : "Partial",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3fc",
+    "value" : "SL",
+    "label" : "Salary",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3fd",
+    "value" : "SS",
+    "label" : "By Session",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b3fe",
+    "value" : "SU",
+    "label" : "Supplemental",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

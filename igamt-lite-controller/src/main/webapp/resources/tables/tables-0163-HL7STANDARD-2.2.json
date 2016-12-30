@@ -1,0 +1,507 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd447d26",
+  "hl7Version" : "2.2",
+  "libIds" : [ "573dd23bd4c6ca828c2970f5" ],
+  "bindingIdentifier" : "0163",
+  "name" : "0163",
+  "description" : "ADMINISTRIVE SITE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d27",
+    "value" : "BE",
+    "label" : "Beide Ohren",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d28",
+    "value" : "BN",
+    "label" : "Beide Nasenlöcher",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d29",
+    "value" : "BU",
+    "label" : "Gesäß",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d2a",
+    "value" : "CT",
+    "label" : "Tubus",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d2b",
+    "value" : "LA",
+    "label" : "Left arm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d2c",
+    "value" : "LAC",
+    "label" : "Linker vorderer Thorax",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d2d",
+    "value" : "LACF",
+    "label" : "Linke Fossa antecubitalis",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d2e",
+    "value" : "LD",
+    "label" : "Linker Deltoideus",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d2f",
+    "value" : "LE",
+    "label" : "Left Ear",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d30",
+    "value" : "LEJ",
+    "label" : "Linke Vena jugularis externa",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d31",
+    "value" : "LF",
+    "label" : "Left Foot",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d32",
+    "value" : "LG",
+    "label" : "Linker Glutäus maximus",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d33",
+    "value" : "LH",
+    "label" : "Left Hand",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d34",
+    "value" : "LIJ",
+    "label" : "Linke Vena jugularis interna",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d35",
+    "value" : "LLAQ",
+    "label" : "Linker unterer Quadrant Abdomen",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d36",
+    "value" : "LLFA",
+    "label" : "Linker Unterarm (unten)",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d37",
+    "value" : "LMFA",
+    "label" : "Linker Unterarm (Mitte)",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d38",
+    "value" : "LN",
+    "label" : "Linkes Nasenloch",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d39",
+    "value" : "LPC",
+    "label" : "Linker hinterer Thorax",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d3a",
+    "value" : "LSC",
+    "label" : "Linke Subclavia",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d3b",
+    "value" : "LT",
+    "label" : "Linker Oberschenkel",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d3c",
+    "value" : "LUA",
+    "label" : "Linker Oberarm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d3d",
+    "value" : "LUAQ",
+    "label" : "Linker oberer Quadrant Abdomen",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d3e",
+    "value" : "LUFA",
+    "label" : "Linker Unterarm (oben)",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d3f",
+    "value" : "LVG",
+    "label" : "Linke Bauch- / Glutealgegend",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d40",
+    "value" : "LVL",
+    "label" : "Linker Musculus vastus lateralis (Offiziersstreifen)",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d41",
+    "value" : "NB",
+    "label" : "Vernebelt",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d42",
+    "value" : "OD",
+    "label" : "Right Eye",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d43",
+    "value" : "OS",
+    "label" : "Left Eye",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d44",
+    "value" : "OU",
+    "label" : "Beide Augen",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d45",
+    "value" : "PA",
+    "label" : "Perianal",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d46",
+    "value" : "PERIN",
+    "label" : "Perineum / Dammbereich",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d47",
+    "value" : "RA",
+    "label" : "Rechter Arm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d48",
+    "value" : "RAC",
+    "label" : "Rechter vorderer Thorax",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d49",
+    "value" : "RACF",
+    "label" : "Rechte Fossa antecubitalis",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d4a",
+    "value" : "RD",
+    "label" : "Rechter Deltoideus",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d4b",
+    "value" : "RE",
+    "label" : "Rechtes Ohr",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d4c",
+    "value" : "REJ",
+    "label" : "Rechte Vena jugularis externa",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d4d",
+    "value" : "RF",
+    "label" : "Rechter Fuß",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d4e",
+    "value" : "RG",
+    "label" : "Rechter Glutäus maximus",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d4f",
+    "value" : "RH",
+    "label" : "Rechte Hand",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d50",
+    "value" : "RIJ",
+    "label" : "Rechte Vena jugularis interna",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d51",
+    "value" : "RLAQ",
+    "label" : "Rechter unterer Quadrant Abdomen",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d52",
+    "value" : "RLFA",
+    "label" : "Rechter Unterarm (unten)",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d53",
+    "value" : "RMFA",
+    "label" : "Rechter Unterarm (Mitte)",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d54",
+    "value" : "RN",
+    "label" : "Rechtes Nasenloch",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d55",
+    "value" : "RPC",
+    "label" : "Rechter hinterer Thorax",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d56",
+    "value" : "RSC",
+    "label" : "Rechte Subclavia",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d57",
+    "value" : "RT",
+    "label" : "Rechter Oberschenkel",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d58",
+    "value" : "RUA",
+    "label" : "Rechter Oberarm",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d59",
+    "value" : "RUAQ",
+    "label" : "Rechter oberer Quadrant Abdomen",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d5a",
+    "value" : "RUFA",
+    "label" : "Rechter Unterarm (oben)",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d5b",
+    "value" : "RVG",
+    "label" : "Rechte Bauch- / Glutealgegend",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d5c",
+    "value" : "RVL",
+    "label" : "Rechter Musculus vastus lateralis (Offiziersstreifen)",
+    "codeSystem" : "HL70163",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443f45",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0474",
+  "name" : "0474",
+  "description" : "Organization unit type - ORG",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f46",
+    "value" : "D",
+    "label" : "Department",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f47",
+    "value" : "F",
+    "label" : "Facility",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f48",
+    "value" : "L",
+    "label" : "Local market area",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f49",
+    "value" : "M",
+    "label" : "Medical Center Area",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f4a",
+    "value" : "S",
+    "label" : "Subdivision",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f4b",
+    "value" : "U",
+    "label" : "Subdepartment",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f4c",
+    "value" : "V",
+    "label" : "Division",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

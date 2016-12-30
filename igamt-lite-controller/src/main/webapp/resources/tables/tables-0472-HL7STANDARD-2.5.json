@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd441401",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0472",
+  "name" : "0472",
+  "description" : "TQ conjunction ID",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.472",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441402",
+    "value" : "A",
+    "label" : "Asynchronous",
+    "codeSystem" : "HL70472",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441403",
+    "value" : "C",
+    "label" : "This is an actuation time",
+    "codeSystem" : "HL70472",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441404",
+    "value" : "S",
+    "label" : "Synchronous.",
+    "codeSystem" : "HL70472",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

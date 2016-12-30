@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd4471d6",
+  "hl7Version" : "2.3",
+  "libIds" : [ "573dd23ad4c6ca828c296b7e" ],
+  "bindingIdentifier" : "0287",
+  "name" : "0287",
+  "description" : "Action Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471d7",
+    "value" : "AD",
+    "label" : "ADD",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471d8",
+    "value" : "CO",
+    "label" : "CORRECT",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471d9",
+    "value" : "DE",
+    "label" : "DELETE",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471da",
+    "value" : "LI",
+    "label" : "LINK",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471db",
+    "value" : "UC",
+    "label" : "UNCHANGED 1",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471dc",
+    "value" : "UN",
+    "label" : "UNLINK",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4471dd",
+    "value" : "UP",
+    "label" : "UPDATE",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

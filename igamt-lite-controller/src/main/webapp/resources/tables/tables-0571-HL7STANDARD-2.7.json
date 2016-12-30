@@ -1,0 +1,93 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655080fb",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0571",
+  "name" : "0571",
+  "description" : "Invoice Processing Results Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080fc",
+    "value" : "ACK",
+    "label" : "Acknowledge",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080fd",
+    "value" : "ADJ",
+    "label" : "Adjudicated with Adjustments",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080fe",
+    "value" : "ADJSUB",
+    "label" : "Adjudicated as Submitted",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080ff",
+    "value" : "ADJZER",
+    "label" : "Adjudicated to Zero",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508100",
+    "value" : "PAID",
+    "label" : "Paid",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508101",
+    "value" : "PEND",
+    "label" : "Pending",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508102",
+    "value" : "PRED",
+    "label" : "Pre-Determination",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508103",
+    "value" : "REJECT",
+    "label" : "Reject",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

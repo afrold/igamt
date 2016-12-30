@@ -1,0 +1,108 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd22fd4c6ca828c28ca60" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550bb7c",
+  "label" : "EI",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "Entity Identifier",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "199",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbaf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bbf8"
+  }, {
+    "type" : "component",
+    "name" : "Namespace ID",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "20",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550a8dd",
+      "bindingIdentifier" : "0363",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bbf9"
+  }, {
+    "type" : "component",
+    "name" : "Universal ID",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "199",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbaf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 3,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bbfa"
+  }, {
+    "type" : "component",
+    "name" : "Universal ID Type",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "6",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b340",
+      "bindingIdentifier" : "0301",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb77",
+      "name" : "ID",
+      "ext" : null,
+      "label" : "ID"
+    },
+    "position" : 4,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bbfb"
+  } ],
+  "name" : "EI",
+  "description" : "Entity Identifier",
+  "comment" : "",
+  "usageNote" : ""
+}

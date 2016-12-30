@@ -1,0 +1,65 @@
+{
+  "type" : "datatype",
+  "hl7Version" : "2.6",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : "PUBLISHED",
+  "participants" : [ ],
+  "libIds" : [ "573dd22fd4c6ca828c28ca60" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0ed4c623dc6550bb85",
+  "label" : "RI",
+  "ext" : null,
+  "purposeAndUse" : null,
+  "components" : [ {
+    "type" : "component",
+    "name" : "Repeat Pattern",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "6",
+    "confLength" : "",
+    "table" : {
+      "id" : "569eac0ed4c623dc6550b805",
+      "bindingIdentifier" : "0335",
+      "bindingStrength" : null,
+      "bindingLocation" : null
+    },
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bb7d",
+      "name" : "IS",
+      "ext" : null,
+      "label" : "IS"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bc16"
+  }, {
+    "type" : "component",
+    "name" : "Explicit Time Interval",
+    "usage" : "O",
+    "minLength" : 0,
+    "maxLength" : "199",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "569eac0ed4c623dc6550bbaf",
+      "name" : "ST",
+      "ext" : null,
+      "label" : "ST"
+    },
+    "position" : 2,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "569eac0ed4c623dc6550bc17"
+  } ],
+  "name" : "RI",
+  "description" : "Repeat Interval",
+  "comment" : "",
+  "usageNote" : ""
+}

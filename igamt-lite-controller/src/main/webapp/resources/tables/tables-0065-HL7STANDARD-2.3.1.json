@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445cf0",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0065",
+  "name" : "0065",
+  "description" : "Specimen action code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cf1",
+    "value" : "A",
+    "label" : "Add ordered tests to the existing specimen",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cf2",
+    "value" : "G",
+    "label" : "Generated order; reflex order",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cf3",
+    "value" : "L",
+    "label" : "Lab to obtain specimen from patient",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cf4",
+    "value" : "O",
+    "label" : "Specimen obtained by service other than Lab",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cf5",
+    "value" : "P",
+    "label" : "Pending specimen; Order sent prior to delivery",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cf6",
+    "value" : "R",
+    "label" : "Revised order",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cf7",
+    "value" : "S",
+    "label" : "Schedule the tests specified below",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

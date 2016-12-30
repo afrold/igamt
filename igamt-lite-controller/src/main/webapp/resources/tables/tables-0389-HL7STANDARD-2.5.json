@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd4408b8",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0389",
+  "name" : "0389",
+  "description" : "Analyte repeat status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.389",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408b9",
+    "value" : "D",
+    "label" : "Repeated with dilution",
+    "codeSystem" : "HL70389",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408ba",
+    "value" : "F",
+    "label" : "Reflex test",
+    "codeSystem" : "HL70389",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408bb",
+    "value" : "O",
+    "label" : "Original, first run",
+    "codeSystem" : "HL70389",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408bc",
+    "value" : "R",
+    "label" : "Repeated without dilution",
+    "codeSystem" : "HL70389",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

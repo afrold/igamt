@@ -1,0 +1,75 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550a8e9",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0001",
+  "name" : "0001",
+  "description" : "Administrative Sex",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.1",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8ea",
+    "value" : "A",
+    "label" : "Ambiguous",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8eb",
+    "value" : "F",
+    "label" : "Female",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8ec",
+    "value" : "M",
+    "label" : "Male",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8ed",
+    "value" : "N",
+    "label" : "Not applicable",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8ee",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8ef",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -1,0 +1,93 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507d50",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0527",
+  "name" : "0527",
+  "description" : "Calendar Alignment",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d51",
+    "value" : "DM",
+    "label" : "day of the month",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d52",
+    "value" : "DW",
+    "label" : "day of the week (begins with Monday)",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d53",
+    "value" : "DY",
+    "label" : "day of the year",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d54",
+    "value" : "HD",
+    "label" : "hour of the day",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d55",
+    "value" : "MY",
+    "label" : "month of the year",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d56",
+    "value" : "NH",
+    "label" : "minute of the hour",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d57",
+    "value" : "SN",
+    "label" : "second of the minute",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d58",
+    "value" : "WY",
+    "label" : "week of the year",
+    "codeSystem" : "HL70527",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

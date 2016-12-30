@@ -1,0 +1,435 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd443b4f",
+  "hl7Version" : "2.4",
+  "libIds" : [ "573dd237d4c6ca828c294b3d" ],
+  "bindingIdentifier" : "0203",
+  "name" : "0203",
+  "description" : "Identifier type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b50",
+    "value" : "AM",
+    "label" : "American Express",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b51",
+    "value" : "AN",
+    "label" : "Account number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b52",
+    "value" : "BA",
+    "label" : "Bank Account Number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b53",
+    "value" : "BR",
+    "label" : "Birth registry number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b54",
+    "value" : "BRN",
+    "label" : "Breed Registry Number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b55",
+    "value" : "DI",
+    "label" : "Diner's Club card",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b56",
+    "value" : "DL",
+    "label" : "Driver's license number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b57",
+    "value" : "DN",
+    "label" : "Doctor number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b58",
+    "value" : "DR",
+    "label" : "Donor Registration Number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b59",
+    "value" : "DS",
+    "label" : "Discover Card",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b5a",
+    "value" : "EI",
+    "label" : "Employee number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b5b",
+    "value" : "EN",
+    "label" : "Employer number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b5c",
+    "value" : "FI",
+    "label" : "Facility ID",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b5d",
+    "value" : "GI",
+    "label" : "Guarantor internal identifier",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b5e",
+    "value" : "GN",
+    "label" : "Guarantor external  identifier",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b5f",
+    "value" : "HC",
+    "label" : "Health Card Number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b60",
+    "value" : "JHN",
+    "label" : "Jurisdictional health number (Canada)",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b61",
+    "value" : "LN",
+    "label" : "License number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b62",
+    "value" : "LR",
+    "label" : "Local Registry ID",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b63",
+    "value" : "MA",
+    "label" : "Medicaid number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b64",
+    "value" : "MC",
+    "label" : "Medicare number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b65",
+    "value" : "MCN",
+    "label" : "Microchip Number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b66",
+    "value" : "MR",
+    "label" : "Medical record number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b67",
+    "value" : "MS",
+    "label" : "MasterCard",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b68",
+    "value" : "NE",
+    "label" : "National employer identifier",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b69",
+    "value" : "NH",
+    "label" : "National Health Plan Identifier",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b6a",
+    "value" : "NI",
+    "label" : "National unique individual identifier",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b6b",
+    "value" : "NNxxx",
+    "label" : "National Person Identifier where the xxx is the ISO table 3166  3-character (alphabetic) country code",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b6c",
+    "value" : "NPI",
+    "label" : "National provider identifier",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b6d",
+    "value" : "PEN",
+    "label" : "Pension Number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b6e",
+    "value" : "PI",
+    "label" : "Patient internal identifier",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b6f",
+    "value" : "PN",
+    "label" : "Person number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b70",
+    "value" : "PRN",
+    "label" : "Provider number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b71",
+    "value" : "PT",
+    "label" : "Patient external identifier",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b72",
+    "value" : "RR",
+    "label" : "Railroad Retirement number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b73",
+    "value" : "RRI",
+    "label" : "Regional registry ID",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b74",
+    "value" : "SL",
+    "label" : "State license",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b75",
+    "value" : "SR",
+    "label" : "State registry ID",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b76",
+    "value" : "SS",
+    "label" : "Social Security number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b77",
+    "value" : "U",
+    "label" : "Unspecified",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b78",
+    "value" : "UPIN",
+    "label" : "Medicare/HCFA's Universal Physician Identification numbers",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b79",
+    "value" : "VN",
+    "label" : "Visit number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b7a",
+    "value" : "VS",
+    "label" : "VISA",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b7b",
+    "value" : "WC",
+    "label" : "WIC identifier",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b7c",
+    "value" : "WCN",
+    "label" : "Workers' Comp Number",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b7d",
+    "value" : "XX",
+    "label" : "Organization identifier",
+    "codeSystem" : "HL70203",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

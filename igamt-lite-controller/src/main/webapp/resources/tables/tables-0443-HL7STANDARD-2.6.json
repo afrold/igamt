@@ -1,0 +1,120 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b6f8",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0443",
+  "name" : "0443",
+  "description" : "Provider role",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.443",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6f9",
+    "value" : "AD",
+    "label" : "Admitting",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6fa",
+    "value" : "AI",
+    "label" : "Assistant/Alternate Interpreter",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6fb",
+    "value" : "AT",
+    "label" : "Attending",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6fc",
+    "value" : "CP",
+    "label" : "Consulting Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6fd",
+    "value" : "FHCP",
+    "label" : "Family Health Care Professional",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6fe",
+    "value" : "PI",
+    "label" : "Primary Interpreter",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b6ff",
+    "value" : "PP",
+    "label" : "Primary Care Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b700",
+    "value" : "RP",
+    "label" : "Referring Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b701",
+    "value" : "RT",
+    "label" : "Referred to Provider",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b702",
+    "value" : "TN",
+    "label" : "Technician",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b703",
+    "value" : "TR",
+    "label" : "Transcriptionist",
+    "codeSystem" : "HL70443",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

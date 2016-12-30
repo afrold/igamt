@@ -102,6 +102,18 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     };
 
+    $scope.deleteConformanceStatementFromList = function (c){
+        $rootScope.segment.conformanceStatements.splice($rootScope.segment.conformanceStatements.indexOf(c), 1);
+
+        $scope.setDirty();
+    };
+
+    $scope.deletePredicateFromList = function (p){
+        $rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf(p), 1);
+
+        $scope.setDirty();
+    };
+
     $scope.AddBindingForSegment = function(segment) {
         var modalInstance = $modal.open({
             templateUrl: 'AddBindingForSegment.html',
@@ -233,62 +245,15 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     $scope.editDT = function(field) {
         $scope.editableDT = field.id;
-        $scope.loadLibrariesByFlavorName = function() {
-            // console.log($rootScope.igdocument);
-            var delay = $q.defer();
-            $scope.ext = null;
-            $scope.results = [];
-            $scope.tmpResults = [];
-            $scope.results = $scope.results.concat(filterFlavors($rootScope.igdocument.profile.datatypeLibrary, field.datatype.name));
-            $scope.results = _.uniq($scope.results, function(item, key, a) {
-                return item.id;
-            });
-            $scope.tmpResults = [].concat($scope.results);
-            //            DatatypeLibrarySvc.findLibrariesByFlavorName(field.datatype.name, 'HL7STANDARD', $rootScope.igdocument.profile.metaData.hl7Version).then(function(libraries) {
-            //                if (libraries != null) {
-            //                    _.each(libraries, function(library) {
-            //                        $scope.results = $scope.results.concat(filterFlavors(library, field.datatype.name));
-            //                    });
-            //                }
-            //
-            //                $scope.results = _.uniq($scope.results, function(item, key, a) {
-            //                    return item.id;
-            //                });
-            //                $scope.tmpResults = [].concat($scope.results);
-            //
-            //                delay.resolve(true);
-            //            }, function(error) {
-            //                $rootScope.msg().text = "Sorry could not load the data types";
-            //                $rootScope.msg().type = error.data.type;
-            //                $rootScope.msg().show = true;
-            //                delay.reject(error);
-            //            });
-            return delay.promise;
-        };
-
-
-        var filterFlavors = function(library, name) {
-            var results = [];
-            _.each(library.children, function(link) {
-                if (link.name === name) {
-                    link.libraryName = library.metaData.name;
-                    link.hl7Version = $rootScope.datatypesMap[link.id].hl7Version;
-                    //link.hl7Version = library.metaData.hl7Version;
-                    results.push(link);
-                }
-            });
-            return results;
-        };
-
-
-
-
-        $scope.loadLibrariesByFlavorName().then(function(done) {
-            // console.log($scope.results);
-            // $scope.selection.selected = $scope.currentDatatype.id;
-            // $scope.showSelectedDetails($scope.currentDatatype);
-        });
-    };
+           
+                          $scope.results = [];
+                          angular.forEach($rootScope.datatypeLibrary.children ,function(dtLink){
+                              if(dtLink.name&&dtLink.name===field.datatype.name){
+                                  $scope.results.push(dtLink);
+                              }
+                          });
+          };
+           
     $scope.backDT = function() {
         $scope.editableDT = '';
     };
@@ -310,7 +275,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
             });
             modalInstance.result.then(function() {
-                $rootScope.editDataType(datatype);
+                $rootScope.editDatatype(datatype);
             });
 
 

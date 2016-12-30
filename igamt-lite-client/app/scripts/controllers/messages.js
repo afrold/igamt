@@ -76,7 +76,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
                 });
                 modalInstance.result.then(function() {
-                    $rootScope.editDataType(datatype);
+                    $rootScope.editDatatype(datatype);
                 });
 
 

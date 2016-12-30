@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd441645",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0475",
+  "name" : "0475",
+  "description" : "Charge Type Reason",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.475",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441646",
+    "value" : "01",
+    "label" : "Allergy",
+    "codeSystem" : "HL70475",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441647",
+    "value" : "02",
+    "label" : "Intolerance",
+    "codeSystem" : "HL70475",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441648",
+    "value" : "03",
+    "label" : "Treatment Failure",
+    "codeSystem" : "HL70475",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441649",
+    "value" : "04",
+    "label" : "Patient Request",
+    "codeSystem" : "HL70475",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44164a",
+    "value" : "05",
+    "label" : "No Exception",
+    "codeSystem" : "HL70475",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}
