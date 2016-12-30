@@ -10,14 +10,14 @@
 		<artifactId>igamt-lite</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<build>
+	<!-- <build>
 		<plugins>
 
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<!-- NB! Set <version> to the latest released version of frontend-maven-plugin, 
-					like in README.md -->
+				NB! Set <version> to the latest released version of frontend-maven-plugin, 
+					like in README.md
 				<version>1.0</version>
 
 				<executions>
@@ -38,14 +38,14 @@
 						<goals>
 							<goal>npm</goal>
 						</goals>
-						<!-- Optional configuration which provides for running any npm command -->
+						Optional configuration which provides for running any npm command
 						<configuration>
 							<arguments>install</arguments>
 						</configuration>
 					</execution>
 
-					<!-- <execution> <id>npm run build</id> <goals> <goal>npm</goal> </goals> 
-						<configuration> <arguments>install</arguments> </configuration> </execution> -->
+					<execution> <id>npm run build</id> <goals> <goal>npm</goal> </goals> 
+						<configuration> <arguments>install</arguments> </configuration> </execution>
 					<execution>
 						<id>bower install</id>
 						<goals>
@@ -65,11 +65,11 @@
 							<arguments>build</arguments>
 						</configuration>
 					</execution>
-					<!-- <execution> <id>javascript tests</id> <goals> <goal>karma</goal> 
+					<execution> <id>javascript tests</id> <goals> <goal>karma</goal> 
 						</goals> <configuration> <karmaConfPath>src/test/javascript/karma.conf.ci.js</karmaConfPath> 
-						</configuration> </execution> -->
+						</configuration> </execution>
 				</executions>
 			</plugin>
 		</plugins>
-	</build>
+	</build> -->
 </project>
