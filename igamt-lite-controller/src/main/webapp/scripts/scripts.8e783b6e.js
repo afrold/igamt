@@ -24235,7 +24235,9 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
+    $scope.ext = null;
+    if($rootScope.igdocument) $scope.ext = $rootScope.igdocument.metaData.ext;
+    $scope.newComplexConstraintId = $rootScope.calNextCSID($scope.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
     $scope.newComplexConstraint = [];
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
@@ -24344,7 +24346,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
             freeText: null,
             verb: null,
             ignoreCase: false,
-            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext),
+            constraintId: $rootScope.calNextCSID($scope.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext),
             contraintType: null,
             value: null,
             value2: null,
@@ -24359,7 +24361,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($scope.ext, $rootScope.datatype.name + "_" + $rootScope.datatype.ext);
     };
 
     $scope.initConformanceStatement();
@@ -26862,6 +26864,12 @@ angular.module('igl')
         $scope.exportAs = function (format) {
             if ($rootScope.igdocument != null) {
                 IgDocumentService.exportAs($rootScope.igdocument, format);
+            }
+        };
+
+        $scope.exportAsWithLayout = function(format,layout) {
+            if ($rootScope.igdocument != null) {
+                IgDocumentService.exportAsWithLayout($rootScope.igdocument, format, layout);
             }
         };
 
