@@ -1874,21 +1874,18 @@
                 <div class="panel panel-default ">
                     <div class="panel-heading ">Conformance Statements Builder</div>
                     <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
-                        <span class="pull-right ">
-                            <div class="btn-group btn-group-sm " data-toggle="buttons ">
-                                <label class="btn btn-raised btn-primary btn-xs " ng-click="constraintType='Free' ; newConstraint.constraintId=c alNextCSID(igdocument.metaData.ext, segment.name + '_' + segment.ext); " ng-class="{ 'active':constraintType==='Free'
-                            } ">
-                                    <input type="radio " ng-value="constraintType ">Add new Free-Text Conf.Statement
-                                </label>
-                                <label class="btn btn-raised btn-primary btn-xs " ng-click="constraintType='Plain' ; newConstraint.constraintId=c alNextCSID(igdocument.metaData.ext, segment.name + '_' + segment.ext); " ng-class="{ 'active':constraintType==='Plain'
-                            } ">
-                                    <input type="radio " ng-value="constraintType ">Add new plain Conf.Statement
-                                </label>
-                                <label class="btn btn-raised btn-primary btn-xs " ng-click="constraintType='Complex' ; newComplexConstraintId=c alNextCSID(igdocument.metaData.ext, segment.name + '_' + segment.ext); " ng-class="{ 'active':constraintType==='Complex'
-                            } ">
-                                    <input type="radio " ng-value="constraintType ">Add new complex Conf.Statement
-                                </label>
-                            </div>
+                        <span class="pull-right">
+                            	<div class="btn-group btn-group-sm" data-toggle="buttons">
+                                	<label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Free';" ng-class="{'active':constraintType === 'Free'}">
+                                    	<input type="radio" ng-value="constraintType">Add new Free-Text Constraint
+                                	</label>
+                                	<label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Plain';" ng-class="{'active':constraintType === 'Plain'}">
+                                    	<input type="radio" ng-value="constraintType">Add new plain Constraint
+                                	</label>
+                                	<label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Complex';" ng-class="{'active':constraintType === 'Complex'}">
+                                    	<input type="radio" ng-value="constraintType">Add new complex Constraint
+                                	</label>
+                            	</div>
                         </span>
 
                         <table class="table table-striped table-bordered " ng-show="constraintType==='Free' ">
@@ -2193,18 +2190,18 @@
                         <div class="panel-heading">Constraint Builder</div>
                         <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
                             <span class="pull-right">
-                            <div class="btn-group btn-group-sm" data-toggle="buttons">
-                                <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Free';" ng-class="{'active':constraintType === 'Free'}">
-                                    <input type="radio" ng-value="constraintType">Add new Free-Text Constraint
-                                </label>
-                                <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Plain';" ng-class="{'active':constraintType === 'Plain'}">
-                                    <input type="radio" ng-value="constraintType">Add new plain Constraint
-                                </label>
-                                <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Complex';" ng-class="{'active':constraintType === 'Complex'}">
-                                    <input type="radio" ng-value="constraintType">Add new complex Constraint
-                                </label>
-                            </div>
-                        </span>
+                            	<div class="btn-group btn-group-sm" data-toggle="buttons">
+                                	<label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Free';" ng-class="{'active':constraintType === 'Free'}">
+                                    	<input type="radio" ng-value="constraintType">Add new Free-Text Constraint
+                                	</label>
+                                	<label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Plain';" ng-class="{'active':constraintType === 'Plain'}">
+                                    	<input type="radio" ng-value="constraintType">Add new plain Constraint
+                                	</label>
+                                	<label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType = 'Complex';" ng-class="{'active':constraintType === 'Complex'}">
+                                    	<input type="radio" ng-value="constraintType">Add new complex Constraint
+                                	</label>
+                            	</div>
+                        	</span>
 
                             <table class="table table-striped table-bordered" ng-show="constraintType === 'Free'">
                                 <thead>
