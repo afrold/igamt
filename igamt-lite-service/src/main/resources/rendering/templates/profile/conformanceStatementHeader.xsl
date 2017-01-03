@@ -7,12 +7,7 @@
         </xsl:element>
         <xsl:element name="col">
             <xsl:attribute name="width">
-                <xsl:text>10%</xsl:text>
-            </xsl:attribute>
-        </xsl:element>
-        <xsl:element name="col">
-            <xsl:attribute name="width">
-                <xsl:text>80%</xsl:text>
+                <xsl:text>90%</xsl:text>
             </xsl:attribute>
         </xsl:element>
         <xsl:element name="thead">
@@ -22,9 +17,6 @@
             <xsl:element name="tr">
                 <xsl:element name="th">
                     <xsl:text>Id</xsl:text>
-                </xsl:element>
-                <xsl:element name="th">
-                    <xsl:text>Location</xsl:text>
                 </xsl:element>
                 <xsl:element name="th">
                     <xsl:text>Description</xsl:text>

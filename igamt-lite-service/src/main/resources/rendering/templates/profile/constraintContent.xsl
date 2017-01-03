@@ -52,10 +52,10 @@
                             <xsl:value-of select="@Id" />
                         </xsl:element>
                     </xsl:if>
-                    <xsl:element name="td">
-                        <xsl:value-of select="concat(@LocationName, @Location)" />
-                    </xsl:element>
                     <xsl:if test="$type='pre'">
+                        <xsl:element name="td">
+                            <xsl:value-of select="concat(@LocationName, @Location)" />
+                        </xsl:element>
                         <xsl:element name="td">
                             <xsl:value-of select="@Usage" />
                         </xsl:element>
