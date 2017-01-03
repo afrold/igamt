@@ -19704,10 +19704,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
     	$scope.vrs=["#","2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7","2.7.1","2.8","2.8.1","2.8.2"];
     	$scope.adjusted=["21","22","23","231","24","25","251","26","27","271","28","281","282"];
-
+    	
+    	$scope.initMatrix=function(){
+    		
+    		blockUI.start();
     	DatatypeLibraryDocumentSvc.getMatrix().then(function(result){
-    			$scope.matrix= result;
+    		
+    		$scope.matrix= result;
+    		blockUI.stop();
     	});
+    	}
     	$scope.make_active = function(x) {
     		
     		for(i=0; i<$scope.tabs.length;i++){
@@ -19808,6 +19814,10 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     $scope.vsTemplate = false;
                     $scope.dataList = CompareService.cmpDatatype(JSON.stringify($scope.cmp1), JSON.stringify($scope.cmp2), [], [], [], []);
                     console.log("hg==========");
+                    
+                    console.log($scope.cmp1);
+                    console.log($scope.cmp2);
+                    
                     $scope.loadingSelection = false;
                     if ($scope.dynamicDt_params) {
                         console.log($scope.dataList);
@@ -22870,6 +22880,9 @@ angular.module('igl')
         	DatatypeService.getOne(id).then(function(result){
                 $scope.dtChanged = false;
                 $scope.vsTemplate = false;
+                console.log("========dddddd");
+                console.log($rootScope.datatype);
+                console.log(result);
                 $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), [], [], [], []);
                 console.log("$scope.dataList");
                 console.log($scope.dataList);

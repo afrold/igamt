@@ -251,6 +251,9 @@ angular.module('igl')
         	DatatypeService.getOne(id).then(function(result){
                 $scope.dtChanged = false;
                 $scope.vsTemplate = false;
+                console.log("========dddddd");
+                console.log($rootScope.datatype);
+                console.log(result);
                 $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), [], [], [], []);
                 console.log("$scope.dataList");
                 console.log($scope.dataList);
