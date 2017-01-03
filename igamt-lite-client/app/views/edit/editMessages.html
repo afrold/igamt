@@ -221,17 +221,13 @@
                                                             <thead>
                                                                 <tr class="tbl-header">
                                                                     <th st-sort="constraintId" class="col-md-2">ID</th>
-                                                                    <th class="col-md-9">Description</th>
-                                                                    <th class="col-md-1">Action</th>
+                                                                    <th class="col-md-10">Description</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr ng-repeat="c in displayed">
                                                                     <td class="col-md-2">{{c.constraintId}}</td>
                                                                     <td class="col-md-10">{{c.description}}</td>
-                                                                    <td class="col-md-1" align="center">
-                                                                        <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatement(c, node)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
-                                                                    </td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
