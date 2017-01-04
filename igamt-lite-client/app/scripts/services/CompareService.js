@@ -601,6 +601,7 @@ angular.module('igl').factory('CompareService',
                             element2: childArray.value.datatype.label
                         };
                         var components = [];
+                        if(childArray.value.components&&childArray.value.components.length){
                         for (var i = 0; i < childArray.value.components.length; i++) {
                             var component = {};
                             component.position = {
@@ -639,6 +640,7 @@ angular.module('igl').factory('CompareService',
                             components.push(component);
 
 
+                        }
                         }
                         console.log(components);
                         result.components = components;

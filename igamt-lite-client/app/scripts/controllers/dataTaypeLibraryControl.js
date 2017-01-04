@@ -207,18 +207,18 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
               DatatypeService.getOneStandard($scope.selectedRow.name, $scope.selectedVersion1,versions1).then(function(result1) {
             	$scope.cmp1=result1;
+            	console.log("Found the first One")
+            	console.log($scope.cmp1);
                 DatatypeService.getOneStandard($scope.selectedRow.name, $scope.selectedVersion2,versions2).then(function(result2) {
                 	$scope.cmp2=result2;
-
+                	console.log("Found the secont One")
+                	console.log($scope.cmp2);
 
                     $scope.loadingSelection = true;
                     $scope.dtChanged = false;
                     $scope.vsTemplate = false;
                     $scope.dataList = CompareService.cmpDatatype(JSON.stringify($scope.cmp1), JSON.stringify($scope.cmp2), [], [], [], []);
-                    console.log("hg==========");
-                    
-                    console.log($scope.cmp1);
-                    console.log($scope.cmp2);
+                 
                     
                     $scope.loadingSelection = false;
                     if ($scope.dynamicDt_params) {
