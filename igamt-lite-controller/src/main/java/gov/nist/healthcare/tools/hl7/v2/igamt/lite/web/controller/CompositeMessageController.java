@@ -82,6 +82,18 @@ public class CompositeMessageController extends CommonController{
       return compositeMessage;
 
   }
+  @RequestMapping(value = "/save", method = RequestMethod.POST)
+	public CompositeMessage save(@RequestBody CompositeMessage message) {
+		log.debug("message=" + message);
+		log.debug("message.getId()=" + message.getId());
+		log.info("Saving the " + message.getScope() + " message.");
+		message.setDateUpdated(DateUtils.getCurrentDate());
+		CompositeMessage saved = compositeMessageService.save(message);
+		log.debug("saved.getId()=" + saved.getId());
+		log.debug("saved.getScope()=" + saved.getScope());
+		return message;
+
+	}
   @RequestMapping(value = "/savegrporseg", method = RequestMethod.POST)
   public List<SegmentOrGroup> save( @RequestBody List<SegmentOrGroup> segOrGrps) throws IGDocumentException {
     System.out.println("+++++++++++++++++++++++++++++++++");
