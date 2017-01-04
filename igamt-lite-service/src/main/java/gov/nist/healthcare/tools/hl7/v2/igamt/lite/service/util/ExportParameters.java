@@ -22,13 +22,20 @@ public class ExportParameters {
     private boolean includeTOC = true;
     private String targetFormat = "html";
     private String documentTitle = "Implementation Guide";
+    private String imageLogo;
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle) {
+        this(inlineConstraints,includeTOC,targetFormat,documentTitle,null);
+    }
+
+    public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
+        String documentTitle,String imageLogo) {
         this.inlineConstraints = inlineConstraints;
         this.includeTOC = includeTOC;
         this.targetFormat = targetFormat;
         this.documentTitle = documentTitle;
+        this.imageLogo = imageLogo;
     }
 
     public ExportParameters() {
@@ -72,6 +79,13 @@ public class ExportParameters {
         params.put("inlineConstraints", String.valueOf(inlineConstraints));
         params.put("targetFormat", targetFormat);
         params.put("documentTitle", documentTitle);
+        if(imageLogo!=null) {
+            params.put("imageLogo", imageLogo);
+        }
         return params;
+    }
+
+    public void setImageLogo(String imageLogo) {
+        this.imageLogo = imageLogo;
     }
 }

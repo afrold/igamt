@@ -17,8 +17,8 @@
                 				<xsl:attribute name="id">
                     				<xsl:value-of select="@id"/>
                 				</xsl:attribute>
-                            	<xsl:choose>
-                    				<xsl:when test="@prefix != '' and @target = 'html' ">
+                                <xsl:choose>
+                    				<xsl:when test="@prefix != '' and $target = 'html' ">
                                 		<xsl:value-of select="concat(@prefix, ' - ', @title)"/>
 	                            	</xsl:when>
 	                        	    <xsl:when test="@scope = 'MASTER'">
@@ -33,7 +33,8 @@
                                     		<xsl:value-of select="@title"/>
                                 		</xsl:element>
                             		</xsl:when>	
-                            		<xsl:otherwise>                           
+                            		<xsl:otherwise>
+                                        bite
                             			<xsl:value-of select="@title"/>
                             		</xsl:otherwise>
                             	</xsl:choose>

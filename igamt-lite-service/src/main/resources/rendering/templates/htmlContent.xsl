@@ -12,6 +12,7 @@
                 <xsl:call-template name="sidebar">
                     <xsl:with-param name="includeTOC" select="$includeTOC"/>
                     <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
+                    <xsl:with-param name="target" select="'html'"/>
                 </xsl:call-template>
             </xsl:when>
             <!-- If we don't need to include the table of content -->
