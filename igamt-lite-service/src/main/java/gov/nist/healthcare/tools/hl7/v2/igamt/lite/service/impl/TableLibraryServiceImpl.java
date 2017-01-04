@@ -136,7 +136,7 @@ public class TableLibraryServiceImpl implements TableLibraryService {
 	}
 
 	@Override
-	public List<Table> findTablesById(String libId) {
+	public List<Table> findAllShortTablesByIds(String libId) {
 		Set<TableLink> tableLinks = tableLibraryRepository.findChildrenById(libId);
 		if (tableLinks != null && !tableLinks.isEmpty()) {
 			Set<String> ids = new HashSet<String>();
@@ -144,6 +144,19 @@ public class TableLibraryServiceImpl implements TableLibraryService {
 				ids.add(link.getId());
 			}
 			return tableRepository.findShortAllByIds(ids);
+		}
+		return new ArrayList<Table>(0);
+	}
+
+	@Override
+	public List<Table> findTablesByIds(String libId) {
+		Set<TableLink> tableLinks = tableLibraryRepository.findChildrenById(libId);
+		if (tableLinks != null && !tableLinks.isEmpty()) {
+			Set<String> ids = new HashSet<String>();
+			for (TableLink link : tableLinks) {
+				ids.add(link.getId());
+			}
+			return tableRepository.findAllByIds(ids);
 		}
 		return new ArrayList<Table>(0);
 	}

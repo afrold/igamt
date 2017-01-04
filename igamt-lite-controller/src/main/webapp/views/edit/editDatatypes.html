@@ -500,7 +500,7 @@
                                             </div>
 
                                             <div class="" align="center" style="margin-bottom:10px">
-                                                <button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="btn btn-raised btn-info btn-md">
+                                                <button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || cmp.datatypeId===-1||!dtChanged || !datatype2" class="btn btn-raised btn-info btn-md">
                         <i class="fa fa-check"></i> Delta</button>
                                             </div>
                                         </div>
@@ -577,12 +577,13 @@
                                                         <span ng-show="ref.type === 'field'" class="label label-field label-icon">F</span>
                                                         <span ng-show="ref.type === 'component'" class="label label-component label-icon">C</span>
                                                         <span ng-show="ref.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
-                                                        <span ng-bind="ref.path"></span>
+                                                          <a ng-show="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.path}}</a>
+                                                        <a ng-show="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.path}}</a>
                                                     </td>
                                                     <td st-ratio="15">
 
-                                                        <a ng-show="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</a>
-                                                        <a ng-show="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.name}}</a>
+                                                        <span ng-show="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</span>
+                                                        <span ng-show="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.name}}</span>
 
                                                     </td>
                                                     <td st-ratio="10">

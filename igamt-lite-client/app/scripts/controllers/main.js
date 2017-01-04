@@ -1213,7 +1213,19 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         $rootScope.findDatatypeRefs = function(datatype, obj, path, target) {
             if (obj != null && obj != undefined) {
-                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                if (angular.equals(obj.type, 'field')) {
+                    if (obj.datatype.id === datatype.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        found.target = angular.copy(target);
+                        found.datatypeLink = angular.copy(obj.datatype);
+                        $rootScope.references.push(found);
+                    }
+                   // $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path, target);
+                }
+                
+                
+                else  if (angular.equals(obj.type, 'component')) {
                     if (obj.datatype.id === datatype.id) {
                         var found = angular.copy(obj);
                         found.path = path;
@@ -1222,7 +1234,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         $rootScope.references.push(found);
                     }
                     $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path, target);
-                } else if (angular.equals(obj.type, 'segment')) {
+                }
+
+                else if (angular.equals(obj.type, 'segment')) {
                     angular.forEach(obj.fields, function(field) {
                         $rootScope.findDatatypeRefs(datatype, field, path + "-" + field.position, target);
                     });

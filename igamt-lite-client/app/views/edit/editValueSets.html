@@ -213,7 +213,15 @@
                                         </span>
 
                                  <div class="">
-                                            <table st-safe-src="table.codes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
+
+
+                                     <div ng-if="table.codes.length >= 1000" style="margin-bottom: 10px">
+                                         <div class="alert alert-warning" role="alert">
+                                             Due to the large size of codes, only the first 1000 of {{table.codes.length}} will be displayed.
+                                         </div>
+                                     </div>
+
+                                            <table st-safe-src="table.smallCodes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
                                                 <thead>
                                 <tr>
                                         <th colspan="6">
@@ -291,8 +299,8 @@
                                                 </tbody>
                     <tr style="float:center !important;">
                         <td colspan="6" class="text-center" style="float:center !important;">
-                            <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7" style="float:center !important;"></div>
-                        </td>
+                            <div st-pagination="" st-items-by-page="30" st-displayed-pages="7" style="float:center !important;"></div>
+                         </td>
                     </tr>
 
                                             </table>
@@ -695,9 +703,14 @@
                                 <div class="el-def" style="margin-top: 20px">
                                     <div class="">
                                         <div class="">
-                                            <table st-safe-src="table.codes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
 
+                                            <div ng-if="table.codes.length > 1000" style="margin-bottom: 10px">
+                                                <div class="alert alert-warning" role="alert">
+                                                    Due to the large size of the codes, only the first 1000 of {{table.codes.length}} codes will be displayed.
+                                                </div>
+                                            </div>
 
+                                             <table st-safe-src="table.smallCodes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <th st-sort="value" class="col-md-2">Value</th>
@@ -747,8 +760,15 @@
                                                     </td>
                                                 </tr>
                                                 </tbody>
+                                                 <tr style="float:center !important;">
+                                                     <td colspan="6" class="text-center" style="float:center !important;">
+                                                         <div st-pagination="" st-items-by-page="30" st-displayed-pages="7" style="float:center !important;"></div>
+                                                     </td>
+                                                 </tr>
+
                                             </table>
-                                        </div>
+
+                                         </div>
                                     </div>
                                 </div>
                             </tab>
