@@ -242,14 +242,18 @@ public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 					ids.add(link.getId());
 				}
 				List<Datatype> datatypes = datatypeRepository.findUserDatatypesByIds(ids);
+				List<Datatype> tmp = new ArrayList<Datatype>();
 
 				if (datatypes != null) {
 					for (Datatype dt : datatypes) {
 						if (dt.getStatus() == null || !dt.getStatus().equals(STATUS.PUBLISHED)) {
-							datatypeRepository.delete(dt);
+							tmp.add(dt); 
 						}
 					}
-
+				}
+				
+				if(tmp.size() > 0){
+					datatypeRepository.delete(tmp);
 				}
 			}
 			if (library.getId() != null)

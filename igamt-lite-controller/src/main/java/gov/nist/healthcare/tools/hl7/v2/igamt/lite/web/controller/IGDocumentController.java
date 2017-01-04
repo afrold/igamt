@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.net.ssl.SSLEngineResult.Status;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,6 +43,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeMessage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -117,6 +119,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfilePreLib;
 @RestController
 @RequestMapping("/igdocuments")
 public class IGDocumentController extends CommonController {
+
 
 	Logger log = LoggerFactory.getLogger(IGDocumentController.class);
 
@@ -356,76 +359,76 @@ public class IGDocumentController extends CommonController {
 				}
 			}
 
-			List<Datatype> datatypes = datatypeLibraryService.findDatatypesById(datatypeLibrary.getId());
-			if (datatypes != null) {
-				for (int i = 0; i < datatypes.size(); i++) {
-					String oldDatatypeId = null;
-					Datatype d = datatypes.get(i);
-					DatatypeLink dl = datatypeLibrary.findOne(d.getId()).clone();
-					if (d.getScope().equals(SCOPE.USER) || d.getScope().equals(SCOPE.PRELOADED)) {
-						oldDatatypeId = d.getId();
-						d.setScope(SCOPE.USER);
-						d.setCreatedFrom(oldDatatypeId);
-						d.setId(null);
-						d.setLibId(new HashSet<String>());
-					}
+			 List<Datatype> datatypes = datatypeLibraryService.findDatatypesById(datatypeLibrary.getId());
+      if (datatypes != null) {
+        for (int i = 0; i < datatypes.size(); i++) {
+          String oldDatatypeId = null;
+          Datatype d = datatypes.get(i);
+          DatatypeLink dl = datatypeLibrary.findOne(d.getId()).clone();
+          if (d.getStatus().equals(STATUS.UNPUBLISHED) || d.getScope().equals(SCOPE.PRELOADED)) {
+            oldDatatypeId = d.getId();
+            d.setScope(SCOPE.USER);
+            d.setCreatedFrom(oldDatatypeId);
+            d.setId(null);
+            d.setLibId(new HashSet<String>());
+          }
 
-					d.getLibIds().add(clonedDatatypeLibrary.getId());
-					datatypeService.save(d);
-					dl.setId(d.getId());
-					clonedDatatypeLibrary.addDatatype(dl);
-					if (oldDatatypeId != null) {
-						datatypeIdChangeMap.put(oldDatatypeId, d.getId());
-					}
-				}
-			}
+          d.getLibIds().add(clonedDatatypeLibrary.getId());
+          datatypeService.save(d);
+          dl.setId(d.getId());
+          clonedDatatypeLibrary.addDatatype(dl);
+          if (oldDatatypeId != null) {
+            datatypeIdChangeMap.put(oldDatatypeId, d.getId());
+          }
+        }
+      }
 
-			List<Segment> segments = segmentLibraryService.findSegmentsById(segmentLibrary.getId());
-			if (segments != null) {
-				for (int i = 0; i < segments.size(); i++) {
-					String oldSegmentId = null;
-					Segment s = segments.get(i);
-					SegmentLink sl = segmentLibrary.findOne(s.getId()).clone();
-					if (s.getScope().equals(SCOPE.USER) || s.getScope().equals(SCOPE.PRELOADED)) {
-						oldSegmentId = s.getId();
-						s.setScope(SCOPE.USER);
-						s.setCreatedFrom(oldSegmentId);
-						s.setId(null);
-						s.setLibId(new HashSet<String>());
-					}
-					s.getLibIds().add(clonedSegmentLibrary.getId());
-					segmentService.save(s);
-					sl.setId(s.getId());
-					clonedSegmentLibrary.addSegment(sl);
-					if (oldSegmentId != null) {
-						segmentIdChangeMap.put(oldSegmentId, s.getId());
-					}
-				}
+      List<Segment> segments = segmentLibraryService.findSegmentsById(segmentLibrary.getId());
+      if (segments != null) {
+        for (int i = 0; i < segments.size(); i++) {
+          String oldSegmentId = null;
+          Segment s = segments.get(i);
+          SegmentLink sl = segmentLibrary.findOne(s.getId()).clone();
+          if (s.getScope().equals(SCOPE.USER) || s.getScope().equals(SCOPE.PRELOADED)) {
+            oldSegmentId = s.getId();
+            s.setScope(SCOPE.USER);
+            s.setCreatedFrom(oldSegmentId);
+            s.setId(null);
+            s.setLibId(new HashSet<String>());
+          }
+          s.getLibIds().add(clonedSegmentLibrary.getId());
+          segmentService.save(s);
+          sl.setId(s.getId());
+          clonedSegmentLibrary.addSegment(sl);
+          if (oldSegmentId != null) {
+            segmentIdChangeMap.put(oldSegmentId, s.getId());
+          }
+        }
 
-			}
+      }
 
-			List<Table> tables = tableLibraryService.findTablesByIds(tableLibrary.getId());
-			if (tables != null) {
-				for (int i = 0; i < tables.size(); i++) {
-					String oldTableId = null;
-					Table t = tables.get(i);
-					TableLink tl = tableLibrary.findOneTableById(t.getId()).clone();
-					if (t.getScope().equals(SCOPE.USER) || t.getScope().equals(SCOPE.PRELOADED)) {
-						oldTableId = t.getId();
-						t.setScope(SCOPE.USER);
-						t.setCreatedFrom(oldTableId);
-						t.setId(null);
-						t.setLibIds(new HashSet<String>());
-					}
-					t.getLibIds().add(clonedTableLibrary.getId());
-					tableService.save(t);
-					tl.setId(t.getId());
-					clonedTableLibrary.addTable(tl);
-					if (oldTableId != null) {
-						tableIdChangeMap.put(oldTableId, t.getId());
-					}
-				}
-			}
+      List<Table> tables = tableLibraryService.findTablesByIds(tableLibrary.getId());
+      if (tables != null) {
+        for (int i = 0; i < tables.size(); i++) {
+          String oldTableId = null;
+          Table t = tables.get(i);
+          TableLink tl = tableLibrary.findOneTableById(t.getId()).clone();
+          if (t.getStatus().equals(STATUS.UNPUBLISHED)|| t.getScope().equals(SCOPE.PRELOADED)) {
+            oldTableId = t.getId();
+            t.setScope(SCOPE.USER);
+            t.setCreatedFrom(oldTableId);
+            t.setId(null);
+            t.setLibIds(new HashSet<String>());
+          }
+          t.getLibIds().add(clonedTableLibrary.getId());
+          tableService.save(t);
+          tl.setId(t.getId());
+          clonedTableLibrary.addTable(tl);
+          if (oldTableId != null) {
+            tableIdChangeMap.put(oldTableId, t.getId());
+          }
+        }
+      }
 
 			datatypeLibraryService.save(clonedDatatypeLibrary);
 			segmentLibraryService.save(clonedSegmentLibrary);
