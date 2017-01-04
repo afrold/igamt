@@ -434,7 +434,7 @@
 
                                   </table>
                                             <div class="" align="center" style="margin-bottom:10px">
-                                                <button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || !segment2||!segChanged" class="btn btn-raised btn-info btn-md">
+                                                <button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || cmp.segmentId===-1||!segChanged || !segment2" class="btn btn-raised btn-info btn-md">
                                                         <i class="fa fa-check"></i> Delta</button>
                                             </div>
                                         </div>

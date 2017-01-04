@@ -349,6 +349,7 @@ public class IGDocumentController extends CommonController {
           if (d.getScope().equals(SCOPE.USER) || d.getScope().equals(SCOPE.PRELOADED)) {
             oldDatatypeId = d.getId();
             d.setScope(SCOPE.USER);
+            d.setCreatedFrom(oldDatatypeId);
             d.setId(null);
             d.setLibId(new HashSet<String>());
           }
@@ -368,10 +369,11 @@ public class IGDocumentController extends CommonController {
         for (int i = 0; i < segments.size(); i++) {
           String oldSegmentId = null;
           Segment s = segments.get(i);
-          SegmentLink sl = segmentLibrary.findOne(s.getId());
+          SegmentLink sl = segmentLibrary.findOne(s.getId()).clone();
           if (s.getScope().equals(SCOPE.USER) || s.getScope().equals(SCOPE.PRELOADED)) {
             oldSegmentId = s.getId();
             s.setScope(SCOPE.USER);
+            s.setCreatedFrom(oldSegmentId);
             s.setId(null);
             s.setLibId(new HashSet<String>());
           }
@@ -386,15 +388,16 @@ public class IGDocumentController extends CommonController {
 
       }
 
-      List<Table> tables = tableLibraryService.findTablesById(tableLibrary.getId());
+      List<Table> tables = tableLibraryService.findTablesByIds(tableLibrary.getId());
       if (tables != null) {
         for (int i = 0; i < tables.size(); i++) {
           String oldTableId = null;
           Table t = tables.get(i);
-          TableLink tl = tableLibrary.findOneTableById(t.getId());
+          TableLink tl = tableLibrary.findOneTableById(t.getId()).clone();
           if (t.getScope().equals(SCOPE.USER) || t.getScope().equals(SCOPE.PRELOADED)) {
             oldTableId = t.getId();
             t.setScope(SCOPE.USER);
+            t.setCreatedFrom(oldTableId);
             t.setId(null);
             t.setLibIds(new HashSet<String>());
           }
@@ -419,11 +422,12 @@ public class IGDocumentController extends CommonController {
 
       updateModifiedId(tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap,
           igDocument.getProfile());
-
+      String sourceId = igDocument.getId();
       igDocument.setId(null);
       igDocument.getShareParticipantIds().clear();
       igDocument.setScope(IGDocumentScope.USER);
       igDocument.setAccountId(account.getId());
+      igDocument.setCreatedFrom(sourceId);
       return igDocumentService.save(igDocument);
     } catch (UserAccountNotFoundException e) {
       throw new IGDocumentException(e);
