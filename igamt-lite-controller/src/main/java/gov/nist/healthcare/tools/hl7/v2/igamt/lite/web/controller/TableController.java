@@ -84,18 +84,18 @@ public class TableController extends CommonController {
     log.info("Fetching tableById..." + id);
     
     Table table = findById(id);
-    int codeSize = table.getCodes().size();
-    if(codeSize > Constant.CODESIZELIMIT) {
-    	List<Code> codes = new ArrayList<Code>();
-    	Code c = new Code();
-        c.setValue("Too Many Codes");
-        c.setLabel("Here are " + codeSize + " codes. All codes have been omitted by the perforamance issue");
-        c.setComments("Current Limit of Code size is " + Constant.CODESIZELIMIT);
-        c.setCodeSystem("NA");
-        c.setType(Constant.CODE);
-        codes.add(c);
-        table.setCodes(codes);
-    }
+//    int codeSize = table.getCodes().size();
+//    if(codeSize > Constant.CODESIZELIMIT) {
+//    	List<Code> codes = new ArrayList<Code>();
+//    	Code c = new Code();
+//        c.setValue("Too Many Codes");
+//        c.setLabel("Here are " + codeSize + " codes. All codes have been omitted by the perforamance issue");
+//        c.setComments("Current Limit of Code size is " + Constant.CODESIZELIMIT);
+//        c.setCodeSystem("NA");
+//        c.setType(Constant.CODE);
+//        codes.add(c);
+//        table.setCodes(codes);
+//    }
     return table;
   }
 
