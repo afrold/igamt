@@ -721,7 +721,6 @@ angular.module('igl').factory('CompareService',
                         var components = [];
                         if (childArray.value.components) {
                             for (var i = 0; i < childArray.value.components.length; i++) {
-                                console.log("tttttttttttt");
                                 var component = {};
                                 component.position = {
                                     element: childArray.value.components[i].position,

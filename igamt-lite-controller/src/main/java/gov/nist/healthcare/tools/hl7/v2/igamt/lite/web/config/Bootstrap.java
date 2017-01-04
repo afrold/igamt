@@ -148,6 +148,7 @@ public class Bootstrap implements InitializingBean {
 	 setDtsStatus();// sets the status of all the datatypes to published or unpublished 
 	 setTablesStatus(); //  sets the status of all the tables to published or unpublished 
      Colorate(); // genenerates the datatypes evolution matrix. 
+     setSegmentStatus();
 	  //====================================================================*/
 	//  this.modifyConstraint();
 //	  this.modifyMSH2Constraint();
@@ -181,9 +182,8 @@ public class Bootstrap implements InitializingBean {
   private void setTablesStatus(){
 	  List<Table> allTables = tableService.findAll();  
 	  for(Table t :allTables ){
-		  STATUS status = STATUS.PUBLISHED;
       if(null != t && null != t.getScope() && null != t.getStatus()) {
-        if (t.getScope().equals(SCOPE.HL7STANDARD)) {
+        if (t.getScope().equals(SCOPE.HL7STANDARD)||t.getScope().equals(SCOPE.PRELOADED)) {
           tableService.updateStatus(t.getId(), STATUS.PUBLISHED);
         } else if (!t.getScope().equals(SCOPE.HL7STANDARD) && !t.getStatus()
             .equals(STATUS.PUBLISHED)) {
@@ -196,13 +196,25 @@ public class Bootstrap implements InitializingBean {
   private void setDtsStatus(){
 	  List<Datatype> allDts = datatypeService.findAll();  
 	  for(Datatype d :allDts ){
-		  STATUS status = STATUS.PUBLISHED;
 		  if(null != d && null != d.getScope() && null != d.getStatus()) {
-        if (d.getScope().equals(SCOPE.HL7STANDARD)) {
+        if (d.getScope().equals(SCOPE.HL7STANDARD)||d.getScope().equals(SCOPE.PRELOADED)) {
           datatypeService.updateStatus(d.getId(), STATUS.PUBLISHED);
         } else if (!d.getScope().equals(SCOPE.HL7STANDARD) && !d.getStatus()
             .equals(STATUS.PUBLISHED)) {
           datatypeService.updateStatus(d.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+	  }
+  }
+  private void setSegmentStatus(){
+	  List<Segment> allsegs = segmentService.findAll();  
+	  for(Segment s :allsegs){
+		  if(null != s && null != s.getScope() && null != s.getStatus()) {
+        if (s.getScope().equals(SCOPE.HL7STANDARD)||s.getScope().equals(SCOPE.PRELOADED)) {
+        	segmentService.updateStatus(s.getId(), STATUS.PUBLISHED);
+        } else if (!s.getScope().equals(SCOPE.HL7STANDARD) && !s.getStatus()
+            .equals(STATUS.PUBLISHED)) {
+          segmentService.updateStatus(s.getId(), STATUS.UNPUBLISHED);
         }
       }
 	  }

@@ -2,12 +2,12 @@
     <xsl:template name="conformanceStatementHeader">
         <xsl:element name="col">
             <xsl:attribute name="width">
-                <xsl:text>10%</xsl:text>
+                <xsl:text>20%</xsl:text>
             </xsl:attribute>
         </xsl:element>
         <xsl:element name="col">
             <xsl:attribute name="width">
-                <xsl:text>90%</xsl:text>
+                <xsl:text>80%</xsl:text>
             </xsl:attribute>
         </xsl:element>
         <xsl:element name="thead">

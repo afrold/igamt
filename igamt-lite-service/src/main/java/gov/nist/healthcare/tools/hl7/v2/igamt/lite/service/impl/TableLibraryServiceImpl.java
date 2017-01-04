@@ -24,6 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibraryMetaData;
@@ -127,8 +131,19 @@ public class TableLibraryServiceImpl implements TableLibraryService {
 					ids.add(link.getId());
 				}
 				List<Table> tables = tableRepository.findUserTablesByIds(ids);
-				if (tables != null)
-					tableRepository.delete(tables);
+				List<Table> tmp = new ArrayList<Table>();
+
+				if (tables != null) {
+					for (Table dt : tables) {
+						if (dt.getStatus() == null || !dt.getStatus().equals(STATUS.PUBLISHED)) {
+							tmp.add(dt); 
+						}
+					}
+				}
+				
+				if(tmp.size() > 0){
+					tableRepository.delete(tmp);
+				}
 			}
 			if (library.getId() != null)
 				tableLibraryRepository.delete(library);
