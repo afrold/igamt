@@ -35,7 +35,7 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 
 	private Set<ShareParticipantPermission> shareParticipantIds = new HashSet<ShareParticipantPermission>();
 
-
+	private String sourceId; 
 
 	private void addSection(Section s) {
 		s.setSectionPosition(this.childSections.size() + 1);
@@ -353,4 +353,14 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 	public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
 		this.shareParticipantIds = shareParticipantIds;
 	}
+
+	public String getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(String sourceId) {
+		this.sourceId = sourceId;
+	}
+	
+	
 }

@@ -386,7 +386,7 @@ public class IGDocumentController extends CommonController {
 
       }
 
-      List<Table> tables = tableLibraryService.findTablesById(tableLibrary.getId());
+      List<Table> tables = tableLibraryService.findTablesByIds(tableLibrary.getId());
       if (tables != null) {
         for (int i = 0; i < tables.size(); i++) {
           String oldTableId = null;
@@ -419,11 +419,12 @@ public class IGDocumentController extends CommonController {
 
       updateModifiedId(tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap,
           igDocument.getProfile());
-
+      String sourceId = igDocument.getId();
       igDocument.setId(null);
       igDocument.getShareParticipantIds().clear();
       igDocument.setScope(IGDocumentScope.USER);
       igDocument.setAccountId(account.getId());
+      igDocument.setSourceId(sourceId);
       return igDocumentService.save(igDocument);
     } catch (UserAccountNotFoundException e) {
       throw new IGDocumentException(e);

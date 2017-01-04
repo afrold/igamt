@@ -13,33 +13,32 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 
-@Service
 public interface TableLibraryService {
 
-  List<TableLibrary> findAll();
+	List<TableLibrary> findAll();
 
-  List<TableLibrary> findByScopes(List<SCOPE> scopes);
+	List<TableLibrary> findByScopes(List<SCOPE> scopes);
 
-  TableLibrary findById(String id);
+	TableLibrary findById(String id);
 
-  List<TableLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	List<TableLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-  List<TableLibrary> findByAccountId(Long accountId, String hl7Version);
+	List<TableLibrary> findByAccountId(Long accountId, String hl7Version);
 
-  TableLibrary save(TableLibrary library);
+	TableLibrary save(TableLibrary library);
 
-  TableLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
+	TableLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
 
-  void delete(TableLibrary library);
+	void delete(TableLibrary library);
 
-  List<String> findHl7Versions();
+	List<String> findHl7Versions();
 
-  List<Table> findTablesById(String libId);
+	List<Table> findAllShortTablesByIds(String libId);
+
+	List<Table> findTablesByIds(String libId);
 
 }
