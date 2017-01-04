@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -128,11 +129,23 @@ public class ExportUtil {
         }
     }
 
-    public InputStream exportAsHtmlFromXsl(String xmlString, String xslPath, ExportParameters exportParameters) {
+    public InputStream exportAsHtmlFromXsl(String xmlString, String xslPath, ExportParameters exportParameters, MetaData metaData) {
 
         try {
+            //generate cover picture
+            if (metaData.getCoverPicture() != null && !metaData.getCoverPicture().isEmpty()) {
+                BufferedImage image = null;
+                URL url = new URL(metaData.getCoverPicture());
+                image = ImageIO.read(url);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(image, "png", baos);
+                baos.flush();
+                String coverImage = "data:image/png;base64," + Base64.encode(baos.toByteArray());;
+                exportParameters.setImageLogo(coverImage);
+            }
+
             File tmpHtmlFile = doTransformToTempHtml(xmlString,xslPath,exportParameters);
-            
+
             ByteArrayOutputStream outputStream = cleanHtml(FileUtils.openInputStream(tmpHtmlFile));
             return new ByteArrayInputStream(outputStream.toByteArray());
 
