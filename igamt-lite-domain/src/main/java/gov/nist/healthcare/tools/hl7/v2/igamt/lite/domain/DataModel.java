@@ -28,6 +28,7 @@ public abstract class DataModel {
    
    private String publicationDate;
    private int publicationVersion=0;
+   private String createdFrom;
 
 	  
   public DataModel() {
@@ -73,6 +74,14 @@ public abstract class DataModel {
 
 			public void setPublicationVersion(int publicationVersion) {
 				this.publicationVersion = publicationVersion;
+			}
+
+			public String getCreatedFrom() {
+				return createdFrom;
+			}
+
+			public void setCreatedFrom(String createdFrom) {
+				this.createdFrom = createdFrom;
 			}
 			 
 }
