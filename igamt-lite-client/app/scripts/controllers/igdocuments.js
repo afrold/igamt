@@ -1484,6 +1484,7 @@ angular.module('igl')
                         }
                     }
                 }
+                $rootScope.table.smallCodes = $rootScope.table.codes.slice(0,1000);
                 $rootScope.references = [];
                 angular.forEach($rootScope.segments, function(segment) {
                     $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
