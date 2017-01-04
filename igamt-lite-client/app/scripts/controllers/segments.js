@@ -102,13 +102,13 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     };
 
-    $scope.deleteConformanceStatementFromList = function (c){
+    $scope.deleteConformanceStatementFromList = function(c) {
         $rootScope.segment.conformanceStatements.splice($rootScope.segment.conformanceStatements.indexOf(c), 1);
 
         $scope.setDirty();
     };
 
-    $scope.deletePredicateFromList = function (p){
+    $scope.deletePredicateFromList = function(p) {
         $rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf(p), 1);
 
         $scope.setDirty();
@@ -245,15 +245,15 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     $scope.editDT = function(field) {
         $scope.editableDT = field.id;
-           
-                          $scope.results = [];
-                          angular.forEach($rootScope.datatypeLibrary.children ,function(dtLink){
-                              if(dtLink.name&&dtLink.name===field.datatype.name){
-                                  $scope.results.push(dtLink);
-                              }
-                          });
-          };
-           
+
+        $scope.results = [];
+        angular.forEach($rootScope.datatypeLibrary.children, function(dtLink) {
+            if (dtLink.name && dtLink.name === field.datatype.name) {
+                $scope.results.push(dtLink);
+            }
+        });
+    };
+
     $scope.backDT = function() {
         $scope.editableDT = '';
     };
@@ -2122,7 +2122,7 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
     // });
 
     $scope.scope1 = "USER";
-    $scope.ig1 = angular.copy($rootScope.igdocument.profile.metaData.name);
+    $scope.ig1 = angular.copy($rootScope.igdocument.metaData.title);
 
     $scope.setVersion2 = function(vr) {
         $scope.version2 = vr;
