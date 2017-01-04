@@ -23,7 +23,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 public class SegmentRepositoryImpl implements SegmentOperations {
 
@@ -68,4 +70,13 @@ public class SegmentRepositoryImpl implements SegmentOperations {
 		return date;
 	}
 
+	@Override
+	public void updateStatus(String id, STATUS status) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("id").is(id));
+		query.fields().include("status");
+		Update update = new Update();
+		update.set("status", status);
+		mongo.updateFirst(query, update, Segment.class);
+	}
 }

@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.net.ssl.SSLEngineResult.Status;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,6 +42,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -346,7 +348,7 @@ public class IGDocumentController extends CommonController {
           String oldDatatypeId = null;
           Datatype d = datatypes.get(i);
           DatatypeLink dl = datatypeLibrary.findOne(d.getId()).clone();
-          if (d.getScope().equals(SCOPE.USER) || d.getScope().equals(SCOPE.PRELOADED)) {
+          if (d.getStatus().equals(STATUS.UNPUBLISHED) || d.getScope().equals(SCOPE.PRELOADED)) {
             oldDatatypeId = d.getId();
             d.setScope(SCOPE.USER);
             d.setCreatedFrom(oldDatatypeId);
@@ -394,7 +396,7 @@ public class IGDocumentController extends CommonController {
           String oldTableId = null;
           Table t = tables.get(i);
           TableLink tl = tableLibrary.findOneTableById(t.getId()).clone();
-          if (t.getScope().equals(SCOPE.USER) || t.getScope().equals(SCOPE.PRELOADED)) {
+          if (t.getStatus().equals(STATUS.UNPUBLISHED)|| t.getScope().equals(SCOPE.PRELOADED)) {
             oldTableId = t.getId();
             t.setScope(SCOPE.USER);
             t.setCreatedFrom(oldTableId);
