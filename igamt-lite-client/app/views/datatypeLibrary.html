@@ -228,7 +228,7 @@ if (self === top) {
                             </div>
                         </div>
                 </tab>
-                <tab ng-attr-active="tabs[1].active">
+                <tab ng-attr-active="tabs[1].active" ng-if="datatypeLibrary">
                     <tab-heading>
                         <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Data Type Library</span>
                         <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Data Type Library</span>
@@ -289,7 +289,7 @@ if (self === top) {
                     </div>
         </div>
         </tab>
-        <tab heading="Data Types Evolution" ng-attr-active="tabs[2].active">
+        <tab heading="Data Types Evolution" ng-attr-active="tabs[2].active" ng-click="initMatrix()">
             <div style="margin-top:10px">
                 <div class="col-md-6">
 
@@ -298,9 +298,9 @@ if (self === top) {
                         <div class="panel-heading panel-heading-collapsable">
                             <i class="fa fa-bar-chart" aria-hidden="true"></i>Data Type Evolution By HL7 version
                         </div>
-                        <div class="panel-body" style="padding:0px;">
-                            <div class="">
-                                <table class="table table-bordered table-fix-header table-condensed igl-list-table col-md-12 ">
+                        <div class="panel-body">
+                            <div>
+                                <table class="table table-bordered col-md-12">
                                     <thead>
                                         <tr class="tbl-header">
                                             <th ng-repeat="v in vrs">{{v}}</th>

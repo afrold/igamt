@@ -141,13 +141,15 @@ public class Bootstrap implements InitializingBean {
     // modifyComponentUsage();
     // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
     // to write a code for the message.
-    //Colorate();
-	setDtsStatus();
-	 setTablesStatus();
-    // Colorate();
+    	  
 	  
+	  // ===============Data Type Library=====================================
+	 CreateCollectionOfUnchanged(); // group datatype by sets of versions 
+	 setDtsStatus();// sets the status of all the datatypes to published or unpublished 
+	 setTablesStatus(); //  sets the status of all the tables to published or unpublished 
+     Colorate(); // genenerates the datatypes evolution matrix. 
+	  //====================================================================*/
 	//  this.modifyConstraint();
-	  
 //	  this.modifyMSH2Constraint();
 //	  createNewSectionIds();
 	 
@@ -205,7 +207,7 @@ public class Bootstrap implements InitializingBean {
       }
 	  }
   }
-  
+
   private void modifyFieldUsage() {
     List<Segment> allSegments = segmentService.findAll();
 
@@ -657,12 +659,13 @@ public class Bootstrap implements InitializingBean {
       String name = e.getKey();
       ArrayList<List<String>> values = e.getValue();
       for (List<String> versions : values) {
+    	  if(!name.equals("-")){
         UnchangedDataType unchanged = new UnchangedDataType();
         unchanged.setName(name);
         unchanged.setVersions(versions);
         unchangedData.insert(unchanged);
       }
-
+      }
     }
   }
 
@@ -683,7 +686,9 @@ public class Bootstrap implements InitializingBean {
         }
       }
       dt.setLinks(links);
+      if(!dt.getName().equals("-")){
       matrix.insert(dt);
+      }
     }
   }
 
