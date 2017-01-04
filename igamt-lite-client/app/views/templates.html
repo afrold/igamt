@@ -843,7 +843,7 @@
             <p ng-if="shareParticipant.id===g etAccountID() ">Are you sure you want to be removed from the IG Document:"{{::igdocumentSelected.metaData.title}} "?</p>
             <p ng-if="shareParticipant.id !==g etAccountID() ">Are you sure you want to remove '{{shareParticipant.fullname}}' from the IG Document:"{{::igdocumentSelected.metaData.title}} "?</p>
 
-            <div class="row " ng-if="error !=n ull ">
+            <div class="row " ng-if="error !=null ">
                 <div class="col-md-12 ">
                     <span ng-bind="error " style="color: red; "></span>
                 </div>
