@@ -1296,9 +1296,13 @@ public class IGDocumentController extends CommonController {
 
 		msg.setSubject("NIST IGAMT IGDocument Shared with you.");
 		msg.setTo(target.getEmail());
-		msg.setText("Dear " + target.getUsername() + " \n\n" + "You have received a request to share the IG Document "
-				+ doc.getMetaData().getTitle() + " by " + source.getFullName() + "(" + source.getUsername() + ")" + "\n"
-				+ "If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
+		msg.setText("Dear " + target.getUsername() + ", \n\n"
+				 	+ source.getFullName() + "(" + source.getUsername() +")" + " wants to share the following Implementation Guide Document with you: \n" 
+			    	+ "\n Title: " +  doc.getMetaData().getTitle()
+			    	+ "\n Sub Title: " +  doc.getMetaData().getSubTitle()
+ 			    	+ "\n Description:" + doc.getMetaData().getDescription()
+			    	+ "\n HL7 Version:" + doc.getMetaData().getHl7Version()
+ 				+ "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
 				+ "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
 		try {
 			this.mailSender.send(msg);
@@ -1314,8 +1318,12 @@ public class IGDocumentController extends CommonController {
 		msg.setSubject("NIST IGAMT IGDocument unshare");
 		msg.setTo(target.getEmail());
 		msg.setText("Dear " + target.getUsername() + " \n\n" + "This is an automatic email to let you know that "
-				+ source.getFullName() + "(" + source.getUsername() + ") stopped sharing the IG Document "
-				+ doc.getMetaData().getTitle() + " with you." + "\n\n" + "P.S: If you need help, contact us at '"
+				+ source.getFullName() + "(" + source.getUsername() + ") has stopped sharing the following Implementation Guide Document\n"
+						+ "\n Title: " +  doc.getMetaData().getTitle()
+				    	+ "\n Sub Title: " +  doc.getMetaData().getSubTitle()
+	 			    	+ "\n Description:" + doc.getMetaData().getDescription()
+				    	+ "\n HL7 Version:" + doc.getMetaData().getHl7Version()
+				+ "\n\n" + "P.S: If you need help, contact us at '"
 				+ ADMIN_EMAIL + "'");
 		try {
 			this.mailSender.send(msg);
