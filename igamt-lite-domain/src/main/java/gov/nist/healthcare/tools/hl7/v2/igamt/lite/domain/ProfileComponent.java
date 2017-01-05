@@ -29,38 +29,12 @@ Comparable<ProfileComponent>{
 	  private String name;
 	  private String description;
 	  private String Comment;
-	  private Date dataUpdated;
+	  private Date dateUpdated;
 	  
-	  public String getDescription() {
-		return description;
-	}
-
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-
-	public String getComment() {
-		return Comment;
-	}
-
-
-	public void setComment(String comment) {
-		Comment = comment;
-	}
-
-
-	public Date getDataUpdated() {
-		return dataUpdated;
-	}
-
-
-	public void setDataUpdated(Date date) {
-		this.dataUpdated = date;
-	}
-
+	
 	private List<ApplyInfo> appliedTo;
+	private Set<SubProfileComponent> children=new HashSet<SubProfileComponent>();	  
+
 	  public List<ApplyInfo> getAppliedTo() {
 		return appliedTo;
 	}
@@ -70,7 +44,6 @@ Comparable<ProfileComponent>{
 		this.appliedTo = appliedTo;
 	}
 
-	private Set<SubProfileComponent> children=new HashSet<SubProfileComponent>();	  
 
 	
 
@@ -94,7 +67,34 @@ Comparable<ProfileComponent>{
 	}
 
 
-	
+	 public String getDescription() {
+			return description;
+		}
+
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+
+		public String getComment() {
+			return Comment;
+		}
+
+
+		public void setComment(String comment) {
+			Comment = comment;
+		}
+
+
+		public Date getDateUpdated() {
+			return dateUpdated;
+		}
+
+
+		public void setDateUpdated(Date date) {
+			this.dateUpdated = date;
+		}
 
 
 
