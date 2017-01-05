@@ -156,7 +156,7 @@ public class Bootstrap implements InitializingBean {
 //	  createNewSectionIds();
 	 
 	 
-	 correctProfileComp();
+	 //correctProfileComp();
   }
 
   private void modifyCodeUsage() {

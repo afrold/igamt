@@ -644,7 +644,7 @@
             </div>
         </td>
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
-            <a ng-show="node.obj.text !=='' && node.obj.text !==null" ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
+            <a ng-show="node.obj.text !=='' && node.obj.text !==null && node.obj.text !==undefined " ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
@@ -712,7 +712,7 @@
         </td>
 
         <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
-            <a ng-show="node.obj.text !=='' && node.obj.text !==null" ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
+            <a ng-show="node.obj.text !=='' && node.obj.text !==null && node.obj.text !==undefined " ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>

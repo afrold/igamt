@@ -619,8 +619,13 @@ public class DatatypeController extends CommonController {
 	    msg.setSubject("NIST IGAMT Datatype Shared with you.");
 	    msg.setTo(target.getEmail());
 	    msg.setText("Dear " + target.getUsername() + " \n\n"
-	        + "You have received a request to share the Datatype " +  datatype.getName() + ": " + datatype.getDescription() + " by " + source.getFullName() + "(" + source.getUsername() +")"
-	        + "\n" + "If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Elements' tab"
+	        + source.getFullName() + "(" + source.getUsername() +")" + " wants to share the following data type with you: \n" 
+	    	+ "\n Name: " +  datatype.getName() + "_"  + datatype.getExt() 
+	    	+ "\n Description:" + datatype.getDescription()
+	    	+ "\n HL7 Version:" + datatype.getHl7Version()
+	    	+ "\n Commit Version:" + datatype.getPublicationVersion()
+	    	+ "\n Commit Date:" + datatype.getPublicationDate()
+ 	        + "\n" + "If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Elements' tab"
 	        + "\n\n"
 	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
 	    try {
@@ -638,7 +643,12 @@ private void sendUnshareEmail(Datatype datatype, Account target,Account source) 
 	    msg.setTo(target.getEmail());
 	    msg.setText("Dear " + target.getUsername() + " \n\n"
 	    	+ "This is an automatic email to let you know that "
-	        + source.getFullName() + "(" + source.getUsername() +") stopped sharing the Datatype " +  datatype.getName() + ": " + datatype.getDescription()  + " with you."
+	        + source.getFullName() + "(" + source.getUsername() +") has stopped sharing the following data type with you:\n" 
+ 	    	    	+ "\n Name: " +  datatype.getName() + "_"  + datatype.getExt() 
+	    	    	+ "\n Description:" + datatype.getDescription()
+	    	    	+ "\n HL7 Version:" + datatype.getHl7Version()
+	    	    	+ "\n Commit Version:" + datatype.getPublicationVersion()
+	    	    	+ "\n Commit Date:" + datatype.getPublicationDate()	        
 	    	+ "\n\n"
 	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
 	    try {
