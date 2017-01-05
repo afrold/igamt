@@ -3241,7 +3241,7 @@ angular.module('igl').controller('createProfileComponentCtrl',
                 name: $scope.name,
                 description: $scope.description,
                 comment: $scope.comment,
-                appliedTo: null,
+                appliedTo: [],
                 children: []
             };
             console.log(newPC);
@@ -3447,8 +3447,11 @@ angular.module('igl').controller('createCompositeMessageCtrl',
 
 
 
+
             var orderedList = $filter('orderBy')($scope.pcList, 'position');
+            console.log(orderedList);
             for (var i = 0; i < orderedList.length; i++) {
+
                 for (var j = 0; j < orderedList[i].children.length; j++) {
                     if (orderedList[i].children[j].pathExp) {
                         var resultList = [];
@@ -3585,15 +3588,43 @@ angular.module('igl').controller('createCompositeMessageCtrl',
             }
 
             processedMsg.id = new ObjectId().toString();
+            var profileComponents = [];
+            for (var t = 0; t < $scope.pcList.length; t++) {
+                if ($scope.pcList[t].appliedTo === null) {
+                    $scope.pcList[t].appliedTo = [];
+                }
+                if (processedMsg.appliedPcs === null) {
+                    processedMsg.appliedPcs = [];
+                }
+                processedMsg.appliedPcs.push({
+                    id: $scope.pcList[t].id,
+                    name: $scope.pcList[t].name,
+                    pcDate: $scope.pcList[t].dateUpdated,
+                    position: $scope.pcList[t].position
+                });
+                $scope.pcList[t].appliedTo.push({
+                    id: processedMsg.id,
+                    name: processedMsg.name,
+                    pcDate: $scope.pcList[t].dateUpdated,
+                    position: $scope.pcList[t].position
+                });
+                var pComponent = angular.copy($scope.pcList[t]);
+                delete pComponent.position;
+                profileComponents.push(pComponent);
+            }
+
 
             CompositeMessageService.SaveGroupOrSegment(processedMsg.children).then(function(grpOrSeg) {
-                console.log("=================================");
 
-                console.log(grpOrSeg);
                 CompositeMessageService.create(processedMsg, $rootScope.igdocument.id).then(function(compositeM) {
+                    console.log("=================================");
+                    console.log(profileComponents)
+                    PcService.saveAll(profileComponents).then(function(pcs) {
+                        $rootScope.igdocument.profile.compositeMessages.children.push(compositeM);
+                        $modalInstance.close(compositeM);
+                    });
 
-                    $rootScope.igdocument.profile.compositeMessages.children.push(compositeM);
-                    $modalInstance.close(compositeM);
+
 
                 });
             });

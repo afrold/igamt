@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ProfileComponentWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
@@ -65,7 +67,7 @@ public class ProfileComponentController extends CommonController {
 	  public ProfileComponent saveProfileComponent(@PathVariable("pcLibid") String pcLibid,@RequestBody ProfileComponent profileComponent, HttpServletRequest request,
 	      HttpServletResponse response)
 	      throws IOException, IGDocumentNotFoundException, IGDocumentException {
-	  profileComponent.setDataUpdated(new Date());
+	  profileComponent.setDateUpdated(new Date());
 	  ProfileComponentLibrary pcLib=profileComponentLibraryService.findProfileComponentLibById(pcLibid);
 //	  pcLib.findOne(profileComponent.getId());
 	  for(ProfileComponentLink pcLink:pcLib.getChildren()){
@@ -76,6 +78,20 @@ public class ProfileComponentController extends CommonController {
 	  profileComponentLibraryService.save(pcLib);
 	  profileComponentService.save(profileComponent);
 	  return profileComponent;
+	    
+	    
+	  }
+	@RequestMapping(value = "/saveAll", method = RequestMethod.POST)
+	  public List<ProfileComponent> saveProfileComponents(@RequestBody List<ProfileComponent> profileComponents, HttpServletRequest request,
+	      HttpServletResponse response)
+	      throws IOException {
+	  //profileComponent.setDataUpdated(new Date());
+	 
+	  for(ProfileComponent pc : profileComponents){
+		  profileComponentService.save(pc);
+	  }
+	  
+	  return profileComponents;
 	    
 	    
 	  }

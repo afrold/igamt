@@ -551,7 +551,7 @@ public class IGDocumentController extends CommonController {
 			throw new IGDocumentNotFoundException(id);
 		}
 
-		profileComponent.setDataUpdated(new Date());
+		profileComponent.setDateUpdated(new Date());
 		if (d.getProfile().getProfileComponentLibrary() == null) {
 			ProfileComponentLibrary profileComponentLibrary = new ProfileComponentLibrary();
 			profileComponentService.create(profileComponent);
