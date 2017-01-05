@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -718,7 +717,9 @@ public class UserController {
         + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
+    } catch (RuntimeException ex) {
+      logger.error(ex.getMessage(), ex);
+    } catch (Exception ex) {
       logger.error(ex.getMessage(), ex);
     }
   }
@@ -736,9 +737,11 @@ public class UserController {
 
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      logger.error(ex.getMessage(), ex);
-    }
+    } catch (RuntimeException ex) {
+        logger.error(ex.getMessage(), ex);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+      }
   }
 
   private void sendRegistrationNotificationToAdmin(Account acc) {
@@ -773,9 +776,11 @@ public class UserController {
         + "The NIST IGAMT Team" + "\n\n");
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      logger.error(ex.getMessage(), ex);
-    }
+    } catch (RuntimeException ex) {
+        logger.error(ex.getMessage(), ex);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+      }
   }
 
   private void sendAccountApproveNotification(Account acc) {
@@ -790,9 +795,11 @@ public class UserController {
         + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      logger.error(ex.getMessage(), ex);
-    }
+    } catch (RuntimeException ex) {
+        logger.error(ex.getMessage(), ex);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+      }
   }
 
   private void sendAccountRegistrationPasswordResetNotification(Account acc, String url) {
@@ -811,9 +818,11 @@ public class UserController {
 
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      logger.error(ex.getMessage(), ex);
-    }
+    } catch (RuntimeException ex) {
+        logger.error(ex.getMessage(), ex);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+      }
   }
 
   private void sendAccountPasswordResetRequestNotification(Account acc, String url) {
@@ -832,9 +841,11 @@ public class UserController {
 
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      logger.error(ex.getMessage(), ex);
-    }
+    } catch (RuntimeException ex) {
+        logger.error(ex.getMessage(), ex);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+      }
   }
 
   private void sendChangeAccountPasswordNotification(Account acc) {
@@ -848,9 +859,11 @@ public class UserController {
 
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      logger.error(ex.getMessage(), ex);
-    }
+    } catch (RuntimeException ex) {
+        logger.error(ex.getMessage(), ex);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+      }
   }
 
   private void sendChangeAccountPasswordNotification(Account acc, String newPassword) {
@@ -865,9 +878,11 @@ public class UserController {
 
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      logger.error(ex.getMessage(), ex);
-    }
+    } catch (RuntimeException ex) {
+        logger.error(ex.getMessage(), ex);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+      }
   }
 
   private void sendResetAccountPasswordNotification(Account acc) {
@@ -881,9 +896,11 @@ public class UserController {
 
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      logger.error(ex.getMessage(), ex);
-    }
+    } catch (RuntimeException ex) {
+        logger.error(ex.getMessage(), ex);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+      }
   }
 
   private void sendResetRegistrationAccountPasswordNotification(Account acc) {
@@ -898,9 +915,11 @@ public class UserController {
 
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      logger.error(ex.getMessage(), ex);
-    }
+    } catch (RuntimeException ex) {
+        logger.error(ex.getMessage(), ex);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+      }
   }
 
   private void sendRetrieveForgottenUsernameNotification(Account acc) {
@@ -913,9 +932,11 @@ public class UserController {
 
     try {
       this.mailSender.send(msg);
-    } catch (MailException ex) {
-      logger.error(ex.getMessage(), ex);
-    }
+    } catch (RuntimeException ex) {
+        logger.error(ex.getMessage(), ex);
+      } catch (Exception ex) {
+        logger.error(ex.getMessage(), ex);
+      }
   }
 
   private String generateNextUsername(String accountType) throws Exception {
