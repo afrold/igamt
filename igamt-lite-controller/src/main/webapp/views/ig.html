@@ -323,7 +323,7 @@
                             <tbody>
                                 <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id ">
                                     <td style="width:30px ">
-                                        <input type="checkbox " ng-model="bool " ng-change="trackSelections(bool, message.id) ">
+                                        <input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, message.id) ">
                                     </td>
                                     <td style="width:150px ">{{message.identifier}}</td>
                                     <td style="width:300px ">{{message.name}}</td>
@@ -337,7 +337,7 @@
         </form>
     </div>
     <div class="modal-footer ">
-        <button class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===n ull || selectedMessagesIDs===n ull || selectedMessagesIDs.length===0 " ng-click="exportAsZIPforSelectedMessages() "><span><i class="fa fa-download fa-fw "></i>Export</span>
+        <button class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPforSelectedMessages() "><span><i class="fa fa-download fa-fw "></i>Export</span>
         </button>
         <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
                 class="fa fa-times fa-fw ">&nbsp; </i>Close</span></button>

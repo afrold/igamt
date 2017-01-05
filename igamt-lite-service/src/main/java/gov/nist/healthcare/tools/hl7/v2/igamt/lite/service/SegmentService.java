@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 public interface SegmentService {
@@ -39,5 +40,7 @@ public interface SegmentService {
 	public Date updateDate(String id, Date date) throws IGDocumentException;
 
 	Segment save(Segment segment, Date date);
+
+	void updateStatus(String id, STATUS unpublished);
 
 }

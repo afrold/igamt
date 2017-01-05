@@ -2081,6 +2081,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             try {
                 TableService.getOne(table.id).then(function(tbl) {
                     $rootScope.table = tbl;
+                    $rootScope.table.smallCodes = $rootScope.table.codes.slice(0,1000);
                     $rootScope.currentData = $rootScope.table;
                     $rootScope.codeSystems = [];
                     for (var i = 0; i < $rootScope.table.codes.length; i++) {

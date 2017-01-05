@@ -843,7 +843,7 @@
             <p ng-if="shareParticipant.id===g etAccountID() ">Are you sure you want to be removed from the IG Document:"{{::igdocumentSelected.metaData.title}} "?</p>
             <p ng-if="shareParticipant.id !==g etAccountID() ">Are you sure you want to remove '{{shareParticipant.fullname}}' from the IG Document:"{{::igdocumentSelected.metaData.title}} "?</p>
 
-            <div class="row " ng-if="error !=n ull ">
+            <div class="row " ng-if="error !=null ">
                 <div class="col-md-12 ">
                     <span ng-bind="error " style="color: red; "></span>
                 </div>
@@ -872,7 +872,7 @@
             </div>
         </div>
 
-        <div class="modal-body ">
+        <div class="modal-body">
             <form role="form ">
                 <div class="col-md-3 ">
                     <div class="panel panel-default ">
@@ -1237,7 +1237,7 @@
             </form>
         </div>
 
-        <div class="modal-footer">
+        <div class="modal-footer" style="padding-top:5px">
             <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
             <button type="button" class="btn btn-raised btn-success btn-sm" ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
         </div>
@@ -1572,7 +1572,7 @@
             </form>
         </div>
 
-        <div class="modal-footer">
+        <div class="modal-footer" style="padding-top:5px">
             <button type="button" class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
         &nbsp; </i>Cancel</span></button>
             <button type="button" class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">
@@ -2164,7 +2164,7 @@
         </div>
         </form>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="padding-top:5px">
             <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
             <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
         </div>
@@ -2515,7 +2515,7 @@
                 </div>
             </form>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="padding-top:5px">
             <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
             <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ng-click="saveclose()"><span><i class="fa fa-check fa-fw"> &nbsp; </i>Save</span></button>
         </div>
@@ -2960,7 +2960,7 @@
                 </div>
             </form>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="padding-top:5px">
             <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
             <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
         </div>
@@ -3313,7 +3313,7 @@
         </div>
         </form>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="padding-top:5px">
             <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
             <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ng-click="saveclose()"><span><i class="fa fa-check fa-fw"> &nbsp; </i>Save</span></button>
         </div>
@@ -3939,15 +3939,15 @@
         </h3>
         </div>
         <div class="modal-body">
-            <p>You cannot commit this datatype since it contains uncommited elements </p>
+            <p>You cannot commit this data type since it contains uncommitted elements </p>
             <div ng-show="unpublishedDatatypes.length>0">
                 <h4>Datatype<h4>
         <div class="igl-table" ng-show="unpublishedDatatypes.length>0">
             <table class="table table-striped table-condensed table-bordered">
                 <thead>
                 <tr class="tbl-header">
-                    <th>Component</th>
-                    <th>Uncommited Datatype</th>
+                    <th>Component Path</th>
+                    <th>Uncommitted Data Type</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -3961,7 +3961,7 @@
 
                     </td>
                     <td>
-                        <div class="ng-binding">{{obj.datatype.name+ obj.datatype.ext}}</div>
+                        <div class="ng-binding">{{obj.datatype.name}}_{{obj.datatype.ext}}</div>
                     </td>
                 </tr><!-- end ngRepeat: ref in references -->
                 </tbody>
@@ -3977,8 +3977,8 @@
             <table class="table table-striped table-condensed table-bordered">
                 <thead>
                 <tr class="tbl-header">
-                    <th>Component</th>
-                    <th>Uncommited Tables</th>
+                    <th>Component Path</th>
+                    <th>Uncommitted Tables</th>
                 </tr>
                 </thead>
                 <tbody>
