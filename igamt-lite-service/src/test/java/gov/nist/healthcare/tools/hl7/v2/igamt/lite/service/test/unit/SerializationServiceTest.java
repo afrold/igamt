@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import nu.xom.Document;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -37,11 +38,18 @@ public class SerializationServiceTest {
     IGDocumentService igDocumentService;
 
     @Test
-    public void testSerializeIGDocument(){
+    public void testSerializeCompactIGDocument(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         assertTrue(igDocument!=null);
-        Document document = serializationService.serializeIGDocument(igDocument,
-            true);
+        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.COMPACT);
+        String xmlDocument = document.toXML();
+        System.out.println(xmlDocument);
+    }
+    @Test
+    public void testSerializeVerboseIGDocument(){
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
+        assertTrue(igDocument!=null);
+        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.VERBOSE);
         String xmlDocument = document.toXML();
         System.out.println(xmlDocument);
     }

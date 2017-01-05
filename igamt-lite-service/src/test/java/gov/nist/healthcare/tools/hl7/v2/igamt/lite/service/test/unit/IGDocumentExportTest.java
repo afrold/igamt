@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,24 +41,41 @@ public class IGDocumentExportTest {
     private static final String EXPORT_BASE_PATH = "test/ig_test";
 
     @Test
-    public void testHtmlExport(){
+    public void testHtmlCompactExport(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
-            File htmlFile = new File(EXPORT_BASE_PATH+".html");
+            File htmlFile = new File(EXPORT_BASE_PATH+"_compact.html");
             if(htmlFile.exists()){
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, true), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.COMPACT), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     @Test
-    public void testDocxExport(){
+    public void testHtmlVerboseExport(){
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
+        try {
+            //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
+            File htmlFile = new File(EXPORT_BASE_PATH+"_verbose.html");
+            if(htmlFile.exists()){
+                htmlFile.delete();
+            }
+            if(htmlFile.createNewFile()) {
+                FileUtils.copyInputStreamToFile(exportService
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.VERBOSE), htmlFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testDocxCompactExport(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             File wordFile = new File(EXPORT_BASE_PATH+".docx");
@@ -66,7 +84,23 @@ public class IGDocumentExportTest {
             }
             if(wordFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    true), wordFile);
+                    SerializationLayout.COMPACT), wordFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testDocxVerboseExport(){
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
+        try {
+            File wordFile = new File(EXPORT_BASE_PATH+".docx");
+            if(wordFile.exists()){
+                wordFile.delete();
+            }
+            if(wordFile.createNewFile()) {
+                FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
+                    SerializationLayout.VERBOSE), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();

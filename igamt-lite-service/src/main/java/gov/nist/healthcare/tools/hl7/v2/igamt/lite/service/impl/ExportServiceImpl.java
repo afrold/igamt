@@ -6,6 +6,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportParameters;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import org.apache.commons.io.IOUtils;
@@ -56,12 +57,12 @@ public class ExportServiceImpl implements ExportService {
     private ProfileSerialization profileSerializationService;
 
     @Override public InputStream exportIGDocumentAsDocx(IGDocument igDocument,
-        boolean includeSegmentsInMessage) throws IOException {
+        SerializationLayout serializationLayout) throws IOException {
         if (igDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(
                 DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD);
             return exportUtil.exportAsDocxFromXml(
-                serializationService.serializeIGDocument(igDocument, includeSegmentsInMessage).toXML(),
+                serializationService.serializeIGDocument(igDocument, serializationLayout).toXML(),
                 GLOBAL_STYLESHEET, exportParameters, igDocument.getProfile(),
                 igDocument.getMetaData());
         } else {
@@ -70,11 +71,11 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override public InputStream exportIGDocumentAsHtml(IGDocument igDocument,
-        boolean includeSegmentsInMessage) throws IOException {
+        SerializationLayout serializationLayout) throws IOException {
         if (igDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML);
             return exportUtil.exportAsHtmlFromXsl(serializationService.serializeIGDocument(igDocument,
-                    includeSegmentsInMessage).toXML(),
+                    serializationLayout).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,igDocument.getMetaData());
         } else {
             return new NullInputStream(1L);

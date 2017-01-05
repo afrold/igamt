@@ -5,10 +5,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeDatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeMessageService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeSegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeTableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import nu.xom.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +42,8 @@ import java.util.UUID;
     @Autowired SerializeTableService serializeTableService;
 
     @Override public Document serializeDatatypeLibrary(IGDocument igDocument,
-        boolean includeSegmentsInMessage) {
-        return serializeIGDocument(igDocument, includeSegmentsInMessage);
+        SerializationLayout serializationLayout) {
+        return serializeIGDocument(igDocument, serializationLayout);
     }
 
     @Override public Document serializeElement(SerializableElement element) {
@@ -56,7 +53,7 @@ import java.util.UUID;
     }
 
     @Override public Document serializeIGDocument(IGDocument igDocument,
-        boolean includeSegmentsInMessage) {
+        SerializationLayout serializationLayout) {
         SerializableStructure serializableStructure = new SerializableStructure();
         SerializableMetadata serializableMetadata =
             new SerializableMetadata(igDocument.getMetaData(),
@@ -92,16 +89,21 @@ import java.util.UUID;
             serializableSections.getRootSections().appendChild(textElement);
         }
         //Message Serialization
-        SerializableSection messageSection = this.serializeMessages(profile,
-            includeSegmentsInMessage);
+        SerializableSection messageSection = this.serializeMessages(profile, serializationLayout);
         profileSection.addSection(messageSection);
 
         //Segments serialization
         SerializableSection segmentsSection = this.serializeSegments(profile);
-        profileSection.addSection(segmentsSection);
+        if(!serializationLayout.equals(SerializationLayout.VERBOSE)) {
+            profileSection.addSection(segmentsSection);
+        }
 
         //Datatypes serialization
-        SerializableSection datatypeSection = this.serializeDatatypes(profile);
+        boolean serializeMaster = true;
+        if(serializationLayout.equals(SerializationLayout.VERBOSE)) {
+            serializeMaster = false;
+        }
+        SerializableSection datatypeSection = this.serializeDatatypes(profile,serializeMaster);
         profileSection.addSection(datatypeSection);
 
         //Value sets serialization
@@ -144,7 +146,7 @@ import java.util.UUID;
         return serializableStructure.serializeStructure();
     }
 
-    private SerializableSection serializeDatatypes(Profile profile) {
+    private SerializableSection serializeDatatypes(Profile profile, boolean serializeMaster) {
         String id = profile.getDatatypeLibrary().getId();
         String position = String.valueOf(profile.getDatatypeLibrary().getSectionPosition());
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
@@ -170,14 +172,17 @@ import java.util.UUID;
                 .serializeDatatype(datatypeLink,
                     prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
                     datatypeLinkList.indexOf(datatypeLink));
-            datatypeSection.addSection(serializableDatatype);
+            //TODO check if we should use the scope or not
+            if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals("HL7STANDARD"))){
+                datatypeSection.addSection(serializableDatatype);
+            }
         }
         return datatypeSection;
     }
 
 
 
-    private SerializableSection serializeMessages(Profile profile, boolean includeSegmentsInMessage) {
+    private SerializableSection serializeMessages(Profile profile, SerializationLayout serializationLayout) {
         String id = profile.getMessages().getId();
         String position = String.valueOf(profile.getMessages().getSectionPosition());
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
@@ -197,7 +202,7 @@ import java.util.UUID;
 
         for (Message message : profile.getMessages().getChildren()) {
             SerializableMessage serializableMessage =
-                serializeMessageService.serializeMessage(message, prefix, includeSegmentsInMessage);
+                serializeMessageService.serializeMessage(message, prefix, serializationLayout);
             messageSection.addSection(serializableMessage);
         }
         return messageSection;
