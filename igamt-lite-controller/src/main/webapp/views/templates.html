@@ -3949,7 +3949,6 @@
 									<tr ng-repeat="participant in igdocumentSelected.shareParticipantIds">
 										<td><i>{{participant.fullname}} ({{participant.username}})</i></td>
 										<td>
-                      <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="!participant.pendingApproval"><i class="fa fa-times"></i> Remove</button>
                       <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request</button>
                       <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="participant.pendingApproval"><i class="fa fa-times"></i> Cancel</button>
                     </td>
@@ -4006,7 +4005,6 @@
                   <tr ng-repeat="participant in igdocumentSelected.shareParticipantIds">
                     <td><i>{{participant.fullname}} ({{participant.username}})</i></td>
                     <td>
-                      <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="!participant.pendingApproval"><i class="fa fa-times"></i> Remove</button>
                       <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request</button>
                       <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="participant.pendingApproval"><i class="fa fa-times"></i> Cancel</button>
                     </td>
@@ -4113,7 +4111,7 @@
         </h3>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want this {{getMessage()}} {{datatypeTo.name}}_{{datatypeTo.ext}}<span class="version-badge-label">v{{datatypeTo.publicationVersion}}</span> to be shared with you</p>
+        <p>Are you sure you want to remove this {{datatypeTo.name}}_{{datatypeTo.ext}}<span class="version-badge-label">v{{datatypeTo.publicationVersion}}</span></p>
 
     </div>
     </div>
