@@ -12,11 +12,9 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +23,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -46,7 +43,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
@@ -56,12 +52,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
@@ -141,23 +135,49 @@ public class Bootstrap implements InitializingBean {
     // modifyComponentUsage();
     // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
     // to write a code for the message.
-    	  
-	  
-	  // ===============Data Type Library=====================================
 
-	 //CreateCollectionOfUnchanged(); // group datatype by sets of versions 
-	 //setDtsStatus();// sets the status of all the datatypes to published or unpublished 
-	 //setTablesStatus(); //  sets the status of all the tables to published or unpublished 
-     //Colorate(); // genenerates the datatypes evolution matrix. 
-     //setSegmentStatus();
-	  //====================================================================*/
-	//  this.modifyConstraint();
-//	  this.modifyMSH2Constraint();
-//	  createNewSectionIds();
-	 
-	 
-	 //correctProfileComp();
+
+    // ===============Data Type Library=====================================
+
+    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
+    // setDtsStatus();// sets the status of all the datatypes to published or unpublished
+    // setTablesStatus(); // sets the status of all the tables to published or unpublished
+    // Colorate(); // genenerates the datatypes evolution matrix.
+    // setSegmentStatus();
+    // ====================================================================*/
+    // this.modifyConstraint();
+    // this.modifyMSH2Constraint();
+    // createNewSectionIds();
+
+
+    // correctProfileComp();
+    // fixConfLengths();
   }
+
+  private void fixConfLengths() {
+    List<Segment> segments = segmentService.findAll();
+    for (Segment s : segments) {
+      List<Field> fields = s.getFields();
+      for (Field f : fields) {
+        if ("-1".equals(f.getConfLength())) {
+          f.setConfLength("");
+        }
+      }
+    }
+    segmentService.save(segments);
+
+    List<Datatype> datatypes = datatypeService.findAll();
+    for (Datatype s : datatypes) {
+      List<Component> components = s.getComponents();
+      for (Component f : components) {
+        if ("-1".equals(f.getConfLength())) {
+          f.setConfLength("");
+        }
+      }
+    }
+    datatypeService.save(datatypes);
+  }
+
 
   private void modifyCodeUsage() {
     List<Table> allTables = tableService.findAll();
@@ -180,45 +200,44 @@ public class Bootstrap implements InitializingBean {
       }
     }
   }
-  private void setTablesStatus(){
-	  List<Table> allTables = tableService.findAll();  
-	  for(Table t :allTables ){
-      if(null != t && null != t.getScope()) {
-        if (t.getScope().equals(SCOPE.HL7STANDARD)||t.getScope().equals(SCOPE.PRELOADED)) {
+
+  private void setTablesStatus() {
+    List<Table> allTables = tableService.findAll();
+    for (Table t : allTables) {
+      if (null != t && null != t.getScope()) {
+        if (t.getScope().equals(SCOPE.HL7STANDARD) || t.getScope().equals(SCOPE.PRELOADED)) {
           tableService.updateStatus(t.getId(), STATUS.PUBLISHED);
-        } else if (!STATUS.PUBLISHED
-            .equals(t.getStatus())) {
+        } else if (!STATUS.PUBLISHED.equals(t.getStatus())) {
           tableService.updateStatus(t.getId(), STATUS.UNPUBLISHED);
         }
       }
-	  }
+    }
   }
-  
-  private void setDtsStatus(){
-	  List<Datatype> allDts = datatypeService.findAll();  
-	  for(Datatype d :allDts ){
-		  if(null != d && null != d.getScope()) {
-        if (d.getScope().equals(SCOPE.HL7STANDARD)||d.getScope().equals(SCOPE.PRELOADED)) {
+
+  private void setDtsStatus() {
+    List<Datatype> allDts = datatypeService.findAll();
+    for (Datatype d : allDts) {
+      if (null != d && null != d.getScope()) {
+        if (d.getScope().equals(SCOPE.HL7STANDARD) || d.getScope().equals(SCOPE.PRELOADED)) {
           datatypeService.updateStatus(d.getId(), STATUS.PUBLISHED);
-        } else if (!STATUS.PUBLISHED
-            .equals(d.getStatus())) {
+        } else if (!STATUS.PUBLISHED.equals(d.getStatus())) {
           datatypeService.updateStatus(d.getId(), STATUS.UNPUBLISHED);
         }
       }
-	  }
+    }
   }
-  private void setSegmentStatus(){
-	  List<Segment> allsegs = segmentService.findAll();  
-	  for(Segment s :allsegs){
-		  if(null != s && null != s.getScope()) {
-        if (s.getScope().equals(SCOPE.HL7STANDARD)||s.getScope().equals(SCOPE.PRELOADED)) {
-        	segmentService.updateStatus(s.getId(), STATUS.PUBLISHED);
-        } else if (!STATUS.PUBLISHED
-            .equals(s.getStatus())) {
+
+  private void setSegmentStatus() {
+    List<Segment> allsegs = segmentService.findAll();
+    for (Segment s : allsegs) {
+      if (null != s && null != s.getScope()) {
+        if (s.getScope().equals(SCOPE.HL7STANDARD) || s.getScope().equals(SCOPE.PRELOADED)) {
+          segmentService.updateStatus(s.getId(), STATUS.PUBLISHED);
+        } else if (!STATUS.PUBLISHED.equals(s.getStatus())) {
           segmentService.updateStatus(s.getId(), STATUS.UNPUBLISHED);
         }
       }
-	  }
+    }
   }
 
   private void modifyFieldUsage() {
@@ -238,23 +257,24 @@ public class Bootstrap implements InitializingBean {
       }
     }
   }
-  private void createNewSectionIds() throws IGDocumentException{
-	  List<IGDocument> igs=documentService.findAll();
-	  for(IGDocument ig: igs){
-		  if(ig.getChildSections()!=null&& !ig.getChildSections().isEmpty()){
-			  for(Section s : ig.getChildSections()){
-			  }
-		  }
-		  documentService.save(ig);
-	  }
 
-	  setUpdatedDates(); // Run only once.
+  private void createNewSectionIds() throws IGDocumentException {
+    List<IGDocument> igs = documentService.findAll();
+    for (IGDocument ig : igs) {
+      if (ig.getChildSections() != null && !ig.getChildSections().isEmpty()) {
+        for (Section s : ig.getChildSections()) {
+        }
+      }
+      documentService.save(ig);
+    }
+
+    setUpdatedDates(); // Run only once.
 
   }
-   
 
-  
-//    correctProfileComp();  }
+
+
+  // correctProfileComp(); }
 
   private void correctProfileComp() throws IGDocumentException {
 
@@ -262,11 +282,11 @@ public class Bootstrap implements InitializingBean {
     List<IGDocument> igDocuments = documentService.findAll();
     for (IGDocument igd : igDocuments) {
       Messages msgs = igd.getProfile().getMessages();
-      if(igd.getProfile().getProfileComponentLibrary().getId()==null){
-        
+      if (igd.getProfile().getProfileComponentLibrary().getId() == null) {
+
         profileComponentLibraryService.save(igd.getProfile().getProfileComponentLibrary());
       }
-      
+
     }
     documentService.save(igDocuments);
   }
@@ -672,12 +692,12 @@ public class Bootstrap implements InitializingBean {
       String name = e.getKey();
       ArrayList<List<String>> values = e.getValue();
       for (List<String> versions : values) {
-    	  if(!name.equals("-")){
-        UnchangedDataType unchanged = new UnchangedDataType();
-        unchanged.setName(name);
-        unchanged.setVersions(versions);
-        unchangedData.insert(unchanged);
-      }
+        if (!name.equals("-")) {
+          UnchangedDataType unchanged = new UnchangedDataType();
+          unchanged.setName(name);
+          unchanged.setVersions(versions);
+          unchangedData.insert(unchanged);
+        }
       }
     }
   }
@@ -699,8 +719,8 @@ public class Bootstrap implements InitializingBean {
         }
       }
       dt.setLinks(links);
-      if(!dt.getName().equals("-")){
-      matrix.insert(dt);
+      if (!dt.getName().equals("-")) {
+        matrix.insert(dt);
       }
     }
   }
