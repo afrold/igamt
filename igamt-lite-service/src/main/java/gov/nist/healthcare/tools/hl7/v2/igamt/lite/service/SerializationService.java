@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -18,8 +19,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
  */
 public interface SerializationService {
     public nu.xom.Document serializeIGDocument(IGDocument igDocument,
-        boolean includeSegmentsInMessage);
+        SerializationLayout serializationLayout);
     public nu.xom.Document serializeDatatypeLibrary(IGDocument igDocument,
-        boolean includeSegmentsInMessage);
+        SerializationLayout serializationLayout);
     public nu.xom.Document serializeElement(SerializableElement element);
 }

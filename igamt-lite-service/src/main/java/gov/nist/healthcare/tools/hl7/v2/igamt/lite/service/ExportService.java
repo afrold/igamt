@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,8 +24,8 @@ import java.io.InputStream;
 @Service
 public interface ExportService {
 
-    InputStream exportIGDocumentAsDocx(IGDocument igDocument, boolean includeSegmentsInMessage) throws IOException;
-    InputStream exportIGDocumentAsHtml(IGDocument igDocument, boolean includeSegmentsInMessage) throws IOException;
+    InputStream exportIGDocumentAsDocx(IGDocument igDocument, SerializationLayout serializationLayout) throws IOException;
+    InputStream exportIGDocumentAsHtml(IGDocument igDocument, SerializationLayout serializationLayout) throws IOException;
     InputStream exportIGDocumentAsXml(IGDocument igDocument) throws IOException;
     InputStream exportDatatypeLibraryDocumentAsHtml(DatatypeLibraryDocument datatypeLibraryDocument);
     InputStream exportDatatypeLibraryDocumentAsDocx(DatatypeLibraryDocument datatypeLibraryDocument);

@@ -17,6 +17,7 @@ import javax.net.ssl.SSLEngineResult.Status;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -637,18 +638,29 @@ public class IGDocumentController extends CommonController {
     log.info("Exporting as html file IGDcoument with id=" + id);
     IGDocument d = this.findIGDocument(id);
     InputStream content = null;
-    boolean includeSegmentsInMessage = false;
-    if (layout != null && !layout.isEmpty()) {
-      if (layout.equals("Verbose")) {
-        includeSegmentsInMessage = true;
-      }
-    }
-    content = exportService.exportIGDocumentAsHtml(d, includeSegmentsInMessage);
+    SerializationLayout serializationLayout = identifyLayout(layout);
+    content = exportService.exportIGDocumentAsHtml(d, serializationLayout);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
             + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
     FileCopyUtils.copy(content, response.getOutputStream());
+  }
+
+  private SerializationLayout identifyLayout(String layout) {
+    SerializationLayout serializationLayout;
+    switch(layout){
+      case "Verbose":
+        serializationLayout = SerializationLayout.VERBOSE;
+        break;
+      case "Compact":
+        serializationLayout = SerializationLayout.COMPACT;
+        break;
+      default:
+        serializationLayout = SerializationLayout.COMPACT;
+        break;
+    }
+    return serializationLayout;
   }
 
   @RequestMapping(value = "/{id}/export/zip", method = RequestMethod.POST,
@@ -742,13 +754,8 @@ public class IGDocumentController extends CommonController {
     log.info("Exporting as docx file profile with id=" + id);
     IGDocument d = findIGDocument(id);
     InputStream content = null;
-    boolean includeSegmentsInMessage = false;
-    if (layout != null && !layout.isEmpty()) {
-      if (layout.equals("Verbose")) {
-        includeSegmentsInMessage = true;
-      }
-    }
-    content = exportService.exportIGDocumentAsDocx(d, includeSegmentsInMessage);
+    SerializationLayout serializationLayout = identifyLayout(layout);
+    content = exportService.exportIGDocumentAsDocx(d, serializationLayout);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
