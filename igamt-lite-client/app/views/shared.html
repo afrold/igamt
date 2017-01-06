@@ -137,7 +137,7 @@
 
 						<div ui-tree-handle data-nodrag context-menu="unshareDatatype" style="font-weight:normal;cursor:pointer;">
 						<span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{data.hl7Version}}</span><span class="badge">v{{data.publicationVersion}}</span>
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{data.hl7Version}} <span class="version-badge">v{{data.publicationVersion}}</span></span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
                         </div>
                     </li>
