@@ -36,7 +36,7 @@
 
                     <div class="form-group control-group vertical-align" ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}" ng-if="!viewSettings.tableReadonly" flow-init flow-name="uploader.flow" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()" flow-file-success="successUpload($file, $message, $data)">
                         <div class="col-md-2" style="justify-content: flex-end;">
-                          <label class="control-label">Export Cover Picture</label>
+                          <label class="control-label">Cover Picture</label>
                         </div>
 
                         <div class="col-md-10 upload_drop" flow-drop flow-drag-enter="class='upload_drop_hover'" flow-drag-leave="class=''" ng-class="class">
@@ -67,7 +67,7 @@
 
                     <div class="form-group control-group vertical-align" ng-if="viewSettings.tableReadonly">
                       <div class="col-md-2" style="justify-content: flex-end;">
-                        <label class="control-label">Export Cover Picture</label>
+                        <label class="control-label">Cover Picture</label>
                       </div>
 
                       <div class="col-md-10">

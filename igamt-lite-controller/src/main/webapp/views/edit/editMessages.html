@@ -1,18 +1,11 @@
-<style id="antiClickjack">
-    body {
+<style id="antiClickjack">body {
         display: none !important;
-    }
-</style>
-<script type="text/javascript">
-    if (self === top) {
+    }</style> <script type="text/javascript">if (self === top) {
         var antiClickjack = document.getElementById("antiClickjack");
         antiClickjack.parentNode.removeChild(antiClickjack);
     } else {
         top.location = self.location;
-    }
-</script>
-<script type="text/ng-template" id="EditMessages.html">
-    <div ng-controller="MessageListCtrl" ng-init="init()">
+    }</script> <script type="text/ng-template" id="EditMessages.html"><div ng-controller="MessageListCtrl" ng-init="init()">
         <div ng-show="loadingSelection" style="text-align: center;">
             <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
         </div>
@@ -380,11 +373,7 @@
             </div>
         </div>
     </div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="MessageEditTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    </div></script> <script type="text/ng-template" id="MessageEditTree.html"><tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-md-2 col-fixed-250">
             <span>{{node.obj.event}}^{{node.obj.structID}}:{{node.obj.description}}</span>
         </td>
@@ -406,12 +395,7 @@
         </td>
         <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
         </td>
-    </tr>
-</script>
-
-<script type="text/ng-template" id="MessageSegmentRefEditTree.html">
-
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
+    </tr></script> <script type="text/ng-template" id="MessageSegmentRefEditTree.html"><tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250">
             <a ng-show="editableSeg!==node.obj.id" ng-click="editSgmt(node,message)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -512,11 +496,7 @@
 
 
         </td>
-    </tr>
-</script>
-
-<script type="text/ng-template" id="MessageGroupEditTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) && (node.obj.usage==='R' ||node.obj.usage==='C' ||node.obj.usage==='RE' ) && $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
+    </tr></script> <script type="text/ng-template" id="MessageGroupEditTree.html"><tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) && (node.obj.usage==='R' ||node.obj.usage==='C' ||node.obj.usage==='RE' ) && $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250" context-menu="segOption">
             <a ng-show="editableGrp!==node.obj.id" ng-click="editGrp(node,message)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -613,11 +593,7 @@
                 <i class="fa fa-times fa-fw"></i>
             </a>
         </td>
-    </tr>
-</script>
-
-<script type="text/ng-template" id="MessageFieldViewTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
+    </tr></script> <script type="text/ng-template" id="MessageFieldViewTree.html"><tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
         <td class="col-md-2 col-fixed-250">
             <span class="label label-field label-icon" ng-show="node.obj.type==='field'">F</span>
             <span class="label label-sub-component label-icon" ng-show="node.obj.type==='subcomponent'">S</span>
@@ -678,11 +654,7 @@
                 <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
             </a>
         </td>
-    </tr>
-</script>
-
-<script type="text/ng-template" id="MessageComponentViewTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
+    </tr></script> <script type="text/ng-template" id="MessageComponentViewTree.html"><tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
         <td class="col-md-2 col-fixed-250">
             <span>
                 <span class="label label-field label-icon" ng-show="node.obj.type==='field'">F</span>
@@ -750,13 +722,7 @@
                 <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
             </a>
         </td>
-    </tr>
-</script>
-
-
-
-<script type="text/ng-template" id="MessageReadTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    </tr></script> <script type="text/ng-template" id="MessageReadTree.html"><tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-md-2 col-fixed-250">
             <span>{{::node.obj.event}}^{{::node.obj.structID}}:{{::node.obj.description}}</span>
         </td>
@@ -778,10 +744,7 @@
         </td>
         <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
         </td>
-    </tr>
-</script>
-<script type="text/ng-template" id="MessageSegmentRefReadTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
+    </tr></script> <script type="text/ng-template" id="MessageSegmentRefReadTree.html"><tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250">
             <span class="label label-segment label-icon">S</span>
             <!--<a-->
@@ -828,10 +791,7 @@
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
-    </tr>
-</script>
-<script type="text/ng-template" id="MessageGroupReadTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
+    </tr></script> <script type="text/ng-template" id="MessageGroupReadTree.html"><tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250">
             <span>
 
@@ -880,10 +840,7 @@
                 <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
             </a>
         </td>
-    </tr>
-</script>
-<script type="text/ng-template" id="AddSegmentModal.html">
-    <div class="modal-header modal-wide">
+    </tr></script> <script type="text/ng-template" id="AddSegmentModal.html"><div class="modal-header modal-wide">
         <div class="form-inline">
             <span class="header4">Create Segment</span>
         </div>
@@ -970,10 +927,7 @@
                 &nbsp; </i>Add</span>
             </button>
         </div>
-    </div>
-</script>
-<script type="text/ng-template" id="AddGroupModal.html">
-    <div class="modal-header modal-wide">
+    </div></script> <script type="text/ng-template" id="AddGroupModal.html"><div class="modal-header modal-wide">
         <div class="form-inline">
             <span class="header4">Create Group</span>
         </div>
@@ -1043,10 +997,7 @@
                 &nbsp; </i>Add</span>
             </button>
         </div>
-    </div>
-</script>
-<script type="text/ng-template" id="SelectSegmentFlavor.html">
-    <div class="modal-header modal-wide">
+    </div></script> <script type="text/ng-template" id="SelectSegmentFlavor.html"><div class="modal-header modal-wide">
         <div class="form-inline">
             <span class="header4 pull-left">Segment Selection: {{getSegmentLabel(currentSegment)}}</span>
         </div>
@@ -1106,10 +1057,7 @@
                 </div>
             </div>
         </div>
-    </div>
-</script>
-<script type="text/ng-template" id="ConfirmMessageDeleteCtrl.html">
-    <div class="modal-header modal-wide">
+    </div></script> <script type="text/ng-template" id="ConfirmMessageDeleteCtrl.html"><div class="modal-header modal-wide">
         <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Delete Confirmation
         </p>
     </div>
@@ -1122,10 +1070,7 @@
         </button>
         <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
-    </div>
-</script>
-<script type="text/ng-template" id="DeleteSegmentRefOrGrp.html">
-    <div class="modal-header">
+    </div></script> <script type="text/ng-template" id="DeleteSegmentRefOrGrp.html"><div class="modal-header">
         <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Delete Confirmation
         </p>
     </div>
@@ -1139,10 +1084,7 @@
         </button>
         <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
-    </div>
-</script>
-<script type="text/ng-template" id="OtoX.html">
-    <div class="modal-header">
+    </div></script> <script type="text/ng-template" id="OtoX.html"><div class="modal-header">
         <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Change Usage O to X Confirmation
         </p>
     </div>
@@ -1155,10 +1097,7 @@
         </button>
         <button class="btn btn-raised btn-primary btn-sm" ng-click="confirm(message)"><span><i class="fa fa-check fa-fw">&nbsp; </i>OK</span>
         </button>
-    </div>
-</script>
-<script type="text/ng-template" id="redirectCtrl.html">
-    <div class="modal-header">
+    </div></script> <script type="text/ng-template" id="redirectCtrl.html"><div class="modal-header">
         <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Confirmation
         </p>
     </div>
@@ -1174,10 +1113,7 @@
         </button>
         <button class="btn btn-raised btn-primary btn-sm" ng-click="confirm()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Leave</span>
         </button>
-    </div>
-</script>
-<script type="text/ng-template" id="DeleteMessagePredicate.html">
-    <div class="modal-header">
+    </div></script> <script type="text/ng-template" id="DeleteMessagePredicate.html"><div class="modal-header">
         <h3 class="modal-title">Delete Confirmation</h3>
     </div>
     <div class="modal-body">
@@ -1189,5 +1125,4 @@
         </button>
         <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
-    </div>
-</script>
+    </div></script>

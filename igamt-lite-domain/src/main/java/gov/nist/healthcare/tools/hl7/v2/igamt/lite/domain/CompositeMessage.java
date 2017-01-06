@@ -34,7 +34,7 @@ Comparable<Message> {
 	  private String structID; // Message/@StructID
 
 	  private String description; // Message/@Description
-	  private List<String> appliedPcs;
+	  private List<ApplyInfo> appliedPcs;
 	  private List<SegmentOrGroupLink> children = new ArrayList<SegmentOrGroupLink>();
 
 	  protected Integer position = 0;
@@ -124,12 +124,12 @@ Comparable<Message> {
 	}
 
 
-	public List<String> getAppliedPcs() {
+	public List<ApplyInfo> getAppliedPcs() {
 		return appliedPcs;
 	}
 
 
-	public void setAppliedPcs(List<String> appliedPcs) {
+	public void setAppliedPcs(List<ApplyInfo> appliedPcs) {
 		this.appliedPcs = appliedPcs;
 	}
 

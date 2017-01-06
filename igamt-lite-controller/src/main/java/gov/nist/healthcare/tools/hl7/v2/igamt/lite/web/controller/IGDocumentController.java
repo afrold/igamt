@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.net.ssl.SSLEngineResult.Status;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -40,8 +41,10 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeMessage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -78,6 +81,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeMessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
@@ -117,6 +121,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain.ProfilePreLib;
 @RequestMapping("/igdocuments")
 public class IGDocumentController extends CommonController {
 
+
   Logger log = LoggerFactory.getLogger(IGDocumentController.class);
 
   @Autowired
@@ -151,6 +156,8 @@ public class IGDocumentController extends CommonController {
   @Autowired
   private ProfileComponentLibraryService profileComponentLibraryService;
   @Autowired
+  private CompositeMessageService compositeMessageService;
+  @Autowired
   private DatatypeLibraryService datatypeLibraryService;
 
   @Autowired
@@ -173,19 +180,18 @@ public class IGDocumentController extends CommonController {
 
   @Autowired
   private ProfileSerialization profileSerializationService;
-  
+
   @Value("${server.email}")
   private String SERVER_EMAIL;
 
   @Value("${admin.email}")
   private String ADMIN_EMAIL;
-  
+
   @Autowired
   private MailSender mailSender;
 
   @Autowired
   private SimpleMailMessage templateMessage;
-
 
   public IGDocumentService getIgDocumentService() {
     return igDocumentService;
@@ -268,8 +274,6 @@ public class IGDocumentController extends CommonController {
       throw new NotFoundException("igDocumentNotFound");
     return result;
   }
-  
-  
 
   /**
    * Return the list of pre-loaded profiles
@@ -319,27 +323,46 @@ public class IGDocumentController extends CommonController {
         }
         messageService.save(m);
       }
+      for (CompositeMessage cm : igDocument.getProfile().getCompositeMessages().getChildren()) {
+        cm.setId(null);
+        compositeMessageService.save(cm);
+      }
 
       DatatypeLibrary datatypeLibrary = igDocument.getProfile().getDatatypeLibrary();
       SegmentLibrary segmentLibrary = igDocument.getProfile().getSegmentLibrary();
       TableLibrary tableLibrary = igDocument.getProfile().getTableLibrary();
-      ProfileComponentLibrary profileComponentLibrary =igDocument.getProfile().getProfileComponentLibrary();
+      ProfileComponentLibrary profileComponentLibrary =
+          igDocument.getProfile().getProfileComponentLibrary();
 
       DatatypeLibrary clonedDatatypeLibrary = datatypeLibrary.clone();
       SegmentLibrary clonedSegmentLibrary = segmentLibrary.clone();
       TableLibrary clonedTableLibrary = tableLibrary.clone();
-      ProfileComponentLibrary clonedProfileComponentLibrary =profileComponentLibrary.clone();
-
+      ProfileComponentLibrary clonedProfileComponentLibrary = profileComponentLibrary.clone();
 
       clonedDatatypeLibrary.setChildren(new HashSet<DatatypeLink>());
       clonedSegmentLibrary.setChildren(new HashSet<SegmentLink>());
       clonedTableLibrary.setChildren(new HashSet<TableLink>());
+      clonedProfileComponentLibrary.setChildren(new HashSet<ProfileComponentLink>());
 
       datatypeLibraryService.save(clonedDatatypeLibrary);
       segmentLibraryService.save(clonedSegmentLibrary);
       tableLibraryService.save(clonedTableLibrary);
       profileComponentLibraryService.save(clonedProfileComponentLibrary);
-      
+
+      List<ProfileComponent> profilecomponents =
+          profileComponentLibraryService.findProfileComponentsById(profileComponentLibrary.getId());
+      if (profilecomponents != null) {
+        for (int i = 0; i < profilecomponents.size(); i++) {
+          String oldPCId = null;
+          ProfileComponent pc = profilecomponents.get(i);
+          ProfileComponentLink pcL = profileComponentLibrary.findOne(pc.getId()).clone();
+          pc.setId(null);
+          profileComponentService.save(pc);
+          pcL.setId(pc.getId());
+          clonedProfileComponentLibrary.addProfileComponent(pcL);
+
+        }
+      }
 
       List<Datatype> datatypes = datatypeLibraryService.findDatatypesById(datatypeLibrary.getId());
       if (datatypes != null) {
@@ -347,7 +370,7 @@ public class IGDocumentController extends CommonController {
           String oldDatatypeId = null;
           Datatype d = datatypes.get(i);
           DatatypeLink dl = datatypeLibrary.findOne(d.getId()).clone();
-          if (d.getScope().equals(SCOPE.USER) || d.getScope().equals(SCOPE.PRELOADED)) {
+          if (d.getStatus().equals(STATUS.UNPUBLISHED) || d.getScope().equals(SCOPE.PRELOADED)) {
             oldDatatypeId = d.getId();
             d.setScope(SCOPE.USER);
             d.setCreatedFrom(oldDatatypeId);
@@ -395,7 +418,7 @@ public class IGDocumentController extends CommonController {
           String oldTableId = null;
           Table t = tables.get(i);
           TableLink tl = tableLibrary.findOneTableById(t.getId()).clone();
-          if (t.getScope().equals(SCOPE.USER) || t.getScope().equals(SCOPE.PRELOADED)) {
+          if (t.getStatus().equals(STATUS.UNPUBLISHED) || t.getScope().equals(SCOPE.PRELOADED)) {
             oldTableId = t.getId();
             t.setScope(SCOPE.USER);
             t.setCreatedFrom(oldTableId);
@@ -415,11 +438,14 @@ public class IGDocumentController extends CommonController {
       datatypeLibraryService.save(clonedDatatypeLibrary);
       segmentLibraryService.save(clonedSegmentLibrary);
       tableLibraryService.save(clonedTableLibrary);
+      profileComponentLibraryService.save(clonedProfileComponentLibrary);
+
 
       igDocument.getProfile().setMetaData(igDocument.getProfile().getMetaData().clone());
       igDocument.getProfile().setDatatypeLibrary(clonedDatatypeLibrary);
       igDocument.getProfile().setSegmentLibrary(clonedSegmentLibrary);
       igDocument.getProfile().setTableLibrary(clonedTableLibrary);
+      igDocument.getProfile().setProfileComponentLibrary(clonedProfileComponentLibrary);
 
       updateModifiedId(tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap,
           igDocument.getProfile());
@@ -523,6 +549,7 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentNotFoundException(e);
     }
   }
+
   @RequestMapping(value = "/{id}/profile/profilecomponent/save", method = RequestMethod.POST)
   public ProfileComponent saveProfileComponent(@PathVariable("id") String id,
       @RequestBody ProfileComponent profileComponent, HttpServletRequest request,
@@ -532,12 +559,12 @@ public class IGDocumentController extends CommonController {
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
     }
-    
-    profileComponent.setDataUpdated(new Date());
-    if(d.getProfile().getProfileComponentLibrary()==null){
-      ProfileComponentLibrary profileComponentLibrary=new ProfileComponentLibrary();
+
+    profileComponent.setDateUpdated(new Date());
+    if (d.getProfile().getProfileComponentLibrary() == null) {
+      ProfileComponentLibrary profileComponentLibrary = new ProfileComponentLibrary();
       profileComponentService.create(profileComponent);
-      ProfileComponentLink profileComponentLink=new ProfileComponentLink();
+      ProfileComponentLink profileComponentLink = new ProfileComponentLink();
       profileComponentLink.setId(profileComponent.getId());
       profileComponentLink.setName(profileComponent.getName());
       profileComponentLibrary.addProfileComponent(profileComponentLink);
@@ -545,7 +572,7 @@ public class IGDocumentController extends CommonController {
       d.getProfile().setProfileComponentLibrary(profileComponentLibrary);
     } else {
       profileComponentService.create(profileComponent);
-      ProfileComponentLink profileComponentLink=new ProfileComponentLink();
+      ProfileComponentLink profileComponentLink = new ProfileComponentLink();
       profileComponentLink.setId(profileComponent.getId());
       profileComponentLink.setName(profileComponent.getName());
       d.getProfile().getProfileComponentLibrary().addProfileComponent(profileComponentLink);;
@@ -554,6 +581,7 @@ public class IGDocumentController extends CommonController {
     igDocumentService.save(d);
     return profileComponent;
   }
+
   @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
   public ResponseMessage delete(@PathVariable("id") String id) throws IGDocumentDeleteException {
     try {
@@ -587,7 +615,6 @@ public class IGDocumentController extends CommonController {
 
   }
 
-
   @RequestMapping(value = "/{id}/export/xml", method = RequestMethod.POST, produces = "text/xml",
       consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void export(@PathVariable("id") String id, HttpServletRequest request,
@@ -598,15 +625,16 @@ public class IGDocumentController extends CommonController {
     content = exportService.exportIGDocumentAsXml(d);
     response.setContentType("text/xml");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
+        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
-  @RequestMapping(value = "/{id}/export/html/{layout}", method = RequestMethod.POST, produces = "text/html",
-      consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportHtml(@PathVariable("id") String id, @PathVariable("layout") String layout, HttpServletRequest request,
-      HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
+  @RequestMapping(value = "/{id}/export/html/{layout}", method = RequestMethod.POST,
+      produces = "text/html", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
+  public void exportHtml(@PathVariable("id") String id, @PathVariable("layout") String layout,
+      HttpServletRequest request, HttpServletResponse response)
+      throws IOException, IGDocumentNotFoundException {
     log.info("Exporting as html file IGDcoument with id=" + id);
     IGDocument d = this.findIGDocument(id);
     InputStream content = null;
@@ -614,8 +642,8 @@ public class IGDocumentController extends CommonController {
     content = exportService.exportIGDocumentAsHtml(d, serializationLayout);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -645,8 +673,8 @@ public class IGDocumentController extends CommonController {
     content = igDocumentExport.exportAsZip(d);
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -663,8 +691,8 @@ public class IGDocumentController extends CommonController {
     content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -681,8 +709,8 @@ public class IGDocumentController extends CommonController {
     content = igDocumentExport.exportAsGazelleForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -697,8 +725,8 @@ public class IGDocumentController extends CommonController {
     content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageIds);
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -720,8 +748,9 @@ public class IGDocumentController extends CommonController {
   @RequestMapping(value = "/{id}/export/docx/{layout}", method = RequestMethod.POST,
       produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportDocx(@PathVariable("id") String id, @PathVariable("layout") String layout, HttpServletRequest request,
-      HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
+  public void exportDocx(@PathVariable("id") String id, @PathVariable("layout") String layout,
+      HttpServletRequest request, HttpServletResponse response)
+      throws IOException, IGDocumentNotFoundException {
     log.info("Exporting as docx file profile with id=" + id);
     IGDocument d = findIGDocument(id);
     InputStream content = null;
@@ -730,8 +759,8 @@ public class IGDocumentController extends CommonController {
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -770,8 +799,8 @@ public class IGDocumentController extends CommonController {
     content = igDocumentExport.exportAsXlsx(d);
     response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
-            + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
+        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -833,8 +862,8 @@ public class IGDocumentController extends CommonController {
     log.info("Fetching all Tables for " + hl7Version);
     List<SCOPE> scopes = new ArrayList<SCOPE>();
     scopes.add(SCOPE.HL7STANDARD);
-   
-	return new HashSet<Table>(tableService.findByScopesAndVersion(scopes, hl7Version));
+
+    return new HashSet<Table>(tableService.findByScopesAndVersion(scopes, hl7Version));
   }
 
   @RequestMapping(value = "/PHINVADS/tables", method = RequestMethod.GET,
@@ -843,7 +872,6 @@ public class IGDocumentController extends CommonController {
     log.info("Fetching all Tables for preloaded PHINVADS");
     return new TimerTaskForPHINVADSValueSetDigger().findAllpreloadedPHINVADSTables();
   }
-
 
   @RequestMapping(value = "/{searchText}/PHINVADS/tables", method = RequestMethod.GET,
       produces = "application/json")
@@ -915,7 +943,7 @@ public class IGDocumentController extends CommonController {
     if (found != null) {
       messages.remove(found);
       igDocumentService.save(d);
-     }
+    }
     return d.getDateUpdated().getTime();
   }
 
@@ -946,7 +974,7 @@ public class IGDocumentController extends CommonController {
     d.getProfile().setDateUpdated(DateUtils.getCurrentDate());
     igDocumentService.save(d);
     return d.getDateUpdated().getTime();
-   }
+  }
 
   @RequestMapping(value = "/{id}/section/save", method = RequestMethod.POST)
   public Long saveSection(@PathVariable("id") String id, @RequestBody Section section,
@@ -962,7 +990,7 @@ public class IGDocumentController extends CommonController {
     d.setChildSections(newChildSection);
     igDocumentService.save(d, section.getDateUpdated());
     return d.getDateUpdated().getTime();
-   }
+  }
 
   @RequestMapping(value = "/{id}/section/update", method = RequestMethod.POST)
   public Long updateSection(@PathVariable("id") String id, @RequestBody Section section,
@@ -995,9 +1023,9 @@ public class IGDocumentController extends CommonController {
       Section s = findSection(d, idSect);
       if (s == null)
         throw new IGDocumentException("Unknown Section");
-      s.merge(section); 
+      s.merge(section);
     }
-    igDocumentService.save(d, section.getDateUpdated());    
+    igDocumentService.save(d, section.getDateUpdated());
     return d.getDateUpdated().getTime();
   }
 
@@ -1021,9 +1049,9 @@ public class IGDocumentController extends CommonController {
         throw new IGDocumentException("Unknown Section");
       parent.getChildSections().remove(sect);
     }
-    igDocumentService.save(d);  
+    igDocumentService.save(d);
     return d.getDateUpdated().getTime();
-   }
+  }
 
   private Section findSectionParent(IGDocument document, String sectionId) {
     for (Section section : document.getChildSections()) {
@@ -1083,7 +1111,6 @@ public class IGDocumentController extends CommonController {
     return str.replaceAll(" ", "-");
   }
 
-
   @RequestMapping(value = "/{id}/updateChildSections", method = RequestMethod.POST)
   public Long updateChildSections(@PathVariable("id") String id,
       @RequestBody Set<Section> childSections)
@@ -1098,8 +1125,7 @@ public class IGDocumentController extends CommonController {
   }
 
   @RequestMapping(value = "/{id}/reorderMessages", method = RequestMethod.POST)
-  public Long reorderMessages(@PathVariable("id") String id,
-      @RequestBody Set<MessageMap> messages)
+  public Long reorderMessages(@PathVariable("id") String id, @RequestBody Set<MessageMap> messages)
       throws IOException, IGDocumentNotFoundException, IGDocumentException, ProfileException {
 
     IGDocument d = igDocumentService.findOne(id);
@@ -1114,7 +1140,7 @@ public class IGDocumentController extends CommonController {
       for (MessageMap x : messages) {
         if (m.getId().equals(x.getId())) {
           m.setPosition(x.getPosition());
-          messageService.save(m,date);
+          messageService.save(m, date);
         }
       }
     }
@@ -1126,12 +1152,11 @@ public class IGDocumentController extends CommonController {
     sortedSet.addAll(sortedList);
     msgs.setChildren(sortedSet);
     p.setMessages(msgs);
-    profileService.save(p,date);
+    profileService.save(p, date);
     d.setProfile(p);
-    igDocumentService.save(d,date);
+    igDocumentService.save(d, date);
     return date.getTime();
   }
-
 
   @RequestMapping(value = "/{id}/findAndAddMessages", method = RequestMethod.POST)
   public List<Message> findAndAddMessages(@PathVariable("id") String id,
@@ -1175,8 +1200,6 @@ public class IGDocumentController extends CommonController {
       log.error("", e);
     }
 
-
-
     // for(Message m : newMessages){
     //
     // }
@@ -1217,8 +1240,6 @@ public class IGDocumentController extends CommonController {
     return d.getDateUpdated().getTime();
   }
 
-
-
   @RequestMapping(value = "/{id}/reorderChildSections", method = RequestMethod.POST)
   public Long reorderChildSections(@PathVariable("id") String id,
       @RequestBody Set<SectionMap> sections)
@@ -1227,7 +1248,6 @@ public class IGDocumentController extends CommonController {
     if (d == null) {
       throw new IGDocumentNotFoundException(id);
     }
-
 
     for (Section s : d.getChildSections()) {
       for (SectionMap x : sections) {
@@ -1238,18 +1258,17 @@ public class IGDocumentController extends CommonController {
     }
     List<Section> sortedList = new ArrayList<Section>();
     sortedList.addAll(d.getChildSections());
- 
 
     PositionComparator comparator = new PositionComparator();
     Collections.sort(sortedList, comparator);
- 
+
     Set<Section> sortedSet = new HashSet<Section>();
     sortedSet.addAll(sortedList);
-     d.setChildSections(sortedSet);
-     igDocumentService.save(d);
+    d.setChildSections(sortedSet);
+    igDocumentService.save(d);
     return d.getDateUpdated().getTime();
   }
-  
+
   /**
    * Share multiple participants
    * 
@@ -1272,16 +1291,16 @@ public class IGDocumentController extends CommonController {
         throw new IGDocumentException(
             "You do not have the right privilege to share this IG Document");
       }
-      for(Long accountId : participants) {
-    	  d.getShareParticipantIds().add(new ShareParticipantPermission(accountId));
-    	  
-    	  // Find the user
-    	  Account acc = accountRepository.findOne(accountId);
-    	  // Send confirmation email
-    	  sendShareConfirmation(d, acc,account);
+      for (Long accountId : participants) {
+        d.getShareParticipantIds().add(new ShareParticipantPermission(accountId));
+
+        // Find the user
+        Account acc = accountRepository.findOne(accountId);
+        // Send confirmation email
+        sendShareConfirmation(d, acc, account);
       }
       igDocumentService.save(d);
-       return true;
+      return true;
     } catch (Exception e) {
       log.error("", e);
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
@@ -1313,8 +1332,8 @@ public class IGDocumentController extends CommonController {
             || account.getId().equals(shareParticipantId)) {
           d.getShareParticipantIds().remove(new ShareParticipantPermission(shareParticipantId));
           // Find the user
-    	  Account acc = accountRepository.findOne(shareParticipantId);
-    	  // Send unshare confirmation email
+          Account acc = accountRepository.findOne(shareParticipantId);
+          // Send unshare confirmation email
           sendUnshareEmail(d, acc, account);
         } else {
           throw new IGDocumentException("You do not have the right to share this ig document");
@@ -1329,8 +1348,6 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentException("Failed to unshare IG Document \n" + e.getMessage());
     }
   }
-
-
 
   private List<IGDocument> sharedIGDocument() throws IGDocumentException {
     log.info("Getting List of shared Ig Documents");
@@ -1347,52 +1364,58 @@ public class IGDocumentController extends CommonController {
     }
   }
 
-  
-  private void sendShareConfirmation(IGDocument doc, Account target,Account source) {	  
-	  
-	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+  private void sendShareConfirmation(IGDocument doc, Account target, Account source) {
 
-	    msg.setSubject("NIST IGAMT IGDocument Shared with you.");
-	    msg.setTo(target.getEmail());
-	    msg.setText("Dear " + target.getUsername() + " \n\n"
-	        + "You have received a request to share the IG Document " +  doc.getMetaData().getTitle() + " by " + source.getFullName() + "(" + source.getUsername() +")"
-	        + "\n" + "If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
-	        + "\n\n"
-	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
-	    try {
-	      this.mailSender.send(msg);
-	    } catch (MailException ex) {
-	      log.error(ex.getMessage(), ex);
-	    }
+    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+    msg.setSubject("NIST IGAMT IGDocument Shared with you.");
+    msg.setTo(target.getEmail());
+    msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
+        + source.getUsername() + ")"
+        + " wants to share the following Implementation Guide Document with you: \n" + "\n Title: "
+        + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
+        + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
+        + doc.getMetaData().getHl7Version()
+        + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
+        + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
+    try {
+      this.mailSender.send(msg);
+    } catch (MailException ex) {
+      log.error(ex.getMessage(), ex);
+    }
   }
-  
-  private void sendUnshareEmail(IGDocument doc, Account target,Account source) {
-	  
-	    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
-	    msg.setSubject("NIST IGAMT IGDocument unshare");
-	    msg.setTo(target.getEmail());
-	    msg.setText("Dear " + target.getUsername() + " \n\n"
-	    	+ "This is an automatic email to let you know that "
-	        + source.getFullName() + "(" + source.getUsername() +") stopped sharing the IG Document " +  doc.getMetaData().getTitle() + " with you."
-	    	+ "\n\n"
-	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
-	    try {
-	      this.mailSender.send(msg);
-	    } catch (MailException ex) {
-	      log.error(ex.getMessage(), ex);
-	    }
-}
-  
- /**
-  *  Update the IG document's date
-  * @param id
-  * @return
-  * @throws IGDocumentException
-  */
-  @RequestMapping(value = "/{id}/updateDate", method = RequestMethod.POST, produces = "application/json")
-  public Long updateDate(@PathVariable("id") String id)
-      throws IGDocumentException {
+  private void sendUnshareEmail(IGDocument doc, Account target, Account source) {
+
+    SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+
+    msg.setSubject("NIST IGAMT IGDocument unshare");
+    msg.setTo(target.getEmail());
+    msg.setText("Dear " + target.getUsername() + " \n\n"
+        + "This is an automatic email to let you know that " + source.getFullName() + "("
+        + source.getUsername()
+        + ") has stopped sharing the following Implementation Guide Document\n" + "\n Title: "
+        + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
+        + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
+        + doc.getMetaData().getHl7Version() + "\n\n" + "P.S: If you need help, contact us at '"
+        + ADMIN_EMAIL + "'");
+    try {
+      this.mailSender.send(msg);
+    } catch (MailException ex) {
+      log.error(ex.getMessage(), ex);
+    }
+  }
+
+  /**
+   * Update the IG document's date
+   * 
+   * @param id
+   * @return
+   * @throws IGDocumentException
+   */
+  @RequestMapping(value = "/{id}/updateDate", method = RequestMethod.POST,
+      produces = "application/json")
+  public Long updateDate(@PathVariable("id") String id) throws IGDocumentException {
     log.info("Updating date of ig document with id=" + id);
     try {
       User u = userService.getCurrentUser();
@@ -1404,7 +1427,6 @@ public class IGDocumentController extends CommonController {
       log.error("", e);
       throw new IGDocumentException("Failed to update IG Document's date \n" + e.getMessage());
     }
-  } 
-  
- 
+  }
+
 }

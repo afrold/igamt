@@ -84,18 +84,18 @@ public class TableController extends CommonController {
     log.info("Fetching tableById..." + id);
     
     Table table = findById(id);
-    int codeSize = table.getCodes().size();
-    if(codeSize > Constant.CODESIZELIMIT) {
-    	List<Code> codes = new ArrayList<Code>();
-    	Code c = new Code();
-        c.setValue("Too Many Codes");
-        c.setLabel("Here are " + codeSize + " codes. All codes have been omitted by the perforamance issue");
-        c.setComments("Current Limit of Code size is " + Constant.CODESIZELIMIT);
-        c.setCodeSystem("NA");
-        c.setType(Constant.CODE);
-        codes.add(c);
-        table.setCodes(codes);
-    }
+//    int codeSize = table.getCodes().size();
+//    if(codeSize > Constant.CODESIZELIMIT) {
+//    	List<Code> codes = new ArrayList<Code>();
+//    	Code c = new Code();
+//        c.setValue("Too Many Codes");
+//        c.setLabel("Here are " + codeSize + " codes. All codes have been omitted by the perforamance issue");
+//        c.setComments("Current Limit of Code size is " + Constant.CODESIZELIMIT);
+//        c.setCodeSystem("NA");
+//        c.setType(Constant.CODE);
+//        codes.add(c);
+//        table.setCodes(codes);
+//    }
     return table;
   }
 
@@ -334,10 +334,16 @@ public class TableController extends CommonController {
 
 	    msg.setSubject("NIST IGAMT Value Set Shared with you.");
 	    msg.setTo(target.getEmail());
-	    msg.setText("Dear " + target.getUsername() + " \n\n"
-	        + "You have received a request to share the Value Set " +  table.getName() + ": " + table.getDescription() + " by " + source.getFullName() + "(" + source.getUsername() +")"
-	        + "\n" + "If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Elements' tab"
-	        + "\n\n"
+ 	    		 msg.setText("Dear " + target.getUsername() + " \n\n"
+	    			        + source.getFullName() + "(" + source.getUsername() +")" + " wants to share the following value set with you: \n" 
+	    			    	+ "\n Name: " +  table.getName()
+	    			    	+ "\n Binding Identifier:" + table.getBindingIdentifier()
+	    			    	+ "\n Description:" + table.getDescription()
+	    			    	+ "\n HL7 Version:" + table.getHl7Version()
+	    			    	+ "\n Commit Version:" + table.getPublicationVersion()
+	    			    	+ "\n Commit Date:" + table.getPublicationDate()
+	    		 	        + "\n" + "If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Elements' tab"
+	    			        + "\n\n"
 	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
 	    try {
 	      this.mailSender.send(msg);
@@ -354,7 +360,13 @@ private void sendUnshareEmail(Table table, Account target,Account source) {
 	    msg.setTo(target.getEmail());
 	    msg.setText("Dear " + target.getUsername() + " \n\n"
 	    	+ "This is an automatic email to let you know that "
-	        + source.getFullName() + "(" + source.getUsername() +") stopped sharing the Value Set " +  table.getName() + ": " + table.getDescription()  + " with you."
+	        + source.getFullName() + "(" + source.getUsername() +") has stopped sharing the following value set with you:\n"
+	        + "\n Name: " +  table.getName()
+	    	+ "\n Binding Identifier:" + table.getBindingIdentifier()
+	    	+ "\n Description:" + table.getDescription()
+	    	+ "\n HL7 Version:" + table.getHl7Version()
+	    	+ "\n Commit Version:" + table.getPublicationVersion()
+	    	+ "\n Commit Date:" + table.getPublicationDate()
 	    	+ "\n\n"
 	        + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
 	    try {

@@ -15,6 +15,19 @@ angular.module('igl').factory('CompositeMessageService',
                 });
                 return delay.promise;
             },
+            save: function(message) {
+                var delay = $q.defer();
+                $http.post('api/composite-messages/save', message, {
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(function(response) {
+                    var saved = angular.fromJson(response.data);
+                    delay.resolve(saved);
+                    return saved;
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
             getCm: function(cmID) {
                 var delay = $q.defer();
                 $http.get('api/composite-messages/' + cmID).then(function(response) {

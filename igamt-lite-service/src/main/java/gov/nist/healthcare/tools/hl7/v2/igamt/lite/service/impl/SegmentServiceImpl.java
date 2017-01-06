@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
@@ -96,5 +97,11 @@ public class SegmentServiceImpl implements SegmentService {
 		return segmentRepository.updateDate(id, date);
 
 	}
+
+	@Override
+	public void updateStatus(String id, STATUS status) {
+		segmentRepository.updateStatus(id, status);
+	}
+
 
 }
