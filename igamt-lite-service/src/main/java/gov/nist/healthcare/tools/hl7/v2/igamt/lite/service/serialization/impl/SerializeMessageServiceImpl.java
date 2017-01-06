@@ -47,20 +47,20 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
 
     private List<String> messageSegmentsNameList;
 
+    private int segmentPosition = 1;
+
     @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         //TODO find a better solution to create a void section
         SerializableSection messageSegments = new SerializableSection("","","","","");
-        Integer position = 1;
         this.messageSegmentsNameList = new ArrayList<>();
+        this.segmentPosition = 1;
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
             SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             if(serializationLayout.equals(SerializationLayout.VERBOSE)){
                 serializeSegment(segmentRefOrGroup,
-                    prefix + "." + String.valueOf(message.getPosition()) + "." + String
-                        .valueOf(position), position, messageSegments);
-                position+=1;
+                    prefix + "." + String.valueOf(message.getPosition()) + ".", messageSegments);
             }
         }
         String type = "ConformanceStatement";
@@ -88,13 +88,15 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         return serializableMessage;
     }
 
-    private void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, Integer position, SerializableSection segmentsSection) {
+    private void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection) {
         if(segmentRefOrGroup instanceof SegmentRef){
             SegmentLink segmentLink = ((SegmentRef) segmentRefOrGroup).getRef();
             if(!messageSegmentsNameList.contains(segmentLink.getName())) {
                 segmentsSection.addSection(
-                    serializeSegmentService.serializeSegment(segmentLink, prefix, position, 5));
+                    serializeSegmentService.serializeSegment(segmentLink, prefix+ String
+                        .valueOf(segmentPosition), segmentPosition, 5));
                 messageSegmentsNameList.add(segmentLink.getName());
+                segmentPosition++;
             }
         } else if (segmentRefOrGroup instanceof Group){
             /*String id = UUID.randomUUID().toString();
@@ -102,7 +104,7 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
             String title = ((Group) segmentRefOrGroup).getName();
             SerializableSection serializableSection = new SerializableSection(id,prefix,String.valueOf(position),headerLevel,title);*/
             for(SegmentRefOrGroup groupSegmentRefOrGroup : ((Group) segmentRefOrGroup).getChildren()){
-                serializeSegment(groupSegmentRefOrGroup, prefix, position, segmentsSection);
+                serializeSegment(groupSegmentRefOrGroup, prefix, segmentsSection);
             }
         }
     }
