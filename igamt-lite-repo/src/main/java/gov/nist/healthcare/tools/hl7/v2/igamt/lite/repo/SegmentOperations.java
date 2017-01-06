@@ -25,13 +25,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
  */
 public interface SegmentOperations {
 
-	List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+  List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-	public List<Segment> findByIds(Set<String> ids);
+  public List<Segment> findByIds(Set<String> ids);
 
-	List<Segment> findUserSegmentsByIds(Set<String> ids);
+  List<Segment> findUserSegmentsByIds(Set<String> ids);
 
-	public Date updateDate(String id, Date date);
-	void updateStatus(String id, STATUS status);
+  public Date updateDate(String id, Date date);
+
+  void updateStatus(String id, STATUS status);
+
 
 }
