@@ -34,7 +34,6 @@
                                 		</xsl:element>
                             		</xsl:when>	
                             		<xsl:otherwise>
-                                        bite
                             			<xsl:value-of select="@title"/>
                             		</xsl:otherwise>
                             	</xsl:choose>
