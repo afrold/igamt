@@ -94,7 +94,7 @@
                             <xsl:text>Length</xsl:text>
                         </xsl:element>
                         <xsl:element name="th">
-                            <xsl:text>Concept Domain</xsl:text>
+                            <xsl:text>Value Set</xsl:text>
                         </xsl:element>
                         <xsl:element name="th">
                             <xsl:text>Comment</xsl:text>
