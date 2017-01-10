@@ -82,7 +82,7 @@
                 </xsl:element>
             </xsl:element>
             <xsl:element name="tbody">
-                <xsl:apply-templates select="MessageSegment"/>
+                <xsl:apply-templates select="MessageSegment|MessageGroup/MessageSegment"/>
             </xsl:element>
         </xsl:element>
         <xsl:if test="count(./Constraints/Constraint[@Type='cs'])+count(./MessageGroup/Constraint[@Type='cs']) &gt; 0">
