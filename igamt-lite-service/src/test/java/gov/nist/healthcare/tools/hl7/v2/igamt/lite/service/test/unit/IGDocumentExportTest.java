@@ -78,7 +78,7 @@ public class IGDocumentExportTest {
     public void testDocxCompactExport(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
-            File wordFile = new File(EXPORT_BASE_PATH+".docx");
+            File wordFile = new File(EXPORT_BASE_PATH+"_compact.docx");
             if(wordFile.exists()){
                 wordFile.delete();
             }
@@ -94,7 +94,7 @@ public class IGDocumentExportTest {
     public void testDocxVerboseExport(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
-            File wordFile = new File(EXPORT_BASE_PATH+".docx");
+            File wordFile = new File(EXPORT_BASE_PATH+"_verbose.docx");
             if(wordFile.exists()){
                 wordFile.delete();
             }
