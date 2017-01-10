@@ -56,8 +56,7 @@ import java.util.UUID;
         SerializationLayout serializationLayout) {
         SerializableStructure serializableStructure = new SerializableStructure();
         SerializableMetadata serializableMetadata =
-            new SerializableMetadata(igDocument.getMetaData(),
-                igDocument.getProfile().getMetaData(), igDocument.getDateUpdated());
+            new SerializableMetadata(igDocument.getMetaData(), igDocument.getDateUpdated());
         serializableStructure.addSerializableElement(serializableMetadata);
         SerializableSections serializableSections = new SerializableSections();
         String prefix = "";

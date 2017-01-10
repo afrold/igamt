@@ -23,13 +23,11 @@ import java.util.Date;
 public class SerializableMetadata extends SerializableElement{
 
     private DocumentMetaData documentMetaData;
-    private ProfileMetaData profileMetaData;
     private Date dateUpdated;
 
-    public SerializableMetadata(DocumentMetaData documentMetaData, ProfileMetaData profileMetaData,
+    public SerializableMetadata(DocumentMetaData documentMetaData,
         Date dateUpdated) {
         this.documentMetaData = documentMetaData;
-        this.profileMetaData = profileMetaData;
         this.dateUpdated = dateUpdated;
     }
 
@@ -47,16 +45,14 @@ public class SerializableMetadata extends SerializableElement{
                 elmMetaData.addAttribute(new Attribute("Date", this.format(this.dateUpdated)));
             if (documentMetaData.getExt() != null)
                 elmMetaData.addAttribute(new Attribute("Ext", documentMetaData.getExt()));
-        }
-        if (this.profileMetaData != null) {
-            if (this.profileMetaData.getOrgName() != null)
-                elmMetaData.addAttribute(new Attribute("OrgName", this.profileMetaData.getOrgName()));
-            if (this.profileMetaData.getStatus() != null)
-                elmMetaData.addAttribute(new Attribute("Status", this.profileMetaData.getStatus()));
-            if (this.profileMetaData.getTopics() != null)
-                elmMetaData.addAttribute(new Attribute("Topics", this.profileMetaData.getTopics()));
-            if (this.profileMetaData.getHl7Version() != null)
-                elmMetaData.addAttribute(new Attribute("HL7Version", this.profileMetaData.getHl7Version()));
+            if (this.documentMetaData.getOrgName() != null)
+                elmMetaData.addAttribute(new Attribute("OrgName", this.documentMetaData.getOrgName()));
+            if (this.documentMetaData.getStatus() != null)
+                elmMetaData.addAttribute(new Attribute("Status", this.documentMetaData.getStatus()));
+            if (this.documentMetaData.getTopics() != null)
+                elmMetaData.addAttribute(new Attribute("Topics", this.documentMetaData.getTopics()));
+            if (this.documentMetaData.getHl7Version() != null)
+                elmMetaData.addAttribute(new Attribute("HL7Version", this.documentMetaData.getHl7Version()));
         }
         return elmMetaData;
     }

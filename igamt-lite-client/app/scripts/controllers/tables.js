@@ -13,6 +13,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.reverse = false;
     $scope.selectedCodes = [];
     $scope.isDeltaCalled = false;
+    $scope.itemsByPage = 30;
     $scope.tabStatus = {
         active: 1
     };
@@ -254,7 +255,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             codeUsage: 'R'
         };
 
-
+        $rootScope.table.smallCodes.unshift(newValue);
         $rootScope.table.codes.unshift(newValue);
         var newValueBlock = { targetType: 'table', targetId: $rootScope.table.id, obj: newValue };
         if (!$scope.isNewObject('table', 'add', $rootScope.table.id)) {
@@ -264,16 +265,13 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     };
     $rootScope.checkAll = false;
     $scope.ProcessChecking = function(checkAll) {
-
-
-        console.log("here");
         if (checkAll) {
             $scope.checkAllValues();
         } else {
             $scope.uncheckAllValues();
         }
 
-    }
+    };
     $scope.addOrRemoveValue = function(c) {
         if (c.selected === true) {
             $scope.selectedCodes.push(c);
@@ -283,31 +281,28 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                 $scope.selectedCodes.splice(index, 1);
             }
         }
-
-
-    }
+    };
     $scope.deleteSlectedValues = function() {
-        console.log()
-        console.log("deleting");
         $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
+        $rootScope.table.smallCodes = _.difference($rootScope.table.smallCodes, $scope.selectedCodes);
         $scope.selectedCodes = [];
-    }
+    };
     $scope.checkAllValues = function() {
+        $scope.selectedCodes = [];
+
         angular.forEach($rootScope.table.codes, function(c) {
             c.selected = true;
             $scope.selectedCodes.push(c);
         });
-    }
+    };
     $scope.uncheckAllValues = function() {
-        console.log("deleting");
-        //console.log($rootScope.displayCollection);
         angular.forEach($rootScope.table.codes, function(c) {
             if (c.selected && c.selected === true) {
                 c.selected = false;
             }
         });
         $scope.selectedCodes = [];
-    }
+    };
     $scope.deleteValue = function(value) {
         // if (!$scope.isNewValueThenDelete(value.id)) {
         //     $rootScope.recordChangeForEdit2('value', "delete", value.id, 'id', value.id);
