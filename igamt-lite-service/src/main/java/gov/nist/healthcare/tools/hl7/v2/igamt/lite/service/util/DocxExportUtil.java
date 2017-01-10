@@ -64,7 +64,7 @@ public class DocxExportUtil {
 
 	Logger logger = LoggerFactory.getLogger(DocxExportUtil.class);
 
-	public void createCoverPageForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory, Profile p,
+	public void createCoverPageForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory,
 			MetaData metaData) {
 
 		BufferedImage image = null;
@@ -84,26 +84,32 @@ public class DocxExportUtil {
 			e.printStackTrace();
 		}
 
-		if (metaData instanceof DocumentMetaData) {
-			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title",
-					((DocumentMetaData) metaData).getTitle());
-			addLineBreak(wordMLPackage, factory);
-			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle",
-					"Subtitle " + ((DocumentMetaData) metaData).getSubTitle());
-		}
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", metaData.getDate());
-		addLineBreak(wordMLPackage, factory);
-		addLineBreak(wordMLPackage, factory);
-		if (p != null && p.getMetaData() != null && p.getMetaData().getHl7Version() != null
-				&& !"".equals(p.getMetaData().getHl7Version())) {
-			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1",
-					"HL7 Version " + p.getMetaData().getHl7Version());
-		}
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1",
-				"Document Version " + metaData.getVersion());
-		if (p != null && p.getMetaData() != null && p.getMetaData().getOrgName() != null
-				&& !"".equals(p.getMetaData().getOrgName())) {
-			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", p.getMetaData().getOrgName());
+		if ( null!= metaData && metaData instanceof DocumentMetaData) {
+				DocumentMetaData documentMetaData = (DocumentMetaData) metaData;
+				if(null != documentMetaData.getTitle()) {
+						wordMLPackage.getMainDocumentPart()
+								.addStyledParagraphOfText("Title", documentMetaData.getTitle());
+						addLineBreak(wordMLPackage, factory);
+				}
+				if(null!=documentMetaData.getSubTitle() && !documentMetaData.getSubTitle().isEmpty()) {
+					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle", "Subtitle " + documentMetaData.getSubTitle());
+				}
+				if(null!=documentMetaData.getDate() && !documentMetaData.getDate().isEmpty()) {
+					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", metaData.getDate());
+				}
+				addLineBreak(wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				if (null != documentMetaData.getHl7Version() && !"".equals(documentMetaData.getHl7Version())) {
+					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1",
+							"HL7 Version " + documentMetaData.getHl7Version());
+				}
+				if(null!=documentMetaData.getVersion() && !documentMetaData.getVersion().isEmpty()) {
+						wordMLPackage.getMainDocumentPart()
+								.addStyledParagraphOfText("Style1", "Document Version " + documentMetaData.getVersion());
+				}
+				if (null != documentMetaData.getOrgName() && !"".equals(documentMetaData.getOrgName())) {
+					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", documentMetaData.getOrgName());
+				}
 		}
 		addPageBreak(wordMLPackage, factory);
 	}
