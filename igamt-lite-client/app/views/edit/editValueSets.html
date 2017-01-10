@@ -162,21 +162,18 @@
                                     <div class="form-group control-group">
                                         <label class="col-md-2 control-label">Date Updated</label>
                                         <div class="controls col-md-10">
-                                           <span
-                                                   class="form-control">{{table.dateUpdated | date:dateFormat}}</span>
+                                           <span class="form-control">{{table.dateUpdated | date:dateFormat}}</span>
                                         </div>
                                     </div>
 
                                 </div>
                             </tab>
 
-                            <tab   ng-click="setDeltaToF()">
+                            <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Definition
                                 </tab-heading>
-
                                 <div class="el-def igl-def-table-container" style="margin-top: 20px">
-
                                     <accordion>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
@@ -195,121 +192,103 @@
 
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Value Set Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>
+                                                <span style="color:white;">Value Set Definition </span>
+                                                <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>
                                             </accordion-heading>
+
                                             <div class="igl-def-table-container">
-                                    <div class="">
-                                        <span class="pull-right">
-											<button title="Add new Value" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
-												<span><i class="fa fa-plus fa-fw"></i>Add Value</span>
-                                        </button>
-                                        <button title="Delete Values" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
-                                                <i class="fa fa-trash-o fa-fw"></i>Delete Values <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
-                                                </button>
-                                        </span>
-                                        <span class="form-group">
-                                        <label> Codes By Page </label>
-                                        <input class="input-sm form group" name="items" id="items" type="number" ng-model="itemsByPage"/>
-                                        </span>
+                                                <div class="">
+                                                    <span class="pull-right">
+											            <button title="Add new Value" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
+												            <span><i class="fa fa-plus fa-fw"></i>Add Value</span>
+                                                        </button>
+                                                        <button title="Delete Values" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
+                                                            <i class="fa fa-trash-o fa-fw"></i>Delete Values <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
+                                                        </button>
+                                                    </span>
+                                                    <span class="form-group">
+                                                        <label>Codes By Page</label>
+                                                        <input class="input-sm form group" name="items" id="items" type="number" ng-model="itemsByPage"/>
+                                                    </span>
 
-                                 <div class="">
-
-
-                                     <div ng-if="table.codes.length >= 1000" style="margin-bottom: 10px">
-                                         <div class="alert alert-warning" role="alert">
-                                             Due to the large size of codes, only the first 1000 of {{table.codes.length}} will be displayed.
-                                         </div>
-                                     </div>
-
-                                            <table st-safe-src="table.smallCodes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
-                                                <thead>
-                                <tr>
-                                        <th colspan="6">
-                                        <input st-search placeholder="Search" class="input-sm form-control" type="search" />
-                                        </th>
-                                    </tr>
-                                                    <tr class="tbl-header">
-                                                        <th class="col-md-1">
-                                                        <input type="checkbox" ng-model="checkAll" ng-change="ProcessChecking(checkAll)">
-                                                        <span ng-if="checkAll">UnCheck All</span>
-                                                        <span ng-if="!checkAll"> Check All</span>
-                                                        </input>
-
-                                                        </th>
-                                                        <th st-sort="value" class="col-md-2">Value</th>
-                                                        <th st-sort="label" class="col-md-3">Description</th>
-                                                        <th class="col-md-2">CodeSystem</th>
-                                                        <th class="col-md-1">Usage  <span class="btn-group btn-group-xs btn-info" role="group" aria-label="...">
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-raised btn-default btn-info">R</button>
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-raised btn-default btn-info">P</button>
-                                                                <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-raised btn-default btn-info">E</button>
-                                                            </span></th>
-                                                        <th class="col-md-3">Comments</th>
-
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody>
-
-
-                                                    <tr ng-repeat="c in displayCollection">
-                                                        <td cs-select="col-md-1">
-                                                            <input type="checkbox" ng-model="c.selected" ng-change="addOrRemoveValue(c)">
-                                                        </td>
-                                                        <td class="col-md-2">
-                                                            <div>
-                                                                <input type="text" style="width: 100%" name="Value" ng-change="setDirty()" ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'value', 'codeSystem' , table.codes), 'form-control': !isDuplicatedTwoContexts(c,'value', 'codeSystem' , table.codes)}" ng-model="c.value" />
-                                                                <span ng-if="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)" style="color:red">Duplicated</span>
+                                                    <div class="">
+                                                        <div ng-if="table.codes.length >= 1000" style="margin-bottom: 10px">
+                                                            <div class="alert alert-warning" role="alert">
+                                                                Due to the large size of codes, only the first 1000 of {{table.codes.length}} will be displayed.
                                                             </div>
-                                                        </td>
+                                                        </div>
 
-                                                        <td class="col-md-3">
-                                                            <div>
-                                                                <input type="text" style="width: 100%" name="Label" ng-change="setDirty()" ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes), 'form-control': !isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)}"  ng-model="c.label" />
-                                                                <span ng-if="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)" style="color:red">Duplicated</span>
-                                                            </div>
-                                                        </td>
-
-                                                        <td class="col-md-2">
-                                                            <div ng-show="!c.codeSystem || c.codeSystem === ''">
-                                                                <select class="form-control-warning" ng-change="setDirty()" ng-model="c.codeSystem" ng-options="cs for cs in codeSystems">
-														        </select>
-                                                                <span style="color:red">Missing CodeSystem</span>
-                                                            </div>
-                                                            <div ng-hide="!c.codeSystem || c.codeSystem === ''">
-                                                                <select class="form-control" ng-change="setDirty()" ng-model="c.codeSystem" ng-options="cs for cs in codeSystems">
-														</select>
-                                                            </div>
-                                                        </td>
-                                                        <td class="col-md-1">
-                                                            <select class="form-control" name="Usage" ng-change="setDirty()" ng-model="c.codeUsage" ng-options="codeUsage for codeUsage in config.codeUsages">
-													        </select>
-                                                        </td>
-
-                                                        <td class="col-md-3">
-                                                            <textarea rows="2" ng-change="setDirty()" class="form-control" ng-model="c.comments" />
-                                                        </td>
-
-<!--                                                         <td class="col-md-1">
-                                                            <button title="Delete" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteValue(c)">
-														<i class="fa fa-trash-o fa-fw"></i> -->
-<!-- 													</button>
-                                                        </td> -->
-                                                    </tr>
-                                                </tbody>
-                    <tr style="float:center !important;" ng-if="table.smallCodes.length > 30">
-                        <td colspan="6" class="text-center" style="float:center !important;">
-                            <div st-pagination="" st-items-by-page="30" st-displayed-pages="7" style="float:center !important;"></div>
-                         </td>
-                    </tr>
-
-                                            </table>
-
-
-                                        </div>
-                                        </div>
+                                                        <table st-safe-src="table.smallCodes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="6">
+                                                                        <input st-search placeholder="Search" class="input-sm form-control" type="search" />
+                                                                    </th>
+                                                                </tr>
+                                                                <tr class="tbl-header">
+                                                                    <th class="col-md-1">
+                                                                        <input type="checkbox" ng-model="checkAll" ng-change="ProcessChecking(checkAll)">
+                                                                            <span ng-if="checkAll">UnCheck All</span>
+                                                                            <span ng-if="!checkAll"> Check All</span>
+                                                                        </input>
+                                                                    </th>
+                                                                    <th st-sort="value" class="col-md-2">Value</th>
+                                                                    <th st-sort="label" class="col-md-3">Description</th>
+                                                                    <th class="col-md-2">CodeSystem</th>
+                                                                    <th class="col-md-1">Usage
+                                                                        <span class="btn-group btn-group-xs btn-info" role="group" aria-label="...">
+                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-raised btn-default btn-info">R</button>
+                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-raised btn-default btn-info">P</button>
+                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-raised btn-default btn-info">E</button>
+                                                                        </span>
+                                                                    </th>
+                                                                    <th class="col-md-3">Comments</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="c in displayCollection">
+                                                                    <td cs-select="col-md-1">
+                                                                        <input type="checkbox" ng-model="c.selected" ng-change="addOrRemoveValue(c)">
+                                                                    </td>
+                                                                    <td class="col-md-2">
+                                                                        <div>
+                                                                            <input type="text" style="width: 100%" name="Value" ng-change="setDirty()" ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'value', 'codeSystem' , table.codes), 'form-control': !isDuplicatedTwoContexts(c,'value', 'codeSystem' , table.codes)}" ng-model="c.value" />
+                                                                            <span ng-if="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)" style="color:red">Duplicated</span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="col-md-3">
+                                                                        <div>
+                                                                            <input type="text" style="width: 100%" name="Label" ng-change="setDirty()" ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes), 'form-control': !isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)}"  ng-model="c.label" />
+                                                                            <span ng-if="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)" style="color:red">Duplicated</span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="col-md-2">
+                                                                        <div ng-show="!c.codeSystem || c.codeSystem === ''">
+                                                                            <select class="form-control-warning" ng-change="setDirty()" ng-model="c.codeSystem" ng-options="cs for cs in codeSystems"/>
+                                                                            <span style="color:red">Missing CodeSystem</span>
+                                                                        </div>
+                                                                        <div ng-hide="!c.codeSystem || c.codeSystem === ''">
+                                                                            <select class="form-control" ng-change="setDirty()" ng-model="c.codeSystem" ng-options="cs for cs in codeSystems"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="col-md-1">
+                                                                        <select class="form-control" name="Usage" ng-change="setDirty()" ng-model="c.codeUsage" ng-options="codeUsage for codeUsage in config.codeUsages"/>
+                                                                    </td>
+                                                                    <td class="col-md-3">
+                                                                        <textarea rows="2" ng-change="setDirty()" class="form-control" ng-model="c.comments" />
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tr style="float:center !important;" ng-if="table.smallCodes.length > itemsByPage">
+                                                                <td colspan="6" class="text-center" style="float:center !important;">
+                                                                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7" style="float:center !important;"></div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
+                                        </div>
 
                                     <div accordion-group class="panel-primary" is-open="accordStatus.isThirdOpen">
                                         <accordion-heading>
