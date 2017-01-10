@@ -289,7 +289,9 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.deleteSlectedValues = function() {
         console.log()
         console.log("deleting");
+        
         $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
+        $rootScope.table.smallCodes = _.difference($rootScope.table.smallCodes, $scope.selectedCodes);
         $scope.selectedCodes = [];
     }
     $scope.checkAllValues = function() {
