@@ -37,3 +37,6 @@ scripts.7e4951a9.js
 datatypeLibrary.html
 editDatatypeInLibrary.html
 index-1.html
+*webapp/*
+*webapp/* >> .gitignorewebapp/WEB-INF/web.xml
+*webapp/WEB-INF/web.xml

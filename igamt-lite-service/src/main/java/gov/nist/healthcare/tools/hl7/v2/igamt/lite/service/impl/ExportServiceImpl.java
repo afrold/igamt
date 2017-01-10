@@ -63,7 +63,7 @@ public class ExportServiceImpl implements ExportService {
                 DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD);
             return exportUtil.exportAsDocxFromXml(
                 serializationService.serializeIGDocument(igDocument, serializationLayout).toXML(),
-                GLOBAL_STYLESHEET, exportParameters, igDocument.getProfile(),
+                GLOBAL_STYLESHEET, exportParameters,
                 igDocument.getMetaData());
         } else {
             return new NullInputStream(1L);
@@ -109,7 +109,7 @@ public class ExportServiceImpl implements ExportService {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD);
             return exportUtil.exportAsDocxFromXml(igDocumentSerializationService
                     .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
-                GLOBAL_STYLESHEET, exportParameters, null, datatypeLibraryDocument.getMetaData());
+                GLOBAL_STYLESHEET, exportParameters, datatypeLibraryDocument.getMetaData());
         } else {
             return new NullInputStream(1L);
         }

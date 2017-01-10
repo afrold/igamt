@@ -112,21 +112,22 @@ public class SerializableSegment extends SerializableSection {
                 if (field.getTables() != null && !field.getTables().isEmpty()) {
                     List<Table> fieldTables = fieldTableMap.get(field);
                     String temp = "";
-                    if (fieldTables.size() > 1) {
+                    boolean isFirst = true;
+                    if (fieldTables.size() > 0) {
                         for (Table table : fieldTables) {
                             String bindingIdentifier = table.getBindingIdentifier();
-                            temp += (bindingIdentifier != null && !bindingIdentifier.equals("")) ?
-                                "," + bindingIdentifier :
-                                ", ! DEBUG: COULD NOT FIND binding identifier " + table
+                            if(!isFirst){
+                                temp += ",";
+                            } else {
+                                isFirst = false;
+                            }
+                            if((bindingIdentifier != null && !bindingIdentifier.equals(""))){
+                                temp += bindingIdentifier;
+                            } else {
+                                temp += " ! DEBUG: COULD NOT FIND binding identifier " + table
                                     .getBindingIdentifier();
+                            }
                         }
-                    } else {
-                        Table table = fieldTables.get(0);
-                        String bindingIdentifier = table == null ?
-                            null :
-                            table.getBindingIdentifier();
-                        temp = (bindingIdentifier != null && !bindingIdentifier.equals("")) ?
-                            bindingIdentifier : "! DEBUG: COULD NOT FIND binding identifier " + table.getBindingIdentifier();
                     }
                     fieldElement.addAttribute(new Attribute("Binding", temp));
                 }
