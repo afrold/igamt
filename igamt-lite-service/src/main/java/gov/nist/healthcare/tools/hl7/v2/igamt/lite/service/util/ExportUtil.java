@@ -65,7 +65,7 @@ public class ExportUtil {
     @Autowired
     private DocxExportUtil docxExportUtil;
 
-    public InputStream exportAsDocxFromXml(String xmlString, String xmlPath, ExportParameters exportParameters, Profile p, MetaData metaData) {
+    public InputStream exportAsDocxFromXml(String xmlString, String xmlPath, ExportParameters exportParameters, MetaData metaData) {
 
         try {
             File tmpHtmlFile = doTransformToTempHtml(xmlString,xmlPath,exportParameters);
@@ -77,7 +77,7 @@ public class ExportUtil {
 
             ObjectFactory factory = Context.getWmlObjectFactory();
 
-            docxExportUtil.createCoverPageForDocx4j(wordMLPackage, factory, p, metaData);
+            docxExportUtil.createCoverPageForDocx4j(wordMLPackage, factory, metaData);
 
             if (exportParameters.isIncludeTOC()) {
                 docxExportUtil.createTableOfContentForDocx4j(wordMLPackage, factory);

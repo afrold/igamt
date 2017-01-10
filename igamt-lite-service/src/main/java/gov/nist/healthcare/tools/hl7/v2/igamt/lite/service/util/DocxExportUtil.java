@@ -64,7 +64,7 @@ public class DocxExportUtil {
 
 	Logger logger = LoggerFactory.getLogger(DocxExportUtil.class);
 
-	public void createCoverPageForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory, Profile p,
+	public void createCoverPageForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory,
 			MetaData metaData) {
 
 		BufferedImage image = null;
