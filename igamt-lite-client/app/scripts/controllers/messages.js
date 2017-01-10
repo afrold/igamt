@@ -1067,6 +1067,9 @@ angular.module('igl').controller('MessageViewCtrl', function($scope, $rootScope,
         $scope.loading = true;
         $scope.msg = message;
         console.log(message.id);
+        console.log("oppened");
+        $scope.findAllGlobalConstraints();
+       
         $scope.setData($scope.msg);
         $scope.loading = false;
     };
@@ -1604,10 +1607,11 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         init();
     });
     $rootScope.$on('event:initMessage', function(event) {
-
+    	 $scope.findAllGlobalConstraints();
         if ($scope.isDeltaCalled) {
             init();
         }
+        
     });
     $rootScope.$on('event:openMsgDelta', function(event) {
         init();
