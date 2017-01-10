@@ -1604,7 +1604,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         init();
     });
     $rootScope.$on('event:initMessage', function(event) {
-
+    	$scope.findAllGlobalConstraints();
         if ($scope.isDeltaCalled) {
             init();
         }
