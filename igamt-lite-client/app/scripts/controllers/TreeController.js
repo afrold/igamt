@@ -167,9 +167,21 @@ angular
 
 
                 dragStart: function (event) {
+                	$rootScope.childSections=angular.copy($rootScope.igdocument.childSections);
+//                	var sourceNode = event.source.nodeScope;
+//        			var destNodes = event.dest.nodesScope;
+//        			
+//        			$scope.sourceDrag=angular.copy(sourceNode.$modelValue);
+//        			//$scope.destDrag=angular.copy(sourceNode.$parent.$nodeScope.$modelValue);
+//        			$scope.parentDrag=sourceNode.$parentNodeScope.$modelValue;
+//        			console.log($scope.parentDrag);
+                	
+                	
                     if ($rootScope.hasChanges()) {
 
                         $rootScope.openConfirmLeaveDlg().result.then(function () {
+                        	
+              
 
                         });
                     }
@@ -192,6 +204,8 @@ angular
 
                     var parentSource = sourceNode.$parentNodeScope.$modelValue;
                     var parentDest = event.dest.nodesScope.$nodeScope.$modelValue;
+                    
+                    
                     if (dataTypeDest === "messages") {
                         console.log("========ordering messages");
                         $scope.updateMessagePositions($rootScope.igdocument.profile.messages.children);
@@ -240,6 +254,7 @@ angular
 
                     }
                 }
+              
 
             };
 
@@ -438,9 +453,10 @@ angular
                 null, [
                     'Delete',
                     function ($itemScope) {
-
+                    	console.log($itemScope.section);
                         var section = $itemScope.section;
                         var index = $itemScope.$nodeScope.$parentNodesScope.$modelValue.indexOf($itemScope.$nodeScope.$modelValue);
+                        
                         if (index > -1) {
                             $itemScope.$nodeScope.$parentNodesScope.$modelValue
                                 .splice(index, 1);
@@ -450,13 +466,13 @@ angular
 
                         SectionSvc.delete($rootScope.igdocument.id, $itemScope.section.id).then(function () {
 
-
-                            if ($itemScope.section.id === $rootScope.activeModel) {
-                                $scope.displayNullView();
-                            }
-                            if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === 'section') {
-                                SectionSvc.update($rootScope.igdocument.id, $itemScope.$nodeScope.$parentNodeScope.$modelValue);
-                            } else if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type === 'document') {
+                        	$scope.closeChildren($itemScope.section);
+                            if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type ==='section') {
+                                SectionSvc.update($rootScope.igdocument.id, $itemScope.$nodeScope.$parentNodeScope.$modelValue).then(function(){
+                                	
+                                });
+                            } else if ($itemScope.$nodeScope.$parentNodeScope.$modelValue.type ==='document') {
+                            	$scope.closeChildren($itemScope.section);
                                 $scope.updateChildeSections($rootScope.igdocument.childSections);
 
 
@@ -673,7 +689,21 @@ angular
 
 
 
-
+            $scope.closeChildren=function (section){
+            	console.log("Calling close Children")
+                if (section.id === $rootScope.activeModel){
+                	console.log(section);
+                    $scope.displayNullView();
+                }else{
+                	angular.forEach(section.childSections, function(s){
+               
+                		$scope.closeChildren(s);
+                	});
+                }
+            }
+            
+            
+            
             $rootScope.readyForNewVersion = function (element) {
                 var ready = true;
                 var obj=$rootScope.versionAndUseMap[element.id];
