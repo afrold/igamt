@@ -30,6 +30,9 @@ public class SerializationUtil {
   }
 
   public String cleanRichtext(String richtext) {
+    richtext = richtext.replace("<br>", "<br></br>");
+    richtext = richtext.replace("<p style=\"\"><br></p>", "<p></p>");
+
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
     Elements elements1 = doc.select("h1");
     elements1.tagName("p").attr("style",
@@ -72,6 +75,12 @@ public class SerializationUtil {
             elementImg.attr("src", texEncImg);
           }
         }
+        if (elementImg.attr("alt") == null || elementImg.attr("alt").isEmpty()){
+          elementImg.attr("alt", ".");
+      }
+      String imgStyle = elementImg.attr("style");
+      elementImg.attr("style", imgStyle.replace("px;", ";"));
+//    style="width: 300px;
       } catch (RuntimeException e) {
         e.printStackTrace(); // If error, we leave the original document
         // as is.
@@ -80,6 +89,15 @@ public class SerializationUtil {
         // as is.
       }
     }
+    for (org.jsoup.nodes.Element elementTbl : doc.select("table")) {
+      if (elementTbl.attr("summary") == null || elementTbl.attr("summary").isEmpty()) {
+          elementTbl.attr("summary", ".");
+      }
+  }
+
+    //Renaming strong to work as html4 
+    doc.select("strong").tagName("b");
+
     return "<div class=\"fr-view\">" + doc.body().html() + "</div>";
   }
 
