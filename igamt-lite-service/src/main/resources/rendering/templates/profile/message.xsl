@@ -82,10 +82,7 @@
                 </xsl:element>
             </xsl:element>
             <xsl:element name="tbody">
-                <xsl:for-each select="MessageSegment">
-                    <xsl:call-template name="messageSegment">
-                    </xsl:call-template>
-                </xsl:for-each>
+                <xsl:apply-templates select="MessageSegment"/>
             </xsl:element>
         </xsl:element>
         <xsl:if test="count(./Constraints/Constraint[@Type='cs'])+count(./MessageGroup/Constraint[@Type='cs']) &gt; 0">
