@@ -835,7 +835,7 @@
             </a>
             <div ng-show="editableDT===node.id">
                 <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
-                    <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.id===datatype.id"> {{getDatatypeLabel(datatype)}} {{::datatype.hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
+                    <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.id===datatype.id"> {{getDatatypeLabel(datatype)}} {{::datatypesMap[datatype.id].hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
                     </option>
                     <option ng-click="otherDT(node)" value="" ng-show="node.added==='yes'"> Others
                 </select>
