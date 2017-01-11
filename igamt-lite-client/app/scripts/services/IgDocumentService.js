@@ -59,9 +59,9 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
             blockUI.stop();
         },
 
-        addMessage: function(igId, child) {
+       copyMessage: function(igId, childId) {
             var delay = $q.defer();
-            $http.post('api/igdocuments/' + igId + '/addMessage', child).then(function(response) {
+            $http.post('api/igdocuments/' + igId + '/copyMessage', childId).then(function(response) {
                 var link = angular.fromJson(response.data);
                 delay.resolve(link);
             }, function(error) {
