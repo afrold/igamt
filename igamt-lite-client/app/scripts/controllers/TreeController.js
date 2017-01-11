@@ -180,9 +180,6 @@ angular
                     if ($rootScope.hasChanges()) {
 
                         $rootScope.openConfirmLeaveDlg().result.then(function () {
-                        	
-              
-
                         });
                     }
 

@@ -3330,6 +3330,13 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
     };
 
     $scope.save = function() {
+    	  if ($rootScope.editForm) {
+    		  console.log("editform called")
+              $rootScope.editForm.$setPristine();
+    		  $rootScope.editForm.$dirty = false;
+          }
+          $rootScope.clearChanges();
+    	
         var data = $rootScope.currentData;
         if ($rootScope.libraryDoc && $rootScope.libraryDoc != null) {
             if (data.datatypeLibId && data.date) {
