@@ -1,11 +1,14 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
+import com.mongodb.gridfs.GridFSDBFile;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
@@ -61,6 +64,8 @@ public class ExportUtil {
 
     Logger logger = LoggerFactory.getLogger(ExportUtil.class);
 
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Autowired
     private DocxExportUtil docxExportUtil;
@@ -134,16 +139,20 @@ public class ExportUtil {
         try {
             //generate cover picture
             if (metaData.getCoverPicture() != null && !metaData.getCoverPicture().isEmpty()) {
-                BufferedImage image = null;
-                URL url = new URL(metaData.getCoverPicture());
-                image = ImageIO.read(url);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(image, "png", baos);
-                baos.flush();
-                String coverImage = "data:image/png;base64," + Base64.encode(baos.toByteArray());;
-                exportParameters.setImageLogo(coverImage);
+                InputStream imgis;
+                byte[] bytes = null;
+                String filename = docxExportUtil.parseFileName(metaData.getCoverPicture());
+                String ext = FilenameUtils.getExtension(filename);
+                GridFSDBFile dbFile = fileStorageService.findOneByFilename(filename);
+                if (dbFile != null) {
+                    imgis = dbFile.getInputStream();
+                    bytes = IOUtils.toByteArray(imgis);
+                }
+                if (bytes != null && bytes.length > 0) {
+                    String coverImage = "data:image/"+ext+";base64," + Base64.encode(bytes);
+                    exportParameters.setImageLogo(coverImage);
+                }
             }
-
             File tmpHtmlFile = doTransformToTempHtml(xmlString,xslPath,exportParameters);
 
             ByteArrayOutputStream outputStream = cleanHtml(FileUtils.openInputStream(tmpHtmlFile));
