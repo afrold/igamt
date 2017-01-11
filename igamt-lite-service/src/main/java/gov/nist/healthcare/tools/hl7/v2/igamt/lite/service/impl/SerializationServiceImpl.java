@@ -171,10 +171,10 @@ import java.util.UUID;
                 .serializeDatatype(datatypeLink,
                     prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
                     datatypeLinkList.indexOf(datatypeLink));
-            //TODO check if we should use the scope or not
-            if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
+            //This "if" is only useful if we want to display only user datatypes
+            //if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
                 datatypeSection.addSection(serializableDatatype);
-            }
+            //}
         }
         return datatypeSection;
     }
