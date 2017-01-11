@@ -180,6 +180,7 @@ angular
                         //        			console.log($scope.parentDrag);
 
 
+
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function() {

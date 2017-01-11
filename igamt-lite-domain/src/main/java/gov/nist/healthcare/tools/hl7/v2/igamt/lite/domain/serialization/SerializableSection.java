@@ -86,4 +86,8 @@ public class SerializableSection extends SerializableElement {
     public List<SerializableSection> getSerializableSectionList() {
         return serializableSectionList;
     }
+
+    @Override public String getPrefix() {
+        return prefix;
+    }
 }

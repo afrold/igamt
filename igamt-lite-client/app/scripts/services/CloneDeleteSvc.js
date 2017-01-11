@@ -553,28 +553,25 @@ angular.module('igl').factory(
         
         
         svc.copyMessage = function (message) {
-            var newMessage={};
-            var newMessage = angular.copy(message);
-            newMessage.id = new ObjectId().toString();
-            newMessage.position=$rootScope.igdocument.profile.messages.length+1;
-            newMessage.name = $rootScope.createNewFlavorName(message.name);
-            var groups = ProfileAccessSvc.Messages().getGroups(newMessage);
-            angular.forEach(groups, function (group) {
-                group.id = new ObjectId().toString();
-            });
+      
 
-            var segRefs = ProfileAccessSvc.Messages().getSegmentRefs(newMessage);
-            angular.forEach(segRefs, function (segRef) {
-                segRef.id = new ObjectId().toString();
-            });
+                IgDocumentService.copyMessage($rootScope.igdocument.id, message.id).then(function (result) {
+                	
 
-            MessageService.save(newMessage).then(function (result) {
-                newMessage = result;
-                $rootScope.messagesMap[newMessage.id]=newMessage;
-                //MessageService.merge($rootScope.messagesMap[newMessage.id], newMessage);                
-                $rootScope.igdocument.profile.messages.children.push(newMessage);
-                
-                IgDocumentService.save($rootScope.igdocument).then(function (igd) {
+                    var newMessage = result;
+                    $rootScope.messagesMap[newMessage.id]=newMessage;
+                    var groups = ProfileAccessSvc.Messages().getGroups(newMessage);
+                    angular.forEach(groups, function (group) {
+                        group.id = new ObjectId().toString();
+                    });
+
+                    var segRefs = ProfileAccessSvc.Messages().getSegmentRefs(newMessage);
+                    angular.forEach(segRefs, function (segRef) {
+                        segRef.id = new ObjectId().toString();
+                    });
+                    //MessageService.merge($rootScope.messagesMap[newMessage.id], newMessage);                
+                    $rootScope.igdocument.profile.messages.children.push(newMessage);
+                    
                     $rootScope.messages = $rootScope.igdocument.profile.messages;
                     $rootScope.message = newMessage;
 
@@ -589,13 +586,13 @@ angular.module('igl').factory(
                     $rootScope.msg().type = error.data.type;
                     $rootScope.msg().show = true;
                 });
-            }, function (error) {
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
-            });
+                
+                
+                
+            };
+        
+        
 
-        };
 
         svc.deleteValueSet = function (table) {
                  $rootScope.referencesForMenu = [];

@@ -228,12 +228,12 @@ if (self === top) {
                             </div>
                         </div>
                 </tab>
-                <tab ng-attr-active="tabs[1].active" ng-if="datatypeLibrary">
+                <tab ng-attr-active="tabs[1].active" ng-if="datatypeLibrary" >
                     <tab-heading>
                         <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Data Type Library</span>
                         <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Data Type Library</span>
                     </tab-heading>
-                    <div>
+                    <div ng-controller="EditAreaCtrl" ng-init="init()">
                         <div class="row">
                             <div class="col-md-12">
                                 <span class="pull-right">
@@ -277,7 +277,7 @@ if (self === top) {
                         <div ng-class="{'col-md-9': !hideToc, 'col-md-11 col-98-5-percent':hideToc}">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">Edit Area</div>
-                                <div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init()">
+                                <div class="panel-body" style="padding-bottom:100px">
                                     <form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form>
                                         <div ng-if="subview" style="width:100%;">
                                             <div ng-include="subview"></div>
