@@ -28,6 +28,17 @@ angular.module('igl').factory('CompositeMessageService',
                 });
                 return delay.promise;
             },
+            delete: function(cmID) {
+                var delay = $q.defer();
+                $http.get('api/composite-messages/delete/' + cmID).then(function() {
+
+
+                    delay.resolve(true);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
             getCm: function(cmID) {
                 var delay = $q.defer();
                 $http.get('api/composite-messages/' + cmID).then(function(response) {

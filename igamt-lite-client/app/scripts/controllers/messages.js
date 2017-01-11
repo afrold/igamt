@@ -1187,6 +1187,8 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
                 if (place.children.length !== 0) {
 
                     $scope.newSegment.position = place.children[place.children.length - 1].obj.position + 1;
+                    console.log("position");
+                    console.log($scope.newSegment.position);
 
                 } else {
                     $scope.newSegment.position = 1;
@@ -1604,7 +1606,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         init();
     });
     $rootScope.$on('event:initMessage', function(event) {
-    	$scope.findAllGlobalConstraints();
+        $scope.findAllGlobalConstraints();
         if ($scope.isDeltaCalled) {
             init();
         }

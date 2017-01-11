@@ -27,14 +27,14 @@
                                     ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'"
                                     ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
-                            </button>
-                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="segment.scope !== 'USER'" ng-click="saveBindingForSegment();cleanState();">
+                        </button>
+                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="segment.scope !== 'USER'" ng-click="saveBindingForSegment();cleanState();">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </button>
-                            <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="segment.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="segment.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
                                 <span><i class="fa fa-times fa-fw"></i> Reset</span>
                             </button>
-                            <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
                                 <span><i class="fa fa-times fa-fw"></i> Reset</span>
                             </button>
                         </span>
@@ -78,37 +78,35 @@
                                         </div>
                                     </div>
                                     <!--<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.text1.$invalid}">-->
-                                        <!--<label class="col-md-2 control-label">Definition Pre-Text</label>-->
-                                        <!--<div class="controls col-md-10">-->
-                                            <!--<div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">-->
-                                                <!--<textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1" name="text1" ng-change="setDirty()"></textarea>-->
-                                            <!--</div>-->
-                                            <!--<div ng-show="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">-->
-                                                <!--<div froala-view="segment.text1"></div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
+                                    <!--<label class="col-md-2 control-label">Definition Pre-Text</label>-->
+                                    <!--<div class="controls col-md-10">-->
+                                    <!--<div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">-->
+                                    <!--<textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1" name="text1" ng-change="setDirty()"></textarea>-->
+                                    <!--</div>-->
+                                    <!--<div ng-show="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">-->
+                                    <!--<div froala-view="segment.text1"></div>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
                                     <!--</div>-->
                                     <!--<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.text2.$invalid}">-->
-                                        <!--<label class="col-md-2 control-label">Definition Post-Text</label>-->
-                                        <!--<div class="controls col-md-10">-->
-                                            <!--<div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">-->
-                                                <!--<textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2" name="text2" ng-change="setDirty()"></textarea>-->
-                                            <!--</div>-->
-                                            <!--<div ng-show="viewSettings.tableReadonly || (segment.scope === 'MASTER' || segment.scope === 'HL7STANDARD')">-->
-                                                <!--<div class="fr-view">-->
-                                                    <!--<div froala-view="segment.text2"></div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
+                                    <!--<label class="col-md-2 control-label">Definition Post-Text</label>-->
+                                    <!--<div class="controls col-md-10">-->
+                                    <!--<div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">-->
+                                    <!--<textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2" name="text2" ng-change="setDirty()"></textarea>-->
+                                    <!--</div>-->
+                                    <!--<div ng-show="viewSettings.tableReadonly || (segment.scope === 'MASTER' || segment.scope === 'HL7STANDARD')">-->
+                                    <!--<div class="fr-view">-->
+                                    <!--<div froala-view="segment.text2"></div>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
                                     <!--</div>-->
 
-                                    <div class="form-group control-group" ng-hide="segment.scope === 'HL7STANDARD'"
-                                         >
+                                    <div class="form-group control-group" ng-hide="segment.scope === 'HL7STANDARD'">
                                         <label class="col-md-2 control-label">Date Updated</label>
 
                                         <div class="controls col-md-10">
-                                            <span
-                                                    class="form-control">{{segment.dateUpdated | date:dateFormat}}</span>
+                                            <span class="form-control">{{segment.dateUpdated | date:dateFormat}}</span>
                                         </div>
                                     </div>
 
@@ -118,50 +116,45 @@
                                 <tab-heading>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Segment Definition
                                 </tab-heading>
-                                
+
                                 <div class="el-def" style="margin-top: 5px">
                                     <accordion>
 
 
-                                    <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFifthOpen">
-                                        <accordion-heading>
-                                            <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
-                                        <div class="panel-body">
-                                            <div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">
-                                                <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1" name="text1" ng-change="setDirty()"></textarea>
-                                            </div>
-                                            <div ng-show="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
-                                                <div froala-view="segment.text1"></div>
+                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFifthOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">
+                                                    <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1" name="text1" ng-change="setDirty()"></textarea>
+                                                </div>
+                                                <div ng-show="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                                                    <div froala-view="segment.text1"></div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
                                         <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
                                                 <span style="color:white;">Segment Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
                                             </accordion-heading>
                                             <div class="" style="margin:5px 5px 5px 5px">
-                                                 <div class="pull-left">
-                                                    <div ng-dropdown-multiselect=""
-                                                        options="viewSettings.columnOptions"
-                                                        selected-model="viewSettings.visibleColumns"
-                                                        events="viewSettings.events" extra-settings="viewSettings.extra"
-                                                        translation-texts="viewSettings.translations"></div>
+                                                <div class="pull-left">
+                                                    <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
                                                 </div>
                                                 <div class="pull-right">
                                                     <div class="btn-group">
-                                                        <button ng-show="segment.scope!=='HL7STANDARD' && !viewSettings.tableReadonly"
-                                                            ng-click="addFieldModal(segment)" type="button" class="btn btn-raised btn-info btn-sm">
+                                                        <button ng-show="segment.scope!=='HL7STANDARD' && !viewSettings.tableReadonly" ng-click="addFieldModal(segment)" type="button" class="btn btn-raised btn-info btn-sm">
                                                         <span><i class="glyphicon glyphicon-plus"></i> Add Field</span>
                                                         </button>
                                                     </div>
                                                 </div>
-                                                  <div class="igl-def-table-container">
+                                                <div class="igl-def-table-container">
                                                     <table id="treeTable" tt-table tt-params="segmentsParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                         <thead>
                                                             <tr class="tbl-header" style="">
                                                                 <th class="col-md-2 col-fixed-250">Name</th>
-                                                                <th class="col-md-1 col-fixed-80" >Usage
+                                                                <th class="col-md-1 col-fixed-80">Usage
                                                                     <button type="button" ng-show="(segment.scope === 'USER') && !viewSettings.tableReadonly && (segment.fields.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(segment)">O to X
                                                                     </button>
                                                                 </th>
@@ -187,61 +180,61 @@
                                                         </thead>
                                                         <tbody></tbody>
                                                     </table>
-                                                     </div>
+                                                </div>
                                             </div>
-                                            
+
                                         </div>
 
-                                    <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isSixOpen">
-                                        <accordion-heading>
-                                            <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
-                                        <div class="panel-body">
-                                            <div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">
-                                                <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2" name="text2" ng-change="setDirty()"></textarea>
-                                            </div>
-                                            <div ng-show="viewSettings.tableReadonly || (segment.scope === 'MASTER' || segment.scope === 'HL7STANDARD')">
-                                                <div class="fr-view">
-                                                    <div froala-view="segment.text2"></div>
+                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isSixOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">
+                                                    <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2" name="text2" ng-change="setDirty()"></textarea>
+                                                </div>
+                                                <div ng-show="viewSettings.tableReadonly || (segment.scope === 'MASTER' || segment.scope === 'HL7STANDARD')">
+                                                    <div class="fr-view">
+                                                        <div froala-view="segment.text2"></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
                                         <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isSecondOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i> </accordion-heading>
+                                                <span style="color:white;">Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
-                                                    <div class="col-md-12 igl-page-header">
-                                                                <span class="pull-right">
+                                                <div class="col-md-12 igl-page-header">
+                                                    <span class="pull-right">
                                                                     <button class="btn btn-raised btn-info btn-sm" ng-click="manageConformanceStatement();"  type="button"
                                                                             ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                                                                         <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Conf.Statement</span></button>
-                                                                </span>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <!--<span ng-hide="segment.conformanceStatements.length > 0">No conformance statement</span>-->
-                                                        <table st-table="displayed" st-safe-src="segment.conformanceStatements" class="table table-striped table-bordered table-condensed" ng-show="segment.conformanceStatements.length > 0">
-                                                            <thead>
-                                                                <tr class="tbl-header">
-                                                                    <th st-sort="constraintId" class="col-md-1">ID</th>
-                                                                    <th class="col-md-10">Description</th>
-                                                                    <th class="col-md-1"></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr ng-repeat="c in displayed">
-                                                                    <td class="col-md-1">{{c.constraintId}}</td>
-                                                                    <td class="col-md-10">{{c.description}}</td>
-                                                                    <td class="col-md-1" align="center">
-                                                                        <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatementFromList(c);" ng-hide="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <!--<span ng-hide="segment.conformanceStatements.length > 0">No conformance statement</span>-->
+                                                    <table st-table="displayed" st-safe-src="segment.conformanceStatements" class="table table-striped table-bordered table-condensed" ng-show="segment.conformanceStatements.length > 0">
+                                                        <thead>
+                                                            <tr class="tbl-header">
+                                                                <th st-sort="constraintId" class="col-md-1">ID</th>
+                                                                <th class="col-md-10">Description</th>
+                                                                <th class="col-md-1"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="c in displayed">
+                                                                <td class="col-md-1">{{c.constraintId}}</td>
+                                                                <td class="col-md-10">{{c.description}}</td>
+                                                                <td class="col-md-1" align="center">
+                                                                    <button class="btn btn-raised btn-danger btn-xxs" ng-click="deleteConformanceStatementFromList(c);" ng-hide="viewSettings.tableReadonly"><span><i class="fa fa-trash fa-fw">
                                                                                 &nbsp; </i>Del</span>
                                                                         </button>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                               
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
                                             </div>
                                         </div>
                                         <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isThirdOpen">
@@ -286,25 +279,25 @@
                                             </accordion-heading>
                                             <div class="panel-body">
                                                 <div class="col-md-12 igl-page-header">
-                                                        
-                                                        <span class="pull-right">
+
+                                                    <span class="pull-right">
                                                             <button ng-hide="segment.coConstraints.columnList.length == 0" class="btn btn-raised btn-danger btn-sm" ng-click="deleteCoConstraints();">
                                                                 <span><i class="fa fa-trash fa-fw">&nbsp; </i>Delete Co-Constraint</span>
-                                                            </button>
-                                                            <button class="btn btn-raised btn-info btn-sm" ng-show="segment.coConstraints.columnList.length == 0" ng-click="manageCoConstaintsTableModal(segment);" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                                                    </button>
+                                                    <button class="btn btn-raised btn-info btn-sm" ng-show="segment.coConstraints.columnList.length == 0" ng-click="manageCoConstaintsTableModal(segment);" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                                                                 <span><i class="fa fa-plus fa-fw">&nbsp; </i>Create Co-Constraint</span>
                                                             </button>
-                                                            <button class="btn btn-raised btn-info btn-sm" ng-show="segment.coConstraints.columnList.length > 0" ng-click="manageCoConstaintsTableModal(segment);" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                                                    <button class="btn btn-raised btn-info btn-sm" ng-show="segment.coConstraints.columnList.length > 0" ng-click="manageCoConstaintsTableModal(segment);" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                                                                 <span><i class="fa fa-pencil fa-fw">&nbsp; </i>Edit Co-Constraint</span>
                                                             </button>
-                                                        </span>
+                                                    </span>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div ng-hide="segment.coConstraints.columnList.length == 0" class="table-container">
                                                         <span class="pull-right">
                                                             <button class="btn btn-raised btn-info btn-xs" ng-click="addCoConstraint();" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                                                                 <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Value</span>
-                                                            </button>
+                                                        </button>
                                                         </span>
                                                         <table st-table="rowCollection" class="table table-striped table-bordered table-condensed">
                                                             <thead>
@@ -317,13 +310,14 @@
                                                                     </th>
                                                                     <th class="col-md-2">Description</th>
                                                                     <th class="col-md-2">Comments</th>
-                                                                    <th class="col-md-1" align="right"/>
+                                                                    <th class="col-md-1" align="right" />
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr ng-repeat="cc in segment.coConstraints.constraints">
                                                                     <td class="col-md-1" ng-repeat="col in segment.coConstraints.columnList">
-                                                                        <input ng-show="col.constraintType === 'v'" class="form-control" ng-model="cc.values[col.columnPosition].value" ng-change="recordChange()" type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
+                                                                        <input ng-show="col.constraintType === 'v'" class="form-control" ng-model="cc.values[col.columnPosition].value" ng-change="recordChange()" type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
+                                                                        />
                                                                         <select ng-show="col.constraintType === 'vs'" ng-model="cc.values[col.columnPosition].value" class="form-control" ng-change="recordChange()" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" ng-options="link.id as tablesMap[link.id].bindingIdentifier+'-'+ tablesMap[link.id].description for link in igdocument.profile.tableLibrary.children | orderBy:'bindingIdentifier'">
                                                                             <option value="">N/A</option>
                                                                         </select>
@@ -348,11 +342,11 @@
                                         </div>
 
                                     </accordion>
-                                    
+
                                 </div>
-                                
-                                
-                                
+
+
+
                             </tab>
                             <tab ng-click="callSegDelta()">
                                 <tab-heading>
@@ -367,72 +361,72 @@
 
                                             <table class="table table-stripped table-borderless table-condensed">
                                                 <thead>
-                                                <tr class="tbl-header">
-                                                    <th class="col-md-1"></th>
-                                                    <th class="col-md-2">HL7 Version</th>
-                                                    <th class="col-md-2">Scope</th>
-                                                    <th class="col-md-3">IG Document</th>
-                                                    <th class="col-md-4">Segment</th>
+                                                    <tr class="tbl-header">
+                                                        <th class="col-md-1"></th>
+                                                        <th class="col-md-2">HL7 Version</th>
+                                                        <th class="col-md-2">Scope</th>
+                                                        <th class="col-md-3">IG Document</th>
+                                                        <th class="col-md-4">Segment</th>
                                                 </thead>
 
                                                 <tbody>
 
-                                                <tr>
-                                                    <td class="col-md-1">
-                                                        <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
-                                                    </td>
-                                                    <td class="col-md-2">
-                                                        <select ng-model="version1" class="form-control" disabled>
+                                                    <tr>
+                                                        <td class="col-md-1">
+                                                            <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
+                                                        </td>
+                                                        <td class="col-md-2">
+                                                            <select ng-model="version1" class="form-control" disabled>
                                                             <option ng-selected="version1"> {{version1}}</option>
                                                         </select>
-                                                    </td>
-                                                    <td class="col-md-2">
-                                                        <select ng-model="scope1" class="form-control" disabled>
+                                                        </td>
+                                                        <td class="col-md-2">
+                                                            <select ng-model="scope1" class="form-control" disabled>
                                                             <option ng-selected="scope1"> {{scope1}}</option>
                                                         </select>
-                                                    </td>
-                                                    <td class="col-md-3">
-                                                        <select ng-model="ig1" class="form-control" disabled>
+                                                        </td>
+                                                        <td class="col-md-3">
+                                                            <select ng-model="ig1" class="form-control" disabled>
                                                             <option ng-selected="ig1"> {{ig1}}</option>
                                                         </select>
-                                                    </td>
-                                                    <td class="col-md-4">
-                                                        <select ng-model="segment1" class="form-control" disabled>
+                                                        </td>
+                                                        <td class="col-md-4">
+                                                            <select ng-model="segment1" class="form-control" disabled>
                                                             <option ng-selected="segment1"> {{getLabel(segment1)}}</option>
                                                         </select>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <td class="col-md-1">
-                                                        <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
-                                                    </td>
-                                                    <td class="col-md-2">
-                                                        <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
+                                                    <tr>
+                                                        <td class="col-md-1">
+                                                            <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
+                                                        </td>
+                                                        <td class="col-md-2">
+                                                            <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
                                                             <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
                                                         </select>
-                                                    </td>
-                                                    <td class="col-md-2">
-                                                        <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
+                                                        </td>
+                                                        <td class="col-md-2">
+                                                            <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
                                                             <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
                                                         </select>
-                                                    </td>
-                                                    <td class="col-md-3">
-                                                        <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
-                                                    </td>
-                                                    <td class="col-md-4">
-                                                        <select ng-model="cmp.segmentId" class="form-control" ng-change="setSegment2(cmp.segmentId)" ng-disabled="!ig2" no-dirty-check>
+                                                        </td>
+                                                        <td class="col-md-3">
+                                                            <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
+                                                        </td>
+                                                        <td class="col-md-4">
+                                                            <select ng-model="cmp.segmentId" class="form-control" ng-change="setSegment2(cmp.segmentId)" ng-disabled="!ig2" no-dirty-check>
                                                             <option value='-1'></option>
                                                             <option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{$index}}'> {{getLabel(segment)}}</option>
                                                         </select>
-                                                    </td>
+                                                        </td>
 
-                                                </tr>
+                                                    </tr>
 
 
                                                 </tbody>
 
-                                  </table>
+                                            </table>
                                             <div class="" align="center" style="margin-bottom:10px">
                                                 <button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || cmp.segmentId===-1||!segChanged || !segment2" class="btn btn-raised btn-info btn-md">
                                                         <i class="fa fa-check"></i> Delta</button>
@@ -474,7 +468,7 @@
                                 </div>
 
                             </tab>
-                            
+
                             <tab ng-click="setDeltaToF()">
                                 <tab-heading>
                                     <i class="fa fa-link" aria-hidden="true"></i> Segment Cross-References <span class="badge">{{references.length}}</span>
@@ -486,43 +480,43 @@
                                     <div ng-show="references != null && references.length > 0">
                                         <table st-table="tmpReferences" st-safe-src="references" class="table table-striped table-bordered table-condensed">
                                             <thead>
-                                            <tr class="tbl-header">
-                                                <td st-ratio="5">#</td>
-                                                <th st-ratio="20">Position Path</th>
-                                                <th st-ratio="40">Path</th>
-                                                <th st-ratio="10">Usage</th>
-                                                <th st-ratio="20">Segment</th>
-                                                <th st-ratio="5">Status</th>
-                                            </tr>
+                                                <tr class="tbl-header">
+                                                    <td st-ratio="5">#</td>
+                                                    <th st-ratio="20">Position Path</th>
+                                                    <th st-ratio="40">Path</th>
+                                                    <th st-ratio="10">Usage</th>
+                                                    <th st-ratio="20">Segment</th>
+                                                    <th st-ratio="5">Status</th>
+                                                </tr>
 
                                             </thead>
 
                                             <tbody>
-                                            <tr ng-repeat="ref in tmpReferences">
-                                                <td st-ratio="5">{{$index + 1}}
-                                                </td>
-                                                <td st-ratio="20">
-                                                    <span ng-bind="ref.positionPath"></span>
-                                                </td>
-                                                <td st-ratio="40">
-                                                    <span ng-bind="ref.path"></span>
-                                                </td>
-                                                <td st-ratio="10">
-                                                    {{::ref.usage}}
-                                                </td>
-                                                <td st-ratio="20">
-                                                    <select class="form-control" ng-change="changeSegmentLink(ref.segmentLink)" ng-model="ref.segmentLink.id">
+                                                <tr ng-repeat="ref in tmpReferences">
+                                                    <td st-ratio="5">{{$index + 1}}
+                                                    </td>
+                                                    <td st-ratio="20">
+                                                        <span ng-bind="ref.positionPath"></span>
+                                                    </td>
+                                                    <td st-ratio="40">
+                                                        <span ng-bind="ref.path"></span>
+                                                    </td>
+                                                    <td st-ratio="10">
+                                                        {{::ref.usage}}
+                                                    </td>
+                                                    <td st-ratio="20">
+                                                        <select class="form-control" ng-change="changeSegmentLink(ref.segmentLink)" ng-model="ref.segmentLink.id">
                                                         <option ng-repeat="seg in segments |orderBy:'+name'" ng-hide="seg.name != segment.name" value="{{seg.id}}">
                                                             {{::getSegmentLabel(seg)}}
                                                         </option>
                                                     </select>
-                                                </td>
-                                                <td st-ratio="5">
-                                                    <span ng-show="ref.segmentLink.isNew">New</span>
-                                                    <span ng-show="!ref.segmentLink.isNew && ref.segmentLink.isChanged">Changed</span>
-                                                </td>
+                                                    </td>
+                                                    <td st-ratio="5">
+                                                        <span ng-show="ref.segmentLink.isNew">New</span>
+                                                        <span ng-show="!ref.segmentLink.isNew && ref.segmentLink.isChanged">Changed</span>
+                                                    </td>
 
-                                            </tr>
+                                                </tr>
                                             </tbody>
                                             <tr ng-show="references.length > 15">
                                                 <td colspan="6" class="text-center">
@@ -539,11 +533,11 @@
                             </tab>
                         </tabset>
                     </div>
+                </div>
             </div>
-        </div>
-        
 
-    </div>
+
+        </div>
     </div>
 </script>
 <script type="text/ng-template" id="ManageCoConstraintsTableModal.html">
@@ -630,24 +624,24 @@
             <span ng-bind="node.description"></span>
         </td>
         <td class="col-md-1 col-fixed-80 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-80 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
-         </td>
+        </td>
         <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>-</div>
         </td>
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
-         </td>
+        </td>
         <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-         </td>
+        </td>
     </tr>
 </script>
 <script type="text/ng-template" id="SegmentReadTree.html">
@@ -660,23 +654,23 @@
             <span ng-bind="node.description"></span>
         </td>
         <td class="col-md-1 col-fixed-80 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-80 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
-         </td>
+        </td>
         <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
-         </td>
+        </td>
         <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-         </td>
+        </td>
     </tr>
 </script>
 <script type="text/ng-template" id="SegmentCaseReadTree.html">
@@ -686,26 +680,26 @@
             <span ng-bind="node.value"></span>
         </td>
         <td class="col-md-1 col-fixed-80 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-80 emptyCol">
-         </td>
+        </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             {{getDatatypeLabel(datatypesMap[node.datatype])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
         </td>
         <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
-         </td>
+        </td>
         <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
-         </td>
+        </td>
         <td class="col-md-1 emptyCol" ng-style="csWidthx" ng-show="viewSettings.isVisibleColumn('confStatement')">
-         </td>
+        </td>
         <td class="col-md-1 emptyCol col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
-         </td>
+        </td>
         <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-         </td>
+        </td>
     </tr>
 </script>
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
@@ -758,7 +752,7 @@
             </ng-form>
         </td>
         <td class="col-md-1 col-fixed-80">
-                 <span ng-show="node.usage !=='C' || (node.usage==='C' && countPredicate(node.position)===0 )" ng-controller="DatatypeRowCtrl">
+            <span ng-show="node.usage !=='C' || (node.usage==='C' && countPredicate(node.position)===0 )" ng-controller="DatatypeRowCtrl">
                 <ng-form name="{{formName}}" class="form-inline">
                     <select class="form-control input-sm" name="usage"
                             ng-change="setUsage(node);setCardinalities(node);openPredicateDialog(node);"
@@ -766,15 +760,15 @@
                             required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
                     </ng-form>
                 </span>
-                <div ng-show="node.usage==='C' && countPredicate(node.position) !==0">
-                    <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                        C({{p.trueUsage}}/{{p.falseUsage}})
-                    </p>
-                    <a ng-click="deletePredicateByPosition(node.position, segment)" class="point">
-                        <span title="Delete Predicate and Change Usage"><i class="fa fa-times fa-fw"></i></span>
-                    </a>
-                </div>
-         </td>
+            <div ng-show="node.usage==='C' && countPredicate(node.position) !==0">
+                <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                    C({{p.trueUsage}}/{{p.falseUsage}})
+                </p>
+                <a ng-click="deletePredicateByPosition(node.position, segment)" class="point">
+                    <span title="Delete Predicate and Change Usage"><i class="fa fa-times fa-fw"></i></span>
+                </a>
+            </div>
+        </td>
         <td class="col-md-1 col-fixed-100">
             <div ng-controller="SegmentRowCtrl">
                 <span ng-form name="{{formName}}" class="form-inline">
@@ -835,9 +829,10 @@
             </a>
             <div ng-show="editableDT===node.id">
                 <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm">
+
                     <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.id===datatype.id"> {{getDatatypeLabel(datatype)}} {{::datatypesMap[datatype.id].hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
                     </option>
-                    <option ng-click="otherDT(node)" value="" ng-show="node.added==='yes'"> Others
+                    <option ng-click="otherDT(node)" value=""> Change Data Type root
                 </select>
             </div>
             <div align="center">
@@ -892,14 +887,11 @@
             </div>
         </td>
         <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
-            <a ng-click="openInputTextDlg(node, 'comment','Comment', false)" class="point"
-               tooltip-html="node.comment" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip"
-               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', false)" class="point" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 <i class="fa fa-pencil fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
                 <i class="fa fa-plus fa-fw" ng-show="node.comment === '' || node.comment === null"></i>
             </a>
-            <a ng-click="clearComments(node,'comment')"  ng-show="node.comment !== '' && node.comment !== null">
+            <a ng-click="clearComments(node,'comment')" ng-show="node.comment !== '' && node.comment !== null">
                 <i class="fa fa-times fa-fw"></i>
             </a>
         </td>
@@ -934,10 +926,10 @@
         <td class="col-md-1 col-fixed-100">
             [{{::node.min}}, {{::node.max}}]
         </td>
-        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}" >
-           <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}}, {{::node.maxLength}}]</div>
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}}, {{::node.maxLength}}]</div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}" >
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> {{::node.confLength}} </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
@@ -965,11 +957,8 @@
         <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <!--<span class="form-control" style="width:100%;height:100%" ng-bind="node.comment" ng-show="node.comment !=='' && node.comment !==null" disabled>-->
             <!--</span>-->
-            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point"
-               ng-show="node.comment !== '' && node.comment !== null"
-               tooltip-html="node.comment" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip"
-               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-show="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
+                tooltip-placement="left">
                 <i class="fa fa-eye fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
             </a>
 
@@ -1027,8 +1016,8 @@
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
-                <p ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)"
-                    tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <p ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
+                    tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
@@ -1042,11 +1031,8 @@
         <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <!--<span class="form-control" style="width:100%;height:100%" ng-bind="node.comment" disabled ng-show="node.comment !=null && node.comment !=''">-->
             <!--</span>-->
-            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point"
-               ng-show="node.comment !== '' && node.comment !== null"
-               tooltip-html="node.comment" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip"
-               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-show="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
+                tooltip-placement="left">
                 <i class="fa fa-eye fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
             </a>
 
@@ -1097,8 +1083,8 @@
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
-                <p ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)"
-                    tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <p ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
+                    tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
@@ -1110,11 +1096,8 @@
         <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <!--<span class="form-control" style="width:100%;height:100%" ng-bind="node.comment" ng-show="node.comment !=='' && node.comment !==null" disabled>-->
             <!--</span>-->
-            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point"
-               ng-show="node.comment !== '' && node.comment !== null"
-               tooltip-html="node.comment" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip"
-               tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+            <a ng-click="openInputTextDlg(node, 'comment','Comment', true)" class="point" ng-show="node.comment !== '' && node.comment !== null" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false"
+                tooltip-placement="left">
                 <i class="fa fa-eye fa-fw" ng-show="node.comment !== '' && node.comment !== null"></i>
             </a>
 
@@ -1400,7 +1383,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !selectedDT()}">
                     <label class="col-md-3 control-label">Datatype*</label>
                     <div class="controls col-md-9">
@@ -1440,7 +1423,7 @@
                             <auto-complete source="loadVS($query)" min-length="0" load-on-focus="true" max-results-to-show="10"></auto-complete>
                         </tags-input>
                     </div>
-                   
+
                 </div>
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label">Comment</label>
@@ -1543,24 +1526,24 @@
     <div class="modal-body">
         <table class="table table-striped table-bordered table-condensed">
             <thead>
-            <tr class="tbl-header">
-                <th class="col-md-4">Message</th>
-                <th class="col-md-8">SegmentRef</th>
-            </tr>
+                <tr class="tbl-header">
+                    <th class="col-md-4">Message</th>
+                    <th class="col-md-8">SegmentRef</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <select ng-model='selectedMessageForBinding' class="form-control" ng-change="selectMessage();" ng-options="msg as msg.name + '-' + msg.identifier for msg in messages.children" />
-                </td>
-                <td class="col-md-8">
-                    <select ng-show='selectedMessageForBinding != null' ng-model='selectedSegRefForBinding' class="form-control">
+                <tr>
+                    <td class="col-md-4">
+                        <select ng-model='selectedMessageForBinding' class="form-control" ng-change="selectMessage();" ng-options="msg as msg.name + '-' + msg.identifier for msg in messages.children" />
+                    </td>
+                    <td class="col-md-8">
+                        <select ng-show='selectedMessageForBinding != null' ng-model='selectedSegRefForBinding' class="form-control">
                         <option ng-repeat="ref in segRefsList" value="{{ref}}" ng-disabled="checkDuplicated(ref.positionPath);">
                             {{::ref.path}}({{::ref.positionPath}})
                         </option>
                     </select>
-                </td>
-            </tr>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

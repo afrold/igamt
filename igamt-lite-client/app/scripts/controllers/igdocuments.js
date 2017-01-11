@@ -580,10 +580,11 @@ angular.module('igl')
                 PcLibraryService.getProfileComponentsByLibrary($rootScope.igdocument.profile.profileComponentLibrary.id).then(function(pcs) {
                     console.log("++++++++++++++++++++++++++++++++++");
                     console.log(pcs);
+                    console.log($rootScope.igdocument);
                     $rootScope.profileComponentLib = lib
                     $rootScope.profileComponents = pcs;
                     $rootScope.profileComponentsMap = {};
-                    angular.forEach(lib.children, function(child) {
+                    angular.forEach(pcs, function(child) {
                         this[child.id] = child;
                     }, $rootScope.profileComponentsMap);
                     delay.resolve(true);
@@ -754,6 +755,21 @@ angular.module('igl')
         modalInstance.result.then(function(profileComponent) {
 
         }, function() {});
+    };
+    $rootScope.deleteCompositeMessage = function(compositeMessage) {
+        var modalInstance = $modal.open({
+            templateUrl: 'DeleteCompositeMessageCtrl.html',
+            controller: 'DeleteCompositeMessageCtrl',
+            resolve: {
+                compositeMessageToDelete: function() {
+                    return compositeMessage;
+                }
+            }
+        });
+        modalInstance.result.then(function(compositeMessage) {
+
+        }, function() {});
+
     };
 
     $rootScope.cantDeletePc = function(profileComponent) {
@@ -1545,7 +1561,7 @@ angular.module('igl')
                         }
                     }
                 }
-                $rootScope.table.smallCodes = $rootScope.table.codes.slice(0,1000);
+                $rootScope.table.smallCodes = $rootScope.table.codes.slice(0, 1000);
                 $rootScope.references = [];
                 angular.forEach($rootScope.segments, function(segment) {
                     $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
@@ -1770,6 +1786,64 @@ angular.module('igl').controller('DeleteProfileComponentCtrl', function($scope, 
     };
 });
 
+angular.module('igl').controller('DeleteCompositeMessageCtrl', function($scope, $modalInstance, compositeMessageToDelete, $rootScope, $http, CompositeMessageService, PcService) {
+
+    $scope.compositeMessageToDelete = compositeMessageToDelete;
+    var pcsToChange = [];
+    var removeApplyInfoFromPc = function(pcId) {
+        console.log("pcId");
+        console.log(pcId);
+        console.log($rootScope.profileComponentsMap);
+        if ($rootScope.profileComponentsMap[pcId].appliedTo && $rootScope.profileComponentsMap[pcId].appliedTo !== null) {
+            for (var i = 0; i < $rootScope.profileComponentsMap[pcId].appliedTo.length; i++) {
+                if ($rootScope.profileComponentsMap[pcId].appliedTo[i].id === $scope.compositeMessageToDelete.id) {
+                    $rootScope.profileComponentsMap[pcId].appliedTo.splice(i, 1);
+                    pcsToChange.push($rootScope.profileComponentsMap[pcId]);
+
+                }
+            }
+        }
+
+    }
+
+    $scope.loading = false;
+    $scope.delete = function() {
+        $scope.loading = true;
+
+        CompositeMessageService.delete($scope.compositeMessageToDelete.id).then(function() {
+            console.log($rootScope.igdocument.profile.compositeMessages.children);
+            console.log($scope.compositeMessageToDelete);
+            for (var i = 0; i < $rootScope.igdocument.profile.compositeMessages.children.length; i++) {
+                if ($rootScope.igdocument.profile.compositeMessages.children[i] !== null && ($rootScope.igdocument.profile.compositeMessages.children[i].id === $scope.compositeMessageToDelete.id)) {
+                    console.log("TRIIIE");
+                    $rootScope.igdocument.profile.compositeMessages.children.splice(i, 1);
+                }
+            }
+
+            for (var j = 0; j < $scope.compositeMessageToDelete.appliedPcs.length; j++) {
+                removeApplyInfoFromPc($scope.compositeMessageToDelete.appliedPcs[j].id);
+
+            }
+            console.log("pcsToChange");
+            console.log(pcsToChange);
+            PcService.saveAll(pcsToChange).then(function(result) {
+                if ($rootScope.compositeMessage && $rootScope.compositeMessage.id === $scope.compositeMessageToDelete.id) {
+                    $rootScope.compositeMessage = null;
+                    $rootScope.subview = null;
+                }
+                $modalInstance.close();
+            });
+
+
+
+        });
+
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
 
 angular.module('igl').controller('CantDeletePcCtrl', function($scope, $modalInstance, profileComponent, $rootScope, $http, PcService) {
     $scope.profileComponent = profileComponent;
@@ -3315,6 +3389,7 @@ angular.module('igl').controller('createProfileComponentCtrl',
 
                 $rootScope.igdocument.profile.profileComponentLibrary.children.push(profileC);
                 $rootScope.profileComponents.push(profileC);
+                $rootScope.profileComponentsMap[profileC.id] = profileC;
                 $scope.Activate(profileC.id);
                 $modalInstance.close(profileC);
 
@@ -3671,6 +3746,7 @@ angular.module('igl').controller('createCompositeMessageCtrl',
                 });
                 var pComponent = angular.copy($scope.pcList[t]);
                 delete pComponent.position;
+                $rootScope.profileComponentsMap[pComponent.id] = pComponent;
                 profileComponents.push(pComponent);
             }
 
