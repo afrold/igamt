@@ -54,7 +54,7 @@
                     </xsl:if>
                     <xsl:if test="$type='pre'">
                         <xsl:element name="td">
-                            <xsl:value-of select="concat(@LocationName, @Location)" />
+                            <xsl:value-of select="concat(@LocationName,'.', @Location)" />
                         </xsl:element>
                         <xsl:element name="td">
                             <xsl:value-of select="@Usage" />
