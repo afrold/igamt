@@ -119,7 +119,7 @@
         <xsl:if test="count(./Constraint) &gt; 0">
             <xsl:call-template name="Constraint">
                 <xsl:with-param name="title">
-                    <xsl:text>Conformance statements</xsl:text>
+                    <xsl:text>Conformance Statements</xsl:text>
                 </xsl:with-param>
                 <xsl:with-param name="constraintMode">
                     <xsl:text>standalone</xsl:text>
@@ -130,7 +130,7 @@
             </xsl:call-template>
             <xsl:call-template name="Constraint">
                 <xsl:with-param name="title">
-                    <xsl:text>Conditional predicates</xsl:text>
+                    <xsl:text>Conditional Predicates</xsl:text>
                 </xsl:with-param>
                 <xsl:with-param name="constraintMode">
                     <xsl:text>standalone</xsl:text>
