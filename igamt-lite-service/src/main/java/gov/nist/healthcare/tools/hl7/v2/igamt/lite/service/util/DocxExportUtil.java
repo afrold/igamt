@@ -138,7 +138,6 @@ public class DocxExportUtil {
 		paragraphForTOC.getContent().add(r2);
 
 		wordMLPackage.getMainDocumentPart().getContent().add(paragraphForTOC);
-		addPageBreak(wordMLPackage, factory);
 	}
 
 	public void loadTemplateForDocx4j(WordprocessingMLPackage wordMLPackage) {
