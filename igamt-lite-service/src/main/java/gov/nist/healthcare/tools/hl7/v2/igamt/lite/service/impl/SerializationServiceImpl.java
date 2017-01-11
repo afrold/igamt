@@ -254,7 +254,7 @@ import java.util.UUID;
 
         id = UUID.randomUUID().toString();
         position = String.valueOf(1);
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+        prefix = conformanceInformationSection.getPrefix() + "."
             + String.valueOf(1);
         headerLevel = String.valueOf(3);
         title = "Conformance statements";
@@ -263,7 +263,7 @@ import java.util.UUID;
 
         id = UUID.randomUUID().toString();
         position = String.valueOf(2);
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
+        prefix = conformanceInformationSection.getPrefix() + "."
             + String.valueOf(2);
         headerLevel = String.valueOf(3);
         title = "Conditional predicates";
@@ -272,8 +272,7 @@ import java.util.UUID;
 
         id = UUID.randomUUID().toString();
         position = String.valueOf(1);
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
-            + String.valueOf(1) + "." + String.valueOf(1);
+        prefix = conformanceStatementsSection.getPrefix() + "." + String.valueOf(1);
         headerLevel = String.valueOf(4);
         title = "Conformance profile level";
         SerializableSection profileLevelConformanceStatementsSection =
@@ -281,8 +280,7 @@ import java.util.UUID;
 
         id = UUID.randomUUID().toString();
         position = String.valueOf(1);
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
-            + String.valueOf(2) + "." + String.valueOf(1);
+        prefix = conditionalPredicatesSection.getPrefix() + "." + String.valueOf(1);
         headerLevel = String.valueOf(4);
         title = "Conformance profile level";
         SerializableSection profileLevelPredicatesSection =
@@ -290,8 +288,7 @@ import java.util.UUID;
 
         id = UUID.randomUUID().toString();
         position = String.valueOf(2);
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
-            + String.valueOf(1) + "." + String.valueOf(2);
+        prefix = conformanceStatementsSection.getPrefix() + "." + String.valueOf(2);
         headerLevel = String.valueOf(4);
         title = "Segment level";
         SerializableSection segmentLevelConformanceStatementSection =
@@ -299,8 +296,7 @@ import java.util.UUID;
 
         id = UUID.randomUUID().toString();
         position = String.valueOf(2);
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
-            + String.valueOf(2) + "." + String.valueOf(2);
+        prefix = conditionalPredicatesSection.getPrefix() + "." + String.valueOf(2);
         headerLevel = String.valueOf(4);
         title = "Segment level";
         SerializableSection segmentLevelPredicatesSection =
@@ -308,8 +304,7 @@ import java.util.UUID;
 
         id = UUID.randomUUID().toString();
         position = String.valueOf(2);
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
-            + String.valueOf(1) + "." + String.valueOf(3);
+        prefix = conformanceStatementsSection.getPrefix() + "." + String.valueOf(3);
         headerLevel = String.valueOf(4);
         title = "Datatype level";
         SerializableSection datatypeLevelConformanceStatementSection =
@@ -317,8 +312,7 @@ import java.util.UUID;
 
         id = UUID.randomUUID().toString();
         position = String.valueOf(2);
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
-            + String.valueOf(2) + "." + String.valueOf(3);
+        prefix = conditionalPredicatesSection.getPrefix() + "." + String.valueOf(3);
         headerLevel = String.valueOf(4);
         title = "Datatype level";
         SerializableSection datatypeLevelPredicatesSection =
@@ -330,9 +324,9 @@ import java.util.UUID;
                 SerializableMessage serializableMessage =
                     (SerializableMessage) serializableMessageSection;
                 id = UUID.randomUUID().toString();
-                position = String.valueOf(currentConformanceStatementPosition);
-                prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
-                    + String.valueOf(1) + "." + String.valueOf(1) + "." + String.valueOf(currentConformanceStatementPosition);
+                position = String.valueOf(
+                    ((SerializableMessage) serializableMessageSection).getMessage().getPosition());
+                prefix = profileLevelConformanceStatementsSection.getPrefix() + "." + String.valueOf(currentConformanceStatementPosition);
                 headerLevel = String.valueOf(5);
                 title = serializableMessage.getMessage().getName();
                 SerializableConstraints serializableConformanceStatement = serializableMessage.getSerializableConformanceStatements();
@@ -348,9 +342,7 @@ import java.util.UUID;
                 }
                 id = UUID.randomUUID().toString();
                 position = String.valueOf(currentPredicatePosition);
-                prefix =
-                    String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "."
-                        + String.valueOf(1) + "." + String.valueOf(2) + "." + String.valueOf(currentPredicatePosition);
+                prefix = profileLevelPredicatesSection.getPrefix() + "." + String.valueOf(currentPredicatePosition);
                 headerLevel = String.valueOf(5);
                 title = serializableMessage.getMessage().getName();
                 SerializableConstraints serializablePredicate = serializableMessage.getSerializablePredicates();
@@ -367,54 +359,63 @@ import java.util.UUID;
 
         currentConformanceStatementPosition = 1;
         currentPredicatePosition = 1;
-        for(SerializableSection serializableSection : segments){
-            if(serializableSection instanceof SerializableSegment) {
-                SerializableSegment serializableSegment = (SerializableSegment) serializableSection;
-                if (serializableSegment.getConstraints().size() > 0) {
-                    List<SerializableConstraint> segmentConformanceStatements = new ArrayList<>();
-                    List<SerializableConstraint> segmentPredicates = new ArrayList<>();
-                    for(SerializableConstraint serializableConstraint : serializableSegment.getConstraints()){
-                        if(serializableConstraint.getConstraint() instanceof Predicate){
-                            segmentPredicates.add(serializableConstraint);
-                        } else if(serializableConstraint.getConstraint() instanceof ConformanceStatement){
-                            segmentConformanceStatements.add(serializableConstraint);
+        for(SerializableSection serializableSegmentSection : segments){
+            if(serializableSegmentSection.getSerializableSectionList().size()>0) {
+                for (SerializableSection serializableSection : serializableSegmentSection
+                    .getSerializableSectionList()) {
+                    if (serializableSection instanceof SerializableSegment) {
+                        SerializableSegment serializableSegment = (SerializableSegment) serializableSection;
+                        if (serializableSegment.getConstraints().size() > 0) {
+                            List<SerializableConstraint> segmentConformanceStatements = new ArrayList<>();
+                            List<SerializableConstraint> segmentPredicates = new ArrayList<>();
+                            for (SerializableConstraint serializableConstraint : serializableSegment
+                                .getConstraints()) {
+                                if (serializableConstraint.getConstraint() instanceof Predicate) {
+                                    segmentPredicates.add(serializableConstraint);
+                                } else if (serializableConstraint
+                                    .getConstraint() instanceof ConformanceStatement) {
+                                    segmentConformanceStatements.add(serializableConstraint);
+                                }
+                            }
+                            if (segmentConformanceStatements.size() > 0) {
+                                id = UUID.randomUUID().toString();
+                                position = String.valueOf(currentConformanceStatementPosition);
+                                prefix = segmentLevelConformanceStatementSection.getPrefix() + "." + currentConformanceStatementPosition;
+                                headerLevel = String.valueOf(5);
+                                title = serializableSegment.getSegment().getName() + " - " + serializableSegment.getSegment().getDescription();
+                                SerializableSection
+                                    conformanceStatementsSegmentLevelConformanceStatementsSection =
+                                    new SerializableSection(id, prefix, position, headerLevel, title);
+                                SerializableConstraints serializableConformanceStatementConstraints =
+                                    new SerializableConstraints(segmentConformanceStatements, id, "", "",
+                                        "ConformanceStatement");
+                                conformanceStatementsSegmentLevelConformanceStatementsSection
+                                    .addSection(serializableConformanceStatementConstraints);
+                                currentConformanceStatementPosition += 1;
+                                segmentLevelConformanceStatementSection.addSection(
+                                    conformanceStatementsSegmentLevelConformanceStatementsSection);
+                            }
+                            if (segmentPredicates.size() > 0) {
+                                id = UUID.randomUUID().toString();
+                                position = String.valueOf(currentPredicatePosition);
+                                prefix = segmentLevelPredicatesSection.getPrefix() + "." + currentPredicatePosition;
+                                headerLevel = String.valueOf(5);
+                                title = serializableSegment.getSegment().getName() + " - " + serializableSegment.getSegment().getDescription();
+                                SerializableSection
+                                    predicatesSegmentLevelConformanceStatementsSection =
+                                    new SerializableSection(id, prefix, position, headerLevel, title);
+                                SerializableConstraints serializablePredicateConstraints =
+                                    new SerializableConstraints(segmentPredicates, id, "", "",
+                                        "ConditionPredicate");
+                                predicatesSegmentLevelConformanceStatementsSection
+                                    .addSection(serializablePredicateConstraints);
+                                currentPredicatePosition += 1;
+                                segmentLevelPredicatesSection
+                                    .addSection(predicatesSegmentLevelConformanceStatementsSection);
+                            }
+
                         }
                     }
-                    if(segmentConformanceStatements.size()>0) {
-                        id = UUID.randomUUID().toString();
-                        position = String.valueOf(currentConformanceStatementPosition);
-                        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
-                            .valueOf(5) + "." + String.valueOf(2) + "." + String.valueOf(1) + "." + String.valueOf(currentConformanceStatementPosition);
-                        headerLevel = String.valueOf(5);
-                        title = serializableSegment.getSegment().getName() + " - " + serializableSegment.getSegment().getDescription();
-                        SerializableSection
-                            conformanceStatementsSegmentLevelConformanceStatementsSection = new SerializableSection(id, prefix, position, headerLevel, title);
-                        SerializableConstraints serializableConformanceStatementConstraints =
-                            new SerializableConstraints(segmentConformanceStatements, id, "", "",
-                                "ConformanceStatement");
-                        conformanceStatementsSegmentLevelConformanceStatementsSection
-                            .addSection(serializableConformanceStatementConstraints);
-                        currentConformanceStatementPosition+=1;
-                        segmentLevelConformanceStatementSection.addSection(conformanceStatementsSegmentLevelConformanceStatementsSection);
-                    }
-                    if(segmentPredicates.size()>0) {
-                        id = UUID.randomUUID().toString();
-                        position = String.valueOf(currentPredicatePosition);
-                        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
-                            .valueOf(5) + "." + String.valueOf(2) + "." + String.valueOf(2) + "." + String.valueOf(currentPredicatePosition);
-                        headerLevel = String.valueOf(5);
-                        title = serializableSegment.getSegment().getName() + " - " + serializableSegment.getSegment().getDescription();
-                        SerializableSection
-                            predicatesSegmentLevelConformanceStatementsSection = new SerializableSection(id, prefix, position, headerLevel, title);
-                        SerializableConstraints serializablePredicateConstraints =
-                            new SerializableConstraints(segmentPredicates, id, "", "",
-                                "ConditionPredicate");
-                        predicatesSegmentLevelConformanceStatementsSection
-                            .addSection(serializablePredicateConstraints);
-                        currentPredicatePosition+=1;
-                        segmentLevelPredicatesSection.addSection(predicatesSegmentLevelConformanceStatementsSection);
-                    }
-
                 }
             }
         }
@@ -436,8 +437,7 @@ import java.util.UUID;
                     if(datatypeConformanceStatements.size()>0) {
                         id = UUID.randomUUID().toString();
                         position = String.valueOf(currentConformanceStatementPosition);
-                        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
-                            .valueOf(5) + "." + String.valueOf(2) + "." + String.valueOf(1) + "." + String.valueOf(currentConformanceStatementPosition);
+                        prefix = datatypeLevelConformanceStatementSection.getPrefix()+"."+String.valueOf(currentConformanceStatementPosition);
                         headerLevel = String.valueOf(5);
                         title = serializableDatatype.getDatatype().getName() + " - "+serializableDatatype.getDatatype().getDescription();
                         SerializableSection
@@ -453,8 +453,7 @@ import java.util.UUID;
                     if(datatypePredicates.size()>0) {
                         id = UUID.randomUUID().toString();
                         position = String.valueOf(currentPredicatePosition);
-                        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
-                            .valueOf(5) + "." + String.valueOf(2) + "." + String.valueOf(2) + "." + String.valueOf(currentPredicatePosition);
+                        prefix = datatypeLevelPredicatesSection.getPrefix() + "." + String.valueOf(currentPredicatePosition);
                         headerLevel = String.valueOf(5);
                         title = serializableDatatype.getDatatype().getName() + " - "+serializableDatatype.getDatatype().getDescription();
                         SerializableSection
@@ -482,203 +481,6 @@ import java.util.UUID;
         conformanceInformationSection.addSection(conformanceStatementsSection);
         conformanceInformationSection.addSection(conditionalPredicatesSection);
 
-
-        /*for (Message m : profile.getMessages().getChildren()) {
-            if (m.getChildren() != null) {
-
-                nu.xom.Element csinfo = new nu.xom.Element("Constraints");
-                csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-                csinfo.addAttribute(new Attribute("position", String.valueOf(m.getPosition())));
-                csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-                csinfo.addAttribute(new Attribute("title", m.getName()));
-                csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
-
-                nu.xom.Element cpinfo = new nu.xom.Element("Constraints");
-                cpinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-                cpinfo.addAttribute(new Attribute("position", ""));
-                cpinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-                cpinfo.addAttribute(new Attribute("title", m.getName()));
-                cpinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
-
-                // Map<Integer, SegmentRefOrGroup> segmentRefOrGroups =
-                // new HashMap<Integer, SegmentRefOrGroup>();
-                //
-                // for (SegmentRefOrGroup segmentRefOrGroup : m.getChildren()) {
-                // segmentRefOrGroups.put(segmentRefOrGroup.getPosition(),
-                // segmentRefOrGroup);
-                // }
-
-                serializeMessageConstraints(m, csinfo, cpinfo);
-
-                List<SegmentRefOrGroup> children = m.getChildren();
-                for (int i = 0; i < children.size(); i++) {
-                    SegmentRefOrGroup segmentRefOrGroup = children.get(i);
-
-                    String prefixcp = String.valueOf(profile.getSectionPosition() + 1) + "5.1.3";
-                    String prefixcs = String.valueOf(profile.getSectionPosition() + 1) + "5.2.3";
-
-                    this.serializeSegmentRefOrGroupConstraint(segmentRefOrGroup.getPosition(), segmentRefOrGroup,
-                        csinfo, cpinfo, prefixcs, prefixcp);
-
-                }
-                cpmsg.appendChild(cpinfo);
-                csmsg.appendChild(csinfo);
-            }
-        }
-
-        cp.appendChild(cpmsg);
-        cs.appendChild(csmsg);
-
-        // Constraints for segments
-        nu.xom.Element cssg = new nu.xom.Element("Section");
-        cssg.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-        cssg.addAttribute(new Attribute("position", String.valueOf(3)));
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "." + String.valueOf(1)
-            + "." + String.valueOf(profile.getSegmentLibrary().getSectionPosition() + 1);
-        cssg.addAttribute(new Attribute("prefix", prefix));
-        cssg.addAttribute(new Attribute("h", String.valueOf(4)));
-        cssg.addAttribute(new Attribute("title", "Segment level"));
-
-        nu.xom.Element cpsg = new nu.xom.Element("Section");
-        cpsg.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-        cpsg.addAttribute(new Attribute("position", String.valueOf(3)));
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "." + String.valueOf(2)
-            + "." + String.valueOf(profile.getSegmentLibrary().getSectionPosition() + 1);
-        cpsg.addAttribute(new Attribute("prefix", prefix));
-        cpsg.addAttribute(new Attribute("h", String.valueOf(4)));
-        cpsg.addAttribute(new Attribute("title", "Segment level"));
-
-        for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
-            if (sl.getId() != null && segmentService != null && segmentService.findById(sl.getId()) != null) {
-                Segment s = segmentService.findById(sl.getId());
-                if (s.getFields() != null) {
-
-                    nu.xom.Element csinfo = new nu.xom.Element("Constraints");
-                    csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-                    csinfo.addAttribute(new Attribute("position", ""));
-                    csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-                    csinfo.addAttribute(new Attribute("title", sl.getLabel()));
-                    csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
-
-                    nu.xom.Element cpinfo = new nu.xom.Element("Constraints");
-                    cpinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-                    cpinfo.addAttribute(new Attribute("position", ""));
-                    cpinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-                    cpinfo.addAttribute(new Attribute("title", s.getLabel()));
-                    cpinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
-
-                    // Map<Integer, Field> fields = new HashMap<Integer,
-                    // Field>();
-
-                    // for (Field f : s.getFields()) {
-                    // fields.put(f.getPosition(), f);
-                    // }
-
-                    List<Field> children = s.getFields();
-                    for (int i = 0; i < children.size(); i++) {
-                        List<Constraint> constraints = findConstraints(children.get(i).getPosition(), s.getPredicates(),
-                            s.getConformanceStatements());
-                        if (!constraints.isEmpty()) {
-                            for (Constraint constraint : constraints) {
-                                nu.xom.Element elmConstraint = serializeConstraintToElement(constraint,
-                                    s.getName() + "-");
-                                if (constraint instanceof Predicate) {
-                                    prefix = String.valueOf(profile.getSectionPosition() + 1) + "5.1.3";
-                                    cpinfo.addAttribute(new Attribute("prefix", prefix));
-                                    cpinfo.appendChild(elmConstraint);
-                                } else if (constraint instanceof ConformanceStatement) {
-                                    prefix = String.valueOf(profile.getSectionPosition() + 1) + "5.2.3";
-                                    csinfo.addAttribute(new Attribute("prefix", prefix));
-                                    csinfo.appendChild(elmConstraint);
-                                }
-                            }
-                        }
-                    }
-                    cpsg.appendChild(cpinfo);
-                    cssg.appendChild(csinfo);
-                }
-            }
-        }
-
-        cp.appendChild(cpsg);
-        cs.appendChild(cssg);
-
-        // Constraints for datatypes
-        nu.xom.Element csdt = new nu.xom.Element("Section");
-        csdt.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-        csdt.addAttribute(new Attribute("position", String.valueOf(3)));
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "." + String.valueOf(1)
-            + "." + String.valueOf(profile.getDatatypeLibrary().getSectionPosition() + 1);
-        csdt.addAttribute(new Attribute("prefix", prefix));
-        csdt.addAttribute(new Attribute("h", String.valueOf(4)));
-        csdt.addAttribute(new Attribute("title", "Datatype level"));
-
-        nu.xom.Element cpdt = new nu.xom.Element("Section");
-        cpdt.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-        cpdt.addAttribute(new Attribute("position", String.valueOf(3)));
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5) + "." + String.valueOf(2)
-            + "." + String.valueOf(profile.getDatatypeLibrary().getSectionPosition() + 1);
-        cpdt.addAttribute(new Attribute("prefix", prefix));
-        cpdt.addAttribute(new Attribute("h", String.valueOf(4)));
-        cpdt.addAttribute(new Attribute("title", "Datatype level"));
-
-        for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
-            if (datatypeService != null && dl.getId() != null && datatypeService.findById(dl.getId()) != null) {
-                Datatype d = datatypeService.findById(dl.getId());
-                if (d.getComponents() != null && d.getComponents().size() > 0) {
-
-                    nu.xom.Element csinfo = new nu.xom.Element("Constraints");
-                    csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-                    csinfo.addAttribute(new Attribute("position", ""));
-                    csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-                    csinfo.addAttribute(new Attribute("title", d.getLabel()));
-                    csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
-
-                    nu.xom.Element cpdtinfo = new nu.xom.Element("Constraints");
-                    cpdtinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-                    cpdtinfo.addAttribute(new Attribute("position", ""));
-                    cpdtinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-                    cpdtinfo.addAttribute(new Attribute("title", d.getLabel()));
-                    cpdtinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
-                    //
-                    // Map<Integer, Component> components = new HashMap<Integer,
-                    // Component>();
-                    // for (Component c : d.getComponents()) {
-                    // components.put(c.getPosition(), c);
-                    // }
-                    for (int i = 0; i < d.getComponents().size(); i++) {
-                        // Component c = components.get(i);
-                        List<Constraint> constraints = findConstraints(d.getComponents().get(i).getPosition(),
-                            d.getPredicates(), d.getConformanceStatements());
-                        if (!constraints.isEmpty()) {
-                            for (Constraint constraint : constraints) {
-                                nu.xom.Element elmConstraint = serializeConstraintToElement(constraint,
-                                    d.getName() + ".");
-                                if (constraint instanceof Predicate) {
-                                    prefix = String.valueOf(profile.getSectionPosition() + 1) + "5.1.3";
-                                    cpdtinfo.addAttribute(new Attribute("prefix", prefix));
-                                    cpdtinfo.appendChild(elmConstraint);
-                                } else if (constraint instanceof ConformanceStatement) {
-                                    prefix = String.valueOf(profile.getSectionPosition() + 1) + "5.2.3";
-                                    csinfo.addAttribute(new Attribute("prefix", prefix));
-                                    csinfo.appendChild(elmConstraint);
-                                }
-                            }
-                        }
-                    }
-                    cpdt.appendChild(cpdtinfo);
-                    csdt.appendChild(csinfo);
-                }
-            }
-        }
-
-        cp.appendChild(cpdt);
-        cs.appendChild(csdt);
-
-        cnts.appendChild(cp);
-        cnts.appendChild(cs);
-
-        xsect.appendChild(cnts);*/
         return conformanceInformationSection;
     }
 }
