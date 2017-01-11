@@ -141,14 +141,15 @@ public class SerializableSegment extends SerializableSection {
                 if (field.getText() != null && !field.getText().isEmpty()) {
                     fieldElement.appendChild(this.createTextElement("Text", field.getText()));
                 }
-
-                if (!constraints.isEmpty()) {
-                    for (SerializableConstraint constraint : constraints) {
-                        fieldElement.appendChild(constraint.serializeElement());
-                    }
-                }
                 segmentElement.appendChild(fieldElement);
             }
+
+            if (!constraints.isEmpty()) {
+                for (SerializableConstraint constraint : constraints) {
+                    segmentElement.appendChild(constraint.serializeElement());
+                }
+            }
+
             CoConstraints coconstraints = segment.getCoConstraints();
             if (coconstraints.getConstraints().size() != 0) {
                 //TODO refactor in a SerializableCoConstraint object and create the table in the XSLT

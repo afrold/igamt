@@ -52,7 +52,7 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
     @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         //TODO find a better solution to create a void section
-        SerializableSection messageSegments = new SerializableSection("","","","","");
+        SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+String.valueOf(message.getPosition()),"1","4","Segment definitions");
         this.messageSegmentsNameList = new ArrayList<>();
         this.segmentPosition = 1;
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
@@ -81,9 +81,7 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         }
         SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText);
         if(!messageSegments.getSerializableSectionList().isEmpty()){
-            for(SerializableSection messageSegment : messageSegments.getSerializableSectionList()){
-                serializableMessage.addSection(messageSegment);
-            }
+            serializableMessage.addSection(messageSegments);
         }
         return serializableMessage;
     }
