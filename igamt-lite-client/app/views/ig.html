@@ -237,7 +237,7 @@
     <script type="text/ng-template" id="DeleteProfileComponentCtrl.html ">
         <div class="modal-header ">
             <h3 class="modal-title ">Delete Confirmation
-        </h3>
+            </h3>
         </div>
         <div class="modal-body ">
 
@@ -256,6 +256,30 @@
     </div>
 </div>
 </div>
+</script>
+
+<script type="text/ng-template" id="DeleteCompositeMessageCtrl.html ">
+    <div class="modal-header ">
+        <h3 class="modal-title ">Delete Confirmation
+        </h3>
+    </div>
+    <div class="modal-body ">
+
+        <p>Are you sure you want to delete the Composite Message:"{{compositeMessageToDelete.name}} " ? This operation is irreversible</p>
+    </div>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
+                class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
+                class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
+        </button>
+        <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
+        </div>
+    </div>
+    </div>
 </script>
 <script type="text/ng-template" id="CantDeletePcCtrl.html ">
     <div class="modal-header ">
@@ -351,8 +375,8 @@
 </script>
 <script type="text/ng-template " id="RichTextCtrl.html ">
     <div class="modal-header modal-wide ">
-        <h3 class="modal-title ">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
-            {{editorTarget.title}}</h3>
+        <h3 class="modal-title ">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}
+        </h3>
     </div>
     <div class="modal-body ">
         <div class="row ">
@@ -969,7 +993,8 @@
 
     <div>
         <div class="modal-header">
-            <h3 class="modal-title">Share IG Document</h3> </div>
+            <h3 class="modal-title">Share IG Document</h3>
+        </div>
         <div class="modal-body">
             <div class="container" style="margin-bottom: 20px;margin-top: 20px">
                 <div class="row" ng-if="error != null">
@@ -1173,7 +1198,7 @@
         <div class="modal-footer">
             <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
             </button>
-            <button class="btn btn-raised btn-info btn-sm" ng-click="create()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Create</span>
+            <button class="btn btn-raised btn-info btn-sm" ng-disabled="pcList.length<1 || !baseP" ng-click="create()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Create</span>
             </button>
         </div>
     </form>

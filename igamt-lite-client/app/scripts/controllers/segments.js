@@ -176,6 +176,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
 
     $scope.selectDT = function(field, datatype) {
+        console.log(datatype);
         if (datatype) {
             $scope.DTselected = true;
             blockUI.start();
