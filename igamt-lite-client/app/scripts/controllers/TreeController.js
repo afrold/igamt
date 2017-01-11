@@ -827,19 +827,8 @@ angular
 
                     }],
                     null, ['Export Profile', function($itemScope) {
-
-
-                        if ($rootScope.hasChanges()) {
-
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                $scope.selectMessages($rootScope.igdocument);
-                            });
-                        } else {
-                            $scope.selectMessages($rootScope.igdocument);
-                        }
-
-
-
+                              $scope.selectMessagesForExport($rootScope.igdocument);
+             
                     }]
                 ];
 
