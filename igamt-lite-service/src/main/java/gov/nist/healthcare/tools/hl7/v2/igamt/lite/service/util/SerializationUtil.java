@@ -31,19 +31,10 @@ public class SerializationUtil {
     return value != null ? value : "";
   }
 
-  private String removeNonPrintableCharacters(String string){
-    Pattern pt = Pattern.compile("[^a-zA-Z0-9]");
-    Matcher match= pt.matcher(string);
-    while(match.find()){
-      string=string.replace(Character.toString(string.charAt(match.start())),"");
-    }
-    return string;
-  }
-
   public String cleanRichtext(String richtext) {
     richtext = richtext.replace("<br>", "<br></br>");
     richtext = richtext.replace("<p style=\"\"><br></p>", "<p></p>");
-    richtext = removeNonPrintableCharacters(richtext);
+    richtext = richtext.replaceAll("[^\\p{Print}]", "?");
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
     Elements elements1 = doc.select("h1");
     elements1.tagName("p").attr("style",
