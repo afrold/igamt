@@ -14,7 +14,7 @@
 
     <xsl:template match="Segment">
         <xsl:param name="inlineConstraint"/>
-        <xsl:value-of select="@Comment"/>
+        <!--xsl:value-of select="@Comment"/-->
         <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
             <xsl:call-template name="definitionText">
                 <xsl:with-param name="type">

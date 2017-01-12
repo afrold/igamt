@@ -11,7 +11,7 @@
                               select="@PurposeAndUse"/>
             </xsl:element>
         </xsl:if>
-        <xsl:value-of select="@Comment"></xsl:value-of>
+        <!--xsl:value-of select="@Comment"></xsl:value-of-->
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
             <xsl:element name="p">
                 <xsl:element name="h4"><xsl:text>Usage note</xsl:text></xsl:element>
