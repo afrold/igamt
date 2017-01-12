@@ -68,16 +68,25 @@
                             <xsl:text>10%</xsl:text>
                         </xsl:attribute>
                     </xsl:element>
-                    <xsl:element name="col">
-                        <xsl:attribute name="width">
-                            <xsl:text>10%</xsl:text>
-                        </xsl:attribute>
-                    </xsl:element>
-                    <xsl:element name="col">
-                        <xsl:attribute name="width">
-                            <xsl:text>30%</xsl:text>
-                        </xsl:attribute>
-                    </xsl:element>
+                    <xsl:if test="@showConfLength='true'">
+                        <xsl:element name="col">
+                            <xsl:attribute name="width">
+                                <xsl:text>10%</xsl:text>
+                            </xsl:attribute>
+                        </xsl:element>
+                        <xsl:element name="col">
+                            <xsl:attribute name="width">
+                                <xsl:text>30%</xsl:text>
+                            </xsl:attribute>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="@showConfLength='false'">
+                        <xsl:element name="col">
+                            <xsl:attribute name="width">
+                                <xsl:text>40%</xsl:text>
+                            </xsl:attribute>
+                        </xsl:element>
+                    </xsl:if>
                     <xsl:element name="thead">
                         <xsl:attribute name="class">
                             <xsl:text>contentThead</xsl:text>
@@ -98,9 +107,11 @@
                             <xsl:element name="th">
                                 <xsl:text>Usage</xsl:text>
                             </xsl:element>
-                            <xsl:element name="th">
-                                <xsl:text>Length</xsl:text>
-                            </xsl:element>
+                            <xsl:if test="@showConfLength='true'">
+                                <xsl:element name="th">
+                                    <xsl:text>Length</xsl:text>
+                                </xsl:element>
+                            </xsl:if>
                             <xsl:element name="th">
                                 <xsl:text>Value Set</xsl:text>
                             </xsl:element>
@@ -114,8 +125,8 @@
                             <xsl:sort select="@Position" data-type="number"></xsl:sort>
                             <xsl:call-template name="component">
                                 <xsl:with-param name="style"
-                                                select="'background-color:white;text-decoration:normal'">
-                                </xsl:with-param>
+                                                select="'background-color:white;text-decoration:normal'"/>
+                                <xsl:with-param name="showConfLength" select="@showConfLength"/>
                             </xsl:call-template>
                         </xsl:for-each>
                     </xsl:element>

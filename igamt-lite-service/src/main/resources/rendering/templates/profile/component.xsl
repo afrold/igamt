@@ -2,6 +2,7 @@
 
     <xsl:template name="component">
         <xsl:param name="style" />
+        <xsl:param name="showConfLength" />
         <tr style="{$style}">
 
             <td>
@@ -19,15 +20,17 @@
             <td>
                 <xsl:value-of select="@Usage" />
             </td>
-            <td>
-                <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
-                    [
-                    <xsl:value-of select="@MinLength" />
-                    ..
-                    <xsl:value-of select="@MaxLength" />
-                    ]
-                </xsl:if>
-            </td>
+            <xsl:if test="$showConfLength='true'">
+                <td>
+                    <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+                        [
+                        <xsl:value-of select="@MinLength" />
+                        ..
+                        <xsl:value-of select="@MaxLength" />
+                        ]
+                    </xsl:if>
+                </td>
+            </xsl:if>
             <td>
                 <xsl:value-of select="@Binding" />
             </td>

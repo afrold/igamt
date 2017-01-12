@@ -141,6 +141,9 @@ public class SerializationUtil {
 
   public Boolean isShowConfLength(String hl7Version) {
     //Check if hl7Version > 2.5.1
+    if(hl7Version == null || "".equals(hl7Version)){
+      return false;
+    }
     Integer[] comparisonVersion = {2,5,1};
     String[] versionToCompare = hl7Version.split("\\.");
     if(versionToCompare !=null&&versionToCompare.length>0) {
