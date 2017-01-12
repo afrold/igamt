@@ -3,7 +3,7 @@
     <xsl:include href="/rendering/templates/profile/messageSegment.xsl"/>
     <xsl:include href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:template match="Message">
-        <xsl:value-of select="@Comment"/>
+        <!--xsl:value-of select="@Comment"/-->
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
             <xsl:element name="p">
                 <xsl:element name="h4"><xsl:text>Usage note</xsl:text></xsl:element>
