@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatypeDtm;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
@@ -43,6 +44,9 @@ public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
 
     @Autowired
     SerializeConstraintService serializeConstraintService;
+
+    private static final String REQUIRED = "Required";
+    private static final String OPTIONAL = "Optional";
 
     @Override public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix, Integer position) {
         if(datatypeLink!=null && datatypeLink.getId()!=null) {
@@ -91,9 +95,33 @@ public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
                     componentTextMap.put(component,text);
                 }
             }
-            SerializableDatatype serializedDatatype = new SerializableDatatype(id,prefix,String.valueOf(position),headerLevel,title,datatype,defPreText,defPostText,usageNote,constraintsList,componentDatatypeMap,componentTablesMap,componentTextMap);
+            SerializableDatatype serializedDatatype = null;
+            if(datatype.getName().equals("DTM")){
+                Map<String,String> dateValues = getDtmDateValues(datatype.getPrecisionOfDTM(),datatype.isTimeZoneOfDTM());
+                serializedDatatype = new SerializableDatatypeDtm(id, prefix, String.valueOf(position), headerLevel,
+                    title, datatype, defPreText, defPostText, usageNote, constraintsList,
+                    componentDatatypeMap, componentTablesMap, componentTextMap,dateValues);
+            } else {
+                serializedDatatype =
+                    new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,
+                        title, datatype, defPreText, defPostText, usageNote, constraintsList,
+                        componentDatatypeMap, componentTablesMap, componentTextMap);
+            }
             return serializedDatatype;
         }
         return null;
+    }
+
+    private Map<String,String> getDtmDateValues(int precisionOfDTM, boolean timeZoneOfDTM) {
+        HashMap<String,String> dateValue = new HashMap<>();
+        dateValue.put("YYYY",precisionOfDTM>=1?this.REQUIRED:this.OPTIONAL);
+        dateValue.put("MM",precisionOfDTM>=2?this.REQUIRED:this.OPTIONAL);
+        dateValue.put("DD",precisionOfDTM>=3?this.REQUIRED:this.OPTIONAL);
+        dateValue.put("hh",precisionOfDTM>=4?this.REQUIRED:this.OPTIONAL);
+        dateValue.put("mm",precisionOfDTM>=5?this.REQUIRED:this.OPTIONAL);
+        dateValue.put("ss",precisionOfDTM>=6?this.REQUIRED:this.OPTIONAL);
+        dateValue.put("ssss",precisionOfDTM>=7?this.REQUIRED:this.OPTIONAL);
+        dateValue.put("timeZone",timeZoneOfDTM?this.REQUIRED:this.OPTIONAL);
+        return dateValue;
     }
 }
