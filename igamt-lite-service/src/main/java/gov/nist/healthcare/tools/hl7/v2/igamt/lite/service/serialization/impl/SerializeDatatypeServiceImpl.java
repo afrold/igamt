@@ -95,17 +95,18 @@ public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
                     componentTextMap.put(component,text);
                 }
             }
+            Boolean showConfLength = serializationUtil.isShowConfLength(datatype.getHl7Version());
             SerializableDatatype serializedDatatype = null;
             if(datatype.getName().equals("DTM")){
                 Map<String,String> dateValues = getDtmDateValues(datatype.getPrecisionOfDTM(),datatype.isTimeZoneOfDTM());
                 serializedDatatype = new SerializableDateTimeDatatype(id, prefix, String.valueOf(position), headerLevel,
                     title, datatype, defPreText, defPostText, usageNote, constraintsList,
-                    componentDatatypeMap, componentTablesMap, componentTextMap,dateValues);
+                    componentDatatypeMap, componentTablesMap, componentTextMap, showConfLength, dateValues);
             } else {
                 serializedDatatype =
                     new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,
                         title, datatype, defPreText, defPostText, usageNote, constraintsList,
-                        componentDatatypeMap, componentTablesMap, componentTextMap);
+                        componentDatatypeMap, componentTablesMap, componentTextMap, showConfLength);
             }
             return serializedDatatype;
         }

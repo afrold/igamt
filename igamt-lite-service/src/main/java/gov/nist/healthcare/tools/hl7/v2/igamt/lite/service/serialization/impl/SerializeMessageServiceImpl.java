@@ -49,7 +49,7 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
 
     private int segmentPosition = 1;
 
-    @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout) {
+    @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout, String hl7Version) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         //TODO find a better solution to create a void section
         SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+String.valueOf(message.getPosition()),"1","4","Segment definitions");
@@ -79,7 +79,8 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         if(message.getDefPostText()!=null&&!message.getDefPostText().isEmpty()){
             defPostText = serializationUtil.cleanRichtext(message.getDefPostText());
         }
-        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText);
+        Boolean showConfLength = serializationUtil.isShowConfLength(hl7Version);
+        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText, showConfLength);
         if(!messageSegments.getSerializableSectionList().isEmpty()){
             serializableMessage.addSection(messageSegments);
         }

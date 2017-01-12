@@ -88,7 +88,7 @@ import java.util.UUID;
             serializableSections.getRootSections().appendChild(textElement);
         }
         //Message Serialization
-        SerializableSection messageSection = this.serializeMessages(profile, serializationLayout);
+        SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version());
         profileSection.addSection(messageSection);
 
         //Segments serialization
@@ -181,7 +181,7 @@ import java.util.UUID;
 
 
 
-    private SerializableSection serializeMessages(Profile profile, SerializationLayout serializationLayout) {
+    private SerializableSection serializeMessages(Profile profile, SerializationLayout serializationLayout, String hl7Version) {
         String id = profile.getMessages().getId();
         String position = String.valueOf(profile.getMessages().getSectionPosition());
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
@@ -201,7 +201,7 @@ import java.util.UUID;
 
         for (Message message : profile.getMessages().getChildren()) {
             SerializableMessage serializableMessage =
-                serializeMessageService.serializeMessage(message, prefix, serializationLayout);
+                serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version);
             messageSection.addSection(serializableMessage);
         }
         return messageSection;

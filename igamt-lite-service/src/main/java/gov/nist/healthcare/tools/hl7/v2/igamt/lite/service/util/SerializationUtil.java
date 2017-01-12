@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -142,4 +139,23 @@ public class SerializationUtil {
     return sortedSet;
   }
 
+  public Boolean isShowConfLength(String hl7Version) {
+    //Check if hl7Version > 2.5.1
+    Integer[] comparisonVersion = {2,5,1};
+    String[] versionToCompare = hl7Version.split("\\.");
+    if(versionToCompare !=null&&versionToCompare.length>0) {
+      for (int i = 0; i < versionToCompare.length; i++) {
+        Integer comparisonValue = 0;
+        if (i < comparisonVersion.length) {
+          comparisonValue = comparisonVersion[i];
+        }
+        if (Integer.valueOf(versionToCompare[i]) > comparisonValue) {
+          return true;
+        } else if(Integer.valueOf(versionToCompare[i]) < comparisonValue){
+          return false;
+        }
+      }
+    }
+    return false;
+  }
 }
