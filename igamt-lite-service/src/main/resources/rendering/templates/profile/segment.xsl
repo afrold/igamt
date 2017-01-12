@@ -60,7 +60,7 @@
                         <xsl:text>10%</xsl:text>
                     </xsl:attribute>
                 </xsl:element>
-                <xsl:if test="@showConfLength='true'">
+                <xsl:if test="@ShowConfLength='true'">
                     <xsl:element name="col">
                         <xsl:attribute name="width">
                             <xsl:text>10%</xsl:text>
@@ -72,7 +72,7 @@
                         </xsl:attribute>
                     </xsl:element>
                 </xsl:if>
-                <xsl:if test="@showConfLength='false'">
+                <xsl:if test="@ShowConfLength='false'">
                     <xsl:element name="col">
                         <xsl:attribute name="width">
                             <xsl:text>40%</xsl:text>
@@ -99,7 +99,7 @@
                         <xsl:element name="th">
                             <xsl:text>Cardinality</xsl:text>
                         </xsl:element>
-                        <xsl:if test="@showConfLength='true'">
+                        <xsl:if test="@ShowConfLength='true'">
                             <xsl:element name="th">
                                 <xsl:text>Length</xsl:text>
                             </xsl:element>
@@ -117,7 +117,7 @@
                         <xsl:sort select="@Position" data-type="number"></xsl:sort>
                         <xsl:call-template name="SegmentField">
                             <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
-                            <xsl:with-param name="showConfLength" select="@showConfLength='true'"/>
+                            <xsl:with-param name="showConfLength" select="@ShowConfLength='true'"/>
                         </xsl:call-template>
                     </xsl:for-each>
                 </xsl:element>
