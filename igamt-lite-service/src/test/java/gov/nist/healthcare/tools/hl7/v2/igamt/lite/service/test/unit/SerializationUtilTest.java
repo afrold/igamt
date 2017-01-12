@@ -42,7 +42,7 @@ public class SerializationUtilTest {
         assertFalse(serializationUtil.isShowConfLength("0.1"));
         assertFalse(serializationUtil.isShowConfLength("0.1.0"));
         assertFalse(serializationUtil.isShowConfLength("0.1.9"));
-        assertTrue(serializationUtil.isShowConfLength("2.5.1"));
-        assertTrue(serializationUtil.isShowConfLength("2.5.1.0"));
+        assertFalse(serializationUtil.isShowConfLength("2.5.1"));
+        assertFalse(serializationUtil.isShowConfLength("2.5.1.0"));
     }
 }
