@@ -3,7 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatypeDtm;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDateTimeDatatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
@@ -98,7 +98,7 @@ public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
             SerializableDatatype serializedDatatype = null;
             if(datatype.getName().equals("DTM")){
                 Map<String,String> dateValues = getDtmDateValues(datatype.getPrecisionOfDTM(),datatype.isTimeZoneOfDTM());
-                serializedDatatype = new SerializableDatatypeDtm(id, prefix, String.valueOf(position), headerLevel,
+                serializedDatatype = new SerializableDateTimeDatatype(id, prefix, String.valueOf(position), headerLevel,
                     title, datatype, defPreText, defPostText, usageNote, constraintsList,
                     componentDatatypeMap, componentTablesMap, componentTextMap,dateValues);
             } else {

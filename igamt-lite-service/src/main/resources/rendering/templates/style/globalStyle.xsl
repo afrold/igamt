@@ -9,6 +9,7 @@
         <xsl:text>.constraintTr { background-color:#E8E8E8; text-decoration:normal; }</xsl:text>
         <xsl:text>.metadata { text-align:center; }</xsl:text>
         <xsl:text>.contentTable td, .contentTable th {border: 1px solid black;}</xsl:text>
+        <xsl:text>.requiredDTM{background-color:#6495ed!important;}</xsl:text>
     </xsl:template>
 
 </xsl:stylesheet>

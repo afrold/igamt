@@ -22,14 +22,16 @@ import java.util.Map;
  * <p/>
  * Created by Maxence Lefort on 1/12/17.
  */
-public class SerializableDatatypeDtm extends SerializableDatatype {
+public class SerializableDateTimeDatatype extends SerializableDatatype {
 
     private Map<String,String> dateValues;
 
-    public SerializableDatatypeDtm(String id, String prefix, String position, String headerLevel,
-        String title, Datatype datatype, String defPreText, String defPostText, String usageNote,
-        List<SerializableConstraint> constraints, Map<Component, Datatype> componentDatatypeMap,
-        Map<Component, List<Table>> componentTableMap, Map<Component, String> componentTextMap,Map<String,String> dateValues) {
+    public SerializableDateTimeDatatype(String id, String prefix, String position,
+        String headerLevel, String title, Datatype datatype, String defPreText, String defPostText,
+        String usageNote, List<SerializableConstraint> constraints,
+        Map<Component, Datatype> componentDatatypeMap,
+        Map<Component, List<Table>> componentTableMap, Map<Component, String> componentTextMap,
+        Map<String, String> dateValues) {
         super(id, prefix, position, headerLevel, title, datatype, defPreText, defPostText,
             usageNote, constraints, componentDatatypeMap, componentTableMap, componentTextMap);
         this.dateValues = dateValues;
@@ -38,12 +40,12 @@ public class SerializableDatatypeDtm extends SerializableDatatype {
     @Override
     public Element serializeElement() {
         Element element = super.serializeElement();
-        Element dtmElement = new Element("dtmValues");
+        Element dtmElement = new Element("DateTimeDatatype");
         for(String dateElement : dateValues.keySet()){
             Attribute dateValue = new Attribute(dateElement,dateValues.get(dateElement));
             dtmElement.addAttribute(dateValue);
         }
-        element.appendChild(dtmElement);
+        element.getFirstChildElement("Datatype").appendChild(dtmElement);
         return element;
     }
 }
