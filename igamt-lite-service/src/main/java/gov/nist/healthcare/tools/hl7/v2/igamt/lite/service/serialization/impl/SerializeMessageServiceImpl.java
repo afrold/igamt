@@ -49,10 +49,29 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
 
     private int segmentPosition = 1;
 
-    @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout) {
+    @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout, String hl7Version) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
-        //TODO find a better solution to create a void section
-        SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+String.valueOf(message.getPosition()),"1","4","Segment definitions");
+        String type = "ConformanceStatement";
+        SerializableConstraints serializableConformanceStatements = serializeConstraints(message.getConformanceStatements(),message,type);
+        type = "ConditionPredicate";
+        SerializableConstraints serializablePredicates = serializeConstraints(message.getPredicates(),message,type);
+        int segmentSectionPosition = 1;
+        String usageNote, defPreText, defPostText;
+        usageNote = defPreText = defPostText = "";
+        if(message.getUsageNote()!=null&&!message.getUsageNote().isEmpty()){
+            usageNote = serializationUtil.cleanRichtext(message.getUsageNote());
+            segmentSectionPosition++;
+        }
+        if(message.getDefPreText()!=null&&!message.getDefPreText().isEmpty()){
+            defPreText = serializationUtil.cleanRichtext(message.getDefPreText());
+            segmentSectionPosition++;
+        }
+        if(message.getDefPostText()!=null&&!message.getDefPostText().isEmpty()){
+            defPostText = serializationUtil.cleanRichtext(message.getDefPostText());
+        }
+        Boolean showConfLength = serializationUtil.isShowConfLength(hl7Version);
+        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText, showConfLength);
+        SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+"."+String.valueOf(message.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
         this.messageSegmentsNameList = new ArrayList<>();
         this.segmentPosition = 1;
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
@@ -60,26 +79,9 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             if(serializationLayout.equals(SerializationLayout.VERBOSE)){
                 serializeSegment(segmentRefOrGroup,
-                    prefix + "." + String.valueOf(message.getPosition()) + ".", messageSegments);
+                    messageSegments.getPrefix() + ".", messageSegments);
             }
         }
-        String type = "ConformanceStatement";
-        SerializableConstraints serializableConformanceStatements = serializeConstraints(message.getConformanceStatements(),message,type);
-        type = "ConditionPredicate";
-        SerializableConstraints serializablePredicates = serializeConstraints(message.getPredicates(),message,type);
-
-        String usageNote, defPreText, defPostText;
-        usageNote = defPreText = defPostText = "";
-        if(message.getUsageNote()!=null&&!message.getUsageNote().isEmpty()){
-            usageNote = serializationUtil.cleanRichtext(message.getUsageNote());
-        }
-        if(message.getDefPreText()!=null&&!message.getDefPreText().isEmpty()){
-            defPreText = serializationUtil.cleanRichtext(message.getDefPreText());
-        }
-        if(message.getDefPostText()!=null&&!message.getDefPostText().isEmpty()){
-            defPostText = serializationUtil.cleanRichtext(message.getDefPostText());
-        }
-        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText);
         if(!messageSegments.getSerializableSectionList().isEmpty()){
             serializableMessage.addSection(messageSegments);
         }

@@ -30,10 +30,10 @@ public class SerializableDateTimeDatatype extends SerializableDatatype {
         String headerLevel, String title, Datatype datatype, String defPreText, String defPostText,
         String usageNote, List<SerializableConstraint> constraints,
         Map<Component, Datatype> componentDatatypeMap,
-        Map<Component, List<Table>> componentTableMap, Map<Component, String> componentTextMap,
+        Map<Component, List<Table>> componentTableMap, Map<Component, String> componentTextMap, Boolean showConfLength,
         Map<String, String> dateValues) {
         super(id, prefix, position, headerLevel, title, datatype, defPreText, defPostText,
-            usageNote, constraints, componentDatatypeMap, componentTableMap, componentTextMap);
+            usageNote, constraints, componentDatatypeMap, componentTableMap, componentTextMap,showConfLength);
         this.dateValues = dateValues;
     }
 
