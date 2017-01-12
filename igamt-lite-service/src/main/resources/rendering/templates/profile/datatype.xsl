@@ -126,7 +126,7 @@
                             <xsl:call-template name="component">
                                 <xsl:with-param name="style"
                                                 select="'background-color:white;text-decoration:normal'"/>
-                                <xsl:with-param name="showConfLength" select="@ShowConfLength"/>
+                                <xsl:with-param name="showConfLength" select="../@ShowConfLength"/>
                             </xsl:call-template>
                         </xsl:for-each>
                     </xsl:element>

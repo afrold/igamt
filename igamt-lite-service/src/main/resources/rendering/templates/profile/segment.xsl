@@ -117,7 +117,7 @@
                         <xsl:sort select="@Position" data-type="number"></xsl:sort>
                         <xsl:call-template name="SegmentField">
                             <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
-                            <xsl:with-param name="showConfLength" select="@ShowConfLength='true'"/>
+                            <xsl:with-param name="showConfLength" select="../@ShowConfLength"/>
                         </xsl:call-template>
                     </xsl:for-each>
                 </xsl:element>
