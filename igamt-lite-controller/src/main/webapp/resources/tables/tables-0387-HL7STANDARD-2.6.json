@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550ac2d",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0387",
+  "name" : "0387",
+  "description" : "Command response",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.387",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ac2e",
+    "value" : "ER",
+    "label" : "Command cannot be completed because of error condition",
+    "codeSystem" : "HL70387",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ac2f",
+    "value" : "OK",
+    "label" : "Command completed successfully",
+    "codeSystem" : "HL70387",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ac30",
+    "value" : "ST",
+    "label" : "Command cannot be completed because of the status of the requested equipment",
+    "codeSystem" : "HL70387",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ac31",
+    "value" : "TI",
+    "label" : "Command cannot be completed within requested completion time",
+    "codeSystem" : "HL70387",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ac32",
+    "value" : "UN",
+    "label" : "Command cannot be completed for unknown reasons",
+    "codeSystem" : "HL70387",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

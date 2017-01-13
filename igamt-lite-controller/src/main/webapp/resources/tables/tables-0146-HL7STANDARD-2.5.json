@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd4408d7",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0146",
+  "name" : "0146",
+  "description" : "Amount type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.146",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408d8",
+    "value" : "DF",
+    "label" : "Differential",
+    "codeSystem" : "HL70146",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408d9",
+    "value" : "LM",
+    "label" : "Limit",
+    "codeSystem" : "HL70146",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408da",
+    "value" : "PC",
+    "label" : "Percentage",
+    "codeSystem" : "HL70146",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408db",
+    "value" : "RT",
+    "label" : "Rate",
+    "codeSystem" : "HL70146",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408dc",
+    "value" : "UL",
+    "label" : "Unlimited",
+    "codeSystem" : "HL70146",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

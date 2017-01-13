@@ -1,0 +1,30 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd448352",
+  "hl7Version" : "2.1",
+  "libIds" : [ "573dd23bd4c6ca828c297296" ],
+  "bindingIdentifier" : "0061",
+  "name" : "0061",
+  "description" : "CHECK DIGIT SCHEME",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448353",
+    "value" : "M11",
+    "label" : "Mod 11 check digit scheme",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

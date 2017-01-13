@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65507bc4",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0904",
+  "name" : "0904",
+  "description" : "Security Check Scheme",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bc5",
+    "value" : "BCV",
+    "label" : "Bank Card Validation Number",
+    "codeSystem" : "HL70904",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bc6",
+    "value" : "CCS",
+    "label" : "Credit Card Security code",
+    "codeSystem" : "HL70904",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bc7",
+    "value" : "VID",
+    "label" : "Version ID",
+    "codeSystem" : "HL70904",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

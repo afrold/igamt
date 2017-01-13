@@ -20,7 +20,8 @@ import java.text.SimpleDateFormat;
 public class Constant {
 
   private Constant() {}
-
+  public final static String ProfileComponent = "profilecomponent";
+  public final static String ProfileComponentLibrary = "profilecomponentlibrary";  
   public final static String SEGMENTS = "segments";
   public final static String SEGMENTLIBRARY = "segmentlibrary";
   public final static String SEGMENT = "segment";
@@ -30,9 +31,11 @@ public class Constant {
   public final static String SUBCOMPONENT = "subcomponent";
   public final static String GROUP = "group";
   public final static String MESSAGE = "message";
+  public final static String COMPOSITEMESSAGE = "compositemessage";
   public final static String DATATYPES = "datatypes";
   public final static String DATATYPELIBRARY = "datatypelibrary";
   public final static String DATATYPE = "datatype";
+  public final static String SEGMENTORGROUP="segmentorgroup";
   public final static String PROFILE = "profile";
   public final static String TABLELIBRARY = "tablelibrary";
   public final static String TABLES = "tables";

@@ -30,3 +30,13 @@ igamt-lite-service/DTL_*.xml
 igamt-lite-service/DTL_*.html
 igamt-lite-service/DTL_*.docx
 data/db/
+igamt-lite-acmgt/bin
+igamt-lite-resource/bin
+plugins.0500cd7b.js
+scripts.7e4951a9.js
+datatypeLibrary.html
+editDatatypeInLibrary.html
+index-1.html
+*webapp/*
+*webapp/* >> .gitignorewebapp/WEB-INF/web.xml
+*webapp/WEB-INF/web.xml

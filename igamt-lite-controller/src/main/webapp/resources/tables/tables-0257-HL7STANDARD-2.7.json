@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655074a1",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0257",
+  "name" : "0257",
+  "description" : "Nature of Challenge",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074a2",
+    "value" : "CFST",
+    "label" : "Fasting (no calorie intake) for the period specified in the time component of the term, e.g., 1H POST CFST",
+    "codeSystem" : "HL70257",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074a3",
+    "value" : "EXCZ",
+    "label" : "Exercise undertaken as challenge (can be quantified)",
+    "codeSystem" : "HL70257",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074a4",
+    "value" : "FFST",
+    "label" : "No fluid intake for the period specified in the time component of the term",
+    "codeSystem" : "HL70257",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

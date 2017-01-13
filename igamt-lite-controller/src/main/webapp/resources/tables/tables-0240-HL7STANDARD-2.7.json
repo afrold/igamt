@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65508444",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0240",
+  "name" : "0240",
+  "description" : "Event Consequence",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508445",
+    "value" : "C",
+    "label" : "Congenital anomaly/birth defect",
+    "codeSystem" : "HL70240",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508446",
+    "value" : "D",
+    "label" : "Death",
+    "codeSystem" : "HL70240",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508447",
+    "value" : "H",
+    "label" : "Caused hospitalized",
+    "codeSystem" : "HL70240",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508448",
+    "value" : "I",
+    "label" : "Incapacity which is significant, persistent or permanent",
+    "codeSystem" : "HL70240",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508449",
+    "value" : "J",
+    "label" : "Disability which is significant, persistent or permanent",
+    "codeSystem" : "HL70240",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550844a",
+    "value" : "L",
+    "label" : "Life threatening",
+    "codeSystem" : "HL70240",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550844b",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70240",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550844c",
+    "value" : "P",
+    "label" : "Prolonged hospitalization",
+    "codeSystem" : "HL70240",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550844d",
+    "value" : "R",
+    "label" : "Required intervention to prevent permanent impairment/damage",
+    "codeSystem" : "HL70240",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

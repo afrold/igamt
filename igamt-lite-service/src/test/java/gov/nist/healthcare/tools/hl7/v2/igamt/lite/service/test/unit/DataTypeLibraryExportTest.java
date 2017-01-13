@@ -1,12 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
-import org.apache.commons.io.IOUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -15,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -38,24 +36,37 @@ public class DataTypeLibraryExportTest  {
     Logger logger = LoggerFactory.getLogger(DataTypeLibraryExportTest.class);
 
     @Autowired
-    IGDocumentSerialization igDocumentSerialization;
-
-    @Autowired
     DatatypeLibraryDocumentService datatypeLibraryDocumentService;
 
-    @Autowired
-    IGDocumentExportService igDocumentExportService;
+    @Autowired ExportService exportService;
 
     @Test
-    public void testXMLExport(){
-        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57dbf3a6d4c6e51ff8736886");
-        String xml = igDocumentSerialization.serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument);
-        logger.info("Generated XML: "+xml);
+    public void testHtmlExport(){
+        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57b758a884aebc6c9d582cd3");
         try {
-            xml = IOUtils.toString(igDocumentExportService.exportAsXmlDatatypeLibraryDocument(datatypeLibraryDocument));
-            logger.info("Generated XML (InputStream): "+xml);
-            String html = IOUtils.toString(igDocumentExportService.exportAsHtmlDatatypeLibraryDocument(datatypeLibraryDocument));
-            logger.info("Generated HTML: "+html);
+            //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
+            File htmlFile = new File("test/dl_test.html");
+            if(htmlFile.exists()){
+                htmlFile.delete();
+            }
+            if(htmlFile.createNewFile()) {
+                FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsHtml(datatypeLibraryDocument), htmlFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testDocxExport(){
+        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57b758a884aebc6c9d582cd3");
+        try {
+            File wordFile = new File("test/dl_test.docx");
+            if(wordFile.exists()){
+                wordFile.delete();
+            }
+            if(wordFile.createNewFile()) {
+                FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsDocx(datatypeLibraryDocument), wordFile);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

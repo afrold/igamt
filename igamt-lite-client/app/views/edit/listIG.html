@@ -51,7 +51,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="row in tmpIgs track by row.id | orderBy:'metaData.date'" ng-class="{'current': igdocument != null && row.id === igdocument.id}">
+					<tr ng-repeat="row in tmpIgs | orderBy:'metaData.dateUpdated'" ng-class="{'current': igdocument != null && row.id === igdocument.id}">
 						<td st-ratio="5">{{$index + 1}}</td>
 						<td st-ratio="40"> {{row.metaData.title}} </td>
 						<td st-ratio="10" st-sort="cp"><span style="margin-left:5px ;    color: white !important;" class="badge" ns-popover ns-popover-template="templateRow.html" ns-popover-theme="ns-popover-custom-theme" ns-popover-trigger="mouseover" ns-popover-placement="right|top" ns-popover-timeout="0">{{row.profile.messages.children.length}} </span></td>

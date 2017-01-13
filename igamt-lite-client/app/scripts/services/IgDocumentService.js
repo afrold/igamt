@@ -38,9 +38,30 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
             blockUI.stop();
         },
 
-        addMessage: function(igId, child) {
+        exportAsWithLayout: function(igDocument, format, layout) {
+            blockUI.start();
+            var form = document.createElement("form");
+            form.action = $rootScope.api('api/igdocuments/' + igDocument.id + '/export/' + format + '/' +layout);
+            form.method = "POST";
+            form.target = "_blank";
+            var layoutParameter = document.createElement("input");
+            layoutParameter.type = "text";
+            layoutParameter.name = "layout";
+            layoutParameter.value = layout;
+            form.appendChild(layoutParameter);
+            var csrfInput = document.createElement("input");
+            csrfInput.name = "X-XSRF-TOKEN";
+            csrfInput.value = $cookies['XSRF-TOKEN'];
+            form.appendChild(csrfInput);
+            form.style.display = 'none';
+            document.body.appendChild(form);
+            form.submit();
+            blockUI.stop();
+        },
+
+       copyMessage: function(igId, childId) {
             var delay = $q.defer();
-            $http.post('api/igdocuments/' + igId + '/addMessage', child).then(function(response) {
+            $http.post('api/igdocuments/' + igId + '/copyMessage', childId).then(function(response) {
                 var link = angular.fromJson(response.data);
                 delay.resolve(link);
             }, function(error) {
@@ -119,31 +140,42 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
 
             return delay.promise;
         },
-        share:function(igDocId,shareParticipantIds){
+        share: function(igDocId, shareParticipantIds) {
             var delay = $q.defer();
-            $http.post('api/igdocuments/' + igDocId + '/share', shareParticipantIds).then(function (response) {
+            $http.post('api/igdocuments/' + igDocId + '/share', shareParticipantIds).then(function(response) {
                 delay.resolve(response.data);
-            }, function (error) {
+            }, function(error) {
                 delay.reject(error);
             });
             return delay.promise;
         },
-        unshare: function(igDocId, participantId){
+        unshare: function(igDocId, participantId) {
             var delay = $q.defer();
-            $http.post('api/igdocuments/' + igDocId + '/unshare', participantId).then(function (response) {
+            $http.post('api/igdocuments/' + igDocId + '/unshare', participantId).then(function(response) {
                 delay.resolve(response.data);
-             }, function (error) {
+            }, function(error) {
                 delay.reject(error);
             });
             return delay.promise;
         },
-        updateDate: function(igdocument){
+        saveProfileComponent: function(id, pc) {
             var delay = $q.defer();
-            $http.post('api/igdocuments/' + igdocument.id + '/updateDate').then(function (response) {
-               var resu =  response.data;
-               igdocument.dateUpdated = resu;
-               delay.resolve(resu);
-            }, function (error) {
+            $http.post('api/igdocuments/' + id + '/profile/profilecomponent/save', pc).then(function(response) {
+                var saveResponse = angular.fromJson(response.data);
+                delay.resolve(saveResponse);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+
+        },
+        updateDate: function(igdocument) {
+            var delay = $q.defer();
+            $http.post('api/igdocuments/' + igdocument.id + '/updateDate').then(function(response) {
+                var resu = response.data;
+                igdocument.dateUpdated = resu;
+                delay.resolve(resu);
+            }, function(error) {
                 delay.reject(error);
             });
             return delay.promise;

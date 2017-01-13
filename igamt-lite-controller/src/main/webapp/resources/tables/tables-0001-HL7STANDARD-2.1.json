@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd448296",
+  "hl7Version" : "2.1",
+  "libIds" : [ "573dd23bd4c6ca828c297296" ],
+  "bindingIdentifier" : "0001",
+  "name" : "0001",
+  "description" : "SEX",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448297",
+    "value" : "F",
+    "label" : "Female",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448298",
+    "value" : "M",
+    "label" : "Male",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448299",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44829a",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

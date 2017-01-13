@@ -1,0 +1,66 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550af45",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0061",
+  "name" : "0061",
+  "description" : "Check digit scheme",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.61",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af46",
+    "value" : "BCV",
+    "label" : "Bank Card Validation Number",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af47",
+    "value" : "ISO",
+    "label" : "ISO 7064: 1983",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af48",
+    "value" : "M10",
+    "label" : "Mod 10 algorithm",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af49",
+    "value" : "M11",
+    "label" : "Mod 11 algorithm",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af4a",
+    "value" : "NPI",
+    "label" : "Check digit algorithm in the US National Provider Identifier",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

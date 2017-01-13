@@ -1,0 +1,446 @@
+{
+  "type" : "datatypes",
+  "sectionPosition" : 2,
+  "sectionTitle" : "Datatypes",
+  "sectionDescription" : null,
+  "sectionContents" : null,
+  "id" : "573dd23bd4c6ca828c2970f4",
+  "accountId" : null,
+  "ext" : null,
+  "metaData" : {
+    "name" : "HL7 Standard 2.2",
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.2",
+    "date" : "May 19, 2016",
+    "ext" : null,
+    "datatypeLibId" : "39e8b87d-d715-4575-9f94-c04940aee971"
+  },
+  "scope" : "HL7STANDARD",
+  "children" : [ {
+    "id" : "565f3ab7d4c6e52cfd4480f3",
+    "name" : "CE",
+    "ext" : "",
+    "label" : "CE_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480f2",
+    "name" : "ST",
+    "ext" : "",
+    "label" : "ST_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480f1",
+    "name" : "CM_PCF",
+    "ext" : "",
+    "label" : "CM_PCF_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480f0",
+    "name" : "CM_UNDEFINED",
+    "ext" : "",
+    "label" : "CM_UNDEFINED_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480f7",
+    "name" : "CK",
+    "ext" : "",
+    "label" : "CK_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480f6",
+    "name" : "CM_VR",
+    "ext" : "",
+    "label" : "CM_VR_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480f5",
+    "name" : "CM_RANGE",
+    "ext" : "",
+    "label" : "CM_RANGE_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480f4",
+    "name" : "CF",
+    "ext" : "",
+    "label" : "CF_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480df",
+    "name" : "NM",
+    "ext" : "",
+    "label" : "NM_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480da",
+    "name" : "CQ_QUANTITY",
+    "ext" : "",
+    "label" : "CQ_QUANTITY_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480de",
+    "name" : "CM_NDL",
+    "ext" : "",
+    "label" : "CM_NDL_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480dd",
+    "name" : "RP",
+    "ext" : "",
+    "label" : "RP_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480dc",
+    "name" : "CM_LA1",
+    "ext" : "",
+    "label" : "CM_LA1_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480db",
+    "name" : "varies",
+    "ext" : "",
+    "label" : "varies_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44810c",
+    "name" : "TS",
+    "ext" : "",
+    "label" : "TS_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480e9",
+    "name" : "CM_DTN",
+    "ext" : "",
+    "label" : "CM_DTN_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480e8",
+    "name" : "CM_UVC",
+    "ext" : "",
+    "label" : "CM_UVC_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44810b",
+    "name" : "CQ_COMP_QUANT",
+    "ext" : "",
+    "label" : "CQ_COMP_QUANT_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44810a",
+    "name" : "CM_SPS",
+    "ext" : "",
+    "label" : "CM_SPS_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480e7",
+    "name" : "CM_POSITION",
+    "ext" : "",
+    "label" : "CM_POSITION_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480c0",
+    "name" : "DT",
+    "ext" : "",
+    "label" : "DT_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480c4",
+    "name" : "CM_PEN",
+    "ext" : "",
+    "label" : "CM_PEN_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480c3",
+    "name" : "CM_ELD",
+    "ext" : "",
+    "label" : "CM_ELD_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480c2",
+    "name" : "CE_0129",
+    "ext" : "",
+    "label" : "CE_0129_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480c1",
+    "name" : "CE_0049",
+    "ext" : "",
+    "label" : "CE_0049_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480eb",
+    "name" : "COMP_ID_NAME",
+    "ext" : "",
+    "label" : "COMP_ID_NAME_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480ea",
+    "name" : "CM_INTERNAL_LOCATION",
+    "ext" : "",
+    "label" : "CM_INTERNAL_LOCATION_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480ef",
+    "name" : "CM_DLD",
+    "ext" : "",
+    "label" : "CM_DLD_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480ee",
+    "name" : "SI",
+    "ext" : "",
+    "label" : "SI_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480ed",
+    "name" : "CM_PTA",
+    "ext" : "",
+    "label" : "CM_PTA_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480ec",
+    "name" : "CK_ACCOUNT_NO",
+    "ext" : "",
+    "label" : "CK_ACCOUNT_NO_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480f9",
+    "name" : "CE_0160",
+    "ext" : "",
+    "label" : "CE_0160_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480f8",
+    "name" : "CM_BATCH_TOTAL",
+    "ext" : "",
+    "label" : "CM_BATCH_TOTAL_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480b9",
+    "name" : "CM_ABS_RANGE",
+    "ext" : "",
+    "label" : "CM_ABS_RANGE_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480b8",
+    "name" : "COMP_ID_DIGIT",
+    "ext" : "",
+    "label" : "COMP_ID_DIGIT_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480d1",
+    "name" : "CM_DIN",
+    "ext" : "",
+    "label" : "CM_DIN_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480d0",
+    "name" : "CM_FINANCE",
+    "ext" : "",
+    "label" : "CM_FINANCE_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448109",
+    "name" : "PN",
+    "ext" : "",
+    "label" : "PN_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480d5",
+    "name" : "CE_0066",
+    "ext" : "",
+    "label" : "CE_0066_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480d4",
+    "name" : "CE_0184",
+    "ext" : "",
+    "label" : "CE_0184_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480d3",
+    "name" : "CE_0063",
+    "ext" : "",
+    "label" : "CE_0063_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480d2",
+    "name" : "CM_OSP",
+    "ext" : "",
+    "label" : "CM_OSP_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448104",
+    "name" : "CM_RI",
+    "ext" : "",
+    "label" : "CM_RI_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480bf",
+    "name" : "CE_0175",
+    "ext" : "",
+    "label" : "CE_0175_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448103",
+    "name" : "CM_RFR",
+    "ext" : "",
+    "label" : "CM_RFR_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448102",
+    "name" : "CE_0118",
+    "ext" : "",
+    "label" : "CE_0118_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480be",
+    "name" : "CE_0131",
+    "ext" : "",
+    "label" : "CE_0131_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480bd",
+    "name" : "CM_SPD",
+    "ext" : "",
+    "label" : "CM_SPD_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448101",
+    "name" : "CM_JOB_CODE",
+    "ext" : "",
+    "label" : "CM_JOB_CODE_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448108",
+    "name" : "TQ",
+    "ext" : "",
+    "label" : "TQ_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448107",
+    "name" : "CM_AUI",
+    "ext" : "",
+    "label" : "CM_AUI_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448106",
+    "name" : "TN",
+    "ext" : "",
+    "label" : "TN_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448105",
+    "name" : "TM",
+    "ext" : "",
+    "label" : "TM_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480fc",
+    "name" : "CM_EIP",
+    "ext" : "",
+    "label" : "CM_EIP_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480fb",
+    "name" : "CE_0163",
+    "ext" : "",
+    "label" : "CE_0163_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480fa",
+    "name" : "CM_PAT_ID_0192",
+    "ext" : "",
+    "label" : "CM_PAT_ID_0192_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448100",
+    "name" : "CM_PRACTITIONER",
+    "ext" : "",
+    "label" : "CM_PRACTITIONER_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480bc",
+    "name" : "CE_0132",
+    "ext" : "",
+    "label" : "CE_0132_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480bb",
+    "name" : "CE_0051",
+    "ext" : "",
+    "label" : "CE_0051_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480ff",
+    "name" : "CE_0164",
+    "ext" : "",
+    "label" : "CE_0164_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480ba",
+    "name" : "TX",
+    "ext" : "",
+    "label" : "TX_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480fe",
+    "name" : "CE_0165",
+    "ext" : "",
+    "label" : "CE_0165_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480fd",
+    "name" : "CE_0162",
+    "ext" : "",
+    "label" : "CE_0162_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480c8",
+    "name" : "CK_PAT_ID",
+    "ext" : "",
+    "label" : "CK_PAT_ID_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480c7",
+    "name" : "CM_PIP",
+    "ext" : "",
+    "label" : "CM_PIP_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480c6",
+    "name" : "ID",
+    "ext" : "",
+    "label" : "ID_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480c5",
+    "name" : "CM_GROUP_ID",
+    "ext" : "",
+    "label" : "CM_GROUP_ID_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480c9",
+    "name" : "CM_PAT_ID",
+    "ext" : "",
+    "label" : "CM_PAT_ID_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480e2",
+    "name" : "CM_PLN",
+    "ext" : "",
+    "label" : "CM_PLN_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480e1",
+    "name" : "CN_PERSON",
+    "ext" : "",
+    "label" : "CN_PERSON_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480e0",
+    "name" : "CN_PHYSICIAN",
+    "ext" : "",
+    "label" : "CN_PHYSICIAN_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480e6",
+    "name" : "FT",
+    "ext" : "",
+    "label" : "FT_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480e5",
+    "name" : "CM_FILLER",
+    "ext" : "",
+    "label" : "CM_FILLER_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480e4",
+    "name" : "CM_DLT",
+    "ext" : "",
+    "label" : "CM_DLT_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480e3",
+    "name" : "CM_DDI",
+    "ext" : "",
+    "label" : "CM_DDI_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480cf",
+    "name" : "CM_LICENSE_NO",
+    "ext" : "",
+    "label" : "CM_LICENSE_NO_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480ce",
+    "name" : "CE_0181",
+    "ext" : "",
+    "label" : "CE_0181_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480cd",
+    "name" : "CM_OCD",
+    "ext" : "",
+    "label" : "CM_OCD_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480cc",
+    "name" : "CM_PLACER",
+    "ext" : "",
+    "label" : "CM_PLACER_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480cb",
+    "name" : "AD",
+    "ext" : "",
+    "label" : "AD_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480ca",
+    "name" : "MO",
+    "ext" : "",
+    "label" : "MO_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480d9",
+    "name" : "CM_MSG",
+    "ext" : "",
+    "label" : "CM_MSG_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480d8",
+    "name" : "CM_MOC",
+    "ext" : "",
+    "label" : "CM_MOC_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480d7",
+    "name" : "CM_CCD",
+    "ext" : "",
+    "label" : "CM_CCD_"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4480d6",
+    "name" : "CM_RMC",
+    "ext" : "",
+    "label" : "CM_RMC_"
+  } ]
+}

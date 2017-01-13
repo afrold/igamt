@@ -9,6 +9,8 @@ public class MetaData implements java.io.Serializable, Cloneable {
   public MetaData() {
     super();
   }
+ 
+  private String coverPicture;
 
   private String name;
 
@@ -67,12 +69,12 @@ private String ext;
     this.hl7Version = hl7Version;
   }
   
-  @Deprecated 
+
   public String getDate() {
     return date;
   }
 
-  @Deprecated 
+
   public void setDate(String date) {
     this.date = date;
   }
@@ -84,7 +86,13 @@ private String ext;
   public void setExt(String ext) {
     this.ext = ext;
   }
+  public String getCoverPicture() {
+	return coverPicture;
+  }
 
+  public void setCoverPicture(String coverPicture) {
+	this.coverPicture = coverPicture;
+  }
  
 
 @Override

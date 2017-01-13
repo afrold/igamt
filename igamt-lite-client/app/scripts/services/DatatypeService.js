@@ -51,7 +51,8 @@ angular.module('igl').factory('DatatypeService',
                 return template;
             },
             getTemplate: function(node, root) {
-                if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === 'MASTER' || root.scope === null) {
+                var userAccountId = userInfoService.getAccountID().toString();
+                if (ViewSettings.tableReadonly || root != null && (root.status === 'PUBLISHED')|| root.scope === null) {
                     return DatatypeService.getReadTemplate(node, root);
                 } else {
                     //console.log("INTO THE NODES ")
@@ -152,6 +153,20 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
+            publish: function(datatype) {
+            	console.log(datatype);
+                var delay = $q.defer();
+                datatype.accountId = userInfoService.getAccountID();
+                $http.post('api/datatypes/publish', datatype).then(function(response) {
+                    var saveResponse = angular.fromJson(response.data);
+
+                    delay.resolve(saveResponse);
+                }, function(error) {
+                    //console.log("DatatypeService.save error=" + error);
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
             saves: function(datatypes) {
                 var delay = $q.defer();
                 for (var i = 0; i < datatypes.length; i++) {
@@ -242,6 +257,22 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
+
+            getLastMaster: function(name, version) {
+                var wrapper = {
+                    name: name,
+                    version: version,
+                }
+                var delay = $q.defer();
+                $http.post('api/datatypes/getLastMaster', angular.toJson(wrapper)).then(function(response) {
+                    console.log(response);
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
             getPublishedMaster: function(hl7Version) {
                 var delay = $q.defer();
 
@@ -318,13 +349,16 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
 
-
             saveNewElements: function() {
+              saveNewElements(false);
+            },
+
+            saveNewElements: function(silent) {
                 var delay = $q.defer();
                 var datatypeLinks = ElementUtils.getNewDatatypeLinks();
-                if (datatypeLinks.length > 0) {
-                    DatatypeLibrarySvc.addChildren($rootScope.igdocument.profile.datatypeLibrary.id, datatypeLinks).then(function() {
-                        $rootScope.igdocument.profile.datatypeLibrary.children = $rootScope.igdocument.profile.datatypeLibrary.children.concat(datatypeLinks);
+                if (datatypeLinks&&datatypeLinks.length > 0) {
+                    DatatypeLibrarySvc.addChildren($rootScope.datatypeLibrary.id, datatypeLinks).then(function() {
+                        $rootScope.igdocument.profile.datatypeLibrary.children = $rootScope.datatypeLibrary.children.concat(datatypeLinks);
                         _.each($rootScope.addedDatatypes, function(datatype) {
                             if (ElementUtils.indexIn(datatype.id, $rootScope.datatypes) < 0) {
                                 $rootScope.datatypes.push(datatype);
@@ -332,27 +366,39 @@ angular.module('igl').factory('DatatypeService',
                         });
                         var tableLinks = ElementUtils.getNewTableLinks();
                         if (tableLinks.length > 0) {
-                            TableLibrarySvc.addChildren($rootScope.igdocument.profile.tableLibrary.id, tableLinks).then(function() {
-                                $rootScope.igdocument.profile.tableLibrary.children = $rootScope.igdocument.profile.tableLibrary.children.concat(tableLinks);
+                            TableLibrarySvc.addChildren($rootScope.tableLibrary.id, tableLinks).then(function() {
+                                $rootScope.tableLibrary.children = $rootScope.tableLibrary.children.concat(tableLinks);
                                 _.each($rootScope.addedTables, function(table) {
                                     if (ElementUtils.indexIn(table.id, $rootScope.tables) < 0) {
                                         $rootScope.tables.push(table);
                                     }
                                 });
-                                DatatypeService.completeSave();
+                                if(silent) {
+                                  DatatypeService.completeSaveSilent();
+                                } else {
+                                  DatatypeService.completeSave();
+                                }
                                 delay.resolve(true);
                             }, function(error) {
                                 delay.reject(error);
                             });
                         } else {
-                            DatatypeService.completeSave();
+                            if(silent) {
+                              DatatypeService.completeSaveSilent();
+                            } else {
+                              DatatypeService.completeSave();
+                            }
                             delay.resolve(true);
                         }
                     }, function(error) {
                         delay.reject(error);
                     });
                 } else {
-                    DatatypeService.completeSave();
+                    if(silent) {
+                      DatatypeService.completeSaveSilent();
+                    } else {
+                      DatatypeService.completeSave();
+                    }
                     delay.resolve(true);
                 }
                 return delay.promise;
@@ -365,6 +411,12 @@ angular.module('igl').factory('DatatypeService',
                 $rootScope.msg().text = "datatypeSaved";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
+            },
+
+            completeSaveSilent: function() {
+              $rootScope.addedDatatypes = [];
+              $rootScope.addedTables = [];
+              $rootScope.clearChanges();
             },
 
             reset: function() {
@@ -408,6 +460,42 @@ angular.module('igl').factory('DatatypeService',
                 $http.post('api/datatypes/updateDatatypeBinding/', datatypeUpdateParameterList).then(function(response) {
                     delay.resolve(true);
                 }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            share:function(datatypeId,shareParticipantIds, accountId){
+                var delay = $q.defer();
+                $http.post('api/datatypes/' + datatypeId + '/share', {'accountId': accountId, 'participantsList': shareParticipantIds}).then(function (response) {
+                    delay.resolve(response.data);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            unshare: function(datatypeId, participantId){
+                var delay = $q.defer();
+                $http.post('api/datatypes/' + datatypeId + '/unshare', participantId).then(function (response) {
+                    delay.resolve(response.data);
+                 }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            getSharedDatatypes: function(){
+                var delay = $q.defer();
+                $http.get('api/datatypes/findShared').then(function (response) {
+                    delay.resolve(response.data);
+                 }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            getPendingSharedDatatypes: function(){
+                var delay = $q.defer();
+                $http.get('api/datatypes/findPendingShared').then(function (response) {
+                    delay.resolve(response.data);
+                 }, function (error) {
                     delay.reject(error);
                 });
                 return delay.promise;

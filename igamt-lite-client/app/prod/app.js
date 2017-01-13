@@ -38,7 +38,8 @@ var app = angular
 //        'ngMaterial',
         'pageslide-directive',
         'rzModule',
-		'ui.select'
+    		'ui.select',
+        'flow'
       ]);
 
 var
@@ -57,7 +58,7 @@ var
 //the message to be shown to the user
 var msg = {};
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, NotificationProvider,blockUIConfig) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, NotificationProvider,blockUIConfig, flowFactoryProvider) {
 
     $routeProvider
         .when('/', {
@@ -69,13 +70,20 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .when('/ig', {
             templateUrl: 'views/ig.html'
         })
+        .when('/profileComponent', {
+            templateUrl: 'views/profileComponent.html'
+        })
         .when('/compare', {
             templateUrl: 'views/compare.html'
         })
-//        .when('/datatypeLibrary', {
-//            templateUrl: 'views/datatypeLibrary.html',
-//            controller: 'DatatypeLibraryCtl'
-//        })
+        .when('/datatypeLibrary', {
+            templateUrl: 'views/datatypeLibrary.html',
+            controller: 'DatatypeLibraryCtl'
+        })
+        .when('/shared', {
+             templateUrl: 'views/shared.html',
+             controller: 'shared'
+         })
         .when('/doc', {
             templateUrl: 'views/doc.html'
         })
@@ -298,6 +306,16 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     $httpProvider.defaults.transformRequest.push(spinnerStarter);
 
     httpHeaders = $httpProvider.defaults.headers;
+
+    flowFactoryProvider.defaults = {
+      target: 'api/uploaded_files/upload',
+      permanentErrors: [404, 500, 501],
+      maxChunkRetries: 1,
+      chunkRetryInterval: 5000,
+      simultaneousUploads: 4,
+      singleFile: true,
+      testChunks:false
+    };
 
 
 });
@@ -612,6 +630,3 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
 
 
 });
-
-
-

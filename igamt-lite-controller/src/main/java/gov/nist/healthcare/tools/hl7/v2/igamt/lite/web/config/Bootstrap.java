@@ -12,20 +12,18 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -36,6 +34,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -55,13 +54,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -99,6 +99,8 @@ public class Bootstrap implements InitializingBean {
   TableService tableService;
   @Autowired
   DataCorrectionSectionPosition dataCorrectionSectionPosition;
+  @Autowired
+  private ProfileComponentLibraryService profileComponentLibraryService;
 
   /*
    * (non-Javadoc)
@@ -107,254 +109,520 @@ public class Bootstrap implements InitializingBean {
    */
   @Override
   public void afterPropertiesSet() throws Exception {
-	  setUpdatedDates(); // Run only once.
-  }
-  
-  @SuppressWarnings("deprecation")
-private void setUpdatedDates() throws IGDocumentException {
-	  	
-	    List<Datatype> datatypes = datatypeService.findAll();
-	    boolean changed = false;
-	    if(datatypes != null) {
-	    for (Datatype d : datatypes) {
-	       if(d.getScope() != null &&!d .getScope().equals(SCOPE.HL7STANDARD) && d.getDate() != null){
-	    	   try {
-				Date dateUpdated = parseDate(d.getDate());
- 		    	datatypeService.updateDate(d.getId(),dateUpdated);
- 				} catch (ParseException e) {
-					 logger.info("Failed to parse date of datatype with id=" + d.getId()  + ", Date=" + d.getDate());
-				}
-	       }
-	    }
-	    }
-	   
-	    changed = false;	    
-	    List<Segment> segments = segmentService.findAll();
-	    if(segments != null) {
-	    for (Segment d : segments) {
-	       if(d.getScope() != null &&!d .getScope().equals(SCOPE.HL7STANDARD) &&   d.getDate() != null){
-	    	   Date dateUpdated = null;
-	    	   try {
-				  dateUpdated = parseDate(d.getDate());
- 				  segmentService.updateDate(d.getId(),dateUpdated);
- 				} catch (ParseException e) {
-					 logger.info("Failed to parse date of segment with id=" + d.getId()  + ", Date=" + d.getDate());
-	 			}
-	       }
-	    }
-	    } 
-	    
-	    changed = false;	    
-	    List<Table> tables = tableService.findAll();
-	    if(tables != null) {
-	    for (Table d : tables) {
-	       if(d.getScope() != null &&!d .getScope().equals(SCOPE.HL7STANDARD) &&  d.getDate() != null){
-	    	   Date dateUpdated = null;
-	    	   try {
-				  dateUpdated = parseDate(d.getDate());
- 				  tableService.updateDate(d.getId(),dateUpdated);
- 				} catch (ParseException e) {
-					 logger.info("Failed to parse date of table with id=" + d.getId()  + ", Date=" + d.getDate());
-			    }
-	       }
-	    }
-	    }
-	    
-	    
-	    changed = false;	    
-	    List<Message> messages = messageService.findAll();
-	    if(messages != null) {
-	    for (Message d : messages) {
-	       if(d.getScope() != null && !d.getScope().equals(SCOPE.HL7STANDARD) &&   d.getDate() != null){
-	    	   Date dateUpdated = null;
-	    	   try {	    		  
-	    		  dateUpdated = parseDate(d.getDate());
- 				  messageService.updateDate(d.getId(),dateUpdated);
- 				} catch (ParseException e) {
-					logger.info("Failed to parse date of message with id=" + d.getId() + ", Date=" + d.getDate());
-	 			}
-	       }
-	    }
-	    
-	    }
-	    
-	    changed = false;	    
-	    List<IGDocument> documents = documentService.findAll();
-	    if(documents != null) {
-	    for (IGDocument d : documents) {
-	       if(d.getScope() != null && !d.getScope().equals(SCOPE.HL7STANDARD) &&   d.getMetaData().getDate() != null){
-	    	   Date dateUpdated = null;
-	    	   try {	    		  
-	    		  dateUpdated = parseDate(d.getMetaData().getDate());
- 				  documentService.updateDate(d.getId(),dateUpdated);
-				} catch (ParseException e) {
-					logger.info("Failed to parse date of table with id=" + d.getId() + ", Date=" + d.getMetaData().getDate());
-	 			}
-	       }
-	    }
-	    }
-	    
-  } 
-  
-  private Date parseDate(String dateString) throws ParseException{
-	  Date dateUpdated = parseDate(dateString, DateUtils.FORMAT);
-	  
-	  if(dateUpdated == null){
-		  dateUpdated = parseDate(dateString, "EEE MMM d HH:mm:ss zzz yyyy");
-	  } 
-	  
-	  if(dateUpdated == null){
-		  dateUpdated = parseDate(dateString, Constant.mdy.toPattern());
-	  } 
-	  
-	  if(dateUpdated != null) 
-		  return dateUpdated;
-	  
-	  throw new ParseException("", 1); 
-  } 
-  
-  
-  private Date parseDate(String dateString, String format){
-	  Date dateUpdated = null;
-	  try {
-		  dateUpdated = new SimpleDateFormat(format).parse(dateString);
-  		} catch (ParseException e) {
- 			 dateUpdated = null;
-	  }
-	return dateUpdated;
-  }
-  
- 	    
 
-  
-//
-//  private void modifyCodeUsage() {
-//    List<Table> allTables = tableService.findAll();
-//
-//    for (Table t : allTables) {
-//      boolean isChanged = false;
-//      for (Code c : t.getCodes()) {
-//        if (c.getCodeUsage() == null) {
-//          c.setCodeUsage("P");
-//          isChanged = true;
-//        } else if (!c.getCodeUsage().equals("R") && !c.getCodeUsage().equals("P")
-//            && !c.getCodeUsage().equals("E")) {
-//          c.setCodeUsage("P");
-//          isChanged = true;
-//        }
-//      }
-//      if (isChanged) {
-//        tableService.save(t);
-//        logger.info("Table " + t.getId() + " has been updated by the codeusage issue.");
-//      }
-//    }
-//  }
-//
-//  private void modifyFieldUsage() {
-//    List<Segment> allSegments = segmentService.findAll();
-//
-//    for (Segment s : allSegments) {
-//      boolean isChanged = false;
-//      for (Field f : s.getFields()) {
-//        if (f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)) {
-//          f.setUsage(Usage.X);
-//          isChanged = true;
-//        }
-//      }
-//      if (isChanged) {
-//        segmentService.save(s);
-//        logger.info("Segment " + s.getId() + " has been updated by the usage W/B issue.");
-//      }
-//    }
-//  }
-//  private void createNewSectionIds() throws IGDocumentException{
-//	  List<IGDocument> igs=documentService.findAll();
-//	  for(IGDocument ig: igs){
-//		  if(ig.getChildSections()!=null&& !ig.getChildSections().isEmpty()){
-//			  for(Section s : ig.getChildSections()){
-//				  ChangeIdInside(s);
-//			  }
-//		  }
-//		  documentService.save(ig);
-//	  }
-//  }
-//  
-//  private void ChangeIdInside(Section s) {
-//	  s.setId(ObjectId.get().toString());
-//	  if(s.getChildSections()!=null&& !s.getChildSections().isEmpty()){
-//		  for(Section sub : s.getChildSections()){
-//			 
-//			  ChangeIdInside(sub);
-//		  }
-//	  }
-//}
-//
-//private void modifyMSH2Constraint(){
-//	  List<Segment> allSegments = segmentService.findAll();
-//	  
-//	  for (Segment s : allSegments) {
-//		  if(s.getName().equals("MSH")){
-//			  boolean isChanged = false;
-//			  for(ConformanceStatement cs: s.getConformanceStatements()){
-//				  if(cs.getConstraintTarget().equals("2[1]")){
-//					  cs.setDescription("The value of MSH.2 (Encoding Characters) SHALL be '^~\\&'.");
-//					  cs.setAssertion("<Assertion><PlainText IgnoreCase=\"false\" Path=\"2[1]\" Text=\"^~\\&amp;\"/></Assertion>");
-//					  isChanged = true;
-//				  }
-//			  }
-//			  
-//			  if (isChanged) {
-//				  segmentService.save(s);
-//				  logger.info("Segment " + s.getId() + " has been updated by CS issue");
-//			  }  
-//		  }
-//	  }
-//	  
-//  }
-//
-//private void modifyConstraint(){
-//	  List<Segment> allSegments = segmentService.findAll();
-//	  
-//	  for (Segment s : allSegments) {
-//		  if(!s.getName().equals("MSH")){
-//			  boolean isChanged = false;
-//			  ConformanceStatement wrongCS = null;
-//			  for(ConformanceStatement cs: s.getConformanceStatements()){
-//				  if(cs.getConstraintTarget().equals("2[1]")){
-//					  if(cs.getDescription().startsWith("The value of MSH.2")){
-//						  wrongCS = cs;
-//						  isChanged = true;  
-//					  }
-//				  }
-//			  }
-//
-//			  if (isChanged) {
-//				  s.getConformanceStatements().remove(wrongCS);
-//				  segmentService.save(s);
-//				  logger.info("Segment " + s.getId() + " has been updated by CS issue");
-//			  }  
-//		  }
-//	  }
-//	  
-//}
-//
-//  private void modifyComponentUsage() {
-//    List<Datatype> allDatatypes = datatypeService.findAll();
-//
-//    for (Datatype d : allDatatypes) {
-//      boolean isChanged = false;
-//      for (Component c : d.getComponents()) {
-//        if (c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)) {
-//          c.setUsage(Usage.X);
-//          isChanged = true;
-//        }
-//      }
-//      if (isChanged) {
-//        datatypeService.save(d);
-//        logger.info("Datatype " + d.getId() + " has been updated by the usage W/B issue.");
-//      }
-//    }
-//  }
+    // Carefully use this. It will delete all of existing IGDocuments and
+    // make new ones converted from the "igdocumentPreLibHL7",
+    // "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
+    // new IGDocumentConverterFromOldToNew().convert();
+    // new DataCorrection().updateSegment();
+    // new DataCorrection().updateDatatype();
+    // new DataCorrection().updateSegmentLibrary();
+    // new DataCorrection().updateDatatypeLibrary();
+    // new DataCorrection().updateTableLibrary();
+    // new DataCorrection().updateMessage();
+    //
+    // dataCorrectionSectionPosition.resetSectionPositions();
+    // new DataCorrection().updateValueSetForSegment();
+    // new DataCorrection().updateValueSetsForDT();
+
+    // addVersionAndScopetoPRELOADEDIG();
+    // addVersionAndScopetoHL7IG();
+    /** to be runned one Time **/
+    // CreateCollectionOfUnchanged();
+    // AddVersionsToDatatypes();
+    // addVersionAndScopetoUSERIG();
+    // addScopeUserToOldClonedPRELOADEDIG();
+    // changeTabletoTablesInNewHl7();
+    // modifyCodeUsage();
+    // modifyFieldUsage();
+    // modifyComponentUsage();
+    // [NOTE from Woo] I have checked all of Usage B/W in the message, but nothing. So we don't need
+    // to write a code for the message.
+
+
+    // ===============Data Type Library=====================================
+
+    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
+    // setDtsStatus();// sets the status of all the datatypes to published or unpublished
+    // setTablesStatus(); // sets the status of all the tables to published or unpublished
+    // Colorate(); // genenerates the datatypes evolution matrix.
+    // setSegmentStatus();
+    // // ====================================================================*/
+    // // this.modifyConstraint();
+    // // this.modifyMSH2Constraint();
+    // // createNewSectionIds();
+    //
+    //
+    // correctProfileComp();
+    // fixConfLengths();
+    // fixUserPublishedData();
+    // fixConstraints1();
+  }
+
+  private void fixConstraints1() {
+    List<Datatype> allDts = datatypeService.findAll();
+    for (Datatype d : allDts) {
+      fixConstraint1(d.getConformanceStatements(), d.getPredicates());
+      datatypeService.save(d);
+    }
+    List<Segment> segments = segmentService.findAll();
+    for (Segment s : segments) {
+      fixConstraint1(s.getConformanceStatements(), s.getPredicates());
+      segmentService.save(s);
+    }
+  }
+
+  private void fixConstraint1(List<ConformanceStatement> cs, List<Predicate> ps) {
+    if (cs != null) {
+      for (ConformanceStatement c : cs) {
+        if (c.getAssertion() != null && c.getAssertion().startsWith("<Assertion><IFTHEN>")) {
+          c.setAssertion(c.getAssertion().replaceAll(Pattern.quote("IFTHEN>"), "IMPLY>"));
+        }
+      }
+    }
+    if (ps != null) {
+      for (Predicate p : ps) {
+        if (p.getAssertion() != null && p.getAssertion().startsWith("<Assertion><IFTHEN>")) {
+          p.setAssertion(p.getAssertion().replaceAll(Pattern.quote("IFTHEN>"), "IMPLY>"));
+        }
+      }
+    }
+  }
+
+  private void fixUserPublishedData() {
+    List<Table> allTables = tableService.findAll();
+    for (Table t : allTables) {
+      if (null != t && null != t.getScope()) {
+        if (t.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(t.getStatus())) {
+          tableService.updateStatus(t.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+
+    List<Datatype> allDts = datatypeService.findAll();
+    for (Datatype d : allDts) {
+      if (null != d && null != d.getScope()) {
+        if (d.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(d.getStatus())) {
+          datatypeService.updateStatus(d.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+
+    List<Segment> allsegs = segmentService.findAll();
+    for (Segment s : allsegs) {
+      if (null != s && null != s.getScope()) {
+        if (s.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(s.getStatus())) {
+          segmentService.updateStatus(s.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+
+    List<Message> allMessages = messageService.findAll();
+    for (Message s : allMessages) {
+      if (null != s && null != s.getScope()) {
+        if (s.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(s.getStatus())) {
+          segmentService.updateStatus(s.getId(), STATUS.UNPUBLISHED);
+        } else if (s.getScope().equals(SCOPE.HL7STANDARD)
+            && STATUS.UNPUBLISHED.equals(s.getStatus())) {
+          segmentService.updateStatus(s.getId(), STATUS.PUBLISHED);
+        }
+      }
+    }
+  }
+
+  private void fixConfLengths() {
+    List<Segment> segments = segmentService.findAll();
+    for (Segment s : segments) {
+      List<Field> fields = s.getFields();
+      for (Field f : fields) {
+        if ("-1".equals(f.getConfLength())) {
+          f.setConfLength("");
+        }
+      }
+    }
+    segmentService.save(segments);
+
+    List<Datatype> datatypes = datatypeService.findAll();
+    for (Datatype s : datatypes) {
+      List<Component> components = s.getComponents();
+      for (Component f : components) {
+        if ("-1".equals(f.getConfLength())) {
+          f.setConfLength("");
+        }
+      }
+    }
+    datatypeService.save(datatypes);
+  }
+
+
+  private void modifyCodeUsage() {
+    List<Table> allTables = tableService.findAll();
+
+    for (Table t : allTables) {
+      boolean isChanged = false;
+      for (Code c : t.getCodes()) {
+        if (c.getCodeUsage() == null) {
+          c.setCodeUsage("P");
+          isChanged = true;
+        } else if (!c.getCodeUsage().equals("R") && !c.getCodeUsage().equals("P")
+            && !c.getCodeUsage().equals("E")) {
+          c.setCodeUsage("P");
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        tableService.save(t);
+        logger.info("Table " + t.getId() + " has been updated by the codeusage issue.");
+      }
+    }
+  }
+
+  private void setTablesStatus() {
+    List<Table> allTables = tableService.findAll();
+    for (Table t : allTables) {
+      if (null != t && null != t.getScope()) {
+        if (t.getScope().equals(SCOPE.HL7STANDARD) || t.getScope().equals(SCOPE.PRELOADED)) {
+          tableService.updateStatus(t.getId(), STATUS.PUBLISHED);
+        } else if (!STATUS.PUBLISHED.equals(t.getStatus())) {
+          tableService.updateStatus(t.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+  }
+
+  private void setDtsStatus() {
+    List<Datatype> allDts = datatypeService.findAll();
+    for (Datatype d : allDts) {
+      if (null != d && null != d.getScope()) {
+        if (d.getScope().equals(SCOPE.HL7STANDARD) || d.getScope().equals(SCOPE.PRELOADED)) {
+          datatypeService.updateStatus(d.getId(), STATUS.PUBLISHED);
+        } else if (!STATUS.PUBLISHED.equals(d.getStatus())) {
+          datatypeService.updateStatus(d.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+  }
+
+  private void setSegmentStatus() {
+    List<Segment> allsegs = segmentService.findAll();
+    for (Segment s : allsegs) {
+      if (null != s && null != s.getScope()) {
+        if (s.getScope().equals(SCOPE.HL7STANDARD) || s.getScope().equals(SCOPE.PRELOADED)) {
+          segmentService.updateStatus(s.getId(), STATUS.PUBLISHED);
+        } else if (!STATUS.PUBLISHED.equals(s.getStatus())) {
+          segmentService.updateStatus(s.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+  }
+
+  private void modifyFieldUsage() {
+    List<Segment> allSegments = segmentService.findAll();
+
+    for (Segment s : allSegments) {
+      boolean isChanged = false;
+      for (Field f : s.getFields()) {
+        if (f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)) {
+          f.setUsage(Usage.X);
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        segmentService.save(s);
+        logger.info("Segment " + s.getId() + " has been updated by the usage W/B issue.");
+      }
+    }
+  }
+
+  private void createNewSectionIds() throws IGDocumentException {
+    List<IGDocument> igs = documentService.findAll();
+    for (IGDocument ig : igs) {
+      if (ig.getChildSections() != null && !ig.getChildSections().isEmpty()) {
+        for (Section s : ig.getChildSections()) {
+        }
+      }
+      documentService.save(ig);
+    }
+
+    setUpdatedDates(); // Run only once.
+
+  }
+
+
+
+  // correctProfileComp(); }
+
+  private void correctProfileComp() throws IGDocumentException {
+
+
+    List<IGDocument> igDocuments = documentService.findAll();
+    for (IGDocument igd : igDocuments) {
+      Messages msgs = igd.getProfile().getMessages();
+      if (igd.getProfile().getProfileComponentLibrary().getId() == null) {
+
+        profileComponentLibraryService.save(igd.getProfile().getProfileComponentLibrary());
+      }
+
+    }
+    documentService.save(igDocuments);
+  }
+
+
+  @SuppressWarnings("deprecation")
+  private void setUpdatedDates() throws IGDocumentException {
+
+    List<Datatype> datatypes = datatypeService.findAll();
+    boolean changed = false;
+    if (datatypes != null) {
+      for (Datatype d : datatypes) {
+        if (d.getScope() != null && !d.getScope().equals(SCOPE.HL7STANDARD)
+            && d.getDate() != null) {
+          try {
+            Date dateUpdated = parseDate(d.getDate());
+            datatypeService.updateDate(d.getId(), dateUpdated);
+          } catch (ParseException e) {
+            logger.info(
+                "Failed to parse date of datatype with id=" + d.getId() + ", Date=" + d.getDate());
+          }
+        }
+      }
+    }
+
+    changed = false;
+    List<Segment> segments = segmentService.findAll();
+    if (segments != null) {
+      for (Segment d : segments) {
+        if (d.getScope() != null && !d.getScope().equals(SCOPE.HL7STANDARD)
+            && d.getDate() != null) {
+          Date dateUpdated = null;
+          try {
+            dateUpdated = parseDate(d.getDate());
+            segmentService.updateDate(d.getId(), dateUpdated);
+          } catch (ParseException e) {
+            logger.info(
+                "Failed to parse date of segment with id=" + d.getId() + ", Date=" + d.getDate());
+          }
+        }
+      }
+    }
+
+    changed = false;
+    List<Table> tables = tableService.findAll();
+    if (tables != null) {
+      for (Table d : tables) {
+        if (d.getScope() != null && !d.getScope().equals(SCOPE.HL7STANDARD)
+            && d.getDate() != null) {
+          Date dateUpdated = null;
+          try {
+            dateUpdated = parseDate(d.getDate());
+            tableService.updateDate(d.getId(), dateUpdated);
+          } catch (ParseException e) {
+            logger.info(
+                "Failed to parse date of table with id=" + d.getId() + ", Date=" + d.getDate());
+          }
+        }
+      }
+    }
+
+
+    changed = false;
+    List<Message> messages = messageService.findAll();
+    if (messages != null) {
+      for (Message d : messages) {
+        if (d.getScope() != null && !d.getScope().equals(SCOPE.HL7STANDARD)
+            && d.getDate() != null) {
+          Date dateUpdated = null;
+          try {
+            dateUpdated = parseDate(d.getDate());
+            messageService.updateDate(d.getId(), dateUpdated);
+          } catch (ParseException e) {
+            logger.info(
+                "Failed to parse date of message with id=" + d.getId() + ", Date=" + d.getDate());
+          }
+        }
+      }
+
+    }
+
+    changed = false;
+    List<IGDocument> documents = documentService.findAll();
+    if (documents != null) {
+      for (IGDocument d : documents) {
+        if (d.getScope() != null && !d.getScope().equals(SCOPE.HL7STANDARD)
+            && d.getMetaData().getDate() != null) {
+          Date dateUpdated = null;
+          try {
+            dateUpdated = parseDate(d.getMetaData().getDate());
+            documentService.updateDate(d.getId(), dateUpdated);
+          } catch (ParseException e) {
+            logger.info("Failed to parse date of table with id=" + d.getId() + ", Date="
+                + d.getMetaData().getDate());
+          }
+        }
+      }
+    }
+
+  }
+
+  private Date parseDate(String dateString) throws ParseException {
+    Date dateUpdated = parseDate(dateString, DateUtils.FORMAT);
+
+    if (dateUpdated == null) {
+      dateUpdated = parseDate(dateString, "EEE MMM d HH:mm:ss zzz yyyy");
+    }
+
+    if (dateUpdated == null) {
+      dateUpdated = parseDate(dateString, Constant.mdy.toPattern());
+    }
+
+    if (dateUpdated != null)
+      return dateUpdated;
+
+    throw new ParseException("", 1);
+  }
+
+
+  private Date parseDate(String dateString, String format) {
+    Date dateUpdated = null;
+    try {
+      dateUpdated = new SimpleDateFormat(format).parse(dateString);
+    } catch (ParseException e) {
+      dateUpdated = null;
+    }
+    return dateUpdated;
+  }
+
+
+
+  //
+  // private void modifyCodeUsage() {
+  // List<Table> allTables = tableService.findAll();
+  //
+  // for (Table t : allTables) {
+  // boolean isChanged = false;
+  // for (Code c : t.getCodes()) {
+  // if (c.getCodeUsage() == null) {
+  // c.setCodeUsage("P");
+  // isChanged = true;
+  // } else if (!c.getCodeUsage().equals("R") && !c.getCodeUsage().equals("P")
+  // && !c.getCodeUsage().equals("E")) {
+  // c.setCodeUsage("P");
+  // isChanged = true;
+  // }
+  // }
+  // if (isChanged) {
+  // tableService.save(t);
+  // logger.info("Table " + t.getId() + " has been updated by the codeusage issue.");
+  // }
+  // }
+  // }
+  //
+  // private void modifyFieldUsage() {
+  // List<Segment> allSegments = segmentService.findAll();
+  //
+  // for (Segment s : allSegments) {
+  // boolean isChanged = false;
+  // for (Field f : s.getFields()) {
+  // if (f.getUsage().equals(Usage.B) || f.getUsage().equals(Usage.W)) {
+  // f.setUsage(Usage.X);
+  // isChanged = true;
+  // }
+  // }
+  // if (isChanged) {
+  // segmentService.save(s);
+  // logger.info("Segment " + s.getId() + " has been updated by the usage W/B issue.");
+  // }
+  // }
+  // }
+  // private void createNewSectionIds() throws IGDocumentException{
+  // List<IGDocument> igs=documentService.findAll();
+  // for(IGDocument ig: igs){
+  // if(ig.getChildSections()!=null&& !ig.getChildSections().isEmpty()){
+  // for(Section s : ig.getChildSections()){
+  // ChangeIdInside(s);
+  // }
+  // }
+  // documentService.save(ig);
+  // }
+  // }
+  //
+  // private void ChangeIdInside(Section s) {
+  // s.setId(ObjectId.get().toString());
+  // if(s.getChildSections()!=null&& !s.getChildSections().isEmpty()){
+  // for(Section sub : s.getChildSections()){
+  //
+  // ChangeIdInside(sub);
+  // }
+  // }
+  // }
+  //
+  // private void modifyMSH2Constraint(){
+  // List<Segment> allSegments = segmentService.findAll();
+  //
+  // for (Segment s : allSegments) {
+  // if(s.getName().equals("MSH")){
+  // boolean isChanged = false;
+  // for(ConformanceStatement cs: s.getConformanceStatements()){
+  // if(cs.getConstraintTarget().equals("2[1]")){
+  // cs.setDescription("The value of MSH.2 (Encoding Characters) SHALL be '^~\\&'.");
+  // cs.setAssertion("<Assertion><PlainText IgnoreCase=\"false\" Path=\"2[1]\"
+  // Text=\"^~\\&amp;\"/></Assertion>");
+  // isChanged = true;
+  // }
+  // }
+  //
+  // if (isChanged) {
+  // segmentService.save(s);
+  // logger.info("Segment " + s.getId() + " has been updated by CS issue");
+  // }
+  // }
+  // }
+  //
+  // }
+  //
+  // private void modifyConstraint(){
+  // List<Segment> allSegments = segmentService.findAll();
+  //
+  // for (Segment s : allSegments) {
+  // if(!s.getName().equals("MSH")){
+  // boolean isChanged = false;
+  // ConformanceStatement wrongCS = null;
+  // for(ConformanceStatement cs: s.getConformanceStatements()){
+  // if(cs.getConstraintTarget().equals("2[1]")){
+  // if(cs.getDescription().startsWith("The value of MSH.2")){
+  // wrongCS = cs;
+  // isChanged = true;
+  // }
+  // }
+  // }
+  //
+  // if (isChanged) {
+  // s.getConformanceStatements().remove(wrongCS);
+  // segmentService.save(s);
+  // logger.info("Segment " + s.getId() + " has been updated by CS issue");
+  // }
+  // }
+  // }
+  //
+  // }
+  //
+  private void modifyComponentUsage() {
+    List<Datatype> allDatatypes = datatypeService.findAll();
+
+    for (Datatype d : allDatatypes) {
+      boolean isChanged = false;
+      for (Component c : d.getComponents()) {
+        if (c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)) {
+          c.setUsage(Usage.X);
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        datatypeService.save(d);
+        logger.info("Datatype " + d.getId() + " has been updated by the usage W/B issue.");
+      }
+    }
+  }
 
   // private void changeTabletoTablesInNewHl7() {
   // List<String> hl7Versions = new ArrayList<String>();
@@ -500,12 +768,13 @@ private void setUpdatedDates() throws IGDocumentException {
       String name = e.getKey();
       ArrayList<List<String>> values = e.getValue();
       for (List<String> versions : values) {
-        UnchangedDataType unchanged = new UnchangedDataType();
-        unchanged.setName(name);
-        unchanged.setVersions(versions);
-        unchangedData.insert(unchanged);
+        if (!name.equals("-")) {
+          UnchangedDataType unchanged = new UnchangedDataType();
+          unchanged.setName(name);
+          unchanged.setVersions(versions);
+          unchangedData.insert(unchanged);
+        }
       }
-
     }
   }
 
@@ -526,7 +795,9 @@ private void setUpdatedDates() throws IGDocumentException {
         }
       }
       dt.setLinks(links);
-      matrix.insert(dt);
+      if (!dt.getName().equals("-")) {
+        matrix.insert(dt);
+      }
     }
   }
 

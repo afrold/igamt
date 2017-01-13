@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b2c5",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0532",
+  "name" : "0532",
+  "description" : "Expanded yes/no indicator",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.532",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2c6",
+    "value" : "ASKU",
+    "label" : "asked but unknown",
+    "codeSystem" : "HL70532",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2c7",
+    "value" : "N",
+    "label" : "No",
+    "codeSystem" : "HL70532",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2c8",
+    "value" : "NA",
+    "label" : "not applicable",
+    "codeSystem" : "HL70532",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2c9",
+    "value" : "NASK",
+    "label" : "not asked",
+    "codeSystem" : "HL70532",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2ca",
+    "value" : "NAV",
+    "label" : "temporarily unavailable",
+    "codeSystem" : "HL70532",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2cb",
+    "value" : "NI",
+    "label" : "No Information",
+    "codeSystem" : "HL70532",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2cc",
+    "value" : "NP",
+    "label" : "not present",
+    "codeSystem" : "HL70532",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2cd",
+    "value" : "UNK",
+    "label" : "unknown",
+    "codeSystem" : "HL70532",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2ce",
+    "value" : "Y",
+    "label" : "Yes",
+    "codeSystem" : "HL70532",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

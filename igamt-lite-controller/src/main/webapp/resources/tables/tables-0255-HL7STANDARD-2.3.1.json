@@ -1,0 +1,255 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445958",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0255",
+  "name" : "0255",
+  "description" : "Duration categories",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445959",
+    "value" : "* (star)",
+    "label" : "Life of the \"unit.\"  Used for blood products.",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44595a",
+    "value" : "12H",
+    "label" : "12 hours",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44595b",
+    "value" : "1H",
+    "label" : "1 hour",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44595c",
+    "value" : "1L",
+    "label" : "1 months (30 days)",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44595d",
+    "value" : "1W",
+    "label" : "1 week",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44595e",
+    "value" : "2.5H",
+    "label" : "2½ hours",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44595f",
+    "value" : "24H",
+    "label" : "24 hours",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445960",
+    "value" : "2D",
+    "label" : "2 days",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445961",
+    "value" : "2H",
+    "label" : "2 hours",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445962",
+    "value" : "2L",
+    "label" : "2 months",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445963",
+    "value" : "2W",
+    "label" : "2 weeks",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445964",
+    "value" : "30M",
+    "label" : "30 minutes",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445965",
+    "value" : "3D",
+    "label" : "3 days",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445966",
+    "value" : "3H",
+    "label" : "3 hours",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445967",
+    "value" : "3L",
+    "label" : "3 months",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445968",
+    "value" : "3W",
+    "label" : "3 weeks",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445969",
+    "value" : "4D",
+    "label" : "4 days",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44596a",
+    "value" : "4H",
+    "label" : "4 hours",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44596b",
+    "value" : "4W",
+    "label" : "4 weeks",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44596c",
+    "value" : "5D",
+    "label" : "5 days",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44596d",
+    "value" : "5H",
+    "label" : "5 hours",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44596e",
+    "value" : "6D",
+    "label" : "6 days",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44596f",
+    "value" : "6H",
+    "label" : "6 hours",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445970",
+    "value" : "7H",
+    "label" : "7 hours",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445971",
+    "value" : "8H",
+    "label" : "8 hours",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445972",
+    "value" : "PT",
+    "label" : "To identify measures at a point in time.  This is a synonym for \"spot\" or \"random\" as applied to urine measurements.",
+    "codeSystem" : "HL70255",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

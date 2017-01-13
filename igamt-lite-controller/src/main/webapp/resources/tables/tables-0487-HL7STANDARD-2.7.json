@@ -1,0 +1,2460 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655072b4",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0487",
+  "name" : "0487",
+  "description" : "Specimen Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072b5",
+    "value" : "ABS",
+    "label" : "Abscess",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072b6",
+    "value" : "ACNE",
+    "label" : "Tissue, Acne",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072b7",
+    "value" : "ACNFLD",
+    "label" : "Fluid, Acne",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072b8",
+    "value" : "AIRS",
+    "label" : "Air Sample",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072b9",
+    "value" : "ALL",
+    "label" : "Allograft",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072ba",
+    "value" : "AMP",
+    "label" : "Amputation",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072bb",
+    "value" : "ANGI",
+    "label" : "Catheter Tip, Angio",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072bc",
+    "value" : "ARTC",
+    "label" : "Catheter Tip, Arterial",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072bd",
+    "value" : "ASERU",
+    "label" : "Serum, Acute",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072be",
+    "value" : "ASP",
+    "label" : "Aspirate",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072bf",
+    "value" : "ATTE",
+    "label" : "Environment, Attest",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072c0",
+    "value" : "AUTOA",
+    "label" : "Environmental, Autoclave Ampule",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072c1",
+    "value" : "AUTOC",
+    "label" : "Environmental, Autoclave Capsule",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072c2",
+    "value" : "AUTP",
+    "label" : "Autopsy",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072c3",
+    "value" : "BBL",
+    "label" : "Blood bag",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072c4",
+    "value" : "BCYST",
+    "label" : "Cyst, Baker's",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072c5",
+    "value" : "BITE",
+    "label" : "Bite",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072c6",
+    "value" : "BLEB",
+    "label" : "Bleb",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072c7",
+    "value" : "BLIST",
+    "label" : "Blister",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072c8",
+    "value" : "BOIL",
+    "label" : "Boil",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072c9",
+    "value" : "BON",
+    "label" : "Bone",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072ca",
+    "value" : "BOWL",
+    "label" : "Bowel contents",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072cb",
+    "value" : "BPU",
+    "label" : "Blood product unit",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072cc",
+    "value" : "BRN",
+    "label" : "Burn",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072cd",
+    "value" : "BRSH",
+    "label" : "Brush",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072ce",
+    "value" : "BRTH",
+    "label" : "Breath (use EXHLD)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072cf",
+    "value" : "BRUS",
+    "label" : "Brushing",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072d0",
+    "value" : "BUB",
+    "label" : "Bubo",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072d1",
+    "value" : "BULLA",
+    "label" : "Bulla/Bullae",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072d2",
+    "value" : "BX",
+    "label" : "Biopsy",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072d3",
+    "value" : "CALC",
+    "label" : "Calculus (=Stone)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072d4",
+    "value" : "CARBU",
+    "label" : "Carbuncle",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072d5",
+    "value" : "CAT",
+    "label" : "Catheter",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072d6",
+    "value" : "CBITE",
+    "label" : "Bite, Cat",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072d7",
+    "value" : "CLIPP",
+    "label" : "Clippings",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072d8",
+    "value" : "CNJT",
+    "label" : "Conjunctiva",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072d9",
+    "value" : "COL",
+    "label" : "Colostrum",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072da",
+    "value" : "CONE",
+    "label" : "Biospy, Cone",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072db",
+    "value" : "CSCR",
+    "label" : "Scratch, Cat",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072dc",
+    "value" : "CSERU",
+    "label" : "Serum, Convalescent",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072dd",
+    "value" : "CSITE",
+    "label" : "Catheter Insertion Site",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072de",
+    "value" : "CSMY",
+    "label" : "Fluid,  Cystostomy Tube",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072df",
+    "value" : "CST",
+    "label" : "Fluid, Cyst",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072e0",
+    "value" : "CSVR",
+    "label" : "Blood, Cell Saver",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072e1",
+    "value" : "CTP",
+    "label" : "Catheter tip",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072e2",
+    "value" : "CVPS",
+    "label" : "Site, CVP",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072e3",
+    "value" : "CVPT",
+    "label" : "Catheter Tip, CVP",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072e4",
+    "value" : "CYN",
+    "label" : "Nodule, Cystic",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072e5",
+    "value" : "CYST",
+    "label" : "Cyst",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072e6",
+    "value" : "DBITE",
+    "label" : "Bite, Dog",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072e7",
+    "value" : "DCS",
+    "label" : "Sputum, Deep Cough",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072e8",
+    "value" : "DEC",
+    "label" : "Ulcer, Decubitus",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072e9",
+    "value" : "DEION",
+    "label" : "Environmental, Water  (Deionized)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072ea",
+    "value" : "DIA",
+    "label" : "Dialysate",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072eb",
+    "value" : "DISCHG",
+    "label" : "Discharge",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072ec",
+    "value" : "DIV",
+    "label" : "Diverticulum",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072ed",
+    "value" : "DRN",
+    "label" : "Drain",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072ee",
+    "value" : "DRNG",
+    "label" : "Drainage, Tube",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072ef",
+    "value" : "DRNGP",
+    "label" : "Drainage, Penrose",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072f0",
+    "value" : "EARW",
+    "label" : "Ear wax (cerumen)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072f1",
+    "value" : "EBRUSH",
+    "label" : "Brush, Esophageal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072f2",
+    "value" : "EEYE",
+    "label" : "Environmental, Eye Wash",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072f3",
+    "value" : "EFF",
+    "label" : "Environmental, Effluent",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072f4",
+    "value" : "EFFUS",
+    "label" : "Effusion",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072f5",
+    "value" : "EFOD",
+    "label" : "Environmental, Food",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072f6",
+    "value" : "EISO",
+    "label" : "Environmental, Isolette",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072f7",
+    "value" : "ELT",
+    "label" : "Electrode",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072f8",
+    "value" : "ENVIR",
+    "label" : "Environmental, Unidentified Substance",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072f9",
+    "value" : "EOTH",
+    "label" : "Environmental, Other Substance",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072fa",
+    "value" : "ESOI",
+    "label" : "Environmental, Soil",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072fb",
+    "value" : "ESOS",
+    "label" : "Environmental, Solution (Sterile)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072fc",
+    "value" : "ETA",
+    "label" : "Aspirate,  Endotrach",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072fd",
+    "value" : "ETTP",
+    "label" : "Catheter Tip, Endotracheal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072fe",
+    "value" : "ETTUB",
+    "label" : "Tube, Endotracheal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655072ff",
+    "value" : "EWHI",
+    "label" : "Environmental, Whirlpool",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507300",
+    "value" : "EXG",
+    "label" : "Gas, exhaled (=breath)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507301",
+    "value" : "EXS",
+    "label" : "Shunt, External",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507302",
+    "value" : "EXUDTE",
+    "label" : "Exudate",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507303",
+    "value" : "FAW",
+    "label" : "Environmental, Water  (Well)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507304",
+    "value" : "FBLOOD",
+    "label" : "Blood, Fetal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507305",
+    "value" : "FGA",
+    "label" : "Fluid,  Abdomen",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507306",
+    "value" : "FIST",
+    "label" : "Fistula",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507307",
+    "value" : "FLD",
+    "label" : "Fluid, Other",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507308",
+    "value" : "FLT",
+    "label" : "Filter",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507309",
+    "value" : "FLU",
+    "label" : "Fluid, Body unsp",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550730a",
+    "value" : "FLUID",
+    "label" : "Fluid",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550730b",
+    "value" : "FOLEY",
+    "label" : "Catheter Tip, Foley",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550730c",
+    "value" : "FRS",
+    "label" : "Fluid, Respiratory",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550730d",
+    "value" : "FSCLP",
+    "label" : "Scalp, Fetal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550730e",
+    "value" : "FUR",
+    "label" : "Furuncle",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550730f",
+    "value" : "GAS",
+    "label" : "Gas",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507310",
+    "value" : "GASA",
+    "label" : "Aspirate, Gastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507311",
+    "value" : "GASAN",
+    "label" : "Antrum, Gastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507312",
+    "value" : "GASBR",
+    "label" : "Brushing, Gastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507313",
+    "value" : "GASD",
+    "label" : "Drainage, Gastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507314",
+    "value" : "GAST",
+    "label" : "Fluid/contents, Gastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507315",
+    "value" : "GENV",
+    "label" : "Genital vaginal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507316",
+    "value" : "GRAFT",
+    "label" : "Graft",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507317",
+    "value" : "GRAFTS",
+    "label" : "Graft Site",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507318",
+    "value" : "GRANU",
+    "label" : "Granuloma",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507319",
+    "value" : "GROSH",
+    "label" : "Catheter, Groshong",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550731a",
+    "value" : "GSOL",
+    "label" : "Solution, Gastrostomy",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550731b",
+    "value" : "GSPEC",
+    "label" : "Biopsy, Gastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550731c",
+    "value" : "GT",
+    "label" : "Tube, Gastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550731d",
+    "value" : "GTUBE",
+    "label" : "Drainage Tube, Drainage (Gastrostomy)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550731e",
+    "value" : "HBITE",
+    "label" : "Bite, Human",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550731f",
+    "value" : "HBLUD",
+    "label" : "Blood, Autopsy",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507320",
+    "value" : "HEMAQ",
+    "label" : "Catheter Tip, Hemaquit",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507321",
+    "value" : "HEMO",
+    "label" : "Catheter Tip, Hemovac",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507322",
+    "value" : "HERNI",
+    "label" : "Tissue, Herniated",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507323",
+    "value" : "HEV",
+    "label" : "Drain, Hemovac",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507324",
+    "value" : "HIC",
+    "label" : "Catheter, Hickman",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507325",
+    "value" : "HYDC",
+    "label" : "Fluid, Hydrocele",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507326",
+    "value" : "IBITE",
+    "label" : "Bite, Insect",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507327",
+    "value" : "ICYST",
+    "label" : "Cyst, Inclusion",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507328",
+    "value" : "IDC",
+    "label" : "Catheter Tip, Indwelling",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507329",
+    "value" : "IHG",
+    "label" : "Gas, Inhaled",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550732a",
+    "value" : "ILEO",
+    "label" : "Drainage, Ileostomy",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550732b",
+    "value" : "ILLEG",
+    "label" : "Source of Specimen Is Illegible",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550732c",
+    "value" : "IMP",
+    "label" : "Implant",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550732d",
+    "value" : "INCI",
+    "label" : "Site, Incision/Surgical",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550732e",
+    "value" : "INFIL",
+    "label" : "Infiltrate",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550732f",
+    "value" : "INS",
+    "label" : "Insect",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507330",
+    "value" : "INTRD",
+    "label" : "Catheter Tip, Introducer",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507331",
+    "value" : "IT",
+    "label" : "Intubation tube",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507332",
+    "value" : "IUD",
+    "label" : "Intrauterine Device",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507333",
+    "value" : "IVCAT",
+    "label" : "Catheter Tip, IV",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507334",
+    "value" : "IVFLD",
+    "label" : "Fluid, IV",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507335",
+    "value" : "IVTIP",
+    "label" : "Tubing Tip, IV",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507336",
+    "value" : "JEJU",
+    "label" : "Drainage, Jejunal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507337",
+    "value" : "JNTFLD",
+    "label" : "Fluid, Joint",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507338",
+    "value" : "JP",
+    "label" : "Drainage, Jackson Pratt",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507339",
+    "value" : "KELOI",
+    "label" : "Lavage",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550733a",
+    "value" : "KIDFLD",
+    "label" : "Fluid, Kidney",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550733b",
+    "value" : "LAVG",
+    "label" : "Lavage, Bronhial",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550733c",
+    "value" : "LAVGG",
+    "label" : "Lavage, Gastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550733d",
+    "value" : "LAVGP",
+    "label" : "Lavage, Peritoneal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550733e",
+    "value" : "LAVPG",
+    "label" : "Lavage, Pre-Bronch",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550733f",
+    "value" : "LENS1",
+    "label" : "Contact Lens",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507340",
+    "value" : "LENS2",
+    "label" : "Contact Lens Case",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507341",
+    "value" : "LESN",
+    "label" : "Lesion",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507342",
+    "value" : "LIQ",
+    "label" : "Liquid, Unspecified",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507343",
+    "value" : "LIQO",
+    "label" : "Liquid, Other",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507344",
+    "value" : "LSAC",
+    "label" : "Fluid, Lumbar Sac",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507345",
+    "value" : "MAHUR",
+    "label" : "Catheter Tip, Makurkour",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507346",
+    "value" : "MASS",
+    "label" : "Mass",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507347",
+    "value" : "MBLD",
+    "label" : "Blood, Menstrual",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507348",
+    "value" : "MUCOS",
+    "label" : "Mucosa",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507349",
+    "value" : "MUCUS",
+    "label" : "Mucus",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550734a",
+    "value" : "NASDR",
+    "label" : "Drainage, Nasal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550734b",
+    "value" : "NEDL",
+    "label" : "Needle",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550734c",
+    "value" : "NEPH",
+    "label" : "Site, Nephrostomy",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550734d",
+    "value" : "NGASP",
+    "label" : "Aspirate, Nasogastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550734e",
+    "value" : "NGAST",
+    "label" : "Drainage, Nasogastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550734f",
+    "value" : "NGS",
+    "label" : "Site, Naso/Gastric",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507350",
+    "value" : "NODUL",
+    "label" : "Nodule(s)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507351",
+    "value" : "NSECR",
+    "label" : "Secretion, Nasal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507352",
+    "value" : "ORH",
+    "label" : "Other",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507353",
+    "value" : "ORL",
+    "label" : "Lesion, Oral",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507354",
+    "value" : "OTH",
+    "label" : "Source, Other",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507355",
+    "value" : "PACEM",
+    "label" : "Pacemaker",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507356",
+    "value" : "PCFL",
+    "label" : "Fluid, Pericardial",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507357",
+    "value" : "PDSIT",
+    "label" : "Site, Peritoneal Dialysis",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507358",
+    "value" : "PDTS",
+    "label" : "Site, Peritoneal Dialysis Tunnel",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507359",
+    "value" : "PELVA",
+    "label" : "Abscess, Pelvic",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550735a",
+    "value" : "PENIL",
+    "label" : "Lesion, Penile",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550735b",
+    "value" : "PERIA",
+    "label" : "Abscess, Perianal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550735c",
+    "value" : "PILOC",
+    "label" : "Cyst, Pilonidal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550735d",
+    "value" : "PINS",
+    "label" : "Site, Pin",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550735e",
+    "value" : "PIS",
+    "label" : "Site, Pacemaker Insetion",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550735f",
+    "value" : "PLAN",
+    "label" : "Plant Material",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507360",
+    "value" : "PLAS",
+    "label" : "Plasma",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507361",
+    "value" : "PLB",
+    "label" : "Plasma bag",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507362",
+    "value" : "PLEVS",
+    "label" : "Serum, Peak Level",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507363",
+    "value" : "PND",
+    "label" : "Drainage, Penile",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507364",
+    "value" : "POL",
+    "label" : "Polyps",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507365",
+    "value" : "POPGS",
+    "label" : "Graft Site, Popliteal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507366",
+    "value" : "POPLG",
+    "label" : "Graft, Popliteal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507367",
+    "value" : "POPLV",
+    "label" : "Site, Popliteal Vein",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507368",
+    "value" : "PORTA",
+    "label" : "Catheter, Porta",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507369",
+    "value" : "PPP",
+    "label" : "Plasma, Platelet poor",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550736a",
+    "value" : "PROST",
+    "label" : "Prosthetic Device",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550736b",
+    "value" : "PRP",
+    "label" : "Plasma, Platelet rich",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550736c",
+    "value" : "PSC",
+    "label" : "Pseudocyst",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550736d",
+    "value" : "PUNCT",
+    "label" : "Wound, Puncture",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550736e",
+    "value" : "PUS",
+    "label" : "Pus",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550736f",
+    "value" : "PUSFR",
+    "label" : "Pustule",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507370",
+    "value" : "PUST",
+    "label" : "Pus",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507371",
+    "value" : "QC3",
+    "label" : "Quality Control",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507372",
+    "value" : "RANDU",
+    "label" : "Urine, Random",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507373",
+    "value" : "RBITE",
+    "label" : "Bite, Reptile",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507374",
+    "value" : "RECT",
+    "label" : "Drainage, Rectal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507375",
+    "value" : "RECTA",
+    "label" : "Abscess, Rectal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507376",
+    "value" : "RENALC",
+    "label" : "Cyst, Renal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507377",
+    "value" : "RENC",
+    "label" : "Fluid, Renal Cyst",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507378",
+    "value" : "RES",
+    "label" : "Respiratory",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507379",
+    "value" : "SAL",
+    "label" : "Saliva",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550737a",
+    "value" : "SCAR",
+    "label" : "Tissue, Keloid (Scar)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550737b",
+    "value" : "SCLV",
+    "label" : "Catheter Tip, Subclavian",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550737c",
+    "value" : "SCROA",
+    "label" : "Abscess, Scrotal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550737d",
+    "value" : "SECRE",
+    "label" : "Secretion(s)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550737e",
+    "value" : "SER",
+    "label" : "Serum",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550737f",
+    "value" : "SHU",
+    "label" : "Site, Shunt",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507380",
+    "value" : "SHUNF",
+    "label" : "Fluid, Shunt",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507381",
+    "value" : "SHUNT",
+    "label" : "Shunt",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507382",
+    "value" : "SITE",
+    "label" : "Site",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507383",
+    "value" : "SKBP",
+    "label" : "Biopsy, Skin",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507384",
+    "value" : "SKN",
+    "label" : "Skin",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507385",
+    "value" : "SMM",
+    "label" : "Mass, Sub-Mandibular",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507386",
+    "value" : "SNV",
+    "label" : "Fluid, synovial (Joint fluid)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507387",
+    "value" : "SPRM",
+    "label" : "Spermatozoa",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507388",
+    "value" : "SPRP",
+    "label" : "Catheter Tip, Suprapubic",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507389",
+    "value" : "SPRPB",
+    "label" : "Cathether Tip, Suprapubic",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550738a",
+    "value" : "SPS",
+    "label" : "Environmental, Spore Strip",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550738b",
+    "value" : "SPT",
+    "label" : "Sputum",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550738c",
+    "value" : "SPTC",
+    "label" : "Sputum - coughed",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550738d",
+    "value" : "SPTT",
+    "label" : "Sputum - tracheal aspirate",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550738e",
+    "value" : "SPUT1",
+    "label" : "Sputum, Simulated",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550738f",
+    "value" : "SPUTIN",
+    "label" : "Sputum, Inducted",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507390",
+    "value" : "SPUTSP",
+    "label" : "Sputum, Spontaneous",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507391",
+    "value" : "STER",
+    "label" : "Environmental, Sterrad",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507392",
+    "value" : "STL",
+    "label" : "Stool = Fecal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507393",
+    "value" : "STONE",
+    "label" : "Stone, Kidney",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507394",
+    "value" : "SUBMA",
+    "label" : "Abscess, Submandibular",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507395",
+    "value" : "SUBMX",
+    "label" : "Abscess, Submaxillary",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507396",
+    "value" : "SUMP",
+    "label" : "Drainage, Sump",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507397",
+    "value" : "SUP",
+    "label" : "Suprapubic Tap",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507398",
+    "value" : "SUTUR",
+    "label" : "Suture",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507399",
+    "value" : "SWGZ",
+    "label" : "Catheter Tip, Swan Gantz",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550739a",
+    "value" : "TASP",
+    "label" : "Aspirate, Tracheal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550739b",
+    "value" : "TISS",
+    "label" : "Tissue",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550739c",
+    "value" : "TISU",
+    "label" : "Tissue ulcer",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550739d",
+    "value" : "TLC",
+    "label" : "Cathether Tip, Triple Lumen",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550739e",
+    "value" : "TRAC",
+    "label" : "Site, Tracheostomy",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550739f",
+    "value" : "TRANS",
+    "label" : "Transudate",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073a0",
+    "value" : "TSERU",
+    "label" : "Serum, Trough",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073a1",
+    "value" : "TSTES",
+    "label" : "Abscess, Testicular",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073a2",
+    "value" : "TTRA",
+    "label" : "Aspirate, Transtracheal",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073a3",
+    "value" : "TUBES",
+    "label" : "Tubes",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073a4",
+    "value" : "TUMOR",
+    "label" : "Tumor",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073a5",
+    "value" : "TZANC",
+    "label" : "Smear, Tzanck",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073a6",
+    "value" : "UDENT",
+    "label" : "Source, Unidentified",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073a7",
+    "value" : "UR",
+    "label" : "Urine",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073a8",
+    "value" : "URC",
+    "label" : "Urine clean catch",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073a9",
+    "value" : "URINB",
+    "label" : "Urine, Bladder Washings",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073aa",
+    "value" : "URINC",
+    "label" : "Urine, Catheterized",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073ab",
+    "value" : "URINM",
+    "label" : "Urine, Midstream",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073ac",
+    "value" : "URINN",
+    "label" : "Urine, Nephrostomy",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073ad",
+    "value" : "URINP",
+    "label" : "Urine, Pedibag",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073ae",
+    "value" : "URT",
+    "label" : "Urine catheter",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073af",
+    "value" : "USCOP",
+    "label" : "Urine, Cystoscopy",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073b0",
+    "value" : "USPEC",
+    "label" : "Source, Unspecified",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073b1",
+    "value" : "VASTIP",
+    "label" : "Catheter Tip, Vas",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073b2",
+    "value" : "VENT",
+    "label" : "Catheter Tip, Ventricular",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073b3",
+    "value" : "VITF",
+    "label" : "Vitreous Fluid",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073b4",
+    "value" : "VOM",
+    "label" : "Vomitus",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073b5",
+    "value" : "WASH",
+    "label" : "Wash",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073b6",
+    "value" : "WASI",
+    "label" : "Washing, e.g. bronchial washing",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073b7",
+    "value" : "WAT",
+    "label" : "Water",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073b8",
+    "value" : "WB",
+    "label" : "Blood, Whole",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073b9",
+    "value" : "WEN",
+    "label" : "Wen",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073ba",
+    "value" : "WICK",
+    "label" : "Wick",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073bb",
+    "value" : "WND",
+    "label" : "Wound",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073bc",
+    "value" : "WNDA",
+    "label" : "Wound abscess",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073bd",
+    "value" : "WNDD",
+    "label" : "Wound drainage",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073be",
+    "value" : "WNDE",
+    "label" : "Wound exudate",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073bf",
+    "value" : "WORM",
+    "label" : "Worm",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073c0",
+    "value" : "WRT",
+    "label" : "Wart",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073c1",
+    "value" : "WWA",
+    "label" : "Environmental, Water",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073c2",
+    "value" : "WWO",
+    "label" : "Environmental, Water (Ocean)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073c3",
+    "value" : "WWT",
+    "label" : "Environmental, Water  (Tap)",
+    "codeSystem" : "HL70487",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

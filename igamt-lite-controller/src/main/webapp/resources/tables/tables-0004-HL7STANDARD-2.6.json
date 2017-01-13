@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550a5c4",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0004",
+  "name" : "0004",
+  "description" : "Patient Class",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.4",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5c5",
+    "value" : "B",
+    "label" : "Obstetrics",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5c6",
+    "value" : "C",
+    "label" : "Commercial Account",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5c7",
+    "value" : "E",
+    "label" : "Emergency",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5c8",
+    "value" : "I",
+    "label" : "Inpatient",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5c9",
+    "value" : "N",
+    "label" : "Not Applicable",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5ca",
+    "value" : "O",
+    "label" : "Outpatient",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5cb",
+    "value" : "P",
+    "label" : "Preadmit",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5cc",
+    "value" : "R",
+    "label" : "Recurring patient",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5cd",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

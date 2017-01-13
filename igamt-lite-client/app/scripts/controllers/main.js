@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc',
-    function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc) {
+angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc','VersionAndUseService','$q','DatatypeLibrarySvc','CloneDeleteSvc'
+,'TableService','TableLibrarySvc', function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc,VersionAndUseService,$q,DatatypeLibrarySvc,CloneDeleteSvc,TableService,TableLibrarySvc) {
         // This line fetches the info from the server if the user is currently
         // logged in.
         // If success, the app is updated according to the role.
@@ -18,6 +18,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         //         }
         //     }
         // });
+		$rootScope.versionAndUseMap={};
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
 
@@ -45,7 +46,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.activeWhen = function(value) {
             return value ? 'active' : '';
         };
-
         $scope.activeIfInList = function(value, pathsList) {
             var found = false;
             if (angular.isArray(pathsList) === false) {
@@ -72,12 +72,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
 
         };
-
-
         $scope.path = function() {
             return $location.url();
         };
-
+        
         $scope.login = function() {
             // ////console.log("in login");
             $scope.$emit('event:loginRequest', $scope.username, $scope.password);
@@ -120,7 +118,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 $location.url('/ig');
             }
         };
-
+        
         $scope.cancel = function() {
             $scope.$emit('event:loginCancel');
         };
@@ -158,7 +156,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.getAccountID = function(accountId) {
             return userInfoService.getAccountID();
         };
-
+        
 
         $scope.getRoleAsString = function() {
             if ($scope.isAuthor() === true) {
@@ -405,7 +403,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         };
 
-
+ 
         $rootScope.readonly = false;
         $rootScope.igdocument = null; // current igdocument
         $rootScope.message = null; // current message
@@ -531,7 +529,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }, function(newLocation, oldLocation) {
             $rootScope.setActive(newLocation);
         });
-
+        
+        $rootScope.isPublishedMaster= function(dtLink){
+        	DatatypeService.getOneDatatype(dtLink.id).then(function(datatype){
+        		console.log("called")
+        		return datatype.status=="PUBLISHED"&& datatype.scope=="MASTER";
+        	});
+        }
 
         $rootScope.api = function(value) {
             return value;
@@ -707,7 +711,37 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return undefined;
         };
+        $rootScope.redirectVS = function(valueSet) {
+            TableService.getOne(valueSet.id).then(function(valueSet) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'redirectCtrl.html',
+                    controller: 'redirectCtrl',
+                    size: 'md',
+                    resolve: {
+                        destination: function() {
+                            return valueSet;
+                        }
+                    }
 
+
+
+                });
+                modalInstance.result.then(function() {
+                	if(!$rootScope.SharingScope){
+                		$rootScope.editTable(valueSet);
+                	}
+                	else{
+                		$rootScope.hideToc=true;
+                		$scope.hideToc=true;
+                		$scope.editTable(valueSet);
+                	}
+                    
+                });
+
+
+
+            });
+        };
 
         $rootScope.isNewObject = function(type, command, id) {
             if ($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
@@ -903,10 +937,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     } else if (element.type === "group" && element.children) {
                         var g = {};
                         g.path = element.position + "[1]";
+                        g.locationPath = element.name.substr(element.name.lastIndexOf('.') + 1) + '[1]';
                         g.obj = element;
                         g.children = [];
                         if (parent.path) {
-                            g.path = parent.path + "." + element.position + "[1]";
+                            g.path = parent.path + "." + g.path;
+                            g.locationPath = parent.locationPath + "." + g.locationPath;
                         }
                         parent.children.push(g);
                         angular.forEach(element.children, function(segmentRefOrGroup) {
@@ -915,10 +951,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     } else if (element.type === "segmentRef") {
                         var s = {};
                         s.path = element.position + "[1]";
+                        s.locationPath = $rootScope.segmentsMap[element.ref.id].name + '[1]';
                         s.obj = element;
                         s.children = [];
                         if (parent.path) {
                             s.path = parent.path + "." + element.position + "[1]";
+                            s.locationPath = parent.locationPath + "." + s.locationPath;
                         }
 
                         if ($rootScope.segmentsMap[s.obj.ref.id] == undefined) {
@@ -936,6 +974,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                             var s = {};
                             s.obj = element;
                             s.path = element.name;
+                            s.locationPath = element.name;
                             s.children = [];
                             parent = s;
                         }
@@ -950,6 +989,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         var f = {};
                         f.obj = element;
                         f.path = parent.path + "." + element.position + "[1]";
+                        f.locationPath = parent.locationPath + "." + element.position + "[1]";
                         f.children = [];
                         var d = $rootScope.datatypesMap[f.obj.datatype.id];
                         if (d === undefined) {
@@ -979,6 +1019,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
                         c.obj = element;
                         c.path = parent.path + "." + element.position + "[1]";
+                        c.locationPath = parent.locationPath + "." + element.position + "[1]";
                         c.children = [];
                         var d = $rootScope.datatypesMap[c.obj.datatype.id];
                         if (d === undefined) {
@@ -1002,6 +1043,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                             var d = {};
                             d.obj = element;
                             d.path = element.name;
+                            d.locationPath = element.name;
                             d.children = [];
                             parent = d;
                         }
@@ -1171,7 +1213,19 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         $rootScope.findDatatypeRefs = function(datatype, obj, path, target) {
             if (obj != null && obj != undefined) {
-                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                if (angular.equals(obj.type, 'field')) {
+                    if (obj.datatype.id === datatype.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        found.target = angular.copy(target);
+                        found.datatypeLink = angular.copy(obj.datatype);
+                        $rootScope.references.push(found);
+                    }
+                   // $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path, target);
+                }
+                
+                
+                else  if (angular.equals(obj.type, 'component')) {
                     if (obj.datatype.id === datatype.id) {
                         var found = angular.copy(obj);
                         found.path = path;
@@ -1180,7 +1234,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         $rootScope.references.push(found);
                     }
                     $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path, target);
-                } else if (angular.equals(obj.type, 'segment')) {
+                }
+
+                else if (angular.equals(obj.type, 'segment')) {
                     angular.forEach(obj.fields, function(field) {
                         $rootScope.findDatatypeRefs(datatype, field, path + "-" + field.position, target);
                     });
@@ -1188,6 +1244,55 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                         angular.forEach(obj.components, function(component) {
                             $rootScope.findDatatypeRefs(datatype, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
+        $rootScope.findDatatypeRefsForMenu = function(datatype, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.datatype.id === datatype.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        found.target = angular.copy(target);
+                        found.datatypeLink = angular.copy(obj.datatype);
+                        $rootScope.referencesForMenu.push(found);
+                    }
+                    $rootScope.findDatatypeRefsForMenu(datatype, $rootScope.datatypesMap[obj.datatype.id], path, target);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findDatatypeRefsForMenu(datatype, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                            $rootScope.findDatatypeRefsForMenu(datatype, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
+
+            $rootScope.findTempDatatypeRefs = function(datatype, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.datatype.id === datatype.id) {
+                        var found = angular.copy(obj);
+                        found.path = path;
+                        found.target = angular.copy(target);
+                        found.datatypeLink = angular.copy(obj.datatype);
+                        $rootScope.refsForDelete.push(found);
+                    }
+                    $rootScope.findTempDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype.id], path, target);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findTempDatatypeRefs(datatype, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                            $rootScope.findTempDatatypeRefs(datatype, component, path + "." + component.position, target);
                         });
                     }
                 }
@@ -1214,6 +1319,31 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         found.target = angular.copy(target);
                         found.segmentLink = angular.copy(obj.ref);
                         $rootScope.references.push(found);
+                    }
+                }
+            }
+        };
+        
+        $rootScope.findSegmentRefsForMenu = function(segment, obj, path, positionPath, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'message')) {
+                    angular.forEach(obj.children, function(child) {
+                        $rootScope.findSegmentRefsForMenu(segment, child, obj.name + '-' + obj.identifier, obj.name + '-' + obj.identifier, target);
+                    });
+                } else if (angular.equals(obj.type, 'group')){
+                    angular.forEach(obj.children, function(child) {
+                        var groupNames = obj.name.split(".");
+                        var groupName = groupNames[groupNames.length - 1];
+                        $rootScope.findSegmentRefsForMenu(segment, child, path + '.' + groupName, positionPath + '.' + obj.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'segmentRef')) {
+                    if (obj.ref.id === segment.id) {
+                        var found = angular.copy(obj);
+                        found.path = path + '.' + segment.name;
+                        found.positionPath = positionPath + '.' + obj.position;
+                        found.target = angular.copy(target);
+                        found.segmentLink = angular.copy(obj.ref);
+                        $rootScope.referencesForMenu.push(found);
                     }
                 }
             }
@@ -1247,6 +1377,70 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 }
             }
         };
+
+        $rootScope.findTableRefsForMenu = function(table, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.tables != undefined && obj.tables.length > 0) {
+                        angular.forEach(obj.tables, function(tableInside) {
+                            if (tableInside.id === table.id) {
+                                var found = angular.copy(obj);
+                                found.path = path;
+                                found.target = angular.copy(target);
+                                found.tableLink = angular.copy(tableInside);
+                                $rootScope.referencesForMenu.push(found);
+                            }
+                        });
+                    }
+                    // $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findTableRefsForMenu(table, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                            $rootScope.findTableRefsForMenu(table, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
+        
+        
+        
+        $rootScope.findTableRefsForDelete = function(table, obj, path, target) {
+            if (obj != null && obj != undefined) {
+                if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                    if (obj.tables != undefined && obj.tables.length > 0) {
+                        angular.forEach(obj.tables, function(tableInside) {
+                            if (tableInside.id === table.id) {
+                                var found = angular.copy(obj);
+                                found.path = path;
+                                found.target = angular.copy(target);
+                                found.tableLink = angular.copy(tableInside);
+                                $rootScope.refsForDelete.push(found);
+                            }
+                        });
+                    }
+                    // $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype.id], path);
+                } else if (angular.equals(obj.type, 'segment')) {
+                    angular.forEach(obj.fields, function(field) {
+                        $rootScope.findTableRefsForDelete(table, field, path + "-" + field.position, target);
+                    });
+                } else if (angular.equals(obj.type, 'datatype')) {
+                    if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
+                        angular.forEach(obj.components, function(component) {
+                             $rootScope.findTableRefsForDelete(table, component, path + "." + component.position, target);
+                        });
+                    }
+                }
+            }
+        };
+
+
+
+
 
         $rootScope.saveBindingForSegment = function() {
             var segmentBindingUpdateParameterList = [];
@@ -1429,7 +1623,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         });
                         var index = $rootScope.segments.indexOf(oldSegment);
                         if (index > -1) $rootScope.segments[index] = targetSegment;
-
+                        
                         var segmentUpdateParameter = {};
                         segmentUpdateParameter.segmentId = targetSegment.id;
                         segmentUpdateParameter.fieldId = targetField.id;
@@ -1438,6 +1632,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         segmentUpdateParameterList.push(segmentUpdateParameter);
                     }
                 }
+                console.log("clearing");
+                $rootScope.clearChanges();
             }
 
             SegmentService.updateDatatypeBinding(segmentUpdateParameterList).then(function(result) {}, function(error) {
@@ -1461,7 +1657,158 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             });
         };
 
+        $rootScope.replaceElement= function(source, dest){
+            $rootScope.SegmentsToUpdate=[];
+            $rootScope.datatypeToUpdate=[];
+             var newLink = angular.fromJson({
+                            id: dest.id,
+                            name: dest.name,
+                            ext: dest.ext
+                        });
+            var refs= angular.copy($rootScope.references);
+            angular.forEach($rootScope.references, function(ref){
+                if(ref.target.status!=="PUBLISHED"){
+                if(ref.type=='field'){
+                    console.log(ref.target);
+                    var segment=angular.copy(ref.target);
+                angular.forEach(ref.target.fields, function(field){
+                    if(field.position==ref.position){
+                        field.datatype.id=dest.id;
+                    }
+                });
+                $rootScope.SegmentsToUpdate.push(ref.target);  
+                
+                }
+                else if(ref.type=='component'){
+                angular.forEach(ref.target.components, function(component){
+                    if(component.position==ref.position){
+                        component.datatype.id=dest.id;
+                    }
+                });
+                  $rootScope.datatypeToUpdate.push(ref.target);  
+                }
+                }
+                
+                SegmentService.saves($rootScope.SegmentsToUpdate).then(function(segs){
+                            angular.forEach(segs, function(seg){
+                            SegmentService.merge($rootScope.segmentsMap[seg.id], seg);
+                            
+                        
+                    });
+                            DatatypeService.saves($rootScope.datatypeToUpdate).then(function(dts){
+                            
+                            angular.forEach(dts, function(dt){
+                            DatatypeService.merge($rootScope.datatypesMap[dt.id], dt);
+                                             });
+                                                $rootScope.editDatatype(dest);
 
+                                                CloneDeleteSvc.deleteDatatype(source);
+                                           });
+                    
+                                  });
+                         })
+            //
+        };
+
+        
+
+
+        $rootScope.addOneDatatypeById=function(id){
+            $scope.selectedDatatypes=[];
+
+
+        DatatypeService.getOneDatatype(id).then(function(datatype){
+
+             $scope.selectedDatatypes.push(datatype);
+
+                
+	            $scope.selectFlv = [];
+	            var newLinks = [];
+	            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	   
+	                    newLinks.push({
+	                        id: $scope.selectedDatatypes[i].id,
+	                        name: $scope.selectedDatatypes[i].name
+	                    })
+	                
+	            }
+	            $rootScope.usedDtLink = [];
+	            $rootScope.usedVsLink = [];
+	            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	                $rootScope.fillMaps($scope.selectedDatatypes[i]);
+	            }
+	            DatatypeService.saves($scope.selectFlv).then(function(result) {
+	                for (var i = 0; i < result.length; i++) {
+	                    newLinks.push({
+	                        id: result[i].id,
+	                        name: result[i].name,
+	                        ext: result[i].ext
+	                    })
+	                }
+	                DatatypeLibrarySvc.addChildren($rootScope.datatypeLibrary.id, newLinks).then(function(link) {
+	                    for (var i = 0; i < newLinks.length; i++) {
+	                        $rootScope.datatypeLibrary.children.splice(0, 0, newLinks[i]);
+	                    }
+	                    for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	                        $rootScope.datatypes.splice(0, 0, $scope.selectedDatatypes[i]);
+	                    }
+	                    for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
+	                        $rootScope.datatypesMap[$scope.selectedDatatypes[i].id] = $scope.selectedDatatypes[i];
+	                    }
+	                    var usedDtId1 = _.map($rootScope.usedDtLink, function(num, key) {
+	                        return num.id;
+	                    });
+
+	                    DatatypeService.get(usedDtId1).then(function(datatypes) {
+	                        for (var j = 0; j < datatypes.length; j++) {
+	                            if (!$rootScope.datatypesMap[datatypes[j].id]) {
+
+	                                $rootScope.datatypesMap[datatypes[j].id] = datatypes[j];
+	                                $rootScope.datatypes.push(datatypes[j]);
+	                                //$rootScope.getDerived(datatypes[j]);
+	                            }
+	                        }
+
+	                        var usedVsId = _.map($rootScope.usedVsLink, function(num, key) {
+	                            return num.id;
+	                        });
+	                        console.log("$rootScope.usedVsLink");
+
+	                        console.log($rootScope.usedVsLink);
+	                        var newTablesLink = _.difference($rootScope.usedVsLink,$rootScope.tableLibrary.children);
+	                        console.log(newTablesLink);
+
+	                        TableLibrarySvc.addChildren($rootScope.tableLibrary.id, newTablesLink).then(function() {
+	                          $rootScope.tableLibrary.children = _.union(newTablesLink, $rootScope.tableLibrary.children);
+
+	                            TableService.get(usedVsId).then(function(tables) {
+	                                for (var j = 0; j < tables.length; j++) {
+	                                    if (!$rootScope.tablesMap[tables[j].id]) {
+	                                        $rootScope.tablesMap[tables[j].id] = tables[j];
+	                                        $rootScope.tables.push(tables[j]);
+
+	                                    }
+	                                }
+	                            });
+                              
+	                        });
+	                    });
+	                    $rootScope.msg().text = "datatypeAdded";
+	                    $rootScope.msg().type = "success";
+	                    $rootScope.msg().show = true;
+	                });
+
+	            }, function(error) {
+	                $rootScope.saving = false;
+	                $rootScope.msg().text = error.data.text;
+	                $rootScope.msg().type = error.data.type;
+	                $rootScope.msg().show = true;
+	            });
+
+        });
+
+	        
+        };
         $rootScope.saveBindingForValueSet = function() {
             var datatypeUpdateParameterList = [];
             var segmentUpdateParameterList = [];
@@ -1612,37 +1959,39 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             angular.forEach($rootScope.datatypes, function(dt) {
                 $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
             });
+            console.log("clearing");
+            $rootScope.clearChanges();
         };
 
         $rootScope.genRegex = function(format) {
             if (format === 'YYYY') {
-                return '(([0-9]{4})|(([0-9]{4})((0[1-9])|(1[0-2])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+                return '([0-9]{4})(((0[1-9])|(1[0-2]))(((0[1-9])|([1-2][0-9])|(3[0-1]))((([0-1][0-9])|(2[0-3]))(([0-5][0-9])(([0-5][0-9])(\.[0-9]{1,4})?)?)?)?)?)?((\\+|\\-)[0-9]{4})?';
             } else if (format === 'YYYYMM') {
-                return '((([0-9]{4})((0[1-9])|(1[0-2])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))(((0[1-9])|([1-2][0-9])|(3[0-1]))((([0-1][0-9])|(2[0-3]))(([0-5][0-9])(([0-5][0-9])(\.[0-9]{1,4})?)?)?)?)?((\\+|\\-)[0-9]{4})?';
             } else if (format === 'YYYYMMDD') {
-                return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))((([0-1][0-9])|(2[0-3]))(([0-5][0-9])(([0-5][0-9])(\.[0-9]{1,4})?)?)?)?((\\+|\\-)[0-9]{4})?';
             } else if (format === 'YYYYMMDDhh') {
-                return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))(([0-5][0-9])(([0-5][0-9])(\.[0-9]{1,4})?)?)?((\\+|\\-)[0-9]{4})?';
             } else if (format === 'YYYYMMDDhhmm') {
-                return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])(([0-5][0-9])(\.[0-9]{1,4})?)?((\\+|\\-)[0-9]{4})?';
             } else if (format === 'YYYYMMDDhhmmss') {
-                return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])(\.[0-9]{1,4})?((\\+|\\-)[0-9]{4})?';
             } else if (format === 'YYYYMMDDhhmmss.sss') {
-                return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\.[0-9]{1,4}((\\+|\\-)[0-9]{4})?';
             } else if (format === 'YYYY+-ZZZZ') {
-                return '([0-9]{4}).*((\\+|\\-)[0-9]{4})';
+                return '([0-9]{4})(((0[1-9])|(1[0-2]))(((0[1-9])|([1-2][0-9])|(3[0-1]))((([0-1][0-9])|(2[0-3]))(([0-5][0-9])(([0-5][0-9])(\.[0-9]{1,4})?)?)?)?)?)?(\\+|\\-)[0-9]{4}';
             } else if (format === 'YYYYMM+-ZZZZ') {
-                return '([0-9]{4})((0[1-9])|(1[0-2])).*((\\+|\\-)[0-9]{4})';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))(((0[1-9])|([1-2][0-9])|(3[0-1]))((([0-1][0-9])|(2[0-3]))(([0-5][0-9])(([0-5][0-9])(\.[0-9]{1,4})?)?)?)?)?(\\+|\\-)[0-9]{4}';
             } else if (format === 'YYYYMMDD+-ZZZZ') {
-                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])).*((\\+|\\-)[0-9]{4})';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))((([0-1][0-9])|(2[0-3]))(([0-5][0-9])(([0-5][0-9])(\.[0-9]{1,4})?)?)?)?(\\+|\\-)[0-9]{4}';
             } else if (format === 'YYYYMMDDhh+-ZZZZ') {
-                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])).*((\\+|\\-)[0-9]{4})';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))(([0-5][0-9])(([0-5][0-9])(\.[0-9]{1,4})?)?)?(\\+|\\-)[0-9]{4}';
             } else if (format === 'YYYYMMDDhhmm+-ZZZZ') {
-                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]).*((\\+|\\-)[0-9]{4})';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])(([0-5][0-9])(\.[0-9]{1,4})?)?(\\+|\\-)[0-9]{4}';
             } else if (format === 'YYYYMMDDhhmmss+-ZZZZ') {
-                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]).*((\\+|\\-)[0-9]{4})';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])(\.[0-9]{1,4})?(\\+|\\-)[0-9]{4}';
             } else if (format === 'YYYYMMDDhhmmss.sss+-ZZZZ') {
-                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]((\\+|\\-)[0-9]{4})';
+                return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\.[0-9]{1,4}(\\+|\\-)[0-9]{4}';
             } else if (format === 'ISO-compliant OID') {
                 return '[0-2](\\.(0|[1-9][0-9]*))*';
             } else if (format === 'Alphanumeric') {
@@ -1703,7 +2052,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + compositeType + ' [' + secondConstraint.description + ']',
                     assertion: '<Assertion><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Assertion>'
                 };
@@ -1716,27 +2064,23 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                    constraintTarget: firstConstraint.constraintTarget,
                     description: 'IF [' + firstConstraint.description + '] THEN [' + secondConstraint.description + ']',
-                    assertion: '<Assertion><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Assertion>'
+                    assertion: '<Assertion><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Assertion>'
                 };
             } else if (compositeType === 'FORALL' || compositeType === 'EXIST') {
                 var forALLExistId = compositeType;
                 var forALLExistAssertion = '';
                 var forALLExistDescription = compositeType;
-                var forALLExistConstraintTarget = '';
 
                 angular.forEach(constraints, function(c) {
                     forALLExistAssertion = forALLExistAssertion + c.assertion.replace("<Assertion>", "").replace("</Assertion>", "");
                     forALLExistDescription = forALLExistDescription + '[' + c.description + ']';
                     forALLExistId = forALLExistId + '(' + c.constraintId + ')';
-                    forALLExistConstraintTarget = c.constraintTarget;
                 });
 
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: forALLExistId,
-                    constraintTarget: forALLExistConstraintTarget,
                     description: forALLExistDescription,
                     assertion: '<Assertion><' + compositeType + '>' + forALLExistAssertion + '</' + compositeType + '></Assertion>'
                 };
@@ -1776,7 +2120,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     description: 'IF [' + firstConstraint.description + '] THEN [' + secondConstraint.description + ']',
                     trueUsage: '',
                     falseUsage: '',
-                    assertion: '<Condition><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Condition>'
+                    assertion: '<Condition><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Condition>'
                 };
             } else if (compositeType === 'FORALL' || compositeType === 'EXIST') {
                 var forALLExistId = compositeType;
@@ -1802,11 +2146,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return cp;
         };
 
-        $rootScope.generateFreeTextConformanceStatement = function(positionPath, newConstraint) {
+        $rootScope.generateFreeTextConformanceStatement = function(newConstraint) {
             var cs = {
                 id: new ObjectId().toString(),
                 constraintId: newConstraint.constraintId,
-                constraintTarget: positionPath,
                 description: newConstraint.freeText,
                 assertion: null
             };
@@ -1814,13 +2157,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return cs;
         };
 
-        $rootScope.generateConformanceStatement = function(positionPath, newConstraint) {
+        $rootScope.generateConformanceStatement = function(newConstraint) {
             var cs = null;
             if (newConstraint.contraintType === 'valued') {
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + '.',
                     assertion: '<Assertion><Presence Path=\"' + newConstraint.position_1 + '\"/></Assertion>'
                 };
@@ -1829,7 +2171,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     cs = {
                         id: new ObjectId().toString(),
                         constraintId: newConstraint.constraintId,
-                        constraintTarget: positionPath,
                         description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
                         assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Assertion>'
                     };
@@ -1839,7 +2180,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         cs = {
                             id: new ObjectId().toString(),
                             constraintId: newConstraint.constraintId,
-                            constraintTarget: positionPath,
                             description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'^~\\&amp;\'.',
                             assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"^~\\&amp;\" IgnoreCase=\"' + newConstraint.ignoreCase + '\"/></Assertion>'
                         };
@@ -1862,7 +2202,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         cs = {
                             id: new ObjectId().toString(),
                             constraintId: newConstraint.constraintId,
-                            constraintTarget: positionPath,
                             description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
                             assertion: '<Assertion>' + assertionScript + '</Assertion>'
                         };
@@ -1872,7 +2211,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.value + '.',
                     assertion: '<Assertion><StringList Path=\"' + newConstraint.position_1 + '\" CSV=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1880,7 +2218,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.valueSetId + '.',
                     assertion: '<Assertion><ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/></Assertion>'
                 };
@@ -1889,7 +2226,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     cs = {
                         id: new ObjectId().toString(),
                         constraintId: newConstraint.constraintId,
-                        constraintTarget: positionPath,
                         description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value2 + '\'.',
                         assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Assertion>'
                     };
@@ -1897,7 +2233,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     cs = {
                         id: new ObjectId().toString(),
                         constraintId: newConstraint.constraintId,
-                        constraintTarget: positionPath,
                         description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' formatted with \'' + newConstraint.value + '\'.',
                         assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Assertion>'
                     };
@@ -1906,7 +2241,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' identical to the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1914,7 +2248,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1922,7 +2255,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="NE" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1930,7 +2262,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GT" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1938,7 +2269,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GE" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1946,7 +2276,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LT" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1954,7 +2283,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than the value of ' + newConstraint.location_2 + '.',
                     assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LE" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
@@ -1962,7 +2290,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="EQ" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1970,7 +2297,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="NE" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1978,7 +2304,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GT" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1986,7 +2311,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GE" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -1994,7 +2318,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LT" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -2002,7 +2325,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than ' + newConstraint.value + '.',
                     assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LE" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
@@ -2010,7 +2332,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + " valued sequentially starting with the value '1'.",
                     assertion: '<Assertion><SetID Path=\"' + newConstraint.position_1 + '\"/></Assertion>'
                 };
@@ -2295,10 +2616,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         $rootScope.erorrForComplexPredicate = function(compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage, constraints) {
             if ($rootScope.isEmptyCompositeType(compositeType)) return true;
-            if (complexConstraintTrueUsage == null) return true;
-            if (complexConstraintFalseUsage == null) return true;
-
-
             if (compositeType == 'FORALL' || compositeType == 'EXIST') {
                 if (constraints.length < 2) return true;
             } else {
@@ -2307,8 +2624,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return false;
         };
-
-
         $rootScope.erorrForPredicate = function(newConstraint, type, selectedNode) {
             if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
@@ -2338,15 +2653,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
                 if ($rootScope.isEmptyConstraintValueSet(newConstraint)) return true;
             }
-            if (newConstraint.trueUsage == null) return true;
-            if (newConstraint.falseUsage == null) return true;
 
             return false;
         }
 
 
         $rootScope.erorrForConfStatement = function(newConstraint, targetId, type, selectedNode) {
-            if (!selectedNode) return true;
             if ($rootScope.isEmptyConstraintID(newConstraint)) return true;
             if ($rootScope.isDuplicatedConstraintID(newConstraint, targetId)) return true;
             if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
@@ -2392,7 +2704,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
             return false;
         }
-
+        $rootScope.getVersionToSelect=function(element){
+        	if(element.publicationVersion){
+        		return"(v"+element.publicationVersion+")";
+        	}else{
+        		return "";
+        	}
+        }
         $rootScope.isDuplicatedConstraintID = function(newConstraint, targetId) {
             if ($rootScope.conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1 && targetId == newConstraint.constraintId) return true;
 
@@ -2543,12 +2861,34 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 }
             });
         };
+        $rootScope.mergeEmptyProperty= function(to, from){
+        	Object.keys(to).forEach(function(key,index) {
+        		if(!to[key]&&from[key])
+        			to[key]=from[key];
+        	    // key: the name of the object key
+        	    // index: the ordinal position of the key within the object 
+        	});
 
+        }
         $scope.init = function() {
+            VersionAndUseService.findAll().then(function(result) {
+            	console.log("LOADING INFO VERSION");
+
+            
+                angular.forEach(result, function(info) {
+                	console.log("LOADING INFO VERSION");
+                	console.log($rootScope.versionAndUseMap[info.id]);
+                    $rootScope.versionAndUseMap[info.id] = info;
+                });
+            });
             $http.get('api/igdocuments/config', { timeout: 60000 }).then(function(response) {
                 $rootScope.config = angular.fromJson(response.data);
+                var delay = $q.defer();
+
             }, function(error) {});
+            
         };
+
 
         $scope.getFullName = function() {
             if (userInfoService.isAuthenticated() === true) {
@@ -2595,7 +2935,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $rootScope.getPredicateAsString = function(constraint) {
-            return constraint.description;
+            if(constraint) return constraint.description;
+            return null;
         };
 
         $rootScope.getTextValue = function(value) {
@@ -2658,11 +2999,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         };
 
         $rootScope.getDatatypeExtension = function(datatype) {
-            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.igdocument.profile.datatypeLibrary, "ext");
+            return $rootScope.getExtensionInLibrary(datatype.id, $rootScope.datatypeLibrary, "ext");
         };
 
         $rootScope.getTableBindingIdentifier = function(table) {
-            return $rootScope.getExtensionInLibrary(table.id, $rootScope.igdocument.profile.tableLibrary, "bindingIdentifier");
+            return $rootScope.getExtensionInLibrary(table.id, $rootScope.tableLibrary, "bindingIdentifier");
         };
 
 
@@ -2674,6 +3015,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return "";
         };
 
+        $rootScope.getVersionLabel=function(id){
+            if($rootScope.versionAndUseMap[id]){
+                return "(v"+$rootScope.versionAndUseMap[id].publicationVersion+")";
+            }else{
+                return "";
+            }
+             
+        }
         $rootScope.hasSameVersion = function(element) {
 
             return element.hl7Version;
@@ -2681,6 +3030,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         $rootScope.getTableLabel = function(table) {
+        	
             if (table && table.bindingIdentifier) {
                 return $rootScope.getLabel(table.bindingIdentifier, table.ext);
             }
@@ -2698,7 +3048,111 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
             return "";
         };
+        $rootScope.publishTable = function(table) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmTablePublish.html',
+                controller: 'ConfirmTablePublishCtl',
+                resolve: {
+                    tableToPublish: function() {
+                        return table;
+                    }
+                }
+            });
+            modalInstance.result.then(function(table) {
+                
+                var newLink={
+                    name:table.name,
+                    ext:table.ext,
+                    id:table.id
+                }
 
+        
+      
+                TableService.publish($rootScope.table).then(function(published) {
+                		console.log("published Results");
+                		console.log(published);
+                    TableLibrarySvc.updateChild($rootScope.tableLibrary.id, newLink).then(function(link) {
+
+                    		$rootScope.table=published;
+                    		
+                    		
+                    		$rootScope.tablesMap[published.id].status="PUBLISHED";
+
+                    		console.log("rootScope"); 
+                    		$rootScope.$broadcast('event:openTable', $rootScope.table);
+                    		console.log($rootScope.table);
+                            if ($scope.editForm) {
+                            	console.log("Cleeaning");
+                                $scope.editForm.$setPristine();
+                                $scope.editForm.$dirty = false;
+                                $scope.editForm.$invalid = false;
+                                
+                            }
+                            $rootScope.clearChanges();
+                         	VersionAndUseService.findById(published.id).then(function(inf){
+                        		$rootScope.versionAndUseMap[inf.id]=inf;
+                        		if($rootScope.versionAndUseMap[inf.sourceId]){
+                        			$rootScope.versionAndUseMap[inf.sourceId].deprecated=true;
+                        		
+                        		}
+                            	
+                        	});
+                    });
+                });
+            });
+        };
+        $rootScope.canCreateNewVersion= function(element){
+        	if(element.scope&&element.scope!=='USER'){
+
+        		return false;
+        	}else if(element.status!=="PUBLISHED"){
+
+        		return false;
+        	}
+        	else if($rootScope.versionAndUseMap[element.id]&&$rootScope.versionAndUseMap[element.id].deprectaed){
+        		console.log($rootScope.versionAndUseMap[element.id].deprectaed);
+        		return false;
+        		
+        	}else{
+        		return true;
+        	}
+        
+        }
+        $rootScope.publishDatatype = function(datatype) {
+        	console.log("publisheing")
+
+            $rootScope.containUnpublished = false;
+            $rootScope.unpublishedTables = [];
+            $rootScope.unpublishedDatatypes = [];
+            $rootScope.ContainUnpublished(datatype);
+
+            if ($rootScope.containUnpublished) {
+                $rootScope.abortPublish(datatype);
+                datatype.status = "UNPUBLISHED";
+            } else {
+                $rootScope.confirmPublish(datatype);
+
+            }
+        };
+        $rootScope.confirmSwitch = function(source, dest) {
+            var modalInstance = $modal.open({
+                templateUrl: 'confirmSwitch.html',
+                controller: 'confirmSwitch',
+                resolve: {
+                    source: function() {
+                        return source;
+                    },
+                    dest: function() {
+                        return dest;
+                    },
+                    
+                }
+            });
+            modalInstance.result.then(function() {
+            	$rootScope.replaceElement(source,dest);
+                
+            });
+        };
 
         $rootScope.getGroupNodeName = function(node) {
             return node.position + "." + node.name;
@@ -2876,6 +3330,13 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
     };
 
     $scope.save = function() {
+    	  if ($rootScope.editForm) {
+    		  console.log("editform called")
+              $rootScope.editForm.$setPristine();
+    		  $rootScope.editForm.$dirty = false;
+          }
+          $rootScope.clearChanges();
+    	
         var data = $rootScope.currentData;
         if ($rootScope.libraryDoc && $rootScope.libraryDoc != null) {
             if (data.datatypeLibId && data.date) {
@@ -2883,16 +3344,15 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
 
         }
-        var section = { id: data.id, sectionTitle: data.sectionTitle, sectionDescription: data.sectionDescription, sectionPosition: data.sectionPosition, sectionContents: data.sectionContents };
         ////console.log(data);
 
         if (data.type && data.type === "section") {
             ////console.log($rootScope.originalSection);
             ////console.log(data);
 
-            SectionSvc.update($rootScope.igdocument.id, section).then(function(result) {
+            SectionSvc.update($rootScope.igdocument.id, data).then(function(result) {
                 ////console.log($rootScope.igdocument);
-                SectionSvc.merge($rootScope.originalSection, section);
+                SectionSvc.merge($rootScope.originalSection, data);
                 $scope.continue();
             }, function(error) {
                 $rootScope.msg().text = error.data.text;
@@ -3024,8 +3484,8 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                         children = $rootScope.libraryDoc.datatypeLibrary.children;
 
                     } else if ($rootScope.igdocument && $rootScope.igdocument !== null) {
-                        libId = $rootScope.igdocument.profile.datatypeLibrary.id;
-                        children = $rootScope.igdocument.profile.datatypeLibrary.children;
+                        libId = $rootScope.datatypeLibrary.id;
+                        children = $rootScope.datatypeLibrary.children;
                     }
                     var oldLink = DatatypeLibrarySvc.findOneChild(result.id, children);
                     var newLink = DatatypeService.getDatatypeLink(result);
@@ -3065,8 +3525,8 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                     children = $rootScope.libraryDoc.tableLibrary.children;
 
                 } else if ($rootScope.igdocument && $rootScope.igdocument !== null) {
-                    libId = $rootScope.igdocument.profile.tableLibrary.id;
-                    children = $rootScope.igdocument.profile.tableLibrary.children;
+                    libId = $rootScope.tableLibrary.id;
+                    children = $rootScope.tableLibrary.children;
                 }
                 TableService.save(table).then(function(result) {
                     var oldLink = TableLibrarySvc.findOneChild(result.id, children);
@@ -3094,7 +3554,6 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
 
             }
 
-
         } else if (data.type === "document") {
 
             IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function(result) {
@@ -3120,6 +3579,17 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
         }
 
-
     }
+});
+angular.module('igl').controller('confirmSwitch', function($scope, $rootScope, $http, $modalInstance, source, dest) {
+
+	$scope.source=source;
+	$scope.dest=dest;
+    $scope.confirm = function() {
+    	  $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
 });

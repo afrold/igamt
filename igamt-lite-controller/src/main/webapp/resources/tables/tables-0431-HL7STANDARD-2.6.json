@@ -1,0 +1,84 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b3ff",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0431",
+  "name" : "0431",
+  "description" : "Recreational Drug Use Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.431",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b400",
+    "value" : "A",
+    "label" : "Alcohol",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b401",
+    "value" : "C",
+    "label" : "Tobacco - chewed",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b402",
+    "value" : "K",
+    "label" : "Kava",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b403",
+    "value" : "M",
+    "label" : "Marijuana",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b404",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b405",
+    "value" : "T",
+    "label" : "Tobacco - smoked",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b406",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

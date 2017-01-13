@@ -34,14 +34,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit.PersistenceContextUnit;
 
 /**
  * @author gcr1
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PersistenceContext.class})
+@ContextConfiguration(classes = {PersistenceContextUnit.class})
 public class DataypeServiceImplTest {
 
   @Autowired
@@ -94,7 +94,7 @@ public class DataypeServiceImplTest {
    * Test method for
    * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DatatypeServiceImpl#findByLibrary(java.lang.String, gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
    * .
-   */
+
   @Test
   public void testFindLibIds() {
     List<SCOPE> stdScope = new ArrayList<SCOPE>();
@@ -118,5 +118,13 @@ public class DataypeServiceImplTest {
     }
     List<Datatype> sut = datatypeService.findByIds(ids);
     assertEquals(ids.size(), sut.size());
+  }*/
+  
+  @Test
+  public void testFindShared() {
+    List<Datatype> sut = datatypeService.findShared(new Long(10));
+   System.out.println(sut);
+    assertNotNull(sut);
+    assertTrue(0 < sut.size());
   }
 }

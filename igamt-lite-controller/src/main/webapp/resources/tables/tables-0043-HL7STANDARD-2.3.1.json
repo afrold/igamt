@@ -1,0 +1,489 @@
+{
+  "type" : "table",
+  "id" : "565f3ab7d4c6e52cfd445b19",
+  "hl7Version" : "2.3.1",
+  "libIds" : [ "573dd239d4c6ca828c295f91" ],
+  "bindingIdentifier" : "0043",
+  "name" : "0043",
+  "description" : "Condition code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b1a",
+    "value" : "01",
+    "label" : "Military service related",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b1b",
+    "value" : "02",
+    "label" : "Condition is employment related",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b1c",
+    "value" : "03",
+    "label" : "Patient covered by insurance not reflected here",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b1d",
+    "value" : "04",
+    "label" : "HMO enrollee",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b1e",
+    "value" : "05",
+    "label" : "Lien has been filed",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b1f",
+    "value" : "06",
+    "label" : "ESRD patient in first 18 months of entitlement covered by employer group health insurance",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b20",
+    "value" : "07",
+    "label" : "Treatment of non-terminal condition for hospice patient",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b21",
+    "value" : "08",
+    "label" : "Beneficiary would not provide information concerning other insurance coverage",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b22",
+    "value" : "09",
+    "label" : "Neither patient nor spouse is employed",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b23",
+    "value" : "10",
+    "label" : "Patient and/or spouse is employed but no EGHP exists",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b24",
+    "value" : "11",
+    "label" : "Disabled beneficiary but no LGHP",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b25",
+    "value" : "12 ... 16",
+    "label" : "Payer codes.",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b26",
+    "value" : "18",
+    "label" : "Maiden name retained",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b27",
+    "value" : "19",
+    "label" : "Child retains mother’s name",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b28",
+    "value" : "20",
+    "label" : "Beneficiary requested billing",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b29",
+    "value" : "21",
+    "label" : "Billing for Denial Notice",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b2a",
+    "value" : "26",
+    "label" : "VA eligible patient chooses to receive services in a medicare certified facility",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b2b",
+    "value" : "27",
+    "label" : "Patient referred to a sole community hospital for a diagnostic laboratory test",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b2c",
+    "value" : "28",
+    "label" : "Patient and/or spouse’s EGHP is secondary to Medicare",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b2d",
+    "value" : "29",
+    "label" : "Disabled beneficiary and/or family member’s LGHP is secondary to Medicare",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b2e",
+    "value" : "31",
+    "label" : "Patient is student (full time-day)",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b2f",
+    "value" : "32",
+    "label" : "Patient is student (cooperative/work study program)",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b30",
+    "value" : "33",
+    "label" : "Patient is student (full time-night)",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b31",
+    "value" : "34",
+    "label" : "Patient is student (Part time)",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b32",
+    "value" : "36",
+    "label" : "General care patient in a special unit",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b33",
+    "value" : "37",
+    "label" : "Ward accommodation as patient request",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b34",
+    "value" : "38",
+    "label" : "Semi-private room not available",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b35",
+    "value" : "39",
+    "label" : "Private room medically necessary",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b36",
+    "value" : "40",
+    "label" : "Same day transfer",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b37",
+    "value" : "41",
+    "label" : "Partial hospitalization",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b38",
+    "value" : "46",
+    "label" : "Non-availability statement on file",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b39",
+    "value" : "48",
+    "label" : "Psychiatric residential treatment centers for children and adolescents",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b3a",
+    "value" : "55",
+    "label" : "SNF bed not available",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b3b",
+    "value" : "56",
+    "label" : "Medical appropriateness",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b3c",
+    "value" : "57",
+    "label" : "SNF readmission",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b3d",
+    "value" : "60",
+    "label" : "Day outlier",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b3e",
+    "value" : "61",
+    "label" : "Cost outlier",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b3f",
+    "value" : "62",
+    "label" : "Payer code",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b40",
+    "value" : "66",
+    "label" : "Provider does not wish cost outlier payment",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b41",
+    "value" : "67",
+    "label" : "Beneficiary elects not to use life time reserve (LTR) days",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b42",
+    "value" : "68",
+    "label" : "Beneficiary elects to use life time reserve (LTR) days",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b43",
+    "value" : "70",
+    "label" : "Self-administered EPO",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b44",
+    "value" : "71",
+    "label" : "Full care in unit",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b45",
+    "value" : "72",
+    "label" : "Self-care in unit",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b46",
+    "value" : "73",
+    "label" : "Self-care training",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b47",
+    "value" : "74",
+    "label" : "Home",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b48",
+    "value" : "75",
+    "label" : "Home - 100% reimbursement",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b49",
+    "value" : "76",
+    "label" : "Back-up in facility dialysis",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b4a",
+    "value" : "77",
+    "label" : "Provider accepts or is obligated/required due to a contractual arrangement or law to accept payment by a primary payer as payment in full",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b4b",
+    "value" : "78",
+    "label" : "New coverage not implemented by HMO",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b4c",
+    "value" : "79",
+    "label" : "Corf services provided off-site",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445b4d",
+    "value" : "80",
+    "label" : "Pregnant",
+    "codeSystem" : "HL70043",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

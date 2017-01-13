@@ -1,0 +1,57 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655081ca",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0321",
+  "name" : "0321",
+  "description" : "Dispense Method",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081cb",
+    "value" : "AD",
+    "label" : "Automatic Dispensing",
+    "codeSystem" : "HL70321",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081cc",
+    "value" : "F",
+    "label" : "Floor Stock",
+    "codeSystem" : "HL70321",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081cd",
+    "value" : "TR",
+    "label" : "Traditional",
+    "codeSystem" : "HL70321",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655081ce",
+    "value" : "UD",
+    "label" : "Unit Dose",
+    "codeSystem" : "HL70321",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

@@ -12,102 +12,7 @@
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 				<title>Implementation guide</title>
 				<style type="text/css">
-					#sidebar {
-					float:left;
-					width:30%;
-					background:#F0F0F0;
-					overflow: auto;
-					max-height: 100vh;
-					font-family:
-					'Arial Narrow',
-					sans-serif;
-					margin-top: 1px;
-					margin-bottom: 1px;
-					/*
-					border-right: 2px
-					solid
-					black;
-					*/
-					}
-					/* unvisited link */
-					#sidebar a:link {
-					color: #000066;
-					margin-top:
-					1px;
-					margin-bottom: 1px;
-					/* margin-right: 150px;
-					margin-left: 80px;
-					*/
-					}
 
-					/* visited link */
-					#sidebar a:visited {
-					color:
-					green;
-					margin-top: 1px;
-					margin-bottom: 1px;
-					}
-
-					/* mouse over link */
-					#sidebar a:hover {
-					color: hotpink;
-					margin-top:
-					1px;
-					margin-bottom:
-					1px;
-					}
-
-					/* selected link */
-					#sidebar a:active {
-					color: blue;
-					margin-top:
-					1px;
-					margin-bottom: 1px;
-					}
-					#main {
-					float:right;
-					width:70%;
-					overflow:
-					auto;
-					max-height: 100vh;
-					}
-					#notoc {
-					float:right;
-					width:100%;
-					overflow:
-					auto;
-					max-height: 100vh;
-					}
-					.divh1{
-					padding-left: 15px;
-					}
-					.divh2 {
-					padding-left: 30px;
-					}
-					.divh3 {
-					padding-left: 45px;
-					}
-					.divh4 {
-					padding-left: 60px;
-					}
-					.divh5 {
-					padding-left:
-					75px;
-					}
-					.divh6 {
-					padding-left:
-					90px;
-					}
-					.hidden {
-					display: none;
-					}
-					.unhidden {
-					display:
-					block;
-					}
-					.btn {
-					float:right;
-					}
 					.masterDatatypeLabel {
 					color:red;
 					}
@@ -116,6 +21,10 @@
 					font-family: 'Arial Narrow',
 					sans-serif;
 					font-size: 10px;
+					width:100%;
+					overflow:
+					auto;
+					max-height: 100vh;
 					}
 				</style>
 				<style type="text/css">
@@ -189,11 +98,8 @@
 			</head>
 
 			<body style="font-family:Arial Narrow, Arial, sans-serif;">
-				<xsl:if test="$includeTOC='true'">
-						<xsl:apply-templates select="ConformanceProfile/MetaData" />
-						<hr></hr>
-						<xsl:call-template name="dispSect" />
-				</xsl:if>
+				<xsl:call-template name="dispProfileContent" />
+				<xsl:call-template name="dispSect" />
 			</body>
 		</html>
 	</xsl:template>

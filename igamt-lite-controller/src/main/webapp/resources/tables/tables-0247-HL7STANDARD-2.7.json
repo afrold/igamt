@@ -1,0 +1,129 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc655070f4",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0247",
+  "name" : "0247",
+  "description" : "Status of Evaluation",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070f5",
+    "value" : "A",
+    "label" : "Evaluation anticipated, but not yet begun",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070f6",
+    "value" : "C",
+    "label" : "Product received in condition which made analysis impossible",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070f7",
+    "value" : "D",
+    "label" : "Product discarded -- unable to follow up",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070f8",
+    "value" : "I",
+    "label" : "Product remains implanted -- unable to follow up",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070f9",
+    "value" : "K",
+    "label" : "Problem already known, no evaluation necessary",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070fa",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070fb",
+    "value" : "P",
+    "label" : "Evaluation in progress",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070fc",
+    "value" : "Q",
+    "label" : "Product under quarantine -- unable to follow up",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070fd",
+    "value" : "R",
+    "label" : "Product under recall/corrective action",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070fe",
+    "value" : "U",
+    "label" : "Product unavailable for follow up investigation",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070ff",
+    "value" : "X",
+    "label" : "Product not made by company",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507100",
+    "value" : "Y",
+    "label" : "Evaluation completed",
+    "codeSystem" : "HL70247",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

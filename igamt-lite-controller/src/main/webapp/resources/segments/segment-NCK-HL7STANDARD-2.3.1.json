@@ -1,0 +1,47 @@
+{
+  "type" : "segment",
+  "hl7Version" : "2.3.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "status" : null,
+  "participants" : [ ],
+  "libIds" : [ "573dd239d4c6ca828c295f8f" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd44676b",
+  "label" : "NCK",
+  "fields" : [ {
+    "type" : "field",
+    "name" : "System Date/Time",
+    "usage" : "C",
+    "minLength" : 0,
+    "maxLength" : "0",
+    "confLength" : "",
+    "table" : null,
+    "datatype" : {
+      "id" : "565f3ab7d4c6e52cfd44624e",
+      "name" : "TS",
+      "ext" : null,
+      "label" : "TS"
+    },
+    "position" : 1,
+    "comment" : "",
+    "text" : "",
+    "hide" : false,
+    "id" : "565f3ab7d4c6e52cfd44676c",
+    "itemNo" : "01172",
+    "min" : 0,
+    "max" : "1"
+  } ],
+  "dynamicMapping" : {
+    "id" : "573dd239d4c6ca828c295990",
+    "mappings" : [ ]
+  },
+  "name" : "NCK",
+  "description" : "System Clock",
+  "comment" : "",
+  "text1" : "",
+  "text2" : ""
+}

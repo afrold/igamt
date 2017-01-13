@@ -1,0 +1,876 @@
+{
+  "type" : "table",
+  "id" : "569eac0dd4c623dc65508200",
+  "hl7Version" : "2.7",
+  "libIds" : [ "573dd232d4c6ca828c28fc9e" ],
+  "bindingIdentifier" : "0440",
+  "name" : "0440",
+  "description" : "Data Types",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508201",
+    "value" : "AD",
+    "label" : "Address",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508202",
+    "value" : "AUI",
+    "label" : "Authorization information",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508203",
+    "value" : "CCD",
+    "label" : "Charge code and date",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508204",
+    "value" : "CCP",
+    "label" : "Channel calibration parameters",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508205",
+    "value" : "CD",
+    "label" : "Channel definition",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508206",
+    "value" : "CE",
+    "label" : "Coded element",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508207",
+    "value" : "CF",
+    "label" : "Coded element with formatted values",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508208",
+    "value" : "CK",
+    "label" : "Composite ID with check digit",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508209",
+    "value" : "CM",
+    "label" : "Composite",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550820a",
+    "value" : "CN",
+    "label" : "Composite ID number and name",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550820b",
+    "value" : "CNE",
+    "label" : "Coded with no exceptions",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550820c",
+    "value" : "CNN",
+    "label" : "Composite ID number and name simplified",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550820d",
+    "value" : "CP",
+    "label" : "Composite price",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550820e",
+    "value" : "CQ",
+    "label" : "Composite quantity with units",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550820f",
+    "value" : "CSU",
+    "label" : "Channel sensitivity and units",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508210",
+    "value" : "CWE",
+    "label" : "Coded with exceptions",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508211",
+    "value" : "CX",
+    "label" : "Extended composite ID with check digit",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508212",
+    "value" : "DDI",
+    "label" : "Daily deductible information",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508213",
+    "value" : "DIN",
+    "label" : "Date and institution name",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508214",
+    "value" : "DLD",
+    "label" : "Discharge to location and date",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508215",
+    "value" : "DLN",
+    "label" : "Driver's license number",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508216",
+    "value" : "DLT",
+    "label" : "Delta",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508217",
+    "value" : "DR",
+    "label" : "Date/time range",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508218",
+    "value" : "DT",
+    "label" : "Date",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508219",
+    "value" : "DTM",
+    "label" : "Date/time",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550821a",
+    "value" : "DTN",
+    "label" : "Day type and number",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550821b",
+    "value" : "ED",
+    "label" : "Encapsulated data",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550821c",
+    "value" : "EI",
+    "label" : "Entity identifier",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550821d",
+    "value" : "EIP",
+    "label" : "Entity identifier pair",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550821e",
+    "value" : "ELD",
+    "label" : "Error location and description",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550821f",
+    "value" : "ERL",
+    "label" : "Error location",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508220",
+    "value" : "FC",
+    "label" : "Financial class",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508221",
+    "value" : "FN",
+    "label" : "Family name",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508222",
+    "value" : "FT",
+    "label" : "Formatted text",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508223",
+    "value" : "GTS",
+    "label" : "General timing specification",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508224",
+    "value" : "HD",
+    "label" : "Hierarchic designator",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508225",
+    "value" : "ICD",
+    "label" : "Insurance certification definition",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508226",
+    "value" : "ID",
+    "label" : "Coded values for HL7 tables",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508227",
+    "value" : "IS",
+    "label" : "Coded value for user-defined tables",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508228",
+    "value" : "JCC",
+    "label" : "Job code/class",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508229",
+    "value" : "LA1",
+    "label" : "Location with address variation 1",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550822a",
+    "value" : "LA2",
+    "label" : "Location with address variation 2",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550822b",
+    "value" : "MA",
+    "label" : "Multiplexed array",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550822c",
+    "value" : "MO",
+    "label" : "Money",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550822d",
+    "value" : "MOC",
+    "label" : "Money and charge code",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550822e",
+    "value" : "MOP",
+    "label" : "Money or percentage",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550822f",
+    "value" : "MSG",
+    "label" : "Message type",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508230",
+    "value" : "NA",
+    "label" : "Numeric array",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508231",
+    "value" : "NDL",
+    "label" : "Name with date and location",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508232",
+    "value" : "NM",
+    "label" : "Numeric",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508233",
+    "value" : "NR",
+    "label" : "Numeric range",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508234",
+    "value" : "OCD",
+    "label" : "Occurrence code and date",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508235",
+    "value" : "OSD",
+    "label" : "Order sequence definition",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508236",
+    "value" : "OSP",
+    "label" : "Occurrence span code and date",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508237",
+    "value" : "PIP",
+    "label" : "Practitioner institutional privileges",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508238",
+    "value" : "PL",
+    "label" : "Person location",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508239",
+    "value" : "PLN",
+    "label" : "Practitioner license or other ID number",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550823a",
+    "value" : "PN",
+    "label" : "Person name",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550823b",
+    "value" : "PPN",
+    "label" : "Performing person time stamp",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550823c",
+    "value" : "PRL",
+    "label" : "Parent result link",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550823d",
+    "value" : "PT",
+    "label" : "Processing type",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550823e",
+    "value" : "PTA",
+    "label" : "Policy type and amount",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550823f",
+    "value" : "QIP",
+    "label" : "Query input parameter list",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508240",
+    "value" : "QSC",
+    "label" : "Query selection criteria",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508241",
+    "value" : "RCD",
+    "label" : "Row column definition",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508242",
+    "value" : "RFR",
+    "label" : "Reference range",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508243",
+    "value" : "RI",
+    "label" : "Repeat interval",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508244",
+    "value" : "RMC",
+    "label" : "Room coverage",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508245",
+    "value" : "RP",
+    "label" : "Reference pointer",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508246",
+    "value" : "RPT",
+    "label" : "Repeat pattern",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508247",
+    "value" : "SAD",
+    "label" : "Street Address",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508248",
+    "value" : "SCV",
+    "label" : "Scheduling class value pair",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508249",
+    "value" : "SI",
+    "label" : "Sequence ID",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550824a",
+    "value" : "SN",
+    "label" : "Structured numeric",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550824b",
+    "value" : "SNM",
+    "label" : "String of telephone number digits",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550824c",
+    "value" : "SPD",
+    "label" : "Specialty description",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550824d",
+    "value" : "SPS",
+    "label" : "Specimen source",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550824e",
+    "value" : "SRT",
+    "label" : "Sort order",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550824f",
+    "value" : "ST",
+    "label" : "String data",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508250",
+    "value" : "TM",
+    "label" : "Time",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508251",
+    "value" : "TN",
+    "label" : "Telephone number",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508252",
+    "value" : "TQ",
+    "label" : "Timing/quantity",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508253",
+    "value" : "TS",
+    "label" : "Time stamp",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508254",
+    "value" : "TX",
+    "label" : "Text data",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508255",
+    "value" : "UVC",
+    "label" : "UB value code and amount",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508256",
+    "value" : "VH",
+    "label" : "Visiting hours",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508257",
+    "value" : "VID",
+    "label" : "Version identifier",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508258",
+    "value" : "VR",
+    "label" : "Value range",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508259",
+    "value" : "WVI",
+    "label" : "Channel Identifier",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550825a",
+    "value" : "WVS",
+    "label" : "Waveform source",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550825b",
+    "value" : "XAD",
+    "label" : "Extended address",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550825c",
+    "value" : "XCN",
+    "label" : "Extended composite ID number and name for persons",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550825d",
+    "value" : "XON",
+    "label" : "Extended composite name and ID number for organizations",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550825e",
+    "value" : "XPN",
+    "label" : "Extended person name",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550825f",
+    "value" : "XTN",
+    "label" : "Extended telecommunications number",
+    "codeSystem" : "HL70440",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

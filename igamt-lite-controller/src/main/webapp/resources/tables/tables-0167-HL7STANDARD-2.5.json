@@ -1,0 +1,120 @@
+{
+  "type" : "table",
+  "id" : "565f3ab6d4c6e52cfd440b40",
+  "hl7Version" : "2.5",
+  "libIds" : [ "573dd235d4c6ca828c292649" ],
+  "bindingIdentifier" : "0167",
+  "name" : "0167",
+  "description" : "Substitution Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.167",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b41",
+    "value" : "0",
+    "label" : "No product selection indicated",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b42",
+    "value" : "1",
+    "label" : "Substitution not allowed by prescriber",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b43",
+    "value" : "2",
+    "label" : "Substitution allowed - patient requested product dispensed",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b44",
+    "value" : "3",
+    "label" : "Substitution allowed - pharmacist selected product dispensed",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b45",
+    "value" : "4",
+    "label" : "Substitution allowed - generic drug not in stock",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b46",
+    "value" : "5",
+    "label" : "Substitution allowed - brand drug dispensed as a generic",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b47",
+    "value" : "7",
+    "label" : "Substitution not allowed - brand drug mandated by law",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b48",
+    "value" : "8",
+    "label" : "Substitution allowed - generic drug not available in marketplace",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b49",
+    "value" : "G",
+    "label" : "A generic substitution was dispensed.",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b4a",
+    "value" : "N",
+    "label" : "No substitute was dispensed.  This is equivalent to the default (null) value.",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b4b",
+    "value" : "T",
+    "label" : "A therapeutic substitution was dispensed.",
+    "codeSystem" : "HL70167",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

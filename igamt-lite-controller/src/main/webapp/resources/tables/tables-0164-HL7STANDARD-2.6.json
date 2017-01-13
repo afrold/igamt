@@ -1,0 +1,102 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550acbb",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0164",
+  "name" : "0164",
+  "description" : "Administration Device",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.164",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550acbc",
+    "value" : "AP",
+    "label" : "Applicator",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550acbd",
+    "value" : "BT",
+    "label" : "Buretrol",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550acbe",
+    "value" : "HL",
+    "label" : "Heparin Lock",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550acbf",
+    "value" : "IPPB",
+    "label" : "IPPB",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550acc0",
+    "value" : "IVP",
+    "label" : "IV Pump",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550acc1",
+    "value" : "IVS",
+    "label" : "IV Soluset",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550acc2",
+    "value" : "MI",
+    "label" : "Metered Inhaler",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550acc3",
+    "value" : "NEB",
+    "label" : "Nebulizer",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550acc4",
+    "value" : "PCA",
+    "label" : "PCA Pump",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

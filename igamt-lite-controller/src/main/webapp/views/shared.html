@@ -1,0 +1,171 @@
+<style id="antiClickjack">body {
+        display: none !important;
+    }</style> <script type="text/javascript">if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }</script> <div class="container" ng-init="init()"> <tabset> <tab active="datatypeTab" ng-attr-active="datatypeTab" select="select(dtTab)"> <tab-heading ng-click="setTypeOfSharing('datatype');"> Datatypes </tab-heading> <div ng-include="sharedElementView"></div> </tab> <tab active="tableTab" ng-attr-active="tableTab" select="select(vsTab)"> <tab-heading ng-click="setTypeOfSharing('table');"> Value Sets </tab-heading> <div ng-include="sharedElementViewForTables"></div> </tab> <!--  <tab active="segmentTab" select="select(segTab)">
+                  <tab-heading>
+                    Segments
+                  </tab-heading>
+                  <div ng-include="'views/edit/editIG.html'"></div>
+                </tab --> </tabset> </div> <script type="text/ng-template" id="sharedElementView"><br/>
+		<div class="row">
+			<!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
+			<!--<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
+			<!--<i class="fa fa-caret-right"></i>-->
+			<!--</button>-->
+			<!--</div>-->
+			<div ng-show="!hideToc" class="col-md-3">
+				<div class="panel panel-primary">
+					<!-- Default panel contents -->
+					<div class="panel-heading panel-heading-collapsable"> <i class="glyphicon glyphicon-list"></i><span> Table of Contents </span>
+						<button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right" style="margin:0px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-left"></i> </button>
+					</div>
+					<div class="panel-body toc-container">
+						<div ng-include="SharedtocView"></div>
+					</div>
+				</div>
+			</div>
+			<div ng-class="{'col-md-9': !hideToc,'col-md-12': hideToc}">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-right"></i> </button>
+            <span ng-if="Sharedsubview !== 'datatypePending.html'"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </span>
+            <span ng-if="Sharedsubview === 'datatypePending.html'"><i class="fa fa-hourglass" aria-hidden="true"></i> Pending Requests </span>
+          </div>
+					<div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init">
+						<form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form>
+							<div id="edit" ng-show="Sharedsubview" style="width:100%;">
+								<div ng-include="Sharedsubview"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div></script> <script type="text/ng-template" id="sharedElementViewForTables.html"><br/>
+		<div class="row">
+			<!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
+			<!--<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
+			<!--<i class="fa fa-caret-right"></i>-->
+			<!--</button>-->
+			<!--</div>-->
+			<div ng-show="!hideToc" class="col-md-3">
+				<div class="panel panel-primary">
+					<!-- Default panel contents -->
+					<div class="panel-heading panel-heading-collapsable"> <i class="glyphicon glyphicon-list"></i><span> Table of Contents </span>
+						<button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right" style="margin:0px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-left"></i> </button>
+					</div>
+					<div class="panel-body toc-container">
+						<div ng-include="SharedtocViewForTables"></div>
+					</div>
+				</div>
+			</div>
+			<div ng-class="{'col-md-9': !hideToc,'col-md-12': hideToc}">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-right"></i> </button>
+            <span ng-if="!pending"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </span>
+            <span ng-if="pending"><i class="fa fa-hourglass" aria-hidden="true"></i> Pending Requests </span>
+          </div>
+					<div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init">
+						<form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form>
+							<div id="edit" ng-show="Sharedsubview" style="width:100%;">
+								<div ng-include="SharedsubviewForTable"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div></script> <script type="text/ng-template" id="sharedtocView.html"><div ui-tree ng-controller="TreeCtrl" style="margin-left:5px;">
+      <div>
+        <span style="font-size:18px;" data-nodrag ng-click="showPending()"><strong>Pending requests</strong></span>
+      </div>
+      <div style="margin-top:10px;">
+        <span style="font-size:18px;" data-nodrag><strong>Shared Datatypes</strong></span>
+      </div>
+        <ol ui-tree-nodes="" ng-model="SharedDataTypeTree">
+            <li ng-repeat="dataLibrary in SharedDataTypeTree" ui-tree-node>
+                <div ui-tree-handle data-nodrag>
+                    <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Data Types: <span class="badge">{{datatypes.length}}</span>
+                </div>
+
+                <ol ui-tree-nodes="" ng-model="datatypes">
+                    <li ng-repeat="data in datatypes track by $index" ui-tree-node ng-if="!collapsed">
+
+						<div ui-tree-handle data-nodrag context-menu="unshareDatatype" style="font-weight:normal;cursor:pointer;">
+						<span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{data.hl7Version}} <span class="version-badge">v{{data.publicationVersion}}</span></span>
+                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
+                        </div>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div></script> <script type="text/ng-template" id="sharedTabletocView.html"><div ui-tree ng-controller="TreeCtrl" style="margin-left:5px;">
+      <div>
+        <span style="font-size:18px;" data-nodrag ng-click="showPending()"><strong>Pending requests</strong></span>
+      </div>
+      <div style="margin-top:10px;">
+        <span style="font-size:18px;" data-nodrag><strong>Shared Value Sets</strong></span>
+      </div>
+        <ol ui-tree-nodes="" ng-model="SharedTableTree">
+            <li ng-repeat="tableLib in SharedTableTree" ui-tree-node>
+                <div ui-tree-handle data-nodrag>
+                    <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Value Sets: <span class="badge">{{tableLib.length}}</span>
+                </div>
+
+                <ol ui-tree-nodes="" ng-model="tables"  data-type="tables">
+                    <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed">
+                        <div ui-tree-handle data-nodrag context-menu="unshareTable" ng-click="editTable(table); Activate(table.id)"  ng-if="table">
+                           <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
+                                     <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
+                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >  {{getScopeLabel(table)}}{{table.hl7Version}}</span> {{table.bindingIdentifier}}-{{table.description}}
+                            </span>
+                        </div>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </div></script> <script type="text/ng-template" id="datatypePending.html"><table st-table="pendingDatatypes" class="table table-striped table-bordered table-condensed igl-list-table" ng-if="hasPending">
+    <thead>
+      <tr class="tbl-header">
+        <th st-ratio="5">#</th>
+        <th st-ratio="15" st-sort="datatype.name">Name</th>
+        <th st-ratio="30" st-sort="datatype.description">Description</th>
+        <th st-ratio="10" st-sort="cp">#Components</th>
+        <th st-ratio="10" st-sort="datatype.hl7Version">HL7 Version</th>
+        <th st-ratio="30">Actions</th>
+      </tr>
+    </thead>
+    <tbody ng-if="typeOfSharing === 'datatype'">
+      <tr ng-repeat="datatype in pendingDatatypes track by $index">
+        <td st-ratio="5">{{$index + 1}}</td>
+        <td st-ratio="15"> {{datatype.name}} </td>
+        <td st-ratio="30" ng-bind="datatype.description"></td>
+        <td st-ratio="10" st-sort="cp"><span style="margin-left:5px ;color: white !important;" class="badge">{{datatype.components.length}} </span></td>
+        <td st-ratio="10" ng-bind="datatype.hl7Version"></td>
+        <td st-ratio="30">
+          <button title="Approve Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-success" ng-click="confirmShareDocument(datatype)"> <span><i class="fa fa-check fa-fw" aria-hidden="true"></i> Accept </span> </button>
+          <button title="Reject Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-click="rejectShareDocument(datatype)"> <span><i class="fa fa-times fa-fw" aria-hidden="true"></i> Reject </span> </button>
+        </td>
+      </tr>
+    </tbody>
+    <tbody ng-if="typeOfSharing === 'table'">
+      <tr ng-repeat="table in pendingTables track by $index">
+        <td st-ratio="5">{{$index + 1}}</td>
+        <td st-ratio="15"> {{table.name}} </td>
+        <td st-ratio="30" ng-bind="table.description"></td>
+        <td st-ratio="10" st-sort="cp"><span style="margin-left:5px ;color: white !important;" class="badge">{{table.codes.length}} </span></td>
+        <td st-ratio="10" ng-bind="table.hl7Version"></td>
+        <td st-ratio="30">
+          <button title="Approve Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-success" ng-click="confirmShareTable(table)"> <span><i class="fa fa-check fa-fw" aria-hidden="true"></i> Accept </span> </button>
+          <button title="Reject Share Document" type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-click="rejectShareTable(table)"> <span><i class="fa fa-times fa-fw" aria-hidden="true"></i> Reject </span> </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div ng-if="!hasPending">
+    No pending request
+  </div></script>

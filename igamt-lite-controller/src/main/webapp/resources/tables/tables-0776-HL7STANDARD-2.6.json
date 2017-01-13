@@ -1,0 +1,48 @@
+{
+  "type" : "table",
+  "id" : "569eac0ed4c623dc6550b2b8",
+  "hl7Version" : "2.6",
+  "libIds" : [ "573dd22fd4c6ca828c28ca61" ],
+  "bindingIdentifier" : "0776",
+  "name" : "0776",
+  "description" : "Item Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.776",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2b9",
+    "value" : "A",
+    "label" : "Active",
+    "codeSystem" : "HL70776",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2ba",
+    "value" : "I",
+    "label" : "Inactive",
+    "codeSystem" : "HL70776",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2bb",
+    "value" : "P",
+    "label" : "Pending Inactive",
+    "codeSystem" : "HL70776",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD",
+  "accountId" : null,
+  "date" : null,
+  "status" : null
+}

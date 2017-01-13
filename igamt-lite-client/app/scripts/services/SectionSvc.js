@@ -11,7 +11,8 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService, 
             $rootScope.$emit("event:updateIgDate",dateUpdated);
             delay.resolve(dateUpdated);
         }, function (error) {
-            delay.reject(error);
+        	$rootScope.igdocument.childSections=$rootScope.childSections;
+        	delay.reject(error);
         });
         return delay.promise;
     };
@@ -25,6 +26,7 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService, 
             $rootScope.$emit("event:updateIgDate",dateUpdated);
             delay.resolve(dateUpdated);
         }, function (error) {
+        	$rootScope.igdocument.childSections=$rootScope.childSections;
             delay.reject(error);
         });
         return delay.promise;
@@ -37,6 +39,7 @@ angular.module('igl').factory('SectionSvc', function($http, $q,userInfoService, 
             $rootScope.$emit("event:updateIgDate",dateUpdated);
             delay.resolve(dateUpdated);
         }, function (error) {
+        	$rootScope.igdocument.childSections=$rootScope.childSections;
             delay.reject(error);
         });
         return delay.promise;

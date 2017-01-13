@@ -17,12 +17,19 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+
 /**
  * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
  */
 public abstract class DataModel {
 
    protected Date dateUpdated;
+   
+   private String publicationDate;
+   private int publicationVersion=0;
+   private String createdFrom;
+
 	  
   public DataModel() {
 	  this.dateUpdated = new Date();
@@ -50,4 +57,31 @@ public abstract class DataModel {
 		this.dateUpdated = dateUpdated;
 	}
 	  
+	
+	 
+
+		  public String getPublicationDate() {
+				return publicationDate;
+			}
+
+			public void setPublicationDate(String publicationDate) {
+				this.publicationDate = publicationDate;
+			}
+
+			public int getPublicationVersion() {
+				return publicationVersion;
+			}
+
+			public void setPublicationVersion(int publicationVersion) {
+				this.publicationVersion = publicationVersion;
+			}
+
+			public String getCreatedFrom() {
+				return createdFrom;
+			}
+
+			public void setCreatedFrom(String createdFrom) {
+				this.createdFrom = createdFrom;
+			}
+			 
 }

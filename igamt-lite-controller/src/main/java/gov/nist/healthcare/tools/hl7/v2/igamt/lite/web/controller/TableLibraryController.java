@@ -78,7 +78,7 @@ public class TableLibraryController extends CommonController {
       produces = "application/json")
   public List<Table> getTablesByLibrary(@PathVariable("tabLibId") String tabLibId) {
     log.info("Fetching tableByLibrary..." + tabLibId);
-    List<Table> result = tableLibraryService.findTablesById(tabLibId);
+    List<Table> result = tableLibraryService.findAllShortTablesByIds(tabLibId);
     return result;
   }
 

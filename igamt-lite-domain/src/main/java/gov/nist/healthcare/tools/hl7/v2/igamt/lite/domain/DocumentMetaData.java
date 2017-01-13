@@ -77,4 +77,6 @@ public class DocumentMetaData extends MetaData implements java.io.Serializable, 
   public void setSubTitle(String subTitle) {
     this.subTitle = subTitle;
   }
+
+
 }
