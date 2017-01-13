@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -52,6 +53,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -139,19 +142,92 @@ public class Bootstrap implements InitializingBean {
 
     // ===============Data Type Library=====================================
 
-    CreateCollectionOfUnchanged(); // group datatype by sets of versions
+    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
     // setDtsStatus();// sets the status of all the datatypes to published or unpublished
     // setTablesStatus(); // sets the status of all the tables to published or unpublished
-    Colorate(); // genenerates the datatypes evolution matrix.
+    // Colorate(); // genenerates the datatypes evolution matrix.
     // setSegmentStatus();
-    // ====================================================================*/
-    // this.modifyConstraint();
-    // this.modifyMSH2Constraint();
-    // createNewSectionIds();
-
-
+    // // ====================================================================*/
+    // // this.modifyConstraint();
+    // // this.modifyMSH2Constraint();
+    // // createNewSectionIds();
+    //
+    //
     // correctProfileComp();
     // fixConfLengths();
+    // fixUserPublishedData();
+    // fixConstraints1();
+  }
+
+  private void fixConstraints1() {
+    List<Datatype> allDts = datatypeService.findAll();
+    for (Datatype d : allDts) {
+      fixConstraint1(d.getConformanceStatements(), d.getPredicates());
+      datatypeService.save(d);
+    }
+    List<Segment> segments = segmentService.findAll();
+    for (Segment s : segments) {
+      fixConstraint1(s.getConformanceStatements(), s.getPredicates());
+      segmentService.save(s);
+    }
+  }
+
+  private void fixConstraint1(List<ConformanceStatement> cs, List<Predicate> ps) {
+    if (cs != null) {
+      for (ConformanceStatement c : cs) {
+        if (c.getAssertion() != null && c.getAssertion().startsWith("<Assertion><IFTHEN>")) {
+          c.setAssertion(c.getAssertion().replaceAll(Pattern.quote("IFTHEN>"), "IMPLY>"));
+        }
+      }
+    }
+    if (ps != null) {
+      for (Predicate p : ps) {
+        if (p.getAssertion() != null && p.getAssertion().startsWith("<Assertion><IFTHEN>")) {
+          p.setAssertion(p.getAssertion().replaceAll(Pattern.quote("IFTHEN>"), "IMPLY>"));
+        }
+      }
+    }
+  }
+
+  private void fixUserPublishedData() {
+    List<Table> allTables = tableService.findAll();
+    for (Table t : allTables) {
+      if (null != t && null != t.getScope()) {
+        if (t.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(t.getStatus())) {
+          tableService.updateStatus(t.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+
+    List<Datatype> allDts = datatypeService.findAll();
+    for (Datatype d : allDts) {
+      if (null != d && null != d.getScope()) {
+        if (d.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(d.getStatus())) {
+          datatypeService.updateStatus(d.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+
+    List<Segment> allsegs = segmentService.findAll();
+    for (Segment s : allsegs) {
+      if (null != s && null != s.getScope()) {
+        if (s.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(s.getStatus())) {
+          segmentService.updateStatus(s.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+
+    List<Message> allMessages = messageService.findAll();
+    for (Message s : allMessages) {
+      if (null != s && null != s.getScope()) {
+        if (s.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(s.getStatus())) {
+          segmentService.updateStatus(s.getId(), STATUS.UNPUBLISHED);
+        } else if (s.getScope().equals(SCOPE.HL7STANDARD)
+            && STATUS.UNPUBLISHED.equals(s.getStatus())) {
+          segmentService.updateStatus(s.getId(), STATUS.PUBLISHED);
+        }
+      }
+    }
   }
 
   private void fixConfLengths() {
@@ -530,23 +606,23 @@ public class Bootstrap implements InitializingBean {
   //
   // }
   //
-  // private void modifyComponentUsage() {
-  // List<Datatype> allDatatypes = datatypeService.findAll();
-  //
-  // for (Datatype d : allDatatypes) {
-  // boolean isChanged = false;
-  // for (Component c : d.getComponents()) {
-  // if (c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)) {
-  // c.setUsage(Usage.X);
-  // isChanged = true;
-  // }
-  // }
-  // if (isChanged) {
-  // datatypeService.save(d);
-  // logger.info("Datatype " + d.getId() + " has been updated by the usage W/B issue.");
-  // }
-  // }
-  // }
+  private void modifyComponentUsage() {
+    List<Datatype> allDatatypes = datatypeService.findAll();
+
+    for (Datatype d : allDatatypes) {
+      boolean isChanged = false;
+      for (Component c : d.getComponents()) {
+        if (c.getUsage().equals(Usage.B) || c.getUsage().equals(Usage.W)) {
+          c.setUsage(Usage.X);
+          isChanged = true;
+        }
+      }
+      if (isChanged) {
+        datatypeService.save(d);
+        logger.info("Datatype " + d.getId() + " has been updated by the usage W/B issue.");
+      }
+    }
+  }
 
   // private void changeTabletoTablesInNewHl7() {
   // List<String> hl7Versions = new ArrayList<String>();

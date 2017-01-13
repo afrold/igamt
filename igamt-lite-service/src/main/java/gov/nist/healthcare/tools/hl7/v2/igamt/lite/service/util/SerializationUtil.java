@@ -14,10 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class SerializationUtil {
@@ -32,7 +31,7 @@ public class SerializationUtil {
   public String cleanRichtext(String richtext) {
     richtext = richtext.replace("<br>", "<br></br>");
     richtext = richtext.replace("<p style=\"\"><br></p>", "<p></p>");
-
+    richtext = richtext.replaceAll("[^\\p{Print}]", "?");
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
     Elements elements1 = doc.select("h1");
     elements1.tagName("p").attr("style",
@@ -140,4 +139,26 @@ public class SerializationUtil {
     return sortedSet;
   }
 
+  public Boolean isShowConfLength(String hl7Version) {
+    //Check if hl7Version > 2.5.1
+    if(hl7Version == null || "".equals(hl7Version)){
+      return false;
+    }
+    Integer[] comparisonVersion = {2,5,1};
+    String[] versionToCompare = hl7Version.split("\\.");
+    if(versionToCompare !=null&&versionToCompare.length>0) {
+      for (int i = 0; i < versionToCompare.length; i++) {
+        Integer comparisonValue = 0;
+        if (i < comparisonVersion.length) {
+          comparisonValue = comparisonVersion[i];
+        }
+        if (Integer.valueOf(versionToCompare[i]) > comparisonValue) {
+          return true;
+        } else if(Integer.valueOf(versionToCompare[i]) < comparisonValue){
+          return false;
+        }
+      }
+    }
+    return false;
+  }
 }

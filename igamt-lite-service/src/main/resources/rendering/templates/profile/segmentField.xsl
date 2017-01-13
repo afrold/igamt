@@ -2,6 +2,7 @@
 
     <xsl:template name="SegmentField">
         <xsl:param name="inlineConstraint"/>
+        <xsl:param name="showConfLength"/>
         <xsl:element name="tr">
             <xsl:attribute name="class">
                 <xsl:text>contentTr</xsl:text>
@@ -23,11 +24,13 @@
                     <xsl:value-of select="concat('[',@Min,'..',@Max,']')"/>
                 </xsl:if>
             </xsl:element>
-            <xsl:element name="td">
-                <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
-                    <xsl:value-of select="concat('[',@MinLength,'..',@MaxLength,']')"/>
-                </xsl:if>
-            </xsl:element>
+            <xsl:if test="$showConfLength='true'">
+                <xsl:element name="td">
+                    <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+                        <xsl:value-of select="concat('[',@MinLength,'..',@MaxLength,']')"/>
+                    </xsl:if>
+                </xsl:element>
+            </xsl:if>
             <xsl:element name="td">
                 <xsl:value-of select="@Binding" />
             </xsl:element>

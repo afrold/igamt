@@ -124,7 +124,8 @@ import java.util.Map;
                     }
                 }
             }
-            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldTableMap, coConstraintValueTableMap);
+            Boolean showConfLength = serializationUtil.isShowConfLength(segment.getHl7Version());
+            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldTableMap, coConstraintValueTableMap,showConfLength);
             serializableSegmentSection.addSection(serializableSegment);
             return serializableSegmentSection;
         }
