@@ -2294,7 +2294,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
 
     $scope.getLabel = function(element) {
         if (element) {
-            if (element.ext !== null) {
+            if (element.ext !== null && element.ext !== "") {
                 return element.name + "_" + element.ext;
             } else {
                 return element.name;

@@ -2036,7 +2036,7 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
     }];
     $scope.getLabel = function(element) {
         if (element) {
-            if (element.ext !== null) {
+            if (element.ext !== null && element.ext !== "") {
                 return element.name + "_" + element.ext;
             } else {
                 return element.name;
