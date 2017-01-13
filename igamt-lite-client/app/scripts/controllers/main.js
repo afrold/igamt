@@ -2065,7 +2065,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     id: new ObjectId().toString(),
                     constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     description: 'IF [' + firstConstraint.description + '] THEN [' + secondConstraint.description + ']',
-                    assertion: '<Assertion><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Assertion>'
+                    assertion: '<Assertion><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Assertion>'
                 };
             } else if (compositeType === 'FORALL' || compositeType === 'EXIST') {
                 var forALLExistId = compositeType;
@@ -2120,7 +2120,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     description: 'IF [' + firstConstraint.description + '] THEN [' + secondConstraint.description + ']',
                     trueUsage: '',
                     falseUsage: '',
-                    assertion: '<Condition><' + compositeType + '>' + firstConstraintAssertion + secondConstraintAssertion + '</' + compositeType + '></Condition>'
+                    assertion: '<Condition><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Condition>'
                 };
             } else if (compositeType === 'FORALL' || compositeType === 'EXIST') {
                 var forALLExistId = compositeType;
