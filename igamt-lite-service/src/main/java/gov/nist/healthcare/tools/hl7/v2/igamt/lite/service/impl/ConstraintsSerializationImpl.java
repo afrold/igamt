@@ -43,10 +43,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
@@ -307,6 +309,14 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 								predicates_segment_Elm.appendChild(segmentConstaint);
 				}
 				predicates_Elm.appendChild(predicates_segment_Elm);
+				
+				nu.xom.Element predicates_group_Elm = new nu.xom.Element("Group");
+				for (ByNameOrByID byNameOrByIDObj : predicates.getGroups().getByNameOrByIDs()) {
+						nu.xom.Element groupConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+						if (groupConstaint != null)
+								predicates_segment_Elm.appendChild(groupConstaint);
+				}
+				predicates_Elm.appendChild(predicates_group_Elm);
 
 				nu.xom.Element predicates_message_Elm = new nu.xom.Element("Message");
 				for (ByNameOrByID byNameOrByIDObj : predicates.getMessages().getByNameOrByIDs()) {
@@ -335,7 +345,15 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 								constraints_segment_Elm.appendChild(segmentConstaint);
 				}
 				constraints_Elm.appendChild(constraints_segment_Elm);
-
+				
+				nu.xom.Element constraints_group_Elm = new nu.xom.Element("Group");
+				for (ByNameOrByID byNameOrByIDObj : conformanceStatements.getGroups().getByNameOrByIDs()) {
+						nu.xom.Element groupConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+						if (groupConstaint != null)
+							constraints_group_Elm.appendChild(groupConstaint);
+				}
+				constraints_Elm.appendChild(constraints_group_Elm);
+				
 				nu.xom.Element constraints_message_Elm = new nu.xom.Element("Message");
 				for (ByNameOrByID byNameOrByIDObj : conformanceStatements.getMessages().getByNameOrByIDs()) {
 						nu.xom.Element messageConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
@@ -426,8 +444,11 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				elmConstraint.appendChild(elmDescription);
 
 				nu.xom.Node n = this.innerXMLHandler(c.getAssertion());
-				if (n != null)
-						elmConstraint.appendChild(n);
+				if (n != null) {
+					elmConstraint.appendChild(n);
+				}else {
+					return null;
+				}
 
 				return elmConstraint;
 		}
@@ -549,7 +570,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 						constraintObj.setReference(referenceObj);
 				}
 
-		}
+		}	
 
 		private Document stringToDom(String xmlSource) {
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -574,6 +595,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				Constraints constraints = new Constraints();
 				Context dtContext = new Context();
 				Context sContext = new Context();
+				Context gContext = new Context();
 				Context mContext = new Context();
 
 				Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
@@ -586,6 +608,17 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 								byID.setConformanceStatements(m.getConformanceStatements());
 								byNameOrByIDs.add(byID);
 						}
+				}
+				mContext.setByNameOrByIDs(byNameOrByIDs);
+				
+				byNameOrByIDs = new HashSet<ByNameOrByID>();
+				for (Message m : profile.getMessages().getChildren()) {
+					
+					for(SegmentRefOrGroup sog:m.getChildren()){
+						if(sog instanceof Group){
+							byNameOrByIDs = findAllConformanceStatementsForGroup((Group)sog, byNameOrByIDs);
+						}
+					}
 				}
 				mContext.setByNameOrByIDs(byNameOrByIDs);
 
@@ -615,15 +648,56 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 				constraints.setDatatypes(dtContext);
 				constraints.setSegments(sContext);
-				// constraints.setGroups(gContext);
+				constraints.setGroups(gContext);
 				constraints.setMessages(mContext);
 				return constraints;
+		}
+		
+		private Set<ByNameOrByID> findAllConformanceStatementsForGroup(Group g, Set<ByNameOrByID> byNameOrByIDs){
+			ByID byID = new ByID();
+			byID.setByID(g.getId());
+			if (g.getConformanceStatements().size() > 0) {
+				byID.setConformanceStatements(g.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+			
+			for(SegmentRefOrGroup sog:g.getChildren()){
+				if(sog instanceof Group){
+					byNameOrByIDs = findAllPredicatesForGroup((Group)sog, byNameOrByIDs);
+				}
+			}
+			
+			
+			return byNameOrByIDs;
+			
+			
+		}
+		
+		private Set<ByNameOrByID> findAllPredicatesForGroup(Group g, Set<ByNameOrByID> byNameOrByIDs){
+			ByID byID = new ByID();
+			byID.setByID(g.getId());
+			if (g.getPredicates().size() > 0) {
+				byID.setPredicates(g.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+			
+			for(SegmentRefOrGroup sog:g.getChildren()){
+				if(sog instanceof Group){
+					byNameOrByIDs = findAllPredicatesForGroup((Group)sog, byNameOrByIDs);
+				}
+			}
+			
+			
+			return byNameOrByIDs;
+			
+			
 		}
 
 		private Constraints findAllPredicates(Profile profile) {
 				Constraints constraints = new Constraints();
 				Context dtContext = new Context();
 				Context sContext = new Context();
+				Context gContext = new Context();
 				Context mContext = new Context();
 
 				Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
@@ -632,9 +706,20 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 						ByID byID = new ByID();
 						byID.setByID(m.getId());
 						if (m.getPredicates().size() > 0) {
-								byID.setPredicates(m.getPredicates());
-								byNameOrByIDs.add(byID);
+							byID.setPredicates(m.getPredicates());
+							byNameOrByIDs.add(byID);
 						}
+				}
+				mContext.setByNameOrByIDs(byNameOrByIDs);
+				
+				byNameOrByIDs = new HashSet<ByNameOrByID>();
+				for (Message m : profile.getMessages().getChildren()) {
+					
+					for(SegmentRefOrGroup sog:m.getChildren()){
+						if(sog instanceof Group){
+							byNameOrByIDs = findAllPredicatesForGroup((Group)sog, byNameOrByIDs);
+						}
+					}
 				}
 				mContext.setByNameOrByIDs(byNameOrByIDs);
 
@@ -662,6 +747,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				}
 				dtContext.setByNameOrByIDs(byNameOrByIDs);
 
+				constraints.setGroups(gContext);
 				constraints.setDatatypes(dtContext);
 				constraints.setSegments(sContext);
 				constraints.setMessages(mContext);
@@ -672,6 +758,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				Constraints constraints = new Constraints();
 				Context dtContext = new Context();
 				Context sContext = new Context();
+				Context gContext = new Context();
 				Context mContext = new Context();
 
 				Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
@@ -690,6 +777,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 				constraints.setDatatypes(dtContext);
 				constraints.setSegments(sContext);
+				constraints.setGroups(gContext);
 				constraints.setMessages(mContext);
 				return constraints;
 		}
