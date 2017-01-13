@@ -3330,6 +3330,13 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
     };
 
     $scope.save = function() {
+    	  if ($rootScope.editForm) {
+    		  console.log("editform called")
+              $rootScope.editForm.$setPristine();
+    		  $rootScope.editForm.$dirty = false;
+          }
+          $rootScope.clearChanges();
+    	
         var data = $rootScope.currentData;
         if ($rootScope.libraryDoc && $rootScope.libraryDoc != null) {
             if (data.datatypeLibId && data.date) {
@@ -3337,16 +3344,15 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
 
         }
-        var section = { id: data.id, sectionTitle: data.sectionTitle, sectionDescription: data.sectionDescription, sectionPosition: data.sectionPosition, sectionContents: data.sectionContents };
         ////console.log(data);
 
         if (data.type && data.type === "section") {
             ////console.log($rootScope.originalSection);
             ////console.log(data);
 
-            SectionSvc.update($rootScope.igdocument.id, section).then(function(result) {
+            SectionSvc.update($rootScope.igdocument.id, data).then(function(result) {
                 ////console.log($rootScope.igdocument);
-                SectionSvc.merge($rootScope.originalSection, section);
+                SectionSvc.merge($rootScope.originalSection, data);
                 $scope.continue();
             }, function(error) {
                 $rootScope.msg().text = error.data.text;

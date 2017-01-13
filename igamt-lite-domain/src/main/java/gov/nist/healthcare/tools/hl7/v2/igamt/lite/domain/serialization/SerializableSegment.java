@@ -29,9 +29,11 @@ public class SerializableSegment extends SerializableSection {
     private Map<Field,Datatype> fieldDatatypeMap;
     private Map<Field,List<Table>> fieldTableMap;
     private Map<CCValue,Table> coConstraintValueTableMap;
+    private Boolean showConfLength;
+
 
     public SerializableSegment(String id, String prefix, String position, String headerLevel, String title,
-        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap) {
+        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap, Boolean showConfLength) {
         super(id, prefix, position, headerLevel, title);
         this.segment = segment;
         this.name = name;
@@ -44,6 +46,7 @@ public class SerializableSegment extends SerializableSection {
         this.fieldDatatypeMap = fieldDatatypeMap;
         this.fieldTableMap = fieldTableMap;
         this.coConstraintValueTableMap = coConstraintValueTableMap;
+        this.showConfLength = showConfLength;
     }
 
 
@@ -56,6 +59,7 @@ public class SerializableSegment extends SerializableSection {
             segmentElement.addAttribute(new Attribute("Label", this.label));
             segmentElement.addAttribute(new Attribute("Position", ""));
             segmentElement.addAttribute(new Attribute("Description", this.description));
+            segmentElement.addAttribute(new Attribute("ShowConfLength",String.valueOf(showConfLength)));
             if (this.comment != null && !this.comment.isEmpty()) {
                 segmentElement.addAttribute(new Attribute("Comment", this.comment));
             }
@@ -112,21 +116,22 @@ public class SerializableSegment extends SerializableSection {
                 if (field.getTables() != null && !field.getTables().isEmpty()) {
                     List<Table> fieldTables = fieldTableMap.get(field);
                     String temp = "";
-                    if (fieldTables.size() > 1) {
+                    boolean isFirst = true;
+                    if (fieldTables.size() > 0) {
                         for (Table table : fieldTables) {
                             String bindingIdentifier = table.getBindingIdentifier();
-                            temp += (bindingIdentifier != null && !bindingIdentifier.equals("")) ?
-                                "," + bindingIdentifier :
-                                ", ! DEBUG: COULD NOT FIND binding identifier " + table
+                            if(!isFirst){
+                                temp += ",";
+                            } else {
+                                isFirst = false;
+                            }
+                            if((bindingIdentifier != null && !bindingIdentifier.equals(""))){
+                                temp += bindingIdentifier;
+                            } else {
+                                temp += " ! DEBUG: COULD NOT FIND binding identifier " + table
                                     .getBindingIdentifier();
+                            }
                         }
-                    } else {
-                        Table table = fieldTables.get(0);
-                        String bindingIdentifier = table == null ?
-                            null :
-                            table.getBindingIdentifier();
-                        temp = (bindingIdentifier != null && !bindingIdentifier.equals("")) ?
-                            bindingIdentifier : "! DEBUG: COULD NOT FIND binding identifier " + table.getBindingIdentifier();
                     }
                     fieldElement.addAttribute(new Attribute("Binding", temp));
                 }
@@ -140,14 +145,15 @@ public class SerializableSegment extends SerializableSection {
                 if (field.getText() != null && !field.getText().isEmpty()) {
                     fieldElement.appendChild(this.createTextElement("Text", field.getText()));
                 }
-
-                if (!constraints.isEmpty()) {
-                    for (SerializableConstraint constraint : constraints) {
-                        fieldElement.appendChild(constraint.serializeElement());
-                    }
-                }
                 segmentElement.appendChild(fieldElement);
             }
+
+            if (!constraints.isEmpty()) {
+                for (SerializableConstraint constraint : constraints) {
+                    segmentElement.appendChild(constraint.serializeElement());
+                }
+            }
+
             CoConstraints coconstraints = segment.getCoConstraints();
             if (coconstraints.getConstraints().size() != 0) {
                 //TODO refactor in a SerializableCoConstraint object and create the table in the XSLT

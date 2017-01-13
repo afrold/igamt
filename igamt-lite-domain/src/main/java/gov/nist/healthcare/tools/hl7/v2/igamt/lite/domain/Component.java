@@ -11,7 +11,7 @@ public class Component extends DataElement implements Cloneable {
   private static final long serialVersionUID = 1L;
 
   private String id;
-  
+
   public Component() {
     super();
     this.type = Constant.COMPONENT;
@@ -56,10 +56,10 @@ public class Component extends DataElement implements Cloneable {
     clonedObj.setMinLength(minLength);
     clonedObj.setName(name);
     clonedObj.setPosition(position);
-    
+
     clonedObj.setTables(new ArrayList<TableLink>());
-    for(TableLink tl:this.tables){
-    	clonedObj.getTables().add(tl.clone());
+    for (TableLink tl : this.tables) {
+      clonedObj.getTables().add(tl.clone());
     }
     // if (table != null) {
     // if (tableRecords.containsKey(table.getId())) {
@@ -92,13 +92,14 @@ public class Component extends DataElement implements Cloneable {
     return new EqualsBuilder().append(id, rhs.id).isEquals();
   }
 
-public boolean isIdentique(Component c) {
-	if(c.getUsage()!=this.getUsage()){
-		return false;
-	}
-	if(!c.getDatatype().getName().equals(this.datatype.getName())){
-		return false;
-	}
-	return true;
-}
+  public boolean isIdentique(Component c) {
+    if (c.getUsage() != this.getUsage()) {
+      return false;
+    }
+    if (c.getDatatype().getName() == null
+        || !c.getDatatype().getName().equals(this.datatype.getName())) {
+      return false;
+    }
+    return true;
+  }
 }

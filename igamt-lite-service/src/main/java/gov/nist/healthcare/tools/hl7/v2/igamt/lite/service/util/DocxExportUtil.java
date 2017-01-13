@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -11,6 +12,11 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 
+import com.mongodb.gridfs.GridFSDBFile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.docx4j.XmlUtils;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
@@ -38,6 +44,7 @@ import org.docx4j.wml.STFldCharType;
 import org.docx4j.wml.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
@@ -64,20 +71,26 @@ public class DocxExportUtil {
 
 	Logger logger = LoggerFactory.getLogger(DocxExportUtil.class);
 
+	@Autowired
+	private FileStorageService fileStorageService;
+
 	public void createCoverPageForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory,
 			MetaData metaData) {
 
 		BufferedImage image = null;
 		try {
 			if (metaData.getCoverPicture() != null && !metaData.getCoverPicture().isEmpty()) {
-				URL url = new URL(metaData.getCoverPicture());
-				image = ImageIO.read(url);
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ImageIO.write(image, "png", baos);
-				baos.flush();
-				byte[] imageInByte = baos.toByteArray();
-				baos.close();
-				addImageToPackage(wordMLPackage, imageInByte);
+				InputStream imgis;
+				byte[] bytes = null;
+				String filename = parseFileName(metaData.getCoverPicture());
+				GridFSDBFile dbFile = fileStorageService.findOneByFilename(filename);
+				if (dbFile != null) {
+					imgis = dbFile.getInputStream();
+					bytes = IOUtils.toByteArray(imgis);
+				}
+				if (bytes != null && bytes.length > 0) {
+						addImageToPackage(wordMLPackage, bytes);
+				}
 			}
 		} catch (Exception e) {
 			logger.warn("Unable to add image");
@@ -114,7 +127,15 @@ public class DocxExportUtil {
 		addPageBreak(wordMLPackage, factory);
 	}
 
-	public void createTableOfContentForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+		protected String parseFileName(String coverPicture) {
+				if(coverPicture.contains("name=")){
+						return coverPicture.substring(coverPicture.indexOf("name=")+"name=".length());
+				}
+				return "";
+
+		}
+
+		public void createTableOfContentForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
 		P paragraphForTOC = factory.createP();
 		R r = factory.createR();
 
@@ -138,7 +159,6 @@ public class DocxExportUtil {
 		paragraphForTOC.getContent().add(r2);
 
 		wordMLPackage.getMainDocumentPart().getContent().add(paragraphForTOC);
-		addPageBreak(wordMLPackage, factory);
 	}
 
 	public void loadTemplateForDocx4j(WordprocessingMLPackage wordMLPackage) {

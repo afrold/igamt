@@ -34,13 +34,14 @@ public class SerializableDatatype extends SerializableSection {
     private Map<Component,List<Table>> componentTableMap;
     private String defPreText, defPostText, usageNote;
     private Map<Component,String> componentTextMap;
+    private Boolean showConfLength;
 
     public List<SerializableConstraint> getConstraints() {
         return constraints;
     }
 
     public SerializableDatatype(String id, String prefix, String position, String headerLevel, String title,
-        Datatype datatype, String defPreText, String defPostText, String usageNote, List<SerializableConstraint> constraints,Map<Component,Datatype> componentDatatypeMap,Map<Component,List<Table>> componentTableMap, Map<Component,String> componentTextMap) {
+        Datatype datatype, String defPreText, String defPostText, String usageNote, List<SerializableConstraint> constraints,Map<Component,Datatype> componentDatatypeMap,Map<Component,List<Table>> componentTableMap, Map<Component,String> componentTextMap, Boolean showConfLength) {
         super(id, prefix, position, headerLevel, title);
         this.datatype = datatype;
         this.defPreText = defPreText;
@@ -50,6 +51,7 @@ public class SerializableDatatype extends SerializableSection {
         this.componentDatatypeMap = componentDatatypeMap;
         this.componentTableMap = componentTableMap;
         this.componentTextMap = componentTextMap;
+        this.showConfLength = showConfLength;
     }
 
     @Override public Element serializeElement() {
@@ -59,6 +61,7 @@ public class SerializableDatatype extends SerializableSection {
             datatypeElement.addAttribute(new Attribute("Name", datatype.getName()));
             datatypeElement.addAttribute(new Attribute("Label", datatype.getLabel()));
             datatypeElement.addAttribute(new Attribute("Description", datatype.getDescription()));
+            datatypeElement.addAttribute(new Attribute("ShowConfLength",String.valueOf(showConfLength)));
             datatypeElement
                 .addAttribute(new Attribute("PurposeAndUse", datatype.getPurposeAndUse()));
             datatypeElement.addAttribute(new Attribute("Comment", datatype.getComment()));

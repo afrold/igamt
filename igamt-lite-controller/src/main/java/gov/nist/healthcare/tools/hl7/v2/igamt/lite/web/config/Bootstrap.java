@@ -144,14 +144,56 @@ public class Bootstrap implements InitializingBean {
     // setTablesStatus(); // sets the status of all the tables to published or unpublished
     // Colorate(); // genenerates the datatypes evolution matrix.
     // setSegmentStatus();
-    // ====================================================================*/
-    // this.modifyConstraint();
-    // this.modifyMSH2Constraint();
-    // createNewSectionIds();
-
-
+    // // ====================================================================*/
+    // // this.modifyConstraint();
+    // // this.modifyMSH2Constraint();
+    // // createNewSectionIds();
+    //
+    //
     // correctProfileComp();
     // fixConfLengths();
+    // fixUserPublishedData();
+  }
+
+  private void fixUserPublishedData() {
+    List<Table> allTables = tableService.findAll();
+    for (Table t : allTables) {
+      if (null != t && null != t.getScope()) {
+        if (t.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(t.getStatus())) {
+          tableService.updateStatus(t.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+
+    List<Datatype> allDts = datatypeService.findAll();
+    for (Datatype d : allDts) {
+      if (null != d && null != d.getScope()) {
+        if (d.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(d.getStatus())) {
+          datatypeService.updateStatus(d.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+
+    List<Segment> allsegs = segmentService.findAll();
+    for (Segment s : allsegs) {
+      if (null != s && null != s.getScope()) {
+        if (s.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(s.getStatus())) {
+          segmentService.updateStatus(s.getId(), STATUS.UNPUBLISHED);
+        }
+      }
+    }
+
+    List<Message> allMessages = messageService.findAll();
+    for (Message s : allMessages) {
+      if (null != s && null != s.getScope()) {
+        if (s.getScope().equals(SCOPE.USER) && STATUS.PUBLISHED.equals(s.getStatus())) {
+          segmentService.updateStatus(s.getId(), STATUS.UNPUBLISHED);
+        } else if (s.getScope().equals(SCOPE.HL7STANDARD)
+            && STATUS.UNPUBLISHED.equals(s.getStatus())) {
+          segmentService.updateStatus(s.getId(), STATUS.PUBLISHED);
+        }
+      }
+    }
   }
 
   private void fixConfLengths() {

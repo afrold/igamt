@@ -17,7 +17,7 @@
 			<p>No Implementation Guide Selected.</p>
 		</div>
 	</div>
-	<div ng-show="isEditing">
+	<div ng-show="isEditing" ng-controller="EditAreaCtrl" ng-init="init">
 		<div class="row">
 			<div class="col-md-12" ng-show="igDocumentMsg !== null">
 				<div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">
@@ -119,7 +119,7 @@
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-right"></i> </button> <i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </div>
-					<div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init">
+					<div class="panel-body" style="padding-bottom:100px">
 						<form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form>
 							<div id="edit" ng-show="subview" style="width:100%;">
 								<div ng-include="subview"></div>

@@ -3,7 +3,7 @@
     <xsl:include href="/rendering/templates/profile/messageSegment.xsl"/>
     <xsl:include href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:template match="Message">
-        <xsl:value-of select="@Comment"/>
+        <!--xsl:value-of select="@Comment"/-->
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
             <xsl:element name="p">
                 <xsl:element name="h4"><xsl:text>Usage note</xsl:text></xsl:element>
@@ -82,15 +82,12 @@
                 </xsl:element>
             </xsl:element>
             <xsl:element name="tbody">
-                <xsl:for-each select="MessageSegment">
-                    <xsl:call-template name="messageSegment">
-                    </xsl:call-template>
-                </xsl:for-each>
+                <xsl:apply-templates select="MessageSegment|MessageGroup/MessageSegment"/>
             </xsl:element>
         </xsl:element>
         <xsl:if test="count(./Constraints/Constraint[@Type='cs'])+count(./MessageGroup/Constraint[@Type='cs']) &gt; 0">
             <xsl:element name="h4">
-                <xsl:text>Conformance statements</xsl:text>
+                <xsl:text>Conformance Statements</xsl:text>
             </xsl:element>
             <xsl:for-each select="Constraints">
                 <xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
@@ -126,7 +123,7 @@
         </xsl:if>
         <xsl:if test="count(./Constraints/Constraint[@Type='pre'])+count(./MessageGroup/Constraint[@Type='pre']) &gt; 0">
             <xsl:element name="h4">
-                <xsl:text>Conditional predicates</xsl:text>
+                <xsl:text>Conditional Predicates</xsl:text>
             </xsl:element>
             <xsl:for-each select="Constraints">
                 <xsl:if test="count(./Constraint[@Type='pre']) &gt; 0">

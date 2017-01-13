@@ -3,7 +3,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         selectedType: null
     };
     $scope.getLabel = function(element) {
-        if (element.ext !== null) {
+        if (element.ext !== null && element.ext !== "") {
             return element.name + "_" + element.ext;
         } else {
             return element.name;

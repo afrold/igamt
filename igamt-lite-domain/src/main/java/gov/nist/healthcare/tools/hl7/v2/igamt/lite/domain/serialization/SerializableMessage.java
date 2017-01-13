@@ -28,11 +28,12 @@ public class SerializableMessage extends SerializableSection {
     private String usageNote;
     private String defPreText;
     private String defPostText;
-    public SerializableMessage(Message message, String prefix, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, SerializableConstraints serializableConformanceStatements, SerializableConstraints serializablePredicates, String usageNote,String defPreText,String defPostText) {
+    private boolean showConfLength;
+    public SerializableMessage(Message message, String prefix, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, SerializableConstraints serializableConformanceStatements, SerializableConstraints serializablePredicates, String usageNote,String defPreText,String defPostText, Boolean showConfLength) {
         super(message.getId(),
             prefix + "." + String.valueOf(message.getPosition()),
             String.valueOf(message.getPosition() + 1),
-            String.valueOf("4"),
+            String.valueOf("3"),
             message.getName() != null ?
                 message.getName() + " - " + message.getIdentifier() + " - " + message.getDescription()
                 : message.getMessageType() + "^" + message.getEvent() + "^" + message.getStructID() + " - " + message.getIdentifier() + " - " + message.getDescription()
@@ -44,6 +45,7 @@ public class SerializableMessage extends SerializableSection {
         this.usageNote = usageNote;
         this.defPreText = defPreText;
         this.defPostText = defPostText;
+        this.showConfLength = showConfLength;
     }
 
     @Override public Element serializeElement() {
@@ -53,6 +55,7 @@ public class SerializableMessage extends SerializableSection {
         messageElement.addAttribute(new Attribute("Type", this.message.getMessageType()));
         messageElement.addAttribute(new Attribute("Event", this.message.getEvent()));
         messageElement.addAttribute(new Attribute("StructID", this.message.getStructID()));
+        messageElement.addAttribute(new Attribute("ShowConfLength",String.valueOf(showConfLength)));
         messageElement.addAttribute(new Attribute("position", this.message.getPosition() + ""));
         if (this.message.getDescription() != null && !this.message.getDescription().equals(""))
             messageElement.addAttribute(new Attribute("Description", this.message.getDescription()));

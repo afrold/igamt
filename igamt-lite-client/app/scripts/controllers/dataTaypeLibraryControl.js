@@ -326,7 +326,24 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         }
 
         $scope.exportAs = function(dataTypeLibraryDocumentId,format){
-            DatatypeLibraryDocumentSvc.exportAs(dataTypeLibraryDocumentId,format);
+              if ($rootScope.hasChanges()) {
+
+                $rootScope.openConfirmLeaveDlg().result.then(function () {
+                    if ($scope.editForm) {
+                    	console.log("Cleeaning");
+                        $scope.editForm.$dirty = false;
+                        $scope.editForm.$invalid = false;
+
+                    }
+                    $rootScope.clearChanges();
+                	
+                	DatatypeLibraryDocumentSvc.exportAs(dataTypeLibraryDocumentId,format);
+
+                });
+            }else{
+            	DatatypeLibraryDocumentSvc.exportAs(dataTypeLibraryDocumentId,format);
+            }
+            
         }
 
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
