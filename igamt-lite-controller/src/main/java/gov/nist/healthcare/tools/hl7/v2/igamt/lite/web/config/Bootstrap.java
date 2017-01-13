@@ -156,7 +156,7 @@ public class Bootstrap implements InitializingBean {
     // correctProfileComp();
     // fixConfLengths();
     // fixUserPublishedData();
-    fixConstraints1();
+    // fixConstraints1();
   }
 
   private void fixConstraints1() {
@@ -175,15 +175,15 @@ public class Bootstrap implements InitializingBean {
   private void fixConstraint1(List<ConformanceStatement> cs, List<Predicate> ps) {
     if (cs != null) {
       for (ConformanceStatement c : cs) {
-        if (c.getAssertion().startsWith("<Assertion><IFTHEN>")) {
-          c.setAssertion(c.getAssertion().replaceAll(Pattern.quote("IFTHEN>"), "IFTHEN>"));
+        if (c.getAssertion() != null && c.getAssertion().startsWith("<Assertion><IFTHEN>")) {
+          c.setAssertion(c.getAssertion().replaceAll(Pattern.quote("IFTHEN>"), "IMPLY>"));
         }
       }
     }
     if (ps != null) {
       for (Predicate p : ps) {
-        if (p.getAssertion().startsWith("<Assertion><IFTHEN>")) {
-          p.setAssertion(p.getAssertion().replaceAll(Pattern.quote("IFTHEN>"), "IFTHEN>"));
+        if (p.getAssertion() != null && p.getAssertion().startsWith("<Assertion><IFTHEN>")) {
+          p.setAssertion(p.getAssertion().replaceAll(Pattern.quote("IFTHEN>"), "IMPLY>"));
         }
       }
     }
