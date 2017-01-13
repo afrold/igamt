@@ -1,7 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +22,7 @@ public class DataModelWithConstraints extends DataModel {
 
   protected String version;
 
-  protected STATUS status;
+  protected STATUS status = STATUS.UNPUBLISHED;
 
   protected Set<String> participants = new HashSet<String>();
 
@@ -159,6 +158,5 @@ public class DataModelWithConstraints extends DataModel {
   }
 
 
-  
-  
+
 }

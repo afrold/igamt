@@ -24,6 +24,7 @@ angular.module('igl').factory(
             var newSegment = angular.copy(segment);
             newSegment.shareParticipantIds = [];
             newSegment.scope = 'USER';
+            newSegment.status='UNPUBLISHED';
             newSegment.id = null;
             newSegment.libIds = [];
             newSegment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
