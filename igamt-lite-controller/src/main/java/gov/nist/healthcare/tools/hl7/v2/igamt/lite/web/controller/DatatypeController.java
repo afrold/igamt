@@ -315,14 +315,15 @@ public class DatatypeController extends CommonController {
           ancestor.setDeprecated(true);
           versionAndUse.save(ancestor);
         }
-        User u = userService.getCurrentUser();
-        Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-        versionInfo.setAccountId(account.getId());
+
         versionInfo.setPublicationVersion(versionInfo.getPublicationVersion() + 1);
         datatype.setPublicationVersion(versionInfo.getPublicationVersion());
 
 
       }
+      User u = userService.getCurrentUser();
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      versionInfo.setAccountId(account.getId());
       versionInfo.setPublicationDate(DateUtils.getCurrentTime());
       datatype.setPublicationDate(DateUtils.getCurrentTime());
       versionAndUse.save(versionInfo);

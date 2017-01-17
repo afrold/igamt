@@ -20,7 +20,12 @@ angular.module('igl').factory('MessageService',
             },
             getNodes: function(parent, root) {
                 if (!parent || parent == null) {
+                	if(root&&root.children){
                     return root.children;
+                	}else{
+                		var children=[];
+                		return children;
+                	}
                 } else {
                     return parent.children;
                 }

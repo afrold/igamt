@@ -141,15 +141,13 @@
                                         </div>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
-                                                <span style="color:white;"> Conformance Profile Definition</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
+                                                <span style="color:white;"> Conformance Profile Definition</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
+											</accordion-heading>
                                             <div class="igl-def-table-container">
                                                 <span class="pull-left">
-                                                    <div style="" ng-dropdown-multiselect=""
-                                                        options="viewSettings.columnOptions"
-                                                        selected-model="viewSettings.visibleColumns"
-                                                        events="viewSettings.events" extra-settings="viewSettings.extra"
-                                                        translation-texts="viewSettings.translations">
-                                                    </div>
+                                               <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations">
+											   </div>
+
                                                 </span>
                                                 <span class="pull-right" ng-show="!viewSettings.tableReadonly">
                                                     <div class="btn-group">
@@ -166,7 +164,7 @@
                                                 </ul>
                                             </div>
                                             </span>
-                                            <table id="messageTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                                            <table id="treeTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                 <thead>
                                                     <tr class="tbl-header" style="">
                                                         <th class="col-md-2 col-fixed-250">Name</th>
@@ -175,7 +173,7 @@
                                                         </th>
                                                         <th class="col-md-1 col-fixed-100">Cardinality</th>
                                                         <th class="col-md-1 col-fixed-100">Length</th>
-                                                        <th class="col-md-1 col-fixed-80">ConfLength</th>
+                                                        <th class="col-md-1 col-fixed-80" ng-show="showConfLength()">ConfLength</th>
                                                         <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Data Type</th>
                                                         <th class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set</th>
                                                         <th class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">Predicate</th>
@@ -357,7 +355,7 @@
                                                     <th class="col-md-1" rowspan="2" style="width:2%">Usage</th>
                                                     <th class="col-md-1" colspan="2" style="width:4%">Cardinality</th>
                                                     <th class="col-md-1" colspan="2" style="width:4%">Length</th>
-                                                    <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
+                                                    <th class="col-md-1" rowspan="2" style="width:2%" ng-show="showConfLength()">Conformance Length</th>
                                                     <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
                                                     <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
                                                 </tr>
@@ -394,7 +392,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol">
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
@@ -477,7 +475,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol">
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
@@ -579,7 +577,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol">
+        <td class="col-md-1 col-fixed-80 emptyCol"  ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
@@ -635,7 +633,7 @@
         <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}" ng-show="showConfLength()">
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
@@ -703,7 +701,7 @@
                 [{{::node.obj.minLength}},{{::node.obj.maxLength}}]
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}" ng-show="showConfLength()">
             <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0" ng-bind="::node.obj.confLength">
             </div>
         </td>
@@ -766,7 +764,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol">
+        <td class="col-md-1 col-fixed-80 emptyCol"  ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
@@ -805,7 +803,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol">
+        <td class="col-md-1 col-fixed-80 emptyCol"  ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
@@ -853,7 +851,7 @@
         <td class="col-md-1 col-fixed-100">
             <div>-</div>
         </td>
-        <td class="col-md-1 col-fixed-80">
+        <td class="col-md-1 col-fixed-80"  ng-show="showConfLength()">
             <div>-</div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
