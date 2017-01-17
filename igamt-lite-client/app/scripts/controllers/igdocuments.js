@@ -87,6 +87,16 @@ angular.module('igl')
             return DatatypeService.getTemplate(node, $rootScope.datatype);
         }
     });
+    
+    $scope.messagesParams = new ngTreetableParams({
+            getNodes: function(parent) {
+            	console.log($rootScope.messageTree);
+                return MessageService.getNodes(parent, $rootScope.messageTree);
+            },
+            getTemplate: function(node) {
+                return MessageService.getTemplate(node, $rootScope.messageTree);
+            }
+    });
 
     $rootScope.closeIGDocument = function() {
         $rootScope.clearChanges();
@@ -434,6 +444,7 @@ angular.module('igl')
                 $rootScope.datatypeLibrary = igdocument.profile.datatypeLibrary;
                 $rootScope.tableLibrary = igdocument.profile.tableLibrary;
                 $rootScope.ext = igdocument.metaData.ext;
+                $rootScope.igVersion=igdocument.profile.metaData.hl7Version;
                 $rootScope.selectedMessages = angular.copy(igdocument.profile.messages.children);
                 $scope.loadingIGDocument = true;
                 $rootScope.isEditing = true;
@@ -452,7 +463,13 @@ angular.module('igl')
                             $scope.loadTables().then(function() {
                                 $scope.collectMessages();
 
-                                $scope.messagesParams = $scope.getMessageParams();
+                 
+                               try {
+                                   if ($scope.messagesParams)
+                                	   $scope.messagesParams.refresh();
+                               } catch (e) {
+
+                               }
                                 $scope.loadIgDocumentMetaData();
 
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);

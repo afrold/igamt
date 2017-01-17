@@ -1438,7 +1438,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         };
 
-
+        $rootScope.showConfLength=function(){
+        	return $rootScope.igVersion>"2.5.1";
+        }
 
 
 
