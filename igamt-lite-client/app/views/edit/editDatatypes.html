@@ -61,8 +61,8 @@
                               <span> Publish </span>
                             </button>
                         </span>
-                        <span class="pull-right" ng-if="typeOfSharing && datatype.owner" style="font-style: italic;">
-                          (Owner: {{datatype.owner}})
+                        <span class="pull-right" ng-if="datatype.owner" style="font-style: italic;">
+                      -----------------------    (Owner: {{datatype.owner}})
                         </span>
                     </div>
                     <div class="col-md-12" ng-controller="cmpDatatypeCtrl as cmp">
@@ -635,7 +635,7 @@
                                 </div>
 
                             </tab>
-						<tab ng-click="setDeltaToF(); getAllVersionsOfDT(datatype.id)" ng-if="igdocument&&versionAndUseMap[datatype.id]">
+						<tab ng-click="setDeltaToF(); getAllVersionsOfDT(datatype.id)" ng-if="versionAndUseMap[datatype.id]&&datatypeLibrary!=null">
       						     <tab-heading>
                                     <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
                                 </tab-heading>
