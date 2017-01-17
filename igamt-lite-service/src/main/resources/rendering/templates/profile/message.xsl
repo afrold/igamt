@@ -2,6 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:include href="/rendering/templates/profile/messageSegment.xsl"/>
     <xsl:include href="/rendering/templates/profile/constraint.xsl"/>
+    <xsl:include href="/rendering/templates/profile/messageSegmentsOrGroups.xsl"/>
     <xsl:template match="Message">
         <!--xsl:value-of select="@Comment"/-->
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
@@ -82,7 +83,7 @@
                 </xsl:element>
             </xsl:element>
             <xsl:element name="tbody">
-                <xsl:apply-templates select="MessageSegment|MessageGroup/MessageSegment"/>
+                <xsl:call-template name="displayMessageSegmentsOrGroups"/>
             </xsl:element>
         </xsl:element>
         <xsl:if test="count(./Constraints/Constraint[@Type='cs'])+count(./MessageGroup/Constraint[@Type='cs']) &gt; 0">
