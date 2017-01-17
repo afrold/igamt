@@ -1688,7 +1688,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                   $rootScope.datatypeToUpdate.push(ref.target);  
                 }
                 }
-                
+            });
                 SegmentService.saves($rootScope.SegmentsToUpdate).then(function(segs){
                             angular.forEach(segs, function(seg){
                             SegmentService.merge($rootScope.segmentsMap[seg.id], seg);
@@ -1700,13 +1700,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                             angular.forEach(dts, function(dt){
                             DatatypeService.merge($rootScope.datatypesMap[dt.id], dt);
                                              });
-                                                $rootScope.editDatatype(dest);
+                                      });
+                            $rootScope.editDatatype(dest);
 
-                                                CloneDeleteSvc.deleteDatatype(source);
-                                           });
-                    
                                   });
-                         })
+                         
             //
         };
 
