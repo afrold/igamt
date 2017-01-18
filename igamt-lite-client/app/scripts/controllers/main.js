@@ -34,7 +34,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.toggleState = function() {
             $scope.state = !$scope.state;
         };
-
         $scope.language = function() {
             return i18n.language;
         };
@@ -1438,7 +1437,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         };
 
-
+        $rootScope.showConfLength=function(){
+        	return $rootScope.igVersion>"2.5.1";
+        }
 
 
 

@@ -162,7 +162,7 @@
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-100">Length
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-80">Conformance Length
+                                                                <th class="col-md-1 col-fixed-80"  ng-show="showConfLength()">Conformance Length
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
                                                                 </th>
@@ -629,7 +629,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol">
+        <td class="col-md-1 col-fixed-80 emptyCol"  ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
@@ -659,7 +659,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol">
+        <td class="col-md-1 col-fixed-80 emptyCol"  ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
@@ -685,7 +685,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol">
+        <td class="col-md-1 col-fixed-80 emptyCol"  ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             {{getDatatypeLabel(datatypesMap[node.datatype])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
@@ -805,7 +805,7 @@
                                             </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}"  ng-show="showConfLength()">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0" ng-controller="SegmentRowCtrl">
                 <span ng-form name="{{formName}}" class="form-inline">
                                             <input style="width:50%" class="form-control" type="text"
@@ -929,7 +929,7 @@
         <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}}, {{::node.maxLength}}]</div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}"  ng-show="showConfLength()">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> {{::node.confLength}} </div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
@@ -995,7 +995,7 @@
                 [{{::node.minLength}},{{::node.maxLength}}]
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}"  ng-show="showConfLength()">
             <div ng-bind="node.confLength" ng-show="datatypesMap[node.datatype.id].components.length == 0">
             </div>
         </td>
@@ -1069,7 +1069,7 @@
                 [{{::node.minLength}},{{::node.maxLength}}]
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}"  ng-show="showConfLength()">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0" ng-bind="node.confLength">
             </div>
         </td>

@@ -8,6 +8,7 @@ angular
 
             $scope.selectedTab==0;
             $rootScope.SharingScope=true;
+            $rootScope.datatypeLibrary=null;
             $scope.sharedElementView='sharedElementView';
             $scope.sharedElementViewForTables='sharedElementViewForTables.html';
             $scope.SharedtocViewForTables='';
