@@ -1190,6 +1190,8 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
                     if (parent.fields) {
                         return parent.fields;
                     } else if (parent.components) {
+                        console.log("******");
+                        console.log(parent.components);
                         return parent.components;
                     } else if (parent.segments) {
                         return parent.segments;
@@ -1207,6 +1209,11 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             return 'tree_node';
         }
     });
+    $scope.expandAll = function() {
+        //$scope.expanded = !$scope.expanded;
+
+        $('#compareTable').treetable('expandAll');
+    };
     $scope.cmpValueSet = function(table1, table2) {
         $scope.loadingSelection = true;
         $scope.vsChanged = false;
@@ -1258,6 +1265,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
             console.log($scope.dataList);
             $scope.showDelta = true;
             $scope.dynamic_params.refresh();
+            //$scope.expandAll();
         }
 
     };
