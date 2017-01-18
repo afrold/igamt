@@ -515,7 +515,7 @@ public class DatatypeController extends CommonController {
           }
 
           // Find the user
-          Account acc = accountRepository.findOne(accountId);
+          Account acc = accountRepository.findOne(longId);
           // Send confirmation email
           sendShareConfirmation(d, acc, account);
         }

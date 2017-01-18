@@ -441,7 +441,7 @@
         <td class="col-md-1 col-fixed-80">
             <div>
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
-                    <select class="form-control input-sm" name="usage" ng-change="setDirty(); openPredicateDialog(node); setCardinalities(node);" required
+                    <select class="form-control input-sm" name="usage" ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node);" required
                             ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
                 </span>
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
@@ -462,12 +462,12 @@
                                                        name="min"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
-                                                       ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
+                                                       ng-class="{ 'igl-has-error' : {{formName}}.min.$invalid}"
                                                        ng-model="node.obj.min" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="max"
                                                        ng-change="setDirty()"
-                                                       ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
+                                                       ng-class="{ 'igl-has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.obj.max" required>
                                             </span>
@@ -481,7 +481,7 @@
         </td>
         <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
         </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-class="{'has-error': node.obj.usage === 'C' && countPredicate(node.path) != 1}" ng-show="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-md-1" ng-style="predWidthx" ng-class="{'igl-has-error': node.obj.usage === 'C' && countPredicate(node.path) != 1}" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="countPredicate(node.path)===0 && node.obj.usage==='C'">
                     <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
@@ -544,7 +544,7 @@
         <td class="col-md-1 col-fixed-80">
             <div>
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
-                    <select class="form-control input-sm" name="usage" ng-change="setDirty(); openPredicateDialog(node); setCardinalities(node);" required
+                    <select class="form-control input-sm" name="usage" ng-change="setCardinalities(node.obj);setDirty(); openPredicateDialog(node);" required
                             ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
                 </span>
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
@@ -564,12 +564,12 @@
                            name="min"
                            ng-change="setDirty()"
                            ng-pattern="/^\d+$/"
-                           ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
+                           ng-class="{ 'igl-has-error' : {{formName}}.min.$invalid}"
                            ng-model="node.obj.min" required ng-minlength="1"/>
                     <input style="width:45%" class="form-control" type="text"
                            name="max"
                            ng-change="setDirty()"
-                           ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
+                           ng-class="{ 'igl-has-error' : {{formName}}.max.$invalid}"
                            ng-pattern="/^\d+$|^\*?$/"
                            ng-model="node.obj.max" required/>
                 </span>
