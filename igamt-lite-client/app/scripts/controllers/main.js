@@ -34,7 +34,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         $scope.toggleState = function() {
             $scope.state = !$scope.state;
         };
-
         $scope.language = function() {
             return i18n.language;
         };
