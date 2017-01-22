@@ -159,14 +159,11 @@ public class SerializableSegment extends SerializableSection {
                 //TODO refactor in a SerializableCoConstraint object and create the table in the XSLT
                 Element coConstraintsElement = new Element("coconstraints");
                 Element tableElement = new Element("table");
-                tableElement.addAttribute(new Attribute("cellpadding", "1"));
-                tableElement.addAttribute(new Attribute("cellspacing", "0"));
-                tableElement.addAttribute(new Attribute("border", "1"));
-                tableElement.addAttribute(new Attribute("width", "100%"));
+                tableElement.addAttribute(new Attribute("class", "contentTable"));
 
                 Element thead = new Element("thead");
                 thead.addAttribute(
-                    new Attribute("style", "background:#F0F0F0; color:#B21A1C; align:center"));
+                    new Attribute("class", "contentThead"));
                 Element tr = new Element("tr");
                 for (CoConstraintsColumn ccc : coconstraints.getColumnList()) {
                     Element th = new Element("th");
@@ -185,8 +182,6 @@ public class SerializableSegment extends SerializableSection {
                 tableElement.appendChild(thead);
 
                 Element tbody = new Element("tbody");
-                tbody.addAttribute(
-                    new Attribute("style", "background-color:white;text-decoration:normal"));
                 for (CoConstraint coConstraint : coconstraints.getConstraints()) {
 
                     tr = new Element("tr");

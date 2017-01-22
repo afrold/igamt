@@ -178,7 +178,7 @@
             </xsl:if>
         </xsl:if>
         
-        <xsl:value-of disable-output-escaping="yes" select="./coconstraints"></xsl:value-of>
+        <xsl:apply-templates select="./coconstraints"></xsl:apply-templates>
 
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
             <xsl:call-template name="definitionText">
@@ -198,6 +198,15 @@
             </xsl:if>
         </xsl:for-each>
         <xsl:element name="br"/>
+    </xsl:template>
+
+    <xsl:template match="coconstraints">
+        <xsl:element name="strong">
+            <xsl:element name="u">
+                <xsl:text>Co-Constraints</xsl:text>
+            </xsl:element>
+        </xsl:element>
+        <xsl:copy-of select="table"/>
     </xsl:template>
 
 </xsl:stylesheet>
