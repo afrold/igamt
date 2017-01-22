@@ -55,7 +55,9 @@ public class SerializableSection extends SerializableElement {
     @Override
     public Element serializeElement() {
         for(SerializableSection serializableSection : serializableSectionList){
-            sectionElement.appendChild(serializableSection.serializeElement());
+            if(serializableSection!=null) {
+                sectionElement.appendChild(serializableSection.serializeElement());
+            }
         }
         return sectionElement;
     }
