@@ -166,7 +166,7 @@
                         <xsl:element name="p">
                             <xsl:element name="strong">
                                 <xsl:value-of disable-output-escaping="yes"
-                                              select="concat(../@Name, '-', @Position, ':', @Name)"/>
+                                              select="concat(../@Name, '.', @Position, ' : ', @Name)"/>
                             </xsl:element>
                             <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']"/>
                         </xsl:element>
