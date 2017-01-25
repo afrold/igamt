@@ -55,6 +55,7 @@ import java.util.UUID;
     @Override public Document serializeIGDocument(IGDocument igDocument,
         SerializationLayout serializationLayout) {
         SerializableStructure serializableStructure = new SerializableStructure();
+        igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
         SerializableMetadata serializableMetadata =
             new SerializableMetadata(igDocument.getMetaData(), igDocument.getDateUpdated());
         serializableStructure.addSerializableElement(serializableMetadata);
