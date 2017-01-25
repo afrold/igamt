@@ -2,12 +2,12 @@
 
     <xsl:template name="definitionText">
         <xsl:param name="type"/>
-        <xsl:element name="h4">
+        <!--xsl:element name="b">
             <xsl:choose>
                 <xsl:when test="$type='pre'"><xsl:text>Pre-definition:</xsl:text></xsl:when>
                 <xsl:when test="$type='post'"><xsl:text>Post-definition:</xsl:text></xsl:when>
             </xsl:choose>
-        </xsl:element>
+        </xsl:element-->
         <xsl:element name="p">
             <xsl:choose>
                 <xsl:when test="$type='pre'">

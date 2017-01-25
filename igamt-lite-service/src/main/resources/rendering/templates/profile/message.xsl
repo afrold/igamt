@@ -5,13 +5,6 @@
     <xsl:include href="/rendering/templates/profile/messageSegmentsOrGroups.xsl"/>
     <xsl:template match="Message">
         <!--xsl:value-of select="@Comment"/-->
-        <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
-            <xsl:element name="p">
-                <xsl:element name="h4"><xsl:text>Usage note</xsl:text></xsl:element>
-                <xsl:value-of disable-output-escaping="yes"
-                              select="Text[@Type='UsageNote']"/>
-            </xsl:element>
-        </xsl:if>
         <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
             <xsl:call-template name="definitionText">
                 <xsl:with-param name="type">
@@ -164,6 +157,14 @@
                     <xsl:text>post</xsl:text>
                 </xsl:with-param>
             </xsl:call-template>
+        </xsl:if>
+        <xsl:element name="br"/>
+        <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
+            <xsl:element name="p">
+                <xsl:element name="b"><xsl:text>Usage note: </xsl:text></xsl:element>
+                <xsl:value-of disable-output-escaping="yes"
+                              select="Text[@Type='UsageNote']"/>
+            </xsl:element>
         </xsl:if>
     </xsl:template>
 </xsl:stylesheet>
