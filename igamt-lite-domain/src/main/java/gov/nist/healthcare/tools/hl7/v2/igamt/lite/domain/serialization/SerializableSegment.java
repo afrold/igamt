@@ -79,6 +79,7 @@ public class SerializableSegment extends SerializableSection {
             for (int i = 0; i < segment.getFields().size(); i++) {
                 Field field = segment.getFields().get(i);
                 Element fieldElement = new Element("Field");
+                boolean isComplex = false;
                 fieldElement.addAttribute(new Attribute("Name", field.getName()));
                 fieldElement.addAttribute(new Attribute("Usage", getFullUsage(segment, i).toString()));
                 Datatype datatype = fieldDatatypeMap.get(field);
@@ -95,15 +96,15 @@ public class SerializableSegment extends SerializableSection {
                     if (field.getDatatype() != null) {
                         if (datatype != null) {
                             if (datatype.getComponents().size() > 0) {
+                                isComplex = true;
                                 fieldElement.addAttribute(new Attribute("ConfLength", ""));
                                 fieldElement.addAttribute(new Attribute("MinLength", ""));
-                                if (field.getMaxLength() != null && !field.getMaxLength().equals(""))
-                                    fieldElement.addAttribute(new Attribute("MaxLength", ""));
+                                fieldElement.addAttribute(new Attribute("MaxLength", ""));
                             } else {
                                 fieldElement
                                     .addAttribute(new Attribute("ConfLength", field.getConfLength()));
                                 fieldElement.addAttribute(
-                                    new Attribute("MinLength", "" + field.getMinLength()));
+                                    new Attribute("MinLength", String.valueOf(field.getMinLength())));
                                 if (field.getMaxLength() != null && !field.getMaxLength().equals(""))
                                     fieldElement
                                         .addAttribute(new Attribute("MaxLength", field.getMaxLength()));
@@ -111,8 +112,9 @@ public class SerializableSegment extends SerializableSection {
                         }
                     }
                 }
-                fieldElement.addAttribute(new Attribute("Min", "" + field.getMin()));
-                fieldElement.addAttribute(new Attribute("Max", "" + field.getMax()));
+                fieldElement.addAttribute(new Attribute("complex",String.valueOf(isComplex)));
+                fieldElement.addAttribute(new Attribute("Min", String.valueOf(field.getMin())));
+                fieldElement.addAttribute(new Attribute("Max", field.getMax()));
                 if (field.getTables() != null && !field.getTables().isEmpty()) {
                     List<Table> fieldTables = fieldTableMap.get(field);
                     String temp = "";

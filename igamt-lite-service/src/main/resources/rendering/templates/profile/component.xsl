@@ -37,7 +37,7 @@
                         <xsl:text>greyCell</xsl:text>
                     </xsl:attribute>
                 </xsl:if>
-                <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='') and (normalize-space(@MinLength)!='0') and (normalize-space(@MaxLength)!='0') and @complex = 'false'">
+                <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='') and ((normalize-space(@MinLength)!='0') or (normalize-space(@MaxLength)!='0')) and @complex = 'false'">
                     [
                     <xsl:value-of select="@MinLength" />
                     ..
