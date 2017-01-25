@@ -59,7 +59,8 @@ public class SerializableSegment extends SerializableSection {
             segmentElement.addAttribute(new Attribute("Label", this.label));
             segmentElement.addAttribute(new Attribute("Position", ""));
             segmentElement.addAttribute(new Attribute("Description", this.description));
-            segmentElement.addAttribute(new Attribute("ShowConfLength",String.valueOf(showConfLength)));
+            segmentElement.addAttribute(
+                new Attribute("ShowConfLength", String.valueOf(showConfLength)));
             if (this.comment != null && !this.comment.isEmpty()) {
                 segmentElement.addAttribute(new Attribute("Comment", this.comment));
             }
@@ -85,32 +86,22 @@ public class SerializableSegment extends SerializableSection {
                 Datatype datatype = fieldDatatypeMap.get(field);
                 if (field.getDatatype()!=null&&datatype!=null) {
                     fieldElement.addAttribute(new Attribute("Datatype", datatype.getLabel()));
-                } else {
-                    fieldElement.addAttribute(new Attribute("Datatype", field.getDatatype() != null ?
-                        "! DEBUG: COULD NOT FIND datatype " + field.getDatatype().getLabel() :
-                        "! DEBUG: COULD NOT FIND datatype with null id"));
-                }
-                // Following line means that there are no conformance length
-                // for a complex datatype
-                if (field.getConfLength() != null && !field.getConfLength().equals("")) {
-                    if (field.getDatatype() != null) {
-                        if (datatype != null) {
-                            if (datatype.getComponents().size() > 0) {
-                                isComplex = true;
-                                fieldElement.addAttribute(new Attribute("ConfLength", ""));
-                                fieldElement.addAttribute(new Attribute("MinLength", ""));
-                                fieldElement.addAttribute(new Attribute("MaxLength", ""));
-                            } else {
-                                fieldElement
-                                    .addAttribute(new Attribute("ConfLength", field.getConfLength()));
+                        if (datatype.getComponents().size() > 0) {
+                            isComplex = true;
+                            fieldElement.addAttribute(new Attribute("ConfLength", ""));
+                            fieldElement.addAttribute(new Attribute("MinLength", ""));
+                            fieldElement.addAttribute(new Attribute("MaxLength", ""));
+                        } else {
+                            if(field.getConfLength()!=null && !"".equals(field.getConfLength())) {
                                 fieldElement.addAttribute(
-                                    new Attribute("MinLength", String.valueOf(field.getMinLength())));
-                                if (field.getMaxLength() != null && !field.getMaxLength().equals(""))
-                                    fieldElement
-                                        .addAttribute(new Attribute("MaxLength", field.getMaxLength()));
+                                    new Attribute("ConfLength", field.getConfLength()));
                             }
+                            fieldElement.addAttribute(
+                                new Attribute("MinLength", String.valueOf(field.getMinLength())));
+                            if (field.getMaxLength() != null && !field.getMaxLength().equals(""))
+                                fieldElement
+                                    .addAttribute(new Attribute("MaxLength", field.getMaxLength()));
                         }
-                    }
                 }
                 fieldElement.addAttribute(new Attribute("complex",String.valueOf(isComplex)));
                 fieldElement.addAttribute(new Attribute("Min", String.valueOf(field.getMin())));
