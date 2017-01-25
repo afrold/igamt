@@ -26,7 +26,7 @@
             </xsl:element>
             <xsl:if test="$showConfLength='true'">
                 <xsl:element name="td">
-                    <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='')">
+                    <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='') and (normalize-space(@MinLength)!='0') and (normalize-space(@MaxLength)!='0')">
                         <xsl:value-of select="concat('[',@MinLength,'..',@MaxLength,']')"/>
                     </xsl:if>
                 </xsl:element>
