@@ -35,7 +35,7 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         this(segmentRef);
         this.segment = segment;
     }
-    //SegmentRef constructor
+    //Group constructor
     public SerializableSegmentRefOrGroup(Group group,List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> groupConstraintList) {
         this(group);
         this.serializableSegmentRefOrGroups = serializableSegmentRefOrGroups;
