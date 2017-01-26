@@ -148,7 +148,7 @@ public class DocxExportUtil {
 		R r1 = factory.createR();
 		Text txt = new Text();
 		txt.setSpace("preserve");
-		txt.setValue("TOC \\o \"1-3\" \\h \\z \\u \\h");
+		txt.setValue("TOC \\o \"1-5\" \\h \\z \\u \\h");
 		r.getContent().add(factory.createRInstrText(txt));
 		paragraphForTOC.getContent().add(r1);
 
