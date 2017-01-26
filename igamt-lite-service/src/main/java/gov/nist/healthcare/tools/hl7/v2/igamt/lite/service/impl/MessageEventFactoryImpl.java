@@ -23,61 +23,63 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageEventFactory;
 @Service
 public class MessageEventFactoryImpl implements MessageEventFactory {
 
-	private static Logger log = LoggerFactory.getLogger(MessageEventFactory.class);
+  private static Logger log = LoggerFactory.getLogger(MessageEventFactory.class);
 
-	@Autowired
-	private TableRepository tableRepository;
+  @Autowired
+  private TableRepository tableRepository;
 
-	public TableRepository getTableRepository() {
-		return tableRepository;
-	}
+  public TableRepository getTableRepository() {
+    return tableRepository;
+  }
 
-	public void setTableRepository(TableRepository tableRepository) {
-		this.tableRepository = tableRepository;
-	}
+  public void setTableRepository(TableRepository tableRepository) {
+    this.tableRepository = tableRepository;
+  }
 
-	@Override
-	public List<MessageEvents> createMessageEvents(Messages msgs, String hl7Version) {
+  @Override
+  public List<MessageEvents> createMessageEvents(Messages msgs, String hl7Version) {
 
-		Table tableO354 = getTable0354(hl7Version);
-		List<MessageEvents> list = new ArrayList<MessageEvents>();
-		if (tableO354 != null) {
-			for (Message msg : msgs.getChildren()) {
-				String id = msg.getId();
-				String structID = msg.getStructID();
-				Set<String> events = findEvents(structID, tableO354);
-				String description = msg.getDescription();
-				list.add(new MessageEvents(id, structID, events, description));
-			}
-		}
-		return list;
-	}
+    Table tableO354 = getTable0354(hl7Version);
+    List<MessageEvents> list = new ArrayList<MessageEvents>();
+    if (tableO354 != null) {
+      for (Message msg : msgs.getChildren()) {
+        String id = msg.getId();
+        String structID = msg.getStructID();
+        Set<String> events = findEvents(structID, tableO354);
+        String description = msg.getDescription();
+        list.add(new MessageEvents(id, structID, events, description));
+      }
+    }
+    return list;
+  }
 
-	public Set<String> findEvents(String structID, Table tableO354) {
-		Set<String> events = new HashSet<String>();
-		String structID1 = fixUnderscore(structID);
-		Code code = tableO354.findOneCodeByValue(structID1);
-		if (code != null) {
-			String label = code.getLabel();
-			String[] ss = label.split(",");
-			Collections.addAll(events, ss);
-		} else {
-			log.error("No code found for structID=" + structID1);
-		}
+  public Set<String> findEvents(String structID, Table tableO354) {
+    Set<String> events = new HashSet<String>();
+    String structID1 = fixUnderscore(structID);
+    Code code = tableO354.findOneCodeByValue(structID1);
+    if (code != null) {
+      String label = code.getLabel();
+      label = label == null ? "Varies" : label; // Handle ACK
+      String[] ss = label.split(",");
+      Collections.addAll(events, ss);
+    } else {
+      log.error("No code found for structID=" + structID1);
+    }
 
-		return events;
-	}
+    return events;
+  }
 
-	public String fixUnderscore(String structID) {
-		if (structID.endsWith("_")) {
-			int pos = structID.length();
-			return structID.substring(0, pos - 1);
-		} else {
-			return structID;
-		}
-	}
+  public String fixUnderscore(String structID) {
+    if (structID.endsWith("_")) {
+      int pos = structID.length();
+      return structID.substring(0, pos - 1);
+    } else {
+      return structID;
+    }
+  }
 
-	public Table getTable0354(String hl7Version) {
-		return tableRepository.findByBindingIdentifierAndHL7VersionAndScope("0354", hl7Version, SCOPE.HL7STANDARD);
-	}
+  public Table getTable0354(String hl7Version) {
+    return tableRepository.findByBindingIdentifierAndHL7VersionAndScope("0354", hl7Version,
+        SCOPE.HL7STANDARD);
+  }
 }
