@@ -20,7 +20,7 @@
                 <xsl:value-of select="@Usage" />
             </xsl:element>
             <xsl:element name="td">
-                <xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+                <xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='') and ((normalize-space(@Min)!='0') or (normalize-space(@Max)!='0'))">
                     <xsl:value-of select="concat('[',@Min,'..',@Max,']')"/>
                 </xsl:if>
             </xsl:element>
@@ -30,9 +30,9 @@
                         <xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
                     </xsl:when>
                     <xsl:otherwise>
-                        <!--xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='') and ((normalize-space(@MinLength)!='0') or (normalize-space(@MaxLength)!='0'))"-->
+                        <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='') and ((normalize-space(@MinLength)!='0') or (normalize-space(@MaxLength)!='0'))">
                             <xsl:value-of select="concat('[',@MinLength,'..',@MaxLength,']')"/>
-                        <!--/xsl:if-->
+                        </xsl:if>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:element>

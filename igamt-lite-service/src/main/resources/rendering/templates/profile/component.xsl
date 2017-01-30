@@ -32,18 +32,18 @@
                 <xsl:value-of select="@Usage" />
             </xsl:element>
             <xsl:element name="td">
-                <xsl:if test="@complex = 'true'">
-                    <xsl:attribute name="class">
-                        <xsl:text>greyCell</xsl:text>
-                    </xsl:attribute>
-                </xsl:if>
-                <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='') and ((normalize-space(@MinLength)!='0') or (normalize-space(@MaxLength)!='0')) and @complex = 'false'">
-                    [
-                    <xsl:value-of select="@MinLength" />
-                    ..
-                    <xsl:value-of select="@MaxLength" />
-                    ]
-                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="@complex = 'true'">
+                        <xsl:attribute name="class">
+                            <xsl:text>greyCell</xsl:text>
+                        </xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:if test="(normalize-space(@MinLength)!='') and (normalize-space(@MaxLength)!='') and ((normalize-space(@MinLength)!='0') or (normalize-space(@MaxLength)!='0')) and @complex = 'false'">
+                            <xsl:value-of select="concat('[',@MinLength,'..',@MaxLength,']')"/>
+                        </xsl:if>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:element>
             <xsl:element name="td">
                 <xsl:value-of select="@Binding" />
