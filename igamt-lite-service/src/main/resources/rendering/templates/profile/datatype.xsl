@@ -4,21 +4,14 @@
     <xsl:import href="/rendering/templates/profile/definitionText.xsl"/>
     <xsl:import href="/rendering/templates/profile/DateTimeDatatype.xsl"/>
     <xsl:template match="Datatype">
-        <xsl:if test="not(@PurposeAndUse='')">
+        <!--xsl:if test="not(@PurposeAndUse='')">
             <xsl:element name="p">
                 <xsl:element name="h4"><xsl:text>Purpose and Use</xsl:text></xsl:element>
                 <xsl:value-of disable-output-escaping="yes"
                               select="@PurposeAndUse"/>
             </xsl:element>
-        </xsl:if>
+        </xsl:if-->
         <!--xsl:value-of select="@Comment"></xsl:value-of-->
-        <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
-            <xsl:element name="p">
-                <xsl:element name="h4"><xsl:text>Usage note</xsl:text></xsl:element>
-                <xsl:value-of disable-output-escaping="yes"
-                              select="Text[@Type='UsageNote']"/>
-            </xsl:element>
-        </xsl:if>
         <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
             <xsl:call-template name="definitionText">
                 <xsl:with-param name="type">
@@ -98,20 +91,20 @@
                             <xsl:element name="th">
                                 <xsl:text>Element name</xsl:text>
                             </xsl:element>
-                            <xsl:element name="th">
-                                <xsl:text>Conf length</xsl:text>
-                            </xsl:element>
+                            <xsl:if test="@ShowConfLength='true'">
+                                <xsl:element name="th">
+                                    <xsl:text>Conf length</xsl:text>
+                                </xsl:element>
+                            </xsl:if>
                             <xsl:element name="th">
                                 <xsl:text>Data type</xsl:text>
                             </xsl:element>
                             <xsl:element name="th">
                                 <xsl:text>Usage</xsl:text>
                             </xsl:element>
-                            <xsl:if test="@ShowConfLength='true'">
-                                <xsl:element name="th">
-                                    <xsl:text>Length</xsl:text>
-                                </xsl:element>
-                            </xsl:if>
+                            <xsl:element name="th">
+                                <xsl:text>Length</xsl:text>
+                            </xsl:element>
                             <xsl:element name="th">
                                 <xsl:text>Value Set</xsl:text>
                             </xsl:element>
@@ -166,7 +159,7 @@
                         <xsl:element name="p">
                             <xsl:element name="strong">
                                 <xsl:value-of disable-output-escaping="yes"
-                                              select="concat(../@Name, '-', @Position, ':', @Name)"/>
+                                              select="concat(../@Name, '.', @Position, ' : ', @Name)"/>
                             </xsl:element>
                             <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']"/>
                         </xsl:element>
@@ -180,6 +173,14 @@
                     <xsl:text>post</xsl:text>
                 </xsl:with-param>
             </xsl:call-template>
+        </xsl:if>
+        <xsl:element name="br"/>
+        <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
+            <xsl:element name="p">
+                <xsl:element name="b"><xsl:text>Usage note: </xsl:text></xsl:element>
+                <xsl:value-of disable-output-escaping="yes"
+                              select="Text[@Type='UsageNote']"/>
+            </xsl:element>
         </xsl:if>
     </xsl:template>
 

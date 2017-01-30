@@ -44,14 +44,14 @@
                 <xsl:value-of select="@HL7Version"></xsl:value-of>
             </xsl:element>
             <xsl:element name="br"/>
-            <xsl:element name="p">
+            <!--xsl:element name="p">
                 <xsl:attribute name="style">
                     <xsl:text>font-size:80%;</xsl:text>
                 </xsl:attribute>
                 <xsl:text>Document version </xsl:text>
                 <xsl:value-of select="@DocumentVersion"></xsl:value-of>
             </xsl:element>
-            <xsl:element name="br"/>
+            <xsl:element name="br"/-->
             <xsl:element name="p">
                 <xsl:attribute name="style">
                     <xsl:text>font-size:80%;</xsl:text>
