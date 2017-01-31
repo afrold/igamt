@@ -4502,3 +4502,48 @@
         </button>
     </div>
 </script>
+<script type="text/ng-template" id="addDecision.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Add Implementation Decision
+        </h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+             <div class="form-group control-group"
+                     ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+                    <label class="col-md-2 control-label">Title</label>
+                    <div class="col-md-10">
+                        <input type="text"
+                               ng-change="recordChanged()"
+                               name="title" id="title" class="form-control"
+                               ng-model="decision.decisionTitle"
+                               required
+                               ng-disabled="viewSettings.tableReadonly || isFixeddecisionTitle(decision)"
+                               aria-describedby="helpBlock2"/>
+                    </div>
+                </div>
+
+
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error has-feedback' : editForm.content.$invalid}">
+                    <label class="col-md-2 control-label">Contents</label>
+
+                    <div class="col-md-10">
+                            <textarea froala="froalaEditorOptions" ng-model="decision.decisionContents"
+                                      id="content"
+                                      name="content" 
+                                      ng-change="setDirty()"></textarea>
+               
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span>
+          <i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-success btn-sm" ng-click="ok()"><span>
+          <i class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
+        </button>
+    </div>
+</script>

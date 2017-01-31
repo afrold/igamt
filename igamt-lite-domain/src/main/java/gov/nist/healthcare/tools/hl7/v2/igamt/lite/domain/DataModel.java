@@ -13,30 +13,24 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bson.types.ObjectId;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-
 /**
  * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
  */
 public abstract class DataModel {
 
-   protected Date dateUpdated;
-   
-   private String publicationDate;
-   private int publicationVersion=0;
-   private String createdFrom;
+  protected Date dateUpdated;
 
-	  
+  protected String publicationDate;
+  protected int publicationVersion = 0;
+  protected String createdFrom;
+
+
   public DataModel() {
-	  this.dateUpdated = new Date();
+    this.dateUpdated = new Date();
   }
 
   protected String type;
-  
+
   public String dt() {
     return type;
   }
@@ -48,40 +42,39 @@ public abstract class DataModel {
   public void setType(String type) {
     this.type = type;
   }
-  
+
   public Date getDateUpdated() {
-		return dateUpdated;
-	}
+    return dateUpdated;
+  }
 
-	public void setDateUpdated(Date dateUpdated) {
-		this.dateUpdated = dateUpdated;
-	}
-	  
-	
-	 
+  public void setDateUpdated(Date dateUpdated) {
+    this.dateUpdated = dateUpdated;
+  }
 
-		  public String getPublicationDate() {
-				return publicationDate;
-			}
 
-			public void setPublicationDate(String publicationDate) {
-				this.publicationDate = publicationDate;
-			}
 
-			public int getPublicationVersion() {
-				return publicationVersion;
-			}
+  public String getPublicationDate() {
+    return publicationDate;
+  }
 
-			public void setPublicationVersion(int publicationVersion) {
-				this.publicationVersion = publicationVersion;
-			}
+  public void setPublicationDate(String publicationDate) {
+    this.publicationDate = publicationDate;
+  }
 
-			public String getCreatedFrom() {
-				return createdFrom;
-			}
+  public int getPublicationVersion() {
+    return publicationVersion;
+  }
 
-			public void setCreatedFrom(String createdFrom) {
-				this.createdFrom = createdFrom;
-			}
-			 
+  public void setPublicationVersion(int publicationVersion) {
+    this.publicationVersion = publicationVersion;
+  }
+
+  public String getCreatedFrom() {
+    return createdFrom;
+  }
+
+  public void setCreatedFrom(String createdFrom) {
+    this.createdFrom = createdFrom;
+  }
+
 }
