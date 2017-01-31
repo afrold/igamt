@@ -1075,14 +1075,15 @@ angular.module('igl')
                     }
                     $rootScope.clearChanges();
                 	
-                    IgDocumentService.exportAsWithLayout($rootScope.igdocument, format, layout);
+                $scope.customExportModal($rootScope.igdocument,format,layout);                    //IgDocumentService.exportAsWithLayout($rootScope.igdocument, format, layout);
                 }
 
             });
         }
     	    	
         else if ($rootScope.igdocument != null) {
-            IgDocumentService.exportAsWithLayout($rootScope.igdocument, format, layout);
+           // IgDocumentService.exportAsWithLayout($rootScope.igdocument, format, layout);
+           $scope.customExportModal($rootScope.igdocument,format,layout);
         }
     };
 
@@ -1750,11 +1751,22 @@ angular.module('igl')
         });
     };
 
-    $scope.customExportModal = function() {
+    $scope.customExportModal = function(ig, format, layout) {
+        var format=format;
+        var layout=layout;
         var modalInstance = $modal.open({
             templateUrl: 'CustomExportModal.html',
             controller: 'CustomExportCtrl',
-            resolve: {}
+            windowClass: 'conformance-profiles-modal',
+            resolve: {
+                layout:  function() {
+                    return layout;
+                },
+
+                format:  function() {
+                    return format;
+                }
+            }
         });
     };
 
@@ -3792,21 +3804,13 @@ angular.module('igl').controller('createCompositeMessageCtrl',
 
     });
 
-angular.module('igl').controller('CustomExportCtrl', function($scope, $modalInstance, $http, IgDocumentService, $rootScope) {
+angular.module('igl').controller('CustomExportCtrl', function($scope, $modalInstance, $http, IgDocumentService, $rootScope, layout, format) {
     $scope.selectedType = {};
-    $scope.exportType = [{
-        type: "XML",
-        layout: []
-    }, {
-        type: "Word",
-        layout: ["Compact", "Verbose"]
-    }, {
-        type: "HTML",
-        layout: ["Compact", "Verbose"]
-    }];
+ 
 
     $scope.selectedLayout = {};
-
+    $scope.layout=layout;
+    $scope.format=format;
 
     $scope.ok = function() {
         if ($scope.selectedType.selected) {
