@@ -161,9 +161,23 @@ public class Bootstrap implements InitializingBean {
     // fixConfLengths();
     // fixUserPublishedData();
     // fixConstraints1();
+	  
+	  changeStatusofPHINVADSTables();
   }
 
-  private void fixMissingCodes(String sourceTableLibId, String targetTableLibId) {
+  private void changeStatusofPHINVADSTables() {
+	  List<Table> allTables = tableService.findAll();
+	  
+	  for (Table t : allTables) {
+		  if (null != t && null != t.getScope()) {
+			  if (t.getScope().equals(SCOPE.PHINVADS) && STATUS.UNPUBLISHED.equals(t.getStatus())) {
+				  tableService.updateStatus(t.getId(), STATUS.PUBLISHED);
+			  }
+		  }
+	  }
+  }
+
+private void fixMissingCodes(String sourceTableLibId, String targetTableLibId) {
     TableLibrary sourceLib = tableLibraryRepository.findById(sourceTableLibId);
     TableLibrary tagertLib = tableLibraryRepository.findById(targetTableLibId);
 
