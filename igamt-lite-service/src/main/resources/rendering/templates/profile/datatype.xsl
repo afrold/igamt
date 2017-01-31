@@ -91,20 +91,20 @@
                             <xsl:element name="th">
                                 <xsl:text>Element name</xsl:text>
                             </xsl:element>
-                            <xsl:element name="th">
-                                <xsl:text>Conf length</xsl:text>
-                            </xsl:element>
+                            <xsl:if test="@ShowConfLength='true'">
+                                <xsl:element name="th">
+                                    <xsl:text>Conf length</xsl:text>
+                                </xsl:element>
+                            </xsl:if>
                             <xsl:element name="th">
                                 <xsl:text>Data type</xsl:text>
                             </xsl:element>
                             <xsl:element name="th">
                                 <xsl:text>Usage</xsl:text>
                             </xsl:element>
-                            <xsl:if test="@ShowConfLength='true'">
-                                <xsl:element name="th">
-                                    <xsl:text>Length</xsl:text>
-                                </xsl:element>
-                            </xsl:if>
+                            <xsl:element name="th">
+                                <xsl:text>Length</xsl:text>
+                            </xsl:element>
                             <xsl:element name="th">
                                 <xsl:text>Value Set</xsl:text>
                             </xsl:element>

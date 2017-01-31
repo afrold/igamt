@@ -10,6 +10,7 @@
         <xsl:text>.metadata { text-align:center; }</xsl:text>
         <xsl:text>.contentTable td, .contentTable th {border: 1px solid black;}</xsl:text>
         <xsl:text>.requiredDTM{background-color:#6495ed!important;}</xsl:text>
+        <xsl:text>.greyCell{background-color:#808080;}</xsl:text>
     </xsl:template>
 
 </xsl:stylesheet>

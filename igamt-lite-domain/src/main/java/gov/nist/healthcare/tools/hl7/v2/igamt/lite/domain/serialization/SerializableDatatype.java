@@ -77,6 +77,7 @@ public class SerializableDatatype extends SerializableSection {
                     Element componentElement = new Element("Component");
                     componentElement.addAttribute(new Attribute("Name", component.getName()));
                     componentElement.addAttribute(new Attribute("Usage", getFullUsage(datatype, i)));
+                    boolean isComplex = false;
                     if (component.getDatatype() != null) {
                         Datatype datatype = componentDatatypeMap.get(component);
                         if(datatype!=null) {
@@ -102,6 +103,7 @@ public class SerializableDatatype extends SerializableSection {
                                     componentElement.addAttribute(
                                         new Attribute("ConfLength", component.getConfLength()));
                             } else {
+                                isComplex = true;
                                 componentElement.addAttribute(new Attribute("MinLength", ""));
                                 componentElement.addAttribute(new Attribute("MaxLength", ""));
                                 componentElement.addAttribute(new Attribute("ConfLength", ""));
@@ -127,6 +129,7 @@ public class SerializableDatatype extends SerializableSection {
                         }
                         componentElement.addAttribute(new Attribute("Binding", bindingIdentifiers));
                     }
+                    componentElement.addAttribute(new Attribute("complex",String.valueOf(isComplex)));
                     datatypeElement.appendChild(componentElement);
                 }
                 if (datatype.getComponents().size() == 0) {

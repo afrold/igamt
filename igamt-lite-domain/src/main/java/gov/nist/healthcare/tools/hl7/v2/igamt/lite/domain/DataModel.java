@@ -23,6 +23,7 @@ public abstract class DataModel {
   protected String publicationDate;
   protected int publicationVersion = 0;
   protected String createdFrom;
+  private String hl7Section;
 
 
   public DataModel() {
@@ -76,5 +77,17 @@ public abstract class DataModel {
   public void setCreatedFrom(String createdFrom) {
     this.createdFrom = createdFrom;
   }
+
+
+
+  public String getHl7Section() {
+    return hl7Section;
+  }
+
+  public void setHl7Section(String hl7Section) {
+    this.hl7Section = hl7Section;
+  }
+
+
 
 }

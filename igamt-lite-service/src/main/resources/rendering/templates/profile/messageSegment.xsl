@@ -17,7 +17,7 @@
 			<xsl:if test="@Ref!=']'">
 				<xsl:element name="td">
 					<xsl:if
-						test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+						test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='') and (normalize-space(@Min)!='0' or normalize-space(@Max)!='0')">
 						<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>
 					</xsl:if>
 				</xsl:element>
@@ -29,8 +29,8 @@
 			</xsl:if>
 			<xsl:if test="@Ref=']'">
 				<!-- Do not display cardinality and usage for the end of a segment -->
-				<xsl:element name="td"/>
-				<xsl:element name="td"/>
+				<xsl:element name="td"><xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute></xsl:element>
+				<xsl:element name="td"><xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute></xsl:element>
 			</xsl:if>
 			<xsl:element name="td">
 				<xsl:value-of select="@Comment" />
