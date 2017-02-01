@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MetaData;
 import nu.xom.Attribute;
@@ -37,14 +38,10 @@ public class SerializableMetadata extends SerializableElement{
         if(this.metaData !=null){
             if(metaData instanceof DocumentMetaData){
                 DocumentMetaData documentMetaData = (DocumentMetaData) metaData;
-                if (documentMetaData.getTitle() != null)
-                    elmMetaData.addAttribute(new Attribute("Name", documentMetaData.getTitle()));
-                if (documentMetaData.getSubTitle() != null)
-                    elmMetaData.addAttribute(new Attribute("Subtitle", documentMetaData.getSubTitle()));
-                if (documentMetaData.getStatus() != null)
-                    elmMetaData.addAttribute(new Attribute("Status", documentMetaData.getStatus()));
-                if (documentMetaData.getTopics() != null)
-                    elmMetaData.addAttribute(new Attribute("Topics", documentMetaData.getTopics()));
+                addDocumentMetaData(documentMetaData,elmMetaData);
+            } else if(metaData instanceof DatatypeLibraryMetaData){
+                DatatypeLibraryMetaData datatypeLibraryMetaData = (DatatypeLibraryMetaData) metaData;
+                addDatatypeLibraryMetaData(datatypeLibraryMetaData,elmMetaData);
             }
             if (metaData.getVersion() != null)
                 elmMetaData.addAttribute(new Attribute("DocumentVersion", metaData.getVersion()));
@@ -58,5 +55,26 @@ public class SerializableMetadata extends SerializableElement{
                 elmMetaData.addAttribute(new Attribute("HL7Version", this.metaData.getHl7Version()));
         }
         return elmMetaData;
+    }
+
+    private void addDatatypeLibraryMetaData(DatatypeLibraryMetaData datatypeLibraryMetaData,
+        Element elmMetaData) {
+        if(datatypeLibraryMetaData.getName() != null && !"".equals(datatypeLibraryMetaData.getName())){
+            elmMetaData.addAttribute(new Attribute("Name", datatypeLibraryMetaData.getName()));
+        }
+        if(datatypeLibraryMetaData.getDescription()!=null && !"".equals(datatypeLibraryMetaData.getDescription())){
+            elmMetaData.addAttribute(new Attribute("Description", datatypeLibraryMetaData.getDescription()));
+        }
+    }
+
+    private void addDocumentMetaData(DocumentMetaData documentMetaData, Element elmMetaData) {
+        if (documentMetaData.getTitle() != null)
+            elmMetaData.addAttribute(new Attribute("Name", documentMetaData.getTitle()));
+        if (documentMetaData.getSubTitle() != null)
+            elmMetaData.addAttribute(new Attribute("Subtitle", documentMetaData.getSubTitle()));
+        if (documentMetaData.getStatus() != null)
+            elmMetaData.addAttribute(new Attribute("Status", documentMetaData.getStatus()));
+        if (documentMetaData.getTopics() != null)
+            elmMetaData.addAttribute(new Attribute("Topics", documentMetaData.getTopics()));
     }
 }

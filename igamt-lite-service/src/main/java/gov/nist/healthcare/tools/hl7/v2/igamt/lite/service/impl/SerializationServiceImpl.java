@@ -40,15 +40,20 @@ import java.util.*;
 
     @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument) {
         SerializableStructure serializableStructure = new SerializableStructure();
+        datatypeLibraryDocument.getMetaData().setHl7Version("");
+        datatypeLibraryDocument.getDatatypeLibrary().setSectionTitle("Data Types");
+        datatypeLibraryDocument.getDatatypeLibrary().setSectionContents("");
+        datatypeLibraryDocument.getTableLibrary().setSectionContents("");
+        datatypeLibraryDocument.getTableLibrary().setSectionTitle("Value Sets");
         SerializableMetadata serializableMetadata =
             new SerializableMetadata(datatypeLibraryDocument.getMetaData(), datatypeLibraryDocument.getDateUpdated());
         serializableStructure.addSerializableElement(serializableMetadata);
         SerializableSections serializableSections = new SerializableSections();
         SerializableSection datatypeSection = this.serializeDatatypes(datatypeLibraryDocument.getDatatypeLibrary(),1,true);
-        datatypeSection.setTitle("Datatypes");
+        //datatypeSection.setTitle("Data Types");
         serializableSections.addSection(datatypeSection);
         SerializableSection valueSetsSection = this.serializeValueSets(datatypeLibraryDocument.getTableLibrary(),2);
-        valueSetsSection.setTitle("Value Sets");
+        //valueSetsSection.setTitle("Value Sets");
         serializableSections.addSection(valueSetsSection);
         serializableStructure.addSerializableElement(serializableSections);
         return serializableStructure.serializeStructure();

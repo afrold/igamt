@@ -116,6 +116,11 @@ public class DocxExportUtil {
 										.addStyledParagraphOfText("Title", metaData.getName());
 								addLineBreak(wordMLPackage, factory);
 						}
+						if(null!=metaData.getDescription() & !"".equals(metaData.getDescription())){
+								wordMLPackage.getMainDocumentPart()
+										.addStyledParagraphOfText("Style1", "Description: "+metaData.getDescription());
+								addLineBreak(wordMLPackage, factory);
+						}
 				}
 				if(null!=dateUpdated && !dateUpdated.isEmpty()) {
 					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", dateUpdated);
