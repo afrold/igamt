@@ -67,8 +67,8 @@ public class DecisionController {
     User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     decision.setAccountId(account.getId());
-    String username = u.getUsername();
-    decision.setUsername(username);
+
+    decision.setUsername(account.getFullName());
     Decision saved = decisionService.save(decision);
     return saved;
 

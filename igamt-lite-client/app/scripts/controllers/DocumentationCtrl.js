@@ -30,19 +30,18 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 
 		
 		DecisionService.delete(decision).then(function(){
-			$scope.decision=null;
+			$rootScope.decision=null;
 			for(i=0; i<$rootScope.decisions.length;i++){
 				if(decision.id==$rootScope.decisions[i].id){
 					 $rootScope.decisions.splice(i, 1);
 				}
 			}
 
-             
+			$rootScope.clearChanges();
             $rootScope.msg().text = "DecisionDeleteSuccess";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
         }, function(error) {
-            $scope.toEditIGDocumentId = null;
             $rootScope.msg().text = "DecsionDeleteFaild";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
@@ -60,12 +59,11 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 	}
 	
 	
-	$scope.subview="editDecision.html";
 
-	$scope.addDecision= function(){
+	$scope.processAddDecision= function(){
 		
 		var newId=new ObjectId().toString();
-		$scope.decisionToAdd={
+		$rootScope.decisionToAdd={
 			
 				id: newId,
 				title:"New Decision",
@@ -75,30 +73,64 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 		$scope.editMode=true;
 		$scope.activeId=newId;
 		$scope.newOne=true;
-		$rootScope.decisions.push($scope.decisionToAdd);
-		$rootScope.decisionsMap[$scope.decisionToAdd.id]=$scope.decisionToAdd;
-		//$scope.editDecision($scope.decisionToAdd);
-		$scope.decision=angular.copy($scope.decisionToAdd);
-		$rootScope.$emit("event:initEditArea");
+		$rootScope.decisions.push($rootScope.decisionToAdd);
+		$rootScope.decisionsMap[$rootScope.decisionToAdd.id]=$rootScope.decisionToAdd;
+		//$scope.editDecision($rootScope.decisionToAdd);
+		$rootScope.decision=angular.copy($rootScope.decisionToAdd);
+		$rootScope.currentData=$rootScope.decision;
+		//$rootScope.$emit("event:initEditArea");
 	    
 	    
 	}
-	$scope.editDecision = function(decision){
+	$scope.processEditDecision = function(decision){
 		$scope.activeId=decision.id;
-		$rootScope.$emit("event:initEditArea");
+		//$rootScope.$emit("event:initEditArea");
 		console.log(decision);
-		$scope.decision=angular.copy(decision);
+		$rootScope.decision=angular.copy(decision);
+		$rootScope.currentData=$rootScope.decision;
+
 		$scope.editMode=false;
 		$scope.newOne=false;
 		
 
 	}
 	
+	
+	
+	
+	$scope.editDecision=function(decision){
+		if ($rootScope.hasChanges()) {
+
+	        $rootScope.openConfirmLeaveDlg().result.then(function() {
+	        	$scope.processEditDecision(decision);
+	        });
+	    } else {
+
+	    	$scope.processEditDecision(decision);
+
+	    }
+	};
+	
+	
+	$scope.addDecision=function(decision){
+		if ($rootScope.hasChanges()) {
+
+	        $rootScope.openConfirmLeaveDlg().result.then(function() {
+	        $scope.processAddDecision(decision);
+	        });
+	    } else {
+
+	    	$scope.processAddDecision(decision);
+
+	    }
+	};
+	
+	
 	$scope.saveDecision=function(decision){
 		DecisionService.save(decision).then(function(saved){
 			
 			console.log("befor");
-			$scope.decision=saved.data;
+			$rootScope.decision=saved.data;
 
 			console.log($rootScope.decisionsMap[decision.id]);
 			console.log($rootScope.decisions);
@@ -110,7 +142,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 			console.log(saved);
 			
 			angular.forEach($rootScope.decisions, function(d){
-				if(d.id==$scope.decision.id){
+				if(d.id==$rootScope.decision.id){
 				d.title=$rootScope.decisionsMap[saved.data.id].title;
 				d.content=$rootScope.decisionsMap[saved.data.id].content;
 				d.dateUpdated=$rootScope.decisionsMap[saved.data.id].dateUpdated;
@@ -124,34 +156,56 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
             }
 			$scope.editMode=false;
 			$scope.newOne=false;
-		});
+			$rootScope.clearChanges();
+			 $rootScope.msg().text = "DecisionSaveSuccess";
+	            $rootScope.msg().type = "success";
+	            $rootScope.msg().show = true;
+	        }, function(error) {
+	            $rootScope.msg().text = "DecsionSaveFaild";
+	            $rootScope.msg().type = "danger";
+	            $rootScope.msg().show = true;
+	        }
+		);
 	}
 	$scope.resetDecision=function(d){
 		console.log(d);
 		console.log($rootScope.decisionsMap);
-		$scope.decision= angular.copy($rootScope.decisionsMap[d.id]);
+		$rootScope.decision= angular.copy($rootScope.decisionsMap[d.id]);
         if($scope.editForm) {
             $scope.editForm.$setPristine();
             $scope.editForm.$dirty = false;
         }
 		
 
-	}
+	};
 	
-
+	
+	
+ $scope.confirmDeleteDecision = function(decision) {
+ var modalInstance = $modal.open({
+     templateUrl: 'confirmDecisionDeleteCtrl.html',
+     controller: 'confirmDecisionDeleteCtrl',
+      resolve: {
+    	  decisionToDelete: function() {
+              return decision;
+         }
+    }
+ });
+ modalInstance.result.then(function(decisiontoDelete) {
+	
+	 $scope.deleteDecision(decision);
 });
+ 
+ 
+ }
+ });
 
-angular.module('igl').controller('addDecisionCtrl', function($scope, $rootScope, $http, $modalInstance, decisionToAdd,DecisionService) {
+angular.module('igl').controller('confirmDecisionDeleteCtrl', function($scope, $rootScope, $http, $modalInstance, decisionToDelete,DecisionService) {
 
-	$scope.decisiontoAdd=decisionToAdd;
+	$scope.decisiontoDelete=decisionToDelete;
     $scope.ok = function() {
     	
-    	DecisionService.save(decision).then(function(response){
-			$scope.decision=response;
-			$rootScope.decision.push(response);
-			
-		});
-        $modalInstance.dismiss('cancel');
+    	$modalInstance.close($scope.decisiontoDelete);
         
     };
     $scope.cancel = function () {
