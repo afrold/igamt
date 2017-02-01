@@ -383,7 +383,7 @@ import java.util.UUID;
                                 position = String.valueOf(currentConformanceStatementPosition);
                                 prefix = segmentLevelConformanceStatementSection.getPrefix() + "." + currentConformanceStatementPosition;
                                 headerLevel = String.valueOf(5);
-                                title = serializableSegment.getSegment().getName() + " - " + serializableSegment.getSegment().getDescription();
+                                title = serializableSegment.getSegment().getLabel() + " - " + serializableSegment.getSegment().getDescription();
                                 SerializableSection
                                     conformanceStatementsSegmentLevelConformanceStatementsSection =
                                     new SerializableSection(id, prefix, position, headerLevel, title);
@@ -401,7 +401,7 @@ import java.util.UUID;
                                 position = String.valueOf(currentPredicatePosition);
                                 prefix = segmentLevelPredicatesSection.getPrefix() + "." + currentPredicatePosition;
                                 headerLevel = String.valueOf(5);
-                                title = serializableSegment.getSegment().getName() + " - " + serializableSegment.getSegment().getDescription();
+                                title = serializableSegment.getSegment().getLabel() + " - " + serializableSegment.getSegment().getDescription();
                                 SerializableSection
                                     predicatesSegmentLevelConformanceStatementsSection =
                                     new SerializableSection(id, prefix, position, headerLevel, title);
