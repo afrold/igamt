@@ -83,7 +83,7 @@ import java.util.UUID;
             nu.xom.Element textElement = new nu.xom.Element("Text");
             if (profile.getUsageNote() != null && !profile.getUsageNote().equals("")) {
                 nu.xom.Element usageNoteElement = new nu.xom.Element("UsageNote");
-                usageNoteElement.appendChild(profile.getUsageNote());
+                usageNoteElement.appendChild(serializationUtil.cleanRichtext(profile.getUsageNote()));
                 textElement.appendChild(usageNoteElement);
             }
             serializableSections.getRootSections().appendChild(textElement);
