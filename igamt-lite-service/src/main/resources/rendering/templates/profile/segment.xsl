@@ -133,9 +133,11 @@
         </xsl:element>
         <xsl:if test="count(Constraint) &gt; 0">
             <xsl:if test="count(Constraint[@Type='cs']) &gt; 0">
-                <xsl:element name="strong">
-                    <xsl:element name="u">
-                        <xsl:text>Conformance Statements</xsl:text>
+                <xsl:element name="p">
+                    <xsl:element name="strong">
+                        <xsl:element name="u">
+                            <xsl:text>Conformance Statements</xsl:text>
+                        </xsl:element>
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="table">
@@ -159,9 +161,11 @@
                 </xsl:element>
             </xsl:if>
             <xsl:if test="count(Constraint[@Type='pre']) &gt; 0">
-                <xsl:element name="strong">
-                    <xsl:element name="u">
-                        <xsl:text>Conditional Predicates</xsl:text>
+                <xsl:element name="p">
+                    <xsl:element name="strong">
+                        <xsl:element name="u">
+                            <xsl:text>Conditional Predicates</xsl:text>
+                        </xsl:element>
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="table">
@@ -189,29 +193,34 @@
         <xsl:apply-templates select="./coconstraints"></xsl:apply-templates>
 
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
-            <xsl:call-template name="definitionText">
-                <xsl:with-param name="type">
-                    <xsl:text>post</xsl:text>
-                </xsl:with-param>
-            </xsl:call-template>
+            <xsl:element name="p">
+                <xsl:call-template name="definitionText">
+                    <xsl:with-param name="type">
+                        <xsl:text>post</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </xsl:element>
         </xsl:if>
 
         <xsl:for-each select="Field">
             <xsl:sort select="@Position" data-type="number"></xsl:sort>
             <xsl:if test="count(Text) &gt; 0">
-	            <xsl:element name="b">
-	                <xsl:value-of select="concat(../@Name,'-',./@Position,' : ',./@Name,' (',./@Datatype,')')" />
-	            </xsl:element>
-	            <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
+	            <xsl:element name="p">
+                    <xsl:element name="b">
+                        <xsl:value-of select="concat(../@Name,'-',./@Position,' : ',./@Name,' (',./@Datatype,')')" />
+                    </xsl:element>
+                    <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
+                </xsl:element>
             </xsl:if>
         </xsl:for-each>
-        <xsl:element name="br"/>
     </xsl:template>
 
     <xsl:template match="coconstraints">
-        <xsl:element name="strong">
-            <xsl:element name="u">
-                <xsl:text>Co-Constraints</xsl:text>
+        <xsl:element name="p">
+            <xsl:element name="strong">
+                <xsl:element name="u">
+                    <xsl:text>Co-Constraints</xsl:text>
+                </xsl:element>
             </xsl:element>
         </xsl:element>
         <xsl:copy-of select="table"/>
