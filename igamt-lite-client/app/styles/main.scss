@@ -2699,10 +2699,10 @@ tr[dnd-handle] {
   cursor: move !important;
 
 }
-li .dndPlaceholder {
+div.dndPlaceholder {
   display: block;
   min-height: 30px;
-  background-color: gray !important;
+  background-color: lightgray !important;
  list-style: none;
 }
 
