@@ -84,7 +84,8 @@ app.config(function($routeProvider, RestangularProvider, $httpProvider, Keepaliv
              controller: 'shared'
          })
         .when('/doc', {
-            templateUrl: 'views/doc.html'
+            templateUrl: 'views/doc.html',
+            controller:	'DocumentationController'
         })
         .when('/setting', {
             templateUrl: 'views/setting.html'

@@ -11,7 +11,6 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
@@ -20,8 +19,9 @@ import java.text.SimpleDateFormat;
 public class Constant {
 
   private Constant() {}
+
   public final static String ProfileComponent = "profilecomponent";
-  public final static String ProfileComponentLibrary = "profilecomponentlibrary";  
+  public final static String ProfileComponentLibrary = "profilecomponentlibrary";
   public final static String SEGMENTS = "segments";
   public final static String SEGMENTLIBRARY = "segmentlibrary";
   public final static String SEGMENT = "segment";
@@ -35,7 +35,7 @@ public class Constant {
   public final static String DATATYPES = "datatypes";
   public final static String DATATYPELIBRARY = "datatypelibrary";
   public final static String DATATYPE = "datatype";
-  public final static String SEGMENTORGROUP="segmentorgroup";
+  public final static String SEGMENTORGROUP = "segmentorgroup";
   public final static String PROFILE = "profile";
   public final static String TABLELIBRARY = "tablelibrary";
   public final static String TABLES = "tables";
@@ -47,8 +47,10 @@ public class Constant {
 
   public final static String SECTION = "section";
   public final static String Document = "document";
+  public final static String DECISION = "decision";
+
   public final static SimpleDateFormat mdy = new SimpleDateFormat("MMMM dd, yyyy");
-  
+
   public final static int CODESIZELIMIT = 3000;
 
   public enum SCOPE {
@@ -59,12 +61,12 @@ public class Constant {
   };
 
   public final static String ORG_NAME = "NIST";
-public static final String DATATYPE_LIBRARY_DOCUMENT = "datatypeLibraryDocument";
+  public static final String DATATYPE_LIBRARY_DOCUMENT = "datatypeLibraryDocument";
 
   public static enum STATUS {
     PUBLISHED, UNPUBLISHED
   };
-  
+
   public static enum DataContext {
     IG, LIBRARY;
   }
