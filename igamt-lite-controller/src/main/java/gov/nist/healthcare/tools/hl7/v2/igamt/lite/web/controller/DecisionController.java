@@ -11,16 +11,22 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DecisionService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
@@ -39,7 +45,10 @@ public class DecisionController {
 
   @Autowired
   private DecisionService decisionService;
-
+  @Autowired
+  private UserService userService;
+  @Autowired
+  AccountRepository accountRepository;
 
   @RequestMapping(value = "/findAll", method = RequestMethod.POST, produces = "application/json")
   public List<Decision> findAll() {
@@ -53,14 +62,26 @@ public class DecisionController {
   @RequestMapping(value = "/save", method = RequestMethod.POST)
   public Decision save(@RequestBody Decision decision)
       throws DatatypeSaveException, ForbiddenOperationException {
-    // if () {
-    //
+
+    decision.setDateUpdated(new Date());
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    decision.setAccountId(account.getId());
+    String username = u.getUsername();
+    decision.setUsername(username);
     Decision saved = decisionService.save(decision);
-    log.debug("saved.getId()=" + saved.getId());
     return saved;
-    // } else {
-    // throw new ForbiddenOperationException("FORBIDDEN_SAVE_DECSION");
-    // }
+
+  }
+
+  @RequestMapping(value = "/delete", method = RequestMethod.POST)
+  public ResponseMessage delete(@RequestBody Decision decision)
+      throws DatatypeSaveException, ForbiddenOperationException {
+    decisionService.delete(decision);
+    return new ResponseMessage(ResponseMessage.Type.success, "decision Delete Success", null);
+
+
+
   }
 
 }

@@ -32,4 +32,6 @@ public interface DecisionService {
   public Date updateDate(String id, Date date);
 
   public Decision save(Decision d);
+
+  public void delete(Decision decision);
 }

@@ -18,6 +18,20 @@ angular.module('igl').factory('DecisionService',
                 return delay.promise;
 				
 			},
+			delete:function(decision){
+                var delay = $q.defer();
+                //datatype.accountId = userInfoService.getAccountID();
+
+                $http.post('api/decisions/delete', decision).then(function(response) {
+                	var dateUpdated = angular.fromJson(response);
+                	delay.resolve(dateUpdated);
+                }, function(error) {
+                    //console.log("DatatypeService.save error=" + error);
+                    delay.reject(error);
+                });
+				return delay.promise;
+			},
+			
 			findAll:function(){
                 var delay = $q.defer();
                 //datatype.accountId = userInfoService.getAccountID();

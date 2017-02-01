@@ -14,35 +14,39 @@ body {
 <div class="container" ng-init="init()">
 
 
-	<br/> <br/>
+	<br /> <br />
 
 	<div class="row">
 		<div class="col-md-3">
 			<accordion>
-			<div accordion-group="" ng-init="isOpen1=true"  class="panel panel-default" is-open="isOpen1">
+			<div accordion-group="" ng-init="isOpen1=true"
+				class="panel panel-default" is-open="isOpen1">
 				<accordion-heading style="color:white !important;">
 				<i class="pull-left fa" style="color: black;"
 					ng-class="{'fa-chevron-down': isOpen1, 'fa-chevron-right': !isOpen1}"></i>
 				Implementation Decisions </accordion-heading>
-				<div style="margin-bottom:25px;">
-				<button title="add new Decision" type="button" ng-if="isAdmin()" class="pull-right" ng-click="addDecision()"> <i class="fa fa-plus" aria-hidden="true"></i>Add</button>
+				<div style="margin-bottom: 25px;">
+					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
+						aria-hidden="true" ng-click="addDecision()"
+						style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
 				</div>
-				
+
 				<ul class="nav nav-pills nav-stacked"
 					style="margin-left: 5px !important;">
-					
+
 					<li ng-repeat="decision in decisions"
 						ng-click="editDecision(decision)"
-						style="background-color: beige;"> <a>{{decision.title}}</a></li>
+						ng-class="{'current':activeId==decision.id}"><a>{{decision.title}}</a></li>
 
 				</ul>
 			</div>
-			<div accordion-group="" ng-init="isOpen2=true" class="panel panel-default" is-open="isOpen2">
+			<div accordion-group="" ng-init="isOpen2=true"
+				class="panel panel-default" is-open="isOpen2">
 				<accordion-heading style="color:black !important;">
 				<i class="pull-left fa" style="color: black;"
 					ng-class="{'fa-chevron-down':isOpen2, 'fa-chevron-right': !isOpen2}"></i>
 				User Guides </accordion-heading>
-				
+
 				Coming Soon
 			</div>
 			<div accordion-group class="panel panel-default" is-open="isOpen3">
@@ -50,92 +54,89 @@ body {
 				<i class="pull-left fa" style="color: black;"
 					ng-class="{'fa-chevron-down': isOpen3, 'fa-chevron-right': !isOpen3}"></i>
 				FAQ </accordion-heading>
-				
+
 				Coming Soon
 			</div>
 			</accordion>
 		</div>
 		<div class="col-md-8" ng-if="decision"
 			style="border-left: 1px solid #eeeeee; min-height: 80px;">
-			<div class="page-header" style="margin-bottom: 20px">
-				<span class="header4">{{decision.title}}</span> <i
-					class="fa fa-pencil pull-right" aria-hidden="true"
-					ng-click="edit()" ng-if="!editMode"></i>	
+			<div class="" style="margin-bottom: 20px">
+				<span class="header4">{{decision.title}}</span> <span
+					class="pull-right"> <i class="fa fa-pencil "
+					aria-hidden="true" ng-click="edit()" ng-if="!editMode"></i> <i
+					ng-if="!editMode && isAdmin()" class="fa fa-trash-o" style="color:red;"
+					aria-hidden="true" ng-click="deleteDecision(decision)"></i></span>
+					<br/>
+					 <i class="fa fa-calendar" aria-hidden="true"></i>
+					updated {{decision.dateUpdated |date:dateFormat}} <i class="fa fa-user" aria-hidden="true"></i> {{decision.username}}
 			</div>
-			
-			
 			<div class="fr-view" ng-if="!editMode&&!newOne">
 				<div froala-view="decision.content"></div>
-				
-				
-					<div class="form-group control-group">
-						<label class="col-md-2 control-label">Date Updated</label>
 
-						<div class="controls col-md-10" >
-							<span class="form-control">{{decision.dateUpdated |
-								date:dateFormat}}</span>
-						</div>
-					</div>
+
 			</div>
-			
 
 			<hr>
 
 
 
-			<div ng-if="editMode||newOne" ng-controller="EditAreaCtrl" ng-init="init">
-			<form name="editForm" id="editForm">
-				<div class="row" style="margin-left: 0px; margin-right: 10px">
-					<div class="form-group control-group"
-						ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
-						<label class="col-md-2 control-label">Title</label>
-						<div class="col-md-10">
-							<input type="text" name="title" required
-								id="title" class="form-control"
-								ng-model="decision.title" ng-change="setDirty()"/>
-						</div>
-					</div>
-
-
-					<div class="form-group control-group"
-						ng-class="{'igl-has-error has-feedback' : editForm.content.$invalid}">
-						<label class="col-md-2 control-label">Contents</label>
-
-						<div class="col-md-10">
-							<div>
-								<textarea froala="froalaEditorOptions"
-									ng-model="decision.content" id="content" name="content"
-									ng-change="setDirty()"></textarea>
+			<div ng-if="editMode||newOne" ng-controller="EditAreaCtrl"
+				ng-init="init">
+				<form name="editForm" id="editForm">
+					<div class="row" style="margin-left: 0px; margin-right: 10px">
+						<div class="form-group control-group"
+							ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+							<label class="col-md-2 control-label">Title</label>
+							<div class="col-md-10">
+								<input type="text" name="title" required id="title"
+									class="form-control" ng-model="decision.title"
+									ng-change="setDirty()" />
 							</div>
 						</div>
-					</div>
 
-					<div class="form-group control-group" ng-if="decision.dateUpdated&&!newOne">
-						<label class="col-md-2 control-label">Date Updated</label>
 
-						<div class="controls col-md-10">
-							<span class="form-control">{{decision.dateUpdated |
-								date:dateFormat}}</span>
+						<div class="form-group control-group"
+							ng-class="{'igl-has-error has-feedback' : editForm.content.$invalid}">
+							<label class="col-md-2 control-label">Contents</label>
+
+							<div class="col-md-10">
+								<div>
+									<textarea froala="froalaEditorOptions" required
+										ng-model="decision.content" id="content" name="content"
+										ng-change="setDirty()"></textarea>
+								</div>
+							</div>
 						</div>
-					</div>
 
-					<span class="pull-right">
-						<button title="Cancel Changes" type="button"
-							class="btn btn-raised btn-sm btn-warning"
-							ng-disabled="!editForm.$dirty" ng-click="resetDecision(decision)">
-							<span><i class="fa fa-times fa-fw"></i> Reset</span>
-						</button>
-						<button title="Save Changes" type="submit"
-							class="btn btn-raised btn-sm btn-success"
-							ng-disabled="editForm.$invalid || !editForm.$dirty"
-							ng-click="saveDecision(decision)">
-							<span><i class="fa fa-check fa-fw"></i> Save</span>
-						</button>
-					</span>
-				</div>
-			</form>
+						<div class="form-group control-group"
+							ng-if="decision.dateUpdated&&!newOne" style="margin-top: 10px;">
+							<label class="col-md-2 control-label">Date Updated</label>
+
+							<div class="controls col-md-10">
+								<span class="form-control">{{decision.dateUpdated |
+									date:dateFormat}}</span>
+							</div>
+						</div>
+
+						<span class="pull-right">
+							<button title="Cancel Changes" type="button"
+								class="btn btn-raised btn-sm btn-warning"
+								ng-disabled="!editForm.$dirty"
+								ng-click="resetDecision(decision)">
+								<span><i class="fa fa-times fa-fw"></i> Reset</span>
+							</button>
+							<button title="Save Changes" type="submit"
+								class="btn btn-raised btn-sm btn-success"
+								ng-disabled="editForm.$invalid || !editForm.$dirty||decision.content==''"
+								ng-click="saveDecision(decision)">
+								<span><i class="fa fa-check fa-fw"></i> Save</span>
+							</button>
+						</span>
+					</div>
+				</form>
 			</div>
-			
+
 		</div>
 	</div>
 </div>

@@ -2870,16 +2870,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         }
         $scope.init = function() {
+        	if(userInfoService.isAuthenticated()){
             VersionAndUseService.findAll().then(function(result) {
-            	console.log("LOADING INFO VERSION");
-
-            
                 angular.forEach(result, function(info) {
-                	console.log("LOADING INFO VERSION");
                 	console.log($rootScope.versionAndUseMap[info.id]);
                     $rootScope.versionAndUseMap[info.id] = info;
                 });
             });
+        	}
             $http.get('api/igdocuments/config', { timeout: 60000 }).then(function(response) {
                 $rootScope.config = angular.fromJson(response.data);
                 var delay = $q.defer();

@@ -3,6 +3,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 
 	$scope.editMode=false;
 	$scope.newOne=false;
+	$scope.activeId=null;
 	
 //	$scope.init=function(){
 //		console.log("lddsdsdsddssd");
@@ -21,6 +22,33 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 			$rootScope.$emit("event:initEditArea");
 		});
 
+	};
+	
+	
+	$scope.deleteDecision=function(decision){
+		
+
+		
+		DecisionService.delete(decision).then(function(){
+			$scope.decision=null;
+			for(i=0; i<$rootScope.decisions.length;i++){
+				if(decision.id==$rootScope.decisions[i].id){
+					 $rootScope.decisions.splice(i, 1);
+				}
+			}
+
+             
+            $rootScope.msg().text = "DecisionDeleteSuccess";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+        }, function(error) {
+            $scope.toEditIGDocumentId = null;
+            $rootScope.msg().text = "DecsionDeleteFaild";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+        }
+
+		);
 	}
 	
 	
@@ -41,11 +69,11 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 			
 				id: newId,
 				title:"New Decision",
-				content:"Add Decision content",
 				type:"decision"
 				
 		}
 		$scope.editMode=true;
+		$scope.activeId=newId;
 		$scope.newOne=true;
 		$rootScope.decisions.push($scope.decisionToAdd);
 		$rootScope.decisionsMap[$scope.decisionToAdd.id]=$scope.decisionToAdd;
@@ -56,6 +84,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 	    
 	}
 	$scope.editDecision = function(decision){
+		$scope.activeId=decision.id;
 		$rootScope.$emit("event:initEditArea");
 		console.log(decision);
 		$scope.decision=angular.copy(decision);
@@ -68,7 +97,8 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 	$scope.saveDecision=function(decision){
 		DecisionService.save(decision).then(function(saved){
 			
-			console.log("befor")
+			console.log("befor");
+			$scope.decision=saved.data;
 
 			console.log($rootScope.decisionsMap[decision.id]);
 			console.log($rootScope.decisions);
@@ -83,7 +113,8 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 				if(d.id==$scope.decision.id){
 				d.title=$rootScope.decisionsMap[saved.data.id].title;
 				d.content=$rootScope.decisionsMap[saved.data.id].content;
-				console.log("found");
+				d.dateUpdated=$rootScope.decisionsMap[saved.data.id].dateUpdated;
+				d.username=$rootScope.decisionsMap[saved.data.id].username;
 				}
 			});
 			
@@ -99,8 +130,6 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 		console.log(d);
 		console.log($rootScope.decisionsMap);
 		$scope.decision= angular.copy($rootScope.decisionsMap[d.id]);
-		$scope.editMode=false;
-		$scope.editMode=false;
         if($scope.editForm) {
             $scope.editForm.$setPristine();
             $scope.editForm.$dirty = false;

@@ -63,6 +63,13 @@ public class DecisionServiceImpl implements DecisionService {
     return decisionRepository.save(d);
   }
 
+  @Override
+  public void delete(Decision d) {
+    // TODO Auto-generated method stub
+
+    decisionRepository.delete(d);
+  }
+
   /*
    * (non-Javadoc)
    * 

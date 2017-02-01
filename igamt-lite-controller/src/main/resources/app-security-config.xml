@@ -32,6 +32,7 @@
  
 	<sec:http pattern="/api/appInfo" security="none" />
 	<sec:http pattern="/api/uploaded_files/file" security="none" />
+	<sec:http pattern="/api/decisions/findAll" security="none" />
 
 	<sec:http create-session="ifRequired" use-expressions="true">
 		<sec:http-basic entry-point-ref="restAuthenticationEntryPoint" />
@@ -64,7 +65,8 @@
 			access="isFullyAuthenticated() and hasRole('admin')" />
 		<sec:intercept-url pattern="/api/uploaded_files/file" access="isAnonymous()" />
 		<sec:intercept-url pattern="/api/uploaded_files/upload" access="isFullyAuthenticated()" />
-
+		<sec:intercept-url pattern="/api/decisions/findAll" access="isAnonymous()" />
+		
 		<sec:logout logout-success-url="/index.html" />
 		<!-- <sec:custom-filter ref="csrfHeaderFilter" after="CSRF_FILTER"/> -->
 		<!-- <sec:csrf token-repository-ref="csrfTokenRepository" /> -->

@@ -32,6 +32,14 @@ public class Decision extends DataModel {
 
   private Date updateDate;
 
+  private Long AccountId;
+
+  private String username;
+
+  public String getUsername() {
+    return username;
+  }
+
   public String getId() {
     return id;
   }
@@ -82,6 +90,28 @@ public class Decision extends DataModel {
    */
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  /**
+   * @return the accountId
+   */
+  public Long getAccountId() {
+    return AccountId;
+  }
+
+  /**
+   * @param accountId the accountId to set
+   */
+  public void setAccountId(Long accountId) {
+    AccountId = accountId;
+  }
+
+  /**
+   * @param username
+   */
+  public void setUsername(String username) {
+    // TODO Auto-generated method stub
+    this.username = username;
   }
 
 
