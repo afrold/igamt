@@ -11,10 +11,7 @@ import nu.xom.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -41,9 +38,25 @@ import java.util.UUID;
 
     @Autowired SerializeTableService serializeTableService;
 
-    @Override public Document serializeDatatypeLibrary(IGDocument igDocument,
-        SerializationLayout serializationLayout) {
-        return serializeIGDocument(igDocument, serializationLayout);
+    @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument) {
+        SerializableStructure serializableStructure = new SerializableStructure();
+        datatypeLibraryDocument.getMetaData().setHl7Version("");
+        datatypeLibraryDocument.getDatatypeLibrary().setSectionTitle("Data Types");
+        datatypeLibraryDocument.getDatatypeLibrary().setSectionContents("");
+        datatypeLibraryDocument.getTableLibrary().setSectionContents("");
+        datatypeLibraryDocument.getTableLibrary().setSectionTitle("Value Sets");
+        SerializableMetadata serializableMetadata =
+            new SerializableMetadata(datatypeLibraryDocument.getMetaData(), datatypeLibraryDocument.getDateUpdated());
+        serializableStructure.addSerializableElement(serializableMetadata);
+        SerializableSections serializableSections = new SerializableSections();
+        SerializableSection datatypeSection = this.serializeDatatypes(datatypeLibraryDocument.getDatatypeLibrary(),1,true);
+        //datatypeSection.setTitle("Data Types");
+        serializableSections.addSection(datatypeSection);
+        SerializableSection valueSetsSection = this.serializeValueSets(datatypeLibraryDocument.getTableLibrary(),2);
+        //valueSetsSection.setTitle("Value Sets");
+        serializableSections.addSection(valueSetsSection);
+        serializableStructure.addSerializableElement(serializableSections);
+        return serializableStructure.serializeStructure();
     }
 
     @Override public Document serializeElement(SerializableElement element) {
@@ -103,35 +116,11 @@ import java.util.UUID;
         if(serializationLayout.equals(SerializationLayout.VERBOSE)) {
             serializeMaster = false;
         }
-        SerializableSection datatypeSection = this.serializeDatatypes(profile,serializeMaster);
+        SerializableSection datatypeSection = this.serializeDatatypes(profile.getDatatypeLibrary(),profile.getSectionPosition(),serializeMaster);
         profileSection.addSection(datatypeSection);
 
         //Value sets serialization
-        id = profile.getTableLibrary().getId();
-        position = String.valueOf(profile.getTableLibrary().getSectionPosition());
-        prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
-            .valueOf(profile.getTableLibrary().getSectionPosition() + 1);
-        headerLevel = String.valueOf(2);
-        title = "";
-        if (profile.getTableLibrary().getSectionTitle() != null) {
-            title = profile.getTableLibrary().getSectionTitle();
-        }
-        SerializableSection valueSetsSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
-        if (profile.getTableLibrary().getSectionContents() != null && !profile.getTableLibrary()
-            .getSectionContents().isEmpty()) {
-            valueSetsSection.addSectionContent(
-                "<div class=\"fr-view\">" + profile.getTableLibrary().getSectionContents()
-                    + "</div>");
-        }
-        List<TableLink> tableLinkList = new ArrayList<>(profile.getTableLibrary().getChildren());
-        Collections.sort(tableLinkList);
-        for (TableLink tableLink : tableLinkList) {
-            SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
-                prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                tableLinkList.indexOf(tableLink));
-            valueSetsSection.addSection(serializableTable);
-        }
+        SerializableSection valueSetsSection = this.serializeValueSets(profile.getTableLibrary(),profile.getSectionPosition());
         profileSection.addSection(valueSetsSection);
 
         SerializableSection constraintInformationSection =
@@ -146,26 +135,66 @@ import java.util.UUID;
         return serializableStructure.serializeStructure();
     }
 
-    private SerializableSection serializeDatatypes(Profile profile, boolean serializeMaster) {
-        String id = profile.getDatatypeLibrary().getId();
-        String position = String.valueOf(profile.getDatatypeLibrary().getSectionPosition());
-        String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
-            .valueOf(profile.getDatatypeLibrary().getSectionPosition() + 1);
+    private SerializableSection serializeValueSets(TableLibrary tableLibrary,
+        Integer sectionPosition) {
+        String id = tableLibrary.getId();
+        String position,prefix;
+        if(tableLibrary.getSectionPosition()!=null) {
+            position = String.valueOf(tableLibrary.getSectionPosition());
+            prefix = String.valueOf(sectionPosition + 1) + "." + String
+                .valueOf(tableLibrary.getSectionPosition() + 1);
+        } else {
+            position = String.valueOf(sectionPosition);
+            prefix = String.valueOf(sectionPosition);
+        }
         String headerLevel = String.valueOf(2);
         String title = "";
-        if (profile.getDatatypeLibrary().getSectionTitle() != null) {
-            title = profile.getDatatypeLibrary().getSectionTitle();
+        if (tableLibrary.getSectionTitle() != null) {
+            title = tableLibrary.getSectionTitle();
+        }
+        SerializableSection valueSetsSection =
+            new SerializableSection(id, prefix, position, headerLevel, title);
+        if (tableLibrary.getSectionContents() != null && !tableLibrary
+            .getSectionContents().isEmpty()) {
+            valueSetsSection.addSectionContent(
+                "<div class=\"fr-view\">" + tableLibrary.getSectionContents()
+                    + "</div>");
+        }
+        List<TableLink> tableLinkList = new ArrayList<>(tableLibrary.getChildren());
+        Collections.sort(tableLinkList);
+        for (TableLink tableLink : tableLinkList) {
+            SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
+                prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
+                tableLinkList.indexOf(tableLink));
+            valueSetsSection.addSection(serializableTable);
+        }
+        return valueSetsSection;
+    }
+
+    private SerializableSection serializeDatatypes(DatatypeLibrary datatypeLibrary, int sectionPosition, boolean serializeMaster) {
+        String id = datatypeLibrary.getId();
+        String position,prefix;
+        if(datatypeLibrary.getSectionPosition()!=null) {
+            position = String.valueOf(datatypeLibrary.getSectionPosition());
+            prefix = String.valueOf(sectionPosition + 1) + "." + String
+                .valueOf(datatypeLibrary.getSectionPosition() + 1);
+        } else {
+            position = String.valueOf(sectionPosition);
+            prefix = String.valueOf(sectionPosition);
+        }
+        String headerLevel = String.valueOf(2);
+        String title = "";
+        if (datatypeLibrary.getSectionTitle() != null) {
+            title = datatypeLibrary.getSectionTitle();
         }
         SerializableSection datatypeSection =
             new SerializableSection(id, prefix, position, headerLevel, title);
-        if (profile.getDatatypeLibrary().getSectionContents() != null && !profile
-            .getDatatypeLibrary().getSectionContents().isEmpty()) {
+        if (datatypeLibrary.getSectionContents() != null && !datatypeLibrary.getSectionContents().isEmpty()) {
             datatypeSection.addSectionContent(
-                "<div class=\"fr-view\">" + profile.getDatatypeLibrary().getSectionContents()
-                    + "</div>");
+                "<div class=\"fr-view\">" + datatypeLibrary.getSectionContents() + "</div>");
         }
         List<DatatypeLink> datatypeLinkList =
-            new ArrayList<>(profile.getDatatypeLibrary().getChildren());
+            new ArrayList<>(datatypeLibrary.getChildren());
         Collections.sort(datatypeLinkList);
         for (DatatypeLink datatypeLink : datatypeLinkList) {
             SerializableDatatype serializableDatatype = serializeDatatypeService
