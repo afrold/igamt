@@ -248,6 +248,21 @@ public class Bootstrap implements InitializingBean {
     exportConfig.insert(defaultConfiguration);
 
 
+
+    changeStatusofPHINVADSTables();
+
+  }
+
+  private void changeStatusofPHINVADSTables() {
+    List<Table> allTables = tableService.findAll();
+
+    for (Table t : allTables) {
+      if (null != t && null != t.getScope()) {
+        if (t.getScope().equals(SCOPE.PHINVADS) && STATUS.UNPUBLISHED.equals(t.getStatus())) {
+          tableService.updateStatus(t.getId(), STATUS.PUBLISHED);
+        }
+      }
+    }
   }
 
   private void fixMissingCodes(String sourceTableLibId, String targetTableLibId) {
