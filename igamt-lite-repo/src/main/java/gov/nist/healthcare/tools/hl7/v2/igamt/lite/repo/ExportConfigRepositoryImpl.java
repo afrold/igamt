@@ -82,5 +82,22 @@ public class ExportConfigRepositoryImpl implements ExportConfigOperations {
     return mongo.find(qry, ExportConfig.class);
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigOperations#findDefault(java.lang.
+   * String)
+   */
+  @Override
+  public List<ExportConfig> findDefault(String type) {
+    Criteria where = Criteria.where("type").in(type);
+    where.andOperator(Criteria.where("defaultType").is(true));
+    Query qry = Query.query(where);
+    return mongo.find(qry, ExportConfig.class);
+
+
+  }
+
 
 }

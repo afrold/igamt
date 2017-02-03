@@ -7,9 +7,9 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Abdelghani EL OUAKILI (NIST) Feb 2, 2017
+ * that they have been modified. Abdelghani EL OUAKILI (NIST) Feb 3, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
 
@@ -19,8 +19,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public interface ExportConfigOperations {
-
+public interface ExportConfigService {
   public List<ExportConfig> findByType(String type);
 
   public List<ExportConfig> findByTypeAndAccountId(String type, Long accountId);
@@ -28,7 +27,4 @@ public interface ExportConfigOperations {
   public List<ExportConfig> findByAccountId(Long accountId);
 
   public List<ExportConfig> findDefault(String type);
-
-
-
 }
