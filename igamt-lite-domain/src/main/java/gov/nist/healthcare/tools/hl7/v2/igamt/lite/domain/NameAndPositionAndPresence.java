@@ -7,7 +7,7 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Abdelghani EL OUAKILI (NIST) Feb 2, 2017
+ * that they have been modified. Abdelghani EL OUAKILI (NIST) Feb 3, 2017
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
@@ -15,7 +15,42 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public class GeneralColumnConfig extends ColumnsConfig {
+public class NameAndPositionAndPresence {
+
+  private String name;
+  private int position;
+  private boolean present;
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public NameAndPositionAndPresence(String name, int position, boolean present) {
+    super();
+    this.name = name;
+    this.position = position;
+    this.present = present;
+  }
+
+  public int getPosition() {
+    return position;
+  }
+
+  public void setPosition(int position) {
+    this.position = position;
+  }
+
+  public boolean isPresent() {
+    return present;
+  }
+
+  public void setPresent(boolean presence) {
+    this.present = presence;
+  }
 
 
 

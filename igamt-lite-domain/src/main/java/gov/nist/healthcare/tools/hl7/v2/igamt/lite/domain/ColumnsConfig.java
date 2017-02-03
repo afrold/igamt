@@ -11,45 +11,40 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
 public class ColumnsConfig {
+  private List<NameAndPositionAndPresence> columns = new ArrayList<NameAndPositionAndPresence>();
+
+  public ColumnsConfig() {
 
 
-  protected boolean usage;
-  protected boolean comments;
-
-  /**
-   * @return the name
-   */
-  /**
-   * @return the usage
-   */
-  public boolean getUsage() {
-    return usage;
+    super();
+    // TODO Auto-generated constructor stub
   }
 
-  /**
-   * @param usage the usage to set
-   */
-  public void setUsage(boolean usage) {
-    this.usage = usage;
+
+
+  public ColumnsConfig(List<NameAndPositionAndPresence> columns) {
+    super();
+    this.columns = columns;
   }
 
-  /**
-   * @return the comments
-   */
-  public boolean getComments() {
-    return comments;
+
+
+  public List<NameAndPositionAndPresence> getColumns() {
+    return columns;
   }
 
-  /**
-   * @param comments the comments to set
-   */
-  public void setComments(boolean comments) {
-    this.comments = comments;
+  public void setColumns(List<NameAndPositionAndPresence> columns) {
+    this.columns = columns;
   }
+
+
 
 }

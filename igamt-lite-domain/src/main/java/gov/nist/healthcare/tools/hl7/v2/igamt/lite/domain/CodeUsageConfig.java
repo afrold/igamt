@@ -7,7 +7,7 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Abdelghani EL OUAKILI (NIST) Feb 2, 2017
+ * that they have been modified. Abdelghani EL OUAKILI (NIST) Feb 3, 2017
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
@@ -15,8 +15,38 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public class GeneralColumnConfig extends ColumnsConfig {
+public class CodeUsageConfig {
+  private boolean r;
+  private boolean p;
+  private boolean e;
 
+  public boolean getR() {
+    return r;
+  }
 
+  public CodeUsageConfig() {
+    super();
+    // TODO Auto-generated constructor stub
+  }
+
+  public void setR(boolean r) {
+    this.r = r;
+  }
+
+  public boolean getP() {
+    return p;
+  }
+
+  public void setP(boolean p) {
+    this.p = p;
+  }
+
+  public boolean getE() {
+    return e;
+  }
+
+  public void setE(boolean e) {
+    this.e = e;
+  }
 
 }

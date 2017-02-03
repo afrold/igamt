@@ -24,31 +24,78 @@ public class ExportConfig {
 
   @Id
   private String id;
-
-
-
+  boolean defaultType = false;
   private String name;
   private Long accountId;
   private String type;
 
-  private UsageConfig segmentORGroup;
+  private UsageConfig segmentORGroupsExport;
   private UsageConfig segmentsExport;
   private UsageConfig fieldsExport;
-  private UsageConfig fieldsDisplay;
 
-  private UsageConfig valueSetExport;
-  private UsageConfig codeExport;
+  private UsageConfig valueSetsExport;
+  private CodeUsageConfig codesExport;
 
-  private ValueSetUsageConfig codes;
-  private UsageConfig datatypeExport;
+  private UsageConfig datatypesExport;
   private UsageConfig componentExport;
 
-  public UsageConfig getSegmentORGroup() {
-    return segmentORGroup;
+  private ColumnsConfig messageColumn;
+  private ColumnsConfig segmentColumn;
+  public ColumnsConfig datatypeColumn;
+  public ColumnsConfig valueSetColumn;
+
+
+  public ExportConfig() {
+    super();
+    // TODO Auto-generated constructor stub
   }
 
-  public void setSegmentORGroup(UsageConfig segmentORGroup) {
-    this.segmentORGroup = segmentORGroup;
+  public boolean isDefaultType() {
+    return defaultType;
+  }
+
+  public void setDefaultType(boolean defaultType) {
+    this.defaultType = defaultType;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Long getAccountId() {
+    return accountId;
+  }
+
+  public void setAccountId(Long accountId) {
+    this.accountId = accountId;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public UsageConfig getSegmentORGroupsExport() {
+    return segmentORGroupsExport;
+  }
+
+  public void setSegmentORGroupsExport(UsageConfig segmentORGroupsExport) {
+    this.segmentORGroupsExport = segmentORGroupsExport;
   }
 
   public UsageConfig getSegmentsExport() {
@@ -67,36 +114,28 @@ public class ExportConfig {
     this.fieldsExport = fieldsExport;
   }
 
-  public UsageConfig getFieldsDisplay() {
-    return fieldsDisplay;
+  public UsageConfig getValueSetsExport() {
+    return valueSetsExport;
   }
 
-  public void setFieldsDisplay(UsageConfig fieldsDisplay) {
-    this.fieldsDisplay = fieldsDisplay;
+  public void setValueSetsExport(UsageConfig valueSetsExport) {
+    this.valueSetsExport = valueSetsExport;
   }
 
-  public UsageConfig getValueSetExport() {
-    return valueSetExport;
+  public CodeUsageConfig getCodesExport() {
+    return codesExport;
   }
 
-  public void setValueSetExport(UsageConfig valueSetExport) {
-    this.valueSetExport = valueSetExport;
+  public void setCodesExport(CodeUsageConfig codesExport) {
+    this.codesExport = codesExport;
   }
 
-  public ValueSetUsageConfig getCodes() {
-    return codes;
+  public UsageConfig getDatatypesExport() {
+    return datatypesExport;
   }
 
-  public void setCodes(ValueSetUsageConfig codes) {
-    this.codes = codes;
-  }
-
-  public UsageConfig getDatatypeExport() {
-    return datatypeExport;
-  }
-
-  public void setDatatypeExport(UsageConfig datatypeExport) {
-    this.datatypeExport = datatypeExport;
+  public void setDatatypesExport(UsageConfig datatypesExport) {
+    this.datatypesExport = datatypesExport;
   }
 
   public UsageConfig getComponentExport() {
@@ -107,93 +146,40 @@ public class ExportConfig {
     this.componentExport = componentExport;
   }
 
-  public static long getSerialversionuid() {
-    return serialVersionUID;
-  }
-
-  private GeneralColumnConfig messageColumn;
-  private GeneralColumnConfig segmentColumn;
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public Long getAccountId() {
-    return accountId;
-  }
-
-  public void setAccountId(Long accountId) {
-    this.accountId = accountId;
-  }
-
-  public GeneralColumnConfig getMessageColumn() {
+  public ColumnsConfig getMessageColumn() {
     return messageColumn;
   }
 
-  public void setMessageColumn(GeneralColumnConfig messageColumn) {
+  public void setMessageColumn(ColumnsConfig messageColumn) {
     this.messageColumn = messageColumn;
   }
 
-  public GeneralColumnConfig getSegmentColumn() {
+  public ColumnsConfig getSegmentColumn() {
     return segmentColumn;
   }
 
-  public void setSegmentColumn(GeneralColumnConfig segmentColumn) {
+  public void setSegmentColumn(ColumnsConfig segmentColumn) {
     this.segmentColumn = segmentColumn;
   }
 
-  public GeneralColumnConfig getDatatypeColumn() {
+  public ColumnsConfig getDatatypeColumn() {
     return datatypeColumn;
   }
 
-  public void setDatatypeColumn(GeneralColumnConfig datatypeColumn) {
+  public void setDatatypeColumn(ColumnsConfig datatypeColumn) {
     this.datatypeColumn = datatypeColumn;
   }
 
-  public ValueSetColumnConfig getValueSetColumn() {
+  public ColumnsConfig getValueSetColumn() {
     return valueSetColumn;
   }
 
-  public void setValueSetColumn(ValueSetColumnConfig valueSetColumn) {
+  public void setValueSetColumn(ColumnsConfig valueSetColumn) {
     this.valueSetColumn = valueSetColumn;
   }
 
-  public GeneralColumnConfig datatypeColumn;
-  public ValueSetColumnConfig valueSetColumn;
-
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-
-
-  public ExportConfig() {
-    super();
-    // TODO Auto-generated constructor stub
-  }
-
-
-  /**
-   * @return the name
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * @param name the name to set
-   */
-  public void setName(String name) {
-    this.name = name;
+  public static long getSerialversionuid() {
+    return serialVersionUID;
   }
 
 
