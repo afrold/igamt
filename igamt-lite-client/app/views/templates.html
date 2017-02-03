@@ -4472,30 +4472,32 @@
     </div>
     <div class="modal-body">
 
-                 <div class="panel panel-primary col-md-12">
-                         <div class="panel-heading">Message Export Configuration</div>
-                            <div class="panel-body container">
-                                
-                                
-                                <div class="panel panel-primary col-md-5">
-                                    <div class="panel-heading">USAGE Configuration</div>
-                                    <div class="panel-body container">
 
-            
-                                    </div>
+            <tabset class="">
+                <tab>
+                   <tab-heading> IG Style</tab-heading>
+                        <div ng-include="'views/edit/ExportConfig.html'"></div>
 
-                                </div>
-                             </div>
+                </tab>
+                <tab>
+                     <tab-heading> Profile Style</tab-heading>
+                        <div ng-include="'views/edit/ExportConfig.html'"></div>
 
-                </div>
-  
+                </tab>
+                <tab>
+                     <tab-heading>Table Style</tab-heading>
+                        <div ng-include="'views/edit/ExportConfig.html'"></div>
+
+                </tab>
+                <tab>
+                     <tab-heading>Delta Style</tab-heading>
+                        <div ng-include="'views/edit/ExportConfig.html'"></div>
+                </tab>
 
 
+            <tabset>    
 
-
-
-
-
+</div>
 
     <div class="modal-footer">
         <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span>
