@@ -28,6 +28,9 @@
                                 <xsl:call-template name="ConstraintContent">
                                     <xsl:with-param name="mode" select="$constraintMode"/>
                                     <xsl:with-param name="type" select="$type"/>
+                                    <xsl:with-param name="displayPeriod">
+                                        <xsl:text>true</xsl:text>
+                                    </xsl:with-param>
                                 </xsl:call-template>
                             </xsl:for-each>
                         </xsl:element>
@@ -40,6 +43,9 @@
                                 <xsl:call-template name="ConstraintContent">
                                     <xsl:with-param name="mode" select="$constraintMode"/>
                                     <xsl:with-param name="type" select="$type"/>
+                                    <xsl:with-param name="displayPeriod">
+                                        <xsl:text>true</xsl:text>
+                                    </xsl:with-param>
                                 </xsl:call-template>
                             </xsl:for-each>
                         </xsl:element>

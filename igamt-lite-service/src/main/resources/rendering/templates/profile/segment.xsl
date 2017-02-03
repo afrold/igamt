@@ -155,6 +155,9 @@
                                 <xsl:with-param name="type">
                                     <xsl:text>cs</xsl:text>
                                 </xsl:with-param>
+                                <xsl:with-param name="displayPeriod">
+                                    <xsl:text>false</xsl:text>
+                                </xsl:with-param>
                             </xsl:call-template>
                         </xsl:for-each>
                     </xsl:element>
@@ -182,6 +185,9 @@
                                 </xsl:with-param>
                                 <xsl:with-param name="type">
                                     <xsl:text>pre</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="displayPeriod">
+                                    <xsl:text>false</xsl:text>
                                 </xsl:with-param>
                             </xsl:call-template>
                         </xsl:for-each>
