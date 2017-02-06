@@ -96,8 +96,8 @@ public class ExportServiceImpl implements ExportService {
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML);
-            return exportUtil.exportAsHtmlFromXsl(igDocumentSerializationService
-                    .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
+            return exportUtil.exportAsHtmlFromXsl(serializationService
+                    .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,datatypeLibraryDocument.getMetaData());
         } else {
             return new NullInputStream(1L);
@@ -108,8 +108,8 @@ public class ExportServiceImpl implements ExportService {
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD);
-            return exportUtil.exportAsDocxFromXml(igDocumentSerializationService
-                    .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
+            return exportUtil.exportAsDocxFromXml(serializationService
+                    .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
                 GLOBAL_STYLESHEET, exportParameters, datatypeLibraryDocument.getMetaData(),datatypeLibraryDocument.getDateUpdated());
         } else {
             return new NullInputStream(1L);

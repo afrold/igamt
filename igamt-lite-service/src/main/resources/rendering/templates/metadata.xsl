@@ -36,14 +36,22 @@
                 <xsl:value-of select="@Date"></xsl:value-of>
             </xsl:element>
             <xsl:element name="br"/>
-            <xsl:element name="p">
-                <xsl:attribute name="style">
-                    <xsl:text>font-size:100%;</xsl:text>
-                </xsl:attribute>
-                <xsl:text>HL7 version </xsl:text>
-                <xsl:value-of select="@HL7Version"></xsl:value-of>
-            </xsl:element>
-            <xsl:element name="br"/>
+            <xsl:if test="@HL7Version!=''">
+                <xsl:element name="p">
+                    <xsl:attribute name="style">
+                        <xsl:text>font-size:100%;</xsl:text>
+                    </xsl:attribute>
+                    <xsl:text>HL7 version </xsl:text>
+                    <xsl:value-of select="@HL7Version"></xsl:value-of>
+                </xsl:element>
+                <xsl:element name="br"/>
+            </xsl:if>
+            <xsl:if test="@Description!=''">
+                <xsl:element name="p">
+                    <xsl:text>Description: </xsl:text>
+                    <xsl:value-of select="@Description"></xsl:value-of>
+                </xsl:element>
+            </xsl:if>
             <!--xsl:element name="p">
                 <xsl:attribute name="style">
                     <xsl:text>font-size:80%;</xsl:text>

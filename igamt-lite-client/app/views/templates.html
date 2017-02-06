@@ -4502,3 +4502,22 @@
         </button>
     </div>
 </script>
+<script type="text/ng-template" id="confirmDecisionDeleteCtrl.html">
+      <div class="modal-header">
+        <h3 class="modal-title">Delete Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+	<span> Are you sure you want to delete this Decision </span>
+    </div>
+    </div>
+    <div class="modal-footer">
+            <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-success btn-sm" ng-click="ok()"><span>
+          <i class="fa fa-trash-o fa-fw">&nbsp; </i>Confirm</span>
+        </button>
+    </div>
+    </div>
+</script>

@@ -137,8 +137,13 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 			if (table != null) {
 				if (table.getDate().toString().equals(vs.getStatusDate().toString())
 						&& table.getVersion().equals(vsv.getVersionNumber() + "")) {
-					needUpdate = false;
-					log.info(oid + " Table has no change! because same version number and date.");
+					if(table.getCodes().size() == 0){
+						needUpdate = true;
+						log.info(oid + " Table has no change! however local PHINVADS codes are missing");
+					}else {
+						needUpdate = false;
+						log.info(oid + " Table has no change! because same version number and date.");	
+					}
 				} else {
 					needUpdate = true;
 					log.info(oid + " Table has a change! because different version number and date.");
@@ -171,7 +176,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 			table.setLibIds(new HashSet<String>());
 			table.setScope(SCOPE.PHINVADS);
 			table.setStability(Stability.Static);
-			table.setStatus(STATUS.UNPUBLISHED);
+			table.setStatus(STATUS.PUBLISHED);
 			table.setType(Constant.TABLE);
 			table.setComment(vsvByVSOid.get(0).getDescription());
 			table.setDate(vs.getStatusDate().toString());

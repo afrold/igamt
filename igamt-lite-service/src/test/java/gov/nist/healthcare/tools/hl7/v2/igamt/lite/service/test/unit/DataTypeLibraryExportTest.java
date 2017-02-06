@@ -40,12 +40,15 @@ public class DataTypeLibraryExportTest  {
 
     @Autowired ExportService exportService;
 
+    private static final String EXPORT_BASE_PATH = "test/dl_test";
+    private static final String TEST_DOCUMENT_ID = "57b758a884aebc6c9d582cd3";
+
     @Test
     public void testHtmlExport(){
-        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57b758a884aebc6c9d582cd3");
+        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById(TEST_DOCUMENT_ID);
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
-            File htmlFile = new File("test/dl_test.html");
+            File htmlFile = new File(EXPORT_BASE_PATH+".html");
             if(htmlFile.exists()){
                 htmlFile.delete();
             }
@@ -58,9 +61,9 @@ public class DataTypeLibraryExportTest  {
     }
     @Test
     public void testDocxExport(){
-        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById("57b758a884aebc6c9d582cd3");
+        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById(TEST_DOCUMENT_ID);
         try {
-            File wordFile = new File("test/dl_test.docx");
+            File wordFile = new File(EXPORT_BASE_PATH+".docx");
             if(wordFile.exists()){
                 wordFile.delete();
             }

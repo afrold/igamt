@@ -17,7 +17,7 @@
 			<xsl:if test="@Ref!=']'">
 				<xsl:element name="td">
 					<xsl:if
-						test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='')">
+						test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='') and (normalize-space(@Min)!='0' or normalize-space(@Max)!='0')">
 						<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>
 					</xsl:if>
 				</xsl:element>

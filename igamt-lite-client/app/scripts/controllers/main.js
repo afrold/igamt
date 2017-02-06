@@ -2870,16 +2870,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         }
         $scope.init = function() {
+        	if(userInfoService.isAuthenticated()){
             VersionAndUseService.findAll().then(function(result) {
-            	console.log("LOADING INFO VERSION");
-
-            
                 angular.forEach(result, function(info) {
-                	console.log("LOADING INFO VERSION");
                 	console.log($rootScope.versionAndUseMap[info.id]);
                     $rootScope.versionAndUseMap[info.id] = info;
                 });
             });
+        	}
             $http.get('api/igdocuments/config', { timeout: 60000 }).then(function(response) {
                 $rootScope.config = angular.fromJson(response.data);
                 var delay = $q.defer();
@@ -3301,7 +3299,7 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
 }]);
 
 
-angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalInstance, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc) {
+angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalInstance, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc,DecisionService) {
     $scope.continue = function() {
         $rootScope.clearChanges();
         $modalInstance.close();
@@ -3343,9 +3341,44 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
 
         }
+        if(data.type==="decision"){
+    		DecisionService.save(data).then(function(saved){
+    				console.log(data);
+    				console.log("befor");
+    				$rootScope.decision=saved.data;
+    				$rootScope.decisionsMap[data.id]= saved.data;
+    				angular.forEach($rootScope.decisions, function(d){
+    					console.log("found");
+    					if(d.id==$rootScope.decision.id){
+    					d.title=$rootScope.decisionsMap[saved.data.id].title;
+    					d.content=$rootScope.decisionsMap[saved.data.id].content;
+    					d.dateUpdated=$rootScope.decisionsMap[saved.data.id].dateUpdated;
+    					d.username=$rootScope.decisionsMap[saved.data.id].username;
+    					}
+    				});
+    				 $scope.continue();
+    	            if($scope.editForm) {
+    	                $scope.editForm.$setPristine();
+    	                $scope.editForm.$dirty = false;
+    	            }
+    				$scope.editMode=false;
+    				$scope.newOne=false;
+    				$rootScope.clearChanges();
+    				 $rootScope.msg().text = "DecisionSaveSuccess";
+    		            $rootScope.msg().type = "success";
+    		            $rootScope.msg().show = true;
+    		        }, function(error) {
+    		            $rootScope.msg().text = "DecsionSaveFaild";
+    		            $rootScope.msg().type = "danger";
+    		            $rootScope.msg().show = true;
+    		        }
+    			);
+        
+    		
+        }
         ////console.log(data);
 
-        if (data.type && data.type === "section") {
+     if (data.type && data.type === "section") {
             ////console.log($rootScope.originalSection);
             ////console.log(data);
 
