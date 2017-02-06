@@ -82,7 +82,31 @@ public class ExportConfigServiceImpl implements ExportConfigService {
   @Override
   public List<ExportConfig> findDefault(String type) {
     // TODO Auto-generated method stub
-    return null;
+    return exportConfig.findDefault(type);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService#delete(gov.nist.
+   * healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig)
+   */
+  @Override
+  public void delete(ExportConfig conf) {
+    exportConfig.delete(conf);
+
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService#save(gov.nist.
+   * healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig)
+   */
+  @Override
+  public void save(ExportConfig userConfig) {
+    // TODO Auto-generated method stub
+    exportConfig.save(userConfig);
   }
 
 

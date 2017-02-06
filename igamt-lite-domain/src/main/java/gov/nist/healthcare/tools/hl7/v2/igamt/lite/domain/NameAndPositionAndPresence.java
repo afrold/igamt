@@ -30,7 +30,6 @@ public class NameAndPositionAndPresence {
   }
 
   public NameAndPositionAndPresence(String name, int position, boolean present) {
-    super();
     this.name = name;
     this.position = position;
     this.present = present;
@@ -44,6 +43,11 @@ public class NameAndPositionAndPresence {
     this.position = position;
   }
 
+  public NameAndPositionAndPresence() {
+    super();
+    // TODO Auto-generated constructor stub
+  }
+
   public boolean isPresent() {
     return present;
   }
@@ -51,7 +55,5 @@ public class NameAndPositionAndPresence {
   public void setPresent(boolean presence) {
     this.present = presence;
   }
-
-
 
 }

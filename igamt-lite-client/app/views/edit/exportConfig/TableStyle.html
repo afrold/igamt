@@ -13,15 +13,15 @@
                             <div class="container">
                                 <label style="color:black"> Choose Segments Or Groups to export:</label>
                             <br/>
-                                <input type="checkbox" ng-model="exportConfig.segmentORGroupsExport.r"> <label style="color:black">R 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.r"> <label style="color:black">R 
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.segmentORGroupsExport.re"> <label style="color:black">RE 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.re"> <label style="color:black">RE 
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.segmentORGroupsExport.c"> <label style="color:black">C 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.c"> <label style="color:black">C 
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.segmentORGroupsExport.o"> <label style="color:black">O 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.o"> <label style="color:black">O 
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.segmentORGroupsExport.x"> <label style="color:black">X 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.x"> <label style="color:black">X 
                                 </label>
 
                             </div>
@@ -35,7 +35,7 @@
                         <div style="width:100%" >
 
 
-                                <div  style="padding-left:15px; " ng-repeat="c in exportConfig.messageColumn.columns">
+                                <div  style="padding-left:15px; " ng-repeat="c in tableStyleExportConfig.messageColumn.columns">
 
                                     <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
                                     </label><br/>
@@ -60,15 +60,15 @@
                             <div class="container">
                             <label style="color:black"> Choose Segments to export:</label>
                             <br/>
-                                <input type="checkbox" ng-model="exportConfig.segmentsExport.r"> <label style="color:black">R 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.r"> <label style="color:black">R 
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.segmentsExport.re"> <label style="color:black">RE 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.re"> <label style="color:black">RE 
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.segmentsExport.c"> <label style="color:black">C 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.c"> <label style="color:black">C 
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.segmentsExport.o"> <label style="color:black">O 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.o"> <label style="color:black">O 
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.segmentsExport.x"> <label style="color:black">X 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.x"> <label style="color:black">X 
                                 </label>
 
                             </div>
@@ -77,15 +77,15 @@
                                 <label style="color:black">Choose Fields to Display:</label>
                                 </br>
                             
-                                <input type="checkbox" ng-model="exportConfig.fieldsExport.r"> <label style="color:black">R
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.r"> <label style="color:black">R
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.fieldsExport.re"> <label style="color:black">RE
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.re"> <label style="color:black">RE
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.fieldsExport.c"> <label style="color:black">C
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.c"> <label style="color:black">C
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.fieldsExport.o"> <label style="color:black">O
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.o"> <label style="color:black">O
                                 </label>
-                                <input type="checkbox" ng-model="exportConfig.fieldsExport.x"> <label style="color:black">X
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.x"> <label style="color:black">X
                                 </label>
 
                             </div>  
@@ -103,7 +103,7 @@
                         <div style="width:100%" >
 
 
-                                <div  style="padding-left:15px; " ng-repeat="c in exportConfig.segmentColumn.columns">
+                                <div  style="padding-left:15px; " ng-repeat="c in tableStyleExportConfig.segmentColumn.columns">
 
                                     <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
                                     </label><br/>
@@ -131,15 +131,15 @@
             <div class="container">
                <label style="color:black"> Choose Datatype to export:</label>
                 <br/>
-                <input type="checkbox" ng-model="exportConfig.datatypeExport.r"> <label style="color:black">R 
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypeExport.r"> <label style="color:black">R 
                 </label>
-                <input type="checkbox" ng-model="exportConfig.datatypeExport.re"> <label style="color:black">RE 
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypeExport.re"> <label style="color:black">RE 
                 </label>
-                <input type="checkbox" ng-model="exportConfig.datatypeExport.c"> <label style="color:black">C 
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypeExport.c"> <label style="color:black">C 
                 </label>
-                <input type="checkbox" ng-model="exportConfig.datatypeExport.o"> <label style="color:black">O 
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypeExport.o"> <label style="color:black">O 
                 </label>
-                <input type="checkbox" ng-model="exportConfig.datatypeExport.x"> <label style="color:black">X 
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypeExport.x"> <label style="color:black">X 
                 </label>
 
              </div>
@@ -147,15 +147,15 @@
 <div class="container">
                 <label style="color:black">Choose Components to Display:</label>
                <br/>
-                <input type="checkbox" ng-model="exportConfig.componentExport.r"> <label style="color:black">R
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.r"> <label style="color:black">R
                 </label>
-                <input type="checkbox" ng-model="exportConfig.componentExport.re"> <label style="color:black">RE
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.re"> <label style="color:black">RE
                 </label>
-                <input type="checkbox" ng-model="exportConfig.componentExport.c"> <label style="color:black">C
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.c"> <label style="color:black">C
                 </label>
-                <input type="checkbox" ng-model="exportConfig.componentExport.o"> <label style="color:black">O
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.o"> <label style="color:black">O
                 </label>
-                <input type="checkbox" ng-model="exportConfig.componentExport.x"> <label style="color:black">X
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.x"> <label style="color:black">X
                 </label>
 
              </div>  
@@ -173,7 +173,7 @@
                         <div style="width:100%" >
 
 
-                                <div  style="padding-left:15px; " ng-repeat="c in exportConfig.datatypeColumn.columns">
+                                <div  style="padding-left:15px; " ng-repeat="c in tableStyleExportConfig.datatypeColumn.columns">
 
                                     <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
                                     </label><br/>
@@ -196,15 +196,15 @@
             <div class="container">
                <label style="color:black"> Choose Value Sets to export:</label>
                <br/>
-                <input type="checkbox" ng-model="exportConfig.valueSetExport.r"> <label style="color:black">R 
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetExport.r"> <label style="color:black">R 
                 </label>
-                <input type="checkbox" ng-model="exportConfig.valueSetExport.re"> <label style="color:black">RE 
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetExport.re"> <label style="color:black">RE 
                 </label>
-                <input type="checkbox" ng-model="exportConfig.valueSetExport.c"> <label style="color:black">C 
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetExport.c"> <label style="color:black">C 
                 </label>
-                <input type="checkbox" ng-model="exportConfig.valueSetExport.o"> <label style="color:black">O 
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetExport.o"> <label style="color:black">O 
                 </label>
-                <input type="checkbox" ng-model="exportConfig.valueSetExport.x"> <label style="color:black">X 
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetExport.x"> <label style="color:black">X 
                 </label>
 
              </div>
@@ -212,11 +212,11 @@
 <div class="container">
                 <label style="color:black">Choose Codes to Display:</label><br/>
                
-                <input type="checkbox" ng-model="exportConfig.codesExport.r"> <label style="color:black">R
+                <input type="checkbox" ng-model="tableStyleExportConfig.codesExport.r"> <label style="color:black">R
                 </label>
-                <input type="checkbox" ng-model="exportConfig.codesExport.p"> <label style="color:black">P
+                <input type="checkbox" ng-model="tableStyleExportConfig.codesExport.p"> <label style="color:black">P
                 </label>
-                <input type="checkbox" ng-model="exportConfig.codesExport.e"> <label style="color:black">E
+                <input type="checkbox" ng-model="tableStyleExportConfig.codesExport.e"> <label style="color:black">E
                 </label>
 
              </div>  
@@ -231,7 +231,7 @@
                         <div style="width:100%" >
 
 
-                                <div  style="padding-left:15px; " ng-repeat="c in exportConfig.valueSetColumn.columns">
+                                <div  style="padding-left:15px; " ng-repeat="c in tableStyleExportConfig.valueSetColumn.columns">
 
                                     <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
                                     </label><br/>

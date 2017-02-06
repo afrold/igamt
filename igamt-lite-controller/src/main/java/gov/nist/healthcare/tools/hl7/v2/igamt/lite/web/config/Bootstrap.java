@@ -172,13 +172,17 @@ public class Bootstrap implements InitializingBean {
     // fixUserPublishedData();
     // fixConstraints1();
 
-    createDefaultConfiguration();
+    // createDefaultConfiguration("IG Style");
+    // createDefaultConfiguration("Profile Style");
+    // createDefaultConfiguration("Table Style");
+
+    // changeStatusofPHINVADSTables();
   }
 
   /**
    * 
    */
-  private void createDefaultConfiguration() {
+  private void createDefaultConfiguration(String type) {
     // TODO Auto-generated method stub
     ExportConfig defaultConfiguration = new ExportConfig();
     defaultConfiguration.setDefaultType(true);
@@ -245,11 +249,12 @@ public class Bootstrap implements InitializingBean {
 
 
     defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
-    exportConfig.insert(defaultConfiguration);
+    defaultConfiguration.setType(type);
 
 
+    exportConfig.save(defaultConfiguration);
 
-    changeStatusofPHINVADSTables();
+
 
   }
 

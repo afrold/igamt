@@ -1,0 +1,56 @@
+  
+  <div class="row" style="margin-top:20px;">
+		<div class="col-md-2">
+			<accordion>
+			<div accordion-group="" ng-init="isOpen1=true"
+				class="panel panel-default" is-open="isOpen1">
+				<accordion-heading style="color:white !important;">
+				<i class="pull-left fa" style="color: black;"
+					ng-class="{'fa-chevron-down': isOpen1, 'fa-chevron-right': !isOpen1}"></i>
+				Export Configuration </accordion-heading>
+				<div style="margin-bottom: 25px;">
+					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
+						aria-hidden="true" ng-click="addDecision()"
+						style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
+				</div>
+
+				<ul class="nav nav-pills nav-stacked"
+					style="margin-left: 5px !important;">
+
+					<li ng-repeat="mode in ['Word', 'HTML']"  ng-click="activeId=mode;"
+					
+						ng-class="{'current':activeId==mode}"><a>{{mode}}</a></li>
+
+				</ul>
+			</div>
+			
+		</div>
+  
+  
+  <div class="col-md-9">
+  
+  <tabset style="width:100%" ng-init ="init()">
+                <tab style="width:24%">
+                   <tab-heading> IG Style</tab-heading>
+                        <div style="width:100%" ng-include="'views/edit/exportConfig/IGStyle.html'"></div>
+                </tab>
+                <tab style="width:24%">
+                     <tab-heading> Profile Style</tab-heading>
+                        <div style="width:100%"  ng-include="'views/edit/exportConfig/ProfileStyle.html'"></div>
+
+                </tab>
+                <tab style="width:24%">
+                     <tab-heading>Table Style</tab-heading>
+                        <div  style="width:100%" ng-include="'views/edit/exportConfig/TableStyle.html'"></div>
+
+                </tab>
+                <tab style="width:24%">
+                     <tab-heading>Delta Style</tab-heading>
+                Coming Soon
+                </tab>
+
+
+<tabset>  
+    
+    </div>
+  </div>
