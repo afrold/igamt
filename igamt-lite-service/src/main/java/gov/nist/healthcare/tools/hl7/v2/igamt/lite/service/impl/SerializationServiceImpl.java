@@ -65,8 +65,9 @@ import java.util.*;
         return serializableStructure.serializeStructure();
     }
 
-    @Override public Document serializeIGDocument(IGDocument igDocument,
-        SerializationLayout serializationLayout) {
+    @Override public Document serializeIGDocument(IGDocument originIgDocument,
+        SerializationLayout serializationLayout, ExportConfig exportConfig) {
+        IGDocument igDocument = filterIgDocument(originIgDocument,exportConfig);
         SerializableStructure serializableStructure = new SerializableStructure();
         igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
         SerializableMetadata serializableMetadata =
@@ -133,6 +134,16 @@ import java.util.*;
         serializableSections.addSection(profileSection);
         serializableStructure.addSerializableElement(serializableSections);
         return serializableStructure.serializeStructure();
+    }
+
+    private IGDocument filterIgDocument(IGDocument originIgDocument, ExportConfig exportConfig) {
+        if(exportConfig==null){
+            return originIgDocument;
+        } else {
+            IGDocument filteredIgDocument = new IGDocument();
+            //TODO apply filters
+            return filteredIgDocument;
+        }
     }
 
     private SerializableSection serializeValueSets(TableLibrary tableLibrary,

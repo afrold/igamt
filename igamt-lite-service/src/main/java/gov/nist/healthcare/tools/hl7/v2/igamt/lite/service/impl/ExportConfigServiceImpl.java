@@ -85,5 +85,9 @@ public class ExportConfigServiceImpl implements ExportConfigService {
     return null;
   }
 
+  @Override public ExportConfig findOneByAccountId(Long accountId) {
+    return exportConfig.findOneByAccountId(accountId);
+  }
+
 
 }
