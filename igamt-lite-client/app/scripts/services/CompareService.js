@@ -63,9 +63,7 @@ angular.module('igl').factory('CompareService',
                     }
                 }
                 var isEmpty = true;
-                console.log(diff);
-                console.log(dataList);
-
+             
                 var result = [];
                 for (var i = 0; i < dataList.length; i++) {
 
@@ -120,11 +118,14 @@ angular.module('igl').factory('CompareService',
 
                 var vs1 = JSON.parse(table1);
                 var vs2 = JSON.parse(table2);
+               
+                
                 var diff = ObjectDiff.diffOwnProperties(vs1, vs2);
                 var dataList = [];
                 if (diff.changed === "object change") {
                     CompareService.writettTable(diff, dataList);
                 }
+              
                 return dataList
             },
             fMsg: function(msg, datatypeList, segmentList) {
@@ -516,6 +517,7 @@ angular.module('igl').factory('CompareService',
 
                             }
                         } else if (childArray.value.type.value === "table") {
+                         
                             if (childArray.value.bindingIdentifier.changed === "primitive change") {
                                 result.label = {
                                     element1: childArray.value.bindingIdentifier.removed,
@@ -556,6 +558,7 @@ angular.module('igl').factory('CompareService',
                                 });
                             }
                         } else if (childArray.value.type.value === "code") {
+                           
                             if (childArray.value.codeSystem && childArray.value.codeSystem.changed === "primitive change") {
                                 result.codeSystem = {
                                     element1: childArray.value.codeSystem.removed,
