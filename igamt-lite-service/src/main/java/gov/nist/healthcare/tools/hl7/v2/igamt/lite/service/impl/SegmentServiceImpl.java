@@ -58,6 +58,12 @@ public class SegmentServiceImpl implements SegmentService {
   }
 
   @Override
+  public Segment findByNameAndVersionAndScope(String name, String version, String scope) {
+    // TODO Auto-generated method stub
+    return segmentRepository.findByNameAndVersionAndScope(name, version, scope);
+  }
+
+  @Override
   public Segment save(Segment segment) {
     log.info("SegmentServiceImpl.save=" + segment.getLabel());
     return save(segment, DateUtils.getCurrentDate());

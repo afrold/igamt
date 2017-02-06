@@ -142,6 +142,36 @@ angular
 
                     }
                 };
+                $scope.isValidated = function(data) {
+                    if ($rootScope.datatypeValidationResult.targetId === data.id) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                };
+                $scope.hasErrorInTree = function(data) {
+                    if ($rootScope.datatypeValidationResult && $rootScope.datatypeValidationResult.errorCount > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    // if ($rootScope.datatypeValidationResult) {
+                    //     var x = $rootScope.datatypeValidationResult.items.find(function(item) {
+                    //         if (item.targetId === data.id) {
+                    //             return (item.targetId === data.id)
+                    //         } else if (item.parentId === data.id) {
+                    //             return (item.parentId === data.id);
+                    //         }
+                    //     });
+                    //     if (x) {
+                    //         return true;
+                    //     } else {
+                    //         return false;
+                    //     }
+                    // } else {
+                    //     return false;
+                    // }
+                };
 
 
                 $scope.treeOptions = {
@@ -827,8 +857,8 @@ angular
 
                     }],
                     null, ['Export Profile', function($itemScope) {
-                              $scope.selectMessagesForExport($rootScope.igdocument);
-             
+                        $scope.selectMessagesForExport($rootScope.igdocument);
+
                     }]
                 ];
 

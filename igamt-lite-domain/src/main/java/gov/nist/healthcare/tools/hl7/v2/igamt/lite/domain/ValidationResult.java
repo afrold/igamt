@@ -7,36 +7,48 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified.
+ * that they have been modified. Ismail Mellouli (NIST) Jan 30, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import java.util.Date;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
+
 import java.util.List;
-import java.util.Set;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+public class ValidationResult implements java.io.Serializable {
+  private static final long serialVersionUID = 1L;
 
-/**
- * @author gcr1
- *
- */
-public interface SegmentOperations {
+  public ValidationResult() {
 
-  List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+  }
 
-  public Segment findByNameAndVersionAndScope(String name, String version, String scope);
+  private String targetId;
+  private Integer errorCount;
+  private List<ValidationError> items;
 
+  public String getTargetId() {
+    return targetId;
+  }
 
-  public List<Segment> findByIds(Set<String> ids);
+  public void setTargetId(String targetId) {
+    this.targetId = targetId;
+  }
 
-  List<Segment> findUserSegmentsByIds(Set<String> ids);
+  public Integer getErrorCount() {
+    return errorCount;
+  }
 
-  public Date updateDate(String id, Date date);
+  public void setErrorCount(Integer errorCount) {
+    this.errorCount = errorCount;
+  }
 
-  void updateStatus(String id, STATUS status);
+  public List<ValidationError> getItems() {
+    return items;
+  }
+
+  public void setItems(List<ValidationError> items) {
+    this.items = items;
+  }
+
 
 
 }
