@@ -129,6 +129,9 @@
                         <ol ui-tree-nodes="" ng-model="segments" ng-show="!profilecollapsed" data-type="segments">
                             <div ui-tree-handle class="messageContent" style="margin-left:15px;" context-menu="addSegment">
                                 <i data-nodrag ng-click="switcherseg()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsesegment, 'fa-caret-right': collapsesegment}"></i>
+                                    <span ng-show="validationResult && hasErrorInTree(segment) && isValidated(segment)" style="margin-left: -16px;"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+                                    <span ng-show="validationResult && !hasErrorInTree(segment) && isValidated(segment)" style="margin-left: -16px;"><i class="fa fa-check-circle" style="color:green;"></i></span>
+
                                 <span data-nodrag ng-class="{selected :activeModel ==='Segments and field descriptions'}" confirm-click ng-click="editRoutSection('Segments and field descriptions')">
                 {{ig.childSections.length+1}}.4.Segments and field descriptions:</span>
                                 </div>
@@ -148,8 +151,8 @@
                             </div>
                             <li ng-repeat="data in datatypes | orderBy :'label'" ui-tree-node ng-if="!collapsedata" data-type="datatype">
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptions" style="margin-left:30px;" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated">
-                                    <span ng-show="datatypeValidationResult && hasErrorInTree(data) && isValidated(data)" style="margin-left: -16px;"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-                                    <span ng-show="datatypeValidationResult && !hasErrorInTree(data) && isValidated(data)" style="margin-left: -16px;"><i class="fa fa-check-circle" style="color:green;"></i></span>
+                                    <span ng-show="validationResult && hasErrorInTree(data) && isValidated(data)" style="margin-left: -16px;"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+                                    <span ng-show="validationResult && !hasErrorInTree(data) && isValidated(data)" style="margin-left: -16px;"><i class="fa fa-check-circle" style="color:green;"></i></span>
 
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
                                         

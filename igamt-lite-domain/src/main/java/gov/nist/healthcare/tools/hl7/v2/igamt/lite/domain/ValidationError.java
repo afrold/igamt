@@ -22,6 +22,7 @@ public class ValidationError implements java.io.Serializable {
   private String targetId;
   private String parentId;
   private String targetName;
+  private String targetType;
   private Integer position;
   private ValidationType validationType;
   private String errorMessage;
@@ -52,6 +53,15 @@ public class ValidationError implements java.io.Serializable {
 
   public void setTargetName(String targetName) {
     this.targetName = targetName;
+  }
+
+
+  public String getTargetType() {
+    return targetType;
+  }
+
+  public void setTargetType(String targetType) {
+    this.targetType = targetType;
   }
 
   public Integer getPosition() {

@@ -106,6 +106,12 @@ public class ValidationServiceImpl implements ValidationService {
               validateField(reference.getFields().get(i), toBeValidated.getFields().get(i), true,
                   predicatesMap.get(toBeValidated.getFields().get(i).getPosition()),
                   toBeValidated.getHl7Version());
+          for (ValidationError valErr : compResults) {
+            valErr.setParentId(toBeValidated.getFields().get(i).getId());
+
+
+
+          }
           fieldsResults.addAll(compResults);
         }
 
@@ -135,6 +141,7 @@ public class ValidationServiceImpl implements ValidationService {
         valError.setTargetId(toBeValidated.getId());
         valError.setTargetName(toBeValidated.getName());
         valError.setType("Error");
+        valError.setTargetType(toBeValidated.getType());
         valError.setValidationType(ValidationType.USAGE);
         result.add(valError);
       }
@@ -148,6 +155,7 @@ public class ValidationServiceImpl implements ValidationService {
       valErr.setPosition(toBeValidated.getPosition());
       valErr.setTargetId(toBeValidated.getId());
       valErr.setTargetName(toBeValidated.getName());
+      valErr.setTargetType(toBeValidated.getType());
       valErr.setType("Error");
       valErr.setValidationType(ValidationType.LENGTH);
       result.add(valErr);
@@ -158,9 +166,11 @@ public class ValidationServiceImpl implements ValidationService {
           toBeValidated.getDatatype().getName(), childDatatype.getHl7Version(), "HL7STANDARD");
       List<ValidationError> errs =
           validateDatatype(childReference, childDatatype, false).getItems();
-      for (ValidationError valErr : errs) {
-        valErr.setParentId(toBeValidated.getId());
-      }
+      // for (ValidationError valErr : errs) {
+      //
+      // valErr.setParentId(toBeValidated.getId());
+      // }
+
       result.addAll(errs);
     }
     return result;
@@ -200,6 +210,9 @@ public class ValidationServiceImpl implements ValidationService {
               toBeValidated.getComponents().get(i), true,
               predicatesMap.get(toBeValidated.getComponents().get(i).getPosition()),
               toBeValidated.getHl7Version());
+          // for (ValidationError valErr : compResults) {
+          // valErr.setParentId(toBeValidated.getComponents().get(i).getId());
+          // }
           componentsResults.addAll(compResults);
         }
 
@@ -227,6 +240,7 @@ public class ValidationServiceImpl implements ValidationService {
         valError.setPosition(toBeValidated.getPosition());
         valError.setTargetId(toBeValidated.getId());
         valError.setTargetName(toBeValidated.getName());
+        valError.setTargetType(toBeValidated.getType());
         valError.setType("Error");
         valError.setValidationType(ValidationType.USAGE);
         result.add(valError);
@@ -241,6 +255,7 @@ public class ValidationServiceImpl implements ValidationService {
       valErr.setPosition(toBeValidated.getPosition());
       valErr.setTargetId(toBeValidated.getId());
       valErr.setTargetName(toBeValidated.getName());
+      valErr.setTargetType(toBeValidated.getType());
       valErr.setType("Error");
       valErr.setValidationType(ValidationType.LENGTH);
       result.add(valErr);
@@ -254,6 +269,7 @@ public class ValidationServiceImpl implements ValidationService {
       for (ValidationError valErr : errs) {
         valErr.setParentId(toBeValidated.getId());
       }
+
       result.addAll(errs);
     }
     return result;

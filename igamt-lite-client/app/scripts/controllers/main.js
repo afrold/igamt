@@ -71,6 +71,81 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
 
         };
+        $rootScope.hasUsageError = function(id) {
+            if ($rootScope.validationResult) {
+                var x = $rootScope.validationResult.items.find(function(item) {
+                    if (item.targetId === id && item.validationType === "USAGE") {
+                        return (item.targetId === id && item.validationType === "USAGE");
+                        //return 'input-change';
+                    }
+                    // return item.targetId === id;
+                });
+                if (x) {
+                    return 'col-md-1 col-fixed-80 has-validation-error';
+                } else {
+                    return 'col-md-1 col-fixed-80';
+                }
+            } else {
+                return 'col-md-1 col-fixed-80';
+            }
+
+        };
+        $rootScope.hasLengthError = function(id) {
+            if ($rootScope.validationResult) {
+                var x = $rootScope.validationResult.items.find(function(item) {
+                    if (item.targetId === id && item.validationType === "LENGTH") {
+                        return (item.targetId === id && item.validationType === "LENGTH");
+                        //return 'input-change';
+                    }
+                    // return item.targetId === id;
+                });
+                if (x) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+
+        };
+        $rootScope.hasError = function(id) {
+            if ($rootScope.validationResult) {
+                var x = $rootScope.validationResult.items.find(function(item) {
+                    if (item.targetId === id) {
+                        return (item.targetId === id)
+                            //return 'input-change';
+                    } else if (item.parentId === id) {
+                        return (item.parentId === id);
+                    }
+                    // return item.targetId === id;
+                });
+                if (x) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        };
+         $rootScope.displayMessageError = function(id) {
+            if ($rootScope.validationResult) {
+                var x = $rootScope.validationResult.items.find(function(item) {
+                    if (item.targetId === id) {
+                        return (item.targetId === id)
+                            //return 'input-change';
+                    }
+                    // return item.targetId === id;
+                });
+                if (x) {
+                    return x.errorMessage;
+                } else {
+                    return null;
+                }
+            }
+        };
+
         $scope.path = function() {
             return $location.url();
         };

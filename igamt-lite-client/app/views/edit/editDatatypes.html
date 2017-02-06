@@ -193,18 +193,18 @@
                                             <span style="color:white;">Data Type Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
                                         </accordion-heading>
                                         <div class="" style="margin:5px 5px 5px 5px">
-                                            <div class="alert alert-danger " role="alert" ng-show="datatypeValidationResult.errorCount>0 && showErrorNotification">
-                                                <button type="button" class="close" aria-label="Close" ng-click="showErrorNotification=false;"><span aria-hidden="true">&times;</span></button> {{datatypeValidationResult.errorCount}} Validation Errors
+                                            <div class="alert alert-danger " role="alert" ng-show="validationResult.errorCount>0 && showErrorNotification">
+                                                <button type="button" class="close" aria-label="Close" ng-click="showErrorNotification=false;"><span aria-hidden="true">&times;</span></button> {{validationResult.errorCount}} Validation Errors
                                             </div>
 
                                             <div ng-show="datatype.components && datatype.components.length > 0" class="pull-left">
                                                 <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
                                             </div>
-                                            <button class="pull-right" title="Validate Data type" type="button" ng-class="{'btn btn-raised btn-sm btn-danger':(datatypeValidationResult && datatypeValidationResult.errorCount>0),'btn btn-raised btn-sm btn-success':((datatypeValidationResult && datatypeValidationResult.errorCount===0)|| !datatypeValidationResult)}"
+                                            <button class="pull-right" title="Validate Data type" type="button" ng-class="{'btn btn-raised btn-sm btn-danger':(validationResult && validationResult.errorCount>0),'btn btn-raised btn-sm btn-success':((validationResult && validationResult.errorCount===0)|| !validationResult)}"
                                                 ng-click="validateDatatype()"> 
                                                 <span>
-                                                    <i ng-show="datatypeValidationResult && datatypeValidationResult.errorCount>0" class="fa fa-exclamation-triangle"></i>
-                                                    <i  ng-show="(datatypeValidationResult && datatypeValidationResult.errorCount===0)|| !datatypeValidationResult" class="fa fa-check-circle"></i>
+                                                    <i ng-show="validationResult && validationResult.errorCount>0" class="fa fa-exclamation-triangle"></i>
+                                                    <i  ng-show="(validationResult && validationResult.errorCount===0)|| !validationResult" class="fa fa-check-circle"></i>
                                                     Validate
                                                 </span> 
                                             </button>
@@ -811,8 +811,8 @@
             <ng-form name="{{formName}}" class="form-inline">
                 <!--<input type="checkbox" ng-checked="isChildSelected(node)" ng-click="selectChild($event,node)">-->
 
-                <span ng-show="hasError(node.id) && datatypeValidationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-                <span ng-show="!hasError(node.id) && datatypeValidationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+                <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+                <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
 
                 <span class="label label-component label-icon">C</span>
                 <span ng-show="editableComp!==node.id">
@@ -986,8 +986,8 @@
 <script type="text/ng-template" id="DatatypeComponentReadTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250">
-            <span ng-show="hasError(node.id) && datatypeValidationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.id) && datatypeValidationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
 
             <span class="label label-component label-icon">C</span>
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
@@ -1055,8 +1055,8 @@
 <script type="text/ng-template" id="DatatypeComponentReadTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250">
-            <span ng-show="hasError(node.id) && datatypeValidationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.id) && datatypeValidationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <span class="label label-component label-icon">C</span>
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
         </td>
@@ -1139,7 +1139,7 @@
                 </p>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id)}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
         </td>
         <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}" ng-show="showConfLength()">

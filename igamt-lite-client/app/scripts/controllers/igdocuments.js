@@ -58,6 +58,8 @@ angular.module('igl')
         return false;
 
     };
+   
+        
     $scope.validateIG = function() {
         console.log($rootScope.igdocument.id);
     };
@@ -1284,7 +1286,7 @@ angular.module('igl')
                     try {
                         DatatypeService.getOne(datatype.id).then(function(result) {
                             $rootScope.datatype = angular.copy(result);
-                            $rootScope.datatypeValidationResult = null;
+                            $rootScope.validationResult = null;
                             $rootScope.$emit("event:initDatatype");
 
                             $rootScope.currentData = datatype;

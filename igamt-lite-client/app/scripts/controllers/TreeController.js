@@ -143,14 +143,14 @@ angular
                     }
                 };
                 $scope.isValidated = function(data) {
-                    if ($rootScope.datatypeValidationResult.targetId === data.id) {
+                    if ($rootScope.validationResult.targetId === data.id) {
                         return true;
                     } else {
                         return false;
                     }
                 };
                 $scope.hasErrorInTree = function(data) {
-                    if ($rootScope.datatypeValidationResult && $rootScope.datatypeValidationResult.errorCount > 0) {
+                    if ($rootScope.validationResult && $rootScope.validationResult.errorCount > 0) {
                         return true;
                     } else {
                         return false;
