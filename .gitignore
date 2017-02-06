@@ -40,3 +40,4 @@ index-1.html
 *webapp/*
 *webapp/* >> .gitignorewebapp/WEB-INF/web.xml
 *webapp/WEB-INF/web.xml
+igamt-lite-controller/src/main/webapp
