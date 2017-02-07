@@ -14,28 +14,22 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 import java.util.Date;
 import java.util.List;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public interface DecisionOperations {
+public interface DocumentationOperations {
 
 
 
-  public List<Decision> findAll();
+  public List<Documentation> findAll();
 
-  public Decision findById(String id);
+  public Documentation findById(String id);
 
   public Date updateDate(String id, Date date);
 
-
-  /**
-   * @param id
-   * @param date
-   * @return
-   */
 
 
 }
