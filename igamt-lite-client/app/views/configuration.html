@@ -32,7 +32,7 @@
   <tabset style="width:100%" ng-init ="init()">
                 <tab style="width:24%">
                    <tab-heading> IG Style</tab-heading>
-                        <div style="width:100%" ng-include="'views/edit/exportConfig/IGStyle.html'"></div>
+                        <div ng-controller="EditAreaCtrl" ng-init="init" style="width:100%" ng-include="'views/edit/exportConfig/IGStyle.html'"></div>
                 </tab>
                 <tab style="width:24%">
                      <tab-heading> Profile Style</tab-heading>

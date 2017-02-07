@@ -1,247 +1,265 @@
-<div class="row" style="width:100%">
-    <button ng-click="override(profileStyleExportConfig)">Override</button>
+<div class="page-header">
+<div class="pull-right">
+                         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                               ng-disabled="!editForm.$dirty"
+                               ng-click="override(profileStyleExportConfig)">
+                              <span><i class="fa fa-check fa-fw"></i> Save</span>
+                        </button>
+                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly" ng-disabled="!editForm.$dirty" ng-click="reset(profileStyleExportConfig)">
+                                  <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                         </button>
 
-    <div class="col-md-6 conf-box">
-        <div class="page-header">
-            <span class="header5">Message Export Configuration</span>
-        </div>
+</div>
+</div>
+<form name="editForm" id ="editForm">
 
+<div layout="row" layout-align="center start" style="width:100%">
     
-        <div class ="col-md-12">
 
-            <div class="panel panel-primary col-md-6">
-                <div class="panel-heading"><strong>USAGES</strong></div>
-                <div class="panel-body container">
-                    <div class="container">
-                        <label style="color:black"> Choose Segments Or Groups to export:</label>
-                        <br/>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.r"> <label style="color:black">R 
+    <div flex="50" class="conf-box" >
+        <div class="page-header">
+                    <span class="header5">Message Table Options</span>
+        </div>
+                <div layout="row" layout-align="center start" style="width:100%">
+
+                    <div class="panel panel-primary" flex="50">
+                        <div class="panel-heading"><strong>USAGES</strong></div>
+                        <div class="panel-body container">
+                            <div class="container">
+                                <label style="color:black">  Segments/Groups to Display:</label>
+                            <br/>
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.r"> <label style="color:black">R 
                                 </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.re"> <label style="color:black">RE 
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.re"> <label style="color:black">RE 
                                 </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.c"> <label style="color:black">C 
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.c"> <label style="color:black">C 
                                 </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.o"> <label style="color:black">O 
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.o"> <label style="color:black">O 
                                 </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.x"> <label style="color:black">X 
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.x"> <label style="color:black">X 
                                 </label>
+
+                            </div>
+                        </div>
 
                     </div>
-                </div>
 
-            </div>
-
-            <div class="panel panel-primary col-md-5" style="margin-left:5%">
-                <div class="panel-heading"> <strong> Columns </strong></div>
-                <div class="panel-body container">
-                    <div style="width:100%">
+                    <div class="panel panel-primary" flex="50" style="margin-left:10px;">
+                        <div class="panel-heading"> <strong> Columns </strong></div>
+                        <div class="panel-body container">
+                        <div style="width:100%" >
 
 
-                        <div style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.messageColumn.columns">
+                                <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.messageColumn.columns">
 
-                            <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
+                                    <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
                                     </label><br/>
 
+                                </div>
+                        </div>
                         </div>
                     </div>
+
                 </div>
-            </div>
+
+</div>
+
+<div flex="50" class="conf-box">
+                <div class="page-header">
+                    <span class="header5">Segments Table Options</span>
+                </div>
+                <div layout="row" layout-align="center start" style="width:100%">
+                    <div class="panel panel-primary" flex="50">
+                        <div class="panel-heading"> <strong> USAGES </strong></div>
+                        <div class="panel-body container">
+                            <div class="container">
+                            <label style="color:black">  Segments to export:</label>
+                            <br/>
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.r"> <label style="color:black">R 
+                                </label>
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.re"> <label style="color:black">RE 
+                                </label>
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.c"> <label style="color:black">C 
+                                </label>
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.o"> <label style="color:black">O 
+                                </label>
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.x"> <label style="color:black">X 
+                                </label>
+
+                            </div>
+                <hr style="border-top: 2px solid #271e1e;"/>            
+                <div class="container">
+                                <label style="color:black"> Fields to Display:</label>
+                                </br>
+                            
+                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.r"> <label style="color:black">R
+                                </label>
+                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.re"> <label style="color:black">RE
+                                </label>
+                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.c"> <label style="color:black">C
+                                </label>
+                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.o"> <label style="color:black">O
+                                </label>
+                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.x"> <label style="color:black">X
+                                </label>
+
+                            </div>  
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="panel panel-primary" flex="50" style="margin-left:10px;">
+                        <div class="panel-heading"> <strong> Columns </strong></div>
+                        <div class="panel-body container">
+                        <div style="width:100%" >
+
+
+                                <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.segmentColumn.columns">
+
+                                    <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
+                                    </label><br/>
+
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+
+                </div>
+
+</div>
+</div>
+<div layout="row" layout-align="center start" style="width:100%">
+    <div flex="50" class="conf-box" >
+<div class="page-header">
+
+    <span class="header5">Data Type Table Options</span>
+</div>
+<div layout="row" layout-align="center start" style="width:100%">
+
+    <div class="panel panel-primary" flex="50">
+        <div class="panel-heading"><strong>USAGES </strong> </div>
+        <div class="panel-body container">
+            <div class="container">
+               <label style="color:black">  Datatype to export:</label>
+                <br/>
+                <input type="checkbox" ng-model="profileStyleExportConfig.datatypeExport.r"> <label style="color:black">R 
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.datatypeExport.re"> <label style="color:black">RE 
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.datatypeExport.c"> <label style="color:black">C 
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.datatypeExport.o"> <label style="color:black">O 
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.datatypeExport.x"> <label style="color:black">X 
+                </label>
+
+             </div>
+<hr style="border-top: 2px solid #271e1e;"/>            
+<div class="container">
+                <label style="color:black"> Components to Display:</label>
+               <br/>
+                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.r"> <label style="color:black">R
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.re"> <label style="color:black">RE
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.c"> <label style="color:black">C
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.o"> <label style="color:black">O
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.x"> <label style="color:black">X
+                </label>
+
+             </div>  
+
 
         </div>
 
     </div>
 
-    <div class="col-md-6 conf-box">
-        <div class="page-header">
-            <span class="header5">Segments Export Configuration</span>
-        </div>
-        <div class="col-md-12">
-            <div class="panel panel-primary col-md-6">
-                <div class="panel-heading"> <strong> USAGES </strong></div>
-                <div class="panel-body container">
-                    <div class="container">
-                        <label style="color:black"> Choose Segments to export:</label>
-                        <br/>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.r"> <label style="color:black">R 
-                                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.re"> <label style="color:black">RE 
-                                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.c"> <label style="color:black">C 
-                                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.o"> <label style="color:black">O 
-                                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.x"> <label style="color:black">X 
-                                </label>
-
-                    </div>
-                    <hr style="border-top: 2px solid #271e1e;" />
-                    <div class="container">
-                        <label style="color:black">Choose Fields to Display:</label>
-                        </br>
-
-                        <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.r"> <label style="color:black">R
-                                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.re"> <label style="color:black">RE
-                                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.c"> <label style="color:black">C
-                                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.o"> <label style="color:black">O
-                                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.x"> <label style="color:black">X
-                                </label>
-                    </div>
 
 
-                </div>
-
-            </div>
-
-
-
-            <div class="panel panel-primary col-md-5" style="margin-left:5%">
-                <div class="panel-heading"> <strong> Columns </strong></div>
-                <div class="panel-body container">
-                    <div style="width:100%">
+    <div class="panel panel-primary" flex="50" style="margin-left:10px;">
+        <div class="panel-heading"> <strong> Columns </strong></div>
+                        <div class="panel-body container">
+                        <div style="width:100%" >
 
 
-                        <div style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.segmentColumn.columns">
+                                <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.datatypeColumn.columns">
 
-                            <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
+                                    <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
                                     </label><br/>
 
+                                </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                        </div>
+    </div>
+</div>
+    </div>
+<div flex="50" class="conf-box">
+<div class="page-header">
+
+    <span class="header5">Value Set Table Options</span>
+</div>
+<div layout="row" layout-align="center start" style="width:100%">
+    <div class="panel panel-primary" flex="50">
+        <div class="panel-heading"> <strong> USAGES </strong> </div>
+        <div class="panel-body container">
+            <div class="container">
+               <label style="color:black">  Value Sets to export:</label>
+               <br/>
+                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetExport.r"> <label style="color:black">R 
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetExport.re"> <label style="color:black">RE 
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetExport.c"> <label style="color:black">C 
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetExport.o"> <label style="color:black">O 
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetExport.x"> <label style="color:black">X 
+                </label>
+
+             </div>
+<hr style="border-top: 2px solid #271e1e; "/>            
+<div class="container">
+                <label style="color:black"> Codes to Display:</label><br/>
+               
+                <input type="checkbox" ng-model="profileStyleExportConfig.codesExport.r"> <label style="color:black">R
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.codesExport.p"> <label style="color:black">P
+                </label>
+                <input type="checkbox" ng-model="profileStyleExportConfig.codesExport.e"> <label style="color:black">E
+                </label>
+
+             </div>  
+
 
         </div>
+
+    </div>
+    <div class="panel panel-primary" flex="50" style="margin-left:10px;">
+        <div class="panel-heading"> <strong> Columns </strong></div>
+                              <div class="panel-body container">
+                        <div style="width:100%" >
+
+
+                                <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.valueSetColumn.columns">
+
+                                    <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
+                                    </label><br/>
+
+                                </div>
+                        </div>
+                        </div>
 
     </div>
 </div>
-<div class="row" style="width:100%">
-    <div class="col-md-6 conf-box" >
-        <div class="page-header">
-
-            <span class="header5">Data Type</span>
-        </div>
-        <div class="col-md-12" style="width:100%">
-
-            <div class="panel panel-primary col-md-6">
-                <div class="panel-heading"><strong>USAGES </strong> </div>
-                <div class="panel-body container">
-                    <div class="container">
-                        <label style="color:black"> Choose Datatype to export:</label>
-                        <br/>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.datatypeExport.r"> <label style="color:black">R 
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.datatypeExport.re"> <label style="color:black">RE 
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.datatypeExport.c"> <label style="color:black">C 
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.datatypeExport.o"> <label style="color:black">O 
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.datatypeExport.x"> <label style="color:black">X 
-                </label>
-
-                    </div>
-                    <hr style="border-top: 2px solid #271e1e;" />
-                    <div class="container">
-                        <label style="color:black">Choose Components to Display:</label>
-                        <br/>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.r"> <label style="color:black">R
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.re"> <label style="color:black">RE
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.c"> <label style="color:black">C
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.o"> <label style="color:black">O
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.x"> <label style="color:black">X
-                </label>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-
-            <div class="panel panel-primary col-md-5" style="margin-left:5%;">
-                <div class="panel-heading"> <strong> Columns </strong></div>
-                <div class="panel-body container">
-                    <div style="width:100%">
-
-
-                        <div style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.datatypeColumn.columns">
-
-                            <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
-                                    </label><br/>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div  class="conf-box col-md-6">
-        <div class="page-header">
-
-            <span class="header5">Value Set Configuration</span>
-        </div>
-        <div class="col-md-12" style="width:100%">
-            <div class="panel panel-primary col-md-6">
-                <div class="panel-heading"> <strong> USAGES </strong> </div>
-                <div class="panel-body container">
-                    <div class="container">
-                        <label style="color:black"> Choose Value Sets to export:</label>
-                        <br/>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.valueSetExport.r"> <label style="color:black">R 
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.valueSetExport.re"> <label style="color:black">RE 
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.valueSetExport.c"> <label style="color:black">C 
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.valueSetExport.o"> <label style="color:black">O 
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.valueSetExport.x"> <label style="color:black">X 
-                </label>
-
-                    </div>
-                    <hr style="border-top: 2px solid #271e1e; " />
-                    <div class="container">
-                        <label style="color:black">Choose Codes to Display:</label><br/>
-
-                        <input type="checkbox" ng-model="profileStyleExportConfig.codesExport.r"> <label style="color:black">R
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.codesExport.p"> <label style="color:black">P
-                </label>
-                        <input type="checkbox" ng-model="profileStyleExportConfig.codesExport.e"> <label style="color:black">E
-                </label>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-            <div class="panel panel-primary col-md-5"  style="margin-left:5%">
-                <div class="panel-heading"> <strong> Columns </strong></div>
-                <div class="panel-body container">
-                    <div style="width:100%">
-
-
-                        <div style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.valueSetColumn.columns">
-
-                            <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
-                                    </label><br/>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
 </div>
+
+</div>
+
+
+</form>

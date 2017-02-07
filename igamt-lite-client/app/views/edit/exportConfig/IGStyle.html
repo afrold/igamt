@@ -1,9 +1,22 @@
+<div class="pull-right">
+                         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                               ng-disabled="!editForm.$dirty"
+                               ng-click="overrite(IGStyleExportConfig)">
+                              <span><i class="fa fa-check fa-fw"></i> Save</span>
+                        </button>
+                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                                  <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                         </button>
+
+</div>
+<form name="editForm" id ="editForm">
+
 <div layout="row" layout-align="center start" style="width:100%">
     
 
     <div flex="50" class="conf-box" >
         <div class="page-header">
-                    <span class="header5">Message Export Configuration</span>
+                    <span class="header5">Message Table Options</span>
         </div>
                 <div layout="row" layout-align="center start" style="width:100%">
 
@@ -11,13 +24,13 @@
                         <div class="panel-heading"><strong>USAGES</strong></div>
                         <div class="panel-body container">
                             <div class="container">
-                                <label style="color:black"> Choose Segments Or Groups to export:</label>
+                                <label style="color:black"> Segments/Groups to Display:</label>
                             <br/>
-                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentORGroupsExport.r"> <label style="color:black">R 
+                                <input type="checkbox" disabled ng-model="IGStyleExportConfig.segmentORGroupsExport.r"> <label style="color:black">R 
                                 </label>
-                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentORGroupsExport.re"> <label style="color:black">RE 
+                                <input type="checkbox"  disabled ng-model="IGStyleExportConfig.segmentORGroupsExport.re"> <label style="color:black">RE 
                                 </label>
-                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentORGroupsExport.c"> <label style="color:black">C 
+                                <input type="checkbox" disabled ng-model="IGStyleExportConfig.segmentORGroupsExport.c"> <label style="color:black">C 
                                 </label>
                                 <input type="checkbox" ng-model="IGStyleExportConfig.segmentORGroupsExport.o"> <label style="color:black">O 
                                 </label>
@@ -51,14 +64,14 @@
 
 <div flex="50" class="conf-box">
                 <div class="page-header">
-                    <span class="header5">Segments Export Configuration</span>
+                    <span class="header5">Segment Table Options</span>
                 </div>
                 <div layout="row" layout-align="center start" style="width:100%">
                     <div class="panel panel-primary" flex="50">
                         <div class="panel-heading"> <strong> USAGES </strong></div>
                         <div class="panel-body container">
                             <div class="container">
-                            <label style="color:black"> Choose Segments to export:</label>
+                            <label style="color:black"> Segments to Export:</label>
                             <br/>
                                 <input type="checkbox" ng-model="IGStyleExportConfig.segmentsExport.r"> <label style="color:black">R 
                                 </label>
@@ -74,7 +87,7 @@
                             </div>
                 <hr style="border-top: 2px solid #271e1e;"/>            
                 <div class="container">
-                                <label style="color:black">Choose Fields to Display:</label>
+                                <label style="color:black">Fields to Display:</label>
                                 </br>
                             
                                 <input type="checkbox" ng-model="IGStyleExportConfig.fieldsExport.r"> <label style="color:black">R
@@ -121,7 +134,7 @@
     <div flex="50" class="conf-box" >
 <div class="page-header">
 
-    <span class="header5">Data Type</span>
+    <span class="header5">Data Type Table Options</span>
 </div>
 <div layout="row" layout-align="center start" style="width:100%">
 
@@ -129,7 +142,7 @@
         <div class="panel-heading"><strong>USAGES </strong> </div>
         <div class="panel-body container">
             <div class="container">
-               <label style="color:black"> Choose Datatype to export:</label>
+               <label style="color:black">Datatypes to export:</label>
                 <br/>
                 <input type="checkbox" ng-model="IGStyleExportConfig.datatypeExport.r"> <label style="color:black">R 
                 </label>
@@ -145,7 +158,7 @@
              </div>
 <hr style="border-top: 2px solid #271e1e;"/>            
 <div class="container">
-                <label style="color:black">Choose Components to Display:</label>
+                <label style="color:black">Components to Display:</label>
                <br/>
                 <input type="checkbox" ng-model="IGStyleExportConfig.componentExport.r"> <label style="color:black">R
                 </label>
@@ -187,14 +200,14 @@
 <div flex="50" class="conf-box">
 <div class="page-header">
 
-    <span class="header5">Value Set Configuration</span>
+    <span class="header5">Value Sets Table Options</span>
 </div>
 <div layout="row" layout-align="center start" style="width:100%">
     <div class="panel panel-primary" flex="50">
         <div class="panel-heading"> <strong> USAGES </strong> </div>
         <div class="panel-body container">
             <div class="container">
-               <label style="color:black"> Choose Value Sets to export:</label>
+               <label style="color:black"> Value Sets to export:</label>
                <br/>
                 <input type="checkbox" ng-model="IGStyleExportConfig.valueSetExport.r"> <label style="color:black">R 
                 </label>
@@ -210,7 +223,7 @@
              </div>
 <hr style="border-top: 2px solid #271e1e; "/>            
 <div class="container">
-                <label style="color:black">Choose Codes to Display:</label><br/>
+                <label style="color:black">Codes to Display:</label><br/>
                
                 <input type="checkbox" ng-model="IGStyleExportConfig.codesExport.r"> <label style="color:black">R
                 </label>
@@ -244,5 +257,6 @@
 </div>
 </div>
 </div>
+</form>
 
 

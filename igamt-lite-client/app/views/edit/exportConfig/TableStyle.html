@@ -1,9 +1,25 @@
+<div class="page-header">
+<div class="pull-right">
+                         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                               ng-disabled="!editForm.$dirty"
+                               ng-click="override(profileStyleExportConfig)">
+                              <span><i class="fa fa-check fa-fw"></i> Apply</span>
+                        </button>
+                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty" ng-click="reset(tableStyleExportConfig)">
+                                  <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                         </button>
+                         <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default" ng-disabled="tableStyleExportConfig.defaultType" ng-click="restoreDefault(tableStyleExportConfig)">
+                                  <span><i class="fa fa-refresh" aria-hidden="true"></i> Restore Default</span>
+                         </button>
+
+</div>
+</div>
+<form name="editForm" id ="editForm">
 <div layout="row" layout-align="center start" style="width:100%">
     
-
     <div flex="50" class="conf-box" >
         <div class="page-header">
-                    <span class="header5">Message Export Configuration</span>
+                    <span class="header5">Message Table Options</span>
         </div>
                 <div layout="row" layout-align="center start" style="width:100%">
 
@@ -11,7 +27,7 @@
                         <div class="panel-heading"><strong>USAGES</strong></div>
                         <div class="panel-body container">
                             <div class="container">
-                                <label style="color:black"> Choose Segments Or Groups to export:</label>
+                                <label style="color:black">  Segments/Groups to Display:</label>
                             <br/>
                                 <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.r"> <label style="color:black">R 
                                 </label>
@@ -51,14 +67,14 @@
 
 <div flex="50" class="conf-box">
                 <div class="page-header">
-                    <span class="header5">Segments Export Configuration</span>
+                    <span class="header5">Segments Table Options</span>
                 </div>
                 <div layout="row" layout-align="center start" style="width:100%">
                     <div class="panel panel-primary" flex="50">
                         <div class="panel-heading"> <strong> USAGES </strong></div>
                         <div class="panel-body container">
                             <div class="container">
-                            <label style="color:black"> Choose Segments to export:</label>
+                            <label style="color:black">  Segments to export:</label>
                             <br/>
                                 <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.r"> <label style="color:black">R 
                                 </label>
@@ -74,7 +90,7 @@
                             </div>
                 <hr style="border-top: 2px solid #271e1e;"/>            
                 <div class="container">
-                                <label style="color:black">Choose Fields to Display:</label>
+                                <label style="color:black"> Fields to Display:</label>
                                 </br>
                             
                                 <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.r"> <label style="color:black">R
@@ -121,7 +137,7 @@
     <div flex="50" class="conf-box" >
 <div class="page-header">
 
-    <span class="header5">Data Type</span>
+    <span class="header5">Data Type Table Options</span>
 </div>
 <div layout="row" layout-align="center start" style="width:100%">
 
@@ -129,7 +145,7 @@
         <div class="panel-heading"><strong>USAGES </strong> </div>
         <div class="panel-body container">
             <div class="container">
-               <label style="color:black"> Choose Datatype to export:</label>
+               <label style="color:black">  Datatype to export:</label>
                 <br/>
                 <input type="checkbox" ng-model="tableStyleExportConfig.datatypeExport.r"> <label style="color:black">R 
                 </label>
@@ -145,7 +161,7 @@
              </div>
 <hr style="border-top: 2px solid #271e1e;"/>            
 <div class="container">
-                <label style="color:black">Choose Components to Display:</label>
+                <label style="color:black"> Components to Display:</label>
                <br/>
                 <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.r"> <label style="color:black">R
                 </label>
@@ -187,14 +203,14 @@
 <div flex="50" class="conf-box">
 <div class="page-header">
 
-    <span class="header5">Value Set Configuration</span>
+    <span class="header5">Value Set Table Options</span>
 </div>
 <div layout="row" layout-align="center start" style="width:100%">
     <div class="panel panel-primary" flex="50">
         <div class="panel-heading"> <strong> USAGES </strong> </div>
         <div class="panel-body container">
             <div class="container">
-               <label style="color:black"> Choose Value Sets to export:</label>
+               <label style="color:black">  Value Sets to export:</label>
                <br/>
                 <input type="checkbox" ng-model="tableStyleExportConfig.valueSetExport.r"> <label style="color:black">R 
                 </label>
@@ -210,7 +226,7 @@
              </div>
 <hr style="border-top: 2px solid #271e1e; "/>            
 <div class="container">
-                <label style="color:black">Choose Codes to Display:</label><br/>
+                <label style="color:black"> Codes to Display:</label><br/>
                
                 <input type="checkbox" ng-model="tableStyleExportConfig.codesExport.r"> <label style="color:black">R
                 </label>
@@ -243,6 +259,8 @@
     </div>
 </div>
 </div>
+</div>
+</form>
 </div>
 
 
