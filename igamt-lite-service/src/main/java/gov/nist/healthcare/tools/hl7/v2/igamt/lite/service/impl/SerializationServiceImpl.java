@@ -140,6 +140,7 @@ import java.util.*;
         if(exportConfig==null){
             return igDocument;
         } else {
+            exportConfig.getSegmentORGroupsExport().setO(false);
             Profile profile = igDocument.getProfile();
             Messages messages = profile.getMessages();
             UsageConfig segmentORGroupsUsageConfig = exportConfig.getSegmentORGroupsExport();
@@ -165,11 +166,15 @@ import java.util.*;
         } else if(segmentRefOrGroup instanceof Group){
             Group group = (Group) segmentRefOrGroup;
             if(diplayUsage(group.getUsage(), segmentORGroupsUsageConfig)) {
+                List<SegmentRefOrGroup> toBeRemovedList = new ArrayList<>();
                 for (SegmentRefOrGroup groupSegmentRefOrGroup : group.getChildren()) {
                     if (filterSegmentRefOrGroup(groupSegmentRefOrGroup, segmentORGroupsUsageConfig)
                         == null) {
-                        group.getChildren().remove(groupSegmentRefOrGroup);
+                        toBeRemovedList.add(groupSegmentRefOrGroup);
                     }
+                }
+                for(SegmentRefOrGroup toBeRemoved : toBeRemovedList){
+                    group.getChildren().remove(toBeRemoved);
                 }
                 return segmentRefOrGroup;
             }
