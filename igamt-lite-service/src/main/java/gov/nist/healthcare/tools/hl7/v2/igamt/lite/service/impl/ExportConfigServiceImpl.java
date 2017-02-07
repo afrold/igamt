@@ -80,9 +80,8 @@ public class ExportConfigServiceImpl implements ExportConfigService {
    * String)
    */
   @Override
-  public List<ExportConfig> findDefault(String type) {
-    // TODO Auto-generated method stub
-    return null;
+  public ExportConfig findDefault() {
+    return ExportConfig.getBasicExportConfig();
   }
 
   @Override public ExportConfig findOneByAccountId(Long accountId) {

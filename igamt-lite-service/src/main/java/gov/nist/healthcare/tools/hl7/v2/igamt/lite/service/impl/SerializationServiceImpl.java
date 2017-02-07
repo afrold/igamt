@@ -136,13 +136,61 @@ import java.util.*;
         return serializableStructure.serializeStructure();
     }
 
-    private IGDocument filterIgDocument(IGDocument originIgDocument, ExportConfig exportConfig) {
+    private IGDocument filterIgDocument(IGDocument igDocument, ExportConfig exportConfig) {
         if(exportConfig==null){
-            return originIgDocument;
+            return igDocument;
         } else {
-            IGDocument filteredIgDocument = new IGDocument();
-            //TODO apply filters
-            return filteredIgDocument;
+            Profile profile = igDocument.getProfile();
+            Messages messages = profile.getMessages();
+            UsageConfig segmentORGroupsUsageConfig = exportConfig.getSegmentORGroupsExport();
+            for(Message message : messages.getChildren()){
+                List<SegmentRefOrGroup> finalSegmentRefOrGroupList = new ArrayList<>();
+                for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
+                    SegmentRefOrGroup finalSegmentRefOrGroup = filterSegmentRefOrGroup(segmentRefOrGroup,segmentORGroupsUsageConfig);
+                    if(finalSegmentRefOrGroup != null){
+                        finalSegmentRefOrGroupList.add(finalSegmentRefOrGroup);
+                    }
+                }
+                message.setChildren(finalSegmentRefOrGroupList);
+            }
+            return igDocument;
+        }
+    }
+
+    private SegmentRefOrGroup filterSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentORGroupsUsageConfig){
+        if(segmentRefOrGroup instanceof SegmentRef){
+            if(diplayUsage(segmentRefOrGroup.getUsage(),segmentORGroupsUsageConfig)){
+                return segmentRefOrGroup;
+            }
+        } else if(segmentRefOrGroup instanceof Group){
+            Group group = (Group) segmentRefOrGroup;
+            if(diplayUsage(group.getUsage(), segmentORGroupsUsageConfig)) {
+                for (SegmentRefOrGroup groupSegmentRefOrGroup : group.getChildren()) {
+                    if (filterSegmentRefOrGroup(groupSegmentRefOrGroup, segmentORGroupsUsageConfig)
+                        == null) {
+                        group.getChildren().remove(groupSegmentRefOrGroup);
+                    }
+                }
+                return segmentRefOrGroup;
+            }
+        }
+        return null;
+    }
+
+    private boolean diplayUsage(Usage usageToCompare, UsageConfig usageConfig){
+        switch(usageToCompare){
+            case R:
+                return usageConfig.getR();
+            case RE:
+                return usageConfig.getRe();
+            case C:
+                return usageConfig.getC();
+            case X:
+                return usageConfig.getX();
+            case O:
+                return usageConfig.getO();
+            default:
+                return false;
         }
     }
 

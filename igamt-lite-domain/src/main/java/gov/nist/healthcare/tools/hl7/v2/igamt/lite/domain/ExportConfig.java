@@ -14,6 +14,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
@@ -182,6 +184,70 @@ public class ExportConfig {
     return serialVersionUID;
   }
 
+  public static ExportConfig getBasicExportConfig(){
+    ExportConfig defaultConfiguration = new ExportConfig();
+    defaultConfiguration.setDefaultType(true);
+    defaultConfiguration.setAccountId(null);
+    // Default Usages
+    UsageConfig displayAll = new UsageConfig();
+    UsageConfig displaySelectives = new UsageConfig();
+    displaySelectives.setC(true);
+    displaySelectives.setX(false);
+    displaySelectives.setO(false);
+    displaySelectives.setR(true);
+    displaySelectives.setRe(true);
+    CodeUsageConfig codeUsageExport = new CodeUsageConfig();
+    codeUsageExport.setE(false);
+    codeUsageExport.setP(true);
+    codeUsageExport.setR(true);
 
+    displayAll.setC(true);
+    displayAll.setRe(true);
+    displayAll.setX(true);
+    displayAll.setO(true);
+    displayAll.setR(true);
+
+    defaultConfiguration.setSegmentORGroupsExport(displayAll);
+
+    defaultConfiguration.setComponentExport(displayAll);
+
+    defaultConfiguration.setFieldsExport(displayAll);
+
+    defaultConfiguration.setCodesExport(codeUsageExport);
+
+    defaultConfiguration.setDatatypesExport(displaySelectives);
+    defaultConfiguration.setSegmentsExport(displaySelectives);
+    defaultConfiguration.setValueSetsExport(displaySelectives);
+
+    // Default column
+    ArrayList<NameAndPositionAndPresence> generalDefaultList =
+        new ArrayList<NameAndPositionAndPresence>();
+
+    generalDefaultList.add(new NameAndPositionAndPresence("Name", 1, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Usage", 2, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Cardinality", 3, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Length", 4, false));
+    generalDefaultList.add(new NameAndPositionAndPresence("Confromance Length", 5, false));
+    generalDefaultList.add(new NameAndPositionAndPresence("Data Type", 6, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Value Set", 1, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Definition Text", 1, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true));
+
+    defaultConfiguration.setDatatypeColumn(new ColumnsConfig(generalDefaultList));
+    defaultConfiguration.setSegmentColumn(new ColumnsConfig(generalDefaultList));
+    defaultConfiguration.setMessageColumn(new ColumnsConfig(generalDefaultList));
+
+    ArrayList<NameAndPositionAndPresence> valueSetsDefaultList =
+        new ArrayList<NameAndPositionAndPresence>();
+
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Decription", 2, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 3, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, false));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Comments", 5, false));
+
+    defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
+    return defaultConfiguration;
+  }
 
 }
