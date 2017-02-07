@@ -37,12 +37,12 @@ public class ExportConfigServiceImpl implements ExportConfigService {
    */
 
   @Autowired
-  ExportConfigRepository exportConfig;
+  ExportConfigRepository exportConfigRepository;
 
   @Override
   public List<ExportConfig> findByType(String type) {
     // TODO Auto-generated method stub
-    return exportConfig.findByType(type);
+    return exportConfigRepository.findByType(type);
 
   }
 
@@ -56,7 +56,7 @@ public class ExportConfigServiceImpl implements ExportConfigService {
   @Override
   public List<ExportConfig> findByTypeAndAccountId(String type, Long accountId) {
     // TODO Auto-generated method stub
-    return exportConfig.findByTypeAndAccountId(type, accountId);
+    return exportConfigRepository.findByTypeAndAccountId(type, accountId);
   }
 
   /*
@@ -69,7 +69,7 @@ public class ExportConfigServiceImpl implements ExportConfigService {
   @Override
   public List<ExportConfig> findByAccountId(Long accountId) {
     // TODO Auto-generated method stub
-    return exportConfig.findByAccountId(accountId);
+    return exportConfigRepository.findByAccountId(accountId);
   }
 
   /*
@@ -80,12 +80,34 @@ public class ExportConfigServiceImpl implements ExportConfigService {
    * String)
    */
   @Override
+
   public ExportConfig findDefault() {
     return ExportConfig.getBasicExportConfig();
   }
 
   @Override public ExportConfig findOneByAccountId(Long accountId) {
-    return exportConfig.findOneByAccountId(accountId);
+    return exportConfigRepository.findOneByAccountId(accountId);
+  }
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService#delete(gov.nist.
+   * healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig)
+   */
+  @Override
+  public void delete(ExportConfig exportConfig) {
+    exportConfigRepository.delete(exportConfig);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService#save(gov.nist.
+   * healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig)
+   */
+  @Override
+  public void save(ExportConfig exportConfig) {
+    exportConfigRepository.save(exportConfig);
   }
 
 

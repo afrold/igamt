@@ -29,4 +29,9 @@ public interface ExportConfigService {
   public ExportConfig findDefault();
 
   public ExportConfig findOneByAccountId(Long accountId);
+
+  public void delete(ExportConfig exportConfig);
+
+  public void save(ExportConfig exportConfig);
+
 }

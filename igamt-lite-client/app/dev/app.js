@@ -87,6 +87,10 @@ app.config(function($routeProvider, RestangularProvider, $httpProvider, Keepaliv
             templateUrl: 'views/doc.html',
             controller:	'DocumentationController'
         })
+        .when('/configuration', {
+            templateUrl: 'views/configuration.html',
+            controller:	'ConfigurationController'
+        })
         .when('/setting', {
             templateUrl: 'views/setting.html'
         })
