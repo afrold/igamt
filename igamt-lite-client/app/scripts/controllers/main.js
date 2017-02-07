@@ -3299,7 +3299,7 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
 }]);
 
 
-angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalInstance, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc,DecisionService) {
+angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalInstance, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc,DocumentationService) {
     $scope.continue = function() {
         $rootScope.clearChanges();
         $modalInstance.close();
@@ -3341,19 +3341,19 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
 
         }
-        if(data.type==="decision"){
-    		DecisionService.save(data).then(function(saved){
+        if(data.type==="decision"||data.type==="FAQ"||data.type==="userGuide"){
+    		DocumentationService.save(data).then(function(saved){
     				console.log(data);
     				console.log("befor");
-    				$rootScope.decision=saved.data;
-    				$rootScope.decisionsMap[data.id]= saved.data;
-    				angular.forEach($rootScope.decisions, function(d){
+    				$rootScope.documentation=saved.data;
+    				$rootScope.documentationsMap[data.id]= saved.data;
+    				angular.forEach($rootScope.documentations, function(d){
     					console.log("found");
-    					if(d.id==$rootScope.decision.id){
-    					d.title=$rootScope.decisionsMap[saved.data.id].title;
-    					d.content=$rootScope.decisionsMap[saved.data.id].content;
-    					d.dateUpdated=$rootScope.decisionsMap[saved.data.id].dateUpdated;
-    					d.username=$rootScope.decisionsMap[saved.data.id].username;
+    					if(d.id==$rootScope.documentation.id){
+    					d.title=$rootScope.documentationsMap[saved.data.id].title;
+    					d.content=$rootScope.documentationsMap[saved.data.id].content;
+    					d.dateUpdated=$rootScope.documentationsMap[saved.data.id].dateUpdated;
+    					d.username=$rootScope.documentationsMap[saved.data.id].username;
     					}
     				});
     				 $scope.continue();
@@ -3364,11 +3364,11 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
     				$scope.editMode=false;
     				$scope.newOne=false;
     				$rootScope.clearChanges();
-    				 $rootScope.msg().text = "DecisionSaveSuccess";
+    				 $rootScope.msg().text = data.type+"SaveSuccess";;
     		            $rootScope.msg().type = "success";
     		            $rootScope.msg().show = true;
     		        }, function(error) {
-    		            $rootScope.msg().text = "DecsionSaveFaild";
+    		            $rootScope.msg().text = data.type+"SaveFaild";
     		            $rootScope.msg().type = "danger";
     		            $rootScope.msg().show = true;
     		        }

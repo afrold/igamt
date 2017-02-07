@@ -15,23 +15,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public interface DecisionService {
+public interface DocumentationService {
 
-  public List<Decision> findAll();
+  public List<Documentation> findAll();
 
-  public Decision findById(String id);
+  public Documentation findById(String id);
 
-  public List<Decision> findByIds(Set<String> ids);
+  public List<Documentation> findByIds(Set<String> ids);
 
   public Date updateDate(String id, Date date);
 
-  public Decision save(Decision d);
+  public Documentation save(Documentation d);
 
-  public void delete(Decision decision);
+  public void delete(Documentation decision);
 }
