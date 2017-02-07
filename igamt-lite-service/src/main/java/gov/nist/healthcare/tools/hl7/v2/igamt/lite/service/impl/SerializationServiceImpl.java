@@ -140,7 +140,6 @@ import java.util.*;
         if(exportConfig==null){
             return igDocument;
         } else {
-            exportConfig.getSegmentORGroupsExport().setO(false);
             Profile profile = igDocument.getProfile();
             Messages messages = profile.getMessages();
             UsageConfig segmentORGroupsUsageConfig = exportConfig.getSegmentORGroupsExport();
