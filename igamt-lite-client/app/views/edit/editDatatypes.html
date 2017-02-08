@@ -883,7 +883,7 @@
         <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}" ng-show="showConfLength()">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
-                    <input style="width:50%" class="form-control" type="text" name="confLength" required ng-change="setDirty()" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.confLength.$invalid}" ng-pattern="'\\d*[#=]{0,1}'" ng-model="node.confLength">
+                    <input style="width:50%" class="form-control" type="text" name="confLength" ng-change="setDirty()" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.confLength.$invalid}" ng-pattern="'\\d*[#=]{0,1}'" ng-model="node.confLength">
                 </ng-form>
             </div>
         </td>
