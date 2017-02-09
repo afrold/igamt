@@ -85,8 +85,8 @@ public class ExportConfigServiceImpl implements ExportConfigService {
     return ExportConfig.getBasicExportConfig();
   }
 
-  @Override public ExportConfig findOneByAccountId(Long accountId) {
-    return exportConfigRepository.findOneByAccountId(accountId);
+  @Override public ExportConfig findOneByTypeAndAccountId(String type, Long accountId) {
+    return exportConfigRepository.findOneByTypeAndAccountId(type,accountId);
   }
   /*
    * (non-Javadoc)

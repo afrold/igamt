@@ -570,21 +570,21 @@ public class IGDocumentController extends CommonController {
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
-  @RequestMapping(value = "/{id}/export/html/{layout}", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/export/html/{type}", method = RequestMethod.POST,
       produces = "text/html", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportHtml(@PathVariable("id") String id, @PathVariable("layout") String layout,
+  public void exportHtml(@PathVariable("id") String id, @PathVariable("type") String type,
       HttpServletRequest request, HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, UserAccountNotFoundException {
     log.info("Exporting as html file IGDcoument with id=" + id);
     IGDocument d = this.findIGDocument(id);
     InputStream content = null;
-    SerializationLayout serializationLayout = identifyLayout(layout);
+    SerializationLayout serializationLayout = identifyLayout(type);
     User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     if (account == null) {
       throw new UserAccountNotFoundException();
     }
-    ExportConfig exportConfig = exportConfigService.findOneByAccountId(account.getId());
+    ExportConfig exportConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
     content = exportService.exportIGDocumentAsHtml(d, serializationLayout,exportConfig);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
@@ -601,6 +601,12 @@ public class IGDocumentController extends CommonController {
         break;
       case "Compact":
         serializationLayout = SerializationLayout.COMPACT;
+        break;
+      case "IgDocument":
+        serializationLayout = SerializationLayout.IGDOCUMENT;
+        break;
+      case "Profile":
+        serializationLayout = SerializationLayout.PROFILE;
         break;
       default:
         serializationLayout = SerializationLayout.COMPACT;
@@ -691,22 +697,22 @@ public class IGDocumentController extends CommonController {
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
-  @RequestMapping(value = "/{id}/export/docx/{layout}", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/export/docx/{type}", method = RequestMethod.POST,
       produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportDocx(@PathVariable("id") String id, @PathVariable("layout") String layout,
+  public void exportDocx(@PathVariable("id") String id, @PathVariable("type") String type,
       HttpServletRequest request, HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, UserAccountNotFoundException {
     log.info("Exporting as docx file profile with id=" + id);
     IGDocument d = findIGDocument(id);
     InputStream content = null;
-    SerializationLayout serializationLayout = identifyLayout(layout);
+    SerializationLayout serializationLayout = identifyLayout(type);
     User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     if (account == null) {
       throw new UserAccountNotFoundException();
     }
-    ExportConfig exportConfig = exportConfigService.findOneByAccountId(account.getId());
+    ExportConfig exportConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
     content = exportService.exportIGDocumentAsDocx(d, serializationLayout,exportConfig);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");

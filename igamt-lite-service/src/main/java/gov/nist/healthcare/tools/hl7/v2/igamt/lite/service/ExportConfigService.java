@@ -24,11 +24,11 @@ public interface ExportConfigService {
 
   public List<ExportConfig> findByTypeAndAccountId(String type, Long accountId);
 
+  public ExportConfig findOneByTypeAndAccountId(String type, Long accountId);
+
   public List<ExportConfig> findByAccountId(Long accountId);
 
   public ExportConfig findDefault();
-
-  public ExportConfig findOneByAccountId(Long accountId);
 
   public void delete(ExportConfig exportConfig);
 
