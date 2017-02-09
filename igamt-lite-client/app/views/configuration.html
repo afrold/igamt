@@ -19,22 +19,22 @@
   <div class="col-md-9">
   
   <tabset style="width:100%" ng-init ="init()">
-                <tab style="width:24%">
-                   <tab-heading> IG Style</tab-heading>
+                <tab style="width:24%" active="tabActivity[0]" ng-style="getStyle(tabActivity[0])">
+                   <tab-heading style="color:black;"> IG Style</tab-heading>
                         <div style="width:100%" ng-include="'views/edit/exportConfig/IGStyle.html'"></div>
                 </tab>
-                <tab style="width:24%">
-                     <tab-heading> Profile Style</tab-heading>
+                <tab style="width:24%; " active="tabActivity[1]" ng-style="getStyle(tabActivity[1])">
+                     <tab-heading style="color:black;"> Profile Style</tab-heading>
                         <div style="width:100%"  ng-include="'views/edit/exportConfig/ProfileStyle.html'"></div>
 
                 </tab>
-                <tab style="width:24%">
-                     <tab-heading>Table Style</tab-heading>
+                <tab style="width:24%;" active="tabActivity[2]" ng-style="getStyle(tabActivity[2])">
+                     <tab-heading style="color:black;">Table Style</tab-heading>
                         <div style="width:100%" ng-include="'views/edit/exportConfig/TableStyle.html'"></div>
 
                 </tab>
-                <tab style="width:24%">
-                     <tab-heading>Delta Style</tab-heading>
+                <tab style="width:24%;" active="tabActivity[3]" ng-style="getStyle(tabActivity[3])">
+                     <tab-heading style="color:black;">Delta Style</tab-heading>
                 Coming Soon
                 </tab>
 

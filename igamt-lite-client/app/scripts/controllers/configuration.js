@@ -4,6 +4,8 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
 
     $scope.init = function () {
+        $scope.tabActivity=[false,false,true,false];
+
         console.log("INIT called");
 
         $scope.configMap={};
@@ -116,5 +118,15 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         $scope.changed=false;
     }
 
+     $scope.getStyle=function(bool){
+         var beige={'background':'#ffcc00'};
+         var gray={'background':'gainsboro' };
+
+         if(bool){
+             return beige;
+         }else{
+             return gray;
+         }
+     }
 
 });

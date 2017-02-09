@@ -2659,6 +2659,8 @@ margin-bottom: 5px;
 margin-left:10px;
 border:2px solid; 
 padding:5px;
+background-color: gainsboro;
+
 min-height: 370px;
 margin-bottom: 10px;
 
@@ -2669,4 +2671,10 @@ margin-bottom: 10px;
 
 .addMargin{
 	margin-bottom:8px; 
+}
+.gray{
+    background: gainsboro !important;
+}
+.beige{
+    background: beige !important;
 }
