@@ -174,7 +174,6 @@
                 </xsl:with-param>
             </xsl:call-template>
         </xsl:if>
-        <xsl:element name="br"/>
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
             <xsl:element name="p">
                 <xsl:element name="b"><xsl:text>Usage note: </xsl:text></xsl:element>
@@ -189,7 +188,6 @@
         	<xsl:attribute name="href">
 	        	<xsl:value-of select="concat('#', @id)"></xsl:value-of>
         	</xsl:attribute>
-            <xsl:element name="br"></xsl:element>
             <xsl:value-of select="concat(@Label,' - ',@Description)"></xsl:value-of>
         </xsl:element>
     </xsl:template>

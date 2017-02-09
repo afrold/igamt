@@ -19,7 +19,29 @@ body {
 	<div class="row">
 		<div class="col-md-3">
 			<accordion>
-			<div accordion-group="" ng-init="isOpen1=true"
+
+			<div accordion-group="" ng-init="isOpen2=true"
+				class="panel panel-default" is-open="isOpen2">
+				<accordion-heading style="color:black !important;">
+				<i class="pull-left fa" style="color: black;"
+					ng-class="{'fa-chevron-down':isOpen2, 'fa-chevron-right': !isOpen2}"></i>
+				User Guides </accordion-heading>
+				<div style="margin-bottom: 25px;">
+					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
+						aria-hidden="true" ng-click="addDocumentation('userGuide')"
+						style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
+				</div>
+
+				<ul class="nav nav-pills nav-stacked"
+					style="margin-left: 5px !important;">
+
+					<li ng-repeat="documentation in UserGuides"
+						ng-click="editDocumentation(documentation)"
+						ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
+
+				</ul>
+			</div>
+						<div accordion-group="" ng-init="isOpen1=true"
 				class="panel panel-default" is-open="isOpen1">
 				<accordion-heading style="color:white !important;">
 				<i class="pull-left fa" style="color: black;"
@@ -27,27 +49,18 @@ body {
 				Implementation Decisions </accordion-heading>
 				<div style="margin-bottom: 25px;">
 					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
-						aria-hidden="true" ng-click="addDecision()"
+						aria-hidden="true" ng-click="addDocumentation('decision')"
 						style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
 				</div>
 
 				<ul class="nav nav-pills nav-stacked"
 					style="margin-left: 5px !important;">
 
-					<li ng-repeat="decision in decisions"
-						ng-click="editDecision(decision)"
-						ng-class="{'current':activeId==decision.id}"><a>{{decision.title}}</a></li>
+					<li ng-repeat="documentation in decisions"
+						ng-click="editDocumentation(documentation)"
+						ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
 
 				</ul>
-			</div>
-			<div accordion-group="" ng-init="isOpen2=true"
-				class="panel panel-default" is-open="isOpen2">
-				<accordion-heading style="color:black !important;">
-				<i class="pull-left fa" style="color: black;"
-					ng-class="{'fa-chevron-down':isOpen2, 'fa-chevron-right': !isOpen2}"></i>
-				User Guides </accordion-heading>
-
-				Coming Soon
 			</div>
 			<div accordion-group class="panel panel-default" is-open="isOpen3">
 				<accordion-heading style="color:black !important;">
@@ -55,25 +68,38 @@ body {
 					ng-class="{'fa-chevron-down': isOpen3, 'fa-chevron-right': !isOpen3}"></i>
 				FAQ </accordion-heading>
 
-				Coming Soon
+							<div style="margin-bottom: 25px;">
+					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
+						aria-hidden="true" ng-click="addDocumentation('FAQ')"
+						style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
+				</div>
+
+				<ul class="nav nav-pills nav-stacked"
+					style="margin-left: 5px !important;">
+
+					<li ng-repeat="documentation in FAQs"
+						ng-click="editDocumentation(documentation)"
+						ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
+
+				</ul>
 			</div>
 			</accordion>
 		</div>
-		<div class="col-md-8" ng-if="decision"
+		<div class="col-md-8" ng-if="documentation"
 			style="border-left: 1px solid #eeeeee; min-height: 80px;">
 			<div class="" style="margin-bottom: 20px">
-				<span class="header4">{{decision.title}}</span> <span
+				<span class="header4">{{documentation.title}}</span> <span
 					class="pull-right"> <i class="fa fa-pencil "
 					aria-hidden="true" ng-click="edit()" ng-if="!editMode&&isAdmin()" style="font-size:23px;"></i> <i
 					ng-if="isAdmin()" class="fa fa-trash-o" style="color:red;font-size:23px;"
-					aria-hidden="true" ng-click="confirmDeleteDecision(decision)"></i></span>
+					aria-hidden="true" ng-click="confirmDeleteDocumentation(documentation)"></i></span>
 					<br/>
 					<span ng-if="!newOne">
 					 <i class="fa fa-calendar" aria-hidden="true"></i>
-					updated {{decision.dateUpdated |date:dateFormat}} <i class="fa fa-user" aria-hidden="true"></i> {{decision.username}}</span>
+					updated {{documentation.dateUpdated |date:dateFormat}} <i class="fa fa-user" aria-hidden="true"></i> {{documentation.username}}</span>
 			</div>
 			<div class="fr-view" ng-if="!editMode&&!newOne">
-				<div froala-view="decision.content"></div>
+				<div froala-view="documentation.content"></div>
 
 
 			</div>
@@ -91,7 +117,7 @@ body {
 							<label class="col-md-2 control-label">Title</label>
 							<div class="col-md-10">
 								<input type="text" name="title" required id="title"
-									class="form-control" ng-model="decision.title"
+									class="form-control" ng-model="documentation.title"
 									ng-change="setDirty()" />
 							</div>
 						</div>
@@ -104,7 +130,7 @@ body {
 							<div class="col-md-10">
 								<div>
 									<textarea froala="froalaEditorOptions" required
-										ng-model="decision.content" id="content" name="content"
+										ng-model="documentation.content" id="content" name="content"
 										ng-change="setDirty()"></textarea>
 								</div>
 							</div>
@@ -114,13 +140,13 @@ body {
 							<button title="Cancel Changes" type="button"
 								class="btn btn-raised btn-sm btn-warning"
 								ng-disabled="editForm.$invalid ||!editForm.$dirty"
-								ng-click="resetDecision(decision)">
+								ng-click="resetDocumentation(documentation)">
 								<span><i class="fa fa-times fa-fw"></i> Reset</span>
 							</button>
 							<button title="Save Changes" type="submit"
 								class="btn btn-raised btn-sm btn-success"
-								ng-disabled="editForm.$invalid || !editForm.$dirty||decision.content==''"
-								ng-click="saveDecision(decision)">
+								ng-disabled="editForm.$invalid || !editForm.$dirty||documentation.content==''"
+								ng-click="saveDocumentation(documentation)">
 								<span><i class="fa fa-check fa-fw"></i> Save</span>
 							</button>
 						</span>

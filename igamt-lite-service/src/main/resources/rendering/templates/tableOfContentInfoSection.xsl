@@ -63,7 +63,6 @@
                     </xsl:element>
                 </xsl:when>
             </xsl:choose>
-            <xsl:element name="br"/>
         </xsl:if>
     </xsl:template>
 </xsl:stylesheet>

@@ -39,143 +39,155 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermis
 
 public class IGDocumentRepositoryImpl implements IGDocumentOperations {
 
-	private Logger log = LoggerFactory.getLogger(IGDocumentRepositoryImpl.class);
+  private Logger log = LoggerFactory.getLogger(IGDocumentRepositoryImpl.class);
 
-	@Autowired
-	private MongoOperations mongo;
+  @Autowired
+  private MongoOperations mongo;
 
-	@Override
-	public List<IGDocument> findPreloaded() {
-		Criteria where = Criteria.where("scope").is(IGDocumentScope.PRELOADED);
-		Query query = Query.query(where);
-		return mongo.find(query, IGDocument.class);
-	}
+  @Override
+  public List<IGDocument> findPreloaded() {
+    Criteria where = Criteria.where("scope").is(IGDocumentScope.PRELOADED);
+    Query query = Query.query(where);
+    return mongo.find(query, IGDocument.class);
+  }
 
-	@Override
-	public List<IGDocument> findStandard() {
-		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD);
-		Query query = Query.query(where);
-		return mongo.find(query, IGDocument.class);
-	}
+  @Override
+  public List<IGDocument> findStandard() {
+    Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD);
+    Query query = Query.query(where);
+    return mongo.find(query, IGDocument.class);
+  }
 
-	@Override
-	public List<IGDocument> findUser() {
-		Criteria where = Criteria.where("scope").is(IGDocumentScope.USER);
-		Query query = Query.query(where);
-		return mongo.find(query, IGDocument.class);
-	}
+  @Override
+  public List<IGDocument> findUser() {
+    Criteria where = Criteria.where("scope").is(IGDocumentScope.USER);
+    Query query = Query.query(where);
+    return mongo.find(query, IGDocument.class);
+  }
 
-	@Override
-	public List<IGDocument> findStandardByVersion(String hl7version) {
-		log.debug("findStandardByVersion");
-		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD)
-				.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7version));
-		Query query = Query.query(where);
-		List<IGDocument> list = mongo.find(query, IGDocument.class);
-		log.debug("findStandardByVersion list.size()=" + list.size());
-		return list;
-	}
+  @Override
+  public List<IGDocument> findStandardByVersion(String hl7version) {
+    log.debug("findStandardByVersion");
+    Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD)
+        .andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7version));
+    Query query = Query.query(where);
+    List<IGDocument> list = mongo.find(query, IGDocument.class);
+    log.debug("findStandardByVersion list.size()=" + list.size());
+    return list;
+  }
 
-	@Override
-	public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-		Criteria where = Criteria.where("profile.scope").in(scopes);
-		where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
-		Query qry = Query.query(where);
-		qry.fields().include("_id");
-		qry.fields().include("metaData.title");
-		return mongo.find(qry, IGDocument.class);
-	}
+  @Override
+  public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+    Criteria where = Criteria.where("profile.scope").in(scopes);
+    where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
+    Query qry = Query.query(where);
+    qry.fields().include("_id");
+    qry.fields().include("metaData.title");
+    return mongo.find(qry, IGDocument.class);
+  }
 
-	@Override
-	public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions) {
-		Criteria where = Criteria.where("profile.metaData.hl7Version").in(hl7Versions);
-		where.andOperator(Criteria.where("profile.scope").is(scope));
-		Query qry = Query.query(where);
+  @Override
+  public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions) {
+    Criteria where = Criteria.where("profile.metaData.hl7Version").in(hl7Versions);
+    where.andOperator(Criteria.where("profile.scope").is(scope));
+    Query qry = Query.query(where);
 
-		return mongo.find(qry, IGDocument.class);
-	}
+    return mongo.find(qry, IGDocument.class);
+  }
 
-	@Override
-	public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions) {
-		Criteria where = Criteria.where("metaData.hl7Version").in(hl7Versions);
-		where.andOperator(Criteria.where("scope").is(scope));
-		Query qry = Query.query(where);
+  @Override
+  public List<IGDocument> findByScopeAndVersion(IGDocumentScope scope, String hl7Version) {
+    Criteria where = Criteria.where("profile.metaData.hl7Version").is(hl7Version);
+    where.andOperator(Criteria.where("profile.scope").is(scope));
+    Query qry = Query.query(where);
 
-		return mongo.find(qry, IGDocument.class);
-	}
+    return mongo.find(qry, IGDocument.class);
+  }
 
-	@Override
-	public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version) {
-		Criteria where = Criteria.where("profile.scope").in(scopes);
-		// where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
-		where.andOperator(Criteria.where("accountId").is(accountId)
-				.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version)));
-		Query qry = Query.query(where);
-		qry.fields().include("_id");
-		qry.fields().include("metaData.title");
-		return mongo.find(qry, IGDocument.class);
-	}
+  @Override
+  public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope,
+      List<String> hl7Versions) {
+    Criteria where = Criteria.where("metaData.hl7Version").in(hl7Versions);
+    where.andOperator(Criteria.where("scope").is(scope));
+    Query qry = Query.query(where);
 
-	/**
-	 * TODO: Refactor this to not load IG Doc in memory
-	 */
-	@Override
-	public List<String> findHl7Versions() {
-		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD);
-		Query query = Query.query(where);
-		List<String> rval = new ArrayList<String>();
-		List<IGDocument> rs = mongo.find(query, IGDocument.class);
-		for (IGDocument igd : rs) {
-			rval.add(igd.getProfile().getMetaData().getHl7Version());
-		}
-		Collections.sort(rval);
-		return rval;
-	}
+    return mongo.find(qry, IGDocument.class);
+  }
 
-	@Override
-	public List<IGDocument> findAllByScope(IGDocumentScope scope) {
-		Criteria where = Criteria.where("scope").is(scope);
-		Query qry = Query.query(where);
-		return mongo.find(qry, IGDocument.class);
-	}
+  @Override
+  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes,
+      String hl7Version) {
+    Criteria where = Criteria.where("profile.scope").in(scopes);
+    // where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
+    where.andOperator(Criteria.where("accountId").is(accountId)
+        .andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version)));
+    Query qry = Query.query(where);
+    qry.fields().include("_id");
+    qry.fields().include("metaData.title");
+    return mongo.find(qry, IGDocument.class);
+  }
 
-	@Override
-	public List<IGDocument> findByParticipantId(Long participantId) {
-		Criteria accountCreteria = Criteria.where("scope").is(IGDocumentScope.USER).andOperator(
-				Criteria.where("accountId").ne(participantId), Criteria.where("shareParticipantIds").exists(true));
-		// Criteria participantsCr =
-		// Criteria.where("shareParticipantIds").all(Collections.singleton(participantId));
-		// Criteria.where("shareParticipantIds").exists(true);
-		BasicQuery query = new BasicQuery(accountCreteria.getCriteriaObject()); // ,
-																				// participantsCr.getCriteriaObject());
-		List<IGDocument> igdocuments = mongo.find(query, IGDocument.class);
-		List<IGDocument> igdocumentsShareWithParticipantsId = new ArrayList<IGDocument>();
-		for (IGDocument doc : igdocuments) {
-			for (ShareParticipantPermission participant : doc.getShareParticipantIds()) {
-				if (participant.getAccountId() == participantId) {
-					if (!participant.isPendingApproval()) {
-						igdocumentsShareWithParticipantsId.add(doc);
-					} else {
-						IGDocument tempDoc = doc;
-						tempDoc.setChildSections(null);
-						tempDoc.setComment("PENDING_APPROVAL");
-						igdocumentsShareWithParticipantsId.add(tempDoc);
-					}
-				}
-			}
-		}
-		return igdocumentsShareWithParticipantsId;
-	}
+  /**
+   * TODO: Refactor this to not load IG Doc in memory
+   */
+  @Override
+  public List<String> findHl7Versions() {
+    Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD);
+    Query query = Query.query(where);
+    List<String> rval = new ArrayList<String>();
+    List<IGDocument> rs = mongo.find(query, IGDocument.class);
+    for (IGDocument igd : rs) {
+      rval.add(igd.getProfile().getMetaData().getHl7Version());
+    }
+    Collections.sort(rval);
+    return rval;
+  }
 
-	@Override
-	public Date updateDate(String id, Date date) {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("id").is(id));
-		query.fields().include("dateUpdated");
-		Update update = new Update();
-		update.set("dateUpdated", date);
-		mongo.updateFirst(query, update, IGDocument.class);
-		return date;
-	}
+  @Override
+  public List<IGDocument> findAllByScope(IGDocumentScope scope) {
+    Criteria where = Criteria.where("scope").is(scope);
+    Query qry = Query.query(where);
+    return mongo.find(qry, IGDocument.class);
+  }
+
+  @Override
+  public List<IGDocument> findByParticipantId(Long participantId) {
+    Criteria accountCreteria = Criteria.where("scope").is(IGDocumentScope.USER).andOperator(
+        Criteria.where("accountId").ne(participantId),
+        Criteria.where("shareParticipantIds").exists(true));
+    // Criteria participantsCr =
+    // Criteria.where("shareParticipantIds").all(Collections.singleton(participantId));
+    // Criteria.where("shareParticipantIds").exists(true);
+    BasicQuery query = new BasicQuery(accountCreteria.getCriteriaObject()); // ,
+                                                                            // participantsCr.getCriteriaObject());
+    List<IGDocument> igdocuments = mongo.find(query, IGDocument.class);
+    List<IGDocument> igdocumentsShareWithParticipantsId = new ArrayList<IGDocument>();
+    for (IGDocument doc : igdocuments) {
+      for (ShareParticipantPermission participant : doc.getShareParticipantIds()) {
+        if (participant.getAccountId() == participantId) {
+          if (!participant.isPendingApproval()) {
+            igdocumentsShareWithParticipantsId.add(doc);
+          } else {
+            IGDocument tempDoc = doc;
+            tempDoc.setChildSections(null);
+            tempDoc.setComment("PENDING_APPROVAL");
+            igdocumentsShareWithParticipantsId.add(tempDoc);
+          }
+        }
+      }
+    }
+    return igdocumentsShareWithParticipantsId;
+  }
+
+  @Override
+  public Date updateDate(String id, Date date) {
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    query.fields().include("dateUpdated");
+    Update update = new Update();
+    update.set("dateUpdated", date);
+    mongo.updateFirst(query, update, IGDocument.class);
+    return date;
+  }
 
 }

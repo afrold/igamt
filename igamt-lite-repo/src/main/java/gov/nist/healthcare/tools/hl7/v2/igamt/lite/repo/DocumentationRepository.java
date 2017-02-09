@@ -13,12 +13,13 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public interface DecisionRepository extends MongoRepository<Decision, String>, DecisionOperations {
+public interface DocumentationRepository
+    extends MongoRepository<Documentation, String>, DocumentationOperations {
 
 }

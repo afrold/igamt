@@ -1,13 +1,13 @@
-angular.module('igl').factory('DecisionService',
+angular.module('igl').factory('DocumentationService',
     function($rootScope, $http, $q) {
 	
-	var DecisionService={
+	var DocumentationService={
 
-			save:function(decision){
+			save:function(documentation){
                 var delay = $q.defer();
                 //datatype.accountId = userInfoService.getAccountID();
 
-                $http.post('api/decisions/save', decision).then(function(response) {
+                $http.post('api/documentations/save', documentation).then(function(response) {
                 	console.log("resopense");
                 	console.log(response);
                     delay.resolve(response);
@@ -18,11 +18,11 @@ angular.module('igl').factory('DecisionService',
                 return delay.promise;
 				
 			},
-			delete:function(decision){
+			delete:function(documentation){
                 var delay = $q.defer();
                 //datatype.accountId = userInfoService.getAccountID();
 
-                $http.post('api/decisions/delete', decision).then(function(response) {
+                $http.post('api/documentations/delete', documentation).then(function(response) {
                 	var dateUpdated = angular.fromJson(response);
                 	delay.resolve(dateUpdated);
                 }, function(error) {
@@ -35,9 +35,9 @@ angular.module('igl').factory('DecisionService',
 			findAll:function(){
                 var delay = $q.defer();
                 //datatype.accountId = userInfoService.getAccountID();
-                $http.post('api/decisions/findAll').then(function(response) {
-                    var decisions = angular.fromJson(response.data);
-                    delay.resolve(decisions);
+                $http.post('api/documentations/findAll').then(function(response) {
+                    var documentations = angular.fromJson(response.data);
+                    delay.resolve(documentations);
 
                 }, function(error) {
                     //console.log("DatatypeService.save error=" + error);
@@ -51,5 +51,5 @@ angular.module('igl').factory('DecisionService',
 	
 	
 	
-	return DecisionService;
+	return DocumentationService;
 });

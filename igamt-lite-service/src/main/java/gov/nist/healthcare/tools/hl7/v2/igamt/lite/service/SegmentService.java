@@ -21,26 +21,28 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 public interface SegmentService {
 
-	Segment findById(String id);
+  Segment findById(String id);
 
-	Segment save(Segment segment);
+  Segment save(Segment segment);
 
-	List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+  List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-	void delete(Segment segment);
+  public Segment findByNameAndVersionAndScope(String name, String version, String scope);
 
-	void delete(String id);
+  void delete(Segment segment);
 
-	void save(List<Segment> segments);
+  void delete(String id);
 
-	List<Segment> findAll();
+  void save(List<Segment> segments);
 
-	List<Segment> findByIds(Set<String> ids);
+  List<Segment> findAll();
 
-	public Date updateDate(String id, Date date) throws IGDocumentException;
+  List<Segment> findByIds(Set<String> ids);
 
-	Segment save(Segment segment, Date date);
+  public Date updateDate(String id, Date date) throws IGDocumentException;
 
-	void updateStatus(String id, STATUS unpublished);
+  Segment save(Segment segment, Date date);
+
+  void updateStatus(String id, STATUS unpublished);
 
 }

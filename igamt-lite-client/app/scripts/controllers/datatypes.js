@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService, VersionAndUseService, CompareService) {
+    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService, VersionAndUseService, CompareService, ValidationService) {
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
             isFirstOpen: true,
@@ -24,6 +24,7 @@ angular.module('igl')
         $scope.selectedChildren = [];
         $scope.saving = false;
         $scope.init = function() {
+
             $scope.accordStatus = {
                 isCustomHeaderOpen: false,
                 isFirstOpen: true,
@@ -49,6 +50,90 @@ angular.module('igl')
 
             $scope.setDirty();
         };
+        $scope.validateDatatype = function() {
+            console.log($rootScope.datatype);
+            ValidationService.validatedatatype($rootScope.datatype).then(function(result) {
+                $scope.showErrorNotification = true;
+                $rootScope.datatypeValidationResult = result;
+                console.log($rootScope.datatypeValidationResult);
+            });
+        };
+        $scope.displayMessageError = function(id) {
+            if ($rootScope.datatypeValidationResult) {
+                var x = $rootScope.datatypeValidationResult.items.find(function(item) {
+                    if (item.targetId === id) {
+                        return (item.targetId === id)
+                            //return 'input-change';
+                    }
+                    // return item.targetId === id;
+                });
+                if (x) {
+                    return x.errorMessage;
+                } else {
+                    return null;
+                }
+            }
+        };
+
+        $scope.hasUsageError = function(id) {
+            if ($rootScope.datatypeValidationResult) {
+                var x = $rootScope.datatypeValidationResult.items.find(function(item) {
+                    if (item.targetId === id && item.validationType === "USAGE") {
+                        return (item.targetId === id && item.validationType === "USAGE");
+                        //return 'input-change';
+                    }
+                    // return item.targetId === id;
+                });
+                if (x) {
+                    return 'col-md-1 col-fixed-80 has-validation-error';
+                } else {
+                    return 'col-md-1 col-fixed-80';
+                }
+            } else {
+                return 'col-md-1 col-fixed-80';
+            }
+
+        };
+        $scope.hasLengthError = function(id) {
+            if ($rootScope.datatypeValidationResult) {
+                var x = $rootScope.datatypeValidationResult.items.find(function(item) {
+                    if (item.targetId === id && item.validationType === "LENGTH") {
+                        return (item.targetId === id && item.validationType === "LENGTH");
+                        //return 'input-change';
+                    }
+                    // return item.targetId === id;
+                });
+                if (x) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+
+        };
+        $scope.hasError = function(id) {
+            if ($rootScope.datatypeValidationResult) {
+                var x = $rootScope.datatypeValidationResult.items.find(function(item) {
+                    if (item.targetId === id) {
+                        return (item.targetId === id)
+                            //return 'input-change';
+                    } else if (item.parentId === id) {
+                        return (item.parentId === id);
+                    }
+                    // return item.targetId === id;
+                });
+                if (x) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        };
+
 
 
         $scope.changeDatatypeLink = function(datatypeLink) {
@@ -88,6 +173,8 @@ angular.module('igl')
         };
 
         $scope.refreshSlider = function() {
+
+
             setTimeout(function() {
                 $scope.$broadcast('reCalcViewDimensions');
                 console.log("refreshed Slider!!");
