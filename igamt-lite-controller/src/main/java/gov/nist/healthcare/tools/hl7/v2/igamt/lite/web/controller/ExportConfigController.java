@@ -14,6 +14,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,28 +43,31 @@ public class ExportConfigController {
   ExportConfigService exportConfigService;
 
   @Autowired
-  private UserService userService;
+  UserService userService;
   @Autowired
   AccountRepository accountRepository;
+
+  @Autowired
+  static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ExportConfigController.class);
 
 
 
   @RequestMapping(value = "/override", method = RequestMethod.POST, produces = "application/json")
   public ExportConfig override(@RequestBody ExportConfig exportConfig) {
-    List<ExportConfig> currentConfigList;
+    ExportConfig currentConfig;
     User u = userService.getCurrentUser();
-    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-    if (!account.equals(null)) {
-      currentConfigList = exportConfigService.findByAccountId(account.getId());
-      if (null != currentConfigList && !currentConfigList.isEmpty()) {
-        for (ExportConfig currentConfig : currentConfigList) {
-          if (null != currentConfig) {
-            exportConfigService.delete(currentConfig);
-          }
+    try {
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (null != account) {
+        currentConfig = exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(),account.getId());
+        if (null != currentConfig ) {
+          exportConfigService.delete(currentConfig);
         }
+        exportConfig.setAccountId(account.getId());
+        exportConfigService.save(exportConfig);
       }
-      exportConfig.setAccountId(account.getId());
-      exportConfigService.save(exportConfig);
+    } catch (Exception e){
+      logger.error("Unable to save the config: "+e.getMessage());
     }
     return exportConfig;
   }
@@ -72,13 +77,16 @@ public class ExportConfigController {
   public ExportConfig restoreDefault(@RequestBody ExportConfig exportConfig) {
     ExportConfig currentConfig;
     User u = userService.getCurrentUser();
-    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-    if (null != account) {
-      currentConfig =
-          exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(), account.getId());
-      if (null != currentConfig) {
-        exportConfigService.delete(currentConfig);
+    try {
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (null != account) {
+        currentConfig = exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(), account.getId());
+        if (null != currentConfig) {
+          exportConfigService.delete(currentConfig);
+        }
       }
+    } catch (Exception e){
+      logger.warn("Unable to restore the default config: "+e.getMessage());
     }
     currentConfig = ExportConfig.getBasicExportConfig();
     return currentConfig;
@@ -90,11 +98,15 @@ public class ExportConfigController {
   public ExportConfig findCurrent(@RequestBody String type) {
     ExportConfig currentConfig = null;
     User u = userService.getCurrentUser();
-    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-    if (!account.equals(null)) {
-      currentConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
+    try {
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (null != account) {
+        currentConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
+      }
+    } catch (Exception e){
+      logger.warn("Unable to find the current config: "+e.getMessage());
     }
-    if(null == currentConfig){
+    if (null == currentConfig) {
       currentConfig = ExportConfig.getBasicExportConfig();
     }
     return currentConfig;
