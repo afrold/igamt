@@ -115,4 +115,8 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         elementSegment.addAttribute(new Attribute("Position", segmentRef.getPosition().toString()));
         return elementSegment;
     }
+
+    public Segment getSegment() {
+        return segment;
+    }
 }

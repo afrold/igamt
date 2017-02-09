@@ -6,6 +6,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import nu.xom.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,13 @@ import java.util.*;
 
     @Autowired SerializeTableService serializeTableService;
 
+    private ExportConfig exportConfig;
+
+    private List<DatatypeLink> bindedDatatypes;
+
+    private List<TableLink> bindedTables;
+
+
     @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument) {
         SerializableStructure serializableStructure = new SerializableStructure();
         datatypeLibraryDocument.getMetaData().setHl7Version("");
@@ -67,7 +75,8 @@ import java.util.*;
 
     @Override public Document serializeIGDocument(IGDocument originIgDocument,
         SerializationLayout serializationLayout, ExportConfig exportConfig) {
-        IGDocument igDocument = filterIgDocument(originIgDocument,exportConfig);
+        this.exportConfig = exportConfig;
+        IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
         SerializableStructure serializableStructure = new SerializableStructure();
         igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
         SerializableMetadata serializableMetadata =
@@ -103,7 +112,8 @@ import java.util.*;
             serializableSections.getRootSections().appendChild(textElement);
         }
         //Message Serialization
-        SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version());
+        UsageConfig segmentsUsageConfig = exportConfig.getSegmentsExport();
+        SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version(),segmentsUsageConfig);
         profileSection.addSection(messageSection);
 
         //Segments serialization
@@ -136,11 +146,12 @@ import java.util.*;
         return serializableStructure.serializeStructure();
     }
 
-    private IGDocument filterIgDocument(IGDocument igDocument, ExportConfig exportConfig) {
+    private IGDocument filterIgDocumentMessages(IGDocument igDocument, ExportConfig exportConfig) {
         if(exportConfig==null){
             return igDocument;
         } else {
             Profile profile = igDocument.getProfile();
+            //Filter messages' segments and groups
             Messages messages = profile.getMessages();
             UsageConfig segmentORGroupsUsageConfig = exportConfig.getSegmentORGroupsExport();
             for(Message message : messages.getChildren()){
@@ -159,12 +170,12 @@ import java.util.*;
 
     private SegmentRefOrGroup filterSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentORGroupsUsageConfig){
         if(segmentRefOrGroup instanceof SegmentRef){
-            if(diplayUsage(segmentRefOrGroup.getUsage(),segmentORGroupsUsageConfig)){
+            if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), segmentORGroupsUsageConfig)){
                 return segmentRefOrGroup;
             }
         } else if(segmentRefOrGroup instanceof Group){
             Group group = (Group) segmentRefOrGroup;
-            if(diplayUsage(group.getUsage(), segmentORGroupsUsageConfig)) {
+            if(ExportUtil.diplayUsage(group.getUsage(), segmentORGroupsUsageConfig)) {
                 List<SegmentRefOrGroup> toBeRemovedList = new ArrayList<>();
                 for (SegmentRefOrGroup groupSegmentRefOrGroup : group.getChildren()) {
                     if (filterSegmentRefOrGroup(groupSegmentRefOrGroup, segmentORGroupsUsageConfig)
@@ -179,23 +190,6 @@ import java.util.*;
             }
         }
         return null;
-    }
-
-    private boolean diplayUsage(Usage usageToCompare, UsageConfig usageConfig){
-        switch(usageToCompare){
-            case R:
-                return usageConfig.getR();
-            case RE:
-                return usageConfig.getRe();
-            case C:
-                return usageConfig.getC();
-            case X:
-                return usageConfig.getX();
-            case O:
-                return usageConfig.getO();
-            default:
-                return false;
-        }
     }
 
     private SerializableSection serializeValueSets(TableLibrary tableLibrary,
@@ -226,10 +220,13 @@ import java.util.*;
         List<TableLink> tableLinkList = new ArrayList<>(tableLibrary.getChildren());
         Collections.sort(tableLinkList);
         for (TableLink tableLink : tableLinkList) {
-            SerializableTable serializableTable = serializeTableService.serializeTable(tableLink,
-                prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                tableLinkList.indexOf(tableLink));
-            valueSetsSection.addSection(serializableTable);
+            if(bindedTables.contains(tableLink)) {
+                SerializableTable serializableTable = serializeTableService
+                    .serializeTable(tableLink,
+                        prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
+                        tableLinkList.indexOf(tableLink));
+                valueSetsSection.addSection(serializableTable);
+            }
         }
         return valueSetsSection;
     }
@@ -260,21 +257,23 @@ import java.util.*;
             new ArrayList<>(datatypeLibrary.getChildren());
         Collections.sort(datatypeLinkList);
         for (DatatypeLink datatypeLink : datatypeLinkList) {
-            SerializableDatatype serializableDatatype = serializeDatatypeService
-                .serializeDatatype(datatypeLink,
-                    prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
-                    datatypeLinkList.indexOf(datatypeLink));
-            //This "if" is only useful if we want to display only user datatypes
-            //if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
+            if(bindedDatatypes.contains(datatypeLink)) {
+                SerializableDatatype serializableDatatype = serializeDatatypeService
+                    .serializeDatatype(datatypeLink,
+                        prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
+                        datatypeLinkList.indexOf(datatypeLink));
+                //This "if" is only useful if we want to display only user datatypes
+                //if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
                 datatypeSection.addSection(serializableDatatype);
-            //}
+                //}
+            }
         }
         return datatypeSection;
     }
 
 
 
-    private SerializableSection serializeMessages(Profile profile, SerializationLayout serializationLayout, String hl7Version) {
+    private SerializableSection serializeMessages(Profile profile, SerializationLayout serializationLayout, String hl7Version, UsageConfig usageConfig) {
         String id = profile.getMessages().getId();
         String position = String.valueOf(profile.getMessages().getSectionPosition());
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
@@ -291,10 +290,19 @@ import java.util.*;
             messageSection.addSectionContent(
                 "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
         }
-
+        this.bindedDatatypes = new ArrayList<>();
+        this.bindedTables = new ArrayList<>();
         for (Message message : profile.getMessages().getChildren()) {
             SerializableMessage serializableMessage =
-                serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version);
+                serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, usageConfig);
+            for(SerializableSegmentRefOrGroup messageChildren : serializableMessage.getSerializableSegmentRefOrGroups()){
+                for(Field field : messageChildren.getSegment().getFields()){
+                    bindedDatatypes.add(field.getDatatype());
+                    for(TableLink tableLink : field.getTables()) {
+                        bindedTables.add(tableLink);
+                    }
+                }
+            }
             messageSection.addSection(serializableMessage);
         }
         return messageSection;
