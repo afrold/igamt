@@ -221,6 +221,7 @@ import java.util.*;
         Collections.sort(tableLinkList);
         for (TableLink tableLink : tableLinkList) {
             if(bindedTables.contains(tableLink)) {
+
                 SerializableTable serializableTable = serializeTableService
                     .serializeTable(tableLink,
                         prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
@@ -256,12 +257,13 @@ import java.util.*;
         List<DatatypeLink> datatypeLinkList =
             new ArrayList<>(datatypeLibrary.getChildren());
         Collections.sort(datatypeLinkList);
+        UsageConfig datatypeUsageConfig = this.exportConfig.getDatatypesExport();
         for (DatatypeLink datatypeLink : datatypeLinkList) {
             if(bindedDatatypes.contains(datatypeLink)) {
                 SerializableDatatype serializableDatatype = serializeDatatypeService
                     .serializeDatatype(datatypeLink,
                         prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
-                        datatypeLinkList.indexOf(datatypeLink));
+                        datatypeLinkList.indexOf(datatypeLink), datatypeUsageConfig);
                 //This "if" is only useful if we want to display only user datatypes
                 //if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
                 datatypeSection.addSection(serializableDatatype);
@@ -296,10 +298,12 @@ import java.util.*;
             SerializableMessage serializableMessage =
                 serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, usageConfig);
             for(SerializableSegmentRefOrGroup messageChildren : serializableMessage.getSerializableSegmentRefOrGroups()){
-                for(Field field : messageChildren.getSegment().getFields()){
-                    bindedDatatypes.add(field.getDatatype());
-                    for(TableLink tableLink : field.getTables()) {
-                        bindedTables.add(tableLink);
+                if(messageChildren.getSegment() != null) {
+                    for (Field field : messageChildren.getSegment().getFields()) {
+                        bindedDatatypes.add(field.getDatatype());
+                        for (TableLink tableLink : field.getTables()) {
+                            bindedTables.add(tableLink);
+                        }
                     }
                 }
             }

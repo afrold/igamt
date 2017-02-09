@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
 
 /**
@@ -19,6 +20,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 public interface SerializeDatatypeService {
 
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
-        Integer position);
+        Integer position, UsageConfig datatypeUsageConfig);
 
 }
