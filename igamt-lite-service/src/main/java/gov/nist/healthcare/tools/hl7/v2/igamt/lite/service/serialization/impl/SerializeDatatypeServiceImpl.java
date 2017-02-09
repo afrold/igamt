@@ -77,26 +77,28 @@ public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
                 Map<Component, List<Table>> componentTablesMap = new HashMap<>();
                 Map<Component, String> componentTextMap = new HashMap<>();
                 for (Component component : datatype.getComponents()) {
-                    if (component.getDatatype() != null && !component.getDatatype().getId()
-                        .isEmpty()) {
-                        Datatype componentDatatype = datatypeService.findById(component.getDatatype().getId());
-                        componentDatatypeMap.put(component, componentDatatype);
-                    }
-                    if (component.getTables().size() > 0) {
-                        List<Table> componentTables = new ArrayList<>();
-                        for (TableLink tableLink : component.getTables()) {
-                            if (tableLink != null && !tableLink.getId().isEmpty()) {
-                                Table componentTable = tableService.findById(tableLink.getId());
-                                componentTables.add(componentTable);
+                    if(ExportUtil.diplayUsage(component.getUsage(),datatypeUsageConfig)) {
+                        if (component.getDatatype() != null && !component.getDatatype().getId()
+                            .isEmpty()) {
+                            Datatype componentDatatype = datatypeService.findById(component.getDatatype().getId());
+                            componentDatatypeMap.put(component, componentDatatype);
+                        }
+                        if (component.getTables().size() > 0) {
+                            List<Table> componentTables = new ArrayList<>();
+                            for (TableLink tableLink : component.getTables()) {
+                                if (tableLink != null && !tableLink.getId().isEmpty()) {
+                                    Table componentTable = tableService.findById(tableLink.getId());
+                                    componentTables.add(componentTable);
+                                }
+                            }
+                            if (componentTables.size() > 0) {
+                                componentTablesMap.put(component, componentTables);
                             }
                         }
-                        if (componentTables.size() > 0) {
-                            componentTablesMap.put(component, componentTables);
+                        if (component.getText() != null && !component.getText().isEmpty()) {
+                            String text = serializationUtil.cleanRichtext(component.getText());
+                            componentTextMap.put(component, text);
                         }
-                    }
-                    if (component.getText() != null && !component.getText().isEmpty()) {
-                        String text = serializationUtil.cleanRichtext(component.getText());
-                        componentTextMap.put(component, text);
                     }
                 }
                 Boolean showConfLength = serializationUtil.isShowConfLength(datatype.getHl7Version());

@@ -27,12 +27,14 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
 
     private SegmentRefOrGroup segmentRefOrGroup;
     private Segment segment;
+    private SegmentRef segmentRef;
     private List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups;
     private List<SerializableConstraint> groupConstraintList;
 
     //SegmentRef constructor
     public SerializableSegmentRefOrGroup(SegmentRef segmentRef,Segment segment) {
         this(segmentRef);
+        this.segmentRef = segmentRef;
         this.segment = segment;
     }
     //Group constructor
@@ -118,5 +120,9 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
 
     public Segment getSegment() {
         return segment;
+    }
+
+    public SegmentRef getSegmentRef() {
+        return segmentRef;
     }
 }
