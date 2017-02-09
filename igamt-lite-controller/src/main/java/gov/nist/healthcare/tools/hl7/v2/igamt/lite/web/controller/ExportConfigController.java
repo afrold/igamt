@@ -38,7 +38,7 @@ public class ExportConfigController {
 
 
   @Autowired
-  ExportConfigService exportConfigSerive;
+  ExportConfigService exportConfigService;
 
   @Autowired
   private UserService userService;
@@ -48,100 +48,56 @@ public class ExportConfigController {
 
 
   @RequestMapping(value = "/override", method = RequestMethod.POST, produces = "application/json")
-  public ExportConfig overrite(@RequestBody ExportConfig exportConfig) {
-    List<ExportConfig> results = new ArrayList<ExportConfig>();
-    ExportConfig UserConfig = exportConfig;
-    UserConfig.setDefaultType(false);
-    try {
-      User u = userService.getCurrentUser();
-      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-      if (!account.equals(null)) {
-        results =
-            exportConfigSerive.findByTypeAndAccountId(exportConfig.getType(), account.getId());
-        if (!results.isEmpty()) {
-
-          for (ExportConfig conf : results) {
-            if (!conf.isDefaultType()) {
-              exportConfigSerive.delete(conf);
-            }
+  public ExportConfig override(@RequestBody ExportConfig exportConfig) {
+    List<ExportConfig> currentConfigList;
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    if (!account.equals(null)) {
+      currentConfigList = exportConfigService.findByAccountId(account.getId());
+      if (null != currentConfigList && !currentConfigList.isEmpty()) {
+        for (ExportConfig currentConfig : currentConfigList) {
+          if (null != currentConfig) {
+            exportConfigService.delete(currentConfig);
           }
-
-
         }
-        UserConfig.setId(null);
-        UserConfig.setDefaultType(false);
-        UserConfig.setAccountId(account.getId());
-        exportConfigSerive.save(UserConfig);
-        return UserConfig;
       }
-    } catch (Exception e) {
-      new UserAccountNotFoundException();
+      exportConfig.setAccountId(account.getId());
+      exportConfigService.save(exportConfig);
     }
-
-    return UserConfig;
-
-
-
+    return exportConfig;
   }
 
   @RequestMapping(value = "/restoreDefault", method = RequestMethod.POST,
       produces = "application/json")
   public ExportConfig restoreDefault(@RequestBody ExportConfig exportConfig) {
-    List<ExportConfig> results = new ArrayList<ExportConfig>();
-    ExportConfig UserConfig = exportConfig;
-    try {
-      User u = userService.getCurrentUser();
-      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-      if (!account.equals(null)) {
-        results =
-            exportConfigSerive.findByTypeAndAccountId(exportConfig.getType(), account.getId());
-        if (!results.isEmpty()) {
-
-          for (ExportConfig conf : results) {
-            if (!conf.isDefaultType()) {
-              exportConfigSerive.delete(conf);
-            }
-          }
-          results = exportConfigSerive.findDefault(exportConfig.getType());
-          UserConfig = results.get(0);
-
-          // exportConfigSerive.save(UserConfig);
-
-        }
-        return UserConfig;
+    ExportConfig currentConfig;
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    if (null != account) {
+      currentConfig =
+          exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(), account.getId());
+      if (null != currentConfig) {
+        exportConfigService.delete(currentConfig);
       }
-    } catch (Exception e) {
     }
-
-    return UserConfig;
+    currentConfig = ExportConfig.getBasicExportConfig();
+    return currentConfig;
 
   }
 
   @RequestMapping(value = "/findCurrent", method = RequestMethod.POST,
       produces = "application/json")
   public ExportConfig findCurrent(@RequestBody String type) {
-    List<ExportConfig> results = new ArrayList<ExportConfig>();
-    ExportConfig UserConfig = new ExportConfig();
-    try {
-      User u = userService.getCurrentUser();
-      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-      if (!account.equals(null)) {
-        results = exportConfigSerive.findByTypeAndAccountId(type, account.getId());
-        if (!results.isEmpty()) {
-          UserConfig = results.get(0);
-
-        } else {
-          results = exportConfigSerive.findDefault(type);
-          UserConfig = results.get(0);
-
-        }
-        return UserConfig;
-      }
-    } catch (Exception e) {
+    ExportConfig currentConfig = null;
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    if (!account.equals(null)) {
+      currentConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
     }
-
-    return UserConfig;
-
+    if(null == currentConfig){
+      currentConfig = ExportConfig.getBasicExportConfig();
+    }
+    return currentConfig;
   }
 
 
