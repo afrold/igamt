@@ -235,6 +235,24 @@ angular.module('igl')
         return 'templateRow.html';
 
     }
+    $scope.orderIgs=function(igs){
+        console.log(igs);
+        var positionList=[];
+        for(i=0; i<igs.length; i++){
+            igs[i].position=i+1;
+            positionList.push({"id":igs[i].id,"position":igs[i].position});
+
+        }
+        
+
+
+        IgDocumentService.orderIgDocument(positionList).then(function(response){
+
+        },function(error){
+
+
+        })
+    }
     $scope.selectIGDocumentType = function(selectedType) {
         //console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
         $scope.igDocumentConfig.selectedType = selectedType;
@@ -263,6 +281,12 @@ angular.module('igl')
                 console.log(response);
                 $rootScope.igs = angular.fromJson(response.data);
                 $scope.tmpIgs = [].concat($rootScope.igs);
+                console.log($scope.tmpIgs);
+                for(i=0; i<$scope.tmpIgs.length; i++){
+                    if(!$scope.tmpIgs[i].position||$scope.tmpIgs[i].position=='undefined'||$scope.tmpIgs[i].position=='null'){
+                        $scope.tmpIgs[i].position=i+1;
+                    }
+                }
                 $scope.loading = false;
                 delay.resolve(true);
             }, function(error) {

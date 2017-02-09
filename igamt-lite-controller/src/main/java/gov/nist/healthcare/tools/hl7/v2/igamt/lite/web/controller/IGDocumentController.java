@@ -53,6 +53,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IgDocumentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
@@ -207,11 +208,11 @@ public class IGDocumentController extends CommonController {
       throws UserAccountNotFoundException, IGDocumentListException {
     try {
       if ("PRELOADED".equalsIgnoreCase(type)) {
-        return preloaded();
+        return GetorderByposition(preloaded());
       } else if ("USER".equalsIgnoreCase(type)) {
-        return userIGDocuments();
+        return GetorderByposition(userIGDocuments());
       } else if ("SHARED".equalsIgnoreCase(type)) {
-        return sharedIGDocument();
+        return GetorderByposition(sharedIGDocument());
       }
       throw new IGDocumentListException("Unknown IG document type");
     } catch (RuntimeException e) {
@@ -277,6 +278,7 @@ public class IGDocumentController extends CommonController {
   private List<IGDocument> preloaded() {
     log.info("Fetching all preloaded IGDocuments...");
     List<IGDocument> result = igDocumentService.findAllPreloaded();
+
     return result;
   }
 
@@ -1152,6 +1154,27 @@ public class IGDocumentController extends CommonController {
     return date.getTime();
   }
 
+
+  @RequestMapping(value = "/reorderIgs", method = RequestMethod.POST)
+  public List<MessageMap> reorderIGS(@RequestBody List<MessageMap> igsMap)
+      throws IOException, IGDocumentNotFoundException {
+
+
+    for (MessageMap ig : igsMap) {
+
+      IGDocument d = igDocumentService.findOne(ig.getId());
+      if (d == null) {
+        throw new IGDocumentNotFoundException(ig.getId());
+      } else {
+        igDocumentService.updatePosition(ig.getId(), ig.getPosition());
+        throw new IGDocumentNotFoundException(ig.getId());
+      }
+    }
+    return igsMap;
+
+
+  }
+
   @RequestMapping(value = "/{id}/findAndAddMessages", method = RequestMethod.POST)
   public List<Message> findAndAddMessages(@PathVariable("id") String id,
       @RequestBody List<EventWrapper> eventWrapper) throws IOException, IGDocumentNotFoundException,
@@ -1457,4 +1480,13 @@ public class IGDocumentController extends CommonController {
     }
   }
 
+  public List<IGDocument> GetorderByposition(List<IGDocument> toOrder) {
+    // List<IGDocument>
+    List<IGDocument> sortedList = new ArrayList<IGDocument>();
+    sortedList.addAll(toOrder);
+    IgDocumentComparator comparator = new IgDocumentComparator();
+    Collections.sort(sortedList, comparator);
+
+    return sortedList;
+  }
 }
