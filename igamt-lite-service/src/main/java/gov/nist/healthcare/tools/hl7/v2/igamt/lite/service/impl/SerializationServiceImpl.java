@@ -115,7 +115,7 @@ import java.util.*;
         }
         //Message Serialization
         UsageConfig segmentOrGroupsUsageConfig = exportConfig.getSegmentORGroupsExport();
-        SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version(),segmentOrGroupsUsageConfig);
+        SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version());
         profileSection.addSection(messageSection);
 
         //Segments serialization
@@ -278,7 +278,7 @@ import java.util.*;
 
 
 
-    private SerializableSection serializeMessages(Profile profile, SerializationLayout serializationLayout, String hl7Version, UsageConfig usageConfig) {
+    private SerializableSection serializeMessages(Profile profile, SerializationLayout serializationLayout, String hl7Version) {
         String id = profile.getMessages().getId();
         String position = String.valueOf(profile.getMessages().getSectionPosition());
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
@@ -300,7 +300,7 @@ import java.util.*;
         this.bindedTables = new ArrayList<>();
         for (Message message : profile.getMessages().getChildren()) {
             SerializableMessage serializableMessage =
-                serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, usageConfig);
+                serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
             for(SerializableSegmentRefOrGroup messageChildren : serializableMessage.getSerializableSegmentRefOrGroups()){
                 this.bindedSegments.add(messageChildren.getSegmentRef().getRef());
                 if(messageChildren.getSegment() != null) {
@@ -344,7 +344,7 @@ import java.util.*;
                 if (segmentLink.getId() != null) {
                     segmentsSection.addSection(serializeSegmentService.serializeSegment(segmentLink,
                         prefix + "." + String.valueOf(segmentLinkList.indexOf(segmentLink) + 1),
-                        segmentLinkList.indexOf(segmentLink), 3));
+                        segmentLinkList.indexOf(segmentLink), 3, segmentsUsageConfig));
 
                 }
             }

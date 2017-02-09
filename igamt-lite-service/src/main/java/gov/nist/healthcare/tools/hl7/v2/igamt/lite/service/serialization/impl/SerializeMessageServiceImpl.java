@@ -50,7 +50,7 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
 
     private int segmentPosition = 1;
 
-    @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout, String hl7Version, UsageConfig usageConfig) {
+    @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         String type = "ConformanceStatement";
         SerializableConstraints serializableConformanceStatements = serializeConstraints(message.getConformanceStatements(),message,type);
@@ -75,12 +75,14 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+"."+String.valueOf(message.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
         this.messageSegmentsNameList = new ArrayList<>();
         this.segmentPosition = 1;
+        UsageConfig segmentRefOrGroupUsageConfig = exportConfig.getSegmentORGroupsExport();
+        UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,usageConfig);
+            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentRefOrGroupUsageConfig);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             if(serializationLayout.equals(SerializationLayout.VERBOSE)){
                 serializeSegment(segmentRefOrGroup,
-                    messageSegments.getPrefix() + ".", messageSegments);
+                    messageSegments.getPrefix() + ".", messageSegments, segmentUsageConfig);
             }
         }
         if(!messageSegments.getSerializableSectionList().isEmpty()){
@@ -89,13 +91,13 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         return serializableMessage;
     }
 
-    private void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection) {
+    private void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentsUsageConfig) {
         if(segmentRefOrGroup instanceof SegmentRef){
             SegmentLink segmentLink = ((SegmentRef) segmentRefOrGroup).getRef();
             if(!messageSegmentsNameList.contains(segmentLink.getId())) {
                 segmentsSection.addSection(
                     serializeSegmentService.serializeSegment(segmentLink, prefix+ String
-                        .valueOf(segmentPosition), segmentPosition, 5));
+                        .valueOf(segmentPosition), segmentPosition, 5, segmentsUsageConfig));
                 messageSegmentsNameList.add(segmentLink.getId());
                 segmentPosition++;
             }
@@ -105,7 +107,7 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
             String title = ((Group) segmentRefOrGroup).getName();
             SerializableSection serializableSection = new SerializableSection(id,prefix,String.valueOf(position),headerLevel,title);*/
             for(SegmentRefOrGroup groupSegmentRefOrGroup : ((Group) segmentRefOrGroup).getChildren()){
-                serializeSegment(groupSegmentRefOrGroup, prefix, segmentsSection);
+                serializeSegment(groupSegmentRefOrGroup, prefix, segmentsSection, segmentsUsageConfig);
             }
         }
     }
