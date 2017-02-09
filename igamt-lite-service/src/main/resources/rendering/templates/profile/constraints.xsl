@@ -8,7 +8,6 @@
                                 select="@title"/>
                     </xsl:element>
                 </xsl:element>
-
                 <xsl:element name="table">
                     <xsl:attribute name="class">
                         <xsl:text>contentTable</xsl:text>
@@ -32,6 +31,9 @@
                                     <xsl:text>standalone</xsl:text>
                                 </xsl:with-param>
                                 <xsl:with-param name="type" select="@Type"/>
+                                <xsl:with-param name="displayPeriod">
+                                    <xsl:value-of select="../../../@title!='Segment level'"/>
+                                </xsl:with-param>
                             </xsl:call-template>
                         </xsl:for-each>
                     </xsl:element>

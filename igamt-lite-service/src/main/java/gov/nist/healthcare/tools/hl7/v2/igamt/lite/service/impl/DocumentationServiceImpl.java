@@ -20,25 +20,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DecisionRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DecisionService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DocumentationRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DocumentationService;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
 @Service
-public class DecisionServiceImpl implements DecisionService {
+public class DocumentationServiceImpl implements DocumentationService {
 
 
-  Logger log = LoggerFactory.getLogger(DecisionServiceImpl.class);
+  Logger log = LoggerFactory.getLogger(DocumentationServiceImpl.class);
 
   @Autowired
-  private DecisionRepository decisionRepository;
+  private DocumentationRepository decisionRepository;
 
   @Override
-  public List<Decision> findAll() {
+  public List<Documentation> findAll() {
     // TODO Auto-generated method stub
     return decisionRepository.findAll();
 
@@ -48,23 +48,24 @@ public class DecisionServiceImpl implements DecisionService {
    * (non-Javadoc)
    * 
    * @see
-   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DecisionService#findById(java.lang.String)
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DocumentationService#findById(java.lang.
+   * String)
    */
   @Override
-  public Decision findById(String id) {
+  public Documentation findById(String id) {
     // TODO Auto-generated method stub
     return decisionRepository.findOne(id);
   }
 
   @Override
-  public Decision save(Decision d) {
+  public Documentation save(Documentation d) {
     // TODO Auto-generated method stub
 
     return decisionRepository.save(d);
   }
 
   @Override
-  public void delete(Decision d) {
+  public void delete(Documentation d) {
     // TODO Auto-generated method stub
 
     decisionRepository.delete(d);
@@ -74,10 +75,11 @@ public class DecisionServiceImpl implements DecisionService {
    * (non-Javadoc)
    * 
    * @see
-   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DecisionService#findByIds(java.util.Set)
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DocumentationService#findByIds(java.util.
+   * Set)
    */
   @Override
-  public List<Decision> findByIds(Set<String> ids) {
+  public List<Documentation> findByIds(Set<String> ids) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -85,7 +87,8 @@ public class DecisionServiceImpl implements DecisionService {
   /*
    * (non-Javadoc)
    * 
-   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DecisionService#updateDate(java.lang.
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DocumentationService#updateDate(java.lang.
    * String, java.util.Date)
    */
   @Override

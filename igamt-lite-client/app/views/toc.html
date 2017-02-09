@@ -148,10 +148,14 @@
                             </div>
                             <li ng-repeat="data in datatypes | orderBy :'label'" ui-tree-node ng-if="!collapsedata" data-type="datatype">
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptions" style="margin-left:30px;" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated">
-                                    <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
+                                    <span ng-show="datatypeValidationResult && hasErrorInTree(data) && isValidated(data)" style="margin-left: -16px;"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+                                    <span ng-show="datatypeValidationResult && !hasErrorInTree(data) && isValidated(data)" style="margin-left: -16px;"><i class="fa fa-check-circle" style="color:green;"></i></span>
 
-                                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}" > {{getScopeLabel(data)}} {{hasSameVersion(data)}} <span ng-if="versionAndUseMap[data.id]&&data.status==='PUBLISHED'" class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span>                                    </span>
+                                    <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
+                                        
+                                    
+                                    <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}"> {{getScopeLabel(data)}} {{hasSameVersion(data)}} <span ng-if="versionAndUseMap[data.id]&&data.status==='PUBLISHED'" class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span>                                    </span>
                                     {{getDatatypeLabel(data)}}-{{data.description}}
                                     </span>
                                 </div>

@@ -1,6 +1,6 @@
   
   <div class="row" style="margin-top:20px;">
-		<div class="col-md-2">
+		<div class="col-md-2" style="margin:25px;">
 			<accordion>
 			<div accordion-group="" ng-init="isOpen1=true"
 				class="panel panel-default" is-open="isOpen1">
@@ -9,19 +9,8 @@
 					ng-class="{'fa-chevron-down': isOpen1, 'fa-chevron-right': !isOpen1}"></i>
 				Export Configuration </accordion-heading>
 				<div style="margin-bottom: 25px;">
-					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
-						aria-hidden="true" ng-click="addDecision()"
-						style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
 				</div>
-
-				<ul class="nav nav-pills nav-stacked"
-					style="margin-left: 5px !important;">
-
-					<li ng-repeat="mode in ['Word', 'HTML']"  ng-click="activeId=mode;"
-					
-						ng-class="{'current':activeId==mode}"><a>{{mode}}</a></li>
-
-				</ul>
+          <div class="configBox"> </div>
 			</div>
 			
 		</div>
@@ -30,22 +19,22 @@
   <div class="col-md-9">
   
   <tabset style="width:100%" ng-init ="init()">
-                <tab style="width:24%">
-                   <tab-heading> IG Style</tab-heading>
-                        <div ng-controller="EditAreaCtrl" ng-init="init" style="width:100%" ng-include="'views/edit/exportConfig/IGStyle.html'"></div>
+                <tab style="width:24%" active="tabActivity[0]" ng-style="getStyle(tabActivity[0])">
+                   <tab-heading style="color:black;"> IG Style</tab-heading>
+                        <div style="width:100%" ng-include="'views/edit/exportConfig/IGStyle.html'"></div>
                 </tab>
-                <tab style="width:24%">
-                     <tab-heading> Profile Style</tab-heading>
+                <tab style="width:24%; " active="tabActivity[1]" ng-style="getStyle(tabActivity[1])">
+                     <tab-heading style="color:black;"> Profile Style</tab-heading>
                         <div style="width:100%"  ng-include="'views/edit/exportConfig/ProfileStyle.html'"></div>
 
                 </tab>
-                <tab style="width:24%">
-                     <tab-heading>Table Style</tab-heading>
-                        <div  style="width:100%" ng-include="'views/edit/exportConfig/TableStyle.html'"></div>
+                <tab style="width:24%;" active="tabActivity[2]" ng-style="getStyle(tabActivity[2])">
+                     <tab-heading style="color:black;">Table Style</tab-heading>
+                        <div style="width:100%" ng-include="'views/edit/exportConfig/TableStyle.html'"></div>
 
                 </tab>
-                <tab style="width:24%">
-                     <tab-heading>Delta Style</tab-heading>
+                <tab style="width:24%;" active="tabActivity[3]" ng-style="getStyle(tabActivity[3])">
+                     <tab-heading style="color:black;">Delta Style</tab-heading>
                 Coming Soon
                 </tab>
 

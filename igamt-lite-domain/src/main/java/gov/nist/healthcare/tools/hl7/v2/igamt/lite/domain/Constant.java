@@ -48,6 +48,10 @@ public class Constant {
   public final static String SECTION = "section";
   public final static String Document = "document";
   public final static String DECISION = "decision";
+  public final static String FAQ = "FAQ";
+  public final static String USERGuide = "userguide";
+
+
 
   public final static SimpleDateFormat mdy = new SimpleDateFormat("MMMM dd, yyyy");
 

@@ -108,8 +108,10 @@ import java.util.Map;
                         fieldTableMap.put(field, tables);
                     }
                 }
+                if(field.getText()!=null && !"".equals(field.getText())){
+                    field.setText(serializationUtil.cleanRichtext(field.getText()));
+                }
             }
-
             if (segment.getCoConstraints() != null) {
                 CoConstraints coConstraints = segment.getCoConstraints();
                 if (coConstraints.getConstraints() != null && !coConstraints.getConstraints()

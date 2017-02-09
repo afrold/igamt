@@ -19,6 +19,7 @@ angular.module('igl').factory('ConfigurationService',
 				
 			},
 			restoreDefault:function(configuration){
+                var delay = $q.defer();
             $http.post('api/ExportConfiguration/restoreDefault', configuration).then(function(response) {
                 	console.log("resopense");
                  	console.log(response);

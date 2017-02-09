@@ -7,36 +7,29 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified.
+ * that they have been modified. Abdelghani EL OUAKILI (NIST) Jan 26, 2017
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
 
 /**
- * @author gcr1
+ * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public interface SegmentOperations {
-
-  List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
-
-  public Segment findByNameAndVersionAndScope(String name, String version, String scope);
+public interface DocumentationOperations {
 
 
-  public List<Segment> findByIds(Set<String> ids);
 
-  List<Segment> findUserSegmentsByIds(Set<String> ids);
+  public List<Documentation> findAll();
+
+  public Documentation findById(String id);
 
   public Date updateDate(String id, Date date);
 
-  void updateStatus(String id, STATUS status);
 
 
 }

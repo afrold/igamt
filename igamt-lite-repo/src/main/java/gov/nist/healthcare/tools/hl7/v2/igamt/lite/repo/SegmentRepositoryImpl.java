@@ -43,6 +43,27 @@ public class SegmentRepositoryImpl implements SegmentOperations {
   }
 
   @Override
+  public Segment findByNameAndVersionAndScope(String name, String version, String scope) {
+    Criteria where = Criteria.where("name").is(name);
+    where.andOperator(Criteria.where("hl7Version").is(version));
+    // where.andOperator(Criteria.where("scope").is(scope));
+
+    Query qry = Query.query(where);
+    List<Segment> segments = mongo.find(qry, Segment.class);
+    for (Segment seg : segments) {
+      if (seg.getScope().toString().equals(scope)) {
+        return seg;
+      }
+
+    }
+    Segment segment = null;
+
+    return segment;
+
+  }
+
+
+  @Override
   public List<Segment> findByIds(Set<String> ids) {
     Criteria where = Criteria.where("id").in(ids);
     Query qry = Query.query(where);

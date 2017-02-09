@@ -7,31 +7,48 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Abdelghani EL OUAKILI (NIST) Jan 26, 2017
+ * that they have been modified. Ismail Mellouli (NIST) Jan 30, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import java.util.Date;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
+
 import java.util.List;
-import java.util.Set;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
+public class ValidationResult implements java.io.Serializable {
+  private static final long serialVersionUID = 1L;
 
-/**
- * @author Abdelghani EL Ouakili (NIST)
- *
- */
-public interface DecisionService {
+  public ValidationResult() {
 
-  public List<Decision> findAll();
+  }
 
-  public Decision findById(String id);
+  private String targetId;
+  private Integer errorCount;
+  private List<ValidationError> items;
 
-  public List<Decision> findByIds(Set<String> ids);
+  public String getTargetId() {
+    return targetId;
+  }
 
-  public Date updateDate(String id, Date date);
+  public void setTargetId(String targetId) {
+    this.targetId = targetId;
+  }
 
-  public Decision save(Decision d);
+  public Integer getErrorCount() {
+    return errorCount;
+  }
 
-  public void delete(Decision decision);
+  public void setErrorCount(Integer errorCount) {
+    this.errorCount = errorCount;
+  }
+
+  public List<ValidationError> getItems() {
+    return items;
+  }
+
+  public void setItems(List<ValidationError> items) {
+    this.items = items;
+  }
+
+
+
 }

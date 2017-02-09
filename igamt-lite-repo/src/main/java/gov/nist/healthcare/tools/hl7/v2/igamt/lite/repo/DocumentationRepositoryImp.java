@@ -20,14 +20,14 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
 
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public class DecisionRepositoryImp implements DecisionOperations {
+public class DocumentationRepositoryImp implements DocumentationOperations {
 
   @Autowired
   private MongoOperations mongo;
@@ -37,13 +37,13 @@ public class DecisionRepositoryImp implements DecisionOperations {
   /*
    * (non-Javadoc)
    * 
-   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DecisionOperations#findAll()
+   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DocumentationOperations#findAll()
    */
   @Override
-  public List<Decision> findAll() {
+  public List<Documentation> findAll() {
     Query qry = new Query();
     // qry = set4Brevis(qry);
-    return mongo.find(qry, Decision.class);
+    return mongo.find(qry, Documentation.class);
 
   }
 
@@ -53,18 +53,19 @@ public class DecisionRepositoryImp implements DecisionOperations {
    * (non-Javadoc)
    * 
    * @see
-   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DecisionOperations#findById(java.lang.String)
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DocumentationOperations#findById(java.lang.
+   * String)
    */
   @Override
-  public Decision findById(String id) {
+  public Documentation findById(String id) {
 
 
 
     Criteria where = Criteria.where("id").is(id);
     Query qry = Query.query(where);
     // qry = set4Brevis(qry);
-    List<Decision> decisions = mongo.find(qry, Decision.class);
-    Decision decision = null;
+    List<Documentation> decisions = mongo.find(qry, Documentation.class);
+    Documentation decision = null;
     if (decisions != null && decisions.size() > 0) {
       decision = decisions.get(0);
     }
@@ -79,7 +80,7 @@ public class DecisionRepositoryImp implements DecisionOperations {
     query.fields().include("dateUpdated");
     Update update = new Update();
     update.set("dateUpdated", date);
-    mongo.updateFirst(query, update, Decision.class);
+    mongo.updateFirst(query, update, Documentation.class);
     return date;
   }
 
