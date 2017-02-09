@@ -1,4 +1,4 @@
-angular.module('igl').controller('DocumentationController', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout,DocumentationService) {
+angular.module('igl').controller('DocumentationController', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout,DocumentationService,userInfoService) {
 
 
 	$scope.editMode=false;
@@ -17,7 +17,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 			$rootScope.decisions=[];
 			$rootScope.FAQs=[];
 			$rootScope.UserGuides=[];
-			
+			$rootScope.usersNotes=[];
 			angular.forEach(result, function(documentation){
 				$rootScope.documentationsMap[documentation.id]=documentation;
 				if(documentation.type==='decision'){
@@ -29,7 +29,20 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 				}
 				
 			});
-			$rootScope.$emit("event:initEditArea");
+
+			if(userInfoService.isAuthenticated()){
+
+				DocumentationService.findUserNotes().then(function(result){
+					$rootScope.usersNotes=result;
+					angular.forEach(result, function(documentation){
+				$rootScope.documentationsMap[documentation.id]=documentation;
+					});
+				});
+
+			}
+
+
+
 		});
 
 	};
@@ -92,10 +105,18 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 			$rootScope.UserGuides.push($rootScope.documentationToAdd);
 			$rootScope.documentations=$rootScope.UserGuides;
 			$rootScope.documentationToAdd.title="New User Guide";
-		}else{
+
+
+		}else if(type=='FAQ'){
 			$rootScope.FAQs.push($rootScope.documentationToAdd);
 			$rootScope.documentations=$rootScope.FAQs;
 			$rootScope.documentationToAdd.title="New FAQ";
+		}else if (type=='UserNote'){
+			$rootScope.usersNotes.push($rootScope.documentationToAdd);
+			$rootScope.documentations=$rootScope.usersNotes;
+			$rootScope.documentationToAdd.title="New User Note";
+			$rootScope.documentationToAdd.owner=userInfoService.getAccountID();
+
 		}
 		//$rootScope.documentations.push($rootScope.documentationToAdd);
 		$rootScope.documentationsMap[$rootScope.documentationToAdd.id]=$rootScope.documentationToAdd;
@@ -111,8 +132,10 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 			$rootScope.documentations=$rootScope.decisions;
 		}else if(documentation.type==='userGuide'){
 			$rootScope.documentations=$rootScope.UserGuides;
-		}else{
+		}else if(documentation.type==='FAQ'){
 			$rootScope.documentations=$rootScope.FAQs;
+		}else{
+			$rootScope.documentations=$rootScope.usersNotes;
 		}
 		$scope.activeId=documentation.id;
 		//$rootScope.$emit("event:initEditArea");

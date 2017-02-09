@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,10 +54,32 @@ public class DocumentationController {
   @RequestMapping(value = "/findAll", method = RequestMethod.POST, produces = "application/json")
   public List<Documentation> findAll() {
     log.info("Fetching Documentations...");
-    List<Documentation> result = documentationService.findAll();
+    List<Documentation> temp = documentationService.findAll();
+    List<Documentation> result = new ArrayList<Documentation>();
+
+    if (!temp.isEmpty()) {
+      for (Documentation doc : temp) {
+        if (!doc.getType().equals("UserNote")) {
+          result.add(doc);
+        }
+      }
+    }
     return result;
   }
 
+  @RequestMapping(value = "/findUserNotes", method = RequestMethod.POST,
+      produces = "application/json")
+  public List<Documentation> findByCreator() {
+    List<Documentation> userNotes = new ArrayList<Documentation>();
+
+    User u = userService.getCurrentUser();
+    if (u == null) {
+      return userNotes;
+    }
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    userNotes = documentationService.findByOwner(account.getId());
+    return userNotes;
+  }
 
 
   @RequestMapping(value = "/save", method = RequestMethod.POST)

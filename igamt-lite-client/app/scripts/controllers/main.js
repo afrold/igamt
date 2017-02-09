@@ -3341,7 +3341,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
 
         }
-        if(data.type==="decision"||data.type==="FAQ"||data.type==="userGuide"){
+        if(data.type==="decision"||data.type==="FAQ"||data.type==="userGuide"||data.type==='UserNote'){
     		DocumentationService.save(data).then(function(saved){
     				console.log(data);
     				console.log("befor");

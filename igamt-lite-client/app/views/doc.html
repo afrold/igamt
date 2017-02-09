@@ -83,6 +83,32 @@ body {
 
 				</ul>
 			</div>
+
+				<div accordion-group class="panel panel-default" is-open="isOpen4" ng-if="isAuthenticated()">
+				<accordion-heading style="color:black !important;">
+				<i class="pull-left fa" style="color: black;"
+					ng-class="{'fa-chevron-down': isOpen4, 'fa-chevron-right': !isOpen4}"></i>
+				User Notes</accordion-heading>
+
+							<div style="margin-bottom: 25px;">
+					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
+						aria-hidden="true" ng-click="addDocumentation('UserNote')"
+						style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
+				</div>
+
+				<ul class="nav nav-pills nav-stacked"
+					style="margin-left: 5px !important;">
+
+					<li ng-repeat="documentation in usersNotes"
+						ng-click="editDocumentation(documentation)"
+						ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
+
+				</ul>
+			</div>
+
+
+
+
 			</accordion>
 		</div>
 		<div class="col-md-8" ng-if="documentation"

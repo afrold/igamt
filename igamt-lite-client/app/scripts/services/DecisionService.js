@@ -45,6 +45,21 @@ angular.module('igl').factory('DocumentationService',
                 });
                 return delay.promise;
 				
+			},
+
+            findUserNotes:function(){
+                var delay = $q.defer();
+                //datatype.accountId = userInfoService.getAccountID();
+                $http.post('api/documentations/findUserNotes').then(function(response) {
+                    var documentations = angular.fromJson(response.data);
+                    delay.resolve(documentations);
+
+                }, function(error) {
+                    //console.log("DatatypeService.save error=" + error);
+                    delay.reject(error);
+                });
+                return delay.promise;
+				
 			}
 			
 	};

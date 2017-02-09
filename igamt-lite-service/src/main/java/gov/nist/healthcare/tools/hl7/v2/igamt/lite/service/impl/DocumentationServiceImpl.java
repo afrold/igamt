@@ -97,4 +97,19 @@ public class DocumentationServiceImpl implements DocumentationService {
     return decisionRepository.updateDate(id, date);
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DocumentationService#findByCreator(java.
+   * lang.Long)
+   */
+  @Override
+  public List<Documentation> findByOwner(Long accontId) {
+    // TODO Auto-generated method stub
+    return decisionRepository.findByOwner(accontId);
+  }
+
+
+
 }

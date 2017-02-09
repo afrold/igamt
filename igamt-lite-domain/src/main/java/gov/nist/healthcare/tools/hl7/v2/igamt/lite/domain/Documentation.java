@@ -35,6 +35,8 @@ public class Documentation extends DataModel {
 
   protected Long AccountId;
 
+  private Long owner;
+
   protected String username;
 
   private Date updateDate;
@@ -117,6 +119,22 @@ public class Documentation extends DataModel {
    */
   public void setUpdateDate(Date updateDate) {
     this.updateDate = updateDate;
+  }
+
+
+  /**
+   * @return the owner
+   */
+  public Long getOwner() {
+    return owner;
+  }
+
+
+  /**
+   * @param owner the owner to set
+   */
+  public void setOwner(Long owner) {
+    this.owner = owner;
   }
 }
 

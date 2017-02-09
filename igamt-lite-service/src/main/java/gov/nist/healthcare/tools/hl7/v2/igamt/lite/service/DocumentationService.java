@@ -34,4 +34,6 @@ public interface DocumentationService {
   public Documentation save(Documentation d);
 
   public void delete(Documentation decision);
+
+  List<Documentation> findByOwner(Long accontId);
 }
