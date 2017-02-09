@@ -88,7 +88,8 @@ public class ExportConfigController {
       produces = "application/json")
   public ExportConfig restoreDefault(@RequestBody ExportConfig exportConfig) {
     List<ExportConfig> results = new ArrayList<ExportConfig>();
-    ExportConfig UserConfig = exportConfig;
+    results = exportConfigSerive.findDefault(exportConfig.getType());
+    ExportConfig UserConfig = results.get(0);
     try {
       User u = userService.getCurrentUser();
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
@@ -102,8 +103,7 @@ public class ExportConfigController {
               exportConfigSerive.delete(conf);
             }
           }
-          results = exportConfigSerive.findDefault(exportConfig.getType());
-          UserConfig = results.get(0);
+
 
           // exportConfigSerive.save(UserConfig);
 

@@ -5,20 +5,29 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
     $scope.init = function () {
         console.log("INIT called");
+
         $scope.configMap={};
+        $scope.changed=false;
         ConfigurationService.findCurrent("IG Style").then(function (response) {
-            $scope.IGStyleExportConfig = response;
-             $scope.configMap[response.id] = angular.copy(response);
+            var copy=response;
+            $scope.IGStyleExportConfig = angular.copy(response);
+            $scope.IGStyleExportConfigCopy=copy;
+             $scope.configMap[response.id] = response;
 
             ConfigurationService.findCurrent("Profile Style").then(function (response) {
-                $scope.profileStyleExportConfig = response;
-                 $scope.configMap[response.id]=angular.copy(response);
-                ConfigurationService.findCurrent("Table Style").then(function (response) {
-                    $scope.tableStyleExportConfig = response;
-                     $scope.configMap[response.id] = angular.copy(response);
+                var copy=response;
+                $scope.profileStyleExportConfigCopy=copy;
+                $scope.profileStyleExportConfig = angular.copy(response);
 
-                    $scope.exportConfig=$scope.IGStyleExportConfig;
-                    $rootScope.$emit("event:initEditArea");
+                 $scope.configMap[response.id]=response;
+                ConfigurationService.findCurrent("Table Style").then(function (response) {
+                    var copy =response;
+                    $scope.tableStyleExportConfigCopy=copy;
+                     $scope.tableStyleExportConfig = angular.copy(response);
+                     $scope.configMap[response.id] = response;
+
+                    //$scope.exportConfig=$scope.IGStyleExportConfig;
+         
 
 
                 });
@@ -31,9 +40,14 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     }
 
     $scope.override=function(config){
+        config.defaulType=false;
+        $scope.resetChanged();
+
         ConfigurationService.override(config).then(function(response){
+
             $scope.exportConfig=response;
-        	$rootScope.clearChanges();
+
+            $scope.resetChanged();
             $rootScope.msg().text = "ConfigurationSaved";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
@@ -44,6 +58,31 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         }
         )
     }
+
+      $scope.restoreDefault=function(config){
+        config.defaulType=false;
+        ConfigurationService.restoreDefault(config).then(function(response){
+            console.log(response);
+            $scope.exportConfig=response;
+            if($scope.exportConfig.type&& $scope.exportConfig.type==="IG Style"){
+                $scope.IGStyleExportConfig =$scope.exportConfig;
+            }else if($scope.exportConfig.type&& $scope.exportConfig.type==="Profile Style"){
+                 $scope.profileStyleExportConfig=$scope.exportConfig;
+            }else{
+                $scope.tableStyleExportConfig=$scope.exportConfig;
+            }
+            $scope.resetChanged();
+
+            $rootScope.msg().text = "DefaultRestored";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+        }, function(error) {
+            $rootScope.msg().text = "DefaultRestoredFaild";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+        }
+        )
+    };
     $scope.setConfigType=function(type){
         console.log(type);
         if(type==='IG'){
@@ -56,9 +95,26 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
     }
     $scope.reset=function(conf){
-        conf= $scope.configMap[conf.id];
+        console.log(conf);
+        console.log($scope.configMap[conf.id]);
+            if(conf.type&& conf.type==="IG Style"){
+                $scope.IGStyleExportConfig = angular.copy($scope.IGStyleExportConfigCopy);
+            }else if(conf.type&& conf.type==="Profile Style"){
+                 $scope.profileStyleExportConfig= angular.copy($scope.profileStyleExportConfigCopy);
+            }else{
+                $scope.tableStyleExportConfig=angular.copy($scope.tableStyleExportConfig);
+            }
+        console.log(conf);
+        //console.log(configMap);
+        $scope.resetChanged();
     }
 
+    $scope.setChanged=function(){
+        $scope.changed=true;
+    }
+    $scope.resetChanged=function(){
+        $scope.changed=false;
+    }
 
 
 });
