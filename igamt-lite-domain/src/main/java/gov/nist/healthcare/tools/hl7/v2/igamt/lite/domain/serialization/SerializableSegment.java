@@ -110,7 +110,7 @@ public class SerializableSegment extends SerializableSection {
                     List<Table> fieldTables = fieldTableMap.get(field);
                     String temp = "";
                     boolean isFirst = true;
-                    if (fieldTables.size() > 0) {
+                    if (fieldTables != null && fieldTables.size() > 0) {
                         for (Table table : fieldTables) {
                             String bindingIdentifier = table.getBindingIdentifier();
                             if(!isFirst){

@@ -302,12 +302,14 @@ import java.util.*;
             SerializableMessage serializableMessage =
                 serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
             for(SerializableSegmentRefOrGroup messageChildren : serializableMessage.getSerializableSegmentRefOrGroups()){
-                this.bindedSegments.add(messageChildren.getSegmentRef().getRef());
-                if(messageChildren.getSegment() != null) {
-                    for (Field field : messageChildren.getSegment().getFields()) {
-                        bindedDatatypes.add(field.getDatatype());
-                        for (TableLink tableLink : field.getTables()) {
-                            bindedTables.add(tableLink);
+                if(messageChildren.getSegmentRef()!=null) {
+                    this.bindedSegments.add(messageChildren.getSegmentRef().getRef());
+                    if (messageChildren.getSegment() != null) {
+                        for (Field field : messageChildren.getSegment().getFields()) {
+                            bindedDatatypes.add(field.getDatatype());
+                            for (TableLink tableLink : field.getTables()) {
+                                bindedTables.add(tableLink);
+                            }
                         }
                     }
                 }
