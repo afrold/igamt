@@ -30,6 +30,6 @@ public interface DocumentationOperations {
 
   public Date updateDate(String id, Date date);
 
-
+  public List<Documentation> findByOwner(Long accountId);
 
 }
