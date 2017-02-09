@@ -2,9 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
 import com.mongodb.gridfs.GridFSDBFile;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
 import org.apache.commons.io.FileUtils;
@@ -217,6 +215,23 @@ public class ExportUtil {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         tidy.parseDOM(html, outputStream);
         return outputStream;
+    }
+
+    public static boolean diplayUsage(Usage usageToCompare, UsageConfig usageConfig){
+        switch(usageToCompare){
+            case R:
+                return usageConfig.getR();
+            case RE:
+                return usageConfig.getRe();
+            case C:
+                return usageConfig.getC();
+            case X:
+                return usageConfig.getX();
+            case O:
+                return usageConfig.getO();
+            default:
+                return false;
+        }
     }
 
 
