@@ -14,8 +14,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +48,7 @@ public class ExportConfigController {
   AccountRepository accountRepository;
 
   @Autowired
-  static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ExportConfigController.class);
+  static final Logger logger = LoggerFactory.getLogger(ExportConfigController.class);
 
 
 
