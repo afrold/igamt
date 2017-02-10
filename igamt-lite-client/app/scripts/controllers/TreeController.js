@@ -143,18 +143,28 @@ angular
                     }
                 };
                 $scope.isValidated = function(data) {
-                    if ($rootScope.datatypeValidationResult.targetId === data.id) {
+                    if (data && $rootScope.validationResult.targetId === data.id) {
                         return true;
                     } else {
                         return false;
                     }
                 };
                 $scope.hasErrorInTree = function(data) {
-                    if ($rootScope.datatypeValidationResult && $rootScope.datatypeValidationResult.errorCount > 0) {
+                    // if ($rootScope.validationResult) {
+                    //     if (data &&  $rootScope.validationResult.targetId===data.id) {
+                    //         return true;
+                    //     } else {
+                    //         return false;
+                    //     }
+                    // }
+                    if ($rootScope.validationResult && $rootScope.validationResult.errorCount>0) {
                         return true;
                     } else {
                         return false;
                     }
+
+
+
                     // if ($rootScope.datatypeValidationResult) {
                     //     var x = $rootScope.datatypeValidationResult.items.find(function(item) {
                     //         if (item.targetId === data.id) {

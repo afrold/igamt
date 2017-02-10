@@ -29,10 +29,12 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValidationResult;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ValidationService;
 
@@ -49,6 +51,8 @@ public class ValidationController extends CommonController {
   UserService userService;
   @Autowired
   private IGDocumentService igDocumentService;
+  @Autowired
+  private MessageService messageService;
   @Autowired
   private DatatypeService datatypeService;
   @Autowired
@@ -85,7 +89,8 @@ public class ValidationController extends CommonController {
         userDatatype.getHl7Version(), "HL7STANDARD");
 
 
-    ValidationResult result = validationService.validateDatatype(hl7Datatype, userDatatype, true);
+    ValidationResult result =
+        validationService.validateDatatype(hl7Datatype, userDatatype, userDatatype.getId());
 
     return result;
   }
@@ -101,6 +106,23 @@ public class ValidationController extends CommonController {
 
 
     ValidationResult result = validationService.validateSegment(hl7Segment, userSegment, true);
+
+    return result;
+  }
+
+  @RequestMapping(value = "/validateMessage", method = RequestMethod.POST,
+      produces = "application/json")
+  public ValidationResult validateMessage(@RequestBody Message userMessage)
+      throws InvalidObjectException {
+    log.info("Validation ig..." + userMessage.getId() + " " + userMessage.getHl7Version());
+
+    Message hl7Message = messageService.findByStructIdAndScopeAndVersion(userMessage.getStructID(),
+        "HL7STANDARD", userMessage.getHl7Version());
+    System.out.println("++++++" + hl7Message.getId());
+
+
+
+    ValidationResult result = validationService.validateMessage(hl7Message, userMessage, true);
 
     return result;
   }

@@ -12,6 +12,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ValidationResult implements java.io.Serializable {
@@ -22,8 +23,13 @@ public class ValidationResult implements java.io.Serializable {
   }
 
   private String targetId;
+  private String parentId;
   private Integer errorCount;
-  private List<ValidationError> items;
+  // private List<ValidationError> items;
+  // private List<ValidationResult> blocks;
+  private HashMap<String, List<ValidationError>> items;
+  private HashMap<String, ValidationResult> blocks;
+
 
   public String getTargetId() {
     return targetId;
@@ -41,13 +47,45 @@ public class ValidationResult implements java.io.Serializable {
     this.errorCount = errorCount;
   }
 
-  public List<ValidationError> getItems() {
+  // public List<ValidationError> getItems() {
+  // return items;
+  // }
+  //
+  // public void setItems(List<ValidationError> items) {
+  // this.items = items;
+  // }
+
+  public String getParentId() {
+    return parentId;
+  }
+
+  public void setParentId(String parentId) {
+    this.parentId = parentId;
+  }
+
+  public HashMap<String, List<ValidationError>> getItems() {
     return items;
   }
 
-  public void setItems(List<ValidationError> items) {
+  public void setItems(HashMap<String, List<ValidationError>> items) {
     this.items = items;
   }
+
+  public HashMap<String, ValidationResult> getBlocks() {
+    return blocks;
+  }
+
+  public void setBlocks(HashMap<String, ValidationResult> blocks) {
+    this.blocks = blocks;
+  }
+
+  // public List<ValidationResult> getBlocks() {
+  // return blocks;
+  // }
+  //
+  // public void setBlocks(List<ValidationResult> blocks) {
+  // this.blocks = blocks;
+  // }
 
 
 

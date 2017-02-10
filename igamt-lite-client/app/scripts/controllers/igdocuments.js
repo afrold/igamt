@@ -58,6 +58,7 @@ angular.module('igl')
         return false;
 
     };
+
     $scope.Dndenabled=function(){
       return  $scope.igDocumentConfig.selectedType=='USER';
     }
@@ -1238,7 +1239,7 @@ angular.module('igl')
                         SegmentService.get(segment.id).then(function(result) {
                             $rootScope.segment = angular.copy(segment);
                             $rootScope.$emit("event:initSegment");
-
+                            $rootScope.validationResult = null;
                             $rootScope.currentData = $rootScope.segment;
                             $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
                             $rootScope.segment["type"] = "segment";
@@ -1321,7 +1322,7 @@ angular.module('igl')
                     try {
                         DatatypeService.getOne(datatype.id).then(function(result) {
                             $rootScope.datatype = angular.copy(result);
-                            $rootScope.datatypeValidationResult = null;
+                            $rootScope.validationResult = null;
                             $rootScope.$emit("event:initDatatype");
 
                             $rootScope.currentData = datatype;
@@ -1390,6 +1391,8 @@ angular.module('igl')
                 try {
                     $rootScope.originalMessage = message;
                     $rootScope.message = angular.copy(message);
+                    $rootScope.validationResult = null;
+
                     $rootScope.$emit("event:initMessage");
 
                     $rootScope.currentData = $rootScope.message;
