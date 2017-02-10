@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 
-angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI, ViewSettings) {
+angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI, ViewSettings,ValidationService) {
 
     $scope.viewSettings = ViewSettings;
 
@@ -36,6 +36,20 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         $scope.findAllGlobalConstraints();
 
     };
+    $scope.validateMessage = function() {
+            console.log($rootScope.message);
+            ValidationService.validateMessage($rootScope.message,$rootScope.igdocument.profile.metaData.hl7Version).then(function(result) {
+                $rootScope.validationMap = {};
+                $scope.showErrorNotification = true;
+                $rootScope.validationResult = result;
+                console.log($rootScope.validationResult);
+                $rootScope.buildValidationMap($rootScope.validationResult);
+                console.log($rootScope.validationMap);
+
+            },function(error){
+                console.log(error);
+            });
+        };
 
     $scope.redirectSeg = function(segmentRef) {
         SegmentService.get(segmentRef.id).then(function(segment) {

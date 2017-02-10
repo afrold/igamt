@@ -58,8 +58,8 @@ angular.module('igl')
         return false;
 
     };
-   
-        
+
+
     $scope.validateIG = function() {
         console.log($rootScope.igdocument.id);
     };
@@ -1203,7 +1203,7 @@ angular.module('igl')
                         SegmentService.get(segment.id).then(function(result) {
                             $rootScope.segment = angular.copy(segment);
                             $rootScope.$emit("event:initSegment");
-
+                            $rootScope.validationResult = null;
                             $rootScope.currentData = $rootScope.segment;
                             $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
                             $rootScope.segment["type"] = "segment";
@@ -1355,6 +1355,8 @@ angular.module('igl')
                 try {
                     $rootScope.originalMessage = message;
                     $rootScope.message = angular.copy(message);
+                    $rootScope.validationResult = null;
+
                     $rootScope.$emit("event:initMessage");
 
                     $rootScope.currentData = $rootScope.message;

@@ -43,7 +43,23 @@ angular.module('igl').factory('ValidationService', function($http, $q, userInfoS
                 delay.reject(error);
             });
             return delay.promise;
+        },
+        svc.validateMessage = function(msg,hl7Version) {
+            var delay = $q.defer();
+            msg.hl7Version = hl7Version;
+
+            $http.post('api/validation/validateMessage',msg).then(function(response) {
+
+                console.log(response);
+                var saved = angular.fromJson(response.data);
+                delay.resolve(saved);
+                return saved;
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
         }
+
 
 
     return svc;

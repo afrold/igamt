@@ -194,18 +194,18 @@
                                         </accordion-heading>
                                         <div class="" style="margin:5px 5px 5px 5px">
                                             <div class="alert alert-danger " role="alert" ng-show="validationResult.errorCount>0 && showErrorNotification">
-                                                <button type="button" class="close" aria-label="Close" ng-click="showErrorNotification=false;"><span aria-hidden="true">&times;</span></button> {{validationResult.errorCount}} Validation Errors
+                                                <button type="button" class="close" aria-label="Close" ng-click="showErrorNotification=false;"><span aria-hidden="true">&times;</span></button> {{validationResult.errorCount}} Errors
                                             </div>
 
                                             <div ng-show="datatype.components && datatype.components.length > 0" class="pull-left">
                                                 <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
                                             </div>
-                                            <button class="pull-right" title="Validate Data type" type="button" ng-class="{'btn btn-raised btn-sm btn-danger':(validationResult && validationResult.errorCount>0),'btn btn-raised btn-sm btn-success':((validationResult && validationResult.errorCount===0)|| !validationResult)}"
+                                            <button ng-if="datatype.scope!=='HL7STANDARD'" class="pull-right" title="Verify Data type" type="button" ng-class="{'btn btn-raised btn-sm btn-danger':(validationResult && validationResult.errorCount>0),'btn btn-raised btn-sm btn-success':((validationResult && validationResult.errorCount===0)|| !validationResult)}"
                                                 ng-click="validateDatatype()"> 
                                                 <span>
                                                     <i ng-show="validationResult && validationResult.errorCount>0" class="fa fa-exclamation-triangle"></i>
                                                     <i  ng-show="(validationResult && validationResult.errorCount===0)|| !validationResult" class="fa fa-check-circle"></i>
-                                                    Validate
+                                                    Verify
                                                 </span> 
                                             </button>
 
@@ -850,7 +850,7 @@
                 </div>
             </ng-form>
         </td>
-        <td ng-class="hasUsageError(node.id)" data-toggle="tooltip" title="{{displayMessageError(node.id)}}">
+        <td ng-class="hasUsageError(node.id)" data-toggle="tooltip" title="{{displayMessageError(node.id,'USAGE')}}">
             <div>
                 <span ng-if="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                 <ng-form name="{{formName}}" class="form-inline">
@@ -871,7 +871,7 @@
                 </div>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id)}}">
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                     <input style="width:45%" class="form-control" name="minLength" ng-change="setDirty()" ng-pattern="'\\d*[#=]{0,1}'" ng-class="{ 'igl-has-error has-feedback' : {{formName}}.minLength.$invalid}" ng-model="node.minLength" required ng-minlength="1">
@@ -1122,13 +1122,14 @@
 <script type="text/ng-template" id="DatatypeSubComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-md-2 col-fixed-250">
-
+            <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <span>
                                             <span class="label label-sub-component label-icon">S</span>
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
             </span>
         </td>
-        <td ng-class="hasUsageError(node.id)" data-toggle="tooltip" title="{{displayMessageError(node.id)}}">
+        <td ng-class="hasUsageError(node.id)" data-toggle="tooltip" title="{{displayMessageError(node.id,'USAGE')}}">
             <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnSubComponent(node.position, node.id) === 0)">
                 {{::node.usage}}
             </span>
@@ -1139,7 +1140,7 @@
                 </p>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id)}}">
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> [{{::node.minLength}},{{::node.maxLength}}] </div>
         </td>
         <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}" ng-show="showConfLength()">
