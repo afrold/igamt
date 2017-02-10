@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,8 +28,8 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DecisionService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DocumentationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 
@@ -37,48 +38,70 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveExc
  *
  */
 @RestController
-@RequestMapping("/decisions")
-public class DecisionController {
+@RequestMapping("/documentations")
+public class DocumentationController {
 
 
-  Logger log = LoggerFactory.getLogger(DecisionController.class);
+  Logger log = LoggerFactory.getLogger(DocumentationController.class);
 
   @Autowired
-  private DecisionService decisionService;
+  private DocumentationService documentationService;
   @Autowired
   private UserService userService;
   @Autowired
   AccountRepository accountRepository;
 
   @RequestMapping(value = "/findAll", method = RequestMethod.POST, produces = "application/json")
-  public List<Decision> findAll() {
-    log.info("Fetching Decisions...");
-    List<Decision> result = decisionService.findAll();
+  public List<Documentation> findAll() {
+    log.info("Fetching Documentations...");
+    List<Documentation> temp = documentationService.findAll();
+    List<Documentation> result = new ArrayList<Documentation>();
+
+    if (!temp.isEmpty()) {
+      for (Documentation doc : temp) {
+        if (!doc.getType().equals("UserNote")) {
+          result.add(doc);
+        }
+      }
+    }
     return result;
   }
 
+  @RequestMapping(value = "/findUserNotes", method = RequestMethod.POST,
+      produces = "application/json")
+  public List<Documentation> findByCreator() {
+    List<Documentation> userNotes = new ArrayList<Documentation>();
+
+    User u = userService.getCurrentUser();
+    if (u == null) {
+      return userNotes;
+    }
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    userNotes = documentationService.findByOwner(account.getId());
+    return userNotes;
+  }
 
 
   @RequestMapping(value = "/save", method = RequestMethod.POST)
-  public Decision save(@RequestBody Decision decision)
+  public Documentation save(@RequestBody Documentation documentation)
       throws DatatypeSaveException, ForbiddenOperationException {
 
-    decision.setDateUpdated(new Date());
+    documentation.setDateUpdated(new Date());
     User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-    decision.setAccountId(account.getId());
+    documentation.setAccountId(account.getId());
 
-    decision.setUsername(account.getFullName());
-    Decision saved = decisionService.save(decision);
+    documentation.setUsername(account.getFullName());
+    Documentation saved = documentationService.save(documentation);
     return saved;
 
   }
 
   @RequestMapping(value = "/delete", method = RequestMethod.POST)
-  public ResponseMessage delete(@RequestBody Decision decision)
+  public ResponseMessage delete(@RequestBody Documentation documentation)
       throws DatatypeSaveException, ForbiddenOperationException {
-    decisionService.delete(decision);
-    return new ResponseMessage(ResponseMessage.Type.success, "decision Delete Success", null);
+    documentationService.delete(documentation);
+    return new ResponseMessage(ResponseMessage.Type.success, "documentation Delete Success", null);
 
 
 

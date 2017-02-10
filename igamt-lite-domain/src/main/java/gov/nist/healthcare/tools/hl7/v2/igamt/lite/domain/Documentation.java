@@ -7,7 +7,7 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Abdelghani EL OUAKILI (NIST) Jan 26, 2017
+ * that they have been modified. Abdelghani EL OUAKILI (NIST) Feb 7, 2017
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
@@ -21,24 +21,31 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *
  */
 
-@Document(collection = "decision")
-public class Decision extends DataModel {
+@Document(collection = "documentation")
+public class Documentation extends DataModel {
+
+
+
   @Id
-  private String id;
+  protected String id;
 
-  private String content;
+  protected String content;
 
-  private String title;
+  protected String title;
+
+  protected Long AccountId;
+
+  private Long owner;
+
+  protected String username;
 
   private Date updateDate;
 
-  private Long AccountId;
-
-  private String username;
 
   public String getUsername() {
     return username;
   }
+
 
   public String getId() {
     return id;
@@ -56,31 +63,15 @@ public class Decision extends DataModel {
     this.content = content;
   }
 
-  public Decision() {
+  public Documentation() {
     super();
-    this.type = Constant.DECISION;
     this.updateDate = super.dateUpdated;
+
 
     // TODO Auto-generated constructor stub
   }
 
-  /**
-   * @return the updateDate
-   */
-  public Date getUpdateDate() {
-    return updateDate;
-  }
 
-  /**
-   * @param updateDate the updateDate to set
-   */
-  public void setUpdateDate(Date updateDate) {
-    this.updateDate = updateDate;
-  }
-
-  /**
-   * @return the title
-   */
   public String getTitle() {
     return title;
   }
@@ -115,4 +106,35 @@ public class Decision extends DataModel {
   }
 
 
+  /**
+   * @return the updateDate
+   */
+  public Date getUpdateDate() {
+    return updateDate;
+  }
+
+
+  /**
+   * @param updateDate the updateDate to set
+   */
+  public void setUpdateDate(Date updateDate) {
+    this.updateDate = updateDate;
+  }
+
+
+  /**
+   * @return the owner
+   */
+  public Long getOwner() {
+    return owner;
+  }
+
+
+  /**
+   * @param owner the owner to set
+   */
+  public void setOwner(Long owner) {
+    this.owner = owner;
+  }
 }
+

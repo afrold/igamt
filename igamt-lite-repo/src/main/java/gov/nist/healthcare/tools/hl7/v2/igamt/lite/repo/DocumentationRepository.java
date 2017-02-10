@@ -9,29 +9,24 @@
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified. Abdelghani EL OUAKILI (NIST) Jan 26, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public interface DecisionService {
+public interface DocumentationRepository
+    extends MongoRepository<Documentation, String>, DocumentationOperations {
 
-  public List<Decision> findAll();
+  /**
+   * @param accontId
+   * @return
+   */
 
-  public Decision findById(String id);
 
-  public List<Decision> findByIds(Set<String> ids);
 
-  public Date updateDate(String id, Date date);
-
-  public Decision save(Decision d);
-
-  public void delete(Decision decision);
 }

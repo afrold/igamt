@@ -9,33 +9,31 @@
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified. Abdelghani EL OUAKILI (NIST) Jan 26, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public interface DecisionOperations {
+public interface DocumentationService {
 
+  public List<Documentation> findAll();
 
+  public Documentation findById(String id);
 
-  public List<Decision> findAll();
-
-  public Decision findById(String id);
+  public List<Documentation> findByIds(Set<String> ids);
 
   public Date updateDate(String id, Date date);
 
+  public Documentation save(Documentation d);
 
-  /**
-   * @param id
-   * @param date
-   * @return
-   */
+  public void delete(Documentation decision);
 
-
+  List<Documentation> findByOwner(Long accontId);
 }

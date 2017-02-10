@@ -62,7 +62,7 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         elementGroupBegin.addAttribute(new Attribute("IdGpe", group.getId()));
         elementGroupBegin.addAttribute(new Attribute("Name", group.getName()));
         elementGroupBegin.addAttribute(new Attribute("Description", "BEGIN " + group.getName() + " GROUP"));
-        elementGroupBegin.addAttribute(new Attribute("Usage", String.valueOf(depth)));
+        elementGroupBegin.addAttribute(new Attribute("Usage", String.valueOf(group.getUsage())));
         elementGroupBegin.addAttribute(new Attribute("Min", group.getMin() + ""));
         elementGroupBegin.addAttribute(new Attribute("Max", group.getMax()));
         elementGroupBegin.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "["));

@@ -3,6 +3,7 @@
     <xsl:template name="ConstraintContent">
         <xsl:param name="mode"/>
         <xsl:param name="type"/>
+        <xsl:param name="displayPeriod"/>
         <xsl:choose>
             <xsl:when test="$mode='inlineSegment' or $mode='inlineDatatype'">
                 <xsl:variable name="predicateColSpan" select="4"></xsl:variable>
@@ -54,7 +55,14 @@
                     </xsl:if>
                     <xsl:if test="$type='pre'">
                         <xsl:element name="td">
-                            <xsl:value-of select="concat(@LocationName,'.', @Location)" />
+                            <xsl:choose>
+                                <xsl:when test="$displayPeriod='true'">
+                                    <xsl:value-of select="concat(@LocationName,'.', @Location)" />
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="concat(@LocationName, @Location)" />
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </xsl:element>
                         <xsl:element name="td">
                             <xsl:value-of select="@Usage" />

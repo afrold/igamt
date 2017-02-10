@@ -11,14 +11,25 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import java.util.Date;
+import java.util.List;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Decision;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public interface DecisionRepository extends MongoRepository<Decision, String>, DecisionOperations {
+public interface DocumentationOperations {
+
+
+
+  public List<Documentation> findAll();
+
+  public Documentation findById(String id);
+
+  public Date updateDate(String id, Date date);
+
+  public List<Documentation> findByOwner(Long accountId);
 
 }
