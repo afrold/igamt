@@ -11,9 +11,11 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
@@ -40,17 +35,16 @@ public class ExportConfigController {
 
 
   @Autowired
-  ExportConfigService exportConfigService;
+  private ExportConfigService exportConfigService;
 
   @Autowired
-  UserService userService;
-  @Autowired
-  AccountRepository accountRepository;
+  private UserService userService;
 
   @Autowired
-  static final Logger logger = LoggerFactory.getLogger(ExportConfigController.class);
+  private AccountRepository accountRepository;
 
-
+  @Autowired
+  static final private Logger logger = LoggerFactory.getLogger(ExportConfigController.class);
 
   @RequestMapping(value = "/override", method = RequestMethod.POST, produces = "application/json")
   public ExportConfig override(@RequestBody ExportConfig exportConfig) {
@@ -80,7 +74,8 @@ public class ExportConfigController {
     try {
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (null != account) {
-        currentConfig = exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(), account.getId());
+        currentConfig = exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(),
+            account.getId());
         if (null != currentConfig) {
           exportConfigService.delete(currentConfig);
         }
