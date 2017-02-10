@@ -78,16 +78,16 @@
                             </li>
                             <li class="drop-accordian"><a class="point" ng-click="$event.stopPropagation();wordDrop = !wordDrop">As WORD <span class="caret"><!-- --></span></a>
                                 <ul class="drop-accordian-menu" ng-show="wordDrop">
-                                    <li title="Export In IG Style. The segments definitions are outside the conformance profiles."><a class="point" ng-click="exportAsWithLayout('docx','IG Style')">IG Style</a></li>
-                                    <li title="Export In Profile Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('docx','Profile Style')">Profile Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
-                                    <li title="Export In Table Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('docx','Table Style')">Table Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
+                                    <li title="Export In IG Style. The segments definitions are outside the conformance profiles."><a class="point" ng-click="exportAsWithLayout('docx','IgDocument')">IG Style</a></li>
+                                    <li title="Export In Profile Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('docx','Profile')">Profile Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
+                                    <li title="Export In Table Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('docx','Table')">Table Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
                                 </ul>
                             </li>
                             <li class="drop-accordian"><a class="point" ng-click="$event.stopPropagation();htmlDrop = !htmlDrop">As HTML <span class="caret"><!-- --></span></a>
                                 <ul class="drop-accordian-menu" ng-show="htmlDrop">
-                                    <li title="Export In IG Style. The segments definitions are outside the conformance profiles."><a class="point" ng-click="exportAsWithLayout('html','IG Style')">Compact Mode</a></li>
-                                    <li title="Export In Profile Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('html','Profile Style')">Verbose Mode<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
-                                    <li title="Export In Table Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('html','Table Style')">Verbose Mode<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
+                                    <li title="Export In IG Style. The segments definitions are outside the conformance profiles."><a class="point" ng-click="exportAsWithLayout('html','IGDocument')">Compact Mode</a></li>
+                                    <li title="Export In Profile Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('html','Profile')">Verbose Mode<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
+                                    <li title="Export In Table Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('html','Table')">Verbose Mode<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
                                 </ul>
                             </li>
                             <!--li><a class="point" ng-click="customExportModal()">Advanced Export</a></li-->
