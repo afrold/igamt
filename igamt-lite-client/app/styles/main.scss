@@ -2330,6 +2330,13 @@ table.conformance-profiles-table td {
 //   float: left;
 //   border-bottom-width: 0;
 }
+
+.ig-table-tableFix tbody.dnd-list {
+    height: 5px !important; 
+    overflow-y: scroll;
+}
+
+
 .select-change {
 	cursor: pointer;
 	background-color: yellow;
@@ -2695,7 +2702,7 @@ ul[dnd-list] >tr {
 /**
  * Handle positioning
  */
-tr[dnd-handle] {
+td[dnd-handle] {
   cursor: move !important;
 
 }
@@ -2712,3 +2719,7 @@ tr[dnd-handle] {
 //   background-color: lightgray !important;
 //  list-style: none;
 // }
+.scrollit{
+	overflow-y:scroll;
+	height: 1px !important;
+}

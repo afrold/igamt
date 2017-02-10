@@ -1167,7 +1167,6 @@ public class IGDocumentController extends CommonController {
         throw new IGDocumentNotFoundException(ig.getId());
       } else {
         igDocumentService.updatePosition(ig.getId(), ig.getPosition());
-        throw new IGDocumentNotFoundException(ig.getId());
       }
     }
     return igsMap;

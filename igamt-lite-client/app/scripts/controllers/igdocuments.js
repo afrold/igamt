@@ -58,7 +58,9 @@ angular.module('igl')
         return false;
 
     };
-
+    $scope.Dndenabled=function(){
+      return  $scope.igDocumentConfig.selectedType=='USER';
+    }
     $scope.selectIgTab = function(value) {
         if (value === 1) {
             $scope.accordi.igList = false;
@@ -247,11 +249,18 @@ angular.module('igl')
 
 
         IgDocumentService.orderIgDocument(positionList).then(function(response){
+            $rootScope.msg().text = "OrderChanged";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
 
         },function(error){
+            $scope.tmpIgs=angular.copy($scope.IgsCopy);
+            $rootScope.msg().text = "OrderChangedFaild";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
 
-
-        })
+        });
+    
     }
     $scope.selectIGDocumentType = function(selectedType) {
         //console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
@@ -281,12 +290,14 @@ angular.module('igl')
                 console.log(response);
                 $rootScope.igs = angular.fromJson(response.data);
                 $scope.tmpIgs = [].concat($rootScope.igs);
+
                 console.log($scope.tmpIgs);
                 for(i=0; i<$scope.tmpIgs.length; i++){
                     if(!$scope.tmpIgs[i].position||$scope.tmpIgs[i].position=='undefined'||$scope.tmpIgs[i].position=='null'){
                         $scope.tmpIgs[i].position=i+1;
                     }
                 }
+                $scope.IgsCopy= angular.copy($scope.tmpIgs);
                 $scope.loading = false;
                 delay.resolve(true);
             }, function(error) {
