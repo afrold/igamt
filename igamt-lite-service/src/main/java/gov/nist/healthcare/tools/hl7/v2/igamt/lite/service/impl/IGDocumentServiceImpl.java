@@ -138,6 +138,14 @@ public class IGDocumentServiceImpl implements IGDocumentService {
   }
 
   @Override
+
+  public List<IGDocument> findByScopeAndVersion(IGDocumentScope scope, String hl7Version) {
+    List<IGDocument> igDocuments = documentRepository.findByScopeAndVersion(scope, hl7Version);
+    log.info("IGDocumentServiceImpl.findByScopeAndVersions=" + igDocuments.size());
+    return igDocuments;
+  }
+
+  @Override
   public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope,
       List<String> hl7Versions) {
     List<IGDocument> igDocuments =
@@ -230,5 +238,6 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     // TODO Auto-generated method stub
     return documentRepository.updatePosition(id, position);
   }
+
 
 }

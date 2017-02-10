@@ -91,11 +91,11 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
     private void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection) {
         if(segmentRefOrGroup instanceof SegmentRef){
             SegmentLink segmentLink = ((SegmentRef) segmentRefOrGroup).getRef();
-            if(!messageSegmentsNameList.contains(segmentLink.getName())) {
+            if(!messageSegmentsNameList.contains(segmentLink.getId())) {
                 segmentsSection.addSection(
                     serializeSegmentService.serializeSegment(segmentLink, prefix+ String
                         .valueOf(segmentPosition), segmentPosition, 5));
-                messageSegmentsNameList.add(segmentLink.getName());
+                messageSegmentsNameList.add(segmentLink.getId());
                 segmentPosition++;
             }
         } else if (segmentRefOrGroup instanceof Group){

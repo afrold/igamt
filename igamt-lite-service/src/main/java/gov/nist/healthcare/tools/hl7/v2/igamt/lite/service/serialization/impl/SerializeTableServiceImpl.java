@@ -41,19 +41,18 @@ public class SerializeTableServiceImpl implements SerializeTableService {
             String id = tableLink.getId();
             String title = "ID not found: "+tableLink.getId();
             String headerLevel = String.valueOf(3);
-            if(table!=null) {
-                id = table.getId();
-                title = table.getBindingIdentifier()+" - "+table.getDescription();
-            }
             String defPreText,defPostText;
             defPreText = defPostText = "";
-            if(table.getDefPreText()!=null && !table.getDefPreText().isEmpty()){
-                defPreText = serializationUtil.cleanRichtext(table.getDefPreText());
+            if(table!=null) {
+                id = table.getId();
+                title = table.getBindingIdentifier() + " - " + table.getDescription();
+                if (table.getDefPreText() != null && !table.getDefPreText().isEmpty()) {
+                    defPreText = serializationUtil.cleanRichtext(table.getDefPreText());
+                }
+                if (table.getDefPostText() != null && !table.getDefPostText().isEmpty()) {
+                    defPostText = serializationUtil.cleanRichtext(table.getDefPostText());
+                }
             }
-            if(table.getDefPostText()!=null && !table.getDefPostText().isEmpty()){
-                defPostText = serializationUtil.cleanRichtext(table.getDefPostText());
-            }
-
             SerializableTable serializedTable = new SerializableTable(id,prefix,String.valueOf(position),headerLevel,title,table,tableLink.getBindingIdentifier(),defPreText,defPostText);
             return serializedTable;
         }

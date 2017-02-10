@@ -153,6 +153,16 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group control-group" ng-show="table.scope === 'HL7STANDARD' && table.hl7Section != null && table.hl7Section != '' && table.hl7Section != undefined">
+                                        <label class="col-md-2 control-label">HL7 Section</label>
+
+                                        <div class="controls col-md-10">
+                                            <span type="text" name="hl7Section"
+                                                  class="form-control">{{table.hl7Section}}</span>
+                                        </div>
+                                    </div>
+
+
                                     <div class="form-group control-group">
                                         <label class="col-md-2 control-label">Date Updated</label>
                                         <div class="controls col-md-10">
@@ -327,17 +337,17 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <select ng-model="version1" class="form-control" disabled>
-                                                            <option ng-selected="version1"> {{::version1}}</option>
+                                                            <option ng-selected="version1"> {{version1}}</option>
                                                         </select>
                                                     </td>
                                                     <td class="col-md-2">
                                                         <select ng-model="scope1" class="form-control" disabled>
-                                                            <option ng-selected="scope1"> {{::scope1}}</option>
+                                                            <option ng-selected="scope1"> {{scope1}}</option>
                                                         </select>
                                                     </td>
                                                     <td class="col-md-3">
                                                         <select ng-model="ig1" class="form-control" disabled>
-                                                            <option ng-selected="ig1"> {{::ig1}}</option>
+                                                            <option ng-selected="ig1"> {{ig1}}</option>
                                                         </select>
                                                     </td>
                                                     <td class="col-md-4">
@@ -353,12 +363,12 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
-                                                            <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</option>
+                                                            <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
                                                         </select>
                                                     </td>
                                                     <td class="col-md-2">
                                                         <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
-                                                            <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</option>
+                                                            <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
                                                         </select>
                                                     </td>
                                                     <td class="col-md-3">
@@ -366,9 +376,9 @@
 
                                                     </td>
                                                     <td class="col-md-4">
-                                                        <select ng-model="cmp.tableId" class="form-control" ng-change="setTable2(cmp.tableId)" ng-disabled="!ig2" no-dirty-check>
+                                                        <select ng-model="cmp.tableId" class="form-control" ng-change="setTable2(cmp.tableId)" no-dirty-check>
                                                             <option value='-1'></option>
-                                                            <option ng-repeat="table in tables2 " ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{::table.bindingIdentifier}}</option>
+                                                            <option ng-repeat="table in tables2 " ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{table.bindingIdentifier}}</option>
                                                         </select>
                                                     </td>
                                                 </tr>

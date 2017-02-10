@@ -42,6 +42,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -70,7 +72,7 @@ public class ExportUtil {
     @Autowired
     private DocxExportUtil docxExportUtil;
 
-    public InputStream exportAsDocxFromXml(String xmlString, String xmlPath, ExportParameters exportParameters, MetaData metaData) {
+    public InputStream exportAsDocxFromXml(String xmlString, String xmlPath, ExportParameters exportParameters, MetaData metaData, Date dateUpdated) {
 
         try {
             File tmpHtmlFile = doTransformToTempHtml(xmlString,xmlPath,exportParameters);
@@ -82,7 +84,9 @@ public class ExportUtil {
 
             ObjectFactory factory = Context.getWmlObjectFactory();
 
-            docxExportUtil.createCoverPageForDocx4j(wordMLPackage, factory, metaData);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            String formattedDateUpdated = simpleDateFormat.format(dateUpdated);
+            docxExportUtil.createCoverPageForDocx4j(wordMLPackage, factory, metaData,formattedDateUpdated);
 
             if (exportParameters.isIncludeTOC()) {
                 docxExportUtil.createTableOfContentForDocx4j(wordMLPackage, factory);

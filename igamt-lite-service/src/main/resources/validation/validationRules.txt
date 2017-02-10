@@ -1,0 +1,266 @@
+{ 
+ "2.7.1":{
+	"properties":{"minLength":true, "truncationAllowed":true, "confLength":true}, 
+	"constrainable":{
+		"usageMap":{
+			"R" : ["R"],
+			"RE": ["RE", "R"], 
+			"C" : ["C", "C(O/O)","C(X/X)"],
+			"W" : ["W","X"],
+			"F" : ["F","X"],
+			"NA" : ["NA","X"],
+			"O": ["R", "RE", "O", "C", "C(R/R)", "C(R/RE)", "C(R/O)", "C(RE/R)", "C(R/X)", "C(RE/RE)", "C(RE/O)", "C(RE/X)", "C(O/R)", "C(O/RE)", "C(O/O)", "C(O/X)", "C(X/R)", "C(X/RE)", "C(X/O)", "X"],
+			"B" : ["B","O", "X"],
+			"C(R/R)":["R","RE","C(R/R)"], 
+			"C(R/RE)":["R","RE","C(R/R)","C(R/RE)"],
+			"C(R/X)":["R","RE","C(R/X)"],
+			"C(RE/R)":["R","RE","C(R/R)","C(RE/R)"],
+			"C(RE/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+			"C(RE/O)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)","C(R/O)","C(RE/O)"],
+			"C(RE/X)":["R","RE","C(R/X)","C(RE/X)"],
+			"C(O/R)":["R","RE","C(R/R)","C(RE/R)","C(O/R)"],
+			"C(O/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(O/R)","C(O/RE)"], 
+			"C(O/O)":["R","RE","C(R/R)","C(R/RE)", "C(R/O)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/O)","C(RE/X)","C(O/R)","C(O/RE)","C(O,O)","C(O/X)","C(X/R)","C(X/RE)","C(X/O)"], 
+			"C(O/X)":["R","RE","C(R/X)","C(RE/X)","C(O/X)"],
+			"C(X/R)":["R","RE","C(X/R)"],
+			"C(X/RE)":["R","RE","C(X/R)","C(X,RE)"],
+			"C(X/O)":["R","RE","C(X/R)","C(X/RE)","C(X/O)"],
+			"X":["X"]
+		 },
+		 "usageList":["R","RE","O", "C(R/R)","C(R/RE)", "C(R/X)", "C(RE/R)","C(RE/RE)","C(RE/O)","C(RE/X)","C(O/R)","C(O/RE)","C(O/O)","C(O/X)","C(X/R)","C(X/RE)","C(X/O)","C(X/X)","X"] 
+	}, 
+	"implementation":{
+		"usageMap":{
+			"R" :["R"],
+			"RE":["RE","R"], 
+			"C" : ["C", "C(O/O)","C(X/X)"],
+			"C(R/R)":["R","RE","C(R/R)"], 
+			"C(R/RE)":["R","RE","C(R/R)","C(R/RE)"],
+			"C(R/X)":["R","RE","C(R/X)"],
+			"C(RE/R)":["R","RE","C(R/R)","C(RE/R)"],
+			"C(RE/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+ 			"C(RE/X)":["R","RE","C(R/X)","C(RE/X)"],
+ 			"C(X/R)":["R","RE","C(X/R)"],
+			"C(X/RE)":["R","RE","C(X/R)","C(X/RE)"],
+			"W" : ["W","X"],
+            "F" : ["F","X"],
+            "NA" : ["NA","X"],
+            "O": ["R", "RE",  "C", "C(R/R)", "C(R/RE)", "C(RE/R)", "C(R/X)", "C(RE/RE)", "C(RE/X)", "C(X/R)", "C(X/RE)", "X"],
+            "B" : ["B", "X"],
+            "C(RE/O)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+            "C(O/R)":["R","RE","C(R/R)","C(RE/R)"],
+            "C(O/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)"], 
+            "C(O/O)":["R","RE","C(R/R)","C(R/RE)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/X)","C(X/R)","C(X/RE)"], 
+            "C(O/X)":["R","RE","C(R/X)","C(RE/X)"],
+            "C(X/O)":["R","RE","C(X/R)","C(X/RE)"],
+			"X":["X"]
+	 	 }, 
+	 	 "usageList":["R","RE","C(R/R)","C(R/RE)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/X)","C(X/R)","C(X/RE)","C(X/X)","X"]
+     }
+  },
+  "2.8":{
+	"properties":{"minLength":true, "truncationAllowed":true, "confLength":true}, 
+	"constrainable":{
+		"usageMap":{
+			"R" : ["R"],
+			"RE": ["RE", "R"], 
+			"C" : ["C", "C(O/O)","C(X/X)"],
+			"W" : ["W","X"],
+			"F" : ["F","X"],
+			"NA" : ["NA","X"],
+			"O": ["R", "RE", "O", "C", "C(R/R)", "C(R/RE)", "C(R/O)", "C(RE/R)", "C(R/X)", "C(RE/RE)", "C(RE/O)", "C(RE/X)", "C(O/R)", "C(O/RE)", "C(O/O)", "C(O/X)", "C(X/R)", "C(X/RE)", "C(X/O)", "X"],
+			"B" : ["B","O", "X"],
+			"C(R/R)":["R","RE","C(R/R)"], 
+			"C(R/RE)":["R","RE","C(R/R)","C(R/RE)"],
+			"C(R/X)":["R","RE","C(R/X)"],
+			"C(RE/R)":["R","RE","C(R/R)","C(RE/R)"],
+			"C(RE/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+			"C(RE/O)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)","C(R/O)","C(RE/O)"],
+			"C(RE/X)":["R","RE","C(R/X)","C(RE/X)"],
+			"C(O/R)":["R","RE","C(R/R)","C(RE/R)","C(O/R)"],
+			"C(O/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(O/R)","C(O/RE)"], 
+			"C(O/O)":["R","RE","C(R/R)","C(R/RE)", "C(R/O)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/O)","C(RE/X)","C(O/R)","C(O/RE)","C(O,O)","C(O/X)","C(X/R)","C(X/RE)","C(X/O)"], 
+			"C(O/X)":["R","RE","C(R/X)","C(RE/X)","C(O/X)"],
+			"C(X/R)":["R","RE","C(X/R)"],
+			"C(X/RE)":["R","RE","C(X/R)","C(X,RE)"],
+			"C(X/O)":["R","RE","C(X/R)","C(X/RE)","C(X/O)"],
+			"X":["X"]
+		 },
+		 "usageList":["R","RE","O", "C(R/R)","C(R/RE)", "C(R/X)", "C(RE/R)","C(RE/RE)","C(RE/O)","C(RE/X)","C(O/R)","C(O/RE)","C(O/O)","C(O/X)","C(X/R)","C(X/RE)","C(X/O)","C(X/X)","X"] 
+	}, 
+	"implementation":{
+		"usageMap":{
+			"R" :["R"],
+			"RE":["RE","R"], 
+			"C" : ["C", "C(O/O)","C(X/X)"],
+			"C(R/R)":["R","RE","C(R/R)"], 
+			"C(R/RE)":["R","RE","C(R/R)","C(R/RE)"],
+			"C(R/X)":["R","RE","C(R/X)"],
+			"C(RE/R)":["R","RE","C(R/R)","C(RE/R)"],
+			"C(RE/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+ 			"C(RE/X)":["R","RE","C(R/X)","C(RE/X)"],
+ 			"C(X/R)":["R","RE","C(X/R)"],
+			"C(X/RE)":["R","RE","C(X/R)","C(X/RE)"],
+			"W" : ["W","X"],
+            "F" : ["F","X"],
+            "NA" : ["NA","X"],
+            "O": ["R", "RE",  "C", "C(R/R)", "C(R/RE)", "C(RE/R)", "C(R/X)", "C(RE/RE)", "C(RE/X)", "C(X/R)", "C(X/RE)", "X"],
+            "B" : ["B", "X"],
+            "C(RE/O)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+            "C(O/R)":["R","RE","C(R/R)","C(RE/R)"],
+            "C(O/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)"], 
+            "C(O/O)":["R","RE","C(R/R)","C(R/RE)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/X)","C(X/R)","C(X/RE)"], 
+            "C(O/X)":["R","RE","C(R/X)","C(RE/X)"],
+            "C(X/O)":["R","RE","C(X/R)","C(X/RE)"],
+			"X":["X"]
+	 	 }, 
+	 	 "usageList":["R","RE","C(R/R)","C(R/RE)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/X)","C(X/R)","C(X/RE)","C(X/X)","X"]
+     }
+  },
+  "2.8.1":{
+	"properties":{"minLength":true, "truncationAllowed":true, "confLength":true}, 
+	"constrainable":{
+		"usageMap":{
+			"R" : ["R"],
+			"RE": ["RE", "R"], 
+			"C" : ["C", "C(O/O)","C(X/X)"],
+			"W" : ["W","X"],
+			"F" : ["F","X"],
+			"NA" : ["NA","X"],
+			"O": ["R", "RE", "O", "C", "C(R/R)", "C(R/RE)", "C(R/O)", "C(RE/R)", "C(R/X)", "C(RE/RE)", "C(RE/O)", "C(RE/X)", "C(O/R)", "C(O/RE)", "C(O/O)", "C(O/X)", "C(X/R)", "C(X/RE)", "C(X/O)", "X"],
+			"B" : ["B","O", "X"],
+			"C(R/R)":["R","RE","C(R/R)"], 
+			"C(R/RE)":["R","RE","C(R/R)","C(R/RE)"],
+			"C(R/X)":["R","RE","C(R/X)"],
+			"C(RE/R)":["R","RE","C(R/R)","C(RE/R)"],
+			"C(RE/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+			"C(RE/O)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)","C(R/O)","C(RE/O)"],
+			"C(RE/X)":["R","RE","C(R/X)","C(RE/X)"],
+			"C(O/R)":["R","RE","C(R/R)","C(RE/R)","C(O/R)"],
+			"C(O/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(O/R)","C(O/RE)"], 
+			"C(O/O)":["R","RE","C(R/R)","C(R/RE)", "C(R/O)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/O)","C(RE/X)","C(O/R)","C(O/RE)","C(O,O)","C(O/X)","C(X/R)","C(X/RE)","C(X/O)"], 
+			"C(O/X)":["R","RE","C(R/X)","C(RE/X)","C(O/X)"],
+			"C(X/R)":["R","RE","C(X/R)"],
+			"C(X/RE)":["R","RE","C(X/R)","C(X,RE)"],
+			"C(X/O)":["R","RE","C(X/R)","C(X/RE)","C(X/O)"],
+			"X":["X"]
+		 },
+		 "usageList":["R","RE","O", "C(R/R)","C(R/RE)", "C(R/X)", "C(RE/R)","C(RE/RE)","C(RE/O)","C(RE/X)","C(O/R)","C(O/RE)","C(O/O)","C(O/X)","C(X/R)","C(X/RE)","C(X/O)","C(X/X)","X"] 
+	}, 
+	"implementation":{
+		"usageMap":{
+			"R" :["R"],
+			"RE":["RE","R"], 
+			"C" : ["C", "C(O/O)","C(X/X)"],
+			"C(R/R)":["R","RE","C(R/R)"], 
+			"C(R/RE)":["R","RE","C(R/R)","C(R/RE)"],
+			"C(R/X)":["R","RE","C(R/X)"],
+			"C(RE/R)":["R","RE","C(R/R)","C(RE/R)"],
+			"C(RE/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+ 			"C(RE/X)":["R","RE","C(R/X)","C(RE/X)"],
+ 			"C(X/R)":["R","RE","C(X/R)"],
+			"C(X/RE)":["R","RE","C(X/R)","C(X/RE)"],
+			"W" : ["W","X"],
+            "F" : ["F","X"],
+            "NA" : ["NA","X"],
+            "O": ["R", "RE",  "C", "C(R/R)", "C(R/RE)", "C(RE/R)", "C(R/X)", "C(RE/RE)", "C(RE/X)", "C(X/R)", "C(X/RE)", "X"],
+            "B" : ["B", "X"],
+            "C(RE/O)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+            "C(O/R)":["R","RE","C(R/R)","C(RE/R)"],
+            "C(O/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)"], 
+            "C(O/O)":["R","RE","C(R/R)","C(R/RE)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/X)","C(X/R)","C(X/RE)"], 
+            "C(O/X)":["R","RE","C(R/X)","C(RE/X)"],
+            "C(X/O)":["R","RE","C(X/R)","C(X/RE)"],
+			"X":["X"]
+	 	 }, 
+	 	 "usageList":["R","RE","C(R/R)","C(R/RE)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/X)","C(X/R)","C(X/RE)","C(X/X)","X"]
+     }
+  },
+  "2.8.2":{
+	"properties":{"minLength":true, "truncationAllowed":true, "confLength":true}, 
+	"constrainable":{
+		"usageMap":{
+			"R" : ["R"],
+			"RE": ["RE", "R"], 
+			"C" : ["C", "C(O/O)","C(X/X)"],
+			"W" : ["W","X"],
+			"F" : ["F","X"],
+			"NA" : ["NA","X"],
+			"O": ["R", "RE", "O", "C", "C(R/R)", "C(R/RE)", "C(R/O)", "C(RE/R)", "C(R/X)", "C(RE/RE)", "C(RE/O)", "C(RE/X)", "C(O/R)", "C(O/RE)", "C(O/O)", "C(O/X)", "C(X/R)", "C(X/RE)", "C(X/O)", "X"],
+			"B" : ["B","O", "X"],
+			"C(R/R)":["R","RE","C(R/R)"], 
+			"C(R/RE)":["R","RE","C(R/R)","C(R/RE)"],
+			"C(R/X)":["R","RE","C(R/X)"],
+			"C(RE/R)":["R","RE","C(R/R)","C(RE/R)"],
+			"C(RE/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+			"C(RE/O)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)","C(R/O)","C(RE/O)"],
+			"C(RE/X)":["R","RE","C(R/X)","C(RE/X)"],
+			"C(O/R)":["R","RE","C(R/R)","C(RE/R)","C(O/R)"],
+			"C(O/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(O/R)","C(O/RE)"], 
+			"C(O/O)":["R","RE","C(R/R)","C(R/RE)", "C(R/O)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/O)","C(RE/X)","C(O/R)","C(O/RE)","C(O,O)","C(O/X)","C(X/R)","C(X/RE)","C(X/O)"], 
+			"C(O/X)":["R","RE","C(R/X)","C(RE/X)","C(O/X)"],
+			"C(X/R)":["R","RE","C(X/R)"],
+			"C(X/RE)":["R","RE","C(X/R)","C(X,RE)"],
+			"C(X/O)":["R","RE","C(X/R)","C(X/RE)","C(X/O)"],
+			"X":["X"]
+		 },
+		 "usageList":["R","RE","O", "C(R/R)","C(R/RE)", "C(R/X)", "C(RE/R)","C(RE/RE)","C(RE/O)","C(RE/X)","C(O/R)","C(O/RE)","C(O/O)","C(O/X)","C(X/R)","C(X/RE)","C(X/O)","C(X/X)","X"] 
+	}, 
+	"implementation":{
+		"usageMap":{
+			"R" :["R"],
+			"RE":["RE","R"], 
+			"C" : ["C", "C(O/O)","C(X/X)"],
+			"C(R/R)":["R","RE","C(R/R)"], 
+			"C(R/RE)":["R","RE","C(R/R)","C(R/RE)"],
+			"C(R/X)":["R","RE","C(R/X)"],
+			"C(RE/R)":["R","RE","C(R/R)","C(RE/R)"],
+			"C(RE/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+ 			"C(RE/X)":["R","RE","C(R/X)","C(RE/X)"],
+ 			"C(X/R)":["R","RE","C(X/R)"],
+			"C(X/RE)":["R","RE","C(X/R)","C(X/RE)"],
+			"W" : ["W","X"],
+            "F" : ["F","X"],
+            "NA" : ["NA","X"],
+            "O": ["R", "RE",  "C", "C(R/R)", "C(R/RE)", "C(RE/R)", "C(R/X)", "C(RE/RE)", "C(RE/X)", "C(X/R)", "C(X/RE)", "X"],
+            "B" : ["B", "X"],
+            "C(RE/O)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+            "C(O/R)":["R","RE","C(R/R)","C(RE/R)"],
+            "C(O/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)"], 
+            "C(O/O)":["R","RE","C(R/R)","C(R/RE)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/X)","C(X/R)","C(X/RE)"], 
+            "C(O/X)":["R","RE","C(R/X)","C(RE/X)"],
+            "C(X/O)":["R","RE","C(X/R)","C(X/RE)"],
+			"X":["X"]
+	 	 }, 
+	 	 "usageList":["R","RE","C(R/R)","C(R/RE)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/X)","C(X/R)","C(X/RE)","C(X/X)","X"]
+     }
+  },
+  
+ "others":{
+	 "properties":{ "minLength":false, "truncationAllowed":false, "confLength":false}, 
+	 "constrainable":{
+		"usageMap":{
+			"R" :["R"],
+			"RE":["RE","R"], 
+			"O":["R","RE","O","C","X"],
+			"C":["C","C(O/O)","C(X/X)"], 
+			"CE":["R","RE","C","CE"],
+			"X":["X"]
+		 },
+		"usageList":["R","RE","O","C","CE","X"]
+	}, 
+	"implementation":{
+		"usageMap":{
+			"R":["R"],
+			"RE":["RE", "R"], 
+			"C":["C", "C(X/X)"], 
+			"CE":["R","RE","C","CE"],
+			"X":["X"]
+		}, 
+		"usageList":["R","RE","O","C","CE","X"]
+     }
+ }
+ 
+ 
+
+}

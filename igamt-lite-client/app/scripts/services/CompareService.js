@@ -62,16 +62,13 @@ angular.module('igl').factory('CompareService',
                         CompareService.writettTable(arraySeg[i], dataList);
                     }
                 }
-                console.log("dataList---------------------------------");
                 var isEmpty = true;
+             
                 var result = [];
                 for (var i = 0; i < dataList.length; i++) {
-                    console.log("dataList+++++");
-                    console.log(dataList[i]);
 
                     if (!_.isEmpty(dataList[i])) {
-                        console.log("inside");
-                        console.log(dataList[i]);
+
                         result.push(dataList[i]);
                         isEmpty = false;
                     }
@@ -93,14 +90,12 @@ angular.module('igl').factory('CompareService',
                 //var diff = ObjectDiff.diffOwnProperties(seg1, seg2);
                 var diff = ObjectDiff.diff(seg1, seg2);
 
-                console.log(diff);
                 var dataList = [];
                 if (diff.changed === "object change") {
                     var array = CompareService.objToArray(diff);
                     var arraySeg = CompareService.objToArray(array[1]);
                     CompareService.writettTable(arraySeg[0], dataList);
                 }
-                console.log(dataList);
                 return dataList;
             },
             cmpDatatype: function(datatype1, datatype2, dtList1, dtList2, segList1, segList2) {
@@ -123,11 +118,14 @@ angular.module('igl').factory('CompareService',
 
                 var vs1 = JSON.parse(table1);
                 var vs2 = JSON.parse(table2);
+               
+                
                 var diff = ObjectDiff.diffOwnProperties(vs1, vs2);
                 var dataList = [];
                 if (diff.changed === "object change") {
                     CompareService.writettTable(diff, dataList);
                 }
+              
                 return dataList
             },
             fMsg: function(msg, datatypeList, segmentList) {
@@ -251,6 +249,9 @@ angular.module('igl').factory('CompareService',
                         fields[i].datatype.ext = null;
                     }
                     fields[i].datatype.id = "";
+                    for (var k = 0; k < fields[i].tables.length; k++) {
+                        fields[i].tables[k].id = "";
+                    }
 
                 };
 
@@ -296,6 +297,7 @@ angular.module('igl').factory('CompareService',
 
 
                             if (childArray.value.name.changed === "equal") {
+
                                 result.label = {
                                     element: childArray.value.name.value,
                                 };
@@ -322,11 +324,7 @@ angular.module('igl').factory('CompareService',
                                     element2: childArray.value.min.added
 
                                 };
-                            } else if (childArray.value.min && childArray.value.min.changed === "removed") {
-                                console.log(childArray.value.min);
-                            } else if (childArray.value.min && childArray.value.min.changed === "added") {
-                                console.log(childArray.value.min);
-                            }
+                            } else if (childArray.value.min && childArray.value.min.changed === "removed") {} else if (childArray.value.min && childArray.value.min.changed === "added") {}
                             if (childArray.value.max && childArray.value.max.changed === "primitive change") {
                                 result.maxCard = {
                                     element1: childArray.value.max.removed,
@@ -387,12 +385,46 @@ angular.module('igl').factory('CompareService',
                                 // });
 
                             }
-                            if (childArray.value.table && childArray.value.table.changed === "object change" && childArray.value.table.value.bindingIdentifier.changed === "primitive change") {
-                                result.valueset = {
-                                    element1: childArray.value.table.value.bindingIdentifier.removed,
-                                    element2: childArray.value.table.value.bindingIdentifier.added
+                            var objToArray = function(object) {
+                                var result = [];
+                                $.map(object, function(value, index) {
 
-                                };
+                                    result.push(value);
+                                });
+                                return result;
+
+                            };
+                            if (childArray.value.tables && childArray.value.tables.changed === "object change") {
+                                result.valuesets = [];
+
+                                var tables = objToArray(childArray.value.tables.value);
+                                for (var i = 0; i < tables.length; i++) {
+
+                                    if (tables[i].changed === "object change") {
+
+                                        if (tables[i].value.bindingIdentifier.changed === "primitive change") {
+                                            result.valuesets.push({
+                                                element1: tables[i].value.bindingIdentifier.removed,
+                                                element2: tables[i].value.bindingIdentifier.added
+
+                                            });
+                                        }
+
+                                    } else if (tables[i].changed === "removed") {
+
+                                        result.valuesets.push({
+                                            element1: tables[i].value.bindingIdentifier,
+                                            element2: ""
+                                        });
+                                    } else if (tables[i].changed === "added") {
+                                        result.valuesets.push({
+                                            element1: "",
+                                            element2: tables[i].value.bindingIdentifier
+                                        });
+                                    }
+                                }
+
+
 
                             }
 
@@ -452,7 +484,6 @@ angular.module('igl').factory('CompareService',
 
 
                             if (childArray.value.fields && childArray.value.fields.changed === "object change") {
-                                console.log(childArray.value.fields);
                                 result.fields = [];
                                 CompareService.objToArray(childArray.value.fields.value).forEach(function(childNode) {
                                     CompareService.writettTable(childNode, result.fields);
@@ -486,6 +517,7 @@ angular.module('igl').factory('CompareService',
 
                             }
                         } else if (childArray.value.type.value === "table") {
+                         
                             if (childArray.value.bindingIdentifier.changed === "primitive change") {
                                 result.label = {
                                     element1: childArray.value.bindingIdentifier.removed,
@@ -526,6 +558,7 @@ angular.module('igl').factory('CompareService',
                                 });
                             }
                         } else if (childArray.value.type.value === "code") {
+                           
                             if (childArray.value.codeSystem && childArray.value.codeSystem.changed === "primitive change") {
                                 result.codeSystem = {
                                     element1: childArray.value.codeSystem.removed,
@@ -581,8 +614,7 @@ angular.module('igl').factory('CompareService',
                     if (childArray.value.type === "field" || childArray.value.type === "component") {
                         var empty = "";
 
-                        console.log("--HEEEEREE");
-                        console.log(childArray);
+
                         result.position = {
                             element: childArray.value.position,
 
@@ -666,7 +698,6 @@ angular.module('igl').factory('CompareService',
                             }
                         }
 
-                        console.log(components);
                         result.components = components;
 
 
@@ -676,8 +707,7 @@ angular.module('igl').factory('CompareService',
                 } else if (childArray.changed === "removed") {
                     var empty = "";
                     if (childArray.value.type === "field" || childArray.value.type === "component") {
-                        console.log("--HEEEEREE");
-                        console.log(childArray);
+
                         result.position = {
                             element: childArray.value.position,
 
@@ -761,7 +791,6 @@ angular.module('igl').factory('CompareService',
                             }
                         }
 
-                        console.log(components);
                         result.components = components;
 
 

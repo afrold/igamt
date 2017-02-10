@@ -13,6 +13,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 
 import com.mongodb.gridfs.GridFSDBFile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
@@ -75,7 +76,7 @@ public class DocxExportUtil {
 	private FileStorageService fileStorageService;
 
 	public void createCoverPageForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory,
-			MetaData metaData) {
+			MetaData metaData, String dateUpdated) {
 
 		BufferedImage image = null;
 		try {
@@ -97,31 +98,41 @@ public class DocxExportUtil {
 			e.printStackTrace();
 		}
 
-		if ( null!= metaData && metaData instanceof DocumentMetaData) {
-				DocumentMetaData documentMetaData = (DocumentMetaData) metaData;
-				if(null != documentMetaData.getTitle()) {
-						wordMLPackage.getMainDocumentPart()
-								.addStyledParagraphOfText("Title", documentMetaData.getTitle());
-						addLineBreak(wordMLPackage, factory);
+		if ( null!= metaData) {
+				if(metaData instanceof DocumentMetaData) {
+						DocumentMetaData documentMetaData = (DocumentMetaData) metaData;
+						if (null != documentMetaData.getTitle()) {
+								wordMLPackage.getMainDocumentPart()
+										.addStyledParagraphOfText("Title", documentMetaData.getTitle());
+								addLineBreak(wordMLPackage, factory);
+						}
+						if (null != documentMetaData.getSubTitle() && !documentMetaData.getSubTitle().isEmpty()) {
+								wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle",
+										"Subtitle " + documentMetaData.getSubTitle());
+						}
+				} else {
+						if(null!=metaData.getName() & !"".equals(metaData.getName())){
+								wordMLPackage.getMainDocumentPart()
+										.addStyledParagraphOfText("Title", metaData.getName());
+								addLineBreak(wordMLPackage, factory);
+						}
+						if(null!=metaData.getDescription() & !"".equals(metaData.getDescription())){
+								wordMLPackage.getMainDocumentPart()
+										.addStyledParagraphOfText("Style1", "Description: "+metaData.getDescription());
+								addLineBreak(wordMLPackage, factory);
+						}
 				}
-				if(null!=documentMetaData.getSubTitle() && !documentMetaData.getSubTitle().isEmpty()) {
-					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle", "Subtitle " + documentMetaData.getSubTitle());
-				}
-				if(null!=documentMetaData.getDate() && !documentMetaData.getDate().isEmpty()) {
-					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", metaData.getDate());
+				if(null!=dateUpdated && !dateUpdated.isEmpty()) {
+					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", dateUpdated);
 				}
 				addLineBreak(wordMLPackage, factory);
 				addLineBreak(wordMLPackage, factory);
-				if (null != documentMetaData.getHl7Version() && !"".equals(documentMetaData.getHl7Version())) {
+				if (null != metaData.getHl7Version() && !"".equals(metaData.getHl7Version())) {
 					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1",
-							"HL7 Version " + documentMetaData.getHl7Version());
+							"HL7 Version " + metaData.getHl7Version());
 				}
-				if(null!=documentMetaData.getVersion() && !documentMetaData.getVersion().isEmpty()) {
-						wordMLPackage.getMainDocumentPart()
-								.addStyledParagraphOfText("Style1", "Document Version " + documentMetaData.getVersion());
-				}
-				if (null != documentMetaData.getOrgName() && !"".equals(documentMetaData.getOrgName())) {
-					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", documentMetaData.getOrgName());
+				if (null != metaData.getOrgName() && !"".equals(metaData.getOrgName())) {
+					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", metaData.getOrgName());
 				}
 		}
 		addPageBreak(wordMLPackage, factory);
@@ -148,7 +159,7 @@ public class DocxExportUtil {
 		R r1 = factory.createR();
 		Text txt = new Text();
 		txt.setSpace("preserve");
-		txt.setValue("TOC \\o \"1-3\" \\h \\z \\u \\h");
+		txt.setValue("TOC \\o \"1-5\" \\h \\z \\u \\h");
 		r.getContent().add(factory.createRInstrText(txt));
 		paragraphForTOC.getContent().add(r1);
 

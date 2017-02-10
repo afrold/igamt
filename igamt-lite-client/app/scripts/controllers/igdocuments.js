@@ -11,7 +11,7 @@ angular.module('igl')
     $scope.uiGrid = {};
     $rootScope.igs = [];
     $rootScope.currentData = null;
-    $rootScope.editForm=$scope.editForm;
+    $rootScope.editForm = $scope.editForm;
     $scope.tmpIgs = [].concat($rootScope.igs);
     $scope.error = null;
     $scope.loadingTree = false;
@@ -61,6 +61,11 @@ angular.module('igl')
     $scope.Dndenabled=function(){
       return  $scope.igDocumentConfig.selectedType=='USER';
     }
+
+    $scope.validateIG = function() {
+        console.log($rootScope.igdocument.id);
+    };
+
     $scope.selectIgTab = function(value) {
         if (value === 1) {
             $scope.accordi.igList = false;
@@ -89,15 +94,15 @@ angular.module('igl')
             return DatatypeService.getTemplate(node, $rootScope.datatype);
         }
     });
-    
+
     $scope.messagesParams = new ngTreetableParams({
-            getNodes: function(parent) {
-            	console.log($rootScope.messageTree);
-                return MessageService.getNodes(parent, $rootScope.messageTree);
-            },
-            getTemplate: function(node) {
-                return MessageService.getTemplate(node, $rootScope.messageTree);
-            }
+        getNodes: function(parent) {
+            console.log($rootScope.messageTree);
+            return MessageService.getNodes(parent, $rootScope.messageTree);
+        },
+        getTemplate: function(node) {
+            return MessageService.getTemplate(node, $rootScope.messageTree);
+        }
     });
 
     $rootScope.closeIGDocument = function() {
@@ -479,7 +484,7 @@ angular.module('igl')
                 $rootScope.datatypeLibrary = igdocument.profile.datatypeLibrary;
                 $rootScope.tableLibrary = igdocument.profile.tableLibrary;
                 $rootScope.ext = igdocument.metaData.ext;
-                $rootScope.igVersion=igdocument.profile.metaData.hl7Version;
+                $rootScope.igVersion = igdocument.profile.metaData.hl7Version;
                 $rootScope.selectedMessages = angular.copy(igdocument.profile.messages.children);
                 $scope.loadingIGDocument = true;
                 $rootScope.isEditing = true;
@@ -498,13 +503,13 @@ angular.module('igl')
                             $scope.loadTables().then(function() {
                                 $scope.collectMessages();
 
-                 
-                               try {
-                                   if ($scope.messagesParams)
-                                	   $scope.messagesParams.refresh();
-                               } catch (e) {
 
-                               }
+                                try {
+                                    if ($scope.messagesParams)
+                                        $scope.messagesParams.refresh();
+                                } catch (e) {
+
+                                }
                                 $scope.loadIgDocumentMetaData();
 
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);
@@ -856,26 +861,26 @@ angular.module('igl')
         }, function() {});
     };
 
-    
-    $scope.selectMessagesForExport=function(igdocument){
+
+    $scope.selectMessagesForExport = function(igdocument) {
         if ($rootScope.hasChanges()) {
-            $rootScope.openConfirmLeaveDlg().result.then(function () {
-            	if ($scope.editForm) {
-        	    	console.log("Cleeaning");
-        	        $scope.editForm.$setPristine();
-        	        $scope.editForm.$dirty = false;
-        	        $scope.editForm.$invalid = false;
-        	        
-        	    }
-        	    $rootScope.clearChanges();
-        	    $scope.processSelectMessagesForExport(igdocument);
+            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                if ($scope.editForm) {
+                    console.log("Cleeaning");
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                    $scope.editForm.$invalid = false;
+
+                }
+                $rootScope.clearChanges();
+                $scope.processSelectMessagesForExport(igdocument);
 
             });
-        }else{
-        	 $scope.processSelectMessagesForExport(igdocument);
+        } else {
+            $scope.processSelectMessagesForExport(igdocument);
         }
-   }
- 
+    }
+
     $scope.processSelectMessagesForExport = function(igdocument) {
         var modalInstance = $modal.open({
             templateUrl: 'SelectMessagesForExportCtrl.html',
@@ -1069,54 +1074,51 @@ angular.module('igl')
     };
 
     $scope.exportAs = function(format) {
-    	
-    	
+
+
         if ($rootScope.hasChanges()) {
 
-            $rootScope.openConfirmLeaveDlg().result.then(function () {
-            	
+            $rootScope.openConfirmLeaveDlg().result.then(function() {
+
                 if ($rootScope.igdocument != null) {
                     if ($scope.editForm) {
-                    	console.log("Cleeaning");
+                        console.log("Cleeaning");
                         $scope.editForm.$setPristine();
                         $scope.editForm.$dirty = false;
                         $scope.editForm.$invalid = false;
-                        
+
                     }
                     $rootScope.clearChanges();
                     IgDocumentService.exportAs($rootScope.igdocument, format);
                 }
 
             });
-        }
-        else if ($rootScope.igdocument != null) {
+        } else if ($rootScope.igdocument != null) {
             IgDocumentService.exportAs($rootScope.igdocument, format);
         }
     };
 
     $scope.exportAsWithLayout = function(format, layout) {
         if ($rootScope.hasChanges()) {
-        	
 
-            $rootScope.openConfirmLeaveDlg().result.then(function () {
-            	
+
+            $rootScope.openConfirmLeaveDlg().result.then(function() {
+
                 if ($rootScope.igdocument != null) {
-                	if ($scope.editForm) {
-                    	console.log("Cleeaning");
+                    if ($scope.editForm) {
+                        console.log("Cleeaning");
                         $scope.editForm.$setPristine();
                         $scope.editForm.$dirty = false;
                         $scope.editForm.$invalid = false;
-                        
+
                     }
                     $rootScope.clearChanges();
-                	
+
                     IgDocumentService.exportAsWithLayout($rootScope.igdocument, format, layout);
                 }
 
             });
-        }
-    	    	
-        else if ($rootScope.igdocument != null) {
+        } else if ($rootScope.igdocument != null) {
             IgDocumentService.exportAsWithLayout($rootScope.igdocument, format, layout);
         }
     };
@@ -1319,6 +1321,7 @@ angular.module('igl')
                     try {
                         DatatypeService.getOne(datatype.id).then(function(result) {
                             $rootScope.datatype = angular.copy(result);
+                            $rootScope.datatypeValidationResult = null;
                             $rootScope.$emit("event:initDatatype");
 
                             $rootScope.currentData = datatype;

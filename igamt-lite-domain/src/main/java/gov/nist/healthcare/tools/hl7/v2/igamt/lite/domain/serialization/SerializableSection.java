@@ -55,7 +55,9 @@ public class SerializableSection extends SerializableElement {
     @Override
     public Element serializeElement() {
         for(SerializableSection serializableSection : serializableSectionList){
-            sectionElement.appendChild(serializableSection.serializeElement());
+            if(serializableSection!=null) {
+                sectionElement.appendChild(serializableSection.serializeElement());
+            }
         }
         return sectionElement;
     }
@@ -89,5 +91,11 @@ public class SerializableSection extends SerializableElement {
 
     @Override public String getPrefix() {
         return prefix;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        this.titleAttribute = new Attribute("title", title);
+        this.sectionElement.addAttribute(titleAttribute);
     }
 }

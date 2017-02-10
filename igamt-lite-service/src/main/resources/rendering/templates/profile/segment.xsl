@@ -60,6 +60,11 @@
                         <xsl:text>10%</xsl:text>
                     </xsl:attribute>
                 </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>10%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
                 <xsl:if test="@ShowConfLength='true'">
                     <xsl:element name="col">
                         <xsl:attribute name="width">
@@ -68,14 +73,14 @@
                     </xsl:element>
                     <xsl:element name="col">
                         <xsl:attribute name="width">
-                            <xsl:text>30%</xsl:text>
+                            <xsl:text>20%</xsl:text>
                         </xsl:attribute>
                     </xsl:element>
                 </xsl:if>
                 <xsl:if test="@ShowConfLength='false'">
                     <xsl:element name="col">
                         <xsl:attribute name="width">
-                            <xsl:text>40%</xsl:text>
+                            <xsl:text>30%</xsl:text>
                         </xsl:attribute>
                     </xsl:element>
                 </xsl:if>
@@ -99,9 +104,12 @@
                         <xsl:element name="th">
                             <xsl:text>Cardinality</xsl:text>
                         </xsl:element>
+                        <xsl:element name="th">
+                            <xsl:text>Length</xsl:text>
+                        </xsl:element>
                         <xsl:if test="@ShowConfLength='true'">
                             <xsl:element name="th">
-                                <xsl:text>Length</xsl:text>
+                                <xsl:text>ConfLength</xsl:text>
                             </xsl:element>
                         </xsl:if>
                         <xsl:element name="th">
@@ -125,9 +133,11 @@
         </xsl:element>
         <xsl:if test="count(Constraint) &gt; 0">
             <xsl:if test="count(Constraint[@Type='cs']) &gt; 0">
-                <xsl:element name="strong">
-                    <xsl:element name="u">
-                        <xsl:text>Conformance Statements</xsl:text>
+                <xsl:element name="p">
+                    <xsl:element name="strong">
+                        <xsl:element name="u">
+                            <xsl:text>Conformance Statements</xsl:text>
+                        </xsl:element>
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="table">
@@ -145,15 +155,20 @@
                                 <xsl:with-param name="type">
                                     <xsl:text>cs</xsl:text>
                                 </xsl:with-param>
+                                <xsl:with-param name="displayPeriod">
+                                    <xsl:text>false</xsl:text>
+                                </xsl:with-param>
                             </xsl:call-template>
                         </xsl:for-each>
                     </xsl:element>
                 </xsl:element>
             </xsl:if>
             <xsl:if test="count(Constraint[@Type='pre']) &gt; 0">
-                <xsl:element name="strong">
-                    <xsl:element name="u">
-                        <xsl:text>Conditional Predicates</xsl:text>
+                <xsl:element name="p">
+                    <xsl:element name="strong">
+                        <xsl:element name="u">
+                            <xsl:text>Conditional Predicates</xsl:text>
+                        </xsl:element>
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="table">
@@ -171,6 +186,9 @@
                                 <xsl:with-param name="type">
                                     <xsl:text>pre</xsl:text>
                                 </xsl:with-param>
+                                <xsl:with-param name="displayPeriod">
+                                    <xsl:text>false</xsl:text>
+                                </xsl:with-param>
                             </xsl:call-template>
                         </xsl:for-each>
                     </xsl:element>
@@ -178,26 +196,40 @@
             </xsl:if>
         </xsl:if>
         
-        <xsl:value-of disable-output-escaping="yes" select="./coconstraints"></xsl:value-of>
+        <xsl:apply-templates select="./coconstraints"></xsl:apply-templates>
 
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
-            <xsl:call-template name="definitionText">
-                <xsl:with-param name="type">
-                    <xsl:text>post</xsl:text>
-                </xsl:with-param>
-            </xsl:call-template>
+            <xsl:element name="p">
+                <xsl:call-template name="definitionText">
+                    <xsl:with-param name="type">
+                        <xsl:text>post</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </xsl:element>
         </xsl:if>
 
         <xsl:for-each select="Field">
             <xsl:sort select="@Position" data-type="number"></xsl:sort>
             <xsl:if test="count(Text) &gt; 0">
-	            <xsl:element name="b">
-	                <xsl:value-of select="concat(../@Name,' - ',./@Position,' : ',./@Name,'(',./@Datatype,')')" />
-	            </xsl:element>
-	            <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
+	            <xsl:element name="p">
+                    <xsl:element name="b">
+                        <xsl:value-of select="concat(../@Name,'-',./@Position,' : ',./@Name,' (',./@Datatype,')')" />
+                    </xsl:element>
+                    <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
+                </xsl:element>
             </xsl:if>
         </xsl:for-each>
-        <xsl:element name="br"/>
+    </xsl:template>
+
+    <xsl:template match="coconstraints">
+        <xsl:element name="p">
+            <xsl:element name="strong">
+                <xsl:element name="u">
+                    <xsl:text>Co-Constraints</xsl:text>
+                </xsl:element>
+            </xsl:element>
+        </xsl:element>
+        <xsl:copy-of select="table"/>
     </xsl:template>
 
 </xsl:stylesheet>

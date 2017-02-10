@@ -5,12 +5,12 @@
         antiClickjack.parentNode.removeChild(antiClickjack);
     } else {
         top.location = self.location;
-    }</script> <div class="container" ng-init="init()"> <tabset> <tab active="datatypeTab" ng-attr-active="datatypeTab" select="select(dtTab)"> <tab-heading ng-click="setTypeOfSharing('datatype');"> Datatypes </tab-heading> <div ng-include="sharedElementView"></div> </tab> <tab active="tableTab" ng-attr-active="tableTab" select="select(vsTab)"> <tab-heading ng-click="setTypeOfSharing('table');"> Value Sets </tab-heading> <div ng-include="sharedElementViewForTables"></div> </tab> <!--  <tab active="segmentTab" select="select(segTab)">
+    }</script> <div ng-if="isAuthenticated()" class="container" ng-init="init()"> <tabset> <tab active="datatypeTab" ng-attr-active="datatypeTab" select="select(dtTab)"> <tab-heading ng-click="setTypeOfSharing('datatype');"> Datatypes </tab-heading> <div ng-include="sharedElementView"></div> </tab> <tab active="tableTab" ng-attr-active="tableTab" select="select(vsTab)"> <tab-heading ng-click="setTypeOfSharing('table');"> Value Sets </tab-heading> <div ng-include="sharedElementViewForTables"></div> </tab> <!--  <tab active="segmentTab" select="select(segTab)">
                   <tab-heading>
                     Segments
                   </tab-heading>
                   <div ng-include="'views/edit/editIG.html'"></div>
-                </tab --> </tabset> </div> <script type="text/ng-template" id="sharedElementView"><br/>
+                </tab --> </tabset> </div> <div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto"> <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p> </div> <script type="text/ng-template" id="sharedElementView"><br/>
 		<div class="row">
 			<!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
 			<!--<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->

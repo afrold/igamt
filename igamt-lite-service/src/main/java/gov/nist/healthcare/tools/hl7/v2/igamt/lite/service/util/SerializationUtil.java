@@ -7,6 +7,7 @@ import nu.xom.Attribute;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class SerializationUtil {
   }
 
   public String cleanRichtext(String richtext) {
+    richtext = StringEscapeUtils.unescapeHtml4(richtext);
     richtext = richtext.replace("<br>", "<br></br>");
     richtext = richtext.replace("<p style=\"\"><br></p>", "<p></p>");
     richtext = richtext.replaceAll("[^\\p{Print}]", "?");

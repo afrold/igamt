@@ -56,6 +56,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
@@ -101,6 +102,9 @@ public class Bootstrap implements InitializingBean {
   DataCorrectionSectionPosition dataCorrectionSectionPosition;
   @Autowired
   private ProfileComponentLibraryService profileComponentLibraryService;
+
+  @Autowired
+  private TableLibraryRepository tableLibraryRepository;
 
   /*
    * (non-Javadoc)
@@ -157,6 +161,51 @@ public class Bootstrap implements InitializingBean {
     // fixConfLengths();
     // fixUserPublishedData();
     // fixConstraints1();
+
+    // changeStatusofPHINVADSTables();
+  }
+
+  private void changeStatusofPHINVADSTables() {
+    List<Table> allTables = tableService.findAll();
+
+    for (Table t : allTables) {
+      if (null != t && null != t.getScope()) {
+        if (t.getScope().equals(SCOPE.PHINVADS) && STATUS.UNPUBLISHED.equals(t.getStatus())) {
+          tableService.updateStatus(t.getId(), STATUS.PUBLISHED);
+        }
+      }
+    }
+  }
+
+  private void fixMissingCodes(String sourceTableLibId, String targetTableLibId) {
+    TableLibrary sourceLib = tableLibraryRepository.findById(sourceTableLibId);
+    TableLibrary tagertLib = tableLibraryRepository.findById(targetTableLibId);
+
+    for (TableLink targetLink : tagertLib.getChildren()) {
+      Table targetTable = tableService.findById(targetLink.getId());
+      if (targetTable.getScope().equals(SCOPE.USER)
+          && (targetTable.getCodes() == null || targetTable.getCodes().isEmpty())) {
+        TableLink sourceLink = findTableLink(sourceLib, targetTable.getBindingIdentifier());
+        if (sourceLink != null) {
+          Table sourceTable = tableService.findById(sourceLink.getId());
+          if (sourceTable != null) {
+            targetTable.setCodes(sourceTable.getCodes());
+            tableService.save(targetTable);
+          }
+        }
+      }
+    }
+  }
+
+
+  private TableLink findTableLink(TableLibrary library, String bindingIdentifier) {
+    for (TableLink targetLink : library.getChildren()) {
+      if (targetLink.getBindingIdentifier() != null
+          && targetLink.getBindingIdentifier().equals(bindingIdentifier)) {
+        return targetLink;
+      }
+    }
+    return null;
   }
 
   private void fixConstraints1() {

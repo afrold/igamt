@@ -61,10 +61,11 @@ public class ExportServiceImpl implements ExportService {
         if (igDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(
                 DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD);
+            igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
             return exportUtil.exportAsDocxFromXml(
                 serializationService.serializeIGDocument(igDocument, serializationLayout).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,
-                igDocument.getMetaData());
+                igDocument.getMetaData(),igDocument.getDateUpdated());
         } else {
             return new NullInputStream(1L);
         }
@@ -95,8 +96,8 @@ public class ExportServiceImpl implements ExportService {
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML);
-            return exportUtil.exportAsHtmlFromXsl(igDocumentSerializationService
-                    .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
+            return exportUtil.exportAsHtmlFromXsl(serializationService
+                    .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,datatypeLibraryDocument.getMetaData());
         } else {
             return new NullInputStream(1L);
@@ -107,9 +108,9 @@ public class ExportServiceImpl implements ExportService {
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD);
-            return exportUtil.exportAsDocxFromXml(igDocumentSerializationService
-                    .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
-                GLOBAL_STYLESHEET, exportParameters, datatypeLibraryDocument.getMetaData());
+            return exportUtil.exportAsDocxFromXml(serializationService
+                    .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
+                GLOBAL_STYLESHEET, exportParameters, datatypeLibraryDocument.getMetaData(),datatypeLibraryDocument.getDateUpdated());
         } else {
             return new NullInputStream(1L);
         }
