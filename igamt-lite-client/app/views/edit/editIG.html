@@ -85,9 +85,9 @@
                             </li>
                             <li class="drop-accordian"><a class="point" ng-click="$event.stopPropagation();htmlDrop = !htmlDrop">As HTML <span class="caret"><!-- --></span></a>
                                 <ul class="drop-accordian-menu" ng-show="htmlDrop">
-                                    <li title="Export In IG Style. The segments definitions are outside the conformance profiles."><a class="point" ng-click="exportAsWithLayout('html','IGDocument')">Compact Mode</a></li>
-                                    <li title="Export In Profile Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('html','Profile')">Verbose Mode<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
-                                    <li title="Export In Table Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('html','Table')">Verbose Mode<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
+                                    <li title="Export In IG Style. The segments definitions are outside the conformance profiles."><a class="point" ng-click="exportAsWithLayout('html','IGDocument')">IG Style</a></li>
+                                    <li title="Export In Profile Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('html','Profile')">Profile Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
+                                    <li title="Export In Table Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('html','Table')">Table Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
                                 </ul>
                             </li>
                             <!--li><a class="point" ng-click="customExportModal()">Advanced Export</a></li-->

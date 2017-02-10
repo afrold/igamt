@@ -584,7 +584,7 @@ public class IGDocumentController extends CommonController {
     if (account == null) {
       throw new UserAccountNotFoundException();
     }
-    ExportConfig exportConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
+    ExportConfig exportConfig = exportConfigService.findOneByTypeAndAccountId(identifyType(type), account.getId());
     content = exportService.exportIGDocumentAsHtml(d, serializationLayout,exportConfig);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
@@ -613,6 +613,25 @@ public class IGDocumentController extends CommonController {
         break;
     }
     return serializationLayout;
+  }
+
+  private String identifyType(String layout) {
+    String type;
+    switch (layout) {
+      case "IgDocument":
+        type = "Ig Document";
+        break;
+      case "Profile":
+        type = "Profile Style";
+        break;
+      case "Table":
+        type = "Table Style";
+        break;
+      default:
+        type = "IG Style";
+        break;
+    }
+    return type;
   }
 
   @RequestMapping(value = "/{id}/export/zip", method = RequestMethod.POST,

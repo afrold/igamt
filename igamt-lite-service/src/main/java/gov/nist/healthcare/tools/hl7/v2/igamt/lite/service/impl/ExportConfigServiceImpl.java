@@ -13,6 +13,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,9 @@ public class ExportConfigServiceImpl implements ExportConfigService {
 
   @Autowired
   ExportConfigRepository exportConfigRepository;
+
+  @Autowired
+  static final Logger logger = LoggerFactory.getLogger(ExportConfigService.class);
 
   @Override
   public List<ExportConfig> findByType(String type) {
@@ -86,7 +91,15 @@ public class ExportConfigServiceImpl implements ExportConfigService {
   }
 
   @Override public ExportConfig findOneByTypeAndAccountId(String type, Long accountId) {
-    return exportConfigRepository.findOneByTypeAndAccountId(type,accountId);
+    ExportConfig exportConfig = null;
+    try{
+      exportConfig = exportConfigRepository.findOneByTypeAndAccountId(type,accountId);
+    } catch (Exception e){
+      logger.warn("Could not find a configuration for account "+accountId+" with the type "+type);
+    } finally {
+      exportConfig = findDefault();
+    }
+    return exportConfig;
   }
   /*
    * (non-Javadoc)
