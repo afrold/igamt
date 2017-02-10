@@ -190,4 +190,22 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     return date;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentOperations#updatePosition(java.lang.
+   * String, int)
+   */
+  @Override
+  public int updatePosition(String id, int position) {
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    query.fields().include("position");
+    Update update = new Update();
+    update.set("position", position);
+    mongo.updateFirst(query, update, IGDocument.class);
+    return position;
+  }
+
 }

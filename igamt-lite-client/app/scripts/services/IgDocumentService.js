@@ -179,6 +179,17 @@ angular.module('igl').factory('IgDocumentService', function($rootScope, ViewSett
                 delay.reject(error);
             });
             return delay.promise;
+        },
+        orderIgDocument:function(igList){
+        var delay = $q.defer();
+            $http.post('api/igdocuments/reorderIgs',igList).then(function(response) {
+                var resu = response.data;
+                delay.resolve(resu);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+
         }
     };
     return IgDocumentService;
