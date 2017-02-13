@@ -2229,7 +2229,7 @@ angular.module('igl').controller('AddDatatypeCtrlFromUserLib',
             console.log($scope.newDatatype.ext);
             $scope.newDatatype.scope = datatypeLibrary.scope;
             $scope.newDatatype.status = "UNPUBLISHED";
-
+            $scope.newDatatype.publicationVersion=0;
             $scope.newDatatype.participants = [];
             $scope.newDatatype.id = new ObjectId().toString();
             $scope.newDatatype.libIds = [];
@@ -2507,7 +2507,10 @@ angular.module('igl').controller('addMAsterInLibrary',
             return $scope.checkedExt;
         };
         $scope.addDtFlv = function(datatype) {
+
             $scope.newDatatype = angular.copy(datatype);
+            $scope.newDatatype.publicationVersion=0;
+
             if ($rootScope.igdocument) {
 
                 console.log("merging");
@@ -2835,6 +2838,8 @@ angular.module('igl').controller('AddSharedDatatype',
         };
         $scope.addDtFlv = function(datatype) {
             $scope.newDatatype = angular.copy(datatype);
+            $scope.newDatatype.publicationVersion=0;
+
 
             $scope.newDatatype.ext = Math.floor(Math.random() * 1000);
 

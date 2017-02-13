@@ -425,6 +425,7 @@ angular.module('igl')
             $scope.results = [];
             angular.forEach($rootScope.datatypeLibrary.children, function(dtLink) {
                 if (dtLink.name && dtLink.name === field.datatype.name) {
+
                     $scope.results.push(dtLink);
                 }
             });

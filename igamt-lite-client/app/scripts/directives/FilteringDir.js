@@ -20,7 +20,7 @@ function ($filter, $document, $compile, $parse) {
             var groups = attrs.groupBy ? true : false;
 
             var template = '<div class="multiselect-parent btn-group dropdown-multiselect">';
-            template += '<button type="button" class="dropdown-toggle" ng-class="settings.buttonClasses" ng-click="toggleDropdown()">{{getButtonText()}}&nbsp;<span class="caret"></span></button>';
+            template += '<button type="button" class="dropdown-toggle" ng-class="settings.buttonClasses" ng-click="toggleDropdown()" style="color:white">Display&nbsp;<span class="caret"></span></button>';
             template += '<ul class="dropdown-menu dropdown-menu-form" ng-style="{display: open ? \'block\' : \'none\', height : settings.scrollable ? settings.scrollableHeight : \'auto\' }" style="overflow: scroll" >';
             template += '<li ng-hide="!settings.showCheckAll || settings.selectionLimit > 0"><a data-ng-click="selectAll()"><span class="glyphicon glyphicon-ok"></span>  {{texts.checkAll}}</a>';
             template += '<li ng-show="settings.showUncheckAll"><a data-ng-click="deselectAll();"><span class="glyphicon glyphicon-remove"></span>   {{texts.uncheckAll}}</a></li>';
@@ -101,7 +101,7 @@ function ($filter, $document, $compile, $parse) {
                 selectionCount: 'checked',
                 selectionOf: '/',
                 searchPlaceholder: 'Search...',
-                buttonDefaultText: 'Select',
+                buttonDefaultText: 'Display',
                 dynamicButtonTextSuffix: 'checked'
             };
 
@@ -168,52 +168,14 @@ function ($filter, $document, $compile, $parse) {
             }
 
             $scope.getGroupTitle = function (groupValue) {
-                if ($scope.settings.groupByTextProvider !== null) {
-                    return $scope.settings.groupByTextProvider(groupValue);
-                }
-
-                return groupValue;
+              return "Display"
             };
 
-//            $scope.getButtonText = function () {
-//                if ($scope.settings.dynamicTitle && ($scope.selectedModel.length > 0 || (angular.isObject($scope.selectedModel) && _.keys($scope.selectedModel).length > 0))) {
-//                    if ($scope.settings.smartButtonMaxItems > 0) {
-//                        var itemsText = [];
-//
-//                        angular.forEach($scope.options, function (optionItem) {
-//                            if ($scope.isChecked($scope.getPropertyForObject(optionItem, $scope.settings.idProp))) {
-//                                var displayText = $scope.getPropertyForObject(optionItem, $scope.settings.displayProp);
-//                                var converterResponse = $scope.settings.smartButtonTextConverter(displayText, optionItem);
-//
-//                                itemsText.push(converterResponse ? converterResponse : displayText);
-//                            }
-//                        });
-//
-//                        if ($scope.selectedModel.length > $scope.settings.smartButtonMaxItems) {
-//                            itemsText = itemsText.slice(0, $scope.settings.smartButtonMaxItems);
-//                            itemsText.push('...');
-//                        }
-//
-//                        return itemsText.join(', ');
-//                    } else {
-//                        var totalSelected;
-//
-//                        if ($scope.singleSelection) {
-//                            totalSelected = ($scope.selectedModel !== null && angular.isDefined($scope.selectedModel[$scope.settings.idProp])) ? 1 : 0;
-//                        } else {
-//                            totalSelected = angular.isDefined($scope.selectedModel) ? $scope.selectedModel.length : 0;
-//                        }
-//
-//                        if (totalSelected === 0) {
-//                            return $scope.texts.buttonDefaultText;
-//                        }  else {
-//                            return totalSelected + ' ' + $scope.texts.dynamicButtonTextSuffix;
-//                        }
-//                    }
-//                } else {
-//                    return $scope.texts.buttonDefaultText;
-//                }
-//            };
+           $scope.getButtonText = function () {
+              
+                   return $scope.texts.buttonDefaultText;
+               
+           };
 
             $scope.getPropertyForObject = function (object, property) {
                 if (angular.isDefined(object) && object.hasOwnProperty(property)) {
