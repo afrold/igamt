@@ -121,10 +121,14 @@ public class SerializableDatatype extends SerializableSection {
                     }
                     if (component.getTables() != null && (component.getTables().size() > 0)) {
                         String bindingIdentifiers = "";
-                        for(Table table:componentTableMap.get(component)){
-                            if(table!=null){
-                                String bindingIdentifier = table.getBindingIdentifier();
-                                bindingIdentifiers = !bindingIdentifiers.equals("") ? bindingIdentifiers + "," + bindingIdentifier : bindingIdentifier;
+                        if(componentTableMap!=null && componentTableMap.size()>0 && componentTableMap.containsKey(component)) {
+                            for (Table table : componentTableMap.get(component)) {
+                                if (table != null) {
+                                    String bindingIdentifier = table.getBindingIdentifier();
+                                    bindingIdentifiers = !bindingIdentifiers.equals("") ?
+                                        bindingIdentifiers + "," + bindingIdentifier :
+                                        bindingIdentifier;
+                                }
                             }
                         }
                         componentElement.addAttribute(new Attribute("Binding", bindingIdentifiers));

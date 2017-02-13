@@ -4,7 +4,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
 
     $scope.init = function () {
-        $scope.tabActivity=[false,false,true,false];
+        $scope.tabActivity=[true,false,false,false];
 
         console.log("INIT called");
 
@@ -41,8 +41,9 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
     }
 
-    $scope.override=function(config){
-        config.defaulType=false;
+    $scope.override=function(config, type){
+        config.defaultType=false;
+        config.type = type;
         $scope.resetChanged();
 
         ConfigurationService.override(config).then(function(response){
@@ -61,8 +62,9 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         )
     }
 
-      $scope.restoreDefault=function(config){
-        config.defaulType=false;
+      $scope.restoreDefault=function(config,type){
+        config.defaultType=false;
+        config.type = type;
         ConfigurationService.restoreDefault(config).then(function(response){
             console.log(response);
             $scope.exportConfig=response;
@@ -96,7 +98,8 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         }
 
     }
-    $scope.reset=function(conf){
+    $scope.reset=function(conf, type){
+        conf.type = type;
         console.log(conf);
         console.log($scope.configMap[conf.id]);
             if(conf.type&& conf.type==="IG Style"){
