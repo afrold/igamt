@@ -227,7 +227,7 @@ public class ExportConfig {
     generalDefaultList.add(new NameAndPositionAndPresence("Usage", 2, true));
     generalDefaultList.add(new NameAndPositionAndPresence("Cardinality", 3, true));
     generalDefaultList.add(new NameAndPositionAndPresence("Length", 4, false));
-    generalDefaultList.add(new NameAndPositionAndPresence("Confromance Length", 5, false));
+    generalDefaultList.add(new NameAndPositionAndPresence("Conformance Length", 5, false));
     generalDefaultList.add(new NameAndPositionAndPresence("Data Type", 6, true));
     generalDefaultList.add(new NameAndPositionAndPresence("Value Set", 1, true));
     generalDefaultList.add(new NameAndPositionAndPresence("Definition Text", 1, true));
