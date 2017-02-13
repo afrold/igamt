@@ -16,6 +16,28 @@
     <xsl:param name="imageLogo" select="''"/>
     <xsl:variable name="inlineConstraintsVar" select="$inlineConstraints"/>
     <xsl:variable name="imageLogoSrc" select="$imageLogo"/>
+
+    <!-- Parameters for the column filter -->
+    <!-- Segments -->
+    <xsl:param name="segmentColumnName" select="'true'"/>
+    <xsl:variable name="columnDisplay.segment.name" select="$segmentColumnName"/>
+    <xsl:param name="segmentColumnUsage" select="'true'"/>
+    <xsl:variable name="columnDisplay.segment.usage" select="$segmentColumnUsage"/>
+    <xsl:param name="segmentColumnCardinality" select="'true'"/>
+    <xsl:variable name="columnDisplay.segment.cardinality" select="$segmentColumnCardinality"/>
+    <xsl:param name="segmentColumnLength" select="'true'"/>
+    <xsl:variable name="columnDisplay.segment.length" select="$segmentColumnLength"/>
+    <xsl:param name="segmentColumnConformanceLength" select="'true'"/>
+    <xsl:variable name="columnDisplay.segment.conformanceLength" select="$segmentColumnConformanceLength"/>
+    <xsl:param name="segmentColumnDataType" select="'true'"/>
+    <xsl:variable name="columnDisplay.segment.dataType" select="$segmentColumnDataType"/>
+    <xsl:param name="segmentColumnValueSet" select="'true'"/>
+    <xsl:variable name="columnDisplay.segment.valueSet" select="$segmentColumnValueSet"/>
+    <xsl:param name="segmentColumnDefinitionText" select="'true'"/>
+    <xsl:variable name="columnDisplay.segment.definitionText" select="$segmentColumnDefinitionText"/>
+    <xsl:param name="segmentColumnComment" select="'true'"/>
+    <xsl:variable name="columnDisplay.segment.comment" select="$segmentColumnComment"/>
+
 <!--     <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/loose.dtd"
    doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" />
  -->
