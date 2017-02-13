@@ -585,6 +585,9 @@ public class IGDocumentController extends CommonController {
       throw new UserAccountNotFoundException();
     }
     ExportConfig exportConfig = exportConfigService.findOneByTypeAndAccountId(identifyType(type), account.getId());
+    if(exportConfig == null){
+      exportConfig = ExportConfig.getBasicExportConfig();
+    }
     content = exportService.exportIGDocumentAsHtml(d, serializationLayout,exportConfig);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
@@ -732,6 +735,9 @@ public class IGDocumentController extends CommonController {
       throw new UserAccountNotFoundException();
     }
     ExportConfig exportConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
+    if(exportConfig == null){
+      exportConfig = ExportConfig.getBasicExportConfig();
+    }
     content = exportService.exportIGDocumentAsDocx(d, serializationLayout,exportConfig);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");

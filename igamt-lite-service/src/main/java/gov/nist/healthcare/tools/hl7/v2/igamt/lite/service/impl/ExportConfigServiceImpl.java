@@ -96,8 +96,6 @@ public class ExportConfigServiceImpl implements ExportConfigService {
       exportConfig = exportConfigRepository.findOneByTypeAndAccountId(type,accountId);
     } catch (Exception e){
       logger.warn("Could not find a configuration for account "+accountId+" with the type "+type);
-    } finally {
-      exportConfig = findDefault();
     }
     return exportConfig;
   }

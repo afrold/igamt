@@ -57,7 +57,9 @@ public class ExportConfigController {
         if (null != currentConfig ) {
           exportConfigService.delete(currentConfig);
         }
+        exportConfig.setType(currentConfig.getType());
         exportConfig.setAccountId(account.getId());
+        exportConfig.setDefaultType(false);
         exportConfigService.save(exportConfig);
       }
     } catch (Exception e){
