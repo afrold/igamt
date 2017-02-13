@@ -25,10 +25,10 @@
     <xsl:variable name="columnDisplay.message.usage" select="$messageColumnUsage"/>
     <xsl:param name="messageColumnCardinality" select="'true'"/>
     <xsl:variable name="columnDisplay.message.cardinality" select="$messageColumnCardinality"/>
-    <xsl:param name="messageColumnLength" select="'true'"/>
-    <xsl:variable name="columnDisplay.message.segment" select="messageColumnSegment"/>
+    <xsl:param name="messageColumnSegment" select="'true'"/>
+    <xsl:variable name="columnDisplay.message.segment" select="$messageColumnSegment"/>
     <xsl:param name="messageColumnFlavor" select="'true'"/>
-    <xsl:variable name="columnDisplay.message.flavor" select="messageColumnFlavor"/>
+    <xsl:variable name="columnDisplay.message.flavor" select="$messageColumnFlavor"/>
     <xsl:param name="messageColumnComment" select="'true'"/>
     <xsl:variable name="columnDisplay.message.comment" select="$messageColumnComment"/>
     <!-- Segments -->
@@ -65,6 +65,15 @@
     <xsl:variable name="columnDisplay.dataType.valueSet" select="$dataTypeColumnValueSet"/>
     <xsl:param name="dataTypeColumnComment" select="'true'"/>
     <xsl:variable name="columnDisplay.dataType.comment" select="$dataTypeColumnComment"/>
+    <!-- Value Sets -->
+    <xsl:param name="valueSetColumnValue" select="'true'"/>
+    <xsl:variable name="columnDisplay.valueSet.value" select="$valueSetColumnValue"/>
+    <xsl:param name="valueSetColumnUsage" select="'true'"/>
+    <xsl:variable name="columnDisplay.valueSet.usage" select="$valueSetColumnUsage"/>
+    <xsl:param name="valueSetColumnCodeSystem" select="'true'"/>
+    <xsl:variable name="columnDisplay.valueSet.codeSystem" select="$valueSetColumnCodeSystem"/>
+    <xsl:param name="valueSetColumnDescription" select="'true'"/>
+    <xsl:variable name="columnDisplay.valueSet.description" select="$valueSetColumnDescription"/>
 
 <!--     <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/loose.dtd"
    doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" />

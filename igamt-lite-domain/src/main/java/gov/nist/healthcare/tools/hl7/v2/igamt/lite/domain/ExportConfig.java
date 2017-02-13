@@ -226,8 +226,8 @@ public class ExportConfig {
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Segment", 1, true));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Flavor", 2, true));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Element Name", 3, true));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 4, false));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, false));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 4, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true));
 
     ArrayList<NameAndPositionAndPresence> segmentColumnsDefaultList =
@@ -264,10 +264,9 @@ public class ExportConfig {
         new ArrayList<NameAndPositionAndPresence>();
 
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Decription", 2, true));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 3, true));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, false));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Comments", 5, false));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, false));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, false));
 
     defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
     return defaultConfiguration;
