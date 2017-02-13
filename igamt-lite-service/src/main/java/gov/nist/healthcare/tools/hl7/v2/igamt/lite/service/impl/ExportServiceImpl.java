@@ -61,7 +61,7 @@ public class ExportServiceImpl implements ExportService {
         SerializationLayout serializationLayout, ExportConfig exportConfig) throws IOException {
         if (igDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(
-                DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD);
+                DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD, exportConfig);
             igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
             return exportUtil.exportAsDocxFromXml(
                 serializationService.serializeIGDocument(igDocument, serializationLayout, exportConfig).toXML(),
@@ -75,7 +75,7 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportIGDocumentAsHtml(IGDocument igDocument,
         SerializationLayout serializationLayout, ExportConfig exportConfig) throws IOException {
         if (igDocument != null) {
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML);
+            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML, exportConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService.serializeIGDocument(igDocument,
                     serializationLayout, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,igDocument.getMetaData());
@@ -96,7 +96,8 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportDatatypeLibraryDocumentAsHtml(
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML);
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
+            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML,exportConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService
                     .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,datatypeLibraryDocument.getMetaData());
@@ -108,7 +109,8 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportDatatypeLibraryDocumentAsDocx(
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD);
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
+            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD, exportConfig);
             return exportUtil.exportAsDocxFromXml(serializationService
                     .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
                 GLOBAL_STYLESHEET, exportParameters, datatypeLibraryDocument.getMetaData(),datatypeLibraryDocument.getDateUpdated());
