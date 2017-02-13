@@ -401,22 +401,8 @@ public class DatatypeController extends CommonController {
     }
   }
 
-  private void deleteDatatype(Component targetComponent, String key) throws DataNotFoundException {
-    DatatypeLink found = null;
-    if (targetComponent.getDatatype().getId().equals(key))
-      found = targetComponent.getDatatype();
-
-    if (found != null) {
-      targetComponent.setDatatype(null);;
-    } else {
-      throw new DataNotFoundException("datatypeLinkNotFound");
-    }
-
-  }
-
   @RequestMapping(value = "/saveDts", method = RequestMethod.POST)
-  public List<Datatype> save(@RequestBody List<Datatype> datatypes)
-      throws DatatypeSaveException, ForbiddenOperationException {
+  public List<Datatype> save(@RequestBody List<Datatype> datatypes) throws DatatypeSaveException {
     List<Datatype> dts = new ArrayList<Datatype>();
     for (Datatype datatype : datatypes) {
       if (!SCOPE.HL7STANDARD.equals(datatype.getScope())) {
@@ -429,7 +415,7 @@ public class DatatypeController extends CommonController {
         log.debug("saved.getScope()=" + saved.getScope());
         dts.add(datatype);
       } else {
-        throw new ForbiddenOperationException("FORBIDDEN_SAVE_DATATYPE");
+        throw new DatatypeSaveException();
       }
     }
     return dts;

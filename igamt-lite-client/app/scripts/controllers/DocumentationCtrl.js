@@ -18,6 +18,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 			$rootScope.FAQs=[];
 			$rootScope.UserGuides=[];
 			$rootScope.usersNotes=[];
+			$rootScope.releaseNotes=[];
 			angular.forEach(result, function(documentation){
 				$rootScope.documentationsMap[documentation.id]=documentation;
 				if(documentation.type==='decision'){
@@ -26,6 +27,8 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 					$rootScope.UserGuides.push(documentation);
 				}else if(documentation.type==='FAQ'){
 					$rootScope.FAQs.push(documentation);
+				}else if(documentation.type==='releaseNote'){
+					$rootScope.releaseNotes.push(documentation);
 				}
 				
 			});
@@ -117,6 +120,10 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 			$rootScope.documentationToAdd.title="New User Note";
 			$rootScope.documentationToAdd.owner=userInfoService.getAccountID();
 
+		}else if(type=='releaseNote'){
+			$rootScope.releaseNotes.push($rootScope.documentationToAdd);
+			$rootScope.documentations=$rootScope.releaseNotes;
+			$rootScope.documentationToAdd.title="New Release Note";
 		}
 		//$rootScope.documentations.push($rootScope.documentationToAdd);
 		$rootScope.documentationsMap[$rootScope.documentationToAdd.id]=$rootScope.documentationToAdd;
@@ -134,8 +141,10 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 			$rootScope.documentations=$rootScope.UserGuides;
 		}else if(documentation.type==='FAQ'){
 			$rootScope.documentations=$rootScope.FAQs;
-		}else{
+		}else if(documentation.type=='UserNote'){
 			$rootScope.documentations=$rootScope.usersNotes;
+		}else if(documentation.type=='releaseNote'){
+			$rootScope.documentations=$rootScope.releaseNotes;
 		}
 		$scope.activeId=documentation.id;
 		//$rootScope.$emit("event:initEditArea");
