@@ -1,16 +1,18 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableTable;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeTableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,7 +37,8 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     @Autowired
     SerializationUtil serializationUtil;
 
-    @Override public SerializableTable serializeTable(TableLink tableLink, String prefix, Integer position) {
+    @Override public SerializableTable serializeTable(TableLink tableLink, String prefix,
+        Integer position, CodeUsageConfig valueSetCodesUsageConfig) {
         if(tableLink!=null && tableLink.getId()!=null) {
             Table table = tableService.findById(tableLink.getId());
             String id = tableLink.getId();
@@ -53,6 +56,13 @@ public class SerializeTableServiceImpl implements SerializeTableService {
                     defPostText = serializationUtil.cleanRichtext(table.getDefPostText());
                 }
             }
+            List<Code> toBeExportedCodes = new ArrayList<>();
+            for(Code code : table.getCodes()){
+                if(ExportUtil.diplayCodeUsage(code.getCodeUsage(),valueSetCodesUsageConfig)){
+                    toBeExportedCodes.add(code);
+                }
+            }
+            table.setCodes(toBeExportedCodes);
             SerializableTable serializedTable = new SerializableTable(id,prefix,String.valueOf(position),headerLevel,title,table,tableLink.getBindingIdentifier(),defPreText,defPostText);
             return serializedTable;
         }

@@ -11,22 +11,19 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
@@ -38,110 +35,78 @@ public class ExportConfigController {
 
 
   @Autowired
-  ExportConfigService exportConfigSerive;
+  private ExportConfigService exportConfigService;
 
   @Autowired
   private UserService userService;
+
   @Autowired
-  AccountRepository accountRepository;
+  private AccountRepository accountRepository;
 
-
+  @Autowired
+  static final private Logger logger = LoggerFactory.getLogger(ExportConfigController.class);
 
   @RequestMapping(value = "/override", method = RequestMethod.POST, produces = "application/json")
-  public ExportConfig overrite(@RequestBody ExportConfig exportConfig) {
-    List<ExportConfig> results = new ArrayList<ExportConfig>();
-    ExportConfig UserConfig = exportConfig;
-    UserConfig.setDefaultType(false);
+  public ExportConfig override(@RequestBody ExportConfig exportConfig) {
+    ExportConfig currentConfig;
+    User u = userService.getCurrentUser();
     try {
-      User u = userService.getCurrentUser();
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-      if (!account.equals(null)) {
-        results =
-            exportConfigSerive.findByTypeAndAccountId(exportConfig.getType(), account.getId());
-        if (!results.isEmpty()) {
-
-          for (ExportConfig conf : results) {
-            if (!conf.isDefaultType()) {
-              exportConfigSerive.delete(conf);
-            }
-          }
-
-
+      if (null != account) {
+        currentConfig = exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(),account.getId());
+        if (null != currentConfig ) {
+          exportConfigService.delete(currentConfig);
         }
-        UserConfig.setId(null);
-        UserConfig.setDefaultType(false);
-        UserConfig.setAccountId(account.getId());
-        exportConfigSerive.save(UserConfig);
-        return UserConfig;
+        exportConfig.setType(currentConfig.getType());
+        exportConfig.setAccountId(account.getId());
+        exportConfig.setDefaultType(false);
+        exportConfigService.save(exportConfig);
       }
-    } catch (Exception e) {
-      new UserAccountNotFoundException();
+    } catch (Exception e){
+      logger.error("Unable to save the config: "+e.getMessage());
     }
-
-    return UserConfig;
-
-
-
+    return exportConfig;
   }
 
   @RequestMapping(value = "/restoreDefault", method = RequestMethod.POST,
       produces = "application/json")
   public ExportConfig restoreDefault(@RequestBody ExportConfig exportConfig) {
-    List<ExportConfig> results = new ArrayList<ExportConfig>();
-    results = exportConfigSerive.findDefault(exportConfig.getType());
-    ExportConfig UserConfig = results.get(0);
+    ExportConfig currentConfig;
+    User u = userService.getCurrentUser();
     try {
-      User u = userService.getCurrentUser();
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-      if (!account.equals(null)) {
-        results =
-            exportConfigSerive.findByTypeAndAccountId(exportConfig.getType(), account.getId());
-        if (!results.isEmpty()) {
-
-          for (ExportConfig conf : results) {
-            if (!conf.isDefaultType()) {
-              exportConfigSerive.delete(conf);
-            }
-          }
-
-
-          // exportConfigSerive.save(UserConfig);
-
+      if (null != account) {
+        currentConfig = exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(),
+            account.getId());
+        if (null != currentConfig) {
+          exportConfigService.delete(currentConfig);
         }
-        return UserConfig;
       }
-    } catch (Exception e) {
+    } catch (Exception e){
+      logger.warn("Unable to restore the default config: "+e.getMessage());
     }
-
-    return UserConfig;
+    currentConfig = ExportConfig.getBasicExportConfig();
+    return currentConfig;
 
   }
 
   @RequestMapping(value = "/findCurrent", method = RequestMethod.POST,
       produces = "application/json")
   public ExportConfig findCurrent(@RequestBody String type) {
-    List<ExportConfig> results = new ArrayList<ExportConfig>();
-    ExportConfig UserConfig = new ExportConfig();
+    ExportConfig currentConfig = null;
+    User u = userService.getCurrentUser();
     try {
-      User u = userService.getCurrentUser();
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-      if (!account.equals(null)) {
-        results = exportConfigSerive.findByTypeAndAccountId(type, account.getId());
-        if (!results.isEmpty()) {
-          UserConfig = results.get(0);
-
-        } else {
-          results = exportConfigSerive.findDefault(type);
-          UserConfig = results.get(0);
-
-        }
-        return UserConfig;
+      if (null != account) {
+        currentConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
       }
-    } catch (Exception e) {
+    } catch (Exception e){
+      logger.warn("Unable to find the current config: "+e.getMessage());
     }
-
-    return UserConfig;
-
+    if (null == currentConfig) {
+      currentConfig = ExportConfig.getBasicExportConfig();
+    }
+    return currentConfig;
   }
 
 
