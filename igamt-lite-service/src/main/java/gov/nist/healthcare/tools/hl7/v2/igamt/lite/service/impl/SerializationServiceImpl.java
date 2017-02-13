@@ -114,7 +114,6 @@ import java.util.*;
             serializableSections.getRootSections().appendChild(textElement);
         }
         //Message Serialization
-        UsageConfig segmentOrGroupsUsageConfig = exportConfig.getSegmentORGroupsExport();
         SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version());
         profileSection.addSection(messageSection);
 
@@ -298,6 +297,7 @@ import java.util.*;
         this.bindedDatatypes = new ArrayList<>();
         this.bindedSegments = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
+        UsageConfig segmentsUsageConfig = this.exportConfig.getSegmentsExport();
         UsageConfig datatypeUsageConfig = this.exportConfig.getDatatypesExport();
         UsageConfig valueSetUsageConfig = this.exportConfig.getValueSetsExport();
         for (Message message : profile.getMessages().getChildren()) {
@@ -305,7 +305,9 @@ import java.util.*;
                 serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
             for(SerializableSegmentRefOrGroup messageChildren : serializableMessage.getSerializableSegmentRefOrGroups()){
                 if(messageChildren.getSegmentRef()!=null) {
-                    this.bindedSegments.add(messageChildren.getSegmentRef().getRef());
+                    if(!this.bindedSegments.contains(messageChildren.getSegmentRef().getRef()) && ExportUtil.diplayUsage(messageChildren.getSegmentRef().getUsage(),segmentsUsageConfig)) {
+                        this.bindedSegments.add(messageChildren.getSegmentRef().getRef());
+                    }
                     if (messageChildren.getSegment() != null) {
                         for (Field field : messageChildren.getSegment().getFields()) {
                             if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),datatypeUsageConfig)) {
