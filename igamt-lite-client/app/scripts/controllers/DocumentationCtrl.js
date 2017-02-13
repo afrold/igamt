@@ -2,8 +2,10 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 
 
 	$scope.editMode=false;
-	$scope.newOne=false;
+	$rootScope.newOne=false;
 	$scope.activeId=null;
+	$rootScope.documentation=null;
+
 	
 //	$scope.init=function(){
 //		console.log("lddsdsdsddssd");
@@ -11,6 +13,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 //	$rootScope.documentations=[{title: "documentation One" , content:"blaadefefe"},{title: "documentation One" , content:"blaadefefe"},{title: "documentation One" , content:"blaadefefe"}];
 //	}
 	$scope.init=function(){		
+
 		DocumentationService.findAll().then(function(result){	
 			$rootScope.documentationsMap={};
 			$rootScope.documentations=result;
@@ -99,7 +102,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 		
 		$scope.editMode=true;
 		$scope.activeId=newId;
-		$scope.newOne=true;
+		$rootScope.newOne=true;
 		if(type==='decision'){
 			$rootScope.decisions.push($rootScope.documentationToAdd);
 			$rootScope.documentations=$rootScope.decisions;
@@ -153,7 +156,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
 		$rootScope.currentData=$rootScope.documentation;
 
 		$scope.editMode=false;
-		$scope.newOne=false;
+		$rootScope.newOne=false;
 		
 
 	}
@@ -219,7 +222,7 @@ angular.module('igl').controller('DocumentationController', function($scope, $ro
                 $scope.editForm.$dirty = false;
             }
 			$scope.editMode=false;
-			$scope.newOne=false;
+			$rootScope.newOne=false;
 			$rootScope.clearChanges();
 			 $rootScope.msg().text = documentation.type+"SaveSuccess";
 	            $rootScope.msg().type = "success";

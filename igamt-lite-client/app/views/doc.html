@@ -19,7 +19,6 @@ body {
 	<div class="row">
 		<div class="col-md-3">
 			<accordion>
-
 			<div accordion-group="" ng-init="isOpen2=true"
 				class="panel panel-default" is-open="isOpen2">
 				<accordion-heading style="color:black !important;">
@@ -41,12 +40,12 @@ body {
 
 				</ul>
 			</div>
-						<div accordion-group="" ng-init="isOpen1=true"
+				<div accordion-group="" ng-init="isOpen1=true"
 				class="panel panel-default" is-open="isOpen1">
 				<accordion-heading style="color:white !important;">
 				<i class="pull-left fa" style="color: black;"
 					ng-class="{'fa-chevron-down': isOpen1, 'fa-chevron-right': !isOpen1}"></i>
-				Implementation Decisions </accordion-heading>
+				Developer Decisions </accordion-heading>
 				<div style="margin-bottom: 25px;">
 					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
 						aria-hidden="true" ng-click="addDocumentation('decision')"
@@ -119,17 +118,12 @@ body {
 
 				<ul class="nav nav-pills nav-stacked"
 					style="margin-left: 5px !important;">
-
 					<li ng-repeat="documentation in usersNotes"
 						ng-click="editDocumentation(documentation)"
 						ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
 
 				</ul>
 			</div>
-
-
-
-
 			</accordion>
 		</div>
 		<div class="col-md-8" ng-if="documentation"
@@ -143,17 +137,13 @@ body {
 					<br/>
 					<span ng-if="!newOne">
 					 <i class="fa fa-calendar" aria-hidden="true"></i>
-					updated {{documentation.dateUpdated |date:dateFormat}} <span ng-if="documentation.type!=='UserNote'"> <i class="fa fa-user" aria-hidden="true"></i> {{documentation.username}}</span></span>
+					Updated {{documentation.dateUpdated |date:dateFormat}} <span ng-if="documentation.type!=='UserNote'"> <i class="fa fa-user" aria-hidden="true"></i> {{documentation.username}}</span></span>
 			</div>
 			<div class="fr-view" ng-if="!editMode&&!newOne">
 				<div froala-view="documentation.content"></div>
 
 
 			</div>
-
-			<hr>
-
-
 
 			<div ng-if="editMode||newOne" ng-controller="EditAreaCtrl"
 				ng-init="init">
@@ -200,7 +190,6 @@ body {
 					</div>
 				</form>
 			</div>
-
 		</div>
 	</div>
 </div>
