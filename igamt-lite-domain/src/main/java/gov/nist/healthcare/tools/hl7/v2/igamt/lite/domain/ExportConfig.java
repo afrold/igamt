@@ -220,22 +220,45 @@ public class ExportConfig {
     defaultConfiguration.setValueSetsExport(displaySelectives);
 
     // Default column
-    ArrayList<NameAndPositionAndPresence> generalDefaultList =
+    ArrayList<NameAndPositionAndPresence> messageColumnsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
 
-    generalDefaultList.add(new NameAndPositionAndPresence("Name", 1, true));
-    generalDefaultList.add(new NameAndPositionAndPresence("Usage", 2, true));
-    generalDefaultList.add(new NameAndPositionAndPresence("Cardinality", 3, true));
-    generalDefaultList.add(new NameAndPositionAndPresence("Length", 4, false));
-    generalDefaultList.add(new NameAndPositionAndPresence("Conformance Length", 5, false));
-    generalDefaultList.add(new NameAndPositionAndPresence("Data Type", 6, true));
-    generalDefaultList.add(new NameAndPositionAndPresence("Value Set", 1, true));
-    generalDefaultList.add(new NameAndPositionAndPresence("Definition Text", 1, true));
-    generalDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Segment", 1, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Flavor", 2, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Element Name", 3, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 4, false));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, false));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true));
 
-    defaultConfiguration.setDatatypeColumn(new ColumnsConfig(generalDefaultList));
-    defaultConfiguration.setSegmentColumn(new ColumnsConfig(generalDefaultList));
-    defaultConfiguration.setMessageColumn(new ColumnsConfig(generalDefaultList));
+    ArrayList<NameAndPositionAndPresence> segmentColumnsDefaultList =
+        new ArrayList<NameAndPositionAndPresence>();
+
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 2, true));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 3, true));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 4, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Conformance Length", 5, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 6, true));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 1, true));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Definition Text", 1, true));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true));
+
+    ArrayList<NameAndPositionAndPresence> dataTypeColumnsDefaultList =
+        new ArrayList<NameAndPositionAndPresence>();
+
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Conformance Length", 2, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true));
+
+
+
+    defaultConfiguration.setDatatypeColumn(new ColumnsConfig(dataTypeColumnsDefaultList));
+    defaultConfiguration.setSegmentColumn(new ColumnsConfig(segmentColumnsDefaultList));
+    defaultConfiguration.setMessageColumn(new ColumnsConfig(messageColumnsDefaultList));
 
     ArrayList<NameAndPositionAndPresence> valueSetsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
