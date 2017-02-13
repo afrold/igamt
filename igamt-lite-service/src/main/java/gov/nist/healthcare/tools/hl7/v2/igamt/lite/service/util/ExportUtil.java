@@ -234,6 +234,19 @@ public class ExportUtil {
         }
     }
 
+    public static boolean diplayCodeUsage(String codeUsageToCompare, CodeUsageConfig codeUsageConfig){
+        switch(codeUsageToCompare){
+            case "r":
+                return codeUsageConfig.getR();
+            case "p":
+                return codeUsageConfig.getP();
+            case "e":
+                return codeUsageConfig.getE();
+            default:
+                return false;
+        }
+    }
+
 
 
 }

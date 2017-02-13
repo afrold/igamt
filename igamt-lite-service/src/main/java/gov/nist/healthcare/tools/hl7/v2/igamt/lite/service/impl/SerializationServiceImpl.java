@@ -222,13 +222,13 @@ import java.util.*;
         }
         List<TableLink> tableLinkList = new ArrayList<>(tableLibrary.getChildren());
         Collections.sort(tableLinkList);
+        CodeUsageConfig valueSetCodesUsageConfig = this.exportConfig.getCodesExport();
         for (TableLink tableLink : tableLinkList) {
             if(bindedTables.contains(tableLink)) {
-
                 SerializableTable serializableTable = serializeTableService
                     .serializeTable(tableLink,
                         prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                        tableLinkList.indexOf(tableLink));
+                        tableLinkList.indexOf(tableLink),valueSetCodesUsageConfig);
                 valueSetsSection.addSection(serializableTable);
             }
         }
@@ -260,13 +260,13 @@ import java.util.*;
         List<DatatypeLink> datatypeLinkList =
             new ArrayList<>(datatypeLibrary.getChildren());
         Collections.sort(datatypeLinkList);
-        UsageConfig datatypeUsageConfig = this.exportConfig.getDatatypesExport();
+        UsageConfig datatypeComponentsUsageConfig = this.exportConfig.getComponentExport();
         for (DatatypeLink datatypeLink : datatypeLinkList) {
             if(bindedDatatypes.contains(datatypeLink)) {
                 SerializableDatatype serializableDatatype = serializeDatatypeService
                     .serializeDatatype(datatypeLink,
                         prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
-                        datatypeLinkList.indexOf(datatypeLink), datatypeUsageConfig);
+                        datatypeLinkList.indexOf(datatypeLink), datatypeComponentsUsageConfig);
                 //This "if" is only useful if we want to display only user datatypes
                 //if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
                 datatypeSection.addSection(serializableDatatype);
@@ -298,6 +298,8 @@ import java.util.*;
         this.bindedDatatypes = new ArrayList<>();
         this.bindedSegments = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
+        UsageConfig datatypeUsageConfig = this.exportConfig.getDatatypesExport();
+        UsageConfig valueSetUsageConfig = this.exportConfig.getValueSetsExport();
         for (Message message : profile.getMessages().getChildren()) {
             SerializableMessage serializableMessage =
                 serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
@@ -306,9 +308,13 @@ import java.util.*;
                     this.bindedSegments.add(messageChildren.getSegmentRef().getRef());
                     if (messageChildren.getSegment() != null) {
                         for (Field field : messageChildren.getSegment().getFields()) {
-                            bindedDatatypes.add(field.getDatatype());
+                            if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),datatypeUsageConfig)) {
+                                bindedDatatypes.add(field.getDatatype());
+                            }
                             for (TableLink tableLink : field.getTables()) {
-                                bindedTables.add(tableLink);
+                                if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(field.getUsage(),valueSetUsageConfig)) {
+                                    bindedTables.add(tableLink);
+                                }
                             }
                         }
                     }
