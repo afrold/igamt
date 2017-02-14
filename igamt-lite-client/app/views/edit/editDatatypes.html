@@ -41,7 +41,7 @@
                     <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty||editForm.$invalid|| datatype.status === 'PUBLISHED'" ng-hide="viewSettings.tableReadonly||datatype.status==='PUBLISHED'" ng-click="saveDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </button>
-                    <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty||editForm.$invalid" ng-show="datatype.status==='PUBLISHED'&&!editForm.$dirty" ng-click="saveBindingForDatatype()">
+                    <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty||editForm.$invalid" ng-show="datatype.status==='PUBLISHED'&& editForm.$dirty" ng-click="saveBindingForDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
                				      </button>
                     <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
@@ -565,7 +565,7 @@
                             </tab-heading>
                             <div class="el-def" style="margin-top:20px">
 
-                                <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary && datatype.status!=='PUBLISHED'" ng-hide="typeOfSharing ">
+                                <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary" ng-hide="typeOfSharing ">
                                         <button type="button " ng-click="AddBindingForDatatype(datatype) " class="btn btn-raised btn-info btn-md "><i class="fa fa-plus "></i> Add Binding</button>
                                     </span>
 
@@ -605,14 +605,14 @@
                                                     {{::ref.usage}}
                                                 </td>
                                                 <td st-ratio="20">
-                                                    <span ng-show="ref.target.scope !== 'USER'">
+                                                    <span ng-show="ref.target.status !== 'PUBLISHED'">
                                                              <a ng-click="redirectDT(ref.datatype)">{{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}<span class="version-badge-label" ng-if="datatypesMap[ref.datatype.id].publicationVersion">v{{datatypesMap[ref.datatype.id].publicationVersion}}</span></span>
                                                     </a>
 
                                                     </span>
-                                                    <select ng-show="ref.target.scope == 'USER'" class="form-control" ng-change="changeDatatypeLink(ref.datatypeLink)" ng-model="ref.datatypeLink.id">
+                                                    <select ng-show="ref.target.status !== 'PUBLISHED'" class="form-control" ng-change="changeDatatypeLink(ref.datatypeLink)" ng-model="ref.datatypeLink.id">
                                                             <option value="">No Value Set</option>
-                                                            <option ng-repeat="dt in datatypes |orderBy:'+name'" value="{{dt.id}}">
+                                                            <option ng-repeat="dt in datatypes  |orderBy:'+name'" value="{{dt.id}}" ng-disabled="dt.name!==datatypesMap[datatype.id].name" >
                                                                 {{::getDatatypeLabel(dt)}} {{getVersionToSelect(datatypesMap[dt.id])}}
                                                             </option>
                                                         </select>
