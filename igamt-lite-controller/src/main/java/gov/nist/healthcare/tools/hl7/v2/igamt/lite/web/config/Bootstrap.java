@@ -31,18 +31,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
@@ -53,9 +57,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -78,6 +84,10 @@ public class Bootstrap implements InitializingBean {
   private final HashMap<String, ArrayList<List<String>>> DatatypeMap =
       new HashMap<String, ArrayList<List<String>>>();
   private HashMap<String, Integer> Visited = new HashMap<String, Integer>();
+
+
+  @Autowired
+  ExportConfigRepository exportConfig;
 
   @Autowired
   ProfileService profileService;
@@ -162,7 +172,90 @@ public class Bootstrap implements InitializingBean {
     // fixUserPublishedData();
     // fixConstraints1();
 
+    // createDefaultConfiguration("IG Style");
+    // createDefaultConfiguration("Profile Style");
+    // createDefaultConfiguration("Table Style");
+
     // changeStatusofPHINVADSTables();
+  }
+
+  /**
+   * 
+   */
+  private void createDefaultConfiguration(String type) {
+    // TODO Auto-generated method stub
+    ExportConfig defaultConfiguration = new ExportConfig();
+    defaultConfiguration.setDefaultType(true);
+    defaultConfiguration.setAccountId(null);
+    // Default Usages
+    UsageConfig displayAll = new UsageConfig();
+    UsageConfig displaySelectives = new UsageConfig();
+    displaySelectives.setC(true);
+    displaySelectives.setX(false);
+    displaySelectives.setO(false);
+    displaySelectives.setR(true);
+    displaySelectives.setRe(true);
+    CodeUsageConfig codeUsageExport = new CodeUsageConfig();
+    codeUsageExport.setE(false);
+    codeUsageExport.setP(true);
+    codeUsageExport.setR(true);
+
+    displayAll.setC(true);
+    displayAll.setRe(true);
+    displayAll.setX(true);
+    displayAll.setO(true);
+    displayAll.setR(true);
+
+    defaultConfiguration.setSegmentORGroupsExport(displayAll);
+
+    defaultConfiguration.setComponentExport(displayAll);
+
+    defaultConfiguration.setFieldsExport(displayAll);
+
+    defaultConfiguration.setCodesExport(codeUsageExport);
+
+    defaultConfiguration.setDatatypesExport(displaySelectives);
+    defaultConfiguration.setSegmentsExport(displaySelectives);
+    defaultConfiguration.setValueSetsExport(displaySelectives);
+
+
+
+    // Default column
+    ArrayList<NameAndPositionAndPresence> generalDefaultList =
+        new ArrayList<NameAndPositionAndPresence>();
+
+    generalDefaultList.add(new NameAndPositionAndPresence("Name", 1, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Usage", 2, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Cardinality", 3, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Length", 4, false));
+    generalDefaultList.add(new NameAndPositionAndPresence("Confromance Length", 5, false));
+    generalDefaultList.add(new NameAndPositionAndPresence("Data Type", 6, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Value Set", 1, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Definition Text", 1, true));
+    generalDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true));
+
+    defaultConfiguration.setDatatypeColumn(new ColumnsConfig(generalDefaultList));
+    defaultConfiguration.setSegmentColumn(new ColumnsConfig(generalDefaultList));
+    defaultConfiguration.setMessageColumn(new ColumnsConfig(generalDefaultList));
+
+    ArrayList<NameAndPositionAndPresence> valueSetsDefaultList =
+        new ArrayList<NameAndPositionAndPresence>();
+
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Decription", 2, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 3, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, false));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Comments", 5, false));
+
+
+    defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
+    defaultConfiguration.setType(type);
+
+
+    exportConfig.save(defaultConfiguration);
+
+
+
   }
 
   private void changeStatusofPHINVADSTables() {

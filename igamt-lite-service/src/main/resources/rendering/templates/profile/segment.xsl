@@ -92,32 +92,48 @@
                         <xsl:element name="th">
                             <xsl:text>Seq</xsl:text>
                         </xsl:element>
-                        <xsl:element name="th">
-                            <xsl:text>Element name</xsl:text>
-                        </xsl:element>
-                        <xsl:element name="th">
-                            <xsl:text>Data type</xsl:text>
-                        </xsl:element>
-                        <xsl:element name="th">
-                            <xsl:text>Usage</xsl:text>
-                        </xsl:element>
-                        <xsl:element name="th">
-                            <xsl:text>Cardinality</xsl:text>
-                        </xsl:element>
-                        <xsl:element name="th">
-                            <xsl:text>Length</xsl:text>
-                        </xsl:element>
-                        <xsl:if test="@ShowConfLength='true'">
+                        <xsl:if test="$columnDisplay.segment.name = 'true'">
                             <xsl:element name="th">
-                                <xsl:text>ConfLength</xsl:text>
+                                <xsl:text>Element name</xsl:text>
                             </xsl:element>
                         </xsl:if>
-                        <xsl:element name="th">
-                            <xsl:text>Value Set</xsl:text>
-                        </xsl:element>
-                        <xsl:element name="th">
-                            <xsl:text>Comment</xsl:text>
-                        </xsl:element>
+                        <xsl:if test="$columnDisplay.segment.dataType = 'true'">
+                            <xsl:element name="th">
+                                <xsl:text>Data type</xsl:text>
+                            </xsl:element>
+                        </xsl:if>
+                        <xsl:if test="$columnDisplay.segment.usage = 'true'">
+                            <xsl:element name="th">
+                                <xsl:text>Usage</xsl:text>
+                            </xsl:element>
+                        </xsl:if>
+                        <xsl:if test="$columnDisplay.segment.cardinality = 'true'">
+                            <xsl:element name="th">
+                                <xsl:text>Cardinality</xsl:text>
+                            </xsl:element>
+                        </xsl:if>
+                        <xsl:if test="$columnDisplay.segment.length = 'true'">
+                            <xsl:element name="th">
+                                <xsl:text>Length</xsl:text>
+                            </xsl:element>
+                        </xsl:if>
+                        <xsl:if test="$columnDisplay.segment.conformanceLength = 'true'">
+                            <xsl:if test="@ShowConfLength='true'">
+                                <xsl:element name="th">
+                                    <xsl:text>ConfLength</xsl:text>
+                                </xsl:element>
+                            </xsl:if>
+                        </xsl:if>
+                        <xsl:if test="$columnDisplay.segment.valueSet = 'true'">
+                            <xsl:element name="th">
+                                <xsl:text>Value Set</xsl:text>
+                            </xsl:element>
+                        </xsl:if>
+                        <xsl:if test="$columnDisplay.segment.comment = 'true'">
+                            <xsl:element name="th">
+                                <xsl:text>Comment</xsl:text>
+                            </xsl:element>
+                        </xsl:if>
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="tbody">
