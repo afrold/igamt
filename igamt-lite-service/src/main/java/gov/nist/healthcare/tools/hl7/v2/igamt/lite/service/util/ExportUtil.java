@@ -230,7 +230,7 @@ public class ExportUtil {
     }
 
     public static boolean diplayCodeUsage(String codeUsageToCompare, CodeUsageConfig codeUsageConfig){
-        switch(codeUsageToCompare){
+        switch(codeUsageToCompare.trim().toLowerCase()){
             case "r":
                 return codeUsageConfig.getR();
             case "p":
