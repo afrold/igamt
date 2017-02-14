@@ -2136,6 +2136,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return segment.name;
     };
 
+    $rootScope.getUpdatedBindingIdentifier = function (table) {
+      if(table.hl7Version && table.hl7Version!==''){
+          return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
+      }
+
+      return table.bindingIdentifier;
+    };
+
     $rootScope.generateCompositeConformanceStatement = function(compositeType, firstConstraint, secondConstraint, constraints) {
         var cs = null;
         if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR') {

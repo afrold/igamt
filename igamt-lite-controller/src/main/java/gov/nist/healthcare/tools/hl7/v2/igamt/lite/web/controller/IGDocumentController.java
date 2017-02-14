@@ -654,16 +654,14 @@ public class IGDocumentController extends CommonController {
   }
 
   @RequestMapping(value = "/{id}/export/Validation/{mIds}", method = RequestMethod.POST,
-      produces = "application/zip")
+      produces = "application/zip" , consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportValidationXMLByMessages(@PathVariable("id") String id,
-      @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
-      HttpServletResponse response)
+      @PathVariable("mIds") String[] messageIds, HttpServletRequest request, HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
     log.info("Exporting as xml file profile with id=" + id + " for selected messages="
         + Arrays.toString(messageIds));
     IGDocument d = findIGDocument(id);
-    InputStream content = null;
-    content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
+    InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
