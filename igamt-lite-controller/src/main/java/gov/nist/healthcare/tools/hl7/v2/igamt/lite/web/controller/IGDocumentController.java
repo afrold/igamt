@@ -1488,4 +1488,31 @@ public class IGDocumentController extends CommonController {
 
     return sortedList;
   }
+
+  @RequestMapping(value = "/{id}/export/gvt", method = RequestMethod.POST,
+      produces = "application/zip")
+  public void exportToGVT(@PathVariable("id") String id, @RequestParam("mIds") String[] messageIds,
+      @RequestParam("host") String host, @RequestParam("auth") String authorization,
+      HttpServletRequest request, HttpServletResponse response)
+      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+    // log.info(
+    // "Exporting messages to GVT from IG Document with id=" + id + ", messages=" + messageIds);
+    // IGDocument d = findIGDocument(id);
+    // InputStream content = null;
+    // InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
+    //
+    // FileCopyUtils.copy(content, response.getOutputStream());
+    //
+    // GVTClient client = new GVTClient(host, authorization);
+    // URL URL = new URL(host + "/upload/uploadzip");
+
+    //
+    // ResponseEntity<String> response =
+    // client.getTmpl().exchange(URL, HttpMethod.POST, this.createHttpEntity(m), String.class);
+
+
+
+  }
+
+
 }

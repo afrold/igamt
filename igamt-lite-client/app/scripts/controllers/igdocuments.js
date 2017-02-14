@@ -2198,6 +2198,14 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
+
+    $scope.exportAsZIPToGVT = function() {
+        $scope.loading = true;
+        ExportSvc.exportAsZIPToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs);
+        $scope.loading = false;
+    };
+
+
 });
 
 angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, hl7Version, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {

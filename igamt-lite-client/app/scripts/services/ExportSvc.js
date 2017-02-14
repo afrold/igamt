@@ -1,12 +1,11 @@
 angular.module('igl').factory(
     'ExportSvc',
 
-    function ($rootScope, $modal, $cookies) {
+    function ($rootScope, $modal, $cookies, GVTSvc,StorageService) {
 
         var svc = this;
 
-       
-        
+
         svc.exportAsXMLByMessageIds = function (id, mids, xmlFormat) {
             var form = document.createElement("form");
 
@@ -27,7 +26,41 @@ angular.module('igl').factory(
             document.body.appendChild(form);
             form.submit();
         };
-        
-        
+
+        svc.exportAsZIPToGVT = function (id, mids) {
+            if ($rootScope.gvtLoginDialog && $rootScope.gvtLoginDialog != null && $rootScope.gvtLoginDialog.opened) {
+                $rootScope.gvtLoginDialog.dismiss('cancel');
+            }
+            $rootScope.gvtLoginDialog = $modal.open({
+                backdrop: 'static',
+                keyboard: 'false',
+                controller: 'GVTLoginCtrl',
+                size: 'lg',
+                templateUrl: 'views/gvt/login.html',
+                resolve: {
+                    user: function () {
+                        return { username:null, password: null };
+                    }
+                }
+            });
+
+            $rootScope.gvtLoginDialog.result.then(function (auth) {
+                $http({
+                    url: 'api/igdocuments/' + id + '/export/gvt',
+                    method: "POST",
+                    data: { 'mids' : mids, auth:auth}
+                })
+                    .then(function(response) {
+                        // success
+                    },
+                    function(response) { // optional
+                        // failed
+                    });
+
+            });
+        };
+
+
         return svc;
-    });
+    })
+;
