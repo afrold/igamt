@@ -2647,20 +2647,43 @@ input[type="file"] {
 }
 
 .upload_drop {
-    height: 152px;
-    margin-left: 17px;
-    margin-right: 15px;
-    border: 2px #f1f1f1 dashed;
-    border-radius: 5px;
+  height: 152px;
+  margin-left: 17px;
+  margin-right: 15px;
+	border: 2px #f1f1f1 dashed;
+	border-radius: 5px;
 }
-
 .upload_drop_hover {
     background-color: #5CB85C;
 }
+.nav-tabs{
+    border-bottom:none !important;}
+.panel-body{
+min-height:150px;
+margin-bottom: 5px;
+}
+.conf-box{
+margin-left:10px;
+border:2px solid; 
+padding:5px;
+background-color: gainsboro;
 
+min-height: 370px;
+margin-bottom: 10px;
+
+}
 .upload_button {
-
 	margin-top: 0;
+}
+
+.addMargin{
+	margin-bottom:8px; 
+}
+.gray{
+    background: gainsboro !important;
+}
+.beige{
+    background: beige !important;
 }
 
 /**

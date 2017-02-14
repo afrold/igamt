@@ -75,18 +75,26 @@
                     <xsl:text>contentThead</xsl:text>
                 </xsl:attribute>
                 <xsl:element name="tr">
-                    <xsl:element name="th">
-                        <xsl:text>Value</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Code System</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Usage</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Description</xsl:text>
-                    </xsl:element>
+                    <xsl:if test="$columnDisplay.valueSet.value = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Value</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="$columnDisplay.valueSet.codeSystem = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Code System</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="$columnDisplay.valueSet.usage = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Usage</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="$columnDisplay.valueSet.description = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Description</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
                 </xsl:element>
             </xsl:element>
             <xsl:element name="tbody">
@@ -99,18 +107,26 @@
 				            <xsl:attribute name="class">
 				                <xsl:text>contentTr</xsl:text>
 				            </xsl:attribute>
-				            <xsl:element name="td">
-				                <xsl:text></xsl:text>
-				            </xsl:element>
-				            <xsl:element name="td">
-				                <xsl:text></xsl:text>
-				            </xsl:element>
-				            <xsl:element name="td">
-				                <xsl:text></xsl:text>
-				            </xsl:element>
-				            <xsl:element name="td">
-				                <xsl:text></xsl:text>
-				            </xsl:element>
+                            <xsl:if test="$columnDisplay.valueSet.value = 'true'">
+                                <xsl:element name="td">
+                                    <xsl:text></xsl:text>
+                                </xsl:element>
+                            </xsl:if>
+                            <xsl:if test="$columnDisplay.valueSet.codeSystem = 'true'">
+                                <xsl:element name="td">
+                                    <xsl:text></xsl:text>
+                                </xsl:element>
+                            </xsl:if>
+                            <xsl:if test="$columnDisplay.valueSet.usage = 'true'">
+                                <xsl:element name="td">
+                                    <xsl:text></xsl:text>
+                                </xsl:element>
+                            </xsl:if>
+                            <xsl:if test="$columnDisplay.valueSet.description = 'true'">
+                                <xsl:element name="td">
+                                    <xsl:text></xsl:text>
+                                </xsl:element>
+                            </xsl:if>
 				        </xsl:element>
                 
                 </xsl:if>

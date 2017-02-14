@@ -88,29 +88,43 @@
                             <xsl:element name="th">
                                 <xsl:text>Seq</xsl:text>
                             </xsl:element>
-                            <xsl:element name="th">
-                                <xsl:text>Element name</xsl:text>
-                            </xsl:element>
-                            <xsl:if test="@ShowConfLength='true'">
+                            <xsl:if test="$columnDisplay.dataType.name = 'true'">
                                 <xsl:element name="th">
-                                    <xsl:text>Conf length</xsl:text>
+                                    <xsl:text>Element name</xsl:text>
                                 </xsl:element>
                             </xsl:if>
-                            <xsl:element name="th">
-                                <xsl:text>Data type</xsl:text>
-                            </xsl:element>
-                            <xsl:element name="th">
-                                <xsl:text>Usage</xsl:text>
-                            </xsl:element>
-                            <xsl:element name="th">
-                                <xsl:text>Length</xsl:text>
-                            </xsl:element>
-                            <xsl:element name="th">
-                                <xsl:text>Value Set</xsl:text>
-                            </xsl:element>
-                            <xsl:element name="th">
-                                <xsl:text>Comment</xsl:text>
-                            </xsl:element>
+                            <xsl:if test="$columnDisplay.dataType.conformanceLength = 'true'">
+                                <xsl:if test="@ShowConfLength='true'">
+                                    <xsl:element name="th">
+                                        <xsl:text>Conf length</xsl:text>
+                                    </xsl:element>
+                                </xsl:if>
+                            </xsl:if>
+                            <xsl:if test="$columnDisplay.dataType.dataType = 'true'">
+                                <xsl:element name="th">
+                                    <xsl:text>Data type</xsl:text>
+                                </xsl:element>
+                            </xsl:if>
+                            <xsl:if test="$columnDisplay.dataType.usage = 'true'">
+                                <xsl:element name="th">
+                                    <xsl:text>Usage</xsl:text>
+                                </xsl:element>
+                            </xsl:if>
+                            <xsl:if test="$columnDisplay.dataType.length = 'true'">
+                                <xsl:element name="th">
+                                    <xsl:text>Length</xsl:text>
+                                </xsl:element>
+                            </xsl:if>
+                            <xsl:if test="$columnDisplay.dataType.valueSet = 'true'">
+                                <xsl:element name="th">
+                                    <xsl:text>Value Set</xsl:text>
+                                </xsl:element>
+                            </xsl:if>
+                            <xsl:if test="$columnDisplay.dataType.comment = 'true'">
+                                <xsl:element name="th">
+                                    <xsl:text>Comment</xsl:text>
+                                </xsl:element>
+                            </xsl:if>
                         </xsl:element>
                     </xsl:element>
                     <xsl:element name="tbody">

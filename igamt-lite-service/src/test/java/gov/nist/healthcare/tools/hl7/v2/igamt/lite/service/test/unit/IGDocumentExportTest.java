@@ -1,6 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
@@ -36,8 +38,9 @@ public class IGDocumentExportTest {
 
     @Autowired IGDocumentService igDocumentService;
     @Autowired ExportService exportService;
+    @Autowired ExportConfigService exportConfigService;
 
-    private static final String IG_DOCUMENT_TEST_ID = "57c8371a84ae6827fcec5488";
+    private static final String IG_DOCUMENT_TEST_ID = "579a2fd784aeb9b94367d325";
     private static final String EXPORT_BASE_PATH = "test/ig_test";
 
     @Test
@@ -45,13 +48,14 @@ public class IGDocumentExportTest {
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
             File htmlFile = new File(EXPORT_BASE_PATH+"_compact.html");
             if(htmlFile.exists()){
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.COMPACT), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.COMPACT,exportConfig), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,6 +65,7 @@ public class IGDocumentExportTest {
     public void testHtmlVerboseExport(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
             File htmlFile = new File(EXPORT_BASE_PATH+"_verbose.html");
             if(htmlFile.exists()){
@@ -68,7 +73,7 @@ public class IGDocumentExportTest {
             }
             if(htmlFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.VERBOSE), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.VERBOSE,exportConfig), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,12 +84,13 @@ public class IGDocumentExportTest {
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             File wordFile = new File(EXPORT_BASE_PATH+"_compact.docx");
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
             if(wordFile.exists()){
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    SerializationLayout.COMPACT), wordFile);
+                    SerializationLayout.COMPACT,exportConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,12 +101,13 @@ public class IGDocumentExportTest {
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         try {
             File wordFile = new File(EXPORT_BASE_PATH+"_verbose.docx");
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
             if(wordFile.exists()){
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    SerializationLayout.VERBOSE), wordFile);
+                    SerializationLayout.VERBOSE,exportConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
