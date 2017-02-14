@@ -138,6 +138,7 @@ public class IGDocumentServiceImpl implements IGDocumentService {
   }
 
   @Override
+
   public List<IGDocument> findByScopeAndVersion(IGDocumentScope scope, String hl7Version) {
     List<IGDocument> igDocuments = documentRepository.findByScopeAndVersion(scope, hl7Version);
     log.info("IGDocumentServiceImpl.findByScopeAndVersions=" + igDocuments.size());
@@ -224,5 +225,19 @@ public class IGDocumentServiceImpl implements IGDocumentService {
     return documentRepository.updateDate(id, date);
 
   }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService#updatePosition(java.lang.
+   * String, int)
+   */
+  @Override
+  public int updatePosition(String id, int position) {
+    // TODO Auto-generated method stub
+    return documentRepository.updatePosition(id, position);
+  }
+
 
 }

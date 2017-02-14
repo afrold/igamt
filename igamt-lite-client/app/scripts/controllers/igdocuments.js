@@ -58,6 +58,11 @@ angular.module('igl')
         return false;
 
     };
+
+    $scope.Dndenabled=function(){
+      return  $scope.igDocumentConfig.selectedType=='USER';
+    }
+
     $scope.validateIG = function() {
         console.log($rootScope.igdocument.id);
     };
@@ -238,6 +243,31 @@ angular.module('igl')
         return 'templateRow.html';
 
     }
+    $scope.orderIgs=function(igs){
+        console.log(igs);
+        var positionList=[];
+        for(i=0; i<igs.length; i++){
+            igs[i].position=i+1;
+            positionList.push({"id":igs[i].id,"position":igs[i].position});
+
+        }
+        
+
+
+        IgDocumentService.orderIgDocument(positionList).then(function(response){
+            $rootScope.msg().text = "OrderChanged";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+
+        },function(error){
+            $scope.tmpIgs=angular.copy($scope.IgsCopy);
+            $rootScope.msg().text = "OrderChangedFaild";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+
+        });
+    
+    }
     $scope.selectIGDocumentType = function(selectedType) {
         //console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
         $scope.igDocumentConfig.selectedType = selectedType;
@@ -266,6 +296,14 @@ angular.module('igl')
                 console.log(response);
                 $rootScope.igs = angular.fromJson(response.data);
                 $scope.tmpIgs = [].concat($rootScope.igs);
+
+                console.log($scope.tmpIgs);
+                for(i=0; i<$scope.tmpIgs.length; i++){
+                    if(!$scope.tmpIgs[i].position||$scope.tmpIgs[i].position=='undefined'||$scope.tmpIgs[i].position=='null'){
+                        $scope.tmpIgs[i].position=i+1;
+                    }
+                }
+                $scope.IgsCopy= angular.copy($scope.tmpIgs);
                 $scope.loading = false;
                 delay.resolve(true);
             }, function(error) {
@@ -1201,7 +1239,7 @@ angular.module('igl')
                         SegmentService.get(segment.id).then(function(result) {
                             $rootScope.segment = angular.copy(segment);
                             $rootScope.$emit("event:initSegment");
-
+                            $rootScope.validationResult = null;
                             $rootScope.currentData = $rootScope.segment;
                             $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
                             $rootScope.segment["type"] = "segment";
@@ -1284,7 +1322,7 @@ angular.module('igl')
                     try {
                         DatatypeService.getOne(datatype.id).then(function(result) {
                             $rootScope.datatype = angular.copy(result);
-                            $rootScope.datatypeValidationResult = null;
+                            $rootScope.validationResult = null;
                             $rootScope.$emit("event:initDatatype");
 
                             $rootScope.currentData = datatype;
@@ -1353,6 +1391,8 @@ angular.module('igl')
                 try {
                     $rootScope.originalMessage = message;
                     $rootScope.message = angular.copy(message);
+                    $rootScope.validationResult = null;
+
                     $rootScope.$emit("event:initMessage");
 
                     $rootScope.currentData = $rootScope.message;
@@ -2683,6 +2723,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
         $scope.addDtFlv = function(datatype) {
             var newDatatype = angular.copy(datatype);
+            newDatatype.publicationVersion=0;
 
             newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
             newDatatype.scope = 'USER';

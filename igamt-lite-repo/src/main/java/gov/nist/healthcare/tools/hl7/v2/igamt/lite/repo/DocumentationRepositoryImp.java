@@ -84,4 +84,23 @@ public class DocumentationRepositoryImp implements DocumentationOperations {
     return date;
   }
 
+
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DocumentationOperations#findByCreator(java.
+   * lang.Long)
+   */
+  @Override
+  public List<Documentation> findByOwner(Long accountId) {
+    Criteria where = Criteria.where("owner").is(accountId);
+    Query qry = Query.query(where);
+    // qry = set4Brevis(qry);
+    List<Documentation> documentations = mongo.find(qry, Documentation.class);
+
+    return documentations;
+  }
+
 }

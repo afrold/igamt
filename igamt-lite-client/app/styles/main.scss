@@ -2343,6 +2343,13 @@ table.conformance-profiles-table td {
     //   border-bottom-width: 0;
 }
 
+.ig-table-tableFix tbody.dnd-list {
+    height: 5px !important; 
+    overflow-y: scroll;
+}
+
+
+
 .select-change {
     cursor: pointer;
     background-color: yellow;
@@ -2677,4 +2684,109 @@ margin-bottom: 10px;
 }
 .beige{
     background: beige !important;
+}
+
+/**
+ * For the correct positioning of the placeholder element, the dnd-list and
+ * it's children must have position: relative
+ */
+ul[dnd-list] > li {
+  position: relative;
+}
+
+
+ul[dnd-list] > tr{
+  position: relative !important;
+}
+
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
+ */
+ul[dnd-list] {
+  min-height: 42px !important;
+  padding-left: 0px !important;
+}
+
+/**
+ * The dndDraggingSource class will be applied to
+ * the source element of a drag operation. It makes
+ * sense to hide it to give the user the feeling
+ * that he's actually moving it.
+ */
+ul[dnd-list]>tr .dndDraggingSource {
+  display: none !important;
+}
+
+ul[dnd-list] .dndDraggingSource {
+  display: none !important;
+}
+
+.dndDraggingSource {
+  display: none !important;
+}
+/**
+ * An element with .dndPlaceholder class will be
+ * added to the dnd-list while the user is dragging
+ * over it.
+ */
+
+
+
+/**
+ * The dnd-lists's child elements currently MUST have
+ * position: relative. Otherwise we can not determine
+ * whether the mouse pointer is in the upper or lower
+ * half of the element we are dragging over. In other
+ * browsers we can use event.offsetY for this.
+ */
+
+
+ul[dnd-list] >tr {
+  background-color: black;
+  border: 1px solid black;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  display: block;
+  margin-bottom: -1px;
+
+  /* Disable text selection if item is not draggable */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+/**
+ * Gender-specifc backgroun
+
+/**
+ * Handle positioning
+ */
+td[dnd-handle] {
+  cursor: move !important;
+
+}
+// div.dndPlaceholder {
+//   display: block;
+//   min-height: 30px;
+//   background-color: lightgray !important;
+//  list-style: none;
+// }
+
+// tr.dndPlaceholder {
+//   display: block;
+//   min-height: 30px;
+//   background-color: lightgray !important;
+//  list-style: none;
+// }
+.scrollit{
+	overflow-y:scroll;
+	height: 1px !important;
+}
+.current{
+background-color: beige;
 }

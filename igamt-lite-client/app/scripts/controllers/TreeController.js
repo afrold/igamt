@@ -143,18 +143,28 @@ angular
                     }
                 };
                 $scope.isValidated = function(data) {
-                    if ($rootScope.datatypeValidationResult.targetId === data.id) {
+                    if (data && $rootScope.validationResult.targetId === data.id) {
                         return true;
                     } else {
                         return false;
                     }
                 };
                 $scope.hasErrorInTree = function(data) {
-                    if ($rootScope.datatypeValidationResult && $rootScope.datatypeValidationResult.errorCount > 0) {
+                    // if ($rootScope.validationResult) {
+                    //     if (data &&  $rootScope.validationResult.targetId===data.id) {
+                    //         return true;
+                    //     } else {
+                    //         return false;
+                    //     }
+                    // }
+                    if ($rootScope.validationResult && $rootScope.validationResult.errorCount>0) {
                         return true;
                     } else {
                         return false;
                     }
+
+
+
                     // if ($rootScope.datatypeValidationResult) {
                     //     var x = $rootScope.datatypeValidationResult.items.find(function(item) {
                     //         if (item.targetId === data.id) {
@@ -2219,7 +2229,7 @@ angular.module('igl').controller('AddDatatypeCtrlFromUserLib',
             console.log($scope.newDatatype.ext);
             $scope.newDatatype.scope = datatypeLibrary.scope;
             $scope.newDatatype.status = "UNPUBLISHED";
-
+            $scope.newDatatype.publicationVersion=0;
             $scope.newDatatype.participants = [];
             $scope.newDatatype.id = new ObjectId().toString();
             $scope.newDatatype.libIds = [];
@@ -2497,7 +2507,10 @@ angular.module('igl').controller('addMAsterInLibrary',
             return $scope.checkedExt;
         };
         $scope.addDtFlv = function(datatype) {
+
             $scope.newDatatype = angular.copy(datatype);
+            $scope.newDatatype.publicationVersion=0;
+
             if ($rootScope.igdocument) {
 
                 console.log("merging");
@@ -2825,6 +2838,8 @@ angular.module('igl').controller('AddSharedDatatype',
         };
         $scope.addDtFlv = function(datatype) {
             $scope.newDatatype = angular.copy(datatype);
+            $scope.newDatatype.publicationVersion=0;
+
 
             $scope.newDatatype.ext = Math.floor(Math.random() * 1000);
 

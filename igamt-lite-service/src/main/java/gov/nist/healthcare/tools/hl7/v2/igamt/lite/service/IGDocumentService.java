@@ -51,6 +51,7 @@ public interface IGDocumentService {
 
   public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);
 
+
   public List<IGDocument> findByScopeAndVersion(IGDocumentScope scope, String hl7Version);
 
 
@@ -128,6 +129,8 @@ public interface IGDocumentService {
   List<IGDocument> save(Collection<IGDocument> igs) throws IGDocumentException;
 
   IGDocument save(IGDocument ig, Date date) throws IGDocumentException;
+
+  public int updatePosition(String id, int position);
 
   // TODO NEED TO REVIEW
 }

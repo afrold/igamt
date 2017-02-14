@@ -22,4 +22,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Documentation;
 public interface DocumentationRepository
     extends MongoRepository<Documentation, String>, DocumentationOperations {
 
+  /**
+   * @param accontId
+   * @return
+   */
+
+
+
 }

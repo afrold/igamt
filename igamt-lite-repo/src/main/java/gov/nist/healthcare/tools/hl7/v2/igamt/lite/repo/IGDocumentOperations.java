@@ -49,11 +49,16 @@ public interface IGDocumentOperations {
 
   public Date updateDate(String id, Date date);
 
+  public int updatePosition(String id, int position);
+
+
+
   /**
    * @param scope
    * @param hl7Version
    * @return
    */
   List<IGDocument> findByScopeAndVersion(IGDocumentScope scope, String hl7Version);
+
 
 }
