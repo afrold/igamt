@@ -55,10 +55,19 @@
                               <span> Publish </span>
                             </button>
                     </span>
-                    <span class="pull-right" ng-if="datatype.owner" style="font-style: italic;">
-                     	(Owner: {{datatype.owner}})
-                        </span>
                 </div>
+
+                <span class="static_info">
+                 <i class="fa fa-calendar" aria-hidden="true"></i>
+					Updated :{{datatype.dateUpdated | date:dateFormat}}
+                     <span ng-if="datatype.owner" style="font-style: italic;">
+                         <i class="fa fa-user" aria-hidden="true"></i> 
+                         ,{{datatype.owner}}
+                    </span>
+                    <span>,HL7 Version: {{datatype.hl7Version}}</span>
+                    <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
+
+                </span>
                 <div class="col-md-12" ng-controller="cmpDatatypeCtrl as cmp">
                     <tabset active="tabStatus.active">
                         <tab ng-click="setDeltaToF()">
@@ -102,13 +111,7 @@
                                         <input type="text" disabled ng-change="setDirty()" name="description" class="form-control" ng-model="versionAndUseMap[datatype.id].publicationDate" required>
                                     </div>
                                 </div>
-                                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.hl7Version.$invalid}">
-                                    <label class="col-md-2 control-label">HL7 Version*</label>
-
-                                    <div class="controls col-md-10">
-                                        <input type="text" disabled ng-change="setDirty()" name="hl7Version" class="form-control" ng-model="datatype.hl7Version" required>
-                                    </div>
-                                </div>
+    
                                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.purposeUse.$invalid}">
                                     <label class="col-md-2 control-label">Purpose and Use</label>
 
@@ -148,17 +151,6 @@
                                         <span type="text" name="hl7Section" class="form-control">{{datatype.hl7Section}}</span>
                                     </div>
                                 </div>
-
-
-                                <div class="form-group control-group" ng-hide="datatype.scope === 'HL7STANDARD'">
-                                    <label class="col-md-2 control-label">Date Updated</label>
-
-                                    <div class="controls col-md-10">
-                                        <span type="text" name="date" class="form-control">{{datatype.dateUpdated | date:dateFormat}}</span>
-                                    </div>
-                                </div>
-
-
                             </div>
                         </tab>
                         <tab ng-click="setDeltaToF(); refreshSlider();">
@@ -198,7 +190,7 @@
                                             </div>
 
                                             <div ng-show="datatype.components && datatype.components.length > 0" class="pull-left">
-                                                <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
+                                              <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
                                             </div>
                                             <button ng-if="datatype.scope!=='HL7STANDARD'" class="pull-right" title="Verify Data type" type="button" ng-class="{'btn btn-raised btn-sm btn-danger':(validationResult && validationResult.errorCount>0),'btn btn-raised btn-sm btn-success':((validationResult && validationResult.errorCount===0)|| !validationResult)}"
                                                 ng-click="validateDatatype()"> 
@@ -897,7 +889,7 @@
                     <div ng-if="editableDT===node.id">
                         <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                             <option ng-repeat="datatype in results" value="{{datatype}}"
-                                    ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatypesMap[datatype.id].hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
+                                    ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatypesMap[datatype.id])}} {{datatypesMap[datatype.id].hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
                             </option>
                             <!--<option ng-click="otherDT(node)" value=""> Others-->
                         </select>

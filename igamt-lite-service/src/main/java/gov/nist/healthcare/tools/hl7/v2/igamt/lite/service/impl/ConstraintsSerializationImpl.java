@@ -49,6 +49,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
@@ -180,10 +181,8 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 						elmMetaData.addAttribute(
 								new Attribute("Date", dateUpdated != null ? DateUtils.format(dateUpdated) : "No Date Info"));
 
-						if (profile.getMetaData().getSpecificationName() != null
-								&& !profile.getMetaData().getSpecificationName().equals(""))
-								elmMetaData.addAttribute(new Attribute("SpecificationName",
-										serializationUtil.str(profile.getMetaData().getSpecificationName())));
+						if (profile.getMetaData().getSpecificationName() != null && !profile.getMetaData().getSpecificationName().equals(""))
+								elmMetaData.addAttribute(new Attribute("SpecificationName", serializationUtil.str(profile.getMetaData().getSpecificationName())));
 						if (profile.getMetaData().getStatus() != null && !profile.getMetaData().getStatus().equals(""))
 								elmMetaData.addAttribute(new Attribute("Status", serializationUtil.str(profile.getMetaData().getStatus())));
 						if (profile.getMetaData().getTopics() != null && !profile.getMetaData().getTopics().equals(""))
@@ -236,14 +235,18 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 														if (value != null && !value.equals("")) {
 																if (type.equals("vs")) {
-																		if (tableService.findById(value) != null) {
-																				nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSet");
-																				elmValueSetCheck.addAttribute(new Attribute("Path", path));
-																				elmValueSetCheck.addAttribute(new Attribute("ValueSetID",
-																						tableService.findById(value).getBindingIdentifier()));
-																				elmValueSetCheck.addAttribute(new Attribute("BindingStrength", "R"));
-																				elmValueSetCheck.addAttribute(new Attribute("BindingLocation", "1"));
-																				elmPlainCoConstraint.appendChild(elmValueSetCheck);
+																	Table t = tableService.findById(value);
+																		if (t != null) {
+																			nu.xom.Element elmValueSetCheck = new nu.xom.Element("ValueSet");
+																			elmValueSetCheck.addAttribute(new Attribute("Path", path));
+																			if(t.getHl7Version() != null && !t.getHl7Version().equals("")){
+																				elmValueSetCheck.addAttribute(new Attribute("ValueSetID", t.getBindingIdentifier() + "_" + t.getHl7Version().replaceAll("\\.", "-")));
+																			}else {
+																				elmValueSetCheck.addAttribute(new Attribute("ValueSetID", t.getBindingIdentifier()));																				
+																			}
+																			elmValueSetCheck.addAttribute(new Attribute("BindingStrength", "R"));
+																			elmValueSetCheck.addAttribute(new Attribute("BindingLocation", "1"));
+																			elmPlainCoConstraint.appendChild(elmValueSetCheck);
 																		}
 																} else {
 																		nu.xom.Element elmValueCheck = new nu.xom.Element("PlainText");
@@ -626,7 +629,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
 						Segment s = segmentService.findById(sl.getId());
 						ByID byID = new ByID();
-						byID.setByID(s.getLabel());
+						byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
 						if (s.getConformanceStatements().size() > 0) {
 								byID.setConformanceStatements(s.getConformanceStatements());
 								byNameOrByIDs.add(byID);
@@ -638,7 +641,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
 						Datatype d = datatypeService.findById(dl.getId());
 						ByID byID = new ByID();
-						byID.setByID(d.getLabel());
+						byID.setByID(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"));
 						if (d.getConformanceStatements().size() > 0) {
 								byID.setConformanceStatements(d.getConformanceStatements());
 								byNameOrByIDs.add(byID);
@@ -727,7 +730,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
 						Segment s = segmentService.findById(sl.getId());
 						ByID byID = new ByID();
-						byID.setByID(s.getLabel());
+						byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
 						if (s.getPredicates().size() > 0) {
 								byID.setPredicates(s.getPredicates());
 								byNameOrByIDs.add(byID);
@@ -739,7 +742,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
 						Datatype d = datatypeService.findById(dl.getId());
 						ByID byID = new ByID();
-						byID.setByID(d.getLabel());
+						byID.setByID(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"));
 						if (d.getPredicates().size() > 0) {
 								byID.setPredicates(d.getPredicates());
 								byNameOrByIDs.add(byID);

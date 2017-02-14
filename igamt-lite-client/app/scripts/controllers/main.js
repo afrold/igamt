@@ -2136,6 +2136,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return segment.name;
     };
 
+    $rootScope.getUpdatedBindingIdentifier = function (table) {
+      if(table.hl7Version && table.hl7Version!==''){
+          return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
+      }
+
+      return table.bindingIdentifier;
+    };
+
     $rootScope.generateCompositeConformanceStatement = function(compositeType, firstConstraint, secondConstraint, constraints) {
         var cs = null;
         if (compositeType === 'AND' || compositeType === 'OR' || compositeType === 'XOR') {
@@ -3410,10 +3418,25 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
         } else if (data.type && data.type === "datatype") {
             DatatypeService.reset();
         }
+
+
+        else if(data.type==="decision"||data.type==="FAQ"||data.type==="userGuide"||data.type==='UserNote'||data.type==='releaseNote'){
+                if($rootScope.newOne){
+                    
+			        for(i=0; i<$rootScope.documentations.length;i++){
+				        if(data.id==$rootScope.documentations[i].id){
+					    $rootScope.documentations.splice(i, 1);
+				}
+			}
+                }
+                $rootScope.documentation=null;
+
+                $scope.continue();
+        }
         $rootScope.addedSegments = [];
         $rootScope.addedDatatypes = [];
         $rootScope.addedTables = [];
-        $scope.continue();
+        
     };
 
     $scope.error = null;

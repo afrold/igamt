@@ -231,24 +231,53 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         }
     });
 
-//    $httpBackend.whenPOST('api/datatype-library/findByScopesAndVersion').respond(function (method, url, data, headers) {
-//        var request = new XMLHttpRequest();
-//        console.log('api/findByScopesAndVersion begin=' + data);
-//        var datatypeLibs = [];
-//        request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.7.json', false);
-//        request.send(null);
-//        datatypeLibs.push(angular.fromJson(request.response));
-//        request.open('GET', '../../resources/datatypeLibraries/dtLib-HL7STANDARD-2.7.json', false);
-//        request.send(null);
-//        datatypeLibs.push(angular.fromJson(request.response));
-//        request.open('GET', '../../resources/datatypeLibraries/dtLib-USER-2.7.json', false);
-//        request.send(null);
-//        datatypeLibs.push(angular.fromJson(request.response));
-//       return [200, datatypeLibs, {}];
-//    });
+   $httpBackend.whenPOST('api/datatype-library-document/getAllDatatypesName').respond(function (method, url, data, headers) {
+       var request = new XMLHttpRequest();
+       console.log('api/findByScopesAndVersion begin=' + data);
+       var datatypeLibs = [];
+       request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.7.json', false);
+       request.send(null);
+       datatypeLibs.push(angular.fromJson(request.response));
+       request.open('GET', '../../resources/datatypeLibraries/dtLib-HL7STANDARD-2.7.json', false);
+       request.send(null);
+       datatypeLibs.push(angular.fromJson(request.response));
+       request.open('GET', '../../resources/datatypeLibraries/dtLib-USER-2.7.json', false);
+       request.send(null);
+       datatypeLibs.push(angular.fromJson(request.response));
+      return [200, datatypeLibs, {}];
+   });
 
     
     $httpBackend.whenPOST('api/datatype-library/bindDatatypes').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        var datatypes = [];
+        request.open('GET', '../../resources/datatypes/datatype-AD-HL7STANDARD-2.7.json', false);
+        request.send(null);
+        datatypes.push(angular.fromJson(request.response));
+        request.open('GET', '../../resources/datatypes/datatype-AUI-HL7STANDARD-2.7.json', false);
+        request.send(null);
+        datatypes.push(angular.fromJson(request.response));
+        request.open('GET', '../../resources/datatypes/datatype-CCD-HL7STANDARD-2.7.json', false);
+        request.send(null);
+        datatypes.push(angular.fromJson(request.response));
+        return [200, datatypes, {}];
+    });
+    $httpBackend.whenPOST('api/versionAndUse/findAll').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        var datatypes = [];
+        request.open('GET', '../../resources/datatypes/datatype-AD-HL7STANDARD-2.7.json', false);
+        request.send(null);
+        datatypes.push(angular.fromJson(request.response));
+        request.open('GET', '../../resources/datatypes/datatype-AUI-HL7STANDARD-2.7.json', false);
+        request.send(null);
+        datatypes.push(angular.fromJson(request.response));
+        request.open('GET', '../../resources/datatypes/datatype-CCD-HL7STANDARD-2.7.json', false);
+        request.send(null);
+        datatypes.push(angular.fromJson(request.response));
+        return [200, datatypes, {}];
+    });
+
+       $httpBackend.whenPOST('api/versionAndUse/findAll').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         var datatypes = [];
         request.open('GET', '../../resources/datatypes/datatype-AD-HL7STANDARD-2.7.json', false);
