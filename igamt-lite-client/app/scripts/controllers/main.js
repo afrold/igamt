@@ -3203,11 +3203,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         });
     };
     $rootScope.canCreateNewVersion = function(element) {
-        if (element.scope && element.scope !== 'USER') {
-
-            return false;
-        } else if (element.status !== "PUBLISHED") {
-
+        if (element.status !== "PUBLISHED"||element.scope=="HL7STANDARD") {
             return false;
         } else if ($rootScope.versionAndUseMap[element.id] && $rootScope.versionAndUseMap[element.id].deprectaed) {
             console.log($rootScope.versionAndUseMap[element.id].deprectaed);

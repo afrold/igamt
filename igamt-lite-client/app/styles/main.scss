@@ -2163,7 +2163,6 @@ input.form-control-short80 {
 }
 
 .igl-page-header {
-    border-bottom: 1px solid #eeeeee;
     margin-bottom: 20px;
     padding-bottom: 20px;
 }
@@ -2794,4 +2793,16 @@ background-color: beige !important;
 background-color: beige;
 color: #222;
 font-weight: bold;
-}    
+}
+
+.page-header {
+    padding-bottom: 0px !important;
+    margin: 10px 0 10px;
+    border-bottom: none !important;
+}
+.static_info{
+        border-bottom: 1px solid #eeeeee !important;
+        font-style: italic;
+        color:black !important;
+        margin-top:-19px;
+}

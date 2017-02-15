@@ -20,7 +20,7 @@
             <!--<div ng-if="versionAndUseMap[datatype.id].deprecated" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>-->
             <div ng-if="versionAndUseMap[datatype.id].deprecated" class="alert alert-warning">New version of this datatype is available </div>
             <div ng-show="datatype !== null" id="executionPanel">
-                <div class="row" style="margin-left:0px; margin-right: 10px">
+                <div class="container">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}<span class="version-badge-label" ng-if="datatype.publicationVersion">v{{datatype.publicationVersion}}</span></span>
                         <span class="pull-right" ng-if="!typeOfSharing">
@@ -57,7 +57,7 @@
                     </span>
                 </div>
 
-                <span class="static_info">
+                <div class="static_info">
                  <i class="fa fa-calendar" aria-hidden="true"></i>
 					Updated :{{datatype.dateUpdated | date:dateFormat}}
                      <span ng-if="datatype.owner" style="font-style: italic;">
@@ -67,7 +67,7 @@
                     <span>,HL7 Version: {{datatype.hl7Version}}</span>
                     <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
 
-                </span>
+                </div>
                 <div class="col-md-12" ng-controller="cmpDatatypeCtrl as cmp">
                     <tabset active="tabStatus.active">
                         <tab ng-click="setDeltaToF()">
@@ -133,7 +133,7 @@
                                     <label class="col-md-2 control-label">Usage Note </label>
 
                                     <div class="controls col-md-10">
-                                        <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER' && datatype.status!=='PUBLISHED'">
+                                        <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
                                             <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>
                                         </div>
                                         <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
