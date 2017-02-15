@@ -1,7 +1,7 @@
 angular.module('igl').controller('ConfigurationController', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, ConfigurationService) {
 
 
-
+    $scope.activeId="content";
 
     $scope.init = function () {
         $scope.tabActivity=[true,false,false,false];
@@ -10,6 +10,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
         $scope.configMap={};
         $scope.changed=false;
+        $scope.activeId="content";
         ConfigurationService.findCurrent("IG Style").then(function (response) {
             var copy=response;
             $scope.IGStyleExportConfig = angular.copy(response);
@@ -40,7 +41,12 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
 
     }
-
+    $scope.isActive=function(str){
+        return str==$scope.activeId;
+    }
+    $scope.setActive=function(str){
+        $scope.activeId=str;
+    }
     $scope.override=function(config, type){
         config.defaultType=false;
         config.type = type;

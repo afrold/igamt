@@ -2787,7 +2787,12 @@ td[dnd-handle] {
 	height: 1px !important;
 }
 .current{
+background-color: beige !important;
+}
+.alert-config{
 background-color: beige;
+color: #222;
+font-weight: bold;
 }
 
 .page-header {
