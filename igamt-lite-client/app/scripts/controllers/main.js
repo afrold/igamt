@@ -1748,7 +1748,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     datatypeUpdateParameter.datatypeId = targetDatatype.id;
                     datatypeUpdateParameter.componentId = targetComponent.id;
                     datatypeUpdateParameter.datatypeLink = newDatatypeLink;
-                    datatypeUpdateParameter.key = $rootScope.table.id;
+                    datatypeUpdateParameter.key = $rootScope.datatype.id;
                     datatypeUpdateParameterList.push(datatypeUpdateParameter);
                 } else if (ref.type == 'field') {
                     var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
@@ -2188,6 +2188,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         });
         if (field) return segment.name + "-" + position + " (" + field.name + ")";
         return segment.name;
+    };
+
+    $rootScope.getUpdatedBindingIdentifier = function (table) {
+      if(table.hl7Version && table.hl7Version!==''){
+          return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
+      }
+
+      return table.bindingIdentifier;
     };
 
     $rootScope.generateCompositeConformanceStatement = function(compositeType, firstConstraint, secondConstraint, constraints) {
@@ -3249,11 +3257,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         });
     };
     $rootScope.canCreateNewVersion = function(element) {
-        if (element.scope && element.scope !== 'USER') {
-
-            return false;
-        } else if (element.status !== "PUBLISHED") {
-
+        if (element.status !== "PUBLISHED"||element.scope=="HL7STANDARD") {
             return false;
         } else if ($rootScope.versionAndUseMap[element.id] && $rootScope.versionAndUseMap[element.id].deprectaed) {
             console.log($rootScope.versionAndUseMap[element.id].deprectaed);
@@ -3464,10 +3468,25 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
         } else if (data.type && data.type === "datatype") {
             DatatypeService.reset();
         }
+
+
+        else if(data.type==="decision"||data.type==="FAQ"||data.type==="userGuide"||data.type==='UserNote'||data.type==='releaseNote'){
+                if($rootScope.newOne){
+                    
+			        for(i=0; i<$rootScope.documentations.length;i++){
+				        if(data.id==$rootScope.documentations[i].id){
+					    $rootScope.documentations.splice(i, 1);
+				}
+			}
+                }
+                $rootScope.documentation=null;
+
+                $scope.continue();
+        }
         $rootScope.addedSegments = [];
         $rootScope.addedDatatypes = [];
         $rootScope.addedTables = [];
-        $scope.continue();
+        
     };
 
     $scope.error = null;
@@ -3491,39 +3510,41 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
 
         }
 
-        if (data.type === "decision" || data.type === "FAQ" || data.type === "userGuide" || data.type === 'UserNote') {
-            DocumentationService.save(data).then(function(saved) {
-                console.log(data);
-                console.log("befor");
-                $rootScope.documentation = saved.data;
-                $rootScope.documentationsMap[data.id] = saved.data;
-                angular.forEach($rootScope.documentations, function(d) {
-                    console.log("found");
-                    if (d.id == $rootScope.documentation.id) {
-                        d.title = $rootScope.documentationsMap[saved.data.id].title;
-                        d.content = $rootScope.documentationsMap[saved.data.id].content;
-                        d.dateUpdated = $rootScope.documentationsMap[saved.data.id].dateUpdated;
-                        d.username = $rootScope.documentationsMap[saved.data.id].username;
-                    }
-                });
-                $scope.continue();
-                if ($scope.editForm) {
-                    $scope.editForm.$setPristine();
-                    $scope.editForm.$dirty = false;
-                }
-                $scope.editMode = false;
-                $scope.newOne = false;
-                $rootScope.clearChanges();
-                $rootScope.msg().text = data.type + "SaveSuccess";;
-                $rootScope.msg().type = "success";
-                $rootScope.msg().show = true;
-            }, function(error) {
-                $rootScope.msg().text = data.type + "SaveFaild";
-                $rootScope.msg().type = "danger";
-                $rootScope.msg().show = true;
-            });
 
-
+        if(data.type==="decision"||data.type==="FAQ"||data.type==="userGuide"||data.type==='UserNote'||data.type==='releaseNote'){
+    		DocumentationService.save(data).then(function(saved){
+    				console.log(data);
+    				console.log("befor");
+    				$rootScope.documentation=saved.data;
+    				$rootScope.documentationsMap[data.id]= saved.data;
+    				angular.forEach($rootScope.documentations, function(d){
+    					console.log("found");
+    					if(d.id==$rootScope.documentation.id){
+    					d.title=$rootScope.documentationsMap[saved.data.id].title;
+    					d.content=$rootScope.documentationsMap[saved.data.id].content;
+    					d.dateUpdated=$rootScope.documentationsMap[saved.data.id].dateUpdated;
+    					d.username=$rootScope.documentationsMap[saved.data.id].username;
+    					}
+    				});
+    				 $scope.continue();
+    	            if($scope.editForm) {
+    	                $scope.editForm.$setPristine();
+    	                $scope.editForm.$dirty = false;
+    	            }
+    				$scope.editMode=false;
+    				$scope.newOne=false;
+    				$rootScope.clearChanges();
+    				 $rootScope.msg().text = data.type+"SaveSuccess";;
+    		            $rootScope.msg().type = "success";
+    		            $rootScope.msg().show = true;
+    		        }, function(error) {
+    		            $rootScope.msg().text = data.type+"SaveFaild";
+    		            $rootScope.msg().type = "danger";
+    		            $rootScope.msg().show = true;
+    		        }
+    			);
+        
+    		
         }
         ////console.log(data);
 

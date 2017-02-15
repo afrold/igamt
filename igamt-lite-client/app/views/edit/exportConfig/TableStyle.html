@@ -1,0 +1,265 @@
+<div class="alert alert-config">
+    Only the messaging aspects are exported. The export view is on the individual tables. Filters can be applied to export a subset desired tables.
+</div>
+
+<div class="pull-right addMargin">
+                         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                               ng-disabled="!changed"
+                               ng-click="override(profileStyleExportConfig,'Table Style')">
+                              <span><i class="fa fa-check fa-fw"></i> Apply</span>
+                        </button>
+                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!changed" ng-click="reset(tableStyleExportConfig,'Table Style')">
+                                  <span><i class="fa fa-times fa-fw"></i> Reset</span>
+                         </button>
+                         <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default" ng-click="restoreDefault(tableStyleExportConfig,'Table Style')">
+                                  <span><i class="fa fa-refresh" aria-hidden="true"></i> Restore Default</span>
+
+</div>
+
+
+<div layout="row" layout-align="center start" style="width:100%">
+    
+    <div flex="50" class="conf-box" >
+        <div class="page-header">
+                    <span class="header5">Message Table Options</span>
+        </div>
+                <div layout="row" layout-align="center start" style="width:100%">
+
+                    <div class="panel panel-default" flex="50">
+                        <div class="panel-heading beige"><strong>USAGES</strong></div>
+                        <div class="panel-body container">
+                            <div class="container">
+                                <label style="color:black">  Segments/Groups to Export:</label>
+                            <br/>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R 
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE 
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C 
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.o" ng-change="setChanged()"> <label style="color:black">O 
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.x" ng-change="setChanged()"> <label style="color:black">X 
+                                </label>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-default" flex="50" style="margin-left:10px;">
+                        <div class="panel-heading beige"> <strong> Columns </strong></div>
+                        <div class="panel-body container">
+                        <div style="width:100%" >
+
+
+                                <div  style="padding-left:15px; " ng-repeat="c in tableStyleExportConfig.messageColumn.columns">
+
+                                    <input type="checkbox" ng-model="c.present" ng-change="setChanged()"> <label style="color:black">{{c.name}}
+                                    </label><br/>
+
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+
+                </div>
+
+</div>
+
+<div flex="50" class="conf-box">
+                <div class="page-header">
+                    <span class="header5">Segments Table Options</span>
+                </div>
+                <div layout="row" layout-align="center start" style="width:100%">
+                    <div class="panel panel-default" flex="50">
+                        <div class="panel-heading beige"> <strong> USAGES </strong></div>
+                        <div class="panel-body container">
+                            <div class="container">
+                            <label style="color:black">  Segments to export:</label>
+                            <br/>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.r" ng-change="setChanged()" disabled > <label style="color:black">R 
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.re" ng-change="setChanged()" disabled > <label style="color:black">RE 
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C 
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.o" ng-change="setChanged()"> <label style="color:black">O 
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.x" ng-change="setChanged()"> <label style="color:black">X 
+                                </label>
+
+                            </div>
+                <hr style="border-top: 2px solid #271e1e;"/>            
+                <div class="container">
+                                <label style="color:black"> Fields to Export:</label>
+                                </br>
+                            
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.o" ng-change="setChanged()"> <label style="color:black">O
+                                </label>
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.x" ng-change="setChanged()"> <label style="color:black">X
+                                </label>
+
+                            </div>  
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="panel panel-default" flex="50" style="margin-left:10px;">
+                        <div class="panel-heading beige"> <strong> Columns </strong></div>
+                        <div class="panel-body container">
+                        <div style="width:100%" >
+
+
+                                <div  style="padding-left:15px; " ng-repeat="c in tableStyleExportConfig.segmentColumn.columns">
+
+                                    <input type="checkbox" ng-model="c.present" ng-change="setChanged()" > <label style="color:black">{{c.name}}
+                                    </label><br/>
+
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+
+                </div>
+
+</div>
+</div>
+<div layout="row" layout-align="center start" style="width:100%">
+    <div flex="50" class="conf-box" >
+<div class="page-header">
+
+    <span class="header5">Data Type Table Options</span>
+</div>
+<div layout="row" layout-align="center start" style="width:100%">
+
+    <div class="panel panel-default" flex="50">
+        <div class="panel-heading beige"><strong>USAGES </strong> </div>
+        <div class="panel-body container">
+            <div class="container">
+               <label style="color:black">  Datatype to export:</label>
+                <br/>
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.r" disabled> <label style="color:black">R 
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.re" disabled> <label style="color:black">RE 
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.c" disabled> <label style="color:black">C 
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.o"> <label style="color:black">O 
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.x"> <label style="color:black">X 
+                </label>
+
+             </div>
+<hr style="border-top: 2px solid #271e1e;"/>            
+<div class="container">
+                <label style="color:black"> Components to Export:</label>
+               <br/>
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.r" disabled> <label style="color:black">R
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.re" disabled> <label style="color:black">RE
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.c" disabled> <label style="color:black">C
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.o"> <label style="color:black">O
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.x"> <label style="color:black">X
+                </label>
+
+             </div>  
+
+
+        </div>
+
+    </div>
+
+
+
+    <div class="panel panel-default" flex="50" style="margin-left:10px;">
+        <div class="panel-heading beige"> <strong> Columns </strong></div>
+                        <div class="panel-body container">
+                        <div style="width:100%" >
+
+
+                                <div  style="padding-left:15px; " ng-repeat="c in tableStyleExportConfig.datatypeColumn.columns">
+
+                                    <input type="checkbox" ng-model="c.present"> <label style="color:black">{{c.name}}
+                                    </label><br/>
+
+                                </div>
+                        </div>
+                        </div>
+    </div>
+</div>
+    </div>
+<div flex="50" class="conf-box">
+<div class="page-header">
+
+    <span class="header5">Value Set Table Options</span>
+</div>
+<div layout="row" layout-align="center start" style="width:100%">
+    <div class="panel panel-default" flex="50">
+        <div class="panel-heading beige"> <strong> USAGES </strong> </div>
+        <div class="panel-body container">
+            <div class="container">
+               <label style="color:black">  Value Sets to Export:</label>
+               <br/>
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R 
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE 
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C 
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.o" ng-change="setChanged()"> <label style="color:black">O 
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.x" ng-change="setChanged()"> <label style="color:black">X 
+                </label>
+
+             </div>
+<hr style="border-top: 2px solid #271e1e; "/>            
+<div class="container">
+                <label style="color:black"> Codes to Export:</label><br/>
+               
+                <input type="checkbox" ng-model="tableStyleExportConfig.codesExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.codesExport.p" ng-change="setChanged()"> <label style="color:black">P
+                </label>
+                <input type="checkbox" ng-model="tableStyleExportConfig.codesExport.e" ng-change="setChanged()"> <label style="color:black">E
+                </label>
+
+             </div>  
+
+
+        </div>
+
+    </div>
+    <div class="panel panel-default" flex="50" style="margin-left:10px;">
+        <div class="panel-heading beige"> <strong> Columns </strong></div>
+                              <div class="panel-body container">
+                        <div style="width:100%" >
+
+
+                                <div  style="padding-left:15px; " ng-repeat="c in tableStyleExportConfig.valueSetColumn.columns">
+
+                                    <input type="checkbox" ng-model="c.present" ng-change="setChanged()"> <label style="color:black">{{c.name}}
+                                    </label><br/>
+
+                                </div>
+                        </div>
+                        </div>
+
+    </div>
+</div>
+</div>
+</div>
+</div>

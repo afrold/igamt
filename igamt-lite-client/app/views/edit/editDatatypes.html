@@ -20,7 +20,7 @@
             <!--<div ng-if="versionAndUseMap[datatype.id].deprecated" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>-->
             <div ng-if="versionAndUseMap[datatype.id].deprecated" class="alert alert-warning">New version of this datatype is available </div>
             <div ng-show="datatype !== null" id="executionPanel">
-                <div class="row" style="margin-left:0px; margin-right: 10px">
+                <div class="container">
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}<span class="version-badge-label" ng-if="datatype.publicationVersion">v{{datatype.publicationVersion}}</span></span>
                         <span class="pull-right" ng-if="!typeOfSharing">
@@ -41,7 +41,7 @@
                     <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty||editForm.$invalid|| datatype.status === 'PUBLISHED'" ng-hide="viewSettings.tableReadonly||datatype.status==='PUBLISHED'" ng-click="saveDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </button>
-                    <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty||editForm.$invalid" ng-show="datatype.status==='PUBLISHED'&&!editForm.$dirty" ng-click="saveBindingForDatatype()">
+                    <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty||editForm.$invalid" ng-show="datatype.status==='PUBLISHED'&& editForm.$dirty" ng-click="saveBindingForDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
                				      </button>
                     <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="datatype.status==='PUBLISHED'" ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
@@ -55,9 +55,18 @@
                               <span> Publish </span>
                             </button>
                     </span>
-                    <span class="pull-right" ng-if="datatype.owner" style="font-style: italic;">
-                     	(Owner: {{datatype.owner}})
-                        </span>
+                </div>
+
+                <div class="static_info">
+                 <i class="fa fa-calendar" aria-hidden="true"></i>
+					Updated :{{datatype.dateUpdated | date:dateFormat}}
+                     <span ng-if="datatype.owner" style="font-style: italic;">
+                         <i class="fa fa-user" aria-hidden="true"></i> 
+                         ,{{datatype.owner}}
+                    </span>
+                    <span>,HL7 Version: {{datatype.hl7Version}}</span>
+                    <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
+
                 </div>
                 <div class="col-md-12" ng-controller="cmpDatatypeCtrl as cmp">
                     <tabset active="tabStatus.active">
@@ -102,14 +111,9 @@
                                         <input type="text" disabled ng-change="setDirty()" name="description" class="form-control" ng-model="versionAndUseMap[datatype.id].publicationDate" required>
                                     </div>
                                 </div>
-                                <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.hl7Version.$invalid}">
-                                    <label class="col-md-2 control-label">HL7 Version*</label>
 
-                                    <div class="controls col-md-10">
-                                        <input type="text" disabled ng-change="setDirty()" name="hl7Version" class="form-control" ng-model="datatype.hl7Version" required>
-                                    </div>
-                                </div>
-                                <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.purposeUse.$invalid}">
+    
+                                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.purposeUse.$invalid}">
                                     <label class="col-md-2 control-label">Purpose and Use</label>
 
                                     <div class="controls col-md-10">
@@ -130,7 +134,7 @@
                                     <label class="col-md-2 control-label">Usage Note </label>
 
                                     <div class="controls col-md-10">
-                                        <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER' && datatype.status!=='PUBLISHED'">
+                                        <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
                                             <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>
                                         </div>
                                         <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
@@ -148,17 +152,6 @@
                                         <span type="text" name="hl7Section" class="form-control">{{datatype.hl7Section}}</span>
                                     </div>
                                 </div>
-
-
-                                <div class="form-group control-group" ng-hide="datatype.scope === 'HL7STANDARD'">
-                                    <label class="col-md-2 control-label">Date Updated</label>
-
-                                    <div class="controls col-md-10">
-                                        <span type="text" name="date" class="form-control">{{datatype.dateUpdated | date:dateFormat}}</span>
-                                    </div>
-                                </div>
-
-
                             </div>
                         </tab>
                         <tab ng-click="setDeltaToF(); refreshSlider();">
@@ -206,7 +199,7 @@
                                                 </div>
 
                                             <div ng-show="datatype.components && datatype.components.length > 0" class="pull-left">
-                                                <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
+                                              <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
                                             </div>
                                             <button ng-if="datatype.scope!=='HL7STANDARD'" class="pull-right" title="Verify Data type" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
                                                 ng-click="validateDatatype()"> 
@@ -577,7 +570,7 @@
                             </tab-heading>
                             <div class="el-def" style="margin-top:20px">
 
-                                <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary && datatype.status!=='PUBLISHED'" ng-hide="typeOfSharing ">
+                                <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary" ng-hide="typeOfSharing ">
                                         <button type="button " ng-click="AddBindingForDatatype(datatype) " class="btn btn-raised btn-info btn-md "><i class="fa fa-plus "></i> Add Binding</button>
                                     </span>
 
@@ -617,17 +610,11 @@
                                                     {{::ref.usage}}
                                                 </td>
                                                 <td st-ratio="20">
-                                                    <span ng-show="ref.target.scope !== 'USER'">
+                                                    <span ng-show="ref.target.status !== 'PUBLISHED'">
                                                              <a ng-click="redirectDT(ref.datatype)">{{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}<span class="version-badge-label" ng-if="datatypesMap[ref.datatype.id].publicationVersion">v{{datatypesMap[ref.datatype.id].publicationVersion}}</span></span>
                                                     </a>
 
                                                     </span>
-                                                    <select ng-show="ref.target.scope == 'USER'" class="form-control" ng-change="changeDatatypeLink(ref.datatypeLink)" ng-model="ref.datatypeLink.id">
-                                                            <option value="">No Value Set</option>
-                                                            <option ng-repeat="dt in datatypes |orderBy:'+name'" value="{{dt.id}}">
-                                                                {{::getDatatypeLabel(dt)}} {{getVersionToSelect(datatypesMap[dt.id])}}
-                                                            </option>
-                                                        </select>
                                                 </td>
 
                                                 <td st-ratio="10">
@@ -901,7 +888,7 @@
                     <div ng-if="editableDT===node.id">
                         <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                             <option ng-repeat="datatype in results" value="{{datatype}}"
-                                    ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatype)}} {{datatypesMap[datatype.id].hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
+                                    ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatypesMap[datatype.id])}} {{datatypesMap[datatype.id].hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
                             </option>
                             <!--<option ng-click="otherDT(node)" value=""> Others-->
                         </select>

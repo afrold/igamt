@@ -1,6 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +26,10 @@ public class ExportParameters {
     private String targetFormat = "html";
     private String documentTitle = "Implementation Guide";
     private String imageLogo;
+    private List<NameAndPositionAndPresence> messageColumns;
+    private List<NameAndPositionAndPresence> segmentsColumns;
+    private List<NameAndPositionAndPresence> dataTypeColumns;
+    private List<NameAndPositionAndPresence> valueSetColumns;
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle) {
@@ -31,11 +38,23 @@ public class ExportParameters {
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle,String imageLogo) {
+        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null);
+    }
+
+    public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
+        String documentTitle, String imageLogo, List<NameAndPositionAndPresence> messageColumns,
+        List<NameAndPositionAndPresence> segmentsColumns,
+        List<NameAndPositionAndPresence> dataTypeColumns,
+        List<NameAndPositionAndPresence> valueSetColumns) {
         this.inlineConstraints = inlineConstraints;
         this.includeTOC = includeTOC;
         this.targetFormat = targetFormat;
         this.documentTitle = documentTitle;
         this.imageLogo = imageLogo;
+        this.messageColumns = messageColumns;
+        this.segmentsColumns = segmentsColumns;
+        this.dataTypeColumns = dataTypeColumns;
+        this.valueSetColumns = valueSetColumns;
     }
 
     public ExportParameters() {
@@ -81,6 +100,30 @@ public class ExportParameters {
         params.put("documentTitle", documentTitle);
         if(imageLogo!=null) {
             params.put("imageLogo", imageLogo);
+        }
+        if(messageColumns!=null && !messageColumns.isEmpty()){
+            String messageColumn = "messageColumn";
+            for(NameAndPositionAndPresence currentColumn : messageColumns){
+                params.put(messageColumn+currentColumn.getName().replace(" ",""),String.valueOf(currentColumn.isPresent()));
+            }
+        }
+        if(dataTypeColumns!=null && !dataTypeColumns.isEmpty()){
+            String dataTypeColumn = "dataTypeColumn";
+            for(NameAndPositionAndPresence currentColumn : dataTypeColumns){
+                params.put(dataTypeColumn+currentColumn.getName().replace(" ",""),String.valueOf(currentColumn.isPresent()));
+            }
+        }
+        if(valueSetColumns!=null && !valueSetColumns.isEmpty()){
+            String valueSetColumn = "valueSetColumn";
+            for(NameAndPositionAndPresence currentColumn : valueSetColumns){
+                params.put(valueSetColumn+currentColumn.getName().replace(" ",""),String.valueOf(currentColumn.isPresent()));
+            }
+        }
+        if(segmentsColumns!=null && !segmentsColumns.isEmpty()){
+            String segmentsColumn = "segmentColumn";
+            for(NameAndPositionAndPresence currentColumn : segmentsColumns){
+                params.put(segmentsColumn+currentColumn.getName().replace(" ",""),String.valueOf(currentColumn.isPresent()));
+            }
         }
         return params;
     }

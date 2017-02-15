@@ -256,9 +256,12 @@ public class TableSerializationImpl implements TableSerialization {
 
 						if (t != null) {
 								nu.xom.Element elmValueSetDefinition = new nu.xom.Element("ValueSetDefinition");
-								elmValueSetDefinition
-										.addAttribute(
-												new Attribute("BindingIdentifier", serializationUtil.str(t.getBindingIdentifier())));
+								if(t.getHl7Version() != null && !t.getHl7Version().equals("")){
+									elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", serializationUtil.str(t.getBindingIdentifier() + "_" + t.getHl7Version().replaceAll("\\.", "-"))));
+								}else {
+									elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", serializationUtil.str(t.getBindingIdentifier())));	
+								}
+								
 								elmValueSetDefinition.addAttribute(new Attribute("Name", serializationUtil.str(t.getName())));
 								if (t.getDescription() != null && !t.getDescription().equals(""))
 										elmValueSetDefinition

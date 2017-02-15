@@ -55,24 +55,36 @@
                     <xsl:text>contentThead</xsl:text>
                 </xsl:attribute>
                 <xsl:element name="tr">
-                    <xsl:element name="th">
-                        <xsl:text>Segment</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Flavor</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Element name</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Cardinality</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Usage</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Description/Comments</xsl:text>
-                    </xsl:element>
+                    <xsl:if test="$columnDisplay.message.segment = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Segment</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="$columnDisplay.message.flavor = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Flavor</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="$columnDisplay.message.name = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Element name</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="$columnDisplay.message.cardinality = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Cardinality</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="$columnDisplay.message.usage = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Usage</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="$columnDisplay.message.comment = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Description/Comments</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
                 </xsl:element>
             </xsl:element>
             <xsl:element name="tbody">

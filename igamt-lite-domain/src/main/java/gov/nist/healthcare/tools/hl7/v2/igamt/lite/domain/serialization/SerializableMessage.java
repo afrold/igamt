@@ -103,4 +103,8 @@ public class SerializableMessage extends SerializableSection {
     public Message getMessage() {
         return message;
     }
+
+    public List<SerializableSegmentRefOrGroup> getSerializableSegmentRefOrGroups() {
+        return serializableSegmentRefOrGroups;
+    }
 }

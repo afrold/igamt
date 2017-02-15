@@ -35,10 +35,10 @@ var app = angular
         'ds.objectDiff',
         'ngTagsInput',
         'nsPopover',
-        //'ngMaterial',
+        'ngMaterial',
         'pageslide-directive',
         'rzModule',
-		    'ui.select',
+		'ui.select',
         'flow'
     ]);
 
@@ -86,6 +86,10 @@ app.config(function($routeProvider, RestangularProvider, $httpProvider, Keepaliv
         .when('/doc', {
             templateUrl: 'views/doc.html',
             controller:	'DocumentationController'
+        })
+        .when('/configuration', {
+            templateUrl: 'views/configuration.html',
+            controller:	'ConfigurationController'
         })
         .when('/setting', {
             templateUrl: 'views/setting.html'

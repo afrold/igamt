@@ -2745,6 +2745,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
         $scope.addDtFlv = function(datatype) {
             var newDatatype = angular.copy(datatype);
+            newDatatype.publicationVersion=0;
 
             newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
             newDatatype.scope = 'USER';
