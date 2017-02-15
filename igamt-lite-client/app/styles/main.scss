@@ -2163,7 +2163,6 @@ input.form-control-short80 {
 }
 
 .igl-page-header {
-    border-bottom: 1px solid #eeeeee;
     margin-bottom: 20px;
     padding-bottom: 20px;
 }
@@ -2789,4 +2788,15 @@ td[dnd-handle] {
 }
 .current{
 background-color: beige;
+}
+
+.page-header {
+    padding-bottom: 0px !important;
+    margin: 10px 0 10px;
+    border-bottom: none !important;
+}
+.static_info{
+        border-bottom: 1px solid #eeeeee !important;
+        font-style: italic;
+        color:black !important;
 }

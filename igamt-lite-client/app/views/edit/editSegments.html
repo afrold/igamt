@@ -18,8 +18,8 @@
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="segment !== null" id="executionPanel">
-                <div class="row" style="margin-left:0px; margin-right: 10px">
-                    <div class="page-header" style="margin-bottom: 20px">
+                <div class="container">
+                    <div class="page-header">
                         <span class="header4">Segment: {{getSegmentLabel(segment)}}</span>
                         <span class="pull-right">
                             <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
@@ -39,7 +39,7 @@
                             </button>
                         </span>
                     </div>
-                <span class="static_info">
+                <div class="static_info">
                  <i class="fa fa-calendar" aria-hidden="true"></i>
 					Updated :{{segment.dateUpdated | date:dateFormat}}
                      <span ng-if="segment.owner" style="font-style: italic;">
@@ -49,7 +49,7 @@
                     <span>,HL7 Version: {{segment.hl7Version}}</span>
                     <span ng-if="segment.publicationVersion">,Version: {{segment.publicationVersion}}</span>
 
-                </span>
+                </div>
                     <div class="col-md-12" ng-controller="cmpSegmentCtrl as cmp">
                         <tabset active="tabStatus.active">
                             <tab ng-click="setDeltaToF()">
