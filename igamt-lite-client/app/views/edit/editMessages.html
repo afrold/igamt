@@ -18,8 +18,8 @@
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="message !== null" id="executionPanel">
-                <div class="row" style="margin-left:0px; margin-right: 10px">
-                    <div class="page-header" style="margin-bottom: 20px">
+                <div class="container">
+                    <div class="page-header">
                         <span class="header4">Conformance Profile: {{message.name}} </span>
                         <span class="pull-right">
                             <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
@@ -32,7 +32,7 @@
                         </button>
                         </span>
                     </div>
-                 <span class="static_info">
+                 <div class="static_info">
                  <i class="fa fa-calendar" aria-hidden="true"></i>
 					Updated {{message.dateUpdated | date:dateFormat}}
                      <span ng-if="message.owner" style="font-style: italic;">
@@ -42,7 +42,7 @@
                     <span ng-if="message.hl7Version">,HL7 Version: {{message.hl7Version}}</span>
                     <span ng-if="message.publicationVersion">,Version: {{message.publicationVersion}}</span>
 
-                </span>
+                </div>
                     <div class="col-md-12" ng-controller="cmpMessageCtrl as cmpMsg">
                         <tabset active="tabStatus.active">
                             <tab ng-click="setDeltaToF()">
