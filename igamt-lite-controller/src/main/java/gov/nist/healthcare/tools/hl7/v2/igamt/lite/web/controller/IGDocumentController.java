@@ -600,20 +600,17 @@ public class IGDocumentController extends CommonController {
   private SerializationLayout identifyLayout(String layout) {
     SerializationLayout serializationLayout;
     switch (layout) {
-      case "Verbose":
-        serializationLayout = SerializationLayout.VERBOSE;
-        break;
-      case "Compact":
-        serializationLayout = SerializationLayout.COMPACT;
-        break;
       case "IgDocument":
         serializationLayout = SerializationLayout.IGDOCUMENT;
         break;
       case "Profile":
         serializationLayout = SerializationLayout.PROFILE;
         break;
+      case "Table":
+        serializationLayout = SerializationLayout.TABLES;
+        break;
       default:
-        serializationLayout = SerializationLayout.COMPACT;
+        serializationLayout = SerializationLayout.IGDOCUMENT;
         break;
     }
     return serializationLayout;

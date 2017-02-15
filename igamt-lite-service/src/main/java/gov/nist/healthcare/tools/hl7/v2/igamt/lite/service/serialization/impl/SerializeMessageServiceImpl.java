@@ -80,7 +80,7 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
             SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentRefOrGroupUsageConfig);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
-            if(serializationLayout.equals(SerializationLayout.VERBOSE)){
+            if(serializationLayout.equals(SerializationLayout.PROFILE)){
                 serializeSegment(segmentRefOrGroup,
                     messageSegments.getPrefix() + ".", messageSegments, segmentUsageConfig);
             }

@@ -55,7 +55,7 @@ public class IGDocumentExportTest {
             }
             if(htmlFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.COMPACT,exportConfig), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,exportConfig), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,7 +73,26 @@ public class IGDocumentExportTest {
             }
             if(htmlFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.VERBOSE,exportConfig), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.PROFILE,exportConfig), htmlFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testHtmlTablesExport(){
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
+        try {
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
+            //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
+            File htmlFile = new File(EXPORT_BASE_PATH+"_verbose.html");
+            if(htmlFile.exists()){
+                htmlFile.delete();
+            }
+            if(htmlFile.createNewFile()) {
+                FileUtils.copyInputStreamToFile(exportService
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.TABLES,exportConfig), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,7 +109,7 @@ public class IGDocumentExportTest {
             }
             if(wordFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    SerializationLayout.COMPACT,exportConfig), wordFile);
+                    SerializationLayout.IGDOCUMENT,exportConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,7 +126,7 @@ public class IGDocumentExportTest {
             }
             if(wordFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    SerializationLayout.VERBOSE,exportConfig), wordFile);
+                    SerializationLayout.PROFILE,exportConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();

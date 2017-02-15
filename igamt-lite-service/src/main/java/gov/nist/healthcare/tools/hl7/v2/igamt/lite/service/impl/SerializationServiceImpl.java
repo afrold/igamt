@@ -101,8 +101,10 @@ import java.util.*;
         }
         SerializableSection profileSection =
             new SerializableSection(id, prefix, position, headerLevel, title);
-        if (profile.getSectionContents() != null && !profile.getSectionContents().isEmpty()) {
-            profileSection.addSectionContent(profile.getSectionContents());
+        if(!serializationLayout.equals(SerializationLayout.TABLES)) {
+            if (profile.getSectionContents() != null && !profile.getSectionContents().isEmpty()) {
+                profileSection.addSectionContent(profile.getSectionContents());
+            }
         }
         if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
             nu.xom.Element textElement = new nu.xom.Element("Text");
@@ -120,13 +122,13 @@ import java.util.*;
         //Segments serialization
         UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
         SerializableSection segmentsSection = this.serializeSegments(profile,segmentUsageConfig);
-        if(!serializationLayout.equals(SerializationLayout.VERBOSE)) {
+        if(!serializationLayout.equals(SerializationLayout.PROFILE)) {
             profileSection.addSection(segmentsSection);
         }
 
         //Datatypes serialization
         boolean serializeMaster = true;
-        if(serializationLayout.equals(SerializationLayout.VERBOSE)) {
+        if(serializationLayout.equals(SerializationLayout.PROFILE)) {
             serializeMaster = false;
         }
         SerializableSection datatypeSection = this.serializeDatatypes(profile.getDatatypeLibrary(),profile.getSectionPosition(),serializeMaster);
