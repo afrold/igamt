@@ -610,12 +610,6 @@
                                                     </a>
 
                                                     </span>
-                                                    <select ng-show="ref.target.status !== 'PUBLISHED'" class="form-control" ng-change="changeDatatypeLink(ref.datatypeLink)" ng-model="ref.datatypeLink.id">
-                                                            <option value="">No Value Set</option>
-                                                            <option ng-repeat="dt in datatypes  |orderBy:'+name'" value="{{dt.id}}" ng-disabled="dt.name!==datatypesMap[datatype.id].name" >
-                                                                {{::getDatatypeLabel(dt)}} {{getVersionToSelect(datatypesMap[dt.id])}}
-                                                            </option>
-                                                        </select>
                                                 </td>
 
                                                 <td st-ratio="10">
