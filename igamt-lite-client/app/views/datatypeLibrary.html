@@ -1951,7 +1951,7 @@ if (self === top) {
                                 <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
                         <span>ValueSet ID: </span>
                                 <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
-                                    <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">
+                                    <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="{{getUpdatedBindingIdentifier(table)}}">
                                         {{table.bindingIdentifier}}
                                     </option>
                                 </select>

@@ -238,7 +238,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		private nu.xom.Document serializeProfileGazelleToDoc(Profile profile) {
 				nu.xom.Element e = new nu.xom.Element("HL7v2xConformanceProfile");
-				e.addAttribute(new Attribute("HL7Version", serializationUtil.str(profile.getMetaData().getHl7Version())));
+				e.addAttribute(new Attribute("HL7Version", serializationUtil.str(profile.getMetaData().getHl7Version().replaceAll("\\.", "-"))));
 				e.addAttribute(new Attribute("ProfileType", serializationUtil.str(profile.getMetaData().getType())));
 				// e.addAttribute(new Attribute("Identifier",
 				// serializationUtil.str(profile.getMetaData().getProfileID())));
@@ -747,7 +747,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		private nu.xom.Element serializeSegmentRef(SegmentRef segmentRef, SegmentLibrary segments) {
 				Segment s = segmentService.findById(segmentRef.getRef().getId());
 				nu.xom.Element elmSegment = new nu.xom.Element("Segment");
-				elmSegment.addAttribute(new Attribute("Ref", serializationUtil.str(s.getLabel())));
+				elmSegment.addAttribute(new Attribute("Ref", serializationUtil.str(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"))));
 				elmSegment.addAttribute(new Attribute("Usage", serializationUtil.str(segmentRef.getUsage().value())));
 				elmSegment.addAttribute(new Attribute("Min", serializationUtil.str(segmentRef.getMin() + "")));
 				elmSegment.addAttribute(new Attribute("Max", serializationUtil.str(segmentRef.getMax())));
@@ -1491,7 +1491,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		private nu.xom.Element serializeSegment(Segment s, TableLibrary tables, DatatypeLibrary datatypes) {
 				nu.xom.Element elmSegment = new nu.xom.Element("Segment");
-				elmSegment.addAttribute(new Attribute("ID", s.getLabel()));
+				elmSegment.addAttribute(new Attribute("ID", s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-")));
 				elmSegment.addAttribute(new Attribute("Name", serializationUtil.str(s.getName())));
 				elmSegment.addAttribute(new Attribute("Label", serializationUtil.str(s.getLabel())));
 				elmSegment.addAttribute(new Attribute("Description", serializationUtil.str(s.getDescription())));
@@ -1514,8 +1514,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 										if (c.getSecondValue() != null && !c.getSecondValue().equals("")) {
 												elmCase.addAttribute(new Attribute("SecondValue", c.getSecondValue()));
 										}
-										elmCase.addAttribute(
-												new Attribute("Datatype", datatypeService.findById(c.getDatatype()).getLabel()));
+										
+										Datatype d = datatypeService.findById(c.getDatatype());
+										
+										elmCase.addAttribute(new Attribute("Datatype", d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-")));
 										elmMapping.appendChild(elmCase);
 								}
 
@@ -1536,7 +1538,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 						nu.xom.Element elmField = new nu.xom.Element("Field");
 						elmField.addAttribute(new Attribute("Name", serializationUtil.str(f.getName())));
 						elmField.addAttribute(new Attribute("Usage", serializationUtil.str(f.getUsage().toString())));
-						elmField.addAttribute(new Attribute("Datatype", serializationUtil.str(d.getLabel())));
+						elmField.addAttribute(new Attribute("Datatype", serializationUtil.str(d.getLabel()+ "_" + d.getHl7Version().replaceAll("\\.", "-"))));
 						elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
 						if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
 								elmField.addAttribute(new Attribute("MaxLength", serializationUtil.str(f.getMaxLength())));
@@ -1549,9 +1551,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 										String bindingLocation = "";
 										for (TableLink tl : f.getTables()) {
 												Table table = tableService.findById(tl.getId());
-												if (table != null && table.getBindingIdentifier() != null
-														&& !table.getBindingIdentifier().equals(""))
+												if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals("")){
+													if(table.getHl7Version() != null && !table.getHl7Version().equals("")){
+														bindingString = bindingString + table.getBindingIdentifier() + "_" + table.getHl7Version().replaceAll("\\.", "-") + ":";
+													}else{
 														bindingString = bindingString + table.getBindingIdentifier() + ":";
+													}
+												}
+														
 										}
 
 										if (!bindingString.equals(""))
@@ -1586,7 +1593,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		private nu.xom.Element serializeDatatypeForValidation(Datatype d, TableLibrary tables, DatatypeLibrary datatypes) {
 				nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
-				elmDatatype.addAttribute(new Attribute("ID", serializationUtil.str(d.getLabel())));
+				elmDatatype.addAttribute(new Attribute("ID", serializationUtil.str(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"))));
 				elmDatatype.addAttribute(new Attribute("Name", serializationUtil.str(d.getName())));
 				elmDatatype.addAttribute(new Attribute("Label", serializationUtil.str(d.getLabel())));
 				elmDatatype.addAttribute(new Attribute("Description", serializationUtil.str(d.getDescription())));
@@ -1605,7 +1612,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 								nu.xom.Element elmComponent = new nu.xom.Element("Component");
 								elmComponent.addAttribute(new Attribute("Name", serializationUtil.str(c.getName())));
 								elmComponent.addAttribute(new Attribute("Usage", serializationUtil.str(c.getUsage().toString())));
-								elmComponent.addAttribute(new Attribute("Datatype", serializationUtil.str(componentDatatype.getLabel())));
+								elmComponent.addAttribute(new Attribute("Datatype", serializationUtil.str(componentDatatype.getLabel() + "_" + componentDatatype.getHl7Version().replaceAll("\\.", "-"))));
 								elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
 								if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
 										elmComponent.addAttribute(new Attribute("MaxLength", serializationUtil.str(c.getMaxLength())));
@@ -1618,9 +1625,13 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 												String bindingLocation = "";
 												for (TableLink tl : c.getTables()) {
 														Table table = tableService.findById(tl.getId());
-														if (table != null && table.getBindingIdentifier() != null
-																&& !table.getBindingIdentifier().equals(""))
+														if (table != null && table.getBindingIdentifier() != null && !table.getBindingIdentifier().equals("")){
+															if (table.getHl7Version() != null && !table.getHl7Version().equals("")){
+																bindingString = bindingString + table.getBindingIdentifier() + "_" + table.getHl7Version().replaceAll("\\.", "-") + ":";
+															}else{
 																bindingString = bindingString + table.getBindingIdentifier() + ":";
+															}
+														}
 												}
 
 												if (!bindingString.equals(""))
@@ -2005,8 +2016,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 				String profileXMLStr = serializeProfileToXML(profile, metadata, dateUpdated);
 				String valueSetXMLStr = tableSerializationService.serializeTableLibraryToXML(profile, metadata, dateUpdated);
-				String ConstraintXMLStr = constraintsSerializationService.serializeConstraintsToXML(profile, metadata,
-						dateUpdated);
+				String constraintXMLStr = constraintsSerializationService.serializeConstraintsToXML(profile, metadata,dateUpdated);
+				
 
 				Exception profileError = null;
 				try {
@@ -2024,15 +2035,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 				Exception constraintsError = null;
 				try {
-						new ProfileValidationServiceImpl().validate(ConstraintXMLStr,
-								"validation/profilesSchema/ConformanceContext.xsd");
+						new ProfileValidationServiceImpl().validate(constraintXMLStr, "validation/profilesSchema/ConformanceContext.xsd");
 				} catch (Exception e) {
 						constraintsError = e;
 				}
 
 				this.generateProfileIS(out, profileXMLStr);
 				this.generateValueSetIS(out, valueSetXMLStr);
-				this.generateConstraintsIS(out, ConstraintXMLStr);
+				this.generateConstraintsIS(out, constraintXMLStr);
 				this.generateProfileError(out, profileError);
 				this.generateValueSetError(out, valueSetEreor);
 				this.generateConstraintsError(out, constraintsError);
