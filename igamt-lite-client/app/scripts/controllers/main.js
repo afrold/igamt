@@ -1694,7 +1694,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     datatypeUpdateParameter.datatypeId = targetDatatype.id;
                     datatypeUpdateParameter.componentId = targetComponent.id;
                     datatypeUpdateParameter.datatypeLink = newDatatypeLink;
-                    datatypeUpdateParameter.key = $rootScope.table.id;
+                    datatypeUpdateParameter.key = $rootScope.datatype.id;
                     datatypeUpdateParameterList.push(datatypeUpdateParameter);
                 } else if (ref.type == 'field') {
                     var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
