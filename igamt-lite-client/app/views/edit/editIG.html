@@ -37,9 +37,18 @@
                     </div>
                 </div>
                 <div class="pull-right">
-                    <!--</button>-->
-                    <!--<button title="Validate the IG Document" style="margin-top:0px" type="button" class="btn btn-raised btn-sm btn-success" ng-click="validateIG()"> <span><i class="fa fa-check fa-fw"></i>Validate</span> </button>-->
-
+                    <!--<button style="margin-top:0px" title="Verify IG" type="button" ng-class="{'btn btn-raised btn-sm btn-danger':(validationResult && validationResult.errorCount>0),'btn btn-raised btn-sm btn-success':((validationResult && validationResult.errorCount===0)|| !validationResult)}"
+                        ng-click="validateIg()"> 
+                                                <span>
+                                                    <i ng-show="validationResult && validationResult.errorCount>0" class="fa fa-exclamation-triangle"></i>
+                                                    <i  ng-show="(validationResult && validationResult.errorCount===0)|| !validationResult" class="fa fa-check-circle"></i>
+                                                    Verify
+                                                </span> 
+                                            </button>-->
+                    <button style="margin-top:0px" title="Verify IG" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
+                        ng-click="validateIg()"> 
+                                                Verify
+                                            </button>
                     <div class="btn-group">
                         <label class="btn btn-raised btn-primary btn-sm" ng-class="{active:$root.usageF===false}" ng-click="$root.usageF=false"> All Usages </label>
                         <label class=" btn btn-raised btn-primary btn-sm" ng-class="{active:$root.usageF===true}" ng-click="usageFilter()"> Only R,RE,C </label>
@@ -98,6 +107,18 @@
                 <!--<span>version: {{igdocument.metaData.version}}-->
                 <!--</span>-->
                 <!--</div>-->
+            </div>
+        </div>
+        <div class="row" ng-show="showErrorCount(igdocument.id)  && showIgErrorNotification" style="margin-right: 15px;margin-left: 5px;">
+            <div class="alert has-error" ng-show="errorCount(igdocument.id)>0">
+                <!--<button type="button" class="close" aria-label="Close" ><span aria-hidden="true">&times;</span></button> {{errorCount(igdocument.id)}} Errors-->
+                <button type="button" ng-click="setIgErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(igdocument.id)}} Errors
+
+            </div>
+            <div class="alert alert-success" ng-show="errorCount(igdocument.id)===0">
+                <!--<button type="button" class="close" aria-label="Close" ><span aria-hidden="true">&times;</span></button> {{errorCount(igdocument.id)}} Errors-->
+                <button type="button" ng-click="setIgErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(igdocument.id)}} Errors
+
             </div>
         </div>
         <div class="row">

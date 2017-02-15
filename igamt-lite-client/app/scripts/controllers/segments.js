@@ -73,13 +73,19 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.validateSegment = function() {
         ValidationService.validateSegment($rootScope.segment).then(function(result) {
             $rootScope.validationMap = {};
-            $scope.showErrorNotification = true;
+            $rootScope.childValidationMap={};
+            $rootScope.showSegErrorNotification = true;
             $rootScope.validationResult = result;
             console.log($rootScope.validationResult);
             $rootScope.buildValidationMap($rootScope.validationResult);
             console.log($rootScope.validationMap);
-            console.log($scope.showErrorNotification);
+            console.log($rootScope.childValidationMap);
+            console.log($rootScope.showSegErrorNotification);
         });
+    };
+    
+    $scope.setErrorNotification = function() {
+        $rootScope.showSegErrorNotification  = !$rootScope.showSegErrorNotification;
     };
     
     $scope.deleteField = function(fieldToDelete, segment) {

@@ -72,23 +72,52 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     };
     $rootScope.buildValidationMap = function(validation) {
-        Object.keys(validation.items).forEach(function(key, index) {
-            $rootScope.validationMap[key] = validation.items[key];
-        });
-        Object.keys(validation.blocks).forEach(function(key, index) {
-            if ($rootScope.validationMap[key] && angular.isArray($rootScope.validationMap[key])) {
-                $rootScope.validationMap[key].push(validation.blocks[key]);
+    
+        if (validation.items) {
+            Object.keys(validation.items).forEach(function(key, index) {
+                $rootScope.validationMap[key] = validation.items[key];
 
-            } else {
-                $rootScope.validationMap[key] = validation.blocks[key];
+            });
+        }
+        if (validation.blocks) {
+            Object.keys(validation.blocks).forEach(function(key, index) {
+                if ($rootScope.validationMap[key] && angular.isArray($rootScope.validationMap[key])) {
+                    $rootScope.validationMap[key].push(validation.blocks[key]);
 
-            }
-            $rootScope.buildValidationMap(validation.blocks[key]);
 
-        });
+                } else {
+                    $rootScope.validationMap[key] = validation.blocks[key];
+
+
+                }
+                if (validation.blocks[key].targetId) {
+                    $rootScope.childValidationMap[validation.blocks[key].targetId] = validation.blocks[key];
+                }
+                $rootScope.buildValidationMap(validation.blocks[key]);
+
+            });
+        }
+
+
 
 
     };
+    $rootScope.errorCount = function(id){
+        if($rootScope.validationResult && $rootScope.validationResult.targetId ===id){
+            return  $rootScope.validationResult.errorCount;
+
+        } else if($rootScope.childValidationMap && $rootScope.childValidationMap[id]){
+            return $rootScope.childValidationMap[id].errorCount;
+        }
+    };
+    
+    $rootScope.showErrorCount = function(id){
+        if(($rootScope.validationResult && $rootScope.validationResult.targetId ===id) ||($rootScope.childValidationMap && $rootScope.childValidationMap[id]) ){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     $rootScope.hasUsageError = function(id) {
         if ($rootScope.validationResult) {
@@ -138,10 +167,35 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return false;
         }
     };
-    $rootScope.hasError = function(id) {
+    
+    $rootScope.hasCardinalityError = function(id) {
 
         if ($rootScope.validationResult) {
             if ($rootScope.validationMap[id]) {
+                if ($rootScope.validationMap[id].length > 0) {
+                    for (var item in $rootScope.validationMap[id]) {
+                        if ($rootScope.validationMap[id][item].validationType && $rootScope.validationMap[id][item].validationType === "CARDINALITY") {
+                            return true;
+                        }
+                    }
+                } else {
+                    if ($rootScope.validationMap[id].validationType && $rootScope.validationMap[id].validationType === "CARDINALITY") {
+                        return true;
+                    }
+                }
+
+                // return 'col-md-1 col-fixed-80 has-validation-error';
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    };
+    $rootScope.hasError = function(id) {
+
+        if ($rootScope.validationResult) {
+            if (($rootScope.validationMap[id] && $rootScope.validationMap[id].errorCount>0) || ($rootScope.validationMap[id] && $rootScope.validationMap[id].errorCount===undefined)) {
                 return true;
             } else {
                 return false;
@@ -3394,7 +3448,7 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
 
 
 
-angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalInstance, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc,DocumentationService) {
+angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalInstance, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc, DocumentationService) {
     $scope.continue = function() {
         $rootScope.clearChanges();
         $modalInstance.close();
@@ -3437,40 +3491,39 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
 
         }
 
-        if(data.type==="decision"||data.type==="FAQ"||data.type==="userGuide"||data.type==='UserNote'){
-    		DocumentationService.save(data).then(function(saved){
-    				console.log(data);
-    				console.log("befor");
-    				$rootScope.documentation=saved.data;
-    				$rootScope.documentationsMap[data.id]= saved.data;
-    				angular.forEach($rootScope.documentations, function(d){
-    					console.log("found");
-    					if(d.id==$rootScope.documentation.id){
-    					d.title=$rootScope.documentationsMap[saved.data.id].title;
-    					d.content=$rootScope.documentationsMap[saved.data.id].content;
-    					d.dateUpdated=$rootScope.documentationsMap[saved.data.id].dateUpdated;
-    					d.username=$rootScope.documentationsMap[saved.data.id].username;
-    					}
-    				});
-    				 $scope.continue();
-    	            if($scope.editForm) {
-    	                $scope.editForm.$setPristine();
-    	                $scope.editForm.$dirty = false;
-    	            }
-    				$scope.editMode=false;
-    				$scope.newOne=false;
-    				$rootScope.clearChanges();
-    				 $rootScope.msg().text = data.type+"SaveSuccess";;
-    		            $rootScope.msg().type = "success";
-    		            $rootScope.msg().show = true;
-    		        }, function(error) {
-    		            $rootScope.msg().text = data.type+"SaveFaild";
-    		            $rootScope.msg().type = "danger";
-    		            $rootScope.msg().show = true;
-    		        }
-    			);
-        
-    		
+        if (data.type === "decision" || data.type === "FAQ" || data.type === "userGuide" || data.type === 'UserNote') {
+            DocumentationService.save(data).then(function(saved) {
+                console.log(data);
+                console.log("befor");
+                $rootScope.documentation = saved.data;
+                $rootScope.documentationsMap[data.id] = saved.data;
+                angular.forEach($rootScope.documentations, function(d) {
+                    console.log("found");
+                    if (d.id == $rootScope.documentation.id) {
+                        d.title = $rootScope.documentationsMap[saved.data.id].title;
+                        d.content = $rootScope.documentationsMap[saved.data.id].content;
+                        d.dateUpdated = $rootScope.documentationsMap[saved.data.id].dateUpdated;
+                        d.username = $rootScope.documentationsMap[saved.data.id].username;
+                    }
+                });
+                $scope.continue();
+                if ($scope.editForm) {
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                }
+                $scope.editMode = false;
+                $scope.newOne = false;
+                $rootScope.clearChanges();
+                $rootScope.msg().text = data.type + "SaveSuccess";;
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+            }, function(error) {
+                $rootScope.msg().text = data.type + "SaveFaild";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+            });
+
+
         }
         ////console.log(data);
 

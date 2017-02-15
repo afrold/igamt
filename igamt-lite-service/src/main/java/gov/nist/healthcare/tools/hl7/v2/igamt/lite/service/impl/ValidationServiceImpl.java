@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,17 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
@@ -46,7 +53,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValidationError;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValidationResult;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValidationType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ValidationService;
 
@@ -58,11 +68,17 @@ public class ValidationServiceImpl implements ValidationService {
   private static final String USAGE_RULES_ROOT = "usageMap";
   private static final String UNSUPPORTED_SCHEMA_VERSION = "others";
   protected JsonNode root;
-
+  @Autowired
+  MessageService messageService;
   @Autowired
   DatatypeService datatypeService;
   @Autowired
   SegmentService segmentService;
+  @Autowired
+  SegmentLibraryService segmentLibraryService;
+  @Autowired
+  DatatypeLibraryService datatypeLibraryService;
+
 
   public ValidationServiceImpl() {
     init();
@@ -83,13 +99,101 @@ public class ValidationServiceImpl implements ValidationService {
     }
   }
 
+  public Set<String> getMessageIds(Set<Message> messages) {
+    Set<String> msgIds = new HashSet<String>();
+    for (Message message : messages) {
+      msgIds.add(message.getId());
+
+    }
+    return msgIds;
+
+  }
+
+  @Override
+  public ValidationResult validateIg(IGDocument ig) throws InvalidObjectException {
+    ValidationResult result = new ValidationResult();
+    HashMap<String, ValidationResult> blocks = new HashMap<String, ValidationResult>();
+    Set<String> userMsgIds = getMessageIds(ig.getProfile().getMessages().getChildren());
+    List<Message> userMsgs = messageService.findByIds(userMsgIds);
+    for (Message msg : userMsgs) {
+      Message referenceMessage = messageService.findByStructIdAndScopeAndVersion(msg.getStructID(),
+          "HL7STANDARD", ig.getProfile().getMetaData().getHl7Version());
+      ValidationResult valRes = validateMessage(referenceMessage, msg, true);
+      blocks.put(msg.getId(), valRes);
+
+
+    }
+    Set<String> userSegIds = new HashSet<String>();
+    SegmentLibrary userSegLib =
+        segmentLibraryService.findById(ig.getProfile().getSegmentLibrary().getId());
+    Set<SegmentLink> segLinks = userSegLib.getChildren();
+    for (SegmentLink segLink : segLinks) {
+      userSegIds.add(segLink.getId());
+    }
+    List<Segment> userSegs = segmentService.findByIds(userSegIds);
+    for (Segment seg : userSegs) {
+      if (!seg.getScope().equals(SCOPE.HL7STANDARD)) {
+        Segment referenceSegment = segmentService.findByNameAndVersionAndScope(seg.getName(),
+            seg.getHl7Version(), "HL7STANDARD");
+        ValidationResult valSegRes = validateSegment(referenceSegment, seg, true);
+        blocks.put(seg.getId(), valSegRes);
+      } else {
+        ValidationResult valSeg = new ValidationResult();
+        valSeg.setErrorCount(0);
+        valSeg.setTargetId(seg.getId());
+        blocks.put(seg.getId(), valSeg);
+      }
+
+    }
+    Set<String> userdtIds = new HashSet<String>();
+    DatatypeLibrary userdtLib =
+        datatypeLibraryService.findById(ig.getProfile().getDatatypeLibrary().getId());
+    Set<DatatypeLink> dtLinks = userdtLib.getChildren();
+    for (DatatypeLink dtLink : dtLinks) {
+      userdtIds.add(dtLink.getId());
+    }
+    List<Datatype> userdts = datatypeService.findByIds(userdtIds);
+    for (Datatype dt : userdts) {
+      if (!dt.getScope().equals(SCOPE.HL7STANDARD)) {
+        Datatype referenceDatatype = datatypeService.findByNameAndVersionAndScope(dt.getName(),
+            dt.getHl7Version(), "HL7STANDARD");
+        ValidationResult valdtRes = validateDatatype(referenceDatatype, dt, null);
+        blocks.put(dt.getId(), valdtRes);
+      } else {
+        ValidationResult valdt = new ValidationResult();
+        valdt.setErrorCount(0);
+        valdt.setTargetId(dt.getId());
+        blocks.put(dt.getId(), valdt);
+      }
+
+    }
+
+
+    Integer blockCount = 0;
+    for (Map.Entry<String, ValidationResult> entry : blocks.entrySet()) {
+      ValidationResult value = entry.getValue();
+      blockCount = blockCount + value.getErrorCount();
+
+    }
+    result.setErrorCount(blockCount);
+    result.setBlocks(blocks);
+    result.setTargetId(ig.getId());
+
+
+
+    return result;
+  }
+
+
+
   public Set<String> getSegmentIds(List<SegmentRefOrGroup> segRefsOrGrps) {
+
     Set<String> segIds = new HashSet<String>();
     for (SegmentRefOrGroup segRefOrGrp : segRefsOrGrps) {
-      if (segRefOrGrp.getType() == Constant.SEGMENTREF) {
+      if (segRefOrGrp.getType().equalsIgnoreCase(Constant.SEGMENTREF)) {
         SegmentRef segRef = (SegmentRef) segRefOrGrp;
         segIds.add(segRef.getRef().getId());
-      } else if (segRefOrGrp.getType() == Constant.GROUP) {
+      } else if (segRefOrGrp.getType().equalsIgnoreCase(Constant.GROUP)) {
         Group grp = (Group) segRefOrGrp;
 
         segIds.addAll(getSegmentIds(grp.getChildren()));
@@ -109,15 +213,11 @@ public class ValidationServiceImpl implements ValidationService {
     Set<String> userSegIds = getSegmentIds(toBeValidated.getChildren());
     Set<String> referenceSegIds = getSegmentIds(reference.getChildren());
     List<Segment> userSegs = segmentService.findByIds(userSegIds);
-    // List<Segment> referenceSegs = segmentService.findByIds(referenceSegIds);
     HashMap<String, Segment> userSegMap = new HashMap<String, Segment>();
     for (Segment seg : userSegs) {
       userSegMap.put(seg.getId(), seg);
     }
-    // HashMap<String, Segment> referenceSegMap = new HashMap<String, Segment>();
-    // for (Segment seg : referenceSegs) {
-    // referenceSegMap.put(seg.getId(), seg);
-    // }
+
 
     result.setTargetId(toBeValidated.getId());
 
@@ -144,26 +244,34 @@ public class ValidationServiceImpl implements ValidationService {
             items.putAll(valE);
 
           }
-          if (toBeValidated.getChildren().get(i).getType() == Constant.SEGMENTREF) {
+          if (toBeValidated.getChildren().get(i).getType().equalsIgnoreCase(Constant.SEGMENTREF)) {
             SegmentRef segRef = (SegmentRef) toBeValidated.getChildren().get(i);
 
-            // Segment childSegment = segmentService.findById(segRef.getRef().getId());
             Segment childSegment = userSegMap.get(segRef.getRef().getId());
+            if (!childSegment.getScope().equals(SCOPE.HL7STANDARD)) {
+              Segment childReference = segmentService.findByNameAndVersionAndScope(
+                  childSegment.getName(), childSegment.getHl7Version(), "HL7STANDARD");
+              ValidationResult block = validateSegment(childReference, childSegment, false);
+              if (result.getErrorCount() != null && block.getErrorCount() != null) {
+                result.setErrorCount(result.getErrorCount() + block.getErrorCount());
 
-            Segment childReference = segmentService.findByNameAndVersionAndScope(
-                childSegment.getName(), childSegment.getHl7Version(), "HL7STANDARD");
-            ValidationResult block = validateSegment(childReference, childSegment, false);
-            if (result.getErrorCount() != null && block.getErrorCount() != null) {
-              result.setErrorCount(result.getErrorCount() + block.getErrorCount());
+              }
 
-            }
-            if (!block.getBlocks().isEmpty() || !block.getItems().isEmpty()) {
+              blocks.put(toBeValidated.getChildren().get(i).getId(), block);
+
+
+            } else {
+              ValidationResult block = new ValidationResult();
+              block.setErrorCount(0);
+              block.setTargetId(childSegment.getId());
               blocks.put(toBeValidated.getChildren().get(i).getId(), block);
 
             }
 
 
-          } else if (toBeValidated.getChildren().get(i).getType() == Constant.GROUP) {
+
+          } else if (toBeValidated.getChildren().get(i).getType()
+              .equalsIgnoreCase(Constant.GROUP)) {
 
             Group userGrp = (Group) toBeValidated.getChildren().get(i);
             Group referenceGrp = (Group) reference.getChildren().get(i);
@@ -175,10 +283,10 @@ public class ValidationServiceImpl implements ValidationService {
 
             }
 
-            if (!block.getBlocks().isEmpty() || !block.getItems().isEmpty()) {
-              blocks.put(toBeValidated.getChildren().get(i).getId(), block);
 
-            }
+            blocks.put(toBeValidated.getChildren().get(i).getId(), block);
+
+
           }
 
 
@@ -249,17 +357,26 @@ public class ValidationServiceImpl implements ValidationService {
             SegmentRef segRef = (SegmentRef) toBeValidated.getChildren().get(i);
 
             Segment childSegment = segmentService.findById(segRef.getRef().getId());
-            Segment childReference = segmentService.findByNameAndVersionAndScope(
-                childSegment.getName(), childSegment.getHl7Version(), "HL7STANDARD");
-            ValidationResult block = validateSegment(childReference, childSegment, false);
-            if (result.getErrorCount() != null && block.getErrorCount() != null) {
-              result.setErrorCount(result.getErrorCount() + block.getErrorCount());
+            if (!childSegment.getScope().equals(SCOPE.HL7STANDARD)) {
+              Segment childReference = segmentService.findByNameAndVersionAndScope(
+                  childSegment.getName(), childSegment.getHl7Version(), "HL7STANDARD");
+              ValidationResult block = validateSegment(childReference, childSegment, false);
+              if (result.getErrorCount() != null && block.getErrorCount() != null) {
+                result.setErrorCount(result.getErrorCount() + block.getErrorCount());
 
-            }
-            if (!block.getBlocks().isEmpty() || !block.getItems().isEmpty()) {
+              }
+
+              blocks.put(toBeValidated.getChildren().get(i).getId(), block);
+
+
+            } else {
+              ValidationResult block = new ValidationResult();
+              block.setErrorCount(0);
+              block.setTargetId(childSegment.getId());
               blocks.put(toBeValidated.getChildren().get(i).getId(), block);
 
             }
+
 
 
           } else if (toBeValidated.getChildren().get(i).getType() == Constant.GROUP) {
@@ -267,6 +384,13 @@ public class ValidationServiceImpl implements ValidationService {
             Group referenceGrp = (Group) reference.getChildren().get(i);
 
             ValidationResult block = validateGroup(userGrp, referenceGrp);
+            if (result.getErrorCount() != null && block.getErrorCount() != null) {
+              result.setErrorCount(result.getErrorCount() + block.getErrorCount());
+
+            }
+
+
+            blocks.put(toBeValidated.getChildren().get(i).getId(), block);
           }
 
 
@@ -284,13 +408,11 @@ public class ValidationServiceImpl implements ValidationService {
     Integer itemCount = 0;
     Integer blockCount = 0;
     for (Map.Entry<String, List<ValidationError>> entry : items.entrySet()) {
-      String key = entry.getKey();
       List<ValidationError> value = entry.getValue();
       itemCount = itemCount + value.size();
 
     }
     for (Map.Entry<String, ValidationResult> entry : blocks.entrySet()) {
-      String key = entry.getKey();
       ValidationResult value = entry.getValue();
       blockCount = blockCount + value.getErrorCount();
 
@@ -325,6 +447,22 @@ public class ValidationServiceImpl implements ValidationService {
 
     }
 
+
+
+    String cardinalityValidation =
+        validateCardinality(reference.getMin(), reference.getMax(), reference.getUsage().toString(),
+            toBeValidated.getMin(), toBeValidated.getMax(), toBeValidated.getUsage().toString());
+
+    if (cardinalityValidation != null) {
+      ValidationError valError = new ValidationError();
+      valError.setErrorMessage(cardinalityValidation);
+      valError.setPosition(toBeValidated.getPosition());
+      valError.setTargetId(toBeValidated.getId());
+      valError.setType("Error");
+      valError.setTargetType(toBeValidated.getType());
+      valError.setValidationType(ValidationType.CARDINALITY);
+      validationErrors.add(valError);
+    }
     if (!validationErrors.isEmpty()) {
       items.put(toBeValidated.getId(), validationErrors);
 
@@ -382,10 +520,7 @@ public class ValidationServiceImpl implements ValidationService {
         }
       }
       for (int i = 0; i < reference.getFields().size(); i++) {
-        // items.putAll(validateField(reference.getFields().get(i),
-        // toBeValidated.getFields().get(i),
-        // predicatesMap.get(toBeValidated.getFields().get(i).getPosition()),
-        // toBeValidated.getHl7Version()));
+
         if (i < toBeValidated.getFields().size()) {
           HashMap<String, List<ValidationError>> valE =
               validateField(reference.getFields().get(i), toBeValidated.getFields().get(i),
@@ -401,24 +536,37 @@ public class ValidationServiceImpl implements ValidationService {
 
             Datatype childDatatype =
                 userDtMap.get(toBeValidated.getFields().get(i).getDatatype().getId());
-            Datatype childReference =
-                referenceDtMap.get(reference.getFields().get(i).getDatatype().getId());
-            ValidationResult block = validateDatatype(childReference, childDatatype,
-                toBeValidated.getFields().get(i).getId());
+            if (!childDatatype.getScope().equals(SCOPE.HL7STANDARD)) {
+
+              Datatype childReference =
+                  referenceDtMap.get(reference.getFields().get(i).getDatatype().getId());
+              ValidationResult block = validateDatatype(childReference, childDatatype,
+                  toBeValidated.getFields().get(i).getId());
+
+              if (result.getErrorCount() != null && block.getErrorCount() != null) {
+                result.setErrorCount(result.getErrorCount() + block.getErrorCount());
+
+              }
+              blocks.put(toBeValidated.getFields().get(i).getId(), block);
 
 
-            if (result.getErrorCount() != null && block.getErrorCount() != null) {
-              result.setErrorCount(result.getErrorCount() + block.getErrorCount());
-
-            }
-            if (!block.getBlocks().isEmpty() || !block.getItems().isEmpty()) {
+            } else {
+              ValidationResult block = new ValidationResult();
+              block.setErrorCount(0);
+              block.setTargetId(childDatatype.getId());
               blocks.put(toBeValidated.getFields().get(i).getId(), block);
 
             }
 
 
-          } else {
 
+          } else {
+            Datatype childDatatype =
+                userDtMap.get(toBeValidated.getFields().get(i).getDatatype().getId());
+            ValidationResult block = new ValidationResult();
+            block.setErrorCount(0);
+            block.setTargetId(childDatatype.getId());
+            blocks.put(toBeValidated.getFields().get(i).getId(), block);
           }
 
         }
@@ -447,6 +595,7 @@ public class ValidationServiceImpl implements ValidationService {
     }
     result.setErrorCount(itemCount + blockCount);
     result.setBlocks(blocks);
+    result.setTargetId(toBeValidated.getId());
 
     return result;
   }
@@ -484,6 +633,7 @@ public class ValidationServiceImpl implements ValidationService {
       referenceDtMap.put(dt.getId(), dt);
     }
 
+
     if (toBeValidated.getName().equals(reference.getName()) && toBeValidated.getComponents() != null
         && reference.getComponents() != null) {
       // Build predicates Map
@@ -502,38 +652,42 @@ public class ValidationServiceImpl implements ValidationService {
             predicatesMap.get(toBeValidated.getComponents().get(i).getPosition()),
             toBeValidated.getHl7Version(), toBeValidated.getId());
         items.putAll(valE);
-        // if (result.getErrorCount() != null) {
-        // result.setErrorCount(items.size() + result.getErrorCount());
-        // } else {
-        // result.setErrorCount(items.size());
-        // }
-        // if (!datatypeService.findById(toBeValidated.getComponents().get(i).getDatatype().getId())
-        // .getComponents().isEmpty()) {
+
         if (!userDtMap.get(toBeValidated.getComponents().get(i).getDatatype().getId())
             .getComponents().isEmpty()) {
-          // Datatype childDatatype =
-          // datatypeService.findById(toBeValidated.getComponents().get(i).getDatatype().getId());
-          // Datatype childReference = datatypeService.findByNameAndVersionAndScope(
-          // childDatatype.getName(), childDatatype.getHl7Version(), "HL7STANDARD");
+
           Datatype childDatatype =
               userDtMap.get(toBeValidated.getComponents().get(i).getDatatype().getId());
-          Datatype childReference =
-              referenceDtMap.get(reference.getComponents().get(i).getDatatype().getId());
-          ValidationResult block = validateDatatype(childReference, childDatatype,
-              toBeValidated.getComponents().get(i).getId());
-          block.setParentId(toBeValidated.getId());
-          if (result.getErrorCount() != null && block.getErrorCount() != null) {
-            result.setErrorCount(result.getErrorCount() + block.getErrorCount());
+          if (!childDatatype.getScope().equals(SCOPE.HL7STANDARD)) {
+            Datatype childReference =
+                referenceDtMap.get(reference.getComponents().get(i).getDatatype().getId());
+            ValidationResult block = validateDatatype(childReference, childDatatype,
+                toBeValidated.getComponents().get(i).getId());
+            block.setParentId(toBeValidated.getId());
+            if (result.getErrorCount() != null && block.getErrorCount() != null) {
+              result.setErrorCount(result.getErrorCount() + block.getErrorCount());
 
-          }
-          if (!block.getBlocks().isEmpty() || !block.getItems().isEmpty()) {
+            }
+            blocks.put(toBeValidated.getComponents().get(i).getId(), block);
+
+
+          } else {
+            ValidationResult block = new ValidationResult();
+            block.setErrorCount(0);
+            block.setTargetId(childDatatype.getId());
             blocks.put(toBeValidated.getComponents().get(i).getId(), block);
 
           }
 
 
-        } else {
 
+        } else {
+          Datatype childDatatype =
+              userDtMap.get(toBeValidated.getComponents().get(i).getDatatype().getId());
+          ValidationResult block = new ValidationResult();
+          block.setErrorCount(0);
+          block.setTargetId(childDatatype.getId());
+          blocks.put(toBeValidated.getComponents().get(i).getId(), block);
         }
 
 
@@ -545,18 +699,17 @@ public class ValidationServiceImpl implements ValidationService {
     Integer itemCount = 0;
     Integer blockCount = 0;
     for (Map.Entry<String, List<ValidationError>> entry : items.entrySet()) {
-      String key = entry.getKey();
       List<ValidationError> value = entry.getValue();
       itemCount = itemCount + value.size();
 
     }
     for (Map.Entry<String, ValidationResult> entry : blocks.entrySet()) {
-      String key = entry.getKey();
       ValidationResult value = entry.getValue();
       blockCount = blockCount + value.getErrorCount();
 
     }
     result.setErrorCount(itemCount + blockCount);
+
     result.setBlocks(blocks);
 
     return result;
@@ -601,10 +754,13 @@ public class ValidationServiceImpl implements ValidationService {
       validationErrors.add(valErr);
 
     }
+
+
     if (!validationErrors.isEmpty()) {
       items.put(toBeValidated.getId(), validationErrors);
 
     }
+
 
     return items;
   }
@@ -648,6 +804,21 @@ public class ValidationServiceImpl implements ValidationService {
       valErr.setType("Error");
       valErr.setValidationType(ValidationType.LENGTH);
       validationErrors.add(valErr);
+    }
+    System.out.println(toBeValidated.getMin());
+    String cardinalityValidation =
+        validateCardinality(reference.getMin(), reference.getMax(), reference.getUsage().toString(),
+            toBeValidated.getMin(), toBeValidated.getMax(), toBeValidated.getUsage().toString());
+
+    if (cardinalityValidation != null) {
+      ValidationError valError = new ValidationError();
+      valError.setErrorMessage(cardinalityValidation);
+      valError.setPosition(toBeValidated.getPosition());
+      valError.setTargetId(toBeValidated.getId());
+      valError.setType("Error");
+      valError.setTargetType(toBeValidated.getType());
+      valError.setValidationType(ValidationType.CARDINALITY);
+      validationErrors.add(valError);
     }
     if (!validationErrors.isEmpty()) {
       items.put(toBeValidated.getId(), validationErrors);
@@ -731,6 +902,91 @@ public class ValidationServiceImpl implements ValidationService {
 
     return result;
   }
+
+  @Override
+  public String validateCardinality(Integer referenceMin, String referenceMax,
+      String referenceUsage, Integer toBeMin, String pToBeMax, String toBeUsage) {
+    String result = null;
+    if (toBeMin == null) {
+      return "Cardinality Min cannot be empty";
+    }
+    if (!NumberUtils.isNumber(pToBeMax) && !StringUtils.equalsIgnoreCase(pToBeMax, "*")) {
+
+      return "Cardinality Max has to be * or a numerical value.";
+
+    }
+
+    int toBeMax = 0;
+    if ("*".equalsIgnoreCase(pToBeMax)) {
+      toBeMax = Integer.MAX_VALUE;
+    } else {
+      toBeMax = Integer.valueOf(pToBeMax);
+    }
+    String maxCannotBeLessThanMin = "Cardinality Max cannot be less than Cardinality Min.";
+    // if X usage, then cardinality min and max cannot be greater than 0
+    if (toBeUsage.equalsIgnoreCase(Usage.X.toString())) {
+      if (toBeMin != 0 || toBeMax != 0) {
+        result = "Cardinality Min and Max must be 0 when Usage is: " + toBeUsage;
+      }
+      return "".equals(result) ? null : result;
+    }
+    // if R usage, then cardinality min has to be greater than zero and
+    // cardinality max
+    // cannot be less than cardinality min
+    if (toBeUsage.equalsIgnoreCase(Usage.R.toString())) {
+      String message = "";
+      if (toBeMin < 1) {
+        message =
+            message + "Cardinality Min can not be less than 1 when Usage is: " + toBeUsage + ". ";
+
+      }
+      if (!(toBeMax >= toBeMin || toBeMax < 1)) {
+        message = message + maxCannotBeLessThanMin;
+      }
+      result = message;
+      return "".equals(result) ? null : result;
+    }
+
+    // if RE usage, then cardinality min cannot be less than zero and
+    // cardinality max
+    // cannot be less than cardinality min
+    if (toBeUsage.equalsIgnoreCase(Usage.RE.toString())) {
+
+      String message = "";
+
+      if (toBeMin < 0) {
+        message = "Cardinality Min must be 0 when Usage is: " + toBeUsage + ". ";
+      }
+
+      if ((toBeMin >= 0) && toBeMin > toBeMax) {
+        message = message + (maxCannotBeLessThanMin);
+      }
+      result = message;
+      return "".equals(result) ? null : result;
+    }
+    // if C,CE,O, or C(a/b) usage, min cannot be less than or greater than
+    // zero and cardinality
+    // max can not be less than 1
+    if (toBeUsage.equalsIgnoreCase(Usage.O.value())
+        || toBeUsage.equalsIgnoreCase(Usage.C.value())) {
+
+      if (!(toBeMin == 0) && !(toBeMax >= 1 && toBeMax != toBeMin)) {
+        String message = "Cardinality Min must be 0 when Usage is: " + toBeUsage + ". ";
+        message = message + (maxCannotBeLessThanMin);
+        result = message;
+      }
+      if (!(toBeMin == 0) && (toBeMax >= 1 && toBeMax != toBeMin)) {
+        String message = "Cardinality Min must be 0 when Usage is: " + toBeUsage + ". ";
+        result = message;
+      }
+      return "".equals(result) ? null : result;
+    }
+
+    return "".equals(result) ? null : result;
+
+
+  }
+
 
 
   /***************************************************************************************************

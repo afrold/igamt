@@ -54,13 +54,17 @@ angular.module('igl')
             console.log($rootScope.datatype);
             ValidationService.validatedatatype($rootScope.datatype).then(function(result) {
                 $rootScope.validationMap = {};
-                $scope.showErrorNotification = true;
+                $rootScope.childValidationMap = {};
+                $rootScope.showDtErrorNotification = true;
                 $rootScope.validationResult = result;
                 console.log($rootScope.validationResult);
                 $rootScope.buildValidationMap($rootScope.validationResult);
                 console.log($rootScope.validationMap);
 
             });
+        };
+        $scope.setErrorNotification = function() {
+            $rootScope.showDtErrorNotification = !$rootScope.showDtErrorNotification;
         };
 
 

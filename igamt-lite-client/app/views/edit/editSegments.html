@@ -46,38 +46,38 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Segment MetaData
                                 </tab-heading>
                                 <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.name.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.name.$invalid}">
                                         <label class="col-md-2 control-label">Name*</label>
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="identifier" class="form-control" ng-model="segment.name" ng-change="setDirty()" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.ext.$invalid}" ng-hide="segment.scope === 'HL7STANDARD'">
+                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.ext.$invalid}" ng-hide="segment.scope === 'HL7STANDARD'">
                                         <label class="col-md-2 control-label">Extension</label>
                                         <div class="controls col-md-10">
                                             <input type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" class="form-control" ng-change="setDirty()" name="label" class="form-control" ng-model="segment.ext" required required aria-describedby="helpBlock2">
                                             <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(segment,'name', 'ext', segments)">Extension already used</span>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.description.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.description.$invalid}">
                                         <label class="col-md-2 control-label">Description</label>
                                         <div class="controls col-md-10">
                                             <input type="text" disabled ng-change="setDirty()" name="description" class="form-control" ng-model="segment.description" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.description.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.description.$invalid}">
                                         <label class="col-md-2 control-label">Hl7 Version</label>
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="hl7Versions" class="form-control" ng-model="segment.hl7Version" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.comment.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.comment.$invalid}">
                                         <label class="col-md-2 control-label">Comment</label>
                                         <div class="controls col-md-10">
                                             <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || segment.scope === 'HL7STANDARD' || segment.scope === 'MASTER'" ng-change="setDirty()" name="comment" id="comment" class="form-control" ng-model="segment.comment" />
                                         </div>
                                     </div>
-                                    <!--<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.text1.$invalid}">-->
+                                    <!--<div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.text1.$invalid}">-->
                                     <!--<label class="col-md-2 control-label">Definition Pre-Text</label>-->
                                     <!--<div class="controls col-md-10">-->
                                     <!--<div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">-->
@@ -88,7 +88,7 @@
                                     <!--</div>-->
                                     <!--</div>-->
                                     <!--</div>-->
-                                    <!--<div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.text2.$invalid}">-->
+                                    <!--<div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.text2.$invalid}">-->
                                     <!--<label class="col-md-2 control-label">Definition Post-Text</label>-->
                                     <!--<div class="controls col-md-10">-->
                                     <!--<div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">-->
@@ -148,19 +148,25 @@
                                                 <span style="color:white;">Segment Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
                                             </accordion-heading>
                                             <div class="" style="margin:5px 5px 5px 5px">
-                                                <div class="alert alert-danger "  ng-show="validationResult.errorCount>0 && showErrorNotification">
-                                                    <button type="button" class="close" aria-label="Close" ng-click="showErrorNotification=false;"><span aria-hidden="true">&times;</span></button> {{validationResult.errorCount}} Errors
+
+
+                                                <div class="row" ng-show="showErrorCount(segment.id)  && showSegErrorNotification" style="margin-right: 15px;margin-left: 5px;">
+                                                    <div class="alert has-error" ng-show="errorCount(segment.id)>0">
+                                                        <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
+
+                                                    </div>
+                                                    <div class="alert alert-success" ng-show="errorCount(segment.id)===0">
+                                                        <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
+
+                                                    </div>
                                                 </div>
+
                                                 <div class="pull-left">
                                                     <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
                                                 </div>
-                                                <button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right" title="Validate Segment" type="button" ng-class="{'btn btn-raised btn-sm btn-danger':(validationResult && validationResult.errorCount>0),'btn btn-raised btn-sm btn-success':((validationResult && validationResult.errorCount===0)|| !validationResult)}"
+                                                <button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right" title="Validate Segment" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
                                                     ng-click="validateSegment()"> 
-                                                <span>
-                                                    <i ng-show="validationResult && validationResult.errorCount>0" class="fa fa-exclamation-triangle"></i>
-                                                    <i  ng-show="(validationResult && validationResult.errorCount===0)|| !validationResult" class="fa fa-check-circle"></i>
-                                                    Verify
-                                                </span> 
+                                                Verify
                                             </button>
                                                 <div class="pull-right">
                                                     <div class="btn-group">
@@ -750,7 +756,7 @@
                             style="width:65%"
                             name="name"
                             ng-change="recordDatatypeChange( 'field', 'edit',node.id, 'name', node.name)"
-                            ng-class="{ 'igl-has-error has-feedback' : {{formName}}.name.$invalid}"
+                            ng-class="{ 'has-error has-feedback' : {{formName}}.name.$invalid}"
                             ng-model="node.name" required>
             </span>
                 </span>
@@ -778,7 +784,7 @@
                 <ng-form name="{{formName}}" class="form-inline">
                     <select class="form-control input-sm" name="usage"
                             ng-change="setUsage(node);setCardinalities(node);openPredicateDialog(node);"
-                            ng-class="{ 'igl-has-error has-feedback' : {{formName}}.usage.$invalid}"
+                            ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
                             required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
                     </ng-form>
                 </span>
@@ -791,19 +797,20 @@
                 </a>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100">
+        <td class="col-md-1 col-fixed-100" ng-class="{'has-validation-error':hasCardinalityError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'CARDINALITY')}}">
             <div ng-controller="SegmentRowCtrl">
                 <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:45%" class="form-control"
+                                                        type="number"
                                                        name="min"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
-                                                       ng-class="{ 'igl-has-error' : {{formName}}.min.$invalid}"
+                                                       ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
                                                        ng-model="node.min" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="max"
                                                        ng-change="setDirty()"
-                                                       ng-class="{ 'igl-has-error' : {{formName}}.max.$invalid}"
+                                                       ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.max" required>
                                             </span>
@@ -816,12 +823,12 @@
                                                        name="minLength"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
-                                                       ng-class="{ 'igl-has-error' : {{formName}}.minLength.$invalid}"
+                                                       ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
                                                        ng-model="node.minLength" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="maxLength"
                                                        ng-change="setDirty()"
-                                                       ng-class="{ 'igl-has-error' : {{formName}}.maxLength.$invalid}"
+                                                       ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.maxLength" required>
                                             </span>
@@ -833,7 +840,7 @@
                                             <input style="width:50%" class="form-control" type="text"
                                                    name="confLength"
                                                    ng-change="setDirty()"
-                                                   ng-class="{ 'igl-has-error' : {{formName}}.confLength.$invalid}"
+                                                   ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                                    ng-pattern="'\\d*[#=]{0,1}'"
                                                    ng-model="node.confLength">
                                             </span>
@@ -990,7 +997,7 @@
 <script type="text/ng-template" id="SegmentComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-md-2 col-fixed-250">
-            
+
             <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
             <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <span>
@@ -1378,13 +1385,13 @@
     <div class="modal-body">
         <div class="creation-modal-content">
             <form name="addFieldForm" class="form-horizontal" novalidate>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addFieldForm.inputName.$valid}">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.inputName.$valid}">
                     <label class="col-md-3 control-label">Name*</label>
                     <div class="controls col-md-9">
                         <input name="inputName" id="inputName" class="form-control focus" ng-model="newField.name" autofocus required/>
                     </div>
                 </div>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addFieldForm.inputPosition.$valid}">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.inputPosition.$valid}">
                     <label class="col-md-3 control-label">Position*</label>
                     <div class="controls col-md-9">
                         <select ng-model="position" name="inputPosition" id="inputPosition" ng-change="selectPos()" class="form-control input-sm" required>
@@ -1393,13 +1400,13 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addFieldForm.inputUsage.$valid}">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.inputUsage.$valid}">
                     <label class="col-md-3 control-label">Usage*</label>
                     <div class="controls col-md-9">
                         <select name="inputUsage" id="inputUsage" class="form-control input-sm" name="inputUsage" ng-change="selectUsage(newField.usage)" ng-model="newField.usage" ng-options="usage for usage in config.usages" required/>
                     </div>
                 </div>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }">
                     <label class="col-md-3 control-label">Cardinality*</label>
                     <div class="controls col-md-9">
                         <div class="form-inline">
@@ -1409,7 +1416,7 @@
                     </div>
                 </div>
 
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !selectedDT()}">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !selectedDT()}">
                     <label class="col-md-3 control-label">Datatype*</label>
                     <div class="controls col-md-9">
                         <input class="form-control" type="text" ng-model="searchDT.name" ng-hide="selectedDT()" />
@@ -1427,7 +1434,7 @@
                     </div>
                 </div>
                 <div class="form-group control-group" ng-show="selectedDT() && DT.components.length===0">
-                    <label class="col-md-3 control-label" ng-class="{'igl-has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>
+                    <label class="col-md-3 control-label" ng-class="{'has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>
                     <div class="controls col-md-9">
                         <div class="form-inline">
                             <input class="form-control" placeholder="Min Length" name="minLength" style="width:49%" id="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.minLength" required ng-minlength="0">
@@ -1435,7 +1442,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addFieldForm.confLength.$valid}" ng-show="selectedDT() && DT.components.length===0">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.confLength.$valid}" ng-show="selectedDT() && DT.components.length===0">
                     <label class="col-md-3 control-label">Conf Length</label>
                     <div class="controls col-md-9">
                         <input class="form-control" name="confLength" id="confLength" ng-change="setDirty()" ng-pattern="'\\d*[#=]{0,1}'" ng-model="newField.confLength">

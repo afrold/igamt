@@ -128,4 +128,15 @@ public class ValidationController extends CommonController {
   }
 
 
+  @RequestMapping(value = "/validateIg", method = RequestMethod.POST, produces = "application/json")
+  public ValidationResult validateMessage(@RequestBody IGDocument userIg)
+      throws InvalidObjectException {
+    log.info("Validation ig..." + userIg.getMetaData().getHl7Version() + " " + userIg.getId());
+
+    ValidationResult result = validationService.validateIg(userIg);
+
+    return result;
+  }
+
+
 }
