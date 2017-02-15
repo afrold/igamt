@@ -133,7 +133,7 @@
                                     <label class="col-md-2 control-label">Usage Note </label>
 
                                     <div class="controls col-md-10">
-                                        <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER' && datatype.status!=='PUBLISHED'">
+                                        <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
                                             <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>
                                         </div>
                                         <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
