@@ -1,4 +1,4 @@
-<div class="alert alert-info">
+<div class="alert alert-config">
     The implementation guide is exported as a collection of independent building blocks that are assembled to realize a given message profile. A profile will contain it’s Message Structure Definition. Profile Components, Segments, Data Types, and Value Sets are rendered in a single separate section regardless of the profile in which they are used. Both the narrative and messaging aspects are exported.
 </div>
 
@@ -32,11 +32,11 @@
                             <div class="container">
                                 <label style="color:black"> Segments/Groups to Export:</label>
                             <br/>
-                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentORGroupsExport.r" ng-change="setChanged()"> <label style="color:black">R 
+                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentORGroupsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R 
                                 </label>
-                                <input type="checkbox"  ng-model="IGStyleExportConfig.segmentORGroupsExport.re" ng-change="setChanged()"> <label style="color:black">RE 
+                                <input type="checkbox"  ng-model="IGStyleExportConfig.segmentORGroupsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE 
                                 </label>
-                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentORGroupsExport.c" ng-change="setChanged()"> <label style="color:black">C 
+                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentORGroupsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C 
                                 </label>
                                 <input type="checkbox" ng-model="IGStyleExportConfig.segmentORGroupsExport.o" ng-change="setChanged()"> <label style="color:black">O 
                                 </label>
@@ -79,11 +79,11 @@
                             <div class="container">
                             <label style="color:black"> Segments to Export:</label>
                             <br/>
-                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentsExport.r" ng-change="setChanged()"> <label style="color:black">R 
+                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R 
                                 </label>
-                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentsExport.re" ng-change="setChanged()"> <label style="color:black">RE 
+                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE 
                                 </label>
-                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentsExport.c" ng-change="setChanged()"> <label style="color:black">C 
+                                <input type="checkbox" ng-model="IGStyleExportConfig.segmentsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C 
                                 </label>
                                 <input type="checkbox" ng-model="IGStyleExportConfig.segmentsExport.o" ng-change="setChanged()"> <label style="color:black">O 
                                 </label>
@@ -96,11 +96,11 @@
                                 <label style="color:black">Fields to Export:</label>
                                 </br>
                             
-                                <input type="checkbox" ng-model="IGStyleExportConfig.fieldsExport.r" ng-change="setChanged()"> <label style="color:black">R
+                                <input type="checkbox" ng-model="IGStyleExportConfig.fieldsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
                                 </label>
-                                <input type="checkbox" ng-model="IGStyleExportConfig.fieldsExport.re" ng-change="setChanged()"> <label style="color:black">RE
+                                <input type="checkbox" ng-model="IGStyleExportConfig.fieldsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
                                 </label>
-                                <input type="checkbox" ng-model="IGStyleExportConfig.fieldsExport.c" ng-change="setChanged()"> <label style="color:black">C
+                                <input type="checkbox" ng-model="IGStyleExportConfig.fieldsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
                                 </label>
                                 <input type="checkbox" ng-model="IGStyleExportConfig.fieldsExport.o" ng-change="setChanged()"> <label style="color:black">O
                                 </label>
@@ -150,11 +150,11 @@
             <div class="container">
                <label style="color:black">Datatypes to export:</label>
                 <br/>
-                <input type="checkbox" ng-model="IGStyleExportConfig.datatypesExport.r" ng-change="setChanged()"> <label style="color:black">R 
+                <input type="checkbox" ng-model="IGStyleExportConfig.datatypesExport.r" ng-change="setChanged()" disabled> <label style="color:black">R 
                 </label>
-                <input type="checkbox" ng-model="IGStyleExportConfig.datatypesExport.re" ng-change="setChanged()"> <label style="color:black">RE 
+                <input type="checkbox" ng-model="IGStyleExportConfig.datatypesExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE 
                 </label>
-                <input type="checkbox" ng-model="IGStyleExportConfig.datatypesExport.c" ng-change="setChanged()"> <label style="color:black">C 
+                <input type="checkbox" ng-model="IGStyleExportConfig.datatypesExport.c" ng-change="setChanged()" disabled> <label style="color:black">C 
                 </label>
                 <input type="checkbox" ng-model="IGStyleExportConfig.datatypesExport.o" ng-change="setChanged()"> <label style="color:black">O 
                 </label>
@@ -166,11 +166,11 @@
 <div class="container">
                 <label style="color:black">Components to Export:</label>
                <br/>
-                <input type="checkbox" ng-model="IGStyleExportConfig.componentExport.r" ng-change="setChanged()"> <label style="color:black">R
+                <input type="checkbox" ng-model="IGStyleExportConfig.componentExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
                 </label>
-                <input type="checkbox" ng-model="IGStyleExportConfig.componentExport.re" ng-change="setChanged()"> <label style="color:black">RE
+                <input type="checkbox" ng-model="IGStyleExportConfig.componentExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
                 </label>
-                <input type="checkbox" ng-model="IGStyleExportConfig.componentExport.c" ng-change="setChanged()"> <label style="color:black">C
+                <input type="checkbox" ng-model="IGStyleExportConfig.componentExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
                 </label>
                 <input type="checkbox" ng-model="IGStyleExportConfig.componentExport.o" ng-change="setChanged()"> <label style="color:black">O
                 </label>
@@ -215,11 +215,11 @@
             <div class="container">
                <label style="color:black"> Value Sets to Export:</label>
                <br/>
-                <input type="checkbox" ng-model="IGStyleExportConfig.valueSetsExport.r" ng-change="setChanged()"> <label style="color:black">R 
+                <input type="checkbox" ng-model="IGStyleExportConfig.valueSetsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R 
                 </label>
-                <input type="checkbox" ng-model="IGStyleExportConfig.valueSetsExport.re" ng-change="setChanged()"> <label style="color:black">RE 
+                <input type="checkbox" ng-model="IGStyleExportConfig.valueSetsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE 
                 </label>
-                <input type="checkbox" ng-model="IGStyleExportConfig.valueSetsExport.c" ng-change="setChanged()"> <label style="color:black">C 
+                <input type="checkbox" ng-model="IGStyleExportConfig.valueSetsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C 
                 </label>
                 <input type="checkbox" ng-model="IGStyleExportConfig.valueSetsExport.o" ng-change="setChanged()"> <label style="color:black">O 
                 </label>
@@ -230,7 +230,7 @@
 <div class="container">
                 <label style="color:black">Codes to Export:</label><br/>
                
-                <input type="checkbox" ng-model="IGStyleExportConfig.codesExport.r" ng-change="setChanged()"> <label style="color:black">R
+                <input type="checkbox" ng-model="IGStyleExportConfig.codesExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
                 </label>
                 <input type="checkbox" ng-model="IGStyleExportConfig.codesExport.p" ng-change="setChanged()"> <label style="color:black">P
                 </label>

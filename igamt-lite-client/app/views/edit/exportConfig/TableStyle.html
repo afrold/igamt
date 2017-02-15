@@ -1,4 +1,4 @@
-<div class="alert alert-info">
+<div class="alert alert-config">
     Only the messaging aspects are exported. The export view is on the individual tables. Filters can be applied to export a subset desired tables.
 </div>
 
@@ -31,11 +31,11 @@
                             <div class="container">
                                 <label style="color:black">  Segments/Groups to Export:</label>
                             <br/>
-                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.r" ng-change="setChanged()"> <label style="color:black">R 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R 
                                 </label>
-                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.re" ng-change="setChanged()"> <label style="color:black">RE 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE 
                                 </label>
-                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.c" ng-change="setChanged()"> <label style="color:black">C 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C 
                                 </label>
                                 <input type="checkbox" ng-model="tableStyleExportConfig.segmentORGroupsExport.o" ng-change="setChanged()"> <label style="color:black">O 
                                 </label>
@@ -78,11 +78,11 @@
                             <div class="container">
                             <label style="color:black">  Segments to export:</label>
                             <br/>
-                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.r" ng-change="setChanged()"> <label style="color:black">R 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.r" ng-change="setChanged()" disabled > <label style="color:black">R 
                                 </label>
-                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.re" ng-change="setChanged()"> <label style="color:black">RE 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.re" ng-change="setChanged()" disabled > <label style="color:black">RE 
                                 </label>
-                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.c" ng-change="setChanged()"> <label style="color:black">C 
+                                <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C 
                                 </label>
                                 <input type="checkbox" ng-model="tableStyleExportConfig.segmentsExport.o" ng-change="setChanged()"> <label style="color:black">O 
                                 </label>
@@ -95,11 +95,11 @@
                                 <label style="color:black"> Fields to Export:</label>
                                 </br>
                             
-                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.r" ng-change="setChanged()"> <label style="color:black">R
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
                                 </label>
-                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.re" ng-change="setChanged()"> <label style="color:black">RE
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
                                 </label>
-                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.c" ng-change="setChanged()"> <label style="color:black">C
+                                <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
                                 </label>
                                 <input type="checkbox" ng-model="tableStyleExportConfig.fieldsExport.o" ng-change="setChanged()"> <label style="color:black">O
                                 </label>
@@ -149,11 +149,11 @@
             <div class="container">
                <label style="color:black">  Datatype to export:</label>
                 <br/>
-                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.r"> <label style="color:black">R 
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.r" disabled> <label style="color:black">R 
                 </label>
-                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.re"> <label style="color:black">RE 
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.re" disabled> <label style="color:black">RE 
                 </label>
-                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.c"> <label style="color:black">C 
+                <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.c" disabled> <label style="color:black">C 
                 </label>
                 <input type="checkbox" ng-model="tableStyleExportConfig.datatypesExport.o"> <label style="color:black">O 
                 </label>
@@ -165,11 +165,11 @@
 <div class="container">
                 <label style="color:black"> Components to Export:</label>
                <br/>
-                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.r"> <label style="color:black">R
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.r" disabled> <label style="color:black">R
                 </label>
-                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.re"> <label style="color:black">RE
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.re" disabled> <label style="color:black">RE
                 </label>
-                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.c"> <label style="color:black">C
+                <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.c" disabled> <label style="color:black">C
                 </label>
                 <input type="checkbox" ng-model="tableStyleExportConfig.componentExport.o"> <label style="color:black">O
                 </label>
@@ -214,11 +214,11 @@
             <div class="container">
                <label style="color:black">  Value Sets to Export:</label>
                <br/>
-                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.r" ng-change="setChanged()"> <label style="color:black">R 
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R 
                 </label>
-                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.re" ng-change="setChanged()"> <label style="color:black">RE 
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE 
                 </label>
-                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.c" ng-change="setChanged()"> <label style="color:black">C 
+                <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C 
                 </label>
                 <input type="checkbox" ng-model="tableStyleExportConfig.valueSetsExport.o" ng-change="setChanged()"> <label style="color:black">O 
                 </label>
@@ -230,7 +230,7 @@
 <div class="container">
                 <label style="color:black"> Codes to Export:</label><br/>
                
-                <input type="checkbox" ng-model="tableStyleExportConfig.codesExport.r" ng-change="setChanged()"> <label style="color:black">R
+                <input type="checkbox" ng-model="tableStyleExportConfig.codesExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
                 </label>
                 <input type="checkbox" ng-model="tableStyleExportConfig.codesExport.p" ng-change="setChanged()"> <label style="color:black">P
                 </label>

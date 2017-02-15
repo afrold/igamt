@@ -1,5 +1,5 @@
 <div ng-controller="EditAreaCtrl" ng-init="init">
-    <div class="alert alert-info">
+    <div class="alert alert-config">
         The implementation guide is exported as individual message profiles. A profile will contain it’s Message Structure Definition, Profile Components, and Segments. Data Types and Value Sets Organized as individual profiles. Contains Message Definition and all pertaining Profile Components and Segments. Data Type and Value Sets are rendered in a single separate section regardless of the profile in which they are used. Both the narrative and messaging aspects are exported.
     </div>
 <div class="pull-right addMargin">
@@ -31,11 +31,11 @@
                             <div class="container">
                                 <label style="color:black">  Segments/Groups to Export:</label>
                             <br/>
-                                <input type="checkbox" id="segr" ng-model="profileStyleExportConfig.segmentORGroupsExport.r" ng-change="setChanged()"> <label style="color:black">R 
+                                <input type="checkbox" id="segr" ng-model="profileStyleExportConfig.segmentORGroupsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R 
                                 </label>
-                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.re"  ng-change="setChanged()"> <label style="color:black">RE 
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.re"  ng-change="setChanged()" disabled> <label style="color:black">RE 
                                 </label>
-                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.c"  ng-change="setChanged()" > <label style="color:black">C 
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.c"  ng-change="setChanged()" disabled> <label style="color:black">C 
                                 </label>
                                 <input type="checkbox" ng-model="profileStyleExportConfig.segmentORGroupsExport.o"  ng-change="setChanged()"> <label style="color:black">O 
                                 </label>
@@ -78,11 +78,11 @@
                             <div class="container">
                             <label style="color:black">  Segments to export:</label>
                             <br/>
-                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.r"  ng-change="setChanged()"> <label style="color:black">R 
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.r"  ng-change="setChanged()" disabled> <label style="color:black">R 
                                 </label>
-                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.re"  ng-change="setChanged()" > <label style="color:black">RE 
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.re"  ng-change="setChanged()" disabled > <label style="color:black">RE 
                                 </label>
-                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.c"  ng-change="setChanged()" > <label style="color:black">C 
+                                <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.c"  ng-change="setChanged()" disabled> <label style="color:black">C 
                                 </label>
                                 <input type="checkbox" ng-model="profileStyleExportConfig.segmentsExport.o"  ng-change="setChanged()"> <label style="color:black">O 
                                 </label>
@@ -95,11 +95,11 @@
                                 <label style="color:black"> Fields to Export:</label>
                                 </br>
                             
-                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.r"  ng-change="setChanged()"> <label style="color:black">R
+                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.r"  ng-change="setChanged()" disabled> <label style="color:black">R
                                 </label>
-                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.re"  ng-change="setChanged()"> <label style="color:black">RE
+                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.re"  ng-change="setChanged()" disabled> <label style="color:black">RE
                                 </label>
-                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.c"  ng-change="setChanged()"> <label style="color:black">C
+                                <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.c"  ng-change="setChanged()" disabled> <label style="color:black">C
                                 </label>
                                 <input type="checkbox" ng-model="profileStyleExportConfig.fieldsExport.o"  ng-change="setChanged()"> <label style="color:black">O
                                 </label>
@@ -149,11 +149,11 @@
             <div class="container">
                <label style="color:black">  Datatype to export:</label>
                 <br/>
-                <input type="checkbox" ng-model="profileStyleExportConfig.datatypesExport.r"  ng-change="setChanged()"> <label style="color:black">R 
+                <input type="checkbox" ng-model="profileStyleExportConfig.datatypesExport.r"  ng-change="setChanged()" disabled> <label style="color:black">R 
                 </label>
-                <input type="checkbox" ng-model="profileStyleExportConfig.datatypesExport.re"  ng-change="setChanged()"> <label style="color:black">RE 
+                <input type="checkbox" ng-model="profileStyleExportConfig.datatypesExport.re"  ng-change="setChanged()" disabled> <label style="color:black">RE 
                 </label>
-                <input type="checkbox" ng-model="profileStyleExportConfig.datatypesExport.c"  ng-change="setChanged()"> <label style="color:black">C 
+                <input type="checkbox" ng-model="profileStyleExportConfig.datatypesExport.c"  ng-change="setChanged()" disabled> <label style="color:black">C 
                 </label>
                 <input type="checkbox" ng-model="profileStyleExportConfig.datatypesExport.o"  ng-change="setChanged()"> <label style="color:black">O 
                 </label>
@@ -165,11 +165,11 @@
 <div class="container">
                 <label style="color:black"> Components to Export:</label>
                <br/>
-                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.r"  ng-change="setChanged()"> <label style="color:black">R
+                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.r"  ng-change="setChanged()" disabled> <label style="color:black">R
                 </label>
-                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.re"  ng-change="setChanged()"> <label style="color:black">RE
+                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.re"  ng-change="setChanged()" disabled> <label style="color:black">RE
                 </label>
-                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.c"  ng-change="setChanged()"> <label style="color:black">C
+                <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.c"  ng-change="setChanged()" disabled> <label style="color:black">C
                 </label>
                 <input type="checkbox" ng-model="profileStyleExportConfig.componentExport.o"  ng-change="setChanged()"> <label style="color:black">O
                 </label>
@@ -214,11 +214,11 @@
             <div class="container">
                <label style="color:black">  Value Sets to Export:</label>
                <br/>
-                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetsExport.r"  ng-change="setChanged()"> <label style="color:black">R 
+                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetsExport.r"  ng-change="setChanged()" disabled> <label style="color:black">R 
                 </label>
-                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetsExport.re"  ng-change="setChanged()"> <label style="color:black">RE 
+                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetsExport.re"  ng-change="setChanged()" disabled> <label style="color:black">RE 
                 </label>
-                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetsExport.c"  ng-change="setChanged()"> <label style="color:black">C 
+                <input type="checkbox" ng-model="profileStyleExportConfig.valueSetsExport.c"  ng-change="setChanged()" disabled> <label style="color:black">C 
                 </label>
                 <input type="checkbox" ng-model="profileStyleExportConfig.valueSetsExport.o"  ng-change="setChanged()"> <label style="color:black">O 
                 </label>
@@ -230,7 +230,7 @@
 <div class="container">
                 <label style="color:black"> Codes to Export:</label><br/>
                
-                <input type="checkbox" ng-model="profileStyleExportConfig.codesExport.r" ng-change="setChanged()"> <label style="color:black">R
+                <input type="checkbox" ng-model="profileStyleExportConfig.codesExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
                 </label>
                 <input type="checkbox" ng-model="profileStyleExportConfig.codesExport.p"  ng-change="setChanged()"> <label style="color:black">P
                 </label>
