@@ -4,7 +4,7 @@
 
 angular.module('igl')
 
-.controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService) {
+.controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService) {
 
     $scope.loading = false;
     $scope.tocView = 'views/toc.html';
@@ -59,12 +59,37 @@ angular.module('igl')
 
     };
 
-    $scope.Dndenabled=function(){
-      return  $scope.igDocumentConfig.selectedType=='USER';
+    $scope.Dndenabled = function() {
+        return $scope.igDocumentConfig.selectedType == 'USER';
     }
+    $scope.showIgErrorNotification = false;
+    $rootScope.showMsgErrorNotification = false;
+    $rootScope.showSegErrorNotification = false;
+    $rootScope.showDtErrorNotification = false;
+    $rootScope.validationMap = {};
+    $rootScope.childValidationMap = {};
+    $rootScope.validationResult = {};
+    $scope.validateIg = function() {
+        ValidationService.validateIg($rootScope.igdocument).then(function(result) {
+            $rootScope.validationMap = {};
+            $rootScope.childValidationMap = {};
+            $scope.showIgErrorNotification = true;
+            $rootScope.showMsgErrorNotification = true;
+            $rootScope.showSegErrorNotification = true;
+            $rootScope.showDtErrorNotification = true;
+            $rootScope.validationResult = result;
+            console.log($rootScope.validationResult);
+            $rootScope.buildValidationMap($rootScope.validationResult);
+            console.log($rootScope.validationMap);
+            console.log($rootScope.childValidationMap);
+           
 
-    $scope.validateIG = function() {
-        console.log($rootScope.igdocument.id);
+        }, function(error) {
+            console.log(error);
+        });
+    };
+    $scope.setIgErrorNotification = function() {
+        $scope.showIgErrorNotification = !$scope.showIgErrorNotification;
     };
 
     $scope.selectIgTab = function(value) {
@@ -243,30 +268,30 @@ angular.module('igl')
         return 'templateRow.html';
 
     }
-    $scope.orderIgs=function(igs){
+    $scope.orderIgs = function(igs) {
         console.log(igs);
-        var positionList=[];
-        for(i=0; i<igs.length; i++){
-            igs[i].position=i+1;
-            positionList.push({"id":igs[i].id,"position":igs[i].position});
+        var positionList = [];
+        for (i = 0; i < igs.length; i++) {
+            igs[i].position = i + 1;
+            positionList.push({ "id": igs[i].id, "position": igs[i].position });
 
         }
-        
 
 
-        IgDocumentService.orderIgDocument(positionList).then(function(response){
+
+        IgDocumentService.orderIgDocument(positionList).then(function(response) {
             $rootScope.msg().text = "OrderChanged";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
 
-        },function(error){
-            $scope.tmpIgs=angular.copy($scope.IgsCopy);
+        }, function(error) {
+            $scope.tmpIgs = angular.copy($scope.IgsCopy);
             $rootScope.msg().text = "OrderChangedFaild";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
 
         });
-    
+
     }
     $scope.selectIGDocumentType = function(selectedType) {
         //console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
@@ -298,12 +323,12 @@ angular.module('igl')
                 $scope.tmpIgs = [].concat($rootScope.igs);
 
                 console.log($scope.tmpIgs);
-                for(i=0; i<$scope.tmpIgs.length; i++){
-                    if(!$scope.tmpIgs[i].position||$scope.tmpIgs[i].position=='undefined'||$scope.tmpIgs[i].position=='null'){
-                        $scope.tmpIgs[i].position=i+1;
+                for (i = 0; i < $scope.tmpIgs.length; i++) {
+                    if (!$scope.tmpIgs[i].position || $scope.tmpIgs[i].position == 'undefined' || $scope.tmpIgs[i].position == 'null') {
+                        $scope.tmpIgs[i].position = i + 1;
                     }
                 }
-                $scope.IgsCopy= angular.copy($scope.tmpIgs);
+                $scope.IgsCopy = angular.copy($scope.tmpIgs);
                 $scope.loading = false;
                 delay.resolve(true);
             }, function(error) {
@@ -1239,7 +1264,6 @@ angular.module('igl')
                         SegmentService.get(segment.id).then(function(result) {
                             $rootScope.segment = angular.copy(segment);
                             $rootScope.$emit("event:initSegment");
-                            $rootScope.validationResult = null;
                             $rootScope.currentData = $rootScope.segment;
                             $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
                             $rootScope.segment["type"] = "segment";
@@ -1322,7 +1346,6 @@ angular.module('igl')
                     try {
                         DatatypeService.getOne(datatype.id).then(function(result) {
                             $rootScope.datatype = angular.copy(result);
-                            $rootScope.validationResult = null;
                             $rootScope.$emit("event:initDatatype");
 
                             $rootScope.currentData = datatype;
@@ -1391,7 +1414,6 @@ angular.module('igl')
                 try {
                     $rootScope.originalMessage = message;
                     $rootScope.message = angular.copy(message);
-                    $rootScope.validationResult = null;
 
                     $rootScope.$emit("event:initMessage");
 
