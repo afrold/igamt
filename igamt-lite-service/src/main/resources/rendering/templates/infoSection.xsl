@@ -18,9 +18,9 @@
                     				<xsl:value-of select="@id"/>
                 				</xsl:attribute>
                                 <xsl:choose>
-                    				<xsl:when test="@prefix != '' and $target = 'html' ">
+                    				<!--xsl:when test="@prefix != '' and $target = 'html' ">
                                 		<xsl:value-of select="concat(@prefix, ' - ', @title)"/>
-	                            	</xsl:when>
+	                            	</xsl:when-->
 	                        	    <xsl:when test="@scope = 'MASTER'">
     	                        	    <xsl:element name="span">
         	                        	    <xsl:attribute name="class">
@@ -42,7 +42,7 @@
                     </xsl:when>
                     <xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
                         <xsl:element name="h6">
-                            <xsl:value-of select="concat(@prefix, ' - ', @title)"/>
+                            <xsl:value-of select="@title"/>
                         </xsl:element>
                     </xsl:when>
                     <xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'false'">
@@ -52,7 +52,7 @@
                     </xsl:when>
                     <xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
                         <xsl:element name="h6">
-                            <xsl:value-of select="concat(@prefix, ' - ', @title)"/>
+                            <xsl:value-of select="@title"/>
                         </xsl:element>
                     </xsl:when>
                 </xsl:choose>
