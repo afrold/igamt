@@ -85,9 +85,8 @@ public class ExportConfigServiceImpl implements ExportConfigService {
    * String)
    */
   @Override
-
-  public ExportConfig findDefault() {
-    return ExportConfig.getBasicExportConfig();
+  public ExportConfig findDefault(String type) {
+    return ExportConfig.getBasicExportConfig(type);
   }
 
   @Override public ExportConfig findOneByTypeAndAccountId(String type, Long accountId) {
