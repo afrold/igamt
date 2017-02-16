@@ -14,30 +14,30 @@
                     <xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'true'">
                         <xsl:element name="{concat('h', @h)}">
                             <xsl:element name="u">
-                				<xsl:attribute name="id">
-                    				<xsl:value-of select="@id"/>
-                				</xsl:attribute>
+                                <xsl:attribute name="id">
+                                    <xsl:value-of select="@id"/>
+                                </xsl:attribute>
+                                <xsl:attribute name="class">
+                                    <xsl:value-of select="concat('section',@h)"/>
+                                </xsl:attribute>
                                 <xsl:choose>
-                    				<!--xsl:when test="@prefix != '' and $target = 'html' ">
-                                		<xsl:value-of select="concat(@prefix, ' - ', @title)"/>
-	                            	</xsl:when-->
-	                        	    <xsl:when test="@scope = 'MASTER'">
-    	                        	    <xsl:element name="span">
-        	                        	    <xsl:attribute name="class">
-            	                        	    <xsl:text>masterDatatypeLabel</xsl:text>
-                	                    	</xsl:attribute>
-                    	                	<xsl:text>MAS</xsl:text>
-                        	        	</xsl:element>
-                            	    	<xsl:element name="span">
-                                	    	<xsl:text> - </xsl:text>
-                                    		<xsl:value-of select="@title"/>
-                                		</xsl:element>
-                            		</xsl:when>	
-                            		<xsl:otherwise>
-                            			<xsl:value-of select="@title"/>
-                            		</xsl:otherwise>
-                            	</xsl:choose>
-                        	</xsl:element>
+                                    <xsl:when test="@scope = 'MASTER'">
+                                        <xsl:element name="span">
+                                            <xsl:attribute name="class">
+                                                <xsl:text>masterDatatypeLabel</xsl:text>
+                                            </xsl:attribute>
+                                            <xsl:text>MAS</xsl:text>
+                                        </xsl:element>
+                                        <xsl:element name="span">
+                                            <xsl:text> - </xsl:text>
+                                            <xsl:value-of select="@title"/>
+                                        </xsl:element>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="@title"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:element>
                         </xsl:element>
                     </xsl:when>
                     <xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
