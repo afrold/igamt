@@ -84,6 +84,14 @@ import java.util.*;
         SerializationLayout serializationLayout, ExportConfig exportConfig) {
         this.exportConfig = exportConfig;
         igDocumentMessages = originIgDocument.getProfile().getMessages();
+        this.bindedDatatypes = new ArrayList<>();
+        this.bindedTables = new ArrayList<>();
+        this.bindedSegments = new ArrayList<>();
+        for (Message message : originIgDocument.getProfile().getMessages().getChildren()){
+            for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
+                identifyBindedItems(segmentRefOrGroup);
+            }
+        }
         IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
         SerializableStructure serializableStructure = new SerializableStructure();
         igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
@@ -301,18 +309,6 @@ import java.util.*;
             messageSection.addSectionContent(
                 "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
         }
-        this.bindedDatatypes = new ArrayList<>();
-        this.bindedTables = new ArrayList<>();
-        this.bindedSegments = new ArrayList<>();
-        UsageConfig segmentsUsageConfig = this.exportConfig.getSegmentsExport();
-        UsageConfig datatypeUsageConfig = this.exportConfig.getDatatypesExport();
-        UsageConfig valueSetUsageConfig = this.exportConfig.getValueSetsExport();
-        for (Message message : this.igDocumentMessages.getChildren()){
-            for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
-                identifyBindedItems(segmentRefOrGroup);
-            }
-
-        }
         for (Message message : profile.getMessages().getChildren()) {
             SerializableMessage serializableMessage =
                 serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
@@ -326,7 +322,8 @@ import java.util.*;
             if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),exportConfig.getSegmentsExport())){
                 this.bindedSegments.add(((SegmentRef) segmentRefOrGroup).getRef());
             }
-            Segment segment = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
+            Segment segment = segmentService.findById(
+                ((SegmentRef) segmentRefOrGroup).getRef().getId());
             for (Field field : segment.getFields()) {
                 if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getDatatypesExport())) {
                     bindedDatatypes.add(field.getDatatype());
