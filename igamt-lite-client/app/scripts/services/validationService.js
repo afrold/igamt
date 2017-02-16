@@ -2,10 +2,11 @@ angular.module('igl').factory('ValidationService', function($http, $q, userInfoS
 
     var svc = this;
 
-    svc.validateIG = function(igId) {
+   
+        svc.validatedatatype = function(dt,igHl7Version) {
             var delay = $q.defer();
 
-            $http.post('api/validation/validateIG/' + igId).then(function(response) {
+            $http.post('api/validation/validateDatatype/'+igHl7Version, dt).then(function(response) {
 
                 console.log(response);
                 var saved = angular.fromJson(response.data);
@@ -16,24 +17,10 @@ angular.module('igl').factory('ValidationService', function($http, $q, userInfoS
             });
             return delay.promise;
         },
-        svc.validatedatatype = function(dt) {
+        svc.validateSegment = function(seg,igHl7Version) {
             var delay = $q.defer();
 
-            $http.post('api/validation/validateDatatype', dt).then(function(response) {
-
-                console.log(response);
-                var saved = angular.fromJson(response.data);
-                delay.resolve(saved);
-                return saved;
-            }, function(error) {
-                delay.reject(error);
-            });
-            return delay.promise;
-        },
-        svc.validateSegment = function(seg) {
-            var delay = $q.defer();
-
-            $http.post('api/validation/validateSegment', seg).then(function(response) {
+            $http.post('api/validation/validateSegment/'+igHl7Version, seg).then(function(response) {
 
                 console.log(response);
                 var saved = angular.fromJson(response.data);
