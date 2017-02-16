@@ -47,6 +47,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             $rootScope.buildValidationMap($rootScope.validationResult);
             console.log($rootScope.validationMap);
             console.log($rootScope.childValidationMap);
+            
 
         }, function(error) {
             console.log(error);

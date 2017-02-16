@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -135,7 +137,8 @@ public class ValidationServiceImpl implements ValidationService {
       if (!seg.getScope().equals(SCOPE.HL7STANDARD)) {
         Segment referenceSegment = segmentService.findByNameAndVersionAndScope(seg.getName(),
             seg.getHl7Version(), "HL7STANDARD");
-        ValidationResult valSegRes = validateSegment(referenceSegment, seg, true);
+        ValidationResult valSegRes = validateSegment(referenceSegment, seg, true,
+            ig.getProfile().getMetaData().getHl7Version());
         blocks.put(seg.getId(), valSegRes);
       } else {
         ValidationResult valSeg = new ValidationResult();
@@ -157,7 +160,8 @@ public class ValidationServiceImpl implements ValidationService {
       if (!dt.getScope().equals(SCOPE.HL7STANDARD)) {
         Datatype referenceDatatype = datatypeService.findByNameAndVersionAndScope(dt.getName(),
             dt.getHl7Version(), "HL7STANDARD");
-        ValidationResult valdtRes = validateDatatype(referenceDatatype, dt, null);
+        ValidationResult valdtRes = validateDatatype(referenceDatatype, dt, null,
+            ig.getProfile().getMetaData().getHl7Version());
         blocks.put(dt.getId(), valdtRes);
       } else {
         ValidationResult valdt = new ValidationResult();
@@ -251,7 +255,8 @@ public class ValidationServiceImpl implements ValidationService {
             if (!childSegment.getScope().equals(SCOPE.HL7STANDARD)) {
               Segment childReference = segmentService.findByNameAndVersionAndScope(
                   childSegment.getName(), childSegment.getHl7Version(), "HL7STANDARD");
-              ValidationResult block = validateSegment(childReference, childSegment, false);
+              ValidationResult block = validateSegment(childReference, childSegment, false,
+                  toBeValidated.getHl7Version());
               if (result.getErrorCount() != null && block.getErrorCount() != null) {
                 result.setErrorCount(result.getErrorCount() + block.getErrorCount());
 
@@ -277,7 +282,8 @@ public class ValidationServiceImpl implements ValidationService {
             Group referenceGrp = (Group) reference.getChildren().get(i);
 
 
-            ValidationResult block = validateGroup(referenceGrp, userGrp);
+            ValidationResult block =
+                validateGroup(referenceGrp, userGrp, toBeValidated.getHl7Version());
             if (result.getErrorCount() != null && block.getErrorCount() != null) {
               result.setErrorCount(result.getErrorCount() + block.getErrorCount());
 
@@ -304,13 +310,11 @@ public class ValidationServiceImpl implements ValidationService {
     Integer itemCount = 0;
     Integer blockCount = 0;
     for (Map.Entry<String, List<ValidationError>> entry : items.entrySet()) {
-      String key = entry.getKey();
       List<ValidationError> value = entry.getValue();
       itemCount = itemCount + value.size();
 
     }
     for (Map.Entry<String, ValidationResult> entry : blocks.entrySet()) {
-      String key = entry.getKey();
       ValidationResult value = entry.getValue();
       blockCount = blockCount + value.getErrorCount();
 
@@ -323,7 +327,7 @@ public class ValidationServiceImpl implements ValidationService {
 
 
   @Override
-  public ValidationResult validateGroup(Group reference, Group toBeValidated)
+  public ValidationResult validateGroup(Group reference, Group toBeValidated, String igHl7Version)
       throws InvalidObjectException {
     ValidationResult result = new ValidationResult();
     HashMap<String, List<ValidationError>> items = new HashMap<String, List<ValidationError>>();
@@ -360,7 +364,8 @@ public class ValidationServiceImpl implements ValidationService {
             if (!childSegment.getScope().equals(SCOPE.HL7STANDARD)) {
               Segment childReference = segmentService.findByNameAndVersionAndScope(
                   childSegment.getName(), childSegment.getHl7Version(), "HL7STANDARD");
-              ValidationResult block = validateSegment(childReference, childSegment, false);
+              ValidationResult block =
+                  validateSegment(childReference, childSegment, false, igHl7Version);
               if (result.getErrorCount() != null && block.getErrorCount() != null) {
                 result.setErrorCount(result.getErrorCount() + block.getErrorCount());
 
@@ -383,7 +388,7 @@ public class ValidationServiceImpl implements ValidationService {
             Group userGrp = (Group) toBeValidated.getChildren().get(i);
             Group referenceGrp = (Group) reference.getChildren().get(i);
 
-            ValidationResult block = validateGroup(userGrp, referenceGrp);
+            ValidationResult block = validateGroup(userGrp, referenceGrp, igHl7Version);
             if (result.getErrorCount() != null && block.getErrorCount() != null) {
               result.setErrorCount(result.getErrorCount() + block.getErrorCount());
 
@@ -487,7 +492,7 @@ public class ValidationServiceImpl implements ValidationService {
 
   @Override
   public ValidationResult validateSegment(Segment reference, Segment toBeValidated,
-      boolean validateChildren) throws InvalidObjectException {
+      boolean validateChildren, String igHl7Version) throws InvalidObjectException {
 
     ValidationResult result = new ValidationResult();
     HashMap<String, List<ValidationError>> items = new HashMap<String, List<ValidationError>>();
@@ -522,10 +527,16 @@ public class ValidationServiceImpl implements ValidationService {
       for (int i = 0; i < reference.getFields().size(); i++) {
 
         if (i < toBeValidated.getFields().size()) {
+          boolean validateConf = true;
+
+          if (!userDtMap.get(toBeValidated.getFields().get(i).getDatatype().getId()).getComponents()
+              .isEmpty()) {
+            validateConf = false;
+          }
           HashMap<String, List<ValidationError>> valE =
               validateField(reference.getFields().get(i), toBeValidated.getFields().get(i),
                   predicatesMap.get(toBeValidated.getFields().get(i).getPosition()),
-                  toBeValidated.getHl7Version(), toBeValidated.getId());
+                  toBeValidated.getHl7Version(), toBeValidated.getId(), igHl7Version, validateConf);
           if (valE != null) {
             items.putAll(valE);
 
@@ -541,7 +552,7 @@ public class ValidationServiceImpl implements ValidationService {
               Datatype childReference =
                   referenceDtMap.get(reference.getFields().get(i).getDatatype().getId());
               ValidationResult block = validateDatatype(childReference, childDatatype,
-                  toBeValidated.getFields().get(i).getId());
+                  toBeValidated.getFields().get(i).getId(), igHl7Version);
 
               if (result.getErrorCount() != null && block.getErrorCount() != null) {
                 result.setErrorCount(result.getErrorCount() + block.getErrorCount());
@@ -582,13 +593,11 @@ public class ValidationServiceImpl implements ValidationService {
     Integer itemCount = 0;
     Integer blockCount = 0;
     for (Map.Entry<String, List<ValidationError>> entry : items.entrySet()) {
-      String key = entry.getKey();
       List<ValidationError> value = entry.getValue();
       itemCount = itemCount + value.size();
 
     }
     for (Map.Entry<String, ValidationResult> entry : blocks.entrySet()) {
-      String key = entry.getKey();
       ValidationResult value = entry.getValue();
       blockCount = blockCount + value.getErrorCount();
 
@@ -615,7 +624,7 @@ public class ValidationServiceImpl implements ValidationService {
 
   @Override
   public ValidationResult validateDatatype(Datatype reference, Datatype toBeValidated,
-      String parentId) throws InvalidObjectException {
+      String parentId, String igHl7Version) throws InvalidObjectException {
 
     ValidationResult result = new ValidationResult();
     HashMap<String, List<ValidationError>> items = new HashMap<String, List<ValidationError>>();
@@ -647,10 +656,15 @@ public class ValidationServiceImpl implements ValidationService {
       }
 
       for (int i = 0; i < reference.getComponents().size(); i++) {
+        boolean validateConf = true;
+        if (!userDtMap.get(toBeValidated.getComponents().get(i).getDatatype().getId())
+            .getComponents().isEmpty()) {
+          validateConf = false;
+        }
         HashMap<String, List<ValidationError>> valE = validateComponent(
             reference.getComponents().get(i), toBeValidated.getComponents().get(i),
             predicatesMap.get(toBeValidated.getComponents().get(i).getPosition()),
-            toBeValidated.getHl7Version(), toBeValidated.getId());
+            toBeValidated.getHl7Version(), toBeValidated.getId(), igHl7Version, validateConf);
         items.putAll(valE);
 
         if (!userDtMap.get(toBeValidated.getComponents().get(i).getDatatype().getId())
@@ -662,7 +676,7 @@ public class ValidationServiceImpl implements ValidationService {
             Datatype childReference =
                 referenceDtMap.get(reference.getComponents().get(i).getDatatype().getId());
             ValidationResult block = validateDatatype(childReference, childDatatype,
-                toBeValidated.getComponents().get(i).getId());
+                toBeValidated.getComponents().get(i).getId(), igHl7Version);
             block.setParentId(toBeValidated.getId());
             if (result.getErrorCount() != null && block.getErrorCount() != null) {
               result.setErrorCount(result.getErrorCount() + block.getErrorCount());
@@ -717,8 +731,8 @@ public class ValidationServiceImpl implements ValidationService {
 
   @Override
   public HashMap<String, List<ValidationError>> validateComponent(Component reference,
-      Component toBeValidated, Predicate predicate, String hl7Version, String parentId)
-      throws InvalidObjectException {
+      Component toBeValidated, Predicate predicate, String hl7Version, String parentId,
+      String igHl7Version, boolean validateConf) throws InvalidObjectException {
     HashMap<String, List<ValidationError>> items = new HashMap<String, List<ValidationError>>();
     List<ValidationError> validationErrors = new ArrayList<ValidationError>();
     if (reference.getUsage() != null) {
@@ -754,6 +768,20 @@ public class ValidationServiceImpl implements ValidationService {
       validationErrors.add(valErr);
 
     }
+    if (validateConf) {
+      String confLengthValidation = validateConfLength(toBeValidated.getConfLength(), igHl7Version);
+      if (confLengthValidation != null) {
+        ValidationError valError = new ValidationError();
+        valError.setErrorMessage(confLengthValidation);
+        valError.setPosition(toBeValidated.getPosition());
+        valError.setTargetId(toBeValidated.getId());
+        valError.setType("Error");
+        valError.setTargetType(toBeValidated.getType());
+        valError.setValidationType(ValidationType.CONFLENGTH);
+        validationErrors.add(valError);
+      }
+    }
+
 
 
     if (!validationErrors.isEmpty()) {
@@ -769,7 +797,8 @@ public class ValidationServiceImpl implements ValidationService {
 
   @Override
   public HashMap<String, List<ValidationError>> validateField(Field reference, Field toBeValidated,
-      Predicate predicate, String hl7Version, String parentId) throws InvalidObjectException {
+      Predicate predicate, String hl7Version, String parentId, String igHl7Version,
+      boolean validateConf) throws InvalidObjectException {
     HashMap<String, List<ValidationError>> items = new HashMap<String, List<ValidationError>>();
     List<ValidationError> validationErrors = new ArrayList<ValidationError>();
 
@@ -805,7 +834,6 @@ public class ValidationServiceImpl implements ValidationService {
       valErr.setValidationType(ValidationType.LENGTH);
       validationErrors.add(valErr);
     }
-    System.out.println(toBeValidated.getMin());
     String cardinalityValidation =
         validateCardinality(reference.getMin(), reference.getMax(), reference.getUsage().toString(),
             toBeValidated.getMin(), toBeValidated.getMax(), toBeValidated.getUsage().toString());
@@ -820,6 +848,21 @@ public class ValidationServiceImpl implements ValidationService {
       valError.setValidationType(ValidationType.CARDINALITY);
       validationErrors.add(valError);
     }
+    if (validateConf) {
+      String confLengthValidation = validateConfLength(toBeValidated.getConfLength(), igHl7Version);
+      if (confLengthValidation != null) {
+        ValidationError valError = new ValidationError();
+        valError.setErrorMessage(confLengthValidation);
+        valError.setPosition(toBeValidated.getPosition());
+        valError.setTargetId(toBeValidated.getId());
+        valError.setType("Error");
+        valError.setTargetType(toBeValidated.getType());
+        valError.setValidationType(ValidationType.CONFLENGTH);
+        validationErrors.add(valError);
+      }
+    }
+
+
     if (!validationErrors.isEmpty()) {
       items.put(toBeValidated.getId(), validationErrors);
 
@@ -885,8 +928,15 @@ public class ValidationServiceImpl implements ValidationService {
   }
 
   @Override
-  public String validateLength(int referenceMinLen, String referenceMaxLen, int toBeMinLen,
+  public String validateLength(int referenceMinLen, String referenceMaxLen, Integer toBeMinLen,
       String toBeMaxLen) {
+    if (toBeMinLen == null) {
+      return "Min Length cannot be empty";
+    }
+    if (toBeMaxLen == null) {
+      return "Max Length cannot be empty";
+
+    }
     String result = null;
     if (!NumberUtils.isNumber(toBeMaxLen)) {
       if (!"*".equalsIgnoreCase(toBeMaxLen)) {
@@ -985,6 +1035,26 @@ public class ValidationServiceImpl implements ValidationService {
     return "".equals(result) ? null : result;
 
 
+  }
+
+  @Override
+  public String validateConfLength(String confLength, String igHl7Version) {
+
+    if (igHl7Version.compareTo("2.5.1") > 0) {
+      if (confLength == null) {
+        return "Conf. Length cannot be empty";
+      } else {
+        Pattern pattern = Pattern.compile("\\d*[#=]{0,1}");
+        Matcher m = pattern.matcher(confLength);
+        System.out.println(confLength + "matches" + m.matches());
+        if (!m.matches()) {
+          return "Conf. Length don't match regular expression " + pattern;
+        }
+      }
+
+    }
+
+    return null;
   }
 
 
