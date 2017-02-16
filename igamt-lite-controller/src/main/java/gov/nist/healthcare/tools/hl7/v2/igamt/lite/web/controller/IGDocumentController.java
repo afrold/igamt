@@ -1562,14 +1562,12 @@ public class IGDocumentController extends CommonController {
       IGDocument d = findIGDocument(id);
       InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d,
           messageIds.toArray(new String[messageIds.size()]));
-      GVTClient client = new GVTClient();
-      ResponseEntity<Map> rsp = client.send(content, GVT_URL + GVT_EXPORT_ENDPOINT, authorization);
-      Map<String, Object> res = rsp.getBody();
+      ResponseEntity<?> rsp =
+          new GVTClient().send(content, GVT_URL + GVT_EXPORT_ENDPOINT, authorization);
+      Map<String, Object> res = (Map<String, Object>) rsp.getBody();
       return res;
-    } catch (IGDocumentNotFoundException e) {
+    } catch (IGDocumentNotFoundException | IOException | CloneNotSupportedException e) {
       throw new GVTExportException(e);
-    } catch (IOException | CloneNotSupportedException e) {
-      throw new GVTExportException("Failed to export the messages");
     }
   }
 

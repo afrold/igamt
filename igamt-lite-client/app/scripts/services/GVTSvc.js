@@ -37,18 +37,8 @@ angular.module('igl').factory('GVTSvc',
         svc.exportToGVT = function(id,mids, auth) {
              var httpHeaders = {};
             httpHeaders['gvt-auth'] = auth;
-//            httpHeaders['Content-Type']='application/x-www-form-urlencoded; charset=UTF-8';
-//            var params = $.param(mids);
             return $http.post('api/igdocuments/' + id + '/export/gvt',mids,{headers:httpHeaders});
-//            return $http({
-//                url: 'api/igdocuments/' + id + '/export/gvt',
-//                method: "POST",
-//                headers:httpHeaders,
-//                data: mids
-//              });
-         };
-
-
+        };
 
         return svc;
     }]);

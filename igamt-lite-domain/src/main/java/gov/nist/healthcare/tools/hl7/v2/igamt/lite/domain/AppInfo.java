@@ -44,7 +44,7 @@ public class AppInfo implements Serializable {
   private String gvtUrl;
 
   @Value("${gvt.uploadTokenContext}")
-  private String gvtuploadTokenContext;
+  private String gvtUploadTokenContext;
 
   public String getVersion() {
     return version;
@@ -86,12 +86,12 @@ public class AppInfo implements Serializable {
     this.gvtUrl = gvtUrl;
   }
 
-  public String getGvtuploadTokenContext() {
-    return gvtuploadTokenContext;
+  public String getGvtUploadTokenContext() {
+    return gvtUploadTokenContext;
   }
 
-  public void setGvtuploadTokenContext(String gvtuploadTokenContext) {
-    this.gvtuploadTokenContext = gvtuploadTokenContext;
+  public void setGvtUploadTokenContext(String gvtUploadTokenContext) {
+    this.gvtUploadTokenContext = gvtUploadTokenContext;
   }
 
 
