@@ -87,8 +87,9 @@ import java.util.*;
         SerializableSections serializableSections = new SerializableSections();
         String prefix = "";
         Integer depth = 1;
-        serializationUtil.setSectionsPrefixes(igDocument.getChildSections(), prefix, depth,
-            serializableSections.getRootSections());
+        if(!serializationLayout.equals(SerializationLayout.TABLES)){
+            serializationUtil.setSectionsPrefixes(igDocument.getChildSections(), prefix, depth,serializableSections.getRootSections());
+        }
         Profile profile = igDocument.getProfile();
         //Create base section node for the profile serialization
         String id = profile.getId();
@@ -101,10 +102,8 @@ import java.util.*;
         }
         SerializableSection profileSection =
             new SerializableSection(id, prefix, position, headerLevel, title);
-        if(!serializationLayout.equals(SerializationLayout.TABLES)) {
-            if (profile.getSectionContents() != null && !profile.getSectionContents().isEmpty()) {
-                profileSection.addSectionContent(profile.getSectionContents());
-            }
+        if (profile.getSectionContents() != null && !profile.getSectionContents().isEmpty()) {
+            profileSection.addSectionContent(profile.getSectionContents());
         }
         if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
             nu.xom.Element textElement = new nu.xom.Element("Text");

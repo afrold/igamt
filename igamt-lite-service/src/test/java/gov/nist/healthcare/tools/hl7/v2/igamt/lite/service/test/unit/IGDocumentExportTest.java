@@ -86,7 +86,7 @@ public class IGDocumentExportTest {
         try {
             ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
             //File htmlFile = new File("tmp/dtLib_"+new Date().toString()+".html");
-            File htmlFile = new File(EXPORT_BASE_PATH+"_verbose.html");
+            File htmlFile = new File(EXPORT_BASE_PATH+"_table.html");
             if(htmlFile.exists()){
                 htmlFile.delete();
             }
@@ -127,6 +127,23 @@ public class IGDocumentExportTest {
             if(wordFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
                     SerializationLayout.PROFILE,exportConfig), wordFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testDocxTablesExport(){
+        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
+        try {
+            File wordFile = new File(EXPORT_BASE_PATH+"_table.docx");
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
+            if(wordFile.exists()){
+                wordFile.delete();
+            }
+            if(wordFile.createNewFile()) {
+                FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
+                    SerializationLayout.TABLES,exportConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
