@@ -82,7 +82,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
             });
             modalInstance.result.then(function() {
-                $rootScope.editDataType(datatype);
+                $rootScope.editDatatype(datatype);
             });
 
 
@@ -841,6 +841,7 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
 angular.module('igl').controller('AddBindingForValueSet', function($scope, $modalInstance, $rootScope, table) {
     console.log($rootScope.references);
     $scope.table = table;
+    $scope.componentsToSelect=[];
     $scope.selectedSegmentForBinding = null;
     $scope.selectedFieldForBinding = null;
     $scope.selectedDatatypeForBinding = null;
@@ -848,18 +849,21 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
     $scope.selectedBindingLocation = null;
     $scope.selectedBindingStrength = null;
     $scope.pathForBinding = null;
-    $scope.bindingTargetType = 'DATATYPE';
+    $scope.bindingTargetType ='DATATYPE';
+
 
     $scope.init = function() {
-        $scope.selectedSegmentForBinding = null;
-        $scope.selectedFieldForBinding = null;
-        $scope.selectedDatatypeForBinding = null;
-        $scope.selectedComponentForBinding = null;
-        $scope.selectedBindingLocation = null;
-        $scope.selectedBindingStrength = null;
-        $scope.pathForBinding = null;
+        // $scope.selectedSegmentForBinding = null;
+        // $scope.selectedFieldForBinding = null;
+        // $scope.selectedDatatypeForBinding = null;
+        // $scope.selectedComponentForBinding = null;
+        // $scope.selectedBindingLocation = null;
+        // $scope.selectedBindingStrength = null;
+        // $scope.pathForBinding = null;
     };
-
+    $scope.switchTo=function(type){
+        $scope.bindingTargetType=type;
+    }
     $scope.checkDuplicated = function(path) {
         for (var i = 0; i < $rootScope.references.length; i++) {
             var ref = $rootScope.references[i];
@@ -872,8 +876,16 @@ angular.module('igl').controller('AddBindingForValueSet', function($scope, $moda
         $scope.selectedFieldForBinding = null;
     };
 
-    $scope.selectDatatype = function() {
-        $scope.selectedComponentForBinding = null;
+    $scope.selectDatatype = function(dt) {
+        $scope.selectedDatatypeForBinding = JSON.parse(dt);
+        console.log($scope.selectedDatatypeForBinding);
+        $scope.componentsToSelect=$scope.selectedDatatypeForBinding.components
+
+              //$scope.selectedComponentForBinding = null;
+    };
+    $scope.selectComponent=function(c){
+        $scope.selectedComponentForBinding=c;
+        
     };
 
     $scope.save = function(bindingTargetType) {

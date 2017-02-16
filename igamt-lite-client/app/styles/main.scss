@@ -512,11 +512,13 @@ input.form-control-warning {
 }
 
 .has-error {
-    background-color: red;
+    // background-color: #f4867e;
+    background-color: #ad2d2d !important;
 }
 
 .has-validation-error {
-    background-color: rgb(205, 5, 5);
+    // background-color: #f4867e;
+    background-color: #ad2d2d !important;
 }
 
 .bs-docs-section {
@@ -2163,7 +2165,6 @@ input.form-control-short80 {
 }
 
 .igl-page-header {
-    border-bottom: 1px solid #eeeeee;
     margin-bottom: 20px;
     padding-bottom: 20px;
 }
@@ -2788,5 +2789,22 @@ td[dnd-handle] {
 	height: 1px !important;
 }
 .current{
+background-color: beige !important;
+}
+.alert-config{
 background-color: beige;
+color: #222;
+font-weight: bold;
+}
+
+.page-header {
+    padding-bottom: 0px !important;
+    margin: 10px 0 10px;
+    border-bottom: none !important;
+}
+.static_info{
+        border-bottom: 1px solid #eeeeee !important;
+        font-style: italic;
+        color:black !important;
+        margin-top:-19px;
 }

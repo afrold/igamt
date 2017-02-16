@@ -37,9 +37,18 @@
                     </div>
                 </div>
                 <div class="pull-right">
-                    <!--</button>-->
-                    <!--<button title="Validate the IG Document" style="margin-top:0px" type="button" class="btn btn-raised btn-sm btn-success" ng-click="validateIG()"> <span><i class="fa fa-check fa-fw"></i>Validate</span> </button>-->
-
+                    <!--<button style="margin-top:0px" title="Verify IG" type="button" ng-class="{'btn btn-raised btn-sm btn-danger':(validationResult && validationResult.errorCount>0),'btn btn-raised btn-sm btn-success':((validationResult && validationResult.errorCount===0)|| !validationResult)}"
+                        ng-click="validateIg()"> 
+                                                <span>
+                                                    <i ng-show="validationResult && validationResult.errorCount>0" class="fa fa-exclamation-triangle"></i>
+                                                    <i  ng-show="(validationResult && validationResult.errorCount===0)|| !validationResult" class="fa fa-check-circle"></i>
+                                                    Verify
+                                                </span> 
+                                            </button>-->
+                    <button style="margin-top:0px" title="Verify IG" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
+                        ng-click="validateIg()"> 
+                                                Verify
+                                            </button>
                     <div class="btn-group">
                         <label class="btn btn-raised btn-primary btn-sm" ng-class="{active:$root.usageF===false}" ng-click="$root.usageF=false"> All Usages </label>
                         <label class=" btn btn-raised btn-primary btn-sm" ng-class="{active:$root.usageF===true}" ng-click="usageFilter()"> Only R,RE,C </label>
@@ -78,16 +87,16 @@
                             </li>
                             <li class="drop-accordian"><a class="point" ng-click="$event.stopPropagation();wordDrop = !wordDrop">As WORD <span class="caret"><!-- --></span></a>
                                 <ul class="drop-accordian-menu" ng-show="wordDrop">
-                                    <li title="Export In IG Style. The segments definitions are outside the conformance profiles."><a class="point" ng-click="exportAsWithLayout('docx','IgDocument')">IG Style</a></li>
+                                    <li title="  The implementation guide is exported as individual message profiles. A profile will contain it’s Message Structure Definition, Profile Components, and Segments. Data Types and Value Sets Organized as individual profiles. Contains Message Definition and all pertaining Profile Components and Segments. Data Type and Value Sets are rendered in a single separate section regardless of the profile in which they are used. Both the narrative and messaging aspects are exported."><a class="point" ng-click="exportAsWithLayout('docx','IgDocument')">IG Style</a></li>
                                     <li title="Export In Profile Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('docx','Profile')">Profile Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
-                                    <li title="Export In Table Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('docx','Table')">Table Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
+                                    <li title="Only the messaging aspects are exported. The export view is on the individual tables. Filters can be applied to export a subset desired tables."><a class="point" ng-click="exportAsWithLayout('docx','Table')">Table Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
                                 </ul>
                             </li>
                             <li class="drop-accordian"><a class="point" ng-click="$event.stopPropagation();htmlDrop = !htmlDrop">As HTML <span class="caret"><!-- --></span></a>
                                 <ul class="drop-accordian-menu" ng-show="htmlDrop">
-                                    <li title="Export In IG Style. The segments definitions are outside the conformance profiles."><a class="point" ng-click="exportAsWithLayout('html','IGDocument')">IG Style</a></li>
+                                    <li title="  The implementation guide is exported as individual message profiles. A profile will contain it’s Message Structure Definition, Profile Components, and Segments. Data Types and Value Sets Organized as individual profiles. Contains Message Definition and all pertaining Profile Components and Segments. Data Type and Value Sets are rendered in a single separate section regardless of the profile in which they are used. Both the narrative and messaging aspects are exported."><a class="point" ng-click="exportAsWithLayout('html','IGDocument')">IG Style</a></li>
                                     <li title="Export In Profile Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('html','Profile')">Profile Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
-                                    <li title="Export In Table Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included"><a class="point" ng-click="exportAsWithLayout('html','Table')">Table Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
+                                    <li title="Only the messaging aspects are exported. The export view is on the individual tables. Filters can be applied to export a subset desired tables."><a class="point" ng-click="exportAsWithLayout('html','Table')">Table Style<span style="color:red;font-weight: bold; font-size:10px">BETA</span></a></li>
                                 </ul>
                             </li>
                             <!--li><a class="point" ng-click="customExportModal()">Advanced Export</a></li-->
@@ -100,6 +109,18 @@
                 <!--<span>version: {{igdocument.metaData.version}}-->
                 <!--</span>-->
                 <!--</div>-->
+            </div>
+        </div>
+        <div class="row" ng-show="showErrorCount(igdocument.id)  && showIgErrorNotification" style="margin-right: 15px;margin-left: 5px;">
+            <div class="alert has-error" ng-show="errorCount(igdocument.id)>0">
+                <!--<button type="button" class="close" aria-label="Close" ><span aria-hidden="true">&times;</span></button> {{errorCount(igdocument.id)}} Errors-->
+                <button type="button" ng-click="setIgErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(igdocument.id)}} Errors
+
+            </div>
+            <div class="alert alert-success" ng-show="errorCount(igdocument.id)===0">
+                <!--<button type="button" class="close" aria-label="Close" ><span aria-hidden="true">&times;</span></button> {{errorCount(igdocument.id)}} Errors-->
+                <button type="button" ng-click="setIgErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(igdocument.id)}} Errors
+
             </div>
         </div>
         <div class="row">

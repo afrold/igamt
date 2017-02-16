@@ -20,6 +20,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -41,6 +42,8 @@ public interface ValidationService {
    */
   public ValidationResult validateMessage(Message reference, Message toBeValidated,
       boolean validateChildren) throws InvalidObjectException;
+
+  public ValidationResult validateIg(IGDocument ig) throws InvalidObjectException;
 
   public HashMap<String, List<ValidationError>> validateSegmentRefOrGroup(
       SegmentRefOrGroup reference, SegmentRefOrGroup toBeValidated, Predicate predicate,
@@ -126,4 +129,30 @@ public interface ValidationService {
   public String validateLength(int referenceMinLen, String referenceMaxLen, int toBeMinLen,
       String toBeMaxLen);
 
+  /**
+   * <p>
+   * Validates Cardinality in reference to Usage, based on following rules:
+   * </p>
+   * <ul>
+   * <li>if X usage, then cardinality min and max cannot be greater than 0</li>
+   * <li>if R usage, then cardinality min has to be greater than zero and cardinality max<br/>
+   * cannot be less than cardinality min</li>
+   * <li>if RE usage, then cardinality min cannot be less than zero and cardinality max <br/>
+   * cannot be less than cardinality min</li>
+   * <li>if C,CE,O, or C(a/b) usage, min cannot be less than or greater than zero and cardinality
+   * max can not be less than 1</li>
+   * 
+   * @param referenceMin
+   * @param referenceMax
+   * @param referenceUsage
+   * @param toBeMin
+   * @param pToBeMax
+   * @param toBeUsage
+   * @return
+   */
+  public String validateCardinality(Integer referenceMin, String referenceMax,
+      String referenceUsage, Integer toBeMin, String pToBeMax, String toBeUsage);
+
 }
+
+
