@@ -453,16 +453,9 @@
         </form>
     </div>
     <div class="modal-footer ">
+        <div class="row ">
         <div class="col-md-12 ">
-        <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                class="fa fa-times fa-fw ">&nbsp; </i>Close</span></button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPforSelectedMessages() "><span><i class="fa fa-download fa-fw "></i>Export</span>
-        </button>
-        <button class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'" ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPToGVT() "><span><i class="fa fa-download fa-fw "></i>Export to GVT</span>
-        </button>
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-         </div>
+
         <div ng-class="'alert alert-'+ info.type" ng-show="info.show" id="ehrloginalert" style="margin-top:5px; text-align:center">
             <div ng-show="info.type === 'info'">
                 <button type="button" class="close" ng-click="info.show=false">×</button>
@@ -480,9 +473,22 @@
             </div>
 
 
-            </div>
+        </div>
 
+        </div>
+
+        <div class="col-md-12 ">
+        <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
+                class="fa fa-times fa-fw ">&nbsp; </i>Close</span></button>
+        <button class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPforSelectedMessages() "><span><i class="fa fa-download fa-fw "></i>Export</span>
+        </button>
+        <button class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'" ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPToGVT() "><span><i class="fa fa-download fa-fw "></i>Export to GVT</span>
+        </button>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px ">
+            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
+        </div>
 </div>
+            </div>
     </div>
 </script>
 
