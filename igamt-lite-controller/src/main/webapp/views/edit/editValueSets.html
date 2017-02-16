@@ -1,18 +1,25 @@
-<style id="antiClickjack">body {
+<style id="antiClickjack">
+    body {
         display: none !important;
-    }</style> <script type="text/javascript">if (self === top) {
+    }
+</style>
+<script type="text/javascript">
+    if (self === top) {
         var antiClickjack = document.getElementById("antiClickjack");
         antiClickjack.parentNode.removeChild(antiClickjack);
     } else {
         top.location = self.location;
-    }</script> <script type="text/ng-template" id="EditValueSets.html"><div ng-controller="TableListCtrl" ng-init="init()" class="container">
+    }
+</script>
+<script type="text/ng-template" id="EditValueSets.html">
+    <div ng-controller="TableListCtrl" ng-init="init()" class="container">
         <div ng-show="loadingSelection" style="text-align: center; padding-top:20px">
             <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="table !== null" id="executionPanel">
-                <div class="row" style="margin-left:0px; margin-right: 20px">
-                    <div class="page-header" style="margin-bottom: 20px">
+                <div class="container">
+                    <div class="page-header">
 
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span> <span class="version-badge-label" ng-if="table.publicationVersion">v{{table.publicationVersion}}</span></span>
                         <span class="pull-right">
@@ -42,7 +49,7 @@
                         </span>
                     </div>
 
-                 <span class="static_info">
+                 <div class="static_info">
                  <i class="fa fa-calendar" aria-hidden="true"></i>
 					Updated :{{table.dateUpdated | date:dateFormat}}
                      <span ng-if="table.owner" style="font-style: italic;">
@@ -51,7 +58,7 @@
                     </span>
                     <span>HL7 Version: {{table.hl7Version}}</span>
                     <span ng-if="table.publicationVersion">Version: {{table.publicationVersion}}</span>
-                </span>
+                </div>
 
                     <div class="" ng-controller="cmpTableCtrl">
                         <tabset active="tabStatus.active">
@@ -486,14 +493,18 @@
                 </div>
             </div>
         </div>
-    </div></script> <script type="text/ng-template" id="ReadValueSets.html"><div ng-controller="TableListCtrl" ng-init="init()" class="container">
+    </div>
+</script>
+
+<script type="text/ng-template" id="ReadValueSets.html">
+    <div ng-controller="TableListCtrl" ng-init="init()" class="container">
         <div ng-show="loadingSelection" style="text-align: center; padding-top:20px">
             <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="table !== null" id="executionPanel">
-                <div class="row" style="margin-left:0px; margin-right: 20px">
-                    <div class="page-header" style="margin-bottom: 20px">
+                <div class="containerßßßß">
+                    <div class="page-header">
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span> <span class="version-badge-label" ng-if="versionAndUseMap[table.id].publicationVersion">v{{versionAndUseMap[table.id].publicationVersion}}</span></span>
 
                         <span class="pull-right" ng-if="!typeOfSharing">
@@ -522,6 +533,17 @@
                         <span class="pull-right" ng-if="typeOfSharing && table.owner" style="font-style: italic;">
                           (Owner: {{table.owner}})
                         </span>
+
+                    <div class="static_info">
+                 <i class="fa fa-calendar" aria-hidden="true"></i>
+					Updated :{{table.dateUpdated | date:dateFormat}}
+                     <span ng-if="table.owner" style="font-style: italic;">
+                         <i class="fa fa-user" aria-hidden="true"></i> 
+                         {{table.owner}}
+                    </span>
+                    <span>HL7 Version: {{table.hl7Version}}</span>
+                    <span ng-if="table.publicationVersion">Version: {{table.publicationVersion}}</span>
+                </div>
                     </div>
 
                     <div class="">
@@ -666,7 +688,6 @@
                                                     <th class="col-md-2">CodeSystem</th>
                                                     <th class="col-md-1">Usage</th>
                                                     <th class="col-md-3">Comments</th>
-                                                    <th class="col-md-1">Action</th>
                                                 </tr>
 
                                                 <tr>
@@ -703,8 +724,6 @@
                                                     </td>
                                                     <td class="col-md-3">
                                                         <span>{{c.comments}}</span>
-                                                    </td>
-                                                    <td class="col-md-1">
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -789,7 +808,11 @@
                 </div>
             </div>
         </div>
-    </div></script> <script type="text/ng-template" id="ConfirmValueSetDeleteCtrl.html"><div class="modal-header">
+    </div>
+</script>
+
+<script type="text/ng-template" id="ConfirmValueSetDeleteCtrl.html">
+    <div class="modal-header">
         <h3 class="modal-title">Delete Confirmation</h3>
     </div>
     <div class="modal-body">
@@ -801,7 +824,11 @@
         </button>
         <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
-    </div></script> <script type="text/ng-template" id="ValueSetReferencesCtrl.html"><div class="modal-header">
+    </div>
+</script>
+
+<script type="text/ng-template" id="ValueSetReferencesCtrl.html">
+    <div class="modal-header">
         <h3 class="modal-title">Value Set References Found
             <button class="btn btn-raised btn-primary btn-xs pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
             </button>
@@ -842,7 +869,11 @@
     <!--<div class="modal-footer">-->
     <!--<button class="btn btn-raised btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>-->
     <!--</button>-->
-    <!--</div></script> <script type="text/ng-template" id="valueSet_node"><tr tt-node is-branch="node.codes!==undefined">
+    <!--</div>-->
+</script>
+
+<script type="text/ng-template" id="valueSet_node">
+    <tr tt-node is-branch="node.codes!==undefined">
         <td class="col-md-2">
             <table class=" table-borderless" ng-if="node.label.element && node.description.element">
                 <tr>
@@ -931,7 +962,11 @@
             <div align="center"> - </div>
         </td>
 
-    </tr></script> <script type="text/ng-template" id="AddBindingForValueSet.html"><div class="modal-header">
+    </tr>
+</script>
+
+<script type="text/ng-template" id="AddBindingForValueSet.html">
+    <div class="modal-header">
         <h3 class="modal-title">Add Binding for Value Set : {{::table.bindingIdentifier}}</h3>
     </div>
     <div class="modal-body">
@@ -1008,4 +1043,5 @@
         </button>
         <button class="btn btn-raised btn-info btn-sm" ng-disabled="selectedComponentForBinding === null && selectedFieldForBinding === null" ng-click="save(bindingTargetType)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span>
         </button>
-    </div></script>
+    </div>
+</script>

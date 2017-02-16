@@ -20,6 +20,8 @@ public class NameAndPositionAndPresence {
   private String name;
   private int position;
   private boolean present;
+  private boolean disabled;
+
 
   public String getName() {
     return name;
@@ -29,10 +31,11 @@ public class NameAndPositionAndPresence {
     this.name = name;
   }
 
-  public NameAndPositionAndPresence(String name, int position, boolean present) {
+  public NameAndPositionAndPresence(String name, int position, boolean present, boolean disabled) {
     this.name = name;
     this.position = position;
     this.present = present;
+    this.disabled = disabled;
   }
 
   public int getPosition() {
@@ -54,6 +57,20 @@ public class NameAndPositionAndPresence {
 
   public void setPresent(boolean presence) {
     this.present = presence;
+  }
+
+  /**
+   * @return the disabled
+   */
+  public boolean isDisabled() {
+    return disabled;
+  }
+
+  /**
+   * @param disabled the disabled to set
+   */
+  public void setDisabled(boolean disabled) {
+    this.disabled = disabled;
   }
 
 }

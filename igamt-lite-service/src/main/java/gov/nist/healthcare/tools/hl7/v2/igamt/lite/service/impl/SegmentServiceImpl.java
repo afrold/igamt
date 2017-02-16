@@ -94,7 +94,7 @@ public class SegmentServiceImpl implements SegmentService {
 
   @Override
   public List<Segment> findByIds(Set<String> ids) {
-    log.info("DataypeServiceImpl.findByIds=" + ids);
+    log.info("SegmentServiceImpl.findByIds=" + ids);
     return segmentRepository.findByIds(ids);
   }
 
