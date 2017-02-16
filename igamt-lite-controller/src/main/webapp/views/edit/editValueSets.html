@@ -426,13 +426,12 @@
                                         <thead>
                                         <tr class="tbl-header">
                                             <td st-ratio="5">#</td>
-                                            <th st-ratio="15">Path</th>
+                                            <th st-ratio="35">Path</th>
                                             <th st-ratio="15">Name</th>
                                             <th st-ratio="10">Usage</th>
                                             <th st-ratio="10">DataType</th>
                                             <th st-ratio="20">Value Set</th>
-                                            <th st-ratio="10">Binding Location</th>
-                                            <th st-ratio="10">Binding Strength</th>
+                                    
                                             <th st-ratio="5">Status</th>
                                         </tr>
                                         </thead>
@@ -442,7 +441,7 @@
                                                 <span ng-if="ref.type === 'field'" class="label label-field label-icon">F</span>
                                                 <span ng-if="ref.type === 'component'" class="label label-component label-icon">C</span>
                                             </td>
-                                            <td st-ratio="15">
+                                            <td st-ratio="35">
                                                 <a ng-if="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.path}}</a>
                                                 <a ng-if="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.path}}</a>
 
@@ -458,34 +457,14 @@
                                             </td>
 
                                             <td st-ratio="20">
-                                                <span ng-if="ref.target.scope !== 'USER'">
+                                                <span ng-if="ref.target.scope == 'PUBLISHED'">
                                                     {{::tablesMap[ref.tableLink.id].bindingIdentifier}}-{{::tablesMap[ref.tableLink.id].description}}
                                                 </span>
-                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.id">
+                                                <select ng-if="ref.target.scope !== 'PUBLISHED'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.id">
                                                     <option value="">No Value Set</option>
                                                     <option ng-repeat="t in tables |orderBy:'+bindingIdentifier'" value="{{t.id}}">
                                                         {{::t.bindingIdentifier}}-{{::t.description}}
                                                     </option>
-                                                </select>
-                                            </td>
-                                            <td st-ratio="10">
-                                                <span ng-if="ref.target.scope !== 'USER'">
-                                                    {{::ref.tableLink.bindingLocation}}
-                                                </span>
-                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.bindingLocation">
-                                                    <option ng-repeat="component in datatypesMap[ref.datatype.id].components |orderBy:'+position'" value="{{component.position}}">
-                                                        {{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}.{{::component.position}} ({{::component.name}})
-                                                    </option>
-                                                </select>
-                                            </td>
-                                            <td st-ratio="10">
-                                                <span ng-if="ref.target.scope !== 'USER'">
-                                                    {{::ref.tableLink.bindingStrength}}
-                                                </span>
-                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.bindingStrength">
-                                                    <option value="R">Required</option>
-                                                    <option value="S">Suggested</option>
-                                                    <option value="U">Undermined</option>
                                                 </select>
                                             </td>
                                             <td st-ratio="5">
@@ -753,13 +732,11 @@
                                         <thead>
                                         <tr class="tbl-header">
                                             <td st-ratio="5">#</td>
-                                            <th st-ratio="15">Path</th>
+                                            <th st-ratio="35">Path</th>
                                             <th st-ratio="15">Name</th>
                                             <th st-ratio="10">Usage</th>
                                             <th st-ratio="10">DataType</th>
                                             <th st-ratio="20">Value Set</th>
-                                            <th st-ratio="10">Binding Location</th>
-                                            <th st-ratio="10">Binding Strength</th>
                                             <th st-ratio="5">Status</th>
                                         </tr>
                                         </thead>
@@ -769,7 +746,7 @@
                                                 <span ng-if="ref.type === 'field'" class="label label-field label-icon">F</span>
                                                 <span ng-if="ref.type === 'component'" class="label label-component label-icon">C</span>
                                             </td>
-                                            <td st-ratio="15">
+                                            <td st-ratio="35">
                                                 {{::ref.path}}
                                             </td>
                                             <td st-ratio="15">
@@ -782,35 +759,16 @@
                                                 {{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}
                                             </td>
                                             <td st-ratio="20">
-                                                <span ng-if="ref.target.scope !== 'USER'">
+                                                <span ng-if="ref.target.status == 'PUBLISHED'">
                                                     {{::tablesMap[ref.tableLink.id].bindingIdentifier}}-{{::tablesMap[ref.tableLink.id].description}}
                                                 </span>
-                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.id">
+                                                <select ng-if="ref.target.status !== 'PUBLISHED'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.id">
                                                     <option value="">No Value Set</option>
                                                     <option ng-repeat="t in tables |orderBy:'+bindingIdentifier'" value="{{t.id}}">
                                                         {{::t.bindingIdentifier}}-{{::t.description}}
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td st-ratio="10">
-                                                <span ng-if="ref.target.scope !== 'USER'">
-                                                    {{::ref.tableLink.bindingLocation}}
-                                                </span>
-                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.bindingLocation">
-                                                    <option ng-repeat="component in datatypesMap[ref.datatype.id].components |orderBy:'+position'" value="{{component.position}}">
-                                                        {{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}.{{::component.position}} ({{::component.name}})
-                                                    </option>
-                                                </select>
-                                            </td>
-                                            <td st-ratio="10">
-                                                <span ng-if="ref.target.scope !== 'USER'">
-                                                    {{::ref.tableLink.bindingStrength}}
-                                                </span>
-                                                <select ng-if="ref.target.scope == 'USER'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.bindingStrength">
-                                                    <option value="R">Required</option>
-                                                    <option value="S">Suggested</option>
-                                                    <option value="U">Undermined</option>
-                                                </select>
                                             </td>
                                             <td st-ratio="5">
                                                 <span ng-if="ref.tableLink.isNew">New</span>
@@ -978,50 +936,34 @@
     </div>
     <div class="modal-body">
         <span class="pull-right" ng-if="igdocument">
-            <div class="btn-group btn-group-sm" data-toggle="buttons">
-                <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'SEGMENT'; init();" ng-class="{'active':bindingTargetType === 'SEGMENT'}">
-                    <input type="radio" ng-value="SEGMENT" ng-model="bindingTargetType">To Segment
-                </label>
-                <label class="btn btn-raised btn-primary btn-xs" ng-click="bindingTargetType = 'DATATYPE'; init();" ng-class="{'active':bindingTargetType === 'DATATYPE'}">
-                    <input type="radio" ng-value="DATATYPE" ng-model="bindingTargetType">To Datatype
-                </label>
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-raised btn-primary btn-xs" ng-click="switchTo('SEGMENT'); " ng-class="{'active':bindingTargetType === 'SEGMENT'}">
+                    To Segment
+                </button>
+                <button type="button" class="btn btn-raised btn-primary btn-xs" ng-click="switchTo('DATATYPE');" ng-class="{'active':bindingTargetType === 'DATATYPE'}">
+                    To Datatype
+               </button>
             </div>
         </span>
 
-        <div ng-show="bindingTargetType === 'SEGMENT'">
+        <div ng-show="bindingTargetType=='SEGMENT'">
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
                     <tr class="tbl-header">
-                        <th class="col-md-3">Segment</th>
-                        <th class="col-md-3">Field</th>
-                        <th class="col-md-3">Binding Location</th>
-                        <th class="col-md-3">Binding Strength</th>
+                        <th class="col-md-6">Segment</th>
+                        <th class="col-md-6">Field</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="col-md-3">
+                        <td class="col-md-6">
                             <select ng-model='selectedSegmentForBinding' class="form-control" ng-change="selectSegment();" ng-options="seg as getSegmentLabel(seg) for seg in segments | filter:{ scope : 'USER' }" />
                         </td>
-                        <td class="col-md-3">
+                        <td class="col-md-6">
                             <select ng-show='selectedSegmentForBinding != null' ng-model='selectedFieldForBinding' class="form-control">
                                 <option ng-repeat="f in selectedSegmentForBinding.fields | orderBy:'+position'" value="{{f}}" ng-disabled="checkDuplicated(getSegmentLabel(selectedSegmentForBinding) + '-' + f.position)">
                                     {{::f.position}}. {{::f.name}}
                                 </option>
-                            </select>
-                        </td>
-                        <td class="col-md-3">
-                            <select ng-show="selectedFieldForBinding != null" class="form-control" ng-model="selectedBindingLocation">
-                                <option ng-repeat="component in datatypesMap[selectedFieldForBinding.datatype.id].components |orderBy:'+position'" value="{{component.position}}">
-                                    {{::getDatatypeLabel(datatypesMap[selectedFieldForBinding.datatype.id])}}.{{::component.position}} ({{::component.name}})
-                                </option>
-                            </select>
-                        </td>
-                        <td class="col-md-3">
-                            <select ng-show="selectedFieldForBinding != null" class="form-control" ng-model="selectedBindingStrength">
-                                <option value="R">Required</option>
-                                <option value="S">Suggested</option>
-                                <option value="U">Undermined</option>
                             </select>
                         </td>
                     </tr>
@@ -1029,40 +971,29 @@
             </table>
         </div>
 
-        <div ng-show="bindingTargetType === 'DATATYPE'">
+        <div ng-if="bindingTargetType=='DATATYPE'">
             <table class="table table-striped table-bordered table-condensed">
                 <thead>
                 <tr class="tbl-header">
-                    <th class="col-md-3">Datatype</th>
-                    <th class="col-md-3">Component</th>
-                    <th class="col-md-3">Binding Location</th>
-                    <th class="col-md-3">Binding Strength</th>
+                    <th class="col-md-6">Datatype</th>
+                    <th class="col-md-6">Component</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="col-md-3">
-                        <select ng-model='selectedDatatypeForBinding' class="form-control" ng-change="selectDatatype();" ng-options="dt as getDatatypeLabel(dt) for dt in datatypes | filter:{ status : 'UNPUBLISHED' }" />
-                    </td>
-                    <td class="col-md-3">
-                        <select ng-show='selectedDatatypeForBinding != null' ng-model='selectedComponentForBinding' class="form-control">
-                            <option ng-repeat="c in selectedDatatypeForBinding.components | orderBy:'+position'" value="{{c}}" ng-disabled="checkDuplicated(getDatatypeLabel(selectedDatatypeForBinding) + '.' + c.position)">
-                                {{::c.position}}. {{::c.name}}
+                    <td class="col-md-6">
+                        <select  class="form-control" ng-model="selectedDatatypeForBinding" ng-change="selectDatatype(selectedDatatypeForBinding);">
+                            {{selectedDatatypeForBinding}}
+                            <option ng-repeat="dt in datatypes | filter:{ status : 'UNPUBLISHED'}" value="{{dt}}" ng-show="dt.components.length" >
+                            {{dt.name}}_{{dt.ext}}
                             </option>
                         </select>
                     </td>
-                    <td class="col-md-3">
-                        <select ng-show="selectedComponentForBinding != null" class="form-control" ng-model="selectedBindingLocation">
-                            <option ng-repeat="component in datatypesMap[selectedFieldForBinding.datatype.id].components |orderBy:'+position'" value="{{component.position}}">
-                                {{::getDatatypeLabel(datatypesMap[selectedFieldForBinding.datatype.id])}}.{{::component.position}} ({{::component.name}})
+                    <td class="col-md-6">
+                        <select ng-show='selectedDatatypeForBinding !== null' ng-model="selectedComponentForBinding" class="form-control" ng-change="selectComponent(selectedComponentForBinding)">
+                            <option ng-repeat="c in componentsToSelect | orderBy:'+position'" value="{{c}}" ng-disabled="checkDuplicated(getDatatypeLabel(selectedDatatypeForBinding) + '.' + c.position)">
+                                {{c.position}}.{{c.name}}
                             </option>
-                        </select>
-                    </td>
-                    <td class="col-md-3">
-                        <select ng-show="selectedComponentForBinding != null" class="form-control" ng-model="selectedBindingStrength">
-                            <option value="R">Required</option>
-                            <option value="S">Suggested</option>
-                            <option value="U">Undermined</option>
                         </select>
                     </td>
                 </tr>
@@ -1075,6 +1006,6 @@
     <div class="modal-footer">
         <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-info btn-sm" ng-disabled="selectedComponentForBinding == null && selectedFieldForBinding == null" ng-click="save(bindingTargetType)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span>
+        <button class="btn btn-raised btn-info btn-sm" ng-disabled="selectedComponentForBinding === null && selectedFieldForBinding === null" ng-click="save(bindingTargetType)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span>
         </button>
     </div></script>

@@ -160,7 +160,7 @@ public class Bootstrap implements InitializingBean {
     // setDtsStatus();// sets the status of all the datatypes to published or unpublished
     // setTablesStatus(); // sets the status of all the tables to published or unpublished
     // Colorate(); // genenerates the datatypes evolution matrix.
-    // setSegmentStatus();
+    setSegmentStatus();
     // // ====================================================================*/
     // // this.modifyConstraint();
     // // this.modifyMSH2Constraint();
@@ -177,6 +177,8 @@ public class Bootstrap implements InitializingBean {
     // createDefaultConfiguration("Table Style");
 
     // changeStatusofPHINVADSTables();
+	  
+//	  modifyCodeUsage();
   }
 
   /**

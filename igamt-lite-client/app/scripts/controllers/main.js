@@ -1694,7 +1694,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     datatypeUpdateParameter.datatypeId = targetDatatype.id;
                     datatypeUpdateParameter.componentId = targetComponent.id;
                     datatypeUpdateParameter.datatypeLink = newDatatypeLink;
-                    datatypeUpdateParameter.key = $rootScope.table.id;
+                    datatypeUpdateParameter.key = $rootScope.datatype.id;
                     datatypeUpdateParameterList.push(datatypeUpdateParameter);
                 } else if (ref.type == 'field') {
                     var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
@@ -2134,6 +2134,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         });
         if (field) return segment.name + "-" + position + " (" + field.name + ")";
         return segment.name;
+    };
+
+    $rootScope.getUpdatedBindingIdentifier = function (table) {
+      if(table.hl7Version && table.hl7Version!==''){
+          return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
+      }
+
+      return table.bindingIdentifier;
     };
 
     $rootScope.generateCompositeConformanceStatement = function(compositeType, firstConstraint, secondConstraint, constraints) {
