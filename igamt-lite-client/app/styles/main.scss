@@ -513,12 +513,17 @@ input.form-control-warning {
 
 .has-error {
     // background-color: #f4867e;
-    background-color: #ad2d2d !important;
+    //background-color: #ad2d2d !important;
+    background-color : #f7b5b1;
+    color: black;
 }
 
 .has-validation-error {
-    // background-color: #f4867e;
-    background-color: #ad2d2d !important;
+   //  background-color: #f4867e;
+    //background-color: #ad2d2d !important;
+        background-color : #f7b5b1;
+    color: black;
+
 }
 
 .bs-docs-section {

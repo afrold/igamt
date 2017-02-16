@@ -68,7 +68,7 @@ angular.module('igl')
     $rootScope.showDtErrorNotification = false;
     $rootScope.validationMap = {};
     $rootScope.childValidationMap = {};
-    $rootScope.validationResult = {};
+    $rootScope.validationResult = null;
     $scope.validateIg = function() {
         ValidationService.validateIg($rootScope.igdocument).then(function(result) {
             $rootScope.validationMap = {};

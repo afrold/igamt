@@ -13,7 +13,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.io.InvalidObjectException;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,6 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValidationResult;
@@ -65,49 +63,25 @@ public class ValidationController extends CommonController {
 
 
 
-  @RequestMapping(value = "/validateIG/{igId}", method = RequestMethod.POST,
+  @RequestMapping(value = "/validateDatatype/{igHl7Version}", method = RequestMethod.POST,
       produces = "application/json")
-  public ValidationResult validateIG(@PathVariable("igId") String igId) {
-    log.info("Validation ig..." + igId);
-    IGDocument userIg = igDocumentService.findById(igId);
-    List<IGDocument> hl7Igs = igDocumentService.findByScopeAndVersion(IGDocumentScope.HL7STANDARD,
-        userIg.getProfile().getMetaData().getHl7Version());
-    if (!hl7Igs.isEmpty()) {
-      IGDocument hl7Ig = hl7Igs.get(0);
-
-    }
-    ValidationResult result = new ValidationResult();
-    return result;
-  }
-
-  @RequestMapping(value = "/validateDatatype", method = RequestMethod.POST,
-      produces = "application/json")
-  public ValidationResult validateDatatype(@RequestBody Datatype userDatatype)
-      throws InvalidObjectException {
-    log.info("Validation ig..." + userDatatype.getId());
+  public ValidationResult validateDatatype(@PathVariable("igHl7Version") String igHl7Version,
+      @RequestBody Datatype userDatatype) throws InvalidObjectException {
     Datatype hl7Datatype = datatypeService.findByNameAndVersionAndScope(userDatatype.getName(),
         userDatatype.getHl7Version(), "HL7STANDARD");
+    return validationService.validateDatatype(hl7Datatype, userDatatype, userDatatype.getId(),
+        igHl7Version);
 
-
-    ValidationResult result =
-        validationService.validateDatatype(hl7Datatype, userDatatype, userDatatype.getId());
-
-    return result;
   }
 
-  @RequestMapping(value = "/validateSegment", method = RequestMethod.POST,
+  @RequestMapping(value = "/validateSegment/{igHl7Version}", method = RequestMethod.POST,
       produces = "application/json")
-  public ValidationResult validateSegment(@RequestBody Segment userSegment)
-      throws InvalidObjectException {
+  public ValidationResult validateSegment(@PathVariable("igHl7Version") String igHl7Version,
+      @RequestBody Segment userSegment) throws InvalidObjectException {
     log.info("Validation ig..." + userSegment.getId());
     Segment hl7Segment = segmentService.findByNameAndVersionAndScope(userSegment.getName(),
         userSegment.getHl7Version(), "HL7STANDARD");
-
-
-
-    ValidationResult result = validationService.validateSegment(hl7Segment, userSegment, true);
-
-    return result;
+    return validationService.validateSegment(hl7Segment, userSegment, true, igHl7Version);
   }
 
   @RequestMapping(value = "/validateMessage", method = RequestMethod.POST,
@@ -118,13 +92,8 @@ public class ValidationController extends CommonController {
 
     Message hl7Message = messageService.findByStructIdAndScopeAndVersion(userMessage.getStructID(),
         "HL7STANDARD", userMessage.getHl7Version());
-    System.out.println("++++++" + hl7Message.getId());
+    return validationService.validateMessage(hl7Message, userMessage, true);
 
-
-
-    ValidationResult result = validationService.validateMessage(hl7Message, userMessage, true);
-
-    return result;
   }
 
 

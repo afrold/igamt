@@ -52,7 +52,7 @@ angular.module('igl')
         };
         $scope.validateDatatype = function() {
             console.log($rootScope.datatype);
-            ValidationService.validatedatatype($rootScope.datatype).then(function(result) {
+            ValidationService.validatedatatype($rootScope.datatype, $rootScope.igdocument.profile.metaData.hl7Version).then(function(result) {
                 $rootScope.validationMap = {};
                 $rootScope.childValidationMap = {};
                 $rootScope.showDtErrorNotification = true;
@@ -60,6 +60,7 @@ angular.module('igl')
                 console.log($rootScope.validationResult);
                 $rootScope.buildValidationMap($rootScope.validationResult);
                 console.log($rootScope.validationMap);
+                console.log($rootScope.childValidationMap);
 
             });
         };
