@@ -78,6 +78,7 @@ import java.util.*;
     @Override public Document serializeIGDocument(IGDocument originIgDocument,
         SerializationLayout serializationLayout, ExportConfig exportConfig) {
         this.exportConfig = exportConfig;
+        this.bindedSegments = new ArrayList<>();
         IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
         SerializableStructure serializableStructure = new SerializableStructure();
         igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
@@ -173,6 +174,9 @@ import java.util.*;
 
     private SegmentRefOrGroup filterSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentORGroupsUsageConfig){
         if(segmentRefOrGroup instanceof SegmentRef){
+            if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),exportConfig.getSegmentsExport())){
+                this.bindedSegments.add(((SegmentRef) segmentRefOrGroup).getRef());
+            }
             if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), segmentORGroupsUsageConfig)){
                 return segmentRefOrGroup;
             }
@@ -296,7 +300,6 @@ import java.util.*;
                 "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
         }
         this.bindedDatatypes = new ArrayList<>();
-        this.bindedSegments = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
         UsageConfig segmentsUsageConfig = this.exportConfig.getSegmentsExport();
         UsageConfig datatypeUsageConfig = this.exportConfig.getDatatypesExport();
@@ -306,9 +309,6 @@ import java.util.*;
                 serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
             for(SerializableSegmentRefOrGroup messageChildren : serializableMessage.getSerializableSegmentRefOrGroups()){
                 if(messageChildren.getSegmentRef()!=null) {
-                    if(!this.bindedSegments.contains(messageChildren.getSegmentRef().getRef()) && ExportUtil.diplayUsage(messageChildren.getSegmentRef().getUsage(),segmentsUsageConfig)) {
-                        this.bindedSegments.add(messageChildren.getSegmentRef().getRef());
-                    }
                     if (messageChildren.getSegment() != null) {
                         for (Field field : messageChildren.getSegment().getFields()) {
                             if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),datatypeUsageConfig)) {

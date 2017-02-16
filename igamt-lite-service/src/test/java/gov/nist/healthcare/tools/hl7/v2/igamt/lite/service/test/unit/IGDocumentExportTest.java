@@ -108,8 +108,8 @@ public class IGDocumentExportTest {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    SerializationLayout.IGDOCUMENT,exportConfig), wordFile);
+                FileUtils.copyInputStreamToFile(exportService
+                    .exportIGDocumentAsDocx(igDocument, SerializationLayout.IGDOCUMENT,exportConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
