@@ -177,8 +177,8 @@ public class Bootstrap implements InitializingBean {
     // createDefaultConfiguration("Table Style");
 
     // changeStatusofPHINVADSTables();
-	  
-//	  modifyCodeUsage();
+
+    modifyCodeUsage();
   }
 
   /**
