@@ -56,7 +56,7 @@
 
                                 <div  style="padding-left:15px; " ng-repeat="c in IGStyleExportConfig.messageColumn.columns">
 
-                                    <input type="checkbox" ng-model="c.present" ng-change="setChanged()"> <label style="color:black">{{c.name}}
+                                    <input type="checkbox" ng-model="c.present" ng-disabled="c.disabled" ng-change="setChanged()"> <label style="color:black">{{c.name}}
                                     </label><br/>
 
                                 </div>
@@ -124,7 +124,7 @@
 
                                 <div  style="padding-left:15px; " ng-repeat="c in IGStyleExportConfig.segmentColumn.columns">
 
-                                    <input type="checkbox" ng-model="c.present" ng-change="setChanged()"> <label style="color:black">{{c.name}}
+                                    <input type="checkbox" ng-model="c.present"  ng-disabled="c.disabled" ng-change="setChanged()"> <label style="color:black">{{c.name}}
                                     </label><br/>
 
                                 </div>
@@ -194,7 +194,7 @@
 
                                 <div  style="padding-left:15px; " ng-repeat="c in IGStyleExportConfig.datatypeColumn.columns">
 
-                                    <input type="checkbox" ng-model="c.present" ng-change="setChanged()"> <label style="color:black">{{c.name}}
+                                    <input type="checkbox" ng-model="c.present" ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
                                     </label><br/>
 
                                 </div>
@@ -251,7 +251,7 @@
 
                                 <div  style="padding-left:15px; " ng-repeat="c in IGStyleExportConfig.valueSetColumn.columns">
 
-                                    <input type="checkbox" ng-model="c.present" ng-change="setChanged()"> <label style="color:black">{{c.name}}
+                                    <input type="checkbox" ng-model="c.present" ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
                                     </label><br/>
 
                                 </div>
