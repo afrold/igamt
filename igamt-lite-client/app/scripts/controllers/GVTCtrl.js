@@ -16,9 +16,24 @@ angular.module('igl').controller('GVTLoginCtrl', ['$scope', '$modalInstance', 'u
         GVTSvc.login($scope.user.username, $scope.user.password).then(function(auth){
             $modalInstance.close(auth);
         }, function(error){
-            $scope.error.text = error;
+            $scope.error.text = error.data;
             $scope.error.show =true;
         });
     };
+}])
+
+angular.module('igl').controller('GVTErrorsCtrl', ['$scope', '$modalInstance', 'errorDetails', function($scope, $modalInstance, errorDetails) {
+    $scope.errorDetails = errorDetails;
+    $scope.tmpProfileErrors = [].concat($scope.errorDetails.profileErrors);
+    $scope.tmpConstraintErrors = [].concat($scope.errorDetails.constraintsErrors);
+    $scope.tmpValueSetErrors = [].concat($scope.errorDetails.vsErrors);
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+    $scope.close = function() {
+        $modalInstance.close();
+    };
 }]);
+
 

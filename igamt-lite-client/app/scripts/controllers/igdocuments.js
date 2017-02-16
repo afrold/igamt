@@ -2195,7 +2195,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     $scope.xmlFormat = 'Validation';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
-    $scope.info = {text: undefined, show: false, type: null};
+    $scope.info = {text: undefined, show: false, type: null, details: null};
     $scope.redirectUrl = null;
 
     $scope.trackSelections = function (bool, id) {
@@ -2221,15 +2221,37 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $modalInstance.dismiss('cancel');
     };
 
+
+    $scope.viewErrors = function (errorDetails) {
+
+        if ($scope.gvtErrorsDialog && $scope.gvtErrorsDialog != null && $scope.gvtErrorsDialog.opened) {
+            $scope.gvtErrorsDialog.dismiss('cancel');
+        }
+        $scope.gvtErrorsDialog = $modal.open({
+            backdrop: 'static',
+            keyboard: 'true',
+            controller: 'GVTErrorsCtrl',
+            windowClass: 'conformance-profiles-modal',
+            templateUrl: 'views/gvt/errorDetails.html',
+            resolve: {
+                errorDetails: function () {
+                    return errorDetails;
+                }
+            }
+        });
+
+
+    };
+
     $scope.exportAsZIPToGVT = function () {
         $scope.loading = true;
         $scope.info.text = null;
         $scope.info.show = false;
         $scope.info.type = 'danger';
-        if ($rootScope.gvtLoginDialog && $rootScope.gvtLoginDialog != null && $rootScope.gvtLoginDialog.opened) {
-            $rootScope.gvtLoginDialog.dismiss('cancel');
+        if ($scope.gvtLoginDialog && $scope.gvtLoginDialog != null && $scope.gvtLoginDialog.opened) {
+            $scope.gvtLoginDialog.dismiss('cancel');
         }
-        $rootScope.gvtLoginDialog = $modal.open({
+        $scope.gvtLoginDialog = $modal.open({
             backdrop: 'static',
             keyboard: 'false',
             controller: 'GVTLoginCtrl',
@@ -2242,12 +2264,12 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
             }
         });
 
-        $rootScope.gvtLoginDialog.result.then(function (auth) {
+        $scope.gvtLoginDialog.result.then(function (auth) {
             GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function (map) {
                 var response =  angular.fromJson(map.data);
-                console.log(response);
                 if (response.success === false) {
                     $scope.info.text = "gvtExportFailed";
+                    $scope.info['details'] = response;
                     $scope.info.show = true;
                     $scope.info.type = 'danger';
                     $scope.loading = false;
