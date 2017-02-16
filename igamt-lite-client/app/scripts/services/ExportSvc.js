@@ -27,38 +27,7 @@ angular.module('igl').factory(
             form.submit();
         };
 
-        svc.exportAsZIPToGVT = function (id, mids) {
-            if ($rootScope.gvtLoginDialog && $rootScope.gvtLoginDialog != null && $rootScope.gvtLoginDialog.opened) {
-                $rootScope.gvtLoginDialog.dismiss('cancel');
-            }
-            $rootScope.gvtLoginDialog = $modal.open({
-                backdrop: 'static',
-                keyboard: 'false',
-                controller: 'GVTLoginCtrl',
-                size: 'lg',
-                templateUrl: 'views/gvt/login.html',
-                resolve: {
-                    user: function () {
-                        return { username:null, password: null };
-                    }
-                }
-            });
 
-            $rootScope.gvtLoginDialog.result.then(function (auth) {
-                $http({
-                    url: 'api/igdocuments/' + id + '/export/gvt',
-                    method: "POST",
-                    data: { 'mids' : mids, auth:auth}
-                })
-                    .then(function(response) {
-                        // success
-                    },
-                    function(response) { // optional
-                        // failed
-                    });
-
-            });
-        };
 
 
         return svc;

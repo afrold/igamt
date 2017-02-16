@@ -39,6 +39,13 @@ public class AppInfo implements Serializable {
   @Value("${admin.email}")
   private String adminEmail;
 
+
+  @Value("${gvt.url}")
+  private String gvtUrl;
+
+  @Value("${gvt.uploadTokenContext}")
+  private String gvtuploadTokenContext;
+
   public String getVersion() {
     return version;
   }
@@ -70,5 +77,23 @@ public class AppInfo implements Serializable {
   public void setUploadedImagesUrl(String uploadedImagesUrl) {
     this.uploadedImagesUrl = uploadedImagesUrl;
   }
+
+  public String getGvtUrl() {
+    return gvtUrl;
+  }
+
+  public void setGvtUrl(String gvtUrl) {
+    this.gvtUrl = gvtUrl;
+  }
+
+  public String getGvtuploadTokenContext() {
+    return gvtuploadTokenContext;
+  }
+
+  public void setGvtuploadTokenContext(String gvtuploadTokenContext) {
+    this.gvtuploadTokenContext = gvtuploadTokenContext;
+  }
+
+
 
 }

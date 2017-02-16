@@ -2169,11 +2169,13 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootSc
 });
 
 
-angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc) {
+angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc,GVTSvc,$modal,$timeout,$window) {
     $scope.igdocumentToSelect = igdocumentToSelect;
     $scope.xmlFormat = 'Validation';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
+    $scope.info = {text: undefined, show:false, type: null};
+
 
 
     $scope.trackSelections = function(bool, id) {
@@ -2201,8 +2203,57 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
 
     $scope.exportAsZIPToGVT = function() {
         $scope.loading = true;
-        ExportSvc.exportAsZIPToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs);
-        $scope.loading = false;
+        $scope.info.text = null;
+        $scope.info.show =false;
+        $scope.info.type ='danger';
+        if ($rootScope.gvtLoginDialog && $rootScope.gvtLoginDialog != null && $rootScope.gvtLoginDialog.opened) {
+            $rootScope.gvtLoginDialog.dismiss('cancel');
+        }
+        $rootScope.gvtLoginDialog = $modal.open({
+            backdrop: 'static',
+            keyboard: 'false',
+            controller: 'GVTLoginCtrl',
+            size: 'lg',
+            templateUrl: 'views/gvt/login.html',
+            resolve: {
+                user: function () {
+                    return { username:null, password: null };
+                }
+            }
+        });
+
+        $rootScope.gvtLoginDialog.result.then(function (auth) {
+            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function(response){
+                if(response.success === false){
+                    $scope.info.text = "gvtExportFailed";
+                    $scope.info.show =true;
+                    $scope.info.type ='danger';
+                    $scope.loading = false;
+                }else {
+                    var token = response.token;
+                    if(token != null && token != undefined) {
+                        $scope.info.text = 'gvtRedirectInProgress';
+                        $scope.info.show =true;
+                        $scope.info.type ='info';
+                        $timeout(function () {
+                            $scope.info.show =false;
+                            $scope.loading = false;
+                            $window.open($rootScope.appInfo.gvtUrl + "/" + $rootScope.appInfo.gvtUploadTokenContext + "?token=" + token + "&s="+ auth, "_target");
+                        }, 3000);
+                    }else{
+                        $scope.info.text = "gvtBadResponse";
+                        $scope.info.show =true;
+                        $scope.info.type ='danger';
+                        $scope.loading = false;
+                    }
+                }
+            },function(error){
+                $scope.info.text = "gvtExportFailed";
+                $scope.info.show =true;
+                $scope.info.type ='danger';
+                $scope.loading = false;
+            });
+        });
     };
 
 

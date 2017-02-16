@@ -6,8 +6,8 @@ angular.module('igl').factory('GVTSvc',
     ['$q','$modal', '$rootScope', 'StorageService','base64','$http',function ($q,$modal,$rootScope,StorageService,base64,$http) {
 
         var svc = this;
-        svc.url = 'http://localhost:8081/gvt/';
-//        var Email = $resource(svc.url+ 'api/sooa/emails/:email', {email: '@email'});
+
+ //        var Email = $resource(svc.url+ 'api/sooa/emails/:email', {email: '@email'});
 //
 //        svc.userExists = function(email) {
 //            var delay = $q.defer();
@@ -24,14 +24,30 @@ angular.module('igl').factory('GVTSvc',
             var delay = $q.defer();
             var httpHeaders = {};
             httpHeaders['Accept'] = 'application/json';
-            httpHeaders['Authorization'] = 'Basic ' + base64.encode(username + ':' + password);
-            $http.get(svc.url+ 'api/accounts/login', {headers:httpHeaders}).then(function (re) {
-                 delay.resolve(httpHeaders.common['Authorization']);
+            var auth =  base64.encode(username + ':' + password);
+            httpHeaders['Authorization'] = 'Basic ' + auth;
+            $http.get($rootScope.appInfo.gvtUrl+ 'api/accounts/login', {headers:httpHeaders}).then(function (re) {
+                 delay.resolve(auth);
             }, function(er){
                 delay.reject(er);
             });
             return delay.promise;
         };
+
+        svc.exportToGVT = function(id,mids, auth) {
+             var httpHeaders = {};
+            httpHeaders['gvt-auth'] = auth;
+//            httpHeaders['Content-Type']='application/x-www-form-urlencoded; charset=UTF-8';
+//            var params = $.param(mids);
+            return $http.post('api/igdocuments/' + id + '/export/gvt',mids,{headers:httpHeaders});
+//            return $http({
+//                url: 'api/igdocuments/' + id + '/export/gvt',
+//                method: "POST",
+//                headers:httpHeaders,
+//                data: mids
+//              });
+         };
+
 
 
         return svc;

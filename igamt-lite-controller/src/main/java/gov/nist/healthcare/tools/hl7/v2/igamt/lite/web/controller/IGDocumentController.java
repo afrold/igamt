@@ -11,18 +11,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -30,6 +30,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,20 +40,83 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeMessage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IgDocumentComparator;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PositionComparator;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SectionMap;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeMessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PhinvadsWSCallService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.EventWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.GVTClient;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
 
 @RestController
@@ -126,6 +190,15 @@ public class IGDocumentController extends CommonController {
 
   @Value("${admin.email}")
   private String ADMIN_EMAIL;
+
+  @Value("${gvt.url}")
+  private String GVT_URL;
+
+
+  @Value("${gvt.exportEndpoint}")
+  private String GVT_EXPORT_ENDPOINT;
+
+
 
   @Autowired
   private MailSender mailSender;
@@ -585,11 +658,12 @@ public class IGDocumentController extends CommonController {
     if (account == null) {
       throw new UserAccountNotFoundException();
     }
-    ExportConfig exportConfig = exportConfigService.findOneByTypeAndAccountId(identifyType(type), account.getId());
-    if(exportConfig == null){
+    ExportConfig exportConfig =
+        exportConfigService.findOneByTypeAndAccountId(identifyType(type), account.getId());
+    if (exportConfig == null) {
       exportConfig = ExportConfig.getBasicExportConfig();
     }
-    content = exportService.exportIGDocumentAsHtml(d, serializationLayout,exportConfig);
+    content = exportService.exportIGDocumentAsHtml(d, serializationLayout, exportConfig);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
@@ -654,9 +728,10 @@ public class IGDocumentController extends CommonController {
   }
 
   @RequestMapping(value = "/{id}/export/Validation/{mIds}", method = RequestMethod.POST,
-      produces = "application/zip" , consumes = "application/x-www-form-urlencoded; charset=UTF-8")
+      produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportValidationXMLByMessages(@PathVariable("id") String id,
-      @PathVariable("mIds") String[] messageIds, HttpServletRequest request, HttpServletResponse response)
+      @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
+      HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
     log.info("Exporting as xml file profile with id=" + id + " for selected messages="
         + Arrays.toString(messageIds));
@@ -733,11 +808,12 @@ public class IGDocumentController extends CommonController {
     if (account == null) {
       throw new UserAccountNotFoundException();
     }
-    ExportConfig exportConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
-    if(exportConfig == null){
+    ExportConfig exportConfig =
+        exportConfigService.findOneByTypeAndAccountId(type, account.getId());
+    if (exportConfig == null) {
       exportConfig = ExportConfig.getBasicExportConfig();
     }
-    content = exportService.exportIGDocumentAsDocx(d, serializationLayout,exportConfig);
+    content = exportService.exportIGDocumentAsDocx(d, serializationLayout, exportConfig);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
@@ -1476,28 +1552,25 @@ public class IGDocumentController extends CommonController {
   }
 
   @RequestMapping(value = "/{id}/export/gvt", method = RequestMethod.POST,
-      produces = "application/zip")
-  public void exportToGVT(@PathVariable("id") String id, @RequestParam("mIds") String[] messageIds,
-      @RequestParam("host") String host, @RequestParam("auth") String authorization,
-      HttpServletRequest request, HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
-    // log.info(
-    // "Exporting messages to GVT from IG Document with id=" + id + ", messages=" + messageIds);
-    // IGDocument d = findIGDocument(id);
-    // InputStream content = null;
-    // InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
-    //
-    // FileCopyUtils.copy(content, response.getOutputStream());
-    //
-    // GVTClient client = new GVTClient(host, authorization);
-    // URL URL = new URL(host + "/upload/uploadzip");
-
-    //
-    // ResponseEntity<String> response =
-    // client.getTmpl().exchange(URL, HttpMethod.POST, this.createHttpEntity(m), String.class);
-
-
-
+      produces = "application/json")
+  public Map<String, Object> exportToGVT(@PathVariable("id") String id,
+      @RequestBody Set<String> messageIds, @RequestHeader("gvt-auth") String authorization,
+      HttpServletRequest request, HttpServletResponse response) throws GVTExportException {
+    try {
+      log.info(
+          "Exporting messages to GVT from IG Document with id=" + id + ", messages=" + messageIds);
+      IGDocument d = findIGDocument(id);
+      InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d,
+          messageIds.toArray(new String[messageIds.size()]));
+      GVTClient client = new GVTClient();
+      ResponseEntity<Map> rsp = client.send(content, GVT_URL + GVT_EXPORT_ENDPOINT, authorization);
+      Map<String, Object> res = rsp.getBody();
+      return res;
+    } catch (IGDocumentNotFoundException e) {
+      throw new GVTExportException(e);
+    } catch (IOException | CloneNotSupportedException e) {
+      throw new GVTExportException("Failed to export the messages");
+    }
   }
 
 
