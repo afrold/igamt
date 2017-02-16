@@ -2190,15 +2190,15 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootSc
     };
 });
 
-
-angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc) {
+angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window) {
     $scope.igdocumentToSelect = igdocumentToSelect;
     $scope.xmlFormat = 'Validation';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
+    $scope.info = {text: undefined, show: false, type: null};
+    $scope.redirectUrl = null;
 
-
-    $scope.trackSelections = function(bool, id) {
+    $scope.trackSelections = function (bool, id) {
         if (bool) {
             $scope.selectedMessagesIDs.push(id);
         } else {
@@ -2211,16 +2211,72 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     };
 
 
-    $scope.exportAsZIPforSelectedMessages = function() {
+    $scope.exportAsZIPforSelectedMessages = function () {
         $scope.loading = true;
         ExportSvc.exportAsXMLByMessageIds($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, $scope.xmlFormat);
         $scope.loading = false;
     };
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+
+    $scope.exportAsZIPToGVT = function () {
+        $scope.loading = true;
+        $scope.info.text = null;
+        $scope.info.show = false;
+        $scope.info.type = 'danger';
+        if ($rootScope.gvtLoginDialog && $rootScope.gvtLoginDialog != null && $rootScope.gvtLoginDialog.opened) {
+            $rootScope.gvtLoginDialog.dismiss('cancel');
+        }
+        $rootScope.gvtLoginDialog = $modal.open({
+            backdrop: 'static',
+            keyboard: 'false',
+            controller: 'GVTLoginCtrl',
+            size: 'lg',
+            templateUrl: 'views/gvt/login.html',
+            resolve: {
+                user: function () {
+                    return { username: null, password: null };
+                }
+            }
+        });
+
+        $rootScope.gvtLoginDialog.result.then(function (auth) {
+            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function (map) {
+                var response =  angular.fromJson(map.data);
+                console.log(response);
+                if (response.success === false) {
+                    $scope.info.text = "gvtExportFailed";
+                    $scope.info.show = true;
+                    $scope.info.type = 'danger';
+                    $scope.loading = false;
+                } else {
+                    var token = response.token;
+                    $scope.info.text = 'gvtRedirectInProgress';
+                    $scope.info.show = true;
+                    $scope.info.type = 'info';
+                    $scope.redirectUrl = $rootScope.appInfo.gvtUrl + $rootScope.appInfo.gvtUploadTokenContext + "?x=" + encodeURIComponent(token) + "&y=" + encodeURIComponent(auth);
+                    $timeout(function () {
+                        $scope.loading = false;
+                        $window.open($scope.redirectUrl, "_target","",false);
+                    }, 3000);
+                }
+            }, function (error) {
+                $scope.info.text = "gvtExportFailed";
+                $scope.info.show = true;
+                $scope.info.type = 'danger';
+                $scope.loading = false;
+            });
+        }, function () {
+            $scope.info.show = false;
+            $scope.loading = false;
+        });
+    };
+
+
 });
+
 
 angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, hl7Version, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
     $scope.loading = false;
