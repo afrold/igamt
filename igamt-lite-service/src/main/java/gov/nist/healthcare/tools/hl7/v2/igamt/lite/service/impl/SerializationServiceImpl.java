@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
@@ -39,6 +40,8 @@ import java.util.*;
 
     @Autowired SerializeTableService serializeTableService;
 
+    @Autowired SegmentService segmentService;
+
     private ExportConfig exportConfig;
 
     private List<SegmentLink> bindedSegments;
@@ -46,6 +49,8 @@ import java.util.*;
     private List<DatatypeLink> bindedDatatypes;
 
     private List<TableLink> bindedTables;
+
+    private Messages igDocumentMessages;
 
 
     @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument) {
@@ -78,7 +83,7 @@ import java.util.*;
     @Override public Document serializeIGDocument(IGDocument originIgDocument,
         SerializationLayout serializationLayout, ExportConfig exportConfig) {
         this.exportConfig = exportConfig;
-        this.bindedSegments = new ArrayList<>();
+        igDocumentMessages = originIgDocument.getProfile().getMessages();
         IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
         SerializableStructure serializableStructure = new SerializableStructure();
         igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
@@ -174,9 +179,6 @@ import java.util.*;
 
     private SegmentRefOrGroup filterSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentORGroupsUsageConfig){
         if(segmentRefOrGroup instanceof SegmentRef){
-            if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),exportConfig.getSegmentsExport())){
-                this.bindedSegments.add(((SegmentRef) segmentRefOrGroup).getRef());
-            }
             if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), segmentORGroupsUsageConfig)){
                 return segmentRefOrGroup;
             }
@@ -301,31 +303,45 @@ import java.util.*;
         }
         this.bindedDatatypes = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
+        this.bindedSegments = new ArrayList<>();
         UsageConfig segmentsUsageConfig = this.exportConfig.getSegmentsExport();
         UsageConfig datatypeUsageConfig = this.exportConfig.getDatatypesExport();
         UsageConfig valueSetUsageConfig = this.exportConfig.getValueSetsExport();
+        for (Message message : this.igDocumentMessages.getChildren()){
+            for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
+                identifyBindedItems(segmentRefOrGroup);
+            }
+
+        }
         for (Message message : profile.getMessages().getChildren()) {
             SerializableMessage serializableMessage =
                 serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
-            for(SerializableSegmentRefOrGroup messageChildren : serializableMessage.getSerializableSegmentRefOrGroups()){
-                if(messageChildren.getSegmentRef()!=null) {
-                    if (messageChildren.getSegment() != null) {
-                        for (Field field : messageChildren.getSegment().getFields()) {
-                            if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),datatypeUsageConfig)) {
-                                bindedDatatypes.add(field.getDatatype());
-                            }
-                            for (TableLink tableLink : field.getTables()) {
-                                if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(field.getUsage(),valueSetUsageConfig)) {
-                                    bindedTables.add(tableLink);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
             messageSection.addSection(serializableMessage);
         }
         return messageSection;
+    }
+
+    private void identifyBindedItems(SegmentRefOrGroup segmentRefOrGroup) {
+        if(segmentRefOrGroup instanceof SegmentRef){
+            if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),exportConfig.getSegmentsExport())){
+                this.bindedSegments.add(((SegmentRef) segmentRefOrGroup).getRef());
+            }
+            Segment segment = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
+            for (Field field : segment.getFields()) {
+                if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getDatatypesExport())) {
+                    bindedDatatypes.add(field.getDatatype());
+                }
+                for (TableLink tableLink : field.getTables()) {
+                    if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getValueSetsExport())) {
+                        bindedTables.add(tableLink);
+                    }
+                }
+            }
+        } else if(segmentRefOrGroup instanceof Group){
+            for(SegmentRefOrGroup children : ((Group) segmentRefOrGroup).getChildren()){
+                identifyBindedItems(children);
+            }
+        }
     }
 
     private SerializableSection serializeSegments(Profile profile, UsageConfig segmentsUsageConfig) {
