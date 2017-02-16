@@ -138,6 +138,7 @@
                                 </div>
                                 <li ng-repeat="segment in segments | orderBy :'label'" ui-tree-node ng-if="!collapsesegment" data-type="segment">
                                     <div ui-tree-handle data-nodrag confirm-click style="margin-left:30px;" context-menu="SegmentOptions">
+                                       
                                         <span ng-show="validationResult && hasErrorInTree(segment) && isValidated(segment)" style="margin-left: -16px;"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
                                     <span ng-show="validationResult && !hasErrorInTree(segment) && isValidated(segment)" style="margin-left: -16px;"><i class="fa fa-check-circle" style="color:green;"></i></span>
 
@@ -155,6 +156,7 @@
                             </div>
                             <li ng-repeat="data in datatypes | orderBy :'label'" ui-tree-node ng-if="!collapsedata" data-type="datatype">
                                 <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptions" style="margin-left:30px;" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated">
+                                    
                                     <span ng-show="validationResult && hasErrorInTree(data) && isValidated(data)" style="margin-left: -16px;"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
                                     <span ng-show="validationResult && !hasErrorInTree(data) && isValidated(data)" style="margin-left: -16px;"><i class="fa fa-check-circle" style="color:green;"></i></span>
 

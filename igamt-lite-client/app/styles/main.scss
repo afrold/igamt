@@ -512,11 +512,13 @@ input.form-control-warning {
 }
 
 .has-error {
-    background-color: red;
+    // background-color: #f4867e;
+    background-color: #ad2d2d !important;
 }
 
 .has-validation-error {
-    background-color: rgb(205, 5, 5);
+    // background-color: #f4867e;
+    background-color: #ad2d2d !important;
 }
 
 .bs-docs-section {

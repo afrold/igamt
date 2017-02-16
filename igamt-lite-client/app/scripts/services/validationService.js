@@ -58,6 +58,20 @@ angular.module('igl').factory('ValidationService', function($http, $q, userInfoS
                 delay.reject(error);
             });
             return delay.promise;
+        },
+        svc.validateIg = function(ig) {
+            var delay = $q.defer();
+
+            $http.post('api/validation/validateIg',ig).then(function(response) {
+
+                console.log(response);
+                var saved = angular.fromJson(response.data);
+                delay.resolve(saved);
+                return saved;
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
         }
 
 
