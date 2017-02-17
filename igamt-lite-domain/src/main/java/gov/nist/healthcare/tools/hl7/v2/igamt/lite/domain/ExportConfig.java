@@ -269,7 +269,7 @@ public class ExportConfig {
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true, true));
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true, true));
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, false, false));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, false, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, true, true));
 
     defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
     return defaultConfiguration;
