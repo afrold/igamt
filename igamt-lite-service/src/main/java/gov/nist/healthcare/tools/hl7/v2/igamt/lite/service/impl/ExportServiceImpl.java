@@ -96,7 +96,7 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportDatatypeLibraryDocumentAsHtml(
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
-            ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("IG Style");
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML,exportConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService
                     .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
@@ -109,7 +109,7 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportDatatypeLibraryDocumentAsDocx(
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
-            ExportConfig exportConfig = ExportConfig.getBasicExportConfig();
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("IG Style");
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD, exportConfig);
             return exportUtil.exportAsDocxFromXml(serializationService
                     .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),

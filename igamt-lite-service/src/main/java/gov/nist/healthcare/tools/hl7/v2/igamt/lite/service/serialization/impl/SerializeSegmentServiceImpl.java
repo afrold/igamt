@@ -52,7 +52,7 @@ import java.util.Map;
     @Autowired SerializeTableService serializeTableService;
 
     @Override
-    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig) {
+    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig) {
         Segment segment = segmentService.findById(segmentLink.getId());
         if (segment != null) {
             //Create section node
@@ -93,8 +93,9 @@ import java.util.Map;
             Map<Field, Datatype> fieldDatatypeMap = new HashMap<>();
             Map<Field, List<Table>> fieldTableMap = new HashMap<>();
             Map<CCValue, Table> coConstraintValueTableMap = new HashMap<>();
+            List<Field> fieldsToBeRemoved = new ArrayList<>();
             for (Field field : segment.getFields()) {
-                if(ExportUtil.diplayUsage(field.getUsage(),segmentUsageConfig)) {
+                if(ExportUtil.diplayUsage(field.getUsage(),fieldUsageConfig)) {
                     if (field.getDatatype() != null) {
                         Datatype datatype = datatypeService.findById(field.getDatatype().getId());
                         fieldDatatypeMap.put(field, datatype);
@@ -107,10 +108,15 @@ import java.util.Map;
                         }
                         fieldTableMap.put(field, tables);
                     }
+                } else {
+                    fieldsToBeRemoved.add(field);
                 }
                 if(field.getText()!=null && !"".equals(field.getText())){
                     field.setText(serializationUtil.cleanRichtext(field.getText()));
                 }
+            }
+            for(Field field : fieldsToBeRemoved){
+                segment.getFields().remove(field);
             }
             if (segment.getCoConstraints() != null) {
                 CoConstraints coConstraints = segment.getCoConstraints();

@@ -55,7 +55,7 @@
 
                                 <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.messageColumn.columns">
 
-                                    <input type="checkbox" ng-model="c.present"  ng-change="setChanged()"> <label style="color:black">{{c.name}}
+                                    <input type="checkbox" ng-model="c.present"  ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
                                     </label><br/>
 
                                 </div>
@@ -123,7 +123,7 @@
 
                                 <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.segmentColumn.columns">
 
-                                    <input type="checkbox" ng-model="c.present"  ng-change="setChanged()"> <label style="color:black">{{c.name}}
+                                    <input type="checkbox" ng-model="c.present"  ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
                                     </label><br/>
 
                                 </div>
@@ -193,7 +193,7 @@
 
                                 <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.datatypeColumn.columns">
 
-                                    <input type="checkbox" ng-model="c.present"  ng-change="setChanged()"> <label style="color:black">{{c.name}}
+                                    <input type="checkbox" ng-model="c.present"  ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
                                     </label><br/>
 
                                 </div>
@@ -251,7 +251,7 @@
 
                                 <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.valueSetColumn.columns">
 
-                                    <input type="checkbox" ng-model="c.present"  ng-change="setChanged()"> <label style="color:black">{{c.name}}
+                                    <input type="checkbox" ng-model="c.present"  ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
                                     </label><br/>
 
                                 </div>

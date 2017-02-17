@@ -11,10 +11,10 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.ArrayList;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
@@ -184,10 +184,11 @@ public class ExportConfig {
     return serialVersionUID;
   }
 
-  public static ExportConfig getBasicExportConfig(){
+  public static ExportConfig getBasicExportConfig(String type) {
     ExportConfig defaultConfiguration = new ExportConfig();
     defaultConfiguration.setDefaultType(true);
     defaultConfiguration.setAccountId(null);
+    defaultConfiguration.setType(type);
     // Default Usages
     UsageConfig displayAll = new UsageConfig();
     UsageConfig displaySelectives = new UsageConfig();
@@ -223,36 +224,37 @@ public class ExportConfig {
     ArrayList<NameAndPositionAndPresence> messageColumnsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
 
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Segment", 1, true));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Flavor", 2, true));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Element Name", 3, true));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 4, true));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Segment", 1, true, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Flavor", 2, true, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Element Name", 3, true, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 4, true, false));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true, false));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true, false));
 
     ArrayList<NameAndPositionAndPresence> segmentColumnsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true, true));
+    segmentColumnsDefaultList
+        .add(new NameAndPositionAndPresence("Conformance Length", 2, false, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, false, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, false));
 
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 2, true));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 3, true));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 4, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Conformance Length", 5, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 6, true));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 1, true));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Definition Text", 1, true));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true));
+
 
     ArrayList<NameAndPositionAndPresence> dataTypeColumnsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
 
-    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true));
-    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Conformance Length", 2, false));
-    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true));
-    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true));
-    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, false));
-    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true));
-    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true, true));
+    dataTypeColumnsDefaultList
+        .add(new NameAndPositionAndPresence("Conformance Length", 2, false, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, false, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, false));
 
 
 
@@ -263,10 +265,10 @@ public class ExportConfig {
     ArrayList<NameAndPositionAndPresence> valueSetsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
 
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, false));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, false));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, false, false));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, false, true));
 
     defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
     return defaultConfiguration;

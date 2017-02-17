@@ -10,7 +10,7 @@
             <xsl:attribute name="id">
                 <xsl:text>sidebar</xsl:text>
             </xsl:attribute>
-            <xsl:element name="h1">
+            <xsl:element name="b">
                 <xsl:text>TABLE OF CONTENT</xsl:text>
             </xsl:element>
             <xsl:element name="br"/>
