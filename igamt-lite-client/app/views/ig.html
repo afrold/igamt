@@ -500,17 +500,16 @@
                     <div ng-show="info.type === 'info'">
                         <button type="button" class="close" ng-click="info.show=false">×</button>
                         <i class="fa fa-check" aria-hidden="true"></i>
-                        <span msg key-expr="info.text"></span>
-                        <span>Please click <a ng-href="{{redirectUrl}}" target="_blank">here</a> if you are not redirected after 3s</span>
+                        <!--<a msg key-expr="info.text"></span>-->
+                        <a ng-href="{{redirectUrl}}" target="_blank">Please click here if you are not redirected after 3s</a>
                     </div>
 
                     <div ng-show="info.type === 'danger'">
                         <button type="button" class="close" ng-click="info.show=false">×</button>
                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-
-                        <div msg key-expr="info.text"></div>
-                        <a class="point" ng-click="viewErrors(info.details)">Click here for errors details</a>
-                        <span ng-show="info.type === 'info'">Please click <a ng-href="{{redirectUrl}}" target="_blank">here</a> if you are not redirected after 3s</span>
+                        <a class="point" ng-click="viewErrors(info.details)">
+                            <span msg key-expr="info.text"></span> Please click here for errors details
+                        </a>
                     </div>
 
 
