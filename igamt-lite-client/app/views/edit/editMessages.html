@@ -436,8 +436,8 @@
 
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250">
-            <span ng-show="hasError(node.obj.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.obj.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <a ng-show="editableSeg!==node.obj.id" ng-click="editSgmt(node,message)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
@@ -545,8 +545,8 @@
 <script type="text/ng-template" id="MessageGroupEditTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) && (node.obj.usage==='R' ||node.obj.usage==='C' ||node.obj.usage==='RE' ) && $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250" context-menu="segOption">
-            <span ng-show="hasError(node.obj.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.obj.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <a ng-show="editableGrp!==node.obj.id" ng-click="editGrp(node,message)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
@@ -651,8 +651,8 @@
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
 
         <td class="col-md-2 col-fixed-250">
-            <span ng-show="hasError(node.obj.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.obj.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <span class="label label-field label-icon" ng-show="node.obj.type==='field'">F</span>
             <span class="label label-sub-component label-icon" ng-show="node.obj.type==='subcomponent'">S</span>
             <span class="label label-component label-icon" ng-show="node.obj.type==='component'">C</span>
@@ -719,8 +719,8 @@
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
 
         <td class="col-md-2 col-fixed-250">
-            <span ng-show="hasError(node.obj.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.obj.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <span>
                 <span class="label label-field label-icon" ng-show="node.obj.type==='field'">F</span>
             <span class="label label-sub-component label-icon" ng-show="node.obj.type==='subcomponent'">S</span>
