@@ -118,7 +118,7 @@
 
                                     <div class="controls col-md-10">
 
-                                        <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.scope === 'MASTER')|| datatype.status==='PUBLISHED'" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeAndUse"
+                                        <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeAndUse"
                                         />
                                     </div>
                                 </div>
@@ -168,7 +168,7 @@
                                             <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                            </accordion-heading>
                                         <div class="panel-body">
 
-                                            <div ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER' && datatype.status!=='PUBLISHED'">
+                                            <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
                                                 <textarea froala="froalaEditorOptions" ng-model="datatype.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
                                             </div>
                                             <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
@@ -201,7 +201,7 @@
                                             <div ng-show="datatype.components && datatype.components.length > 0" class="pull-left">
                                               <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
                                             </div>
-                                            <button ng-if="datatype.scope!=='HL7STANDARD'" class="pull-right" title="Verify Data type" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
+                                            <button ng-if="igdocument&&datatype.scope!=='HL7STANDARD'" class="pull-right" title="Verify Data type" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
                                                 ng-click="validateDatatype()"> 
                                                 Verify
                                             </button>
@@ -298,7 +298,7 @@
                                                             </td>
                                                         </tr>
 
-                                                        <tr ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
+                                                        <tr ng-show="!viewSettings.tableReadonly && datatype.status !== 'PUBLISHED'">
                                                             <td class="col-md-7" colspan="7">
                                                                 <rzslider rz-slider-options="dtmSliderOptions" rz-slider-model="datatype.precisionOfDTM"></rzslider>
                                                             </td>
@@ -317,7 +317,7 @@
                                             <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i> </accordion-heading>
                                         <div class="panel-body">
 
-                                            <div ng-show="!viewSettings.tableReadonly && datatype.scope==='USER' && datatype.status!=='PUBLISHED'"> <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
+                                            <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'"> <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
                                             </div>
                                             <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
                                                 <div class="fr-view">
