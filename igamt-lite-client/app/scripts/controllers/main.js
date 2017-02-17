@@ -3279,7 +3279,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     }
                     $rootScope.clearChanges();
                     VersionAndUseService.findById(published.id).then(function(inf) {
-                        $rootScope.versionAndUseMap[inf.id] = inf;
+                        $rootScope.versionAndUseMap[inf.id]=inf;
                         if ($rootScope.versionAndUseMap[inf.sourceId]) {
                             $rootScope.versionAndUseMap[inf.sourceId].deprecated = true;
 
