@@ -120,6 +120,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     };
     $rootScope.hasDatatypeError = function(id) {
         if ($rootScope.validationResult) {
+            
             if (($rootScope.validationMap[id] && $rootScope.validationMap[id].errorCount > 0) || ($rootScope.validationMap[id] && !$rootScope.validationMap[id].errorCount === undefined) || ($rootScope.validationResult.targetId === id && $rootScope.validationResult.errorCount > 0) || ($rootScope.childValidationMap[id] && $rootScope.childValidationMap[id].errorCount !== undefined && $rootScope.childValidationMap[id].errorCount > 0)) {
                 return true;
             } else {

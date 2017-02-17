@@ -47,14 +47,21 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             $rootScope.buildValidationMap($rootScope.validationResult);
             console.log($rootScope.validationMap);
             console.log($rootScope.childValidationMap);
-            
+
 
         }, function(error) {
             console.log(error);
         });
     };
+    $scope.isMessageValidated = function() {
+        if ($rootScope.message && ($rootScope.validationResult.targetId === $rootScope.message.id || $rootScope.childValidationMap[$rootScope.message.id])) {
+            return true;
+        } else {
+            return false;
+        }
+    };
     $scope.setErrorNotification = function() {
-        $rootScope.showMsgErrorNotification  = !$rootScope.showMsgErrorNotification;
+        $rootScope.showMsgErrorNotification = !$rootScope.showMsgErrorNotification;
     };
 
     $scope.redirectSeg = function(segmentRef) {

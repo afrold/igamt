@@ -736,8 +736,8 @@
             </a>
             <ng-form name="{{formName}}" class="form-inline">
                 <!--<input type="checkbox" ng-checked="isChildSelected(node)" ng-click="selectChild($event,node)">-->
-                <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-                <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+                <span ng-show="hasError(node.id) && validationResult && isSegmentValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+                <span ng-show="!hasError(node.id) && validationResult && isSegmentValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
                 <span class="label label-field label-icon">F</span>
                 <span ng-show="editableField!==node.id">
                 <span ng-hide="isChildNew(node)"
@@ -841,8 +841,10 @@
                                                    name="confLength"
                                                    ng-change="setDirty()"
                                                    ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
-                                                  
-                                                   ng-model="node.confLength" >
+                                                   ng-pattern="'\\d*[#=]{0,1}'"
+                                                   ng-model-options="{allowInvalid:true}"
+                                                   ng-model="node.confLength" 
+                                                   ng-model-options="{allowInvalid:true}">
                                             </span>
             </div>
         </td>
@@ -998,8 +1000,8 @@
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-md-2 col-fixed-250">
 
-            <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="hasError(node.id) && validationResult && isSegmentValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.id) && validationResult && isSegmentValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <span>
                                  <span ng-show="node.type==='field'" class="label label-field label-icon">F</span>
             <span ng-show="node.type==='component'" class="label label-component label-icon">C</span>

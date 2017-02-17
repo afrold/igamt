@@ -802,8 +802,8 @@
             <ng-form name="{{formName}}" class="form-inline">
                 <!--<input type="checkbox" ng-checked="isChildSelected(node)" ng-click="selectChild($event,node)">-->
 
-                <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-                <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+                <span ng-show="hasError(node.id) && validationResult && isDatatypeValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+                <span ng-show="!hasError(node.id) && validationResult && isDatatypeValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
 
                 <span class="label label-component label-icon">C</span>
                 <span ng-show="editableComp!==node.id">
@@ -874,7 +874,7 @@
         <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasConfError(node.id) && datatypesMap[node.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.id,'CONFLENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
-                    <input style="width:50%" class="form-control" type="text" name="confLength" ng-change="setDirty()" ng-class="{ 'has-error has-feedback' : {{formName}}.confLength.$invalid}" ng-model="node.confLength">
+                    <input style="width:50%" class="form-control" type="text" name="confLength" ng-change="setDirty()" ng-class="{ 'has-error has-feedback' : {{formName}}.confLength.$invalid}" ng-pattern="'\\d*[#=]{0,1}'" ng-model-options="{allowInvalid:true}" ng-model="node.confLength">
                 </ng-form>
             </div>
         </td>
@@ -977,8 +977,8 @@
 <script type="text/ng-template" id="DatatypeComponentReadTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250">
-            <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="hasError(node.id) && validationResult && isDatatypeValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.id) && validationResult && isDatatypeValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
 
             <span class="label label-component label-icon">C</span>
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
@@ -1046,8 +1046,8 @@
 <script type="text/ng-template" id="DatatypeComponentReadTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250">
-            <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="hasError(node.id) && validationResult && isDatatypeValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.id) && validationResult && isDatatypeValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <span class="label label-component label-icon">C</span>
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
         </td>
@@ -1113,8 +1113,8 @@
 <script type="text/ng-template" id="DatatypeSubComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="isVisible(node)">
         <td class="col-md-2 col-fixed-250">
-            <span ng-show="hasError(node.id) && validationResult"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.id) && validationResult"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span ng-show="hasError(node.id) && validationResult && isDatatypeValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.id) && validationResult && isDatatypeValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <span>
                                             <span class="label label-sub-component label-icon">S</span>
             <span tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
