@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
@@ -39,6 +40,8 @@ import java.util.*;
 
     @Autowired SerializeTableService serializeTableService;
 
+    @Autowired SegmentService segmentService;
+
     private ExportConfig exportConfig;
 
     private List<SegmentLink> bindedSegments;
@@ -46,6 +49,8 @@ import java.util.*;
     private List<DatatypeLink> bindedDatatypes;
 
     private List<TableLink> bindedTables;
+
+    private Messages igDocumentMessages;
 
 
     @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument) {
@@ -78,6 +83,15 @@ import java.util.*;
     @Override public Document serializeIGDocument(IGDocument originIgDocument,
         SerializationLayout serializationLayout, ExportConfig exportConfig) {
         this.exportConfig = exportConfig;
+        igDocumentMessages = originIgDocument.getProfile().getMessages();
+        this.bindedDatatypes = new ArrayList<>();
+        this.bindedTables = new ArrayList<>();
+        this.bindedSegments = new ArrayList<>();
+        for (Message message : originIgDocument.getProfile().getMessages().getChildren()){
+            for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
+                identifyBindedItems(segmentRefOrGroup);
+            }
+        }
         IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
         SerializableStructure serializableStructure = new SerializableStructure();
         igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
@@ -87,8 +101,9 @@ import java.util.*;
         SerializableSections serializableSections = new SerializableSections();
         String prefix = "";
         Integer depth = 1;
-        serializationUtil.setSectionsPrefixes(igDocument.getChildSections(), prefix, depth,
-            serializableSections.getRootSections());
+        if(!serializationLayout.equals(SerializationLayout.TABLES)){
+            serializationUtil.setSectionsPrefixes(igDocument.getChildSections(), prefix, depth,serializableSections.getRootSections());
+        }
         Profile profile = igDocument.getProfile();
         //Create base section node for the profile serialization
         String id = profile.getId();
@@ -118,15 +133,15 @@ import java.util.*;
         profileSection.addSection(messageSection);
 
         //Segments serialization
-        UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
-        SerializableSection segmentsSection = this.serializeSegments(profile,segmentUsageConfig);
-        if(!serializationLayout.equals(SerializationLayout.VERBOSE)) {
+        UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
+        SerializableSection segmentsSection = this.serializeSegments(profile,fieldsUsageConfig);
+        if(!serializationLayout.equals(SerializationLayout.PROFILE)) {
             profileSection.addSection(segmentsSection);
         }
 
         //Datatypes serialization
         boolean serializeMaster = true;
-        if(serializationLayout.equals(SerializationLayout.VERBOSE)) {
+        if(serializationLayout.equals(SerializationLayout.PROFILE)) {
             serializeMaster = false;
         }
         SerializableSection datatypeSection = this.serializeDatatypes(profile.getDatatypeLibrary(),profile.getSectionPosition(),serializeMaster);
@@ -294,40 +309,39 @@ import java.util.*;
             messageSection.addSectionContent(
                 "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
         }
-        this.bindedDatatypes = new ArrayList<>();
-        this.bindedSegments = new ArrayList<>();
-        this.bindedTables = new ArrayList<>();
-        UsageConfig segmentsUsageConfig = this.exportConfig.getSegmentsExport();
-        UsageConfig datatypeUsageConfig = this.exportConfig.getDatatypesExport();
-        UsageConfig valueSetUsageConfig = this.exportConfig.getValueSetsExport();
         for (Message message : profile.getMessages().getChildren()) {
             SerializableMessage serializableMessage =
                 serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
-            for(SerializableSegmentRefOrGroup messageChildren : serializableMessage.getSerializableSegmentRefOrGroups()){
-                if(messageChildren.getSegmentRef()!=null) {
-                    if(!this.bindedSegments.contains(messageChildren.getSegmentRef().getRef()) && ExportUtil.diplayUsage(messageChildren.getSegmentRef().getUsage(),segmentsUsageConfig)) {
-                        this.bindedSegments.add(messageChildren.getSegmentRef().getRef());
-                    }
-                    if (messageChildren.getSegment() != null) {
-                        for (Field field : messageChildren.getSegment().getFields()) {
-                            if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),datatypeUsageConfig)) {
-                                bindedDatatypes.add(field.getDatatype());
-                            }
-                            for (TableLink tableLink : field.getTables()) {
-                                if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(field.getUsage(),valueSetUsageConfig)) {
-                                    bindedTables.add(tableLink);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
             messageSection.addSection(serializableMessage);
         }
         return messageSection;
     }
 
-    private SerializableSection serializeSegments(Profile profile, UsageConfig segmentsUsageConfig) {
+    private void identifyBindedItems(SegmentRefOrGroup segmentRefOrGroup) {
+        if(segmentRefOrGroup instanceof SegmentRef){
+            if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),exportConfig.getSegmentsExport())){
+                this.bindedSegments.add(((SegmentRef) segmentRefOrGroup).getRef());
+            }
+            Segment segment = segmentService.findById(
+                ((SegmentRef) segmentRefOrGroup).getRef().getId());
+            for (Field field : segment.getFields()) {
+                if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getDatatypesExport())) {
+                    bindedDatatypes.add(field.getDatatype());
+                }
+                for (TableLink tableLink : field.getTables()) {
+                    if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getValueSetsExport())) {
+                        bindedTables.add(tableLink);
+                    }
+                }
+            }
+        } else if(segmentRefOrGroup instanceof Group){
+            for(SegmentRefOrGroup children : ((Group) segmentRefOrGroup).getChildren()){
+                identifyBindedItems(children);
+            }
+        }
+    }
+
+    private SerializableSection serializeSegments(Profile profile, UsageConfig fieldsUsageConfig) {
         String id = profile.getSegmentLibrary().getId();
         String position = String.valueOf(profile.getSegmentLibrary().getSectionPosition());
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
@@ -354,7 +368,7 @@ import java.util.*;
                 if (segmentLink.getId() != null) {
                     segmentsSection.addSection(serializeSegmentService.serializeSegment(segmentLink,
                         prefix + "." + String.valueOf(segmentLinkList.indexOf(segmentLink) + 1),
-                        segmentLinkList.indexOf(segmentLink), 3, segmentsUsageConfig));
+                        segmentLinkList.indexOf(segmentLink), 3, fieldsUsageConfig));
 
                 }
             }

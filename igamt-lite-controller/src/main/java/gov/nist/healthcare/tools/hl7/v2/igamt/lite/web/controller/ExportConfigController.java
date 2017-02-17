@@ -11,11 +11,6 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
@@ -53,15 +54,16 @@ public class ExportConfigController {
     try {
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (null != account) {
-        currentConfig = exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(),account.getId());
-        if (null != currentConfig ) {
+        currentConfig =
+            exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(), account.getId());
+        if (null != currentConfig) {
           exportConfigService.delete(currentConfig);
         }
         exportConfig.setAccountId(account.getId());
         exportConfigService.save(exportConfig);
       }
-    } catch (Exception e){
-      logger.error("Unable to save the config: "+e.getMessage());
+    } catch (Exception e) {
+      logger.error("Unable to save the config: " + e.getMessage());
     }
     return exportConfig;
   }
@@ -74,16 +76,16 @@ public class ExportConfigController {
     try {
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (null != account) {
-        currentConfig = exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(),
-            account.getId());
+        currentConfig =
+            exportConfigService.findOneByTypeAndAccountId(exportConfig.getType(), account.getId());
         if (null != currentConfig) {
           exportConfigService.delete(currentConfig);
         }
       }
-    } catch (Exception e){
-      logger.warn("Unable to restore the default config: "+e.getMessage());
+    } catch (Exception e) {
+      logger.warn("Unable to restore the default config: " + e.getMessage());
     }
-    currentConfig = ExportConfig.getBasicExportConfig();
+    currentConfig = ExportConfig.getBasicExportConfig(exportConfig.getType());
     return currentConfig;
 
   }
@@ -98,11 +100,11 @@ public class ExportConfigController {
       if (null != account) {
         currentConfig = exportConfigService.findOneByTypeAndAccountId(type, account.getId());
       }
-    } catch (Exception e){
-      logger.warn("Unable to find the current config: "+e.getMessage());
+    } catch (Exception e) {
+      logger.warn("Unable to find the current config: " + e.getMessage());
     }
     if (null == currentConfig) {
-      currentConfig = ExportConfig.getBasicExportConfig();
+      currentConfig = ExportConfig.getBasicExportConfig(type);
     }
     return currentConfig;
   }

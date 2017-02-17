@@ -661,7 +661,7 @@ public class IGDocumentController extends CommonController {
     ExportConfig exportConfig =
         exportConfigService.findOneByTypeAndAccountId(identifyType(type), account.getId());
     if (exportConfig == null) {
-      exportConfig = ExportConfig.getBasicExportConfig();
+      exportConfig = ExportConfig.getBasicExportConfig(type);
     }
     content = exportService.exportIGDocumentAsHtml(d, serializationLayout, exportConfig);
     response.setContentType("text/html");
@@ -674,20 +674,17 @@ public class IGDocumentController extends CommonController {
   private SerializationLayout identifyLayout(String layout) {
     SerializationLayout serializationLayout;
     switch (layout) {
-      case "Verbose":
-        serializationLayout = SerializationLayout.VERBOSE;
-        break;
-      case "Compact":
-        serializationLayout = SerializationLayout.COMPACT;
-        break;
       case "IgDocument":
         serializationLayout = SerializationLayout.IGDOCUMENT;
         break;
       case "Profile":
         serializationLayout = SerializationLayout.PROFILE;
         break;
+      case "Table":
+        serializationLayout = SerializationLayout.TABLES;
+        break;
       default:
-        serializationLayout = SerializationLayout.COMPACT;
+        serializationLayout = SerializationLayout.IGDOCUMENT;
         break;
     }
     return serializationLayout;
@@ -811,7 +808,7 @@ public class IGDocumentController extends CommonController {
     ExportConfig exportConfig =
         exportConfigService.findOneByTypeAndAccountId(type, account.getId());
     if (exportConfig == null) {
-      exportConfig = ExportConfig.getBasicExportConfig();
+      exportConfig = ExportConfig.getBasicExportConfig(type);
     }
     content = exportService.exportIGDocumentAsDocx(d, serializationLayout, exportConfig);
     response
