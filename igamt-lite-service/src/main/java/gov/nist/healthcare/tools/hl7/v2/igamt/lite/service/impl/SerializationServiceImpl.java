@@ -133,8 +133,8 @@ import java.util.*;
         profileSection.addSection(messageSection);
 
         //Segments serialization
-        UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
-        SerializableSection segmentsSection = this.serializeSegments(profile,segmentUsageConfig);
+        UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
+        SerializableSection segmentsSection = this.serializeSegments(profile,fieldsUsageConfig);
         if(!serializationLayout.equals(SerializationLayout.PROFILE)) {
             profileSection.addSection(segmentsSection);
         }
@@ -341,7 +341,7 @@ import java.util.*;
         }
     }
 
-    private SerializableSection serializeSegments(Profile profile, UsageConfig segmentsUsageConfig) {
+    private SerializableSection serializeSegments(Profile profile, UsageConfig fieldsUsageConfig) {
         String id = profile.getSegmentLibrary().getId();
         String position = String.valueOf(profile.getSegmentLibrary().getSectionPosition());
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
@@ -368,7 +368,7 @@ import java.util.*;
                 if (segmentLink.getId() != null) {
                     segmentsSection.addSection(serializeSegmentService.serializeSegment(segmentLink,
                         prefix + "." + String.valueOf(segmentLinkList.indexOf(segmentLink) + 1),
-                        segmentLinkList.indexOf(segmentLink), 3, segmentsUsageConfig));
+                        segmentLinkList.indexOf(segmentLink), 3, fieldsUsageConfig));
 
                 }
             }
