@@ -238,9 +238,10 @@ public class ExportConfig {
         .add(new NameAndPositionAndPresence("Conformance Length", 2, false, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, false, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 5, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 6, false, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 7, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 8, true, false));
 
 
 
