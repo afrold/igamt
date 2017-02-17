@@ -1046,7 +1046,6 @@ public class ValidationServiceImpl implements ValidationService {
       } else {
         Pattern pattern = Pattern.compile("\\d*[#=]{0,1}");
         Matcher m = pattern.matcher(confLength);
-        System.out.println(confLength + "matches" + m.matches());
         if (!m.matches()) {
           return "Conf. Length don't match regular expression " + pattern;
         }

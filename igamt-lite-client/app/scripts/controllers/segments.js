@@ -70,6 +70,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.openPredicateDialog = function(node) {
         if (node.usage == 'C') $scope.managePredicate(node);
     };
+   
     $scope.validateSegment = function() {
         ValidationService.validateSegment($rootScope.segment, $rootScope.igdocument.profile.metaData.hl7Version).then(function(result) {
             $rootScope.validationMap = {};
@@ -82,6 +83,13 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             console.log($rootScope.childValidationMap);
             console.log($rootScope.showSegErrorNotification);
         });
+    };
+    $scope.isSegmentValidated = function() {
+        if ($rootScope.segment && ($rootScope.validationResult.targetId === $rootScope.segment.id || $rootScope.childValidationMap[$rootScope.segment.id])) {
+            return true;
+        } else {
+            return false;
+        }
     };
     
     $scope.setErrorNotification = function() {

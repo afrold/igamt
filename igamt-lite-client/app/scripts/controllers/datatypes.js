@@ -64,6 +64,13 @@ angular.module('igl')
 
             });
         };
+         $scope.isDatatypeValidated = function() {
+        if ($rootScope.datatype && ($rootScope.validationResult.targetId === $rootScope.datatype.id || $rootScope.childValidationMap[$rootScope.datatype.id])) {
+            return true;
+        } else {
+            return false;
+        }
+    };
         $scope.setErrorNotification = function() {
             $rootScope.showDtErrorNotification = !$rootScope.showDtErrorNotification;
         };
