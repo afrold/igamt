@@ -75,10 +75,10 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+"."+String.valueOf(message.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
         this.messageSegmentsNameList = new ArrayList<>();
         this.segmentPosition = 1;
-        UsageConfig segmentRefOrGroupUsageConfig = exportConfig.getSegmentORGroupsExport();
+        UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
         UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentRefOrGroupUsageConfig);
+            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,fieldsUsageConfig);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             if(serializationLayout.equals(SerializationLayout.PROFILE)){
                 serializeSegment(segmentRefOrGroup,
