@@ -118,7 +118,7 @@
 
                                     <div class="controls col-md-10">
 
-                                        <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || (datatype.scope === 'HL7STANDARD' || datatype.status==='PUBLISHED'" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeAndUse"
+                                        <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeAndUse"
                                         />
                                     </div>
                                 </div>
@@ -201,7 +201,7 @@
                                             <div ng-show="datatype.components && datatype.components.length > 0" class="pull-left">
                                               <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
                                             </div>
-                                            <button ng-if="datatype.scope!=='HL7STANDARD'" class="pull-right" title="Verify Data type" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
+                                            <button ng-if="igdocument&&datatype.scope!=='HL7STANDARD'" class="pull-right" title="Verify Data type" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
                                                 ng-click="validateDatatype()"> 
                                                 Verify
                                             </button>
@@ -298,7 +298,7 @@
                                                             </td>
                                                         </tr>
 
-                                                        <tr ng-show="!viewSettings.tableReadonly && datatype.scope === 'USER'">
+                                                        <tr ng-show="!viewSettings.tableReadonly && datatype.status !== 'PUBLISHED'">
                                                             <td class="col-md-7" colspan="7">
                                                                 <rzslider rz-slider-options="dtmSliderOptions" rz-slider-model="datatype.precisionOfDTM"></rzslider>
                                                             </td>
@@ -317,7 +317,7 @@
                                             <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i> </accordion-heading>
                                         <div class="panel-body">
 
-                                            <div ng-show="!viewSettings.tableReadonly&& datatype.status!=='PUBLISHED'"> <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
+                                            <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'"> <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
                                             </div>
                                             <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
                                                 <div class="fr-view">
@@ -865,20 +865,20 @@
         <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
-                    <input style="width:45%" class="form-control" name="minLength" ng-change="setDirty()" ng-pattern="'\\d*[#=]{0,1}'" ng-class="{ 'has-error has-feedback' : {{formName}}.minLength.$invalid}" ng-model="node.minLength" required ng-minlength="1">
+                    <input style="width:45%" class="form-control" name="minLength" ng-change="setDirty()" type="number" min="0" ng-pattern="'\\d*[#=]{0,1}'" ng-class="{ 'has-error has-feedback' : {{formName}}.minLength.$invalid}" ng-model="node.minLength" required ng-minlength="1">
                     <input style="width:45%" class="form-control" type="text" name="maxLength" ng-change="setDirty()" ng-class="{ 'has-error has-feedback' : {{formName}}.maxLength.$invalid}" ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required>
                     </span>
                 </ng-form>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}" ng-show="showConfLength()">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasConfError(node.id) && datatypesMap[node.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.id,'CONFLENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
-                    <input style="width:50%" class="form-control" type="text" name="confLength" ng-change="setDirty()" ng-class="{ 'has-error has-feedback' : {{formName}}.confLength.$invalid}" ng-pattern="'\\d*[#=]{0,1}'" ng-model="node.confLength">
+                    <input style="width:50%" class="form-control" type="text" name="confLength" ng-change="setDirty()" ng-class="{ 'has-error has-feedback' : {{formName}}.confLength.$invalid}" ng-model="node.confLength">
                 </ng-form>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}">
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                 <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                     <a class="point" ng-show="editableDT!==node.id" ng-click="redirectDT(node.datatype)">

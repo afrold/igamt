@@ -72,7 +72,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     };
     $rootScope.buildValidationMap = function(validation) {
-    
+
         if (validation.items) {
             Object.keys(validation.items).forEach(function(key, index) {
                 $rootScope.validationMap[key] = validation.items[key];
@@ -102,22 +102,31 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
     };
-    $rootScope.errorCount = function(id){
-        if($rootScope.validationResult && $rootScope.validationResult.targetId ===id){
-            return  $rootScope.validationResult.errorCount;
+    $rootScope.errorCount = function(id) {
+        if ($rootScope.validationResult && $rootScope.validationResult.targetId === id) {
+            return $rootScope.validationResult.errorCount;
 
-        } else if($rootScope.childValidationMap && $rootScope.childValidationMap[id]){
+        } else if ($rootScope.childValidationMap && $rootScope.childValidationMap[id]) {
             return $rootScope.childValidationMap[id].errorCount;
         }
     };
-    
-    $rootScope.showErrorCount = function(id){
-        if(($rootScope.validationResult && $rootScope.validationResult.targetId ===id) ||($rootScope.childValidationMap && $rootScope.childValidationMap[id]) ){
+
+    $rootScope.showErrorCount = function(id) {
+        if (($rootScope.validationResult && $rootScope.validationResult.targetId === id) || ($rootScope.childValidationMap && $rootScope.childValidationMap[id])) {
             return true;
         } else {
             return false;
         }
-    }
+    };
+    $rootScope.hasDatatypeError = function(id) {
+        if ($rootScope.validationResult) {
+            if (($rootScope.validationMap[id] && $rootScope.validationMap[id].errorCount > 0) || ($rootScope.validationMap[id] && !$rootScope.validationMap[id].errorCount === undefined) || ($rootScope.validationResult.targetId === id && $rootScope.validationResult.errorCount > 0) || ($rootScope.childValidationMap[id] && $rootScope.childValidationMap[id].errorCount !== undefined && $rootScope.childValidationMap[id].errorCount > 0)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
 
     $rootScope.hasUsageError = function(id) {
         if ($rootScope.validationResult) {
@@ -143,6 +152,31 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
     };
+
+    $rootScope.hasConfError = function(id) {
+
+        if ($rootScope.validationResult) {
+            if ($rootScope.validationMap[id]) {
+                if ($rootScope.validationMap[id].length > 0) {
+                    for (var item in $rootScope.validationMap[id]) {
+                        if ($rootScope.validationMap[id][item].validationType && $rootScope.validationMap[id][item].validationType === "CONFLENGTH") {
+                            return true;
+                        }
+                    }
+                } else {
+                    if ($rootScope.validationMap[id].validationType && $rootScope.validationMap[id].validationType === "CONFLENGTH") {
+                        return true;
+                    }
+                }
+
+                // return 'col-md-1 col-fixed-80 has-validation-error';
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    };
     $rootScope.hasLengthError = function(id) {
 
         if ($rootScope.validationResult) {
@@ -167,7 +201,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return false;
         }
     };
-    
+
     $rootScope.hasCardinalityError = function(id) {
 
         if ($rootScope.validationResult) {
@@ -195,7 +229,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     $rootScope.hasError = function(id) {
 
         if ($rootScope.validationResult) {
-            if (($rootScope.validationMap[id] && $rootScope.validationMap[id].errorCount>0) || ($rootScope.validationMap[id] && $rootScope.validationMap[id].errorCount===undefined)) {
+            if (($rootScope.validationMap[id] && $rootScope.validationMap[id].errorCount > 0) || ($rootScope.validationMap[id] && $rootScope.validationMap[id].errorCount === undefined)) {
                 return true;
             } else {
                 return false;
@@ -2190,12 +2224,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return segment.name;
     };
 
-    $rootScope.getUpdatedBindingIdentifier = function (table) {
-      if(table.hl7Version && table.hl7Version!==''){
-          return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
-      }
+    $rootScope.getUpdatedBindingIdentifier = function(table) {
+        if (table.hl7Version && table.hl7Version !== '') {
+            return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
+        }
 
-      return table.bindingIdentifier;
+        return table.bindingIdentifier;
     };
 
     $rootScope.generateCompositeConformanceStatement = function(compositeType, firstConstraint, secondConstraint, constraints) {
@@ -3245,7 +3279,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     }
                     $rootScope.clearChanges();
                     VersionAndUseService.findById(published.id).then(function(inf) {
-                        $rootScope.versionAndUseMap[inf.id] = inf;
+                        $rootScope.versionAndUseMap[inf.id]=inf;
                         if ($rootScope.versionAndUseMap[inf.sourceId]) {
                             $rootScope.versionAndUseMap[inf.sourceId].deprecated = true;
 
@@ -3257,7 +3291,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         });
     };
     $rootScope.canCreateNewVersion = function(element) {
-        if (element.status !== "PUBLISHED"||element.scope=="HL7STANDARD") {
+        if (element.status !== "PUBLISHED" || element.scope == "HL7STANDARD") {
             return false;
         } else if ($rootScope.versionAndUseMap[element.id] && $rootScope.versionAndUseMap[element.id].deprectaed) {
             console.log($rootScope.versionAndUseMap[element.id].deprectaed);
@@ -3467,26 +3501,23 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             SegmentService.reset();
         } else if (data.type && data.type === "datatype") {
             DatatypeService.reset();
-        }
+        } else if (data.type === "decision" || data.type === "FAQ" || data.type === "userGuide" || data.type === 'UserNote' || data.type === 'releaseNote') {
+            if ($rootScope.newOne) {
 
-
-        else if(data.type==="decision"||data.type==="FAQ"||data.type==="userGuide"||data.type==='UserNote'||data.type==='releaseNote'){
-                if($rootScope.newOne){
-                    
-			        for(i=0; i<$rootScope.documentations.length;i++){
-				        if(data.id==$rootScope.documentations[i].id){
-					    $rootScope.documentations.splice(i, 1);
-				}
-			}
+                for (i = 0; i < $rootScope.documentations.length; i++) {
+                    if (data.id == $rootScope.documentations[i].id) {
+                        $rootScope.documentations.splice(i, 1);
+                    }
                 }
-                $rootScope.documentation=null;
+            }
+            $rootScope.documentation = null;
 
-                $scope.continue();
+            $scope.continue();
         }
         $rootScope.addedSegments = [];
         $rootScope.addedDatatypes = [];
         $rootScope.addedTables = [];
-        
+
     };
 
     $scope.error = null;
@@ -3511,40 +3542,39 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
         }
 
 
-        if(data.type==="decision"||data.type==="FAQ"||data.type==="userGuide"||data.type==='UserNote'||data.type==='releaseNote'){
-    		DocumentationService.save(data).then(function(saved){
-    				console.log(data);
-    				console.log("befor");
-    				$rootScope.documentation=saved.data;
-    				$rootScope.documentationsMap[data.id]= saved.data;
-    				angular.forEach($rootScope.documentations, function(d){
-    					console.log("found");
-    					if(d.id==$rootScope.documentation.id){
-    					d.title=$rootScope.documentationsMap[saved.data.id].title;
-    					d.content=$rootScope.documentationsMap[saved.data.id].content;
-    					d.dateUpdated=$rootScope.documentationsMap[saved.data.id].dateUpdated;
-    					d.username=$rootScope.documentationsMap[saved.data.id].username;
-    					}
-    				});
-    				 $scope.continue();
-    	            if($scope.editForm) {
-    	                $scope.editForm.$setPristine();
-    	                $scope.editForm.$dirty = false;
-    	            }
-    				$scope.editMode=false;
-    				$scope.newOne=false;
-    				$rootScope.clearChanges();
-    				 $rootScope.msg().text = data.type+"SaveSuccess";;
-    		            $rootScope.msg().type = "success";
-    		            $rootScope.msg().show = true;
-    		        }, function(error) {
-    		            $rootScope.msg().text = data.type+"SaveFaild";
-    		            $rootScope.msg().type = "danger";
-    		            $rootScope.msg().show = true;
-    		        }
-    			);
-        
-    		
+        if (data.type === "decision" || data.type === "FAQ" || data.type === "userGuide" || data.type === 'UserNote' || data.type === 'releaseNote') {
+            DocumentationService.save(data).then(function(saved) {
+                console.log(data);
+                console.log("befor");
+                $rootScope.documentation = saved.data;
+                $rootScope.documentationsMap[data.id] = saved.data;
+                angular.forEach($rootScope.documentations, function(d) {
+                    console.log("found");
+                    if (d.id == $rootScope.documentation.id) {
+                        d.title = $rootScope.documentationsMap[saved.data.id].title;
+                        d.content = $rootScope.documentationsMap[saved.data.id].content;
+                        d.dateUpdated = $rootScope.documentationsMap[saved.data.id].dateUpdated;
+                        d.username = $rootScope.documentationsMap[saved.data.id].username;
+                    }
+                });
+                $scope.continue();
+                if ($scope.editForm) {
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                }
+                $scope.editMode = false;
+                $scope.newOne = false;
+                $rootScope.clearChanges();
+                $rootScope.msg().text = data.type + "SaveSuccess";;
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
+            }, function(error) {
+                $rootScope.msg().text = data.type + "SaveFaild";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+            });
+
+
         }
         ////console.log(data);
 

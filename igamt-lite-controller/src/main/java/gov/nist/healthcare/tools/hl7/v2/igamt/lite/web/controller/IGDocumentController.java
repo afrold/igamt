@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -28,6 +30,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -109,9 +112,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.EventWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.GVTClient;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
 
 @RestController
@@ -185,6 +190,15 @@ public class IGDocumentController extends CommonController {
 
   @Value("${admin.email}")
   private String ADMIN_EMAIL;
+
+  @Value("${gvt.url}")
+  private String GVT_URL;
+
+
+  @Value("${gvt.exportEndpoint}")
+  private String GVT_EXPORT_ENDPOINT;
+
+
 
   @Autowired
   private MailSender mailSender;
@@ -1533,4 +1547,26 @@ public class IGDocumentController extends CommonController {
 
     return sortedList;
   }
+
+  @RequestMapping(value = "/{id}/export/gvt", method = RequestMethod.POST,
+      produces = "application/json")
+  public Map<String, Object> exportToGVT(@PathVariable("id") String id,
+      @RequestBody Set<String> messageIds, @RequestHeader("gvt-auth") String authorization,
+      HttpServletRequest request, HttpServletResponse response) throws GVTExportException {
+    try {
+      log.info(
+          "Exporting messages to GVT from IG Document with id=" + id + ", messages=" + messageIds);
+      IGDocument d = findIGDocument(id);
+      InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d,
+          messageIds.toArray(new String[messageIds.size()]));
+      ResponseEntity<?> rsp =
+          new GVTClient().send(content, GVT_URL + GVT_EXPORT_ENDPOINT, authorization);
+      Map<String, Object> res = (Map<String, Object>) rsp.getBody();
+      return res;
+    } catch (IGDocumentNotFoundException | IOException | CloneNotSupportedException e) {
+      throw new GVTExportException(e);
+    }
+  }
+
+
 }

@@ -487,6 +487,7 @@
                 <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:45%" class="form-control"
                                                        name="min"
+                                                       min="0"
                                                        type="number"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
@@ -593,6 +594,7 @@
                     <input style="width:45%" class="form-control"
                            name="min"
                            type="number"
+                           min="0"
                            ng-change="setDirty()"
                            ng-pattern="/^\d+$/"
                            ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
@@ -667,10 +669,10 @@
         <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}" ng-show="showConfLength()">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}">
             <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}} <span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span></span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
@@ -738,12 +740,12 @@
                 [{{::node.obj.minLength}},{{::node.obj.maxLength}}]
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}" ng-show="showConfLength()">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
             <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0" ng-bind="::node.obj.confLength">
             </div>
         </td>
 
-        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}">
             <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}<span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span>            </span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">

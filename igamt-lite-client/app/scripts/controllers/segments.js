@@ -71,7 +71,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         if (node.usage == 'C') $scope.managePredicate(node);
     };
     $scope.validateSegment = function() {
-        ValidationService.validateSegment($rootScope.segment).then(function(result) {
+        ValidationService.validateSegment($rootScope.segment, $rootScope.igdocument.profile.metaData.hl7Version).then(function(result) {
             $rootScope.validationMap = {};
             $rootScope.childValidationMap={};
             $rootScope.showSegErrorNotification = true;

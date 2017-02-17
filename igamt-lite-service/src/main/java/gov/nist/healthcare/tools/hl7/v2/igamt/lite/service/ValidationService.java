@@ -49,7 +49,7 @@ public interface ValidationService {
       SegmentRefOrGroup reference, SegmentRefOrGroup toBeValidated, Predicate predicate,
       String hl7Version) throws InvalidObjectException;
 
-  public ValidationResult validateGroup(Group reference, Group toBeValidated)
+  public ValidationResult validateGroup(Group reference, Group toBeValidated, String igHl7Version)
       throws InvalidObjectException;
 
   /**
@@ -63,7 +63,7 @@ public interface ValidationService {
    * @return List<ValidationResult>
    */
   public ValidationResult validateSegment(Segment reference, Segment toBeValidated,
-      boolean validateChildren) throws InvalidObjectException;
+      boolean validateChildren, String igHl7Version) throws InvalidObjectException;
 
 
   /**
@@ -82,7 +82,8 @@ public interface ValidationService {
    */
 
   public HashMap<String, List<ValidationError>> validateField(Field reference, Field toBeValidated,
-      Predicate predicate, String hl7Version, String parentId) throws InvalidObjectException;
+      Predicate predicate, String hl7Version, String parentId, String igHl7Version,
+      boolean validateConf) throws InvalidObjectException;
 
   /**
    * Validates the {@code tobeValidated} {@code Element} against the provided {@code reference}
@@ -96,7 +97,7 @@ public interface ValidationService {
 
 
   public ValidationResult validateDatatype(Datatype reference, Datatype toBeValidated,
-      String parentId) throws InvalidObjectException;
+      String parentId, String igHl7Version) throws InvalidObjectException;
 
   /**
    * Validates the {@code tobeValidated} {@code Element} against the provided {@code reference}
@@ -110,8 +111,8 @@ public interface ValidationService {
 
 
   public HashMap<String, List<ValidationError>> validateComponent(Component reference,
-      Component toBeValidated, Predicate predicate, String hl7Version, String parentId)
-      throws InvalidObjectException;
+      Component toBeValidated, Predicate predicate, String hl7Version, String parentId,
+      String igHl7Version, boolean validateConf) throws InvalidObjectException;
 
   /**
    * <p>
@@ -126,7 +127,7 @@ public interface ValidationService {
   public String validateUsage(Usage reference, Usage newValueForUsage, Predicate predicate,
       String hl7Version);
 
-  public String validateLength(int referenceMinLen, String referenceMaxLen, int toBeMinLen,
+  public String validateLength(int referenceMinLen, String referenceMaxLen, Integer toBeMinLen,
       String toBeMaxLen);
 
   /**
@@ -152,6 +153,8 @@ public interface ValidationService {
    */
   public String validateCardinality(Integer referenceMin, String referenceMax,
       String referenceUsage, Integer toBeMin, String pToBeMax, String toBeUsage);
+
+  public String validateConfLength(String confLength, String igHl7Version);
 
 }
 
