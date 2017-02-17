@@ -238,9 +238,10 @@ public class ExportConfig {
         .add(new NameAndPositionAndPresence("Conformance Length", 2, false, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, false, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 5, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 6, false, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 7, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 8, true, false));
 
 
 
@@ -268,7 +269,7 @@ public class ExportConfig {
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true, true));
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true, true));
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, false, false));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, false, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, true, true));
 
     defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
     return defaultConfiguration;

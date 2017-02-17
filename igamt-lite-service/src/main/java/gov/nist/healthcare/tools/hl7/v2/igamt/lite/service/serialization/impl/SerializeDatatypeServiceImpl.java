@@ -13,6 +13,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,8 +77,9 @@ public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
                 Map<Component, Datatype> componentDatatypeMap = new HashMap<>();
                 Map<Component, List<Table>> componentTablesMap = new HashMap<>();
                 Map<Component, String> componentTextMap = new HashMap<>();
+                ArrayList<Component> toBeRemovedComponents = new ArrayList<>();
                 for (Component component : datatype.getComponents()) {
-                    if(ExportUtil.diplayUsage(component.getUsage(),datatypeUsageConfig)) {
+                    if(ExportUtil.diplayUsage(component.getUsage(), datatypeUsageConfig)) {
                         if (component.getDatatype() != null && !component.getDatatype().getId()
                             .isEmpty()) {
                             Datatype componentDatatype = datatypeService.findById(component.getDatatype().getId());
@@ -99,7 +101,12 @@ public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
                             String text = serializationUtil.cleanRichtext(component.getText());
                             componentTextMap.put(component, text);
                         }
+                    } else {
+                        toBeRemovedComponents.add(component);
                     }
+                }
+                for(Component component : toBeRemovedComponents){
+                    datatype.getComponents().remove(component);
                 }
                 Boolean showConfLength = serializationUtil.isShowConfLength(datatype.getHl7Version());
                 SerializableDatatype serializedDatatype = null;
