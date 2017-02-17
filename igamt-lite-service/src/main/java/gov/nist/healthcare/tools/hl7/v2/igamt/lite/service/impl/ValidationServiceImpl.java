@@ -225,8 +225,8 @@ public class ValidationServiceImpl implements ValidationService {
 
     result.setTargetId(toBeValidated.getId());
 
-    if (toBeValidated.getName().equals(reference.getName()) && toBeValidated.getChildren() != null
-        && reference.getChildren() != null) {
+    if (toBeValidated.getStructID().equals(reference.getStructID())
+        && toBeValidated.getChildren() != null && reference.getChildren() != null) {
 
       // Prerdicate Map
       Map<Integer, Predicate> predicatesMap = new HashMap<>();
