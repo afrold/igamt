@@ -24,9 +24,9 @@ angular.module('igl').controller('GVTLoginCtrl', ['$scope', '$modalInstance', 'u
 
 angular.module('igl').controller('GVTErrorsCtrl', ['$scope', '$modalInstance', 'errorDetails', function($scope, $modalInstance, errorDetails) {
     $scope.errorDetails = errorDetails;
-    $scope.tmpProfileErrors = [].concat($scope.errorDetails.profileErrors);
-    $scope.tmpConstraintErrors = [].concat($scope.errorDetails.constraintsErrors);
-    $scope.tmpValueSetErrors = [].concat($scope.errorDetails.vsErrors);
+    $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors): [];
+    $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors): [];
+    $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');

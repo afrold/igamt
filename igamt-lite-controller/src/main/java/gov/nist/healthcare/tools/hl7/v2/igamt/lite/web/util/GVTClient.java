@@ -25,6 +25,21 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportExcept
  */
 public class GVTClient {
 
+  static {
+    // for localhost testing only
+    javax.net.ssl.HttpsURLConnection
+        .setDefaultHostnameVerifier(new javax.net.ssl.HostnameVerifier() {
+
+          @Override
+          public boolean verify(String hostname, javax.net.ssl.SSLSession sslSession) {
+            if (hostname.equals("hl7v2.gvt.nist.gov")) {
+              return true;
+            }
+            return false;
+          }
+        });
+  }
+
   public GVTClient() {
     super();
   }
