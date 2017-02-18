@@ -23,28 +23,42 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
  */
 public interface IGDocumentOperations {
 
-	public List<IGDocument> findPreloaded();
+  public List<IGDocument> findPreloaded();
 
-	public List<IGDocument> findStandard();
+  public List<IGDocument> findStandard();
 
-	public List<IGDocument> findUser();
+  public List<IGDocument> findUser();
 
-	public List<IGDocument> findStandardByVersion(String hl7version);
+  public List<IGDocument> findStandardByVersion(String hl7version);
 
-	public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+  public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-	public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version);
+  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes,
+      String hl7Version);
 
-	public List<String> findHl7Versions();
+  public List<String> findHl7Versions();
 
-	public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);
+  public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);
 
-	public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions);
+  public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope,
+      List<String> hl7Versions);
 
-	public List<IGDocument> findAllByScope(IGDocumentScope scope);
+  public List<IGDocument> findAllByScope(IGDocumentScope scope);
 
-	public List<IGDocument> findByParticipantId(Long participantId);
+  public List<IGDocument> findByParticipantId(Long participantId);
 
-	public Date updateDate(String id, Date date);
+  public Date updateDate(String id, Date date);
+
+  public int updatePosition(String id, int position);
+
+
+
+  /**
+   * @param scope
+   * @param hl7Version
+   * @return
+   */
+  List<IGDocument> findByScopeAndVersion(IGDocumentScope scope, String hl7Version);
+
 
 }

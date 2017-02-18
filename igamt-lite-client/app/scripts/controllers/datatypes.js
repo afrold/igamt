@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService, VersionAndUseService, CompareService) {
+    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService, VersionAndUseService, CompareService, ValidationService) {
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
             isFirstOpen: true,
@@ -24,6 +24,7 @@ angular.module('igl')
         $scope.selectedChildren = [];
         $scope.saving = false;
         $scope.init = function() {
+
             $scope.accordStatus = {
                 isCustomHeaderOpen: false,
                 isFirstOpen: true,
@@ -49,6 +50,32 @@ angular.module('igl')
 
             $scope.setDirty();
         };
+        $scope.validateDatatype = function() {
+            console.log($rootScope.datatype);
+            ValidationService.validatedatatype($rootScope.datatype, $rootScope.igdocument.profile.metaData.hl7Version).then(function(result) {
+                $rootScope.validationMap = {};
+                $rootScope.childValidationMap = {};
+                $rootScope.showDtErrorNotification = true;
+                $rootScope.validationResult = result;
+                console.log($rootScope.validationResult);
+                $rootScope.buildValidationMap($rootScope.validationResult);
+                console.log($rootScope.validationMap);
+                console.log($rootScope.childValidationMap);
+
+            });
+        };
+         $scope.isDatatypeValidated = function() {
+        if ($rootScope.datatype && ($rootScope.validationResult.targetId === $rootScope.datatype.id || $rootScope.childValidationMap[$rootScope.datatype.id])) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+        $scope.setErrorNotification = function() {
+            $rootScope.showDtErrorNotification = !$rootScope.showDtErrorNotification;
+        };
+
+
 
 
         $scope.changeDatatypeLink = function(datatypeLink) {
@@ -88,6 +115,8 @@ angular.module('igl')
         };
 
         $scope.refreshSlider = function() {
+
+
             setTimeout(function() {
                 $scope.$broadcast('reCalcViewDimensions');
                 console.log("refreshed Slider!!");
@@ -355,24 +384,6 @@ angular.module('igl')
             });
 
         };
-
-        // $scope.applyDT = function(field, datatype) {
-        //     blockUI.start();
-        //     field.datatype.ext = JSON.parse(datatype).ext;
-        //     field.datatype.id = JSON.parse(datatype).id;
-        //     field.datatype.label = JSON.parse(datatype).label;
-        //     field.datatype.name = JSON.parse(datatype).name;
-        //     console.log(field);
-        //     $scope.setDirty();
-        //     // $rootScope.processElement(field);
-
-        //     if ($scope.datatypesParams)
-        //         $scope.datatypesParams.refresh();
-        //     $scope.editableDT = '';
-        //     $scope.DTselected = false;
-        //     blockUI.stop();
-
-        // };
         $scope.redirectSeg = function(segmentRef) {
             SegmentService.get(segmentRef.id).then(function(segment) {
                 var modalInstance = $modal.open({
@@ -426,6 +437,7 @@ angular.module('igl')
             $scope.results = [];
             angular.forEach($rootScope.datatypeLibrary.children, function(dtLink) {
                 if (dtLink.name && dtLink.name === field.datatype.name) {
+
                     $scope.results.push(dtLink);
                 }
             });
@@ -520,24 +532,7 @@ angular.module('igl')
 
 
         };
-        // $scope.applyVS = function(field) {
-        //     $scope.editableVS = '';
-        //     if (field.table === null) {
-        //         field.table = {
-        //             id: '',
-        //             bindingIdentifier: ''
-
-        //         };
-        //         console.log(field);
-
-        //     }
-
-        //     field.table.id = $scope.selectedValueSet.id;
-        //     field.table.bindingIdentifier = $scope.selectedValueSet.bindingIdentifier;
-        //     $scope.setDirty();
-        //     $scope.VSselected = false;
-
-        // };
+     
         $scope.ContainUnpublished = function(element) {
 
             if (element && element.type && element.type === "datatype") {
@@ -636,7 +631,6 @@ angular.module('igl')
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
                         $scope.saving = false;
-                        //$scope.cleanState();
                     }, function(error) {
                         $scope.saving = false;
                         $rootScope.msg().text = "Sorry an error occured. Please try again";
@@ -727,9 +721,7 @@ angular.module('igl')
         $scope.unselectVS = function() {
             $scope.selectedValueSet = undefined;
             $scope.VSselected = false;
-
-            //$scope.newSeg = undefined;
-        };
+            };
         $scope.isVSActive = function(id) {
             if ($scope.selectedValueSet) {
                 return $scope.selectedValueSet.id === id;
@@ -1245,11 +1237,9 @@ angular.module('igl')
                     if (modalTemplate === 'ShareDatatypeModal.html') {
                         $scope.saveDatatypeAfterShare();
                     }
-                    // $log.info('Modal dismissed at: ' + new Date());
                 });
 
             }, function(error) {
-                console.log(error);
             });
         };
 
@@ -1262,7 +1252,6 @@ angular.module('igl')
                 var newLink = DatatypeService.getDatatypeLink(result);
                 newLink.ext = ext;
                 DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
-                    //DatatypeService.merge($rootScope.datatypesMap[result.id], result);
                     DatatypeService.merge($rootScope.datatype, result);
 
                     DatatypeService.saveNewElements(true).then(function() {
@@ -1284,14 +1273,6 @@ angular.module('igl')
             });
             $rootScope.saveBindingForDatatype();
         };
-
-
-        //        $scope.$watch(function(){
-        //            return $rootScope.datatype;
-        //        }, function() {
-        //            $rootScope.recordChanged();
-        //        }, true);
-
 
     });
 
@@ -2440,13 +2421,10 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
                             $scope.segment2 = "";
                             if (igDoc) {
                                 $scope.segList2 = angular.copy(segments);
-                                //$scope.segList2 = orderByFilter($scope.segList2, 'name');
                                 $scope.dtList2 = angular.copy(datatypes);
                                 $scope.tableList2 = angular.copy(tables);
-                                //$scope.messages2 = orderByFilter(igDoc.profile.messages.children, 'name');
-                                //$scope.segments2 = orderByFilter(segments, 'name');
+
                                 $scope.datatypes2 = orderByFilter(datatypes, 'name');
-                                //$scope.tables2 = orderByFilter(tables, 'bindingIdentifier');
                             }
                         });
                     });
@@ -2454,7 +2432,6 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
 
             });
 
-            //$scope.messages2 = ($scope.findIGbyID(JSON.parse(ig).id)).profile.messages.children;
 
         }
 
@@ -2570,7 +2547,7 @@ angular.module('igl').controller('AddBindingForDatatype', function($scope, $moda
     $scope.checkDuplicated = function(path) {
         for (var i = 0; i < $rootScope.references.length; i++) {
             var ref = $rootScope.references[i];
-            if (ref.path == path) return true;
+            if (ref.path==path) return true;
         }
         return false;
     };

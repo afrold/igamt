@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
@@ -19,8 +21,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
  */
 public interface SerializationService {
     public nu.xom.Document serializeIGDocument(IGDocument igDocument,
-        SerializationLayout serializationLayout);
-    public nu.xom.Document serializeDatatypeLibrary(IGDocument igDocument,
-        SerializationLayout serializationLayout);
+        SerializationLayout serializationLayout, ExportConfig exportConfig);
+    public nu.xom.Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument);
     public nu.xom.Document serializeElement(SerializableElement element);
 }

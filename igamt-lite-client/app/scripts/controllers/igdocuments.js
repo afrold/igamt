@@ -4,14 +4,14 @@
 
 angular.module('igl')
 
-.controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService) {
+.controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService) {
 
     $scope.loading = false;
     $scope.tocView = 'views/toc.html';
     $scope.uiGrid = {};
     $rootScope.igs = [];
     $rootScope.currentData = null;
-    $rootScope.editForm=$scope.editForm;
+    $rootScope.editForm = $scope.editForm;
     $scope.tmpIgs = [].concat($rootScope.igs);
     $scope.error = null;
     $scope.loadingTree = false;
@@ -59,6 +59,39 @@ angular.module('igl')
 
     };
 
+    $scope.Dndenabled = function() {
+        return $scope.igDocumentConfig.selectedType == 'USER';
+    }
+    $scope.showIgErrorNotification = false;
+    $rootScope.showMsgErrorNotification = false;
+    $rootScope.showSegErrorNotification = false;
+    $rootScope.showDtErrorNotification = false;
+    $rootScope.validationMap = {};
+    $rootScope.childValidationMap = {};
+    $rootScope.validationResult = null;
+    $scope.validateIg = function() {
+        ValidationService.validateIg($rootScope.igdocument).then(function(result) {
+            $rootScope.validationMap = {};
+            $rootScope.childValidationMap = {};
+            $scope.showIgErrorNotification = true;
+            $rootScope.showMsgErrorNotification = true;
+            $rootScope.showSegErrorNotification = true;
+            $rootScope.showDtErrorNotification = true;
+            $rootScope.validationResult = result;
+            console.log($rootScope.validationResult);
+            $rootScope.buildValidationMap($rootScope.validationResult);
+            console.log($rootScope.validationMap);
+            console.log($rootScope.childValidationMap);
+           
+
+        }, function(error) {
+            console.log(error);
+        });
+    };
+    $scope.setIgErrorNotification = function() {
+        $scope.showIgErrorNotification = !$scope.showIgErrorNotification;
+    };
+
     $scope.selectIgTab = function(value) {
         if (value === 1) {
             $scope.accordi.igList = false;
@@ -87,15 +120,15 @@ angular.module('igl')
             return DatatypeService.getTemplate(node, $rootScope.datatype);
         }
     });
-    
+
     $scope.messagesParams = new ngTreetableParams({
-            getNodes: function(parent) {
-            	console.log($rootScope.messageTree);
-                return MessageService.getNodes(parent, $rootScope.messageTree);
-            },
-            getTemplate: function(node) {
-                return MessageService.getTemplate(node, $rootScope.messageTree);
-            }
+        getNodes: function(parent) {
+            console.log($rootScope.messageTree);
+            return MessageService.getNodes(parent, $rootScope.messageTree);
+        },
+        getTemplate: function(node) {
+            return MessageService.getTemplate(node, $rootScope.messageTree);
+        }
     });
 
     $rootScope.closeIGDocument = function() {
@@ -235,6 +268,31 @@ angular.module('igl')
         return 'templateRow.html';
 
     }
+    $scope.orderIgs = function(igs) {
+        console.log(igs);
+        var positionList = [];
+        for (i = 0; i < igs.length; i++) {
+            igs[i].position = i + 1;
+            positionList.push({ "id": igs[i].id, "position": igs[i].position });
+
+        }
+
+
+
+        IgDocumentService.orderIgDocument(positionList).then(function(response) {
+            $rootScope.msg().text = "OrderChanged";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+
+        }, function(error) {
+            $scope.tmpIgs = angular.copy($scope.IgsCopy);
+            $rootScope.msg().text = "OrderChangedFaild";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+
+        });
+
+    }
     $scope.selectIGDocumentType = function(selectedType) {
         //console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
         $scope.igDocumentConfig.selectedType = selectedType;
@@ -263,6 +321,14 @@ angular.module('igl')
                 console.log(response);
                 $rootScope.igs = angular.fromJson(response.data);
                 $scope.tmpIgs = [].concat($rootScope.igs);
+
+                console.log($scope.tmpIgs);
+                for (i = 0; i < $scope.tmpIgs.length; i++) {
+                    if (!$scope.tmpIgs[i].position || $scope.tmpIgs[i].position == 'undefined' || $scope.tmpIgs[i].position == 'null') {
+                        $scope.tmpIgs[i].position = i + 1;
+                    }
+                }
+                $scope.IgsCopy = angular.copy($scope.tmpIgs);
                 $scope.loading = false;
                 delay.resolve(true);
             }, function(error) {
@@ -444,7 +510,7 @@ angular.module('igl')
                 $rootScope.datatypeLibrary = igdocument.profile.datatypeLibrary;
                 $rootScope.tableLibrary = igdocument.profile.tableLibrary;
                 $rootScope.ext = igdocument.metaData.ext;
-                $rootScope.igVersion=igdocument.profile.metaData.hl7Version;
+                $rootScope.igVersion = igdocument.profile.metaData.hl7Version;
                 $rootScope.selectedMessages = angular.copy(igdocument.profile.messages.children);
                 $scope.loadingIGDocument = true;
                 $rootScope.isEditing = true;
@@ -463,13 +529,13 @@ angular.module('igl')
                             $scope.loadTables().then(function() {
                                 $scope.collectMessages();
 
-                 
-                               try {
-                                   if ($scope.messagesParams)
-                                	   $scope.messagesParams.refresh();
-                               } catch (e) {
 
-                               }
+                                try {
+                                    if ($scope.messagesParams)
+                                        $scope.messagesParams.refresh();
+                                } catch (e) {
+
+                                }
                                 $scope.loadIgDocumentMetaData();
 
                                 $rootScope.filteredTablesList = angular.copy($rootScope.tables);
@@ -821,26 +887,26 @@ angular.module('igl')
         }, function() {});
     };
 
-    
-    $scope.selectMessagesForExport=function(igdocument){
+
+    $scope.selectMessagesForExport = function(igdocument) {
         if ($rootScope.hasChanges()) {
-            $rootScope.openConfirmLeaveDlg().result.then(function () {
-            	if ($scope.editForm) {
-        	    	console.log("Cleeaning");
-        	        $scope.editForm.$setPristine();
-        	        $scope.editForm.$dirty = false;
-        	        $scope.editForm.$invalid = false;
-        	        
-        	    }
-        	    $rootScope.clearChanges();
-        	    $scope.processSelectMessagesForExport(igdocument);
+            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                if ($scope.editForm) {
+                    console.log("Cleeaning");
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                    $scope.editForm.$invalid = false;
+
+                }
+                $rootScope.clearChanges();
+                $scope.processSelectMessagesForExport(igdocument);
 
             });
-        }else{
-        	 $scope.processSelectMessagesForExport(igdocument);
+        } else {
+            $scope.processSelectMessagesForExport(igdocument);
         }
-   }
- 
+    }
+
     $scope.processSelectMessagesForExport = function(igdocument) {
         var modalInstance = $modal.open({
             templateUrl: 'SelectMessagesForExportCtrl.html',
@@ -1034,54 +1100,51 @@ angular.module('igl')
     };
 
     $scope.exportAs = function(format) {
-    	
-    	
+
+
         if ($rootScope.hasChanges()) {
 
-            $rootScope.openConfirmLeaveDlg().result.then(function () {
-            	
+            $rootScope.openConfirmLeaveDlg().result.then(function() {
+
                 if ($rootScope.igdocument != null) {
                     if ($scope.editForm) {
-                    	console.log("Cleeaning");
+                        console.log("Cleeaning");
                         $scope.editForm.$setPristine();
                         $scope.editForm.$dirty = false;
                         $scope.editForm.$invalid = false;
-                        
+
                     }
                     $rootScope.clearChanges();
                     IgDocumentService.exportAs($rootScope.igdocument, format);
                 }
 
             });
-        }
-        else if ($rootScope.igdocument != null) {
+        } else if ($rootScope.igdocument != null) {
             IgDocumentService.exportAs($rootScope.igdocument, format);
         }
     };
 
     $scope.exportAsWithLayout = function(format, layout) {
         if ($rootScope.hasChanges()) {
-        	
 
-            $rootScope.openConfirmLeaveDlg().result.then(function () {
-            	
+
+            $rootScope.openConfirmLeaveDlg().result.then(function() {
+
                 if ($rootScope.igdocument != null) {
-                	if ($scope.editForm) {
-                    	console.log("Cleeaning");
+                    if ($scope.editForm) {
+                        console.log("Cleeaning");
                         $scope.editForm.$setPristine();
                         $scope.editForm.$dirty = false;
                         $scope.editForm.$invalid = false;
-                        
+
                     }
                     $rootScope.clearChanges();
-                	
+
                     IgDocumentService.exportAsWithLayout($rootScope.igdocument, format, layout);
                 }
 
             });
-        }
-    	    	
-        else if ($rootScope.igdocument != null) {
+        } else if ($rootScope.igdocument != null) {
             IgDocumentService.exportAsWithLayout($rootScope.igdocument, format, layout);
         }
     };
@@ -1201,7 +1264,6 @@ angular.module('igl')
                         SegmentService.get(segment.id).then(function(result) {
                             $rootScope.segment = angular.copy(segment);
                             $rootScope.$emit("event:initSegment");
-
                             $rootScope.currentData = $rootScope.segment;
                             $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
                             $rootScope.segment["type"] = "segment";
@@ -1352,6 +1414,7 @@ angular.module('igl')
                 try {
                     $rootScope.originalMessage = message;
                     $rootScope.message = angular.copy(message);
+
                     $rootScope.$emit("event:initMessage");
 
                     $rootScope.currentData = $rootScope.message;
@@ -2127,15 +2190,15 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootSc
     };
 });
 
-
-angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc) {
+angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window) {
     $scope.igdocumentToSelect = igdocumentToSelect;
     $scope.xmlFormat = 'Validation';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
+    $scope.info = {text: undefined, show: false, type: null, details: null};
+    $scope.redirectUrl = null;
 
-
-    $scope.trackSelections = function(bool, id) {
+    $scope.trackSelections = function (bool, id) {
         if (bool) {
             $scope.selectedMessagesIDs.push(id);
         } else {
@@ -2148,16 +2211,94 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     };
 
 
-    $scope.exportAsZIPforSelectedMessages = function() {
+    $scope.exportAsZIPforSelectedMessages = function () {
         $scope.loading = true;
         ExportSvc.exportAsXMLByMessageIds($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, $scope.xmlFormat);
         $scope.loading = false;
     };
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+
+
+    $scope.viewErrors = function (errorDetails) {
+
+        if ($scope.gvtErrorsDialog && $scope.gvtErrorsDialog != null && $scope.gvtErrorsDialog.opened) {
+            $scope.gvtErrorsDialog.dismiss('cancel');
+        }
+        $scope.gvtErrorsDialog = $modal.open({
+            backdrop: 'static',
+            keyboard: 'true',
+            controller: 'GVTErrorsCtrl',
+            windowClass: 'conformance-profiles-modal',
+            templateUrl: 'views/gvt/errorDetails.html',
+            resolve: {
+                errorDetails: function () {
+                    return errorDetails;
+                }
+            }
+        });
+
+
+    };
+
+    $scope.exportAsZIPToGVT = function () {
+        $scope.loading = true;
+        $scope.info.text = null;
+        $scope.info.show = false;
+        $scope.info.type = 'danger';
+        if ($scope.gvtLoginDialog && $scope.gvtLoginDialog != null && $scope.gvtLoginDialog.opened) {
+            $scope.gvtLoginDialog.dismiss('cancel');
+        }
+        $scope.gvtLoginDialog = $modal.open({
+            backdrop: 'static',
+            keyboard: 'false',
+            controller: 'GVTLoginCtrl',
+            size: 'lg',
+            templateUrl: 'views/gvt/login.html',
+            resolve: {
+                user: function () {
+                    return { username: null, password: null };
+                }
+            }
+        });
+
+        $scope.gvtLoginDialog.result.then(function (auth) {
+            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function (map) {
+                var response =  angular.fromJson(map.data);
+                if (response.success === false) {
+                    $scope.info.text = "gvtExportFailed";
+                    $scope.info['details'] = response;
+                    $scope.info.show = true;
+                    $scope.info.type = 'danger';
+                    $scope.loading = false;
+                } else {
+                    var token = response.token;
+                    $scope.info.text = 'gvtRedirectInProgress';
+                    $scope.info.show = true;
+                    $scope.info.type = 'info';
+                    $scope.redirectUrl = $rootScope.appInfo.gvtUrl + $rootScope.appInfo.gvtUploadTokenContext + "?x=" + encodeURIComponent(token) + "&y=" + encodeURIComponent(auth);
+                    $timeout(function () {
+                        $scope.loading = false;
+                        $window.open($scope.redirectUrl, "_target","",false);
+                    }, 3000);
+                }
+            }, function (error) {
+                $scope.info.text = "gvtExportFailed";
+                $scope.info.show = true;
+                $scope.info.type = 'danger';
+                $scope.loading = false;
+            });
+        }, function () {
+            $scope.info.show = false;
+            $scope.loading = false;
+        });
+    };
+
+
 });
+
 
 angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, hl7Version, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
     $scope.loading = false;
@@ -2682,6 +2823,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
         $scope.addDtFlv = function(datatype) {
             var newDatatype = angular.copy(datatype);
+            newDatatype.publicationVersion=0;
 
             newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
             newDatatype.scope = 'USER';

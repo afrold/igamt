@@ -12,6 +12,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeDatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeSegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeTableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ import java.util.Map;
     @Autowired SerializeTableService serializeTableService;
 
     @Override
-    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel) {
+    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig) {
         Segment segment = segmentService.findById(segmentLink.getId());
         if (segment != null) {
             //Create section node
@@ -92,22 +93,30 @@ import java.util.Map;
             Map<Field, Datatype> fieldDatatypeMap = new HashMap<>();
             Map<Field, List<Table>> fieldTableMap = new HashMap<>();
             Map<CCValue, Table> coConstraintValueTableMap = new HashMap<>();
+            List<Field> fieldsToBeRemoved = new ArrayList<>();
             for (Field field : segment.getFields()) {
-                if (field.getDatatype() != null) {
-                    Datatype datatype = datatypeService.findById(field.getDatatype().getId());
-                    fieldDatatypeMap.put(field, datatype);
-                }
-                if (field.getTables() != null && !field.getTables().isEmpty()) {
-                    List<Table> tables = new ArrayList<>();
-                    for (TableLink tableLink : field.getTables()) {
-                        Table table = tableService.findById(tableLink.getId());
-                        tables.add(table);
+                if(ExportUtil.diplayUsage(field.getUsage(),fieldUsageConfig)) {
+                    if (field.getDatatype() != null) {
+                        Datatype datatype = datatypeService.findById(field.getDatatype().getId());
+                        fieldDatatypeMap.put(field, datatype);
                     }
-                    fieldTableMap.put(field, tables);
+                    if (field.getTables() != null && !field.getTables().isEmpty()) {
+                        List<Table> tables = new ArrayList<>();
+                        for (TableLink tableLink : field.getTables()) {
+                            Table table = tableService.findById(tableLink.getId());
+                            tables.add(table);
+                        }
+                        fieldTableMap.put(field, tables);
+                    }
+                } else {
+                    fieldsToBeRemoved.add(field);
                 }
                 if(field.getText()!=null && !"".equals(field.getText())){
                     field.setText(serializationUtil.cleanRichtext(field.getText()));
                 }
+            }
+            for(Field field : fieldsToBeRemoved){
+                segment.getFields().remove(field);
             }
             if (segment.getCoConstraints() != null) {
                 CoConstraints coConstraints = segment.getCoConstraints();

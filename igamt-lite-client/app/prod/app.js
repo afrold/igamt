@@ -35,7 +35,7 @@ var app = angular
         'ds.objectDiff',
         'ngTagsInput',
         'nsPopover',
-//        'ngMaterial',
+       'ngMaterial',
         'pageslide-directive',
         'rzModule',
     		'ui.select',
@@ -59,6 +59,9 @@ var
 var msg = {};
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, NotificationProvider,blockUIConfig, flowFactoryProvider) {
+
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
     $routeProvider
         .when('/', {
@@ -85,7 +88,12 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
              controller: 'shared'
          })
         .when('/doc', {
-            templateUrl: 'views/doc.html'
+            templateUrl: 'views/doc.html',
+            controller: 'DocumentationController'
+        })
+        .when('/configuration', {
+            templateUrl: 'views/configuration.html',
+            controller:	'ConfigurationController'
         })
         .when('/setting', {
             templateUrl: 'views/setting.html'

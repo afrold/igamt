@@ -33,96 +33,104 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 @Service
 public interface IGDocumentService {
 
-	public IGDocument save(IGDocument ig) throws IGDocumentException;
+  public IGDocument save(IGDocument ig) throws IGDocumentException;
 
-	public void delete(String id);
+  public void delete(String id);
 
-	public IGDocument findOne(String id);
+  public IGDocument findOne(String id);
 
-	public List<IGDocument> findAll();
+  public List<IGDocument> findAll();
 
-	public List<IGDocument> findAllPreloaded();
+  public List<IGDocument> findAllPreloaded();
 
-	public List<IGDocument> findAllUser();
+  public List<IGDocument> findAllUser();
 
-	public List<IGDocument> findByAccountId(Long accountId);
+  public List<IGDocument> findByAccountId(Long accountId);
 
-	public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+  public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-	public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);
+  public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);
 
-	public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes, String hl7Version);
 
-	public IGDocument clone(IGDocument ig) throws CloneNotSupportedException;
+  public List<IGDocument> findByScopeAndVersion(IGDocumentScope scope, String hl7Version);
 
-	public IGDocument apply(IGDocument ig) throws IGDocumentException;
 
-	// TODO NEED TO REVIEW
+  public List<IGDocument> findByAccountIdAndScopesAndVersion(Long accountId, List<SCOPE> scopes,
+      String hl7Version);
 
-	public InputStream diffToPdf(IGDocument d);
+  public IGDocument clone(IGDocument ig) throws CloneNotSupportedException;
 
-	//
-	// public InputStream diffToJson(Profile p);
-	//
-	// public Map<String, List<ElementChange>> delta(Profile p);
-	//
-	// public ElementVerification verifyMessages(Profile p, String id, String
-	// type);
-	//
-	// public ElementVerification verifyMessage(Profile p, String id, String
-	// type);
-	//
-	// public ElementVerification verifySegmentRefOrGroup(Profile p, String id,
-	// String type);
-	//
-	// public ElementVerification verifySegments(Profile p, String id, String
-	// type);
-	//
-	public ElementVerification verifySegment(IGDocument d, String id, String type);
+  public IGDocument apply(IGDocument ig) throws IGDocumentException;
 
-	//
-	// public ElementVerification verifyField(Profile p, String id, String
-	// type);
-	//
-	// public ElementVerification verifyDatatypes(Profile p, String id, String
-	// type);
-	//
-	public ElementVerification verifyDatatype(IGDocument d, String id, String type);
+  // TODO NEED TO REVIEW
 
-	//
-	// public ElementVerification verifyComponent(Profile p, String id, String
-	// type);
-	//
-	// public ElementVerification verifyValueSetLibrary(Profile p, String id,
-	// String type);
-	//
-	public ElementVerification verifyValueSet(IGDocument p, String id, String type);
-	//
-	// public ElementVerification verifyUsage(Profile p, String id, String type,
-	// String eltName,
-	// String eltValue);
-	//
-	// public ElementVerification verifyCardinality(Profile p, String id, String
-	// type, String eltName,
-	// String eltValue);
-	//
-	// public ElementVerification verifyLength(Profile p, String id, String
-	// type, String eltName,
-	// String eltValue);
+  public InputStream diffToPdf(IGDocument d);
 
-	public IGDocument findById(String id);
+  //
+  // public InputStream diffToJson(Profile p);
+  //
+  // public Map<String, List<ElementChange>> delta(Profile p);
+  //
+  // public ElementVerification verifyMessages(Profile p, String id, String
+  // type);
+  //
+  // public ElementVerification verifyMessage(Profile p, String id, String
+  // type);
+  //
+  // public ElementVerification verifySegmentRefOrGroup(Profile p, String id,
+  // String type);
+  //
+  // public ElementVerification verifySegments(Profile p, String id, String
+  // type);
+  //
+  public ElementVerification verifySegment(IGDocument d, String id, String type);
 
-	public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope, List<String> hl7Versions);
+  //
+  // public ElementVerification verifyField(Profile p, String id, String
+  // type);
+  //
+  // public ElementVerification verifyDatatypes(Profile p, String id, String
+  // type);
+  //
+  public ElementVerification verifyDatatype(IGDocument d, String id, String type);
 
-	public List<IGDocument> findAllByScope(IGDocumentScope scope);
+  //
+  // public ElementVerification verifyComponent(Profile p, String id, String
+  // type);
+  //
+  // public ElementVerification verifyValueSetLibrary(Profile p, String id,
+  // String type);
+  //
+  public ElementVerification verifyValueSet(IGDocument p, String id, String type);
+  //
+  // public ElementVerification verifyUsage(Profile p, String id, String type,
+  // String eltName,
+  // String eltValue);
+  //
+  // public ElementVerification verifyCardinality(Profile p, String id, String
+  // type, String eltName,
+  // String eltValue);
+  //
+  // public ElementVerification verifyLength(Profile p, String id, String
+  // type, String eltName,
+  // String eltValue);
 
-	public List<IGDocument> findSharedIgDocuments(Long participantId);
+  public IGDocument findById(String id);
 
-	public Date updateDate(String id, Date date) throws IGDocumentException;
+  public List<IGDocument> findByScopeAndVersionsInIg(IGDocumentScope scope,
+      List<String> hl7Versions);
 
-	List<IGDocument> save(Collection<IGDocument> igs) throws IGDocumentException;
+  public List<IGDocument> findAllByScope(IGDocumentScope scope);
 
-	IGDocument save(IGDocument ig, Date date) throws IGDocumentException;
+  public List<IGDocument> findSharedIgDocuments(Long participantId);
 
-	// TODO NEED TO REVIEW
+  public Date updateDate(String id, Date date) throws IGDocumentException;
+
+  List<IGDocument> save(Collection<IGDocument> igs) throws IGDocumentException;
+
+  IGDocument save(IGDocument ig, Date date) throws IGDocumentException;
+
+  public int updatePosition(String id, int position);
+
+  // TODO NEED TO REVIEW
 }

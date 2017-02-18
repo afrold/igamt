@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -28,6 +30,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,11 +51,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IgDocumentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
@@ -81,6 +86,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentReposito
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeMessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
@@ -106,9 +112,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.EventWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.GVTClient;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
 
 @RestController
@@ -136,6 +144,8 @@ public class IGDocumentController extends CommonController {
   ProfileService profileService;
   @Autowired
   AccountRepository accountRepository;
+  @Autowired
+  ExportConfigService exportConfigService;
   @Autowired
   private MessageRepository messageRepository;
 
@@ -181,6 +191,15 @@ public class IGDocumentController extends CommonController {
   @Value("${admin.email}")
   private String ADMIN_EMAIL;
 
+  @Value("${gvt.url}")
+  private String GVT_URL;
+
+
+  @Value("${gvt.exportEndpoint}")
+  private String GVT_EXPORT_ENDPOINT;
+
+
+
   @Autowired
   private MailSender mailSender;
 
@@ -207,11 +226,11 @@ public class IGDocumentController extends CommonController {
       throws UserAccountNotFoundException, IGDocumentListException {
     try {
       if ("PRELOADED".equalsIgnoreCase(type)) {
-        return preloaded();
+        return GetorderByposition(preloaded());
       } else if ("USER".equalsIgnoreCase(type)) {
-        return userIGDocuments();
+        return GetorderByposition(userIGDocuments());
       } else if ("SHARED".equalsIgnoreCase(type)) {
-        return sharedIGDocument();
+        return GetorderByposition(sharedIGDocument());
       }
       throw new IGDocumentListException("Unknown IG document type");
     } catch (RuntimeException e) {
@@ -277,6 +296,7 @@ public class IGDocumentController extends CommonController {
   private List<IGDocument> preloaded() {
     log.info("Fetching all preloaded IGDocuments...");
     List<IGDocument> result = igDocumentService.findAllPreloaded();
+
     return result;
   }
 
@@ -624,16 +644,26 @@ public class IGDocumentController extends CommonController {
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
-  @RequestMapping(value = "/{id}/export/html/{layout}", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/export/html/{type}", method = RequestMethod.POST,
       produces = "text/html", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportHtml(@PathVariable("id") String id, @PathVariable("layout") String layout,
+  public void exportHtml(@PathVariable("id") String id, @PathVariable("type") String type,
       HttpServletRequest request, HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException {
+      throws IOException, IGDocumentNotFoundException, UserAccountNotFoundException {
     log.info("Exporting as html file IGDcoument with id=" + id);
     IGDocument d = this.findIGDocument(id);
     InputStream content = null;
-    SerializationLayout serializationLayout = identifyLayout(layout);
-    content = exportService.exportIGDocumentAsHtml(d, serializationLayout);
+    SerializationLayout serializationLayout = identifyLayout(type);
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    if (account == null) {
+      throw new UserAccountNotFoundException();
+    }
+    ExportConfig exportConfig =
+        exportConfigService.findOneByTypeAndAccountId(identifyType(type), account.getId());
+    if (exportConfig == null) {
+      exportConfig = ExportConfig.getBasicExportConfig(type);
+    }
+    content = exportService.exportIGDocumentAsHtml(d, serializationLayout, exportConfig);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
@@ -644,17 +674,39 @@ public class IGDocumentController extends CommonController {
   private SerializationLayout identifyLayout(String layout) {
     SerializationLayout serializationLayout;
     switch (layout) {
-      case "Verbose":
-        serializationLayout = SerializationLayout.VERBOSE;
+      case "IgDocument":
+        serializationLayout = SerializationLayout.IGDOCUMENT;
         break;
-      case "Compact":
-        serializationLayout = SerializationLayout.COMPACT;
+      case "Profile":
+        serializationLayout = SerializationLayout.PROFILE;
+        break;
+      case "Table":
+        serializationLayout = SerializationLayout.TABLES;
         break;
       default:
-        serializationLayout = SerializationLayout.COMPACT;
+        serializationLayout = SerializationLayout.IGDOCUMENT;
         break;
     }
     return serializationLayout;
+  }
+
+  private String identifyType(String layout) {
+    String type;
+    switch (layout) {
+      case "IgDocument":
+        type = "Ig Document";
+        break;
+      case "Profile":
+        type = "Profile Style";
+        break;
+      case "Table":
+        type = "Table Style";
+        break;
+      default:
+        type = "IG Style";
+        break;
+    }
+    return type;
   }
 
   @RequestMapping(value = "/{id}/export/zip", method = RequestMethod.POST,
@@ -673,7 +725,7 @@ public class IGDocumentController extends CommonController {
   }
 
   @RequestMapping(value = "/{id}/export/Validation/{mIds}", method = RequestMethod.POST,
-      produces = "application/zip")
+      produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportValidationXMLByMessages(@PathVariable("id") String id,
       @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
       HttpServletResponse response)
@@ -681,8 +733,7 @@ public class IGDocumentController extends CommonController {
     log.info("Exporting as xml file profile with id=" + id + " for selected messages="
         + Arrays.toString(messageIds));
     IGDocument d = findIGDocument(id);
-    InputStream content = null;
-    content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
+    InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
@@ -739,17 +790,27 @@ public class IGDocumentController extends CommonController {
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
-  @RequestMapping(value = "/{id}/export/docx/{layout}", method = RequestMethod.POST,
+  @RequestMapping(value = "/{id}/export/docx/{type}", method = RequestMethod.POST,
       produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportDocx(@PathVariable("id") String id, @PathVariable("layout") String layout,
+  public void exportDocx(@PathVariable("id") String id, @PathVariable("type") String type,
       HttpServletRequest request, HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException {
+      throws IOException, IGDocumentNotFoundException, UserAccountNotFoundException {
     log.info("Exporting as docx file profile with id=" + id);
     IGDocument d = findIGDocument(id);
     InputStream content = null;
-    SerializationLayout serializationLayout = identifyLayout(layout);
-    content = exportService.exportIGDocumentAsDocx(d, serializationLayout);
+    SerializationLayout serializationLayout = identifyLayout(type);
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    if (account == null) {
+      throw new UserAccountNotFoundException();
+    }
+    ExportConfig exportConfig =
+        exportConfigService.findOneByTypeAndAccountId(type, account.getId());
+    if (exportConfig == null) {
+      exportConfig = ExportConfig.getBasicExportConfig(type);
+    }
+    content = exportService.exportIGDocumentAsDocx(d, serializationLayout, exportConfig);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
@@ -1152,6 +1213,26 @@ public class IGDocumentController extends CommonController {
     return date.getTime();
   }
 
+
+  @RequestMapping(value = "/reorderIgs", method = RequestMethod.POST)
+  public List<MessageMap> reorderIGS(@RequestBody List<MessageMap> igsMap)
+      throws IOException, IGDocumentNotFoundException {
+
+
+    for (MessageMap ig : igsMap) {
+
+      IGDocument d = igDocumentService.findOne(ig.getId());
+      if (d == null) {
+        throw new IGDocumentNotFoundException(ig.getId());
+      } else {
+        igDocumentService.updatePosition(ig.getId(), ig.getPosition());
+      }
+    }
+    return igsMap;
+
+
+  }
+
   @RequestMapping(value = "/{id}/findAndAddMessages", method = RequestMethod.POST)
   public List<Message> findAndAddMessages(@PathVariable("id") String id,
       @RequestBody List<EventWrapper> eventWrapper) throws IOException, IGDocumentNotFoundException,
@@ -1456,5 +1537,36 @@ public class IGDocumentController extends CommonController {
       throw new IGDocumentException("Failed to update IG Document's date \n" + e.getMessage());
     }
   }
+
+  public List<IGDocument> GetorderByposition(List<IGDocument> toOrder) {
+    // List<IGDocument>
+    List<IGDocument> sortedList = new ArrayList<IGDocument>();
+    sortedList.addAll(toOrder);
+    IgDocumentComparator comparator = new IgDocumentComparator();
+    Collections.sort(sortedList, comparator);
+
+    return sortedList;
+  }
+
+  @RequestMapping(value = "/{id}/export/gvt", method = RequestMethod.POST,
+      produces = "application/json")
+  public Map<String, Object> exportToGVT(@PathVariable("id") String id,
+      @RequestBody Set<String> messageIds, @RequestHeader("gvt-auth") String authorization,
+      HttpServletRequest request, HttpServletResponse response) throws GVTExportException {
+    try {
+      log.info(
+          "Exporting messages to GVT from IG Document with id=" + id + ", messages=" + messageIds);
+      IGDocument d = findIGDocument(id);
+      InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d,
+          messageIds.toArray(new String[messageIds.size()]));
+      ResponseEntity<?> rsp =
+          new GVTClient().send(content, GVT_URL + GVT_EXPORT_ENDPOINT, authorization);
+      Map<String, Object> res = (Map<String, Object>) rsp.getBody();
+      return res;
+    } catch (IGDocumentNotFoundException | IOException | CloneNotSupportedException e) {
+      throw new GVTExportException(e);
+    }
+  }
+
 
 }

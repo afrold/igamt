@@ -13,10 +13,10 @@
 </script>
 <script type="text/ng-template" id="EditDocumentMetadata.html">
 
-    <div ng-controller="DocumentMetaDataCtrl" ng-init="init()">
-        <div class="row" style="margin-left:0px; margin-right: 10px">
+    <div ng-controller="DocumentMetaDataCtrl" ng-init="init()" class="container">
+        <div class="container">
             <div ng-show="metaData !== null">
-                    <div class="page-header" style="margin-bottom: 20px">
+                    <div class="page-header">
                         <span class="header4">IG Document Metadata</span>
             <span class="pull-right">
          <button title="Save Changes" class="btn btn-raised btn-sm btn-success"
@@ -42,6 +42,15 @@
                     </span>
                     </div>
 
+                <div class="static_info">
+                 <i class="fa fa-calendar" aria-hidden="true"></i>
+					Updated {{igdocument.dateUpdated | date:dateFormat}}
+                     <span ng-if="igdocument.owner" style="font-style: italic;">
+                         <i class="fa fa-user" aria-hidden="true"></i> 
+                         ,{{igdocument.owner}}
+                    </span>
+                    <span>,HL7 Version: {{igdocument.profile.metaData.hl7Version}}</span>
+                </div>
                     <div class="form-group control-group vertical-align" ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}" ng-if="!viewSettings.tableReadonly" flow-init flow-name="uploader.flow" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()" flow-file-success="successUpload($file, $message, $data)">
                         <div class="col-md-2" style="justify-content: flex-end;">
                           <label class="control-label">Cover Picture</label>
@@ -180,30 +189,6 @@
                     </div>
                 </div>
 
-
-                <div class="form-group control-group">
-                    <label class="col-md-2 control-label">Date Updated</label>
-
-                    <div class="controls col-md-10">
-                         <span
-                               class="form-control">{{igdocument.dateUpdated | date:dateFormat}}</span>
-                    </div>
-                </div>
-
-
-                <div class="form-group control-group"
-                     ng-class="{'igl-has-error has-feedback' : editForm.date.$invalid}">
-                    <label class="col-md-2 control-label">HL7 Version*</label>
-
-                    <div class="controls col-md-10">
-                        <input type="text" name="version" disabled
-
-                               class="form-control" ng-model="igdocument.profile.metaData.hl7Version" required>
-                    </div>
-                </div>
-
-
-
             </div>
      </div>
 </script>
@@ -256,9 +241,9 @@
                             name="type"
                             ng-change="setDirty()"
                             ng-model="metaData.hl7Version">
-                        <option value="2.1">2.1</option>
-                        <option value="2.2">2.2</option>
-                        <option value="2.3">2.3</option>
+                        <!--<option value="2.1">2.1</option>-->
+                        <!--<option value="2.2">2.2</option>-->
+                        <!--<option value="2.3">2.3</option>-->
                         <option value="2.3.1">2.3.1</option>
                         <option value="2.4">2.4</option>
                         <option value="2.5">2.5</option>

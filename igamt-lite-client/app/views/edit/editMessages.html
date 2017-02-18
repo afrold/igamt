@@ -18,8 +18,8 @@
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="message !== null" id="executionPanel">
-                <div class="row" style="margin-left:0px; margin-right: 10px">
-                    <div class="page-header" style="margin-bottom: 20px">
+                <div class="container">
+                    <div class="page-header">
                         <span class="header4">Conformance Profile: {{message.name}} </span>
                         <span class="pull-right">
                             <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
@@ -32,6 +32,17 @@
                         </button>
                         </span>
                     </div>
+                 <div class="static_info">
+                 <i class="fa fa-calendar" aria-hidden="true"></i>
+					Updated {{message.dateUpdated | date:dateFormat}}
+                     <span ng-if="message.owner" style="font-style: italic;">
+                         <i class="fa fa-user" aria-hidden="true"></i> 
+                         ,{{datatype.owner}}
+                    </span>
+                    <span ng-if="message.hl7Version">,HL7 Version: {{message.hl7Version}}</span>
+                    <span ng-if="message.publicationVersion">,Version: {{message.publicationVersion}}</span>
+
+                </div>
                     <div class="col-md-12" ng-controller="cmpMessageCtrl as cmpMsg">
                         <tabset active="tabStatus.active">
                             <tab ng-click="setDeltaToF()">
@@ -39,62 +50,57 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Conformance Profile MetaData
                                 </tab-heading>
                                 <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.name.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.name.$invalid}">
                                         <label class="col-md-2 control-label">Name*</label>
                                         <div class="controls col-md-10">
                                             <input class="form-control" type="text" disabled name="name" ng-change="setDirty()" ng-model="message.name" ng-disabled="viewSettings.tableReadonly">
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.identifier.$invalid}">
                                         <label class="col-md-2 control-label">Identifier*</label>
                                         <div class="controls col-md-10">
                                             <input type="text" ng-change="setDirty()" name="identifier" class="form-control" ng-model="message.identifier" ng-disabled="viewSettings.tableReadonly" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.description.$invalid}">
                                         <label class="col-md-2 control-label">Description</label>
                                         <div class="controls col-md-10">
                                             <input class="form-control" type="text" name="description" ng-change="setDirty()" ng-model="message.description" ng-disabled="viewSettings.tableReadonly">
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
-                                        <label class="col-md-2 control-label">Hl7 Version</label>
-                                        <div class="controls col-md-10">
-                                            <input class="form-control" type="text" name="hl7Version" ng-model="message.hl7Version" disabled>
-                                        </div>
-                                    </div>
+
                                     <!--<div class="form-group control-group"-->
-                                    <!--ng-class="{'igl-has-error' : editForm.messageOId.$invalid}">-->
+                                    <!--ng-class="{'has-error' : editForm.messageOId.$invalid}">-->
                                     <!--<label class="col-md-2 control-label">Message OID</label>-->
                                     <!--<div class="controls col-md-10"><input type="text" disabled name="messageOId"-->
                                     <!--class="form-control"-->
                                     <!--ng-model="message.messageID" required></div>-->
                                     <!--</div>-->
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageType.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.messageType.$invalid}">
                                         <label class="col-md-2 control-label">Message Type*</label>
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="messageType" class="form-control" ng-model="message.messageType" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageEvent.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.messageEvent.$invalid}">
                                         <label class="col-md-2 control-label">Message Event*</label>
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="messageEvent" class="form-control" ng-model="message.event" required ng-disabled="false">
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageStructID.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.messageStructID.$invalid}">
                                         <label class="col-md-2 control-label">Message Structure ID*</label>
                                         <div class="controls col-md-10">
                                             <input type="text" disabled name="messageStructID" class="form-control" ng-model="message.structID" required>
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.comment.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.comment.$invalid}">
                                         <label class="col-md-2 control-label">Comment</label>
                                         <div class="controls col-md-10">
                                             <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly" ng-change="recordDatatypeChange('message','edit',message.id,'message', message.comment)" name="comment" id="comment" class="form-control" ng-model="message.comment" />
                                         </div>
                                     </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'has-error has-feedback' : datatypeForm.text.$invalid}">
                                         <label class="col-md-2 control-label">Usage Note</label>
                                         <div class="controls col-md-10">
                                             <div ng-show="!viewSettings.tableReadonly">
@@ -112,20 +118,9 @@
                                         <label class="col-md-2 control-label">HL7 Section</label>
 
                                         <div class="controls col-md-10">
-                                            <span type="text" name="hl7Section"
-                                                  class="form-control">{{message.hl7Section}}</span>
+                                            <span type="text" name="hl7Section" class="form-control">{{message.hl7Section}}</span>
                                         </div>
                                     </div>
-
-
-                                    <div class="form-group control-group">
-                                        <label class="col-md-2 control-label">Date Updated</label>
-
-                                        <div class="controls col-md-10">
-                                            <span class="form-control">{{message.dateUpdated | date:dateFormat}}</span>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </tab>
                             <tab heading="Conformance Profile Definition" ng-click="setDeltaToF()">
@@ -152,13 +147,33 @@
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
                                                 <span style="color:white;"> Conformance Profile Definition</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
-											</accordion-heading>
+                                            </accordion-heading>
                                             <div class="igl-def-table-container">
+
+                                                <div style="margin:5px 5px 5px 5px">
+                                                    <div class="row" ng-show="showErrorCount(message.id)  && showMsgErrorNotification" style="margin-right: 15px;margin-left: 5px;">
+                                                        <div class="alert has-error" ng-show="errorCount(message.id)>0">
+                                                            <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(message.id)}} Errors
+
+                                                        </div>
+                                                        <div class="alert alert-success" ng-show="errorCount(message.id)===0">
+                                                            <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(message.id)}} Errors
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <span class="pull-left">
                                                <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations">
 											   </div>
 
                                                 </span>
+                                                <button ng-if="message.scope!=='HL7STANDARD'" class="pull-right" title="Verify Message" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
+                                                    ng-click="validateMessage()"> 
+                                                
+                                                  
+                                                    Verify
+                                                
+                                            </button>
                                                 <span class="pull-right" ng-show="!viewSettings.tableReadonly">
                                                     <div class="btn-group">
                                                         <button type="button" class="btn btn-raised btn-sm btn-info">
@@ -421,6 +436,8 @@
 
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250">
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <a ng-show="editableSeg!==node.obj.id" ng-click="editSgmt(node,message)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
@@ -448,7 +465,7 @@
                 </div>
             </ng-form>
         </td>
-        <td class="col-md-1 col-fixed-80">
+        <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
             <div>
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
                     <select class="form-control input-sm" name="usage" ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node);" required
@@ -465,19 +482,21 @@
             </div>
         </td>
 
-        <td class="col-md-1 col-fixed-100">
+        <td class="col-md-1 col-fixed-100" ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
             <div ng-controller="MessageRowCtrl">
                 <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:45%" class="form-control"
                                                        name="min"
+                                                       min="0"
+                                                       type="number"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
-                                                       ng-class="{ 'igl-has-error' : {{formName}}.min.$invalid}"
+                                                       ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
                                                        ng-model="node.obj.min" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="max"
                                                        ng-change="setDirty()"
-                                                       ng-class="{ 'igl-has-error' : {{formName}}.max.$invalid}"
+                                                       ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.obj.max" required>
                                             </span>
@@ -491,12 +510,12 @@
         </td>
         <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
         </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-class="{'igl-has-error': node.obj.usage === 'C' && countPredicate(node.path) != 1}" ng-show="viewSettings.isVisibleColumn('predicate')">
+        <td class="col-md-1" ng-style="predWidthx" ng-class="{'has-error': node.obj.usage === 'C' && countPredicate(node.path) != 1}" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="countPredicate(node.path)===0 && node.obj.usage==='C'">
                     <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                        <p class="warning" style="color:red;">Need predicate</p>
+                        <p class="warning" >Need predicate</p>
                     </a>
                 </div>
                 <div ng-show="countPredicate(node.path) !==0 && node.obj.usage==='C'">
@@ -526,6 +545,8 @@
 <script type="text/ng-template" id="MessageGroupEditTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) && (node.obj.usage==='R' ||node.obj.usage==='C' ||node.obj.usage==='RE' ) && $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td class="col-md-2 col-fixed-250" context-menu="segOption">
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <a ng-show="editableGrp!==node.obj.id" ng-click="editGrp(node,message)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
@@ -551,7 +572,7 @@
                 </div>
             </ng-form>
         </td>
-        <td class="col-md-1 col-fixed-80">
+        <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
             <div>
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
                     <select class="form-control input-sm" name="usage" ng-change="setCardinalities(node.obj);setDirty(); openPredicateDialog(node);" required
@@ -567,19 +588,21 @@
                 </div>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100">
+        <td class="col-md-1 col-fixed-100" ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
             <div ng-controller="MessageRowCtrl" class="form-inline">
                 <span ng-form name="{{formName}}">
                     <input style="width:45%" class="form-control"
                            name="min"
+                           type="number"
+                           min="0"
                            ng-change="setDirty()"
                            ng-pattern="/^\d+$/"
-                           ng-class="{ 'igl-has-error' : {{formName}}.min.$invalid}"
+                           ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
                            ng-model="node.obj.min" required ng-minlength="1"/>
                     <input style="width:45%" class="form-control" type="text"
                            name="max"
                            ng-change="setDirty()"
-                           ng-class="{ 'igl-has-error' : {{formName}}.max.$invalid}"
+                           ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                            ng-pattern="/^\d+$|^\*?$/"
                            ng-model="node.obj.max" required/>
                 </span>
@@ -587,7 +610,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol"  ng-show="showConfLength()">
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
@@ -598,7 +621,7 @@
                 <div ng-show="countPredicate(node.path)===0 && node.obj.usage==='C'">
                     <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                        <p class="warning" style="color:red;">Need predicate</p>
+                        <p class="warning" >Need predicate</p>
                     </a>
                 </div>
                 <div ng-show="countPredicate(node.path) !==0 && node.obj.usage==='C'">
@@ -626,27 +649,30 @@
 
 <script type="text/ng-template" id="MessageFieldViewTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
+
         <td class="col-md-2 col-fixed-250">
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <span class="label label-field label-icon" ng-show="node.obj.type==='field'">F</span>
             <span class="label label-sub-component label-icon" ng-show="node.obj.type==='subcomponent'">S</span>
             <span class="label label-component label-icon" ng-show="node.obj.type==='component'">C</span>
 
             <span tooltip-html="getFieldNodeName(node.obj)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node.obj)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
         </td>
-        <td class="col-md-1 col-fixed-80">
+        <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
             <span>{{node.obj.usage}}</span>
             <span ng-show="findPredicateByPath(node.path)">({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})</span>
         </td>
-        <td class="col-md-1 col-fixed-100">
+        <td class="col-md-1 col-fixed-100" ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
             <span>[{{::node.obj.min}},{{::node.obj.max}}]</span>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}" ng-show="showConfLength()">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}">
             <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}} <span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span></span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
@@ -670,7 +696,7 @@
                 <div ng-hide="findPredicateByPath(node.path) || filteredSubConstraints.length || viewSettings.tableReadonly || node.obj.usage !=='C'">
                     <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                        <p class="warning" style="color:red;">Need predicate</p>
+                        <p class="warning" >Need predicate</p>
                     </a>
                 </div>
             </div>
@@ -691,7 +717,10 @@
 
 <script type="text/ng-template" id="MessageComponentViewTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
+
         <td class="col-md-2 col-fixed-250">
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <span>
                 <span class="label label-field label-icon" ng-show="node.obj.type==='field'">F</span>
             <span class="label label-sub-component label-icon" ng-show="node.obj.type==='subcomponent'">S</span>
@@ -700,23 +729,23 @@
                 </span>
             </span>
         </td>
-        <td class="col-md-1 col-fixed-80">
+        <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
             <span>{{node.obj.usage}}</span>
             <span ng-show="findPredicateByPath(node.path)">({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})</span>
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}">
+        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
             <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">
                 [{{::node.obj.minLength}},{{::node.obj.maxLength}}]
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0}" ng-show="showConfLength()">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
             <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0" ng-bind="::node.obj.confLength">
             </div>
         </td>
 
-        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
+        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}">
             <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}<span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span>            </span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
@@ -741,7 +770,7 @@
                 <div ng-hide="findPredicateByPath(node.path) || filteredSubConstraints.length || viewSettings.tableReadonly || node.obj.usage !=='C'">
                     <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                        <p class="warning" style="color:red;">Need predicate</p>
+                        <p class="warning" >Need predicate</p>
                     </a>
                 </div>
             </div>
@@ -774,7 +803,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol"  ng-show="showConfLength()">
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
@@ -813,7 +842,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol">
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol"  ng-show="showConfLength()">
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="showConfLength()">
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
@@ -861,7 +890,7 @@
         <td class="col-md-1 col-fixed-100">
             <div>-</div>
         </td>
-        <td class="col-md-1 col-fixed-80"  ng-show="showConfLength()">
+        <td class="col-md-1 col-fixed-80" ng-show="showConfLength()">
             <div>-</div>
         </td>
         <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
@@ -899,7 +928,7 @@
     <div class="modal-body">
         <div class="creation-modal-content">
             <form name="addSegForm" class="form-horizontal" novalidate>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !selected()}">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !selected()}">
                     <label class="col-md-3 control-label">Existing Segment*</label>
                     <div class="controls col-md-9">
                         <input class="input-group form-control" type="text" ng-model="search.name" ng-hide="selected()" required/>
@@ -917,7 +946,7 @@
                     </div>
                 </div>
 
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addSegForm.inputPosition.$valid}">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addSegForm.inputPosition.$valid}">
                     <label class="col-md-3 control-label">Position*</label>
                     <div class="controls col-md-9">
                         <select ng-model="position" ng-change="selectPos()" class="form-control input-sm" required id="inputPosition" name="inputPosition">
@@ -927,13 +956,13 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addSegForm.usage.$valid}">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addSegForm.usage.$valid}">
                     <label class="col-md-3 control-label">Usage*</label>
                     <div class="controls col-md-9">
                         <select class="form-control input-sm" name="usage" id="usage" ng-change="selectUsage(newSegment.usage)" required ng-model="newSegment.usage" ng-options="usage for usage in config.usages" required />
                     </div>
                 </div>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addSegForm.min.$valid ||!addSegForm.max.$valid }">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addSegForm.min.$valid ||!addSegForm.max.$valid }">
                     <label class="col-md-3 control-label">Cardinality*</label>
                     <div class="controls col-md-9">
                         <span class="form-inline">
@@ -989,13 +1018,13 @@
     <div class="modal-body">
         <div class="creation-modal-content">
             <form name="addGrpForm" class="form-horizontal" novalidate>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.inputGroupName.$valid}">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addGrpForm.inputGroupName.$valid}">
                     <label class="col-md-3 control-label">Group Name*</label>
                     <div class="controls col-md-9">
                         <input class="form-control" type="text" ng-model="grpName" name="inputGroupName" id="inputGroupName" required/>
                     </div>
                 </div>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grPosition.$valid}">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addGrpForm.grPosition.$valid}">
                     <label class="col-md-3 control-label">Position*</label>
                     <div class="controls col-md-9">
                         <select ng-model="position" class="form-control input-sm" ng-change="selectPos()" class="point" required id="grPosition" name="grPosition">
@@ -1005,13 +1034,13 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grUsage.$valid}">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addGrpForm.grUsage.$valid}">
                     <label class="col-md-3 control-label">Usage*</label>
                     <div class="controls col-md-9">
                         <select class="form-control input-sm" name="grUsage" id="grUsage" ng-change="selectUsage(newGroup.usage)" ng-model="newGroup.usage" ng-options="usage for usage in config.usages" required />
                     </div>
                 </div>
-                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
+                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
                     <label class="col-md-3 control-label">Cardinality*</label>
                     <div class="controls col-md-9">
                         <span class="form-inline">

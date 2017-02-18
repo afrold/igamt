@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
@@ -57,13 +58,13 @@ public class ExportServiceImpl implements ExportService {
     private ProfileSerialization profileSerializationService;
 
     @Override public InputStream exportIGDocumentAsDocx(IGDocument igDocument,
-        SerializationLayout serializationLayout) throws IOException {
+        SerializationLayout serializationLayout, ExportConfig exportConfig) throws IOException {
         if (igDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(
-                DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD);
+                DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD, exportConfig);
             igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
             return exportUtil.exportAsDocxFromXml(
-                serializationService.serializeIGDocument(igDocument, serializationLayout).toXML(),
+                serializationService.serializeIGDocument(igDocument, serializationLayout, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,
                 igDocument.getMetaData(),igDocument.getDateUpdated());
         } else {
@@ -72,11 +73,11 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override public InputStream exportIGDocumentAsHtml(IGDocument igDocument,
-        SerializationLayout serializationLayout) throws IOException {
+        SerializationLayout serializationLayout, ExportConfig exportConfig) throws IOException {
         if (igDocument != null) {
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML);
+            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML, exportConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService.serializeIGDocument(igDocument,
-                    serializationLayout).toXML(),
+                    serializationLayout, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,igDocument.getMetaData());
         } else {
             return new NullInputStream(1L);
@@ -95,9 +96,10 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportDatatypeLibraryDocumentAsHtml(
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML);
-            return exportUtil.exportAsHtmlFromXsl(igDocumentSerializationService
-                    .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("IG Style");
+            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML,exportConfig);
+            return exportUtil.exportAsHtmlFromXsl(serializationService
+                    .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,datatypeLibraryDocument.getMetaData());
         } else {
             return new NullInputStream(1L);
@@ -107,9 +109,10 @@ public class ExportServiceImpl implements ExportService {
     @Override public InputStream exportDatatypeLibraryDocumentAsDocx(
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD);
-            return exportUtil.exportAsDocxFromXml(igDocumentSerializationService
-                    .serializeDatatypeLibraryDocumentToXML(datatypeLibraryDocument),
+            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("IG Style");
+            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD, exportConfig);
+            return exportUtil.exportAsDocxFromXml(serializationService
+                    .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
                 GLOBAL_STYLESHEET, exportParameters, datatypeLibraryDocument.getMetaData(),datatypeLibraryDocument.getDateUpdated());
         } else {
             return new NullInputStream(1L);

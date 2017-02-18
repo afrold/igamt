@@ -15,10 +15,9 @@
         </h3>
     </div>
     <div class="modal-body">
-        <label>
-            <div msg key="login.banner"></div>
-        </label>
-
+        <!--<label>-->
+            <!--<div msg key="login.banner"></div>-->
+        <!--</label>-->
         <div ng-class="'alert alert-'+loginMessage().type" ng-show="loginMessage().show" id="ehrloginalert">
             <button type="button" class="close" ng-click="loginMessage().show=false">×</button>
             <div msg key-expr="loginMessage().text"></div>

@@ -31,18 +31,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
@@ -53,9 +57,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -78,6 +84,10 @@ public class Bootstrap implements InitializingBean {
   private final HashMap<String, ArrayList<List<String>>> DatatypeMap =
       new HashMap<String, ArrayList<List<String>>>();
   private HashMap<String, Integer> Visited = new HashMap<String, Integer>();
+
+
+  @Autowired
+  ExportConfigRepository exportConfig;
 
   @Autowired
   ProfileService profileService;
@@ -161,6 +171,123 @@ public class Bootstrap implements InitializingBean {
     // fixConfLengths();
     // fixUserPublishedData();
     // fixConstraints1();
+
+    // createDefaultConfiguration("IG Style");
+    // createDefaultConfiguration("Profile Style");
+    // createDefaultConfiguration("Table Style");
+
+    // changeStatusofPHINVADSTables();
+
+    // modifyCodeUsage();
+  }
+
+  /**
+   * 
+   */
+  private void createDefaultConfiguration(String type) {
+    ExportConfig defaultConfiguration = new ExportConfig();
+    defaultConfiguration.setDefaultType(true);
+    defaultConfiguration.setAccountId(null);
+    defaultConfiguration.setType(type);
+    // Default Usages
+    UsageConfig displayAll = new UsageConfig();
+    UsageConfig displaySelectives = new UsageConfig();
+    displaySelectives.setC(true);
+    displaySelectives.setX(false);
+    displaySelectives.setO(false);
+    displaySelectives.setR(true);
+    displaySelectives.setRe(true);
+    CodeUsageConfig codeUsageExport = new CodeUsageConfig();
+    codeUsageExport.setE(false);
+    codeUsageExport.setP(true);
+    codeUsageExport.setR(true);
+
+    displayAll.setC(true);
+    displayAll.setRe(true);
+    displayAll.setX(true);
+    displayAll.setO(true);
+    displayAll.setR(true);
+
+    defaultConfiguration.setSegmentORGroupsExport(displayAll);
+
+    defaultConfiguration.setComponentExport(displayAll);
+
+    defaultConfiguration.setFieldsExport(displayAll);
+
+    defaultConfiguration.setCodesExport(codeUsageExport);
+
+    defaultConfiguration.setDatatypesExport(displaySelectives);
+    defaultConfiguration.setSegmentsExport(displaySelectives);
+    defaultConfiguration.setValueSetsExport(displaySelectives);
+
+    // Default column
+    ArrayList<NameAndPositionAndPresence> messageColumnsDefaultList =
+        new ArrayList<NameAndPositionAndPresence>();
+
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Segment", 1, true, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Flavor", 2, true, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Element Name", 3, true, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 4, true, false));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true, false));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true, false));
+
+    ArrayList<NameAndPositionAndPresence> segmentColumnsDefaultList =
+        new ArrayList<NameAndPositionAndPresence>();
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true, true));
+    segmentColumnsDefaultList
+        .add(new NameAndPositionAndPresence("Conformance Length", 2, false, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, false, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, false));
+
+
+
+    ArrayList<NameAndPositionAndPresence> dataTypeColumnsDefaultList =
+        new ArrayList<NameAndPositionAndPresence>();
+
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true, true));
+    dataTypeColumnsDefaultList
+        .add(new NameAndPositionAndPresence("Conformance Length", 2, false, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, false, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, false));
+    dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, false));
+
+
+
+    defaultConfiguration.setDatatypeColumn(new ColumnsConfig(dataTypeColumnsDefaultList));
+    defaultConfiguration.setSegmentColumn(new ColumnsConfig(segmentColumnsDefaultList));
+    defaultConfiguration.setMessageColumn(new ColumnsConfig(messageColumnsDefaultList));
+
+    ArrayList<NameAndPositionAndPresence> valueSetsDefaultList =
+        new ArrayList<NameAndPositionAndPresence>();
+
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, false, false));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, false, true));
+
+    defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
+
+    exportConfig.save(defaultConfiguration);
+
+
+
+  }
+
+  private void changeStatusofPHINVADSTables() {
+    List<Table> allTables = tableService.findAll();
+
+    for (Table t : allTables) {
+      if (null != t && null != t.getScope()) {
+        if (t.getScope().equals(SCOPE.PHINVADS) && STATUS.UNPUBLISHED.equals(t.getStatus())) {
+          tableService.updateStatus(t.getId(), STATUS.PUBLISHED);
+        }
+      }
+    }
   }
 
   private void fixMissingCodes(String sourceTableLibId, String targetTableLibId) {

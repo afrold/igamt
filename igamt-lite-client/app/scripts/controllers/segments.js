@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 
-angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService, blockUI) {
+angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService, blockUI, ValidationService) {
     //        $scope.loading = false;
 
     // console.log("IN SEGMENTS========");
@@ -70,7 +70,32 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.openPredicateDialog = function(node) {
         if (node.usage == 'C') $scope.managePredicate(node);
     };
-
+   
+    $scope.validateSegment = function() {
+        ValidationService.validateSegment($rootScope.segment, $rootScope.igdocument.profile.metaData.hl7Version).then(function(result) {
+            $rootScope.validationMap = {};
+            $rootScope.childValidationMap={};
+            $rootScope.showSegErrorNotification = true;
+            $rootScope.validationResult = result;
+            console.log($rootScope.validationResult);
+            $rootScope.buildValidationMap($rootScope.validationResult);
+            console.log($rootScope.validationMap);
+            console.log($rootScope.childValidationMap);
+            console.log($rootScope.showSegErrorNotification);
+        });
+    };
+    $scope.isSegmentValidated = function() {
+        if ($rootScope.segment && ($rootScope.validationResult.targetId === $rootScope.segment.id || $rootScope.childValidationMap[$rootScope.segment.id])) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    
+    $scope.setErrorNotification = function() {
+        $rootScope.showSegErrorNotification  = !$rootScope.showSegErrorNotification;
+    };
+    
     $scope.deleteField = function(fieldToDelete, segment) {
         var modalInstance = $modal.open({
             templateUrl: 'DeleteField.html',

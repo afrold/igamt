@@ -33,80 +33,83 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 @Service
 public class MessageServiceImpl implements MessageService {
 
-	Logger log = LoggerFactory.getLogger(MessageServiceImpl.class);
+  Logger log = LoggerFactory.getLogger(MessageServiceImpl.class);
 
-	@Autowired
-	private MessageRepository messageRepository;
+  @Autowired
+  private MessageRepository messageRepository;
 
-	@Override
-	public Message findById(String id) {
-		log.info("MessageServiceImpl.findById=" + id);
-		return messageRepository.findOne(id);
-	}
+  @Override
+  public Message findById(String id) {
+    log.info("MessageServiceImpl.findById=" + id);
+    return messageRepository.findOne(id);
+  }
 
-	@Override
-	public List<Message> findByIds(Set<String> ids) {
-		log.info("MessageServiceImpl.findByIds=" + ids);
-		return messageRepository.findByIds(ids);
-	}
+  @Override
+  public List<Message> findByIds(Set<String> ids) {
+    log.info("MessageServiceImpl.findByIds=" + ids);
+    return messageRepository.findByIds(ids);
+  }
 
-	@Override
-	public void save(Set<Message> messages) {
-		// TODO Auto-generated method stub
-		messageRepository.save(messages);
-	}
+  @Override
+  public void save(Set<Message> messages) {
+    // TODO Auto-generated method stub
+    messageRepository.save(messages);
+  }
 
-	@Override
-	public Message save(Message message) {
-		return save(message, DateUtils.getCurrentDate());
-	}
+  @Override
+  public Message save(Message message) {
+    return save(message, DateUtils.getCurrentDate());
+  }
 
-	@Override
-	public Message save(Message message, Date dateUpdated) {
-		message.setDateUpdated(dateUpdated);
-		return messageRepository.save(message);
-	}
+  @Override
+  public Message save(Message message, Date dateUpdated) {
+    message.setDateUpdated(dateUpdated);
+    return messageRepository.save(message);
+  }
 
-	@Override
-	public void delete(Message segment) {
-		messageRepository.delete(segment);
-	}
+  @Override
+  public void delete(Message segment) {
+    messageRepository.delete(segment);
+  }
 
-	@Override
-	public void delete(String id) {
-		messageRepository.delete(id);
-	}
+  @Override
+  public void delete(String id) {
+    messageRepository.delete(id);
+  }
 
-	@Override
-	public List<Message> findByNamesScopeAndVersion(String name, String structId, String scope, String hl7Version) {
-		List<Message> messages = messageRepository.findByNamesScopeAndVersion(name, structId, scope, hl7Version);
-		log.info("MessageServiceImpl.findByNamesScopeAndVersion=" + messages.size());
-		return messages;
-	}
+  @Override
+  public List<Message> findByNamesScopeAndVersion(String name, String structId, String scope,
+      String hl7Version) {
+    List<Message> messages =
+        messageRepository.findByNamesScopeAndVersion(name, structId, scope, hl7Version);
+    log.info("MessageServiceImpl.findByNamesScopeAndVersion=" + messages.size());
+    return messages;
+  }
 
-	@Override
-	public Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version) {
-		Message message = messageRepository.findByStructIdAndScopeAndVersion(structId, scope, hl7Version);
-		log.info("MessageServiceImpl.findByNamesScopeAndVersion=" + message.getId());
-		return message;
-	}
+  @Override
+  public Message findByStructIdAndScopeAndVersion(String structId, String scope,
+      String hl7Version) {
+    Message message =
+        messageRepository.findByStructIdAndScopeAndVersion(structId, scope, hl7Version);
+    return message;
+  }
 
-	@Override
-	public int findMaxPosition(Messages msgs) {
-		int maxPos = 0;
-		for (Message msg : msgs.getChildren()) {
-			maxPos = Math.max(maxPos, msg.getPosition());
-		}
-		return maxPos;
-	}
+  @Override
+  public int findMaxPosition(Messages msgs) {
+    int maxPos = 0;
+    for (Message msg : msgs.getChildren()) {
+      maxPos = Math.max(maxPos, msg.getPosition());
+    }
+    return maxPos;
+  }
 
-	@Override
-	public List<Message> findAll() {
-		return messageRepository.findAll();
-	}
+  @Override
+  public List<Message> findAll() {
+    return messageRepository.findAll();
+  }
 
-	@Override
-	public Date updateDate(String id, Date date) {
-		return messageRepository.updateDate(id, date);
-	}
+  @Override
+  public Date updateDate(String id, Date date) {
+    return messageRepository.updateDate(id, date);
+  }
 }

@@ -14,11 +14,10 @@
                 </xsl:attribute>
                 
            <xsl:choose>
-                <xsl:when test="@prefix != ''">
+                <!--xsl:when test="@prefix != ''">
                 	<xsl:value-of select="concat(@prefix,' - ', @title)"/>
-                </xsl:when>
+                </xsl:when-->
                 <xsl:when test="$displayMasterDatatypeLabel='true' and @scope = 'MASTER'">
-                	<xsl:value-of select="concat(@prefix,' - ')"/>
                 	<xsl:element name="span">
 	                    <xsl:attribute name="class">
                             <xsl:text>masterDatatypeLabel</xsl:text>

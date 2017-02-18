@@ -6,18 +6,26 @@
             <xsl:attribute name="class">
                 <xsl:text>contentTr</xsl:text>
             </xsl:attribute>
-            <xsl:element name="td">
-                <xsl:value-of select="@Value"/>
-            </xsl:element>
-            <xsl:element name="td">
-                <xsl:value-of select="@CodeSystem"/>
-            </xsl:element>
-            <xsl:element name="td">
-                <xsl:value-of select="@Usage"/>
-            </xsl:element>
-            <xsl:element name="td">
-                <xsl:value-of select="@Label"/>
-            </xsl:element>
+            <xsl:if test="$columnDisplay.valueSet.value = 'true'">
+                <xsl:element name="td">
+                    <xsl:value-of select="@Value"/>
+                </xsl:element>
+            </xsl:if>
+            <xsl:if test="$columnDisplay.valueSet.codeSystem = 'true'">
+                <xsl:element name="td">
+                    <xsl:value-of select="@CodeSystem"/>
+                </xsl:element>
+            </xsl:if>
+            <xsl:if test="$columnDisplay.valueSet.usage = 'true'">
+                <xsl:element name="td">
+                    <xsl:value-of select="@Usage"/>
+                </xsl:element>
+            </xsl:if>
+            <xsl:if test="$columnDisplay.valueSet.description = 'true'">
+                <xsl:element name="td">
+                    <xsl:value-of select="@Label"/>
+                </xsl:element>
+            </xsl:if>
         </xsl:element>
     </xsl:template>
 

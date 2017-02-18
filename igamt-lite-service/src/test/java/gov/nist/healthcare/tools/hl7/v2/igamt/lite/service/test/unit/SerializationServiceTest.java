@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
@@ -41,7 +42,7 @@ public class SerializationServiceTest {
     public void testSerializeCompactIGDocument(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         assertTrue(igDocument!=null);
-        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.COMPACT);
+        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig("IG Style"));
         String xmlDocument = document.toXML();
         System.out.println(xmlDocument);
     }
@@ -49,7 +50,7 @@ public class SerializationServiceTest {
     public void testSerializeVerboseIGDocument(){
         IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
         assertTrue(igDocument!=null);
-        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.VERBOSE);
+        Document document = serializationService.serializeIGDocument(igDocument, SerializationLayout.PROFILE, ExportConfig.getBasicExportConfig("IG Style"));
         String xmlDocument = document.toXML();
         System.out.println(xmlDocument);
     }

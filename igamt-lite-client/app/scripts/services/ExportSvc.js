@@ -1,12 +1,11 @@
 angular.module('igl').factory(
     'ExportSvc',
 
-    function ($rootScope, $modal, $cookies) {
+    function ($rootScope, $modal, $cookies, GVTSvc,StorageService) {
 
         var svc = this;
 
-       
-        
+
         svc.exportAsXMLByMessageIds = function (id, mids, xmlFormat) {
             var form = document.createElement("form");
 
@@ -27,7 +26,10 @@ angular.module('igl').factory(
             document.body.appendChild(form);
             form.submit();
         };
-        
-        
+
+
+
+
         return svc;
-    });
+    })
+;

@@ -142,6 +142,33 @@ angular
 
                     }
                 };
+                $scope.isValidated = function(data) {
+                    if (data && ($rootScope.validationResult.targetId === data.id || $rootScope.childValidationMap[data.id])) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                };
+                $scope.hasErrorInTree = function(data) {
+
+                    // if ($rootScope.validationResult && $rootScope.validationResult.errorCount>0 ) {
+                    //     return true;
+                    // } else {
+                    //     return false;
+                    // }
+
+                    if ($rootScope.validationResult) {
+                       
+
+                        if (($rootScope.validationMap[data.id] && $rootScope.validationMap[data.id].errorCount > 0) || ($rootScope.validationMap[data.id] && !$rootScope.validationMap[data.id].errorCount === undefined) || ($rootScope.validationResult.targetId === data.id && $rootScope.validationResult.errorCount>0) || ($rootScope.childValidationMap[data.id] && $rootScope.childValidationMap[data.id].errorCount !== undefined && $rootScope.childValidationMap[data.id].errorCount > 0)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+
+
+                };
 
 
                 $scope.treeOptions = {
@@ -827,8 +854,8 @@ angular
 
                     }],
                     null, ['Export Profile', function($itemScope) {
-                              $scope.selectMessagesForExport($rootScope.igdocument);
-             
+                        $scope.selectMessagesForExport($rootScope.igdocument);
+
                     }]
                 ];
 
@@ -2189,7 +2216,7 @@ angular.module('igl').controller('AddDatatypeCtrlFromUserLib',
             console.log($scope.newDatatype.ext);
             $scope.newDatatype.scope = datatypeLibrary.scope;
             $scope.newDatatype.status = "UNPUBLISHED";
-
+            $scope.newDatatype.publicationVersion=0;
             $scope.newDatatype.participants = [];
             $scope.newDatatype.id = new ObjectId().toString();
             $scope.newDatatype.libIds = [];
@@ -2382,10 +2409,26 @@ angular.module('igl').controller('addMAsterInLibrary',
                 console.log(datatypes);
 
                 $scope.masterDatatypes = _.where(datatypes, { scope: "MASTER", status: "PUBLISHED" });
+                // if($rootScope.igdocument){
+                //     var temp=[];
+                //     angular.forEach($scope.masterDatatypes, function(datatype){
+                //         if($scope.containsVersion(datatype.hl7versions, $rootScope.igdocument.profile.hl7Version)){
+                //             temp.push(datatype);
+                //         }
+                //     });
+                //     $scope.masterDatatypes=temp;
+                // }
                 console.log($scope.masterDatatypes);
             });
         };
-
+        $scope.containsVersion=function(versions, v){
+            angular.forEach(versions, function(version){
+                if(v===version){
+                    return true;
+                }
+            });
+            return false;
+        }
         var listHL7Versions = function() {
             return $http.get('api/igdocuments/findVersions', {
                 timeout: 60000
@@ -2467,7 +2510,10 @@ angular.module('igl').controller('addMAsterInLibrary',
             return $scope.checkedExt;
         };
         $scope.addDtFlv = function(datatype) {
+
             $scope.newDatatype = angular.copy(datatype);
+            $scope.newDatatype.publicationVersion=0;
+
             if ($rootScope.igdocument) {
 
                 console.log("merging");
@@ -2475,10 +2521,11 @@ angular.module('igl').controller('addMAsterInLibrary',
                 var temp = [];
                 temp.push($rootScope.igdocument.profile.metaData.hl7Version);
                 $scope.newDatatype.hl7versions = temp;
-                $scope.newDatatype.hl7Version = $rootScope.igdocument.profile.metaData.hl7Version;
                 DatatypeService.getOneStandard(datatype.name, $scope.newDatatype.hl7Version, $scope.newDatatype.hl7versions).then(function(standard) {
                     $rootScope.mergeEmptyProperty($scope.newDatatype, standard);
                     console.log("MERGING");
+                    $scope.newDatatype.hl7Version = $rootScope.igdocument.profile.metaData.hl7Version;
+                    console.log($scope.newDatatype);
                 });
             }
 
@@ -2795,6 +2842,8 @@ angular.module('igl').controller('AddSharedDatatype',
         };
         $scope.addDtFlv = function(datatype) {
             $scope.newDatatype = angular.copy(datatype);
+            $scope.newDatatype.publicationVersion=0;
+
 
             $scope.newDatatype.ext = Math.floor(Math.random() * 1000);
 

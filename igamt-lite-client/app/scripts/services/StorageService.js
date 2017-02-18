@@ -11,6 +11,8 @@ angular.module('igl').factory('StorageService',
             TABLE_COLLAPSE_SETTINGS:'TABLE_COLLAPSE_SETTINGS',
             TABLE_READONLY_SETTINGS:'TABLE_READONLY_SETTINGS',
             IG_DOCUMENT:'IG_DOCUMENT',
+            GVT_BASIC_AUTH:'GVT_BASIC_AUTH',
+
             remove: function (key) {
                 return localStorageService.remove(key);
             },
@@ -45,6 +47,12 @@ angular.module('igl').factory('StorageService',
             },
             setIgDocument: function (igDocument) {
                 this.set(this.IG_DOCUMENT,igDocument != null ?  angular.toJson(igDocument):null);
+            },
+            getGVTBasicAuth: function () {
+                return this.get(this.GVT_BASIC_AUTH);
+            },
+            setGVTBasicAuth: function (value) {
+                this.set(this.GVT_BASIC_AUTH,value);
             }
         };
         return service;

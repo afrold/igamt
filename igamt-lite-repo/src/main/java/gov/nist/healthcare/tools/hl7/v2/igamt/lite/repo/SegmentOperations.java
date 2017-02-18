@@ -27,6 +27,9 @@ public interface SegmentOperations {
 
   List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
+  public Segment findByNameAndVersionAndScope(String name, String version, String scope);
+
+
   public List<Segment> findByIds(Set<String> ids);
 
   List<Segment> findUserSegmentsByIds(Set<String> ids);
