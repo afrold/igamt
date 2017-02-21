@@ -190,7 +190,7 @@ public class Bootstrap implements InitializingBean {
     // changeStatusofPHINVADSTables();
 
     // modifyCodeUsage();
-    //fixMissingData();
+    // fixMissingData();
   }
 
   private void fixMissingData() {
@@ -206,9 +206,12 @@ public class Bootstrap implements InitializingBean {
     TableLibrary tableLibrary = document.getProfile().getTableLibrary();
 
     for (SegmentLink segLink : segmentLibrary.getChildren()) {
-      Segment segment = segmentService.findById(segLink.getId());
-      for (Field field : segment.getFields()) {
-        fixMissingData(field.getTables(), field.getDatatype(), tableLibrary, datatypeLibrary);
+      if (segLink.getId() != null) {
+        Segment segment = segmentService.findById(segLink.getId());
+        for (Field field : segment.getFields()) {
+          fixMissingData(field.getTables(), tableLibrary);
+          fixMissingData(field.getDatatype(), tableLibrary, datatypeLibrary);
+        }
       }
     }
     daatypeLibraryRepository.save(datatypeLibrary);
@@ -217,30 +220,52 @@ public class Bootstrap implements InitializingBean {
 
   private void fixMissingData(DatatypeLink datatypeLink, TableLibrary tableLibrary,
       DatatypeLibrary dtLib) {
-    if (!dtLib.getChildren().contains(datatypeLink)) {
-      dtLib.addDatatype(datatypeLink);
-    }
     if (datatypeLink.getId() != null) {
+      if (!contains(datatypeLink, dtLib)) {
+        dtLib.addDatatype(datatypeLink);
+      }
       Datatype datatype = datatypeService.findById(datatypeLink.getId());
       if (datatype.getComponents() != null && !datatype.getComponents().isEmpty()) {
         for (Component c1 : datatype.getComponents()) {
-          DatatypeLink datatypeLink1 = c1.getDatatype();
-          fixMissingData(c1.getTables(), datatypeLink1, tableLibrary, dtLib);
+          if (c1.getDatatype() != null && !datatypeLink.getId().equals(c1.getDatatype().getId())) {
+            fixMissingData(c1.getDatatype(), tableLibrary, dtLib);
+          }
+          fixMissingData(c1.getTables(), tableLibrary);
         }
       }
     }
   }
 
-  private void fixMissingData(List<TableLink> tableLinks, DatatypeLink datatypeLink,
-      TableLibrary tableLibrary, DatatypeLibrary dtLib) {
+  private void fixMissingData(List<TableLink> tableLinks, TableLibrary tableLibrary) {
     if (tableLinks != null && !tableLinks.isEmpty()) {
       for (TableLink tableLink : tableLinks) {
-        if (!tableLibrary.getChildren().contains(tableLink)) {
+        if (tableLink != null && tableLink.getId() != null && !contains(tableLink, tableLibrary)) {
           tableLibrary.addTable(tableLink);
         }
       }
     }
-    fixMissingData(datatypeLink, tableLibrary, dtLib);
+  }
+
+  private boolean contains(TableLink link, TableLibrary tableLibrary) {
+    if (tableLibrary.getChildren() != null) {
+      for (TableLink tableLink : tableLibrary.getChildren()) {
+        if (tableLink.getId() != null && tableLink.getId().equals(link.getId())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean contains(DatatypeLink link, DatatypeLibrary datatypeLibrary) {
+    if (datatypeLibrary.getChildren() != null) {
+      for (DatatypeLink datatypeLink : datatypeLibrary.getChildren()) {
+        if (datatypeLink.getId() != null && datatypeLink.getId().equals(link.getId())) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 
