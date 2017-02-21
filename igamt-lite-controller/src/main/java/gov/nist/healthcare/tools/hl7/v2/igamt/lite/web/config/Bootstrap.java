@@ -190,7 +190,7 @@ public class Bootstrap implements InitializingBean {
     // changeStatusofPHINVADSTables();
 
     // modifyCodeUsage();
-    fixMissingData();
+    //fixMissingData();
   }
 
   private void fixMissingData() {
