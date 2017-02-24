@@ -38,6 +38,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -50,6 +52,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPres
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
@@ -60,6 +64,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
@@ -116,6 +121,12 @@ public class Bootstrap implements InitializingBean {
   @Autowired
   private TableLibraryRepository tableLibraryRepository;
 
+  @Autowired
+  private DatatypeLibraryRepository daatypeLibraryRepository;
+
+  /*
+   * 
+   */
   /*
    * (non-Javadoc)
    * 
@@ -179,7 +190,85 @@ public class Bootstrap implements InitializingBean {
     // changeStatusofPHINVADSTables();
 
     // modifyCodeUsage();
+    // fixMissingData();
   }
+
+  private void fixMissingData() {
+    List<IGDocument> igDocuments = documentService.findAll();
+    for (IGDocument document : igDocuments) {
+      fixMissingData(document);
+    }
+  }
+
+  private void fixMissingData(IGDocument document) {
+    DatatypeLibrary datatypeLibrary = document.getProfile().getDatatypeLibrary();
+    SegmentLibrary segmentLibrary = document.getProfile().getSegmentLibrary();
+    TableLibrary tableLibrary = document.getProfile().getTableLibrary();
+
+    for (SegmentLink segLink : segmentLibrary.getChildren()) {
+      if (segLink.getId() != null) {
+        Segment segment = segmentService.findById(segLink.getId());
+        for (Field field : segment.getFields()) {
+          fixMissingData(field.getTables(), tableLibrary);
+          fixMissingData(field.getDatatype(), tableLibrary, datatypeLibrary);
+        }
+      }
+    }
+    daatypeLibraryRepository.save(datatypeLibrary);
+    tableLibraryRepository.save(tableLibrary);
+  }
+
+  private void fixMissingData(DatatypeLink datatypeLink, TableLibrary tableLibrary,
+      DatatypeLibrary dtLib) {
+    if (datatypeLink.getId() != null) {
+      if (!contains(datatypeLink, dtLib)) {
+        dtLib.addDatatype(datatypeLink);
+      }
+      Datatype datatype = datatypeService.findById(datatypeLink.getId());
+      if (datatype.getComponents() != null && !datatype.getComponents().isEmpty()) {
+        for (Component c1 : datatype.getComponents()) {
+          if (c1.getDatatype() != null && !datatypeLink.getId().equals(c1.getDatatype().getId())) {
+            fixMissingData(c1.getDatatype(), tableLibrary, dtLib);
+          }
+          fixMissingData(c1.getTables(), tableLibrary);
+        }
+      }
+    }
+  }
+
+  private void fixMissingData(List<TableLink> tableLinks, TableLibrary tableLibrary) {
+    if (tableLinks != null && !tableLinks.isEmpty()) {
+      for (TableLink tableLink : tableLinks) {
+        if (tableLink != null && tableLink.getId() != null && !contains(tableLink, tableLibrary)) {
+          tableLibrary.addTable(tableLink);
+        }
+      }
+    }
+  }
+
+  private boolean contains(TableLink link, TableLibrary tableLibrary) {
+    if (tableLibrary.getChildren() != null) {
+      for (TableLink tableLink : tableLibrary.getChildren()) {
+        if (tableLink.getId() != null && tableLink.getId().equals(link.getId())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean contains(DatatypeLink link, DatatypeLibrary datatypeLibrary) {
+    if (datatypeLibrary.getChildren() != null) {
+      for (DatatypeLink datatypeLink : datatypeLibrary.getChildren()) {
+        if (datatypeLink.getId() != null && datatypeLink.getId().equals(link.getId())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
 
   /**
    * 

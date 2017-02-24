@@ -118,8 +118,10 @@ public class ValidationServiceImpl implements ValidationService {
     Set<String> userMsgIds = getMessageIds(ig.getProfile().getMessages().getChildren());
     List<Message> userMsgs = messageService.findByIds(userMsgIds);
     for (Message msg : userMsgs) {
+      msg.setHl7Version(ig.getProfile().getMetaData().getHl7Version());
       Message referenceMessage = messageService.findByStructIdAndScopeAndVersion(msg.getStructID(),
           "HL7STANDARD", ig.getProfile().getMetaData().getHl7Version());
+      System.out.println("HEEEEEEREEEE" + msg.getHl7Version());
       ValidationResult valRes = validateMessage(referenceMessage, msg, true);
       blocks.put(msg.getId(), valRes);
 
@@ -207,13 +209,56 @@ public class ValidationServiceImpl implements ValidationService {
 
   }
 
+  public boolean verifyMsgStruct(List<SegmentRefOrGroup> ref, List<SegmentRefOrGroup> toBeVal) {
+
+    if (ref.size() != toBeVal.size()) {
+      return false;
+    }
+    for (int i = 0; i < toBeVal.size(); i++) {
+      if (toBeVal.get(i).getType() != ref.get(i).getType()) {
+        return false;
+      } else {
+        if (toBeVal.get(i).getType() == Constant.SEGMENTREF) {
+          SegmentRef segRef1 = (SegmentRef) toBeVal.get(i);
+          SegmentRef segRef2 = (SegmentRef) ref.get(i);
+          if (segRef1.getRef().getName() != segRef2.getRef().getName()) {
+            return false;
+          }
+
+        }
+        if (toBeVal.get(i).getType() == Constant.GROUP) {
+          Group grp1 = (Group) toBeVal.get(i);
+          Group grp2 = (Group) ref.get(i);
+          verifyMsgStruct(grp2.getChildren(), grp1.getChildren());
+        }
+      }
+
+    }
+
+    return true;
+  }
+
 
   @Override
   public ValidationResult validateMessage(Message reference, Message toBeValidated,
       boolean validateChildren) throws InvalidObjectException {
     ValidationResult result = new ValidationResult();
+
     HashMap<String, List<ValidationError>> items = new HashMap<String, List<ValidationError>>();
     HashMap<String, ValidationResult> blocks = new HashMap<String, ValidationResult>();
+
+    if (reference == null
+        || !verifyMsgStruct(reference.getChildren(), toBeValidated.getChildren())) {
+      result.setTargetId(toBeValidated.getId());
+      result.setErrorCount(0);
+      result.setItems(items);
+      result.setBlocks(blocks);
+
+      return result;
+
+    }
+
+
     Set<String> userSegIds = getSegmentIds(toBeValidated.getChildren());
     Set<String> referenceSegIds = getSegmentIds(reference.getChildren());
     List<Segment> userSegs = segmentService.findByIds(userSegIds);
@@ -1039,7 +1084,7 @@ public class ValidationServiceImpl implements ValidationService {
 
   @Override
   public String validateConfLength(String confLength, String igHl7Version) {
-
+    System.out.println("HEEEREEE" + igHl7Version);
     if (igHl7Version.compareTo("2.5.1") > 0) {
       if (confLength == null) {
         return "Conf. Length cannot be empty";
