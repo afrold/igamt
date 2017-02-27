@@ -40,15 +40,15 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
     }
 
-    $scope.initExportFont(){
-        ConfigurationService.findFonts).then(function (response) {
+    $scope.initExportFont = function (){
+        ConfigurationService.findFonts().then(function (response) {
             $scope.fonts=response;
             response.forEach(function(font) {
                 if(font.default){
                     $scope.selectedFont=font;
                 }
             });
-        }
+        });
     }
 
     $scope.isActive=function(str){
