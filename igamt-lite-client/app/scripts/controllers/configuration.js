@@ -101,7 +101,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
         }
-        )
+        );
     };
     $scope.setConfigType=function(type){
         console.log(type);

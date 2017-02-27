@@ -47,7 +47,7 @@ angular.module('igl').factory('ConfigurationService',
                 });
                 return delay.promise;
 				
-			}
+			},
 
 			findFonts:function(){
                 var delay = $q.defer();

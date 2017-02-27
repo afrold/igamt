@@ -178,7 +178,7 @@ public class Bootstrap implements InitializingBean {
     // createDefaultConfiguration("IG Style");
     // createDefaultConfiguration("Profile Style");
     // createDefaultConfiguration("Table Style");
-
+    createDefaultExportFonts();
     // changeStatusofPHINVADSTables();
 
     // modifyCodeUsage();
