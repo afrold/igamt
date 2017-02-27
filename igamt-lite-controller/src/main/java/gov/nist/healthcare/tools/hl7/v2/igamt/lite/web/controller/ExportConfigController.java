@@ -11,6 +11,8 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
+
+import java.util.List;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
@@ -43,6 +47,9 @@ public class ExportConfigController {
 
   @Autowired
   private AccountRepository accountRepository;
+
+  @Autowired
+  private ExportFontService exportFontService;
 
   @Autowired
   static final private Logger logger = LoggerFactory.getLogger(ExportConfigController.class);
@@ -109,5 +116,12 @@ public class ExportConfigController {
     return currentConfig;
   }
 
+
+  @RequestMapping(value = "/findFonts", method = RequestMethod.POST,
+      produces = "application/json")
+  public List<ExportFont> findFonts(@RequestBody String type) {
+    List<ExportFont> exportFonts = exportFontService.findAll();
+    return exportFonts;
+  }
 
 }

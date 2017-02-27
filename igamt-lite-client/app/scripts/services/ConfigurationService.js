@@ -48,6 +48,18 @@ angular.module('igl').factory('ConfigurationService',
                 return delay.promise;
 				
 			}
+
+			findFonts:function(){
+                var delay = $q.defer();
+                //datatype.accountId = userInfoService.getAccountID();
+                $http.post('api/ExportConfiguration/findFonts').then(function(response) {
+                    var fonts= angular.fromJson(response.data);
+                    delay.resolve(conf);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+			}
 			
 	};
 	

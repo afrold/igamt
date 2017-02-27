@@ -23,6 +23,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +32,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -69,14 +66,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
@@ -93,6 +82,9 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   ExportConfigRepository exportConfig;
+
+  @Autowired
+  ExportFontService exportFontService;
 
   @Autowired
   ProfileService profileService;
@@ -365,6 +357,15 @@ public class Bootstrap implements InitializingBean {
 
 
 
+  }
+
+  private void createDefaultExportFonts(){
+    ExportFont exportFont = new ExportFont("'Arial Narrow',sans-serif (Default)","'Arial Narrow',sans-serif;",true);
+    exportFontService.save(exportFont);
+    exportFont = new ExportFont("\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif", "\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif;");
+    exportFontService.save(exportFont);
+    exportFont = new ExportFont("\"Times New Roman\", Times, serif","\"Times New Roman\", Times, serif;");
+    exportFontService.save(exportFont);
   }
 
   private void changeStatusofPHINVADSTables() {

@@ -1,0 +1,8 @@
+<div>
+    <form>
+        <div ng-repeat="font in fonts">
+            <input type="radio" name="font.name" ng-value="font" ng-model="selectedFont" /><label style="font-family:{{ font.value }}">{{ font.name }}</label>
+        </div>
+    </form>
+    <div>The selected value is : {{ selectedFont }}</div>
+</div>
