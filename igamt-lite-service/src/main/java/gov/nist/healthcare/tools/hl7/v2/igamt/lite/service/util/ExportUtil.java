@@ -166,8 +166,8 @@ public class ExportUtil {
         }
     }
 
-    public ExportParameters setExportParameters(String documentTitle,boolean includeTOC, boolean inlineConstraints, String targetFormat, ExportConfig exportConfig, ExportFont exportFont){
-        return new ExportParameters(inlineConstraints,includeTOC,targetFormat,documentTitle,null,exportConfig.getMessageColumn().getColumns(),exportConfig.getSegmentColumn().getColumns(),exportConfig.getDatatypeColumn().getColumns(),exportConfig.getValueSetColumn().getColumns(),exportFont.getValue());
+    public ExportParameters setExportParameters(String documentTitle,boolean includeTOC, boolean inlineConstraints, String targetFormat, ExportConfig exportConfig, ExportFontConfig exportFontConfig){
+        return new ExportParameters(inlineConstraints,includeTOC,targetFormat,documentTitle,null,exportConfig.getMessageColumn().getColumns(),exportConfig.getSegmentColumn().getColumns(),exportConfig.getDatatypeColumn().getColumns(),exportConfig.getValueSetColumn().getColumns(),exportFontConfig);
     }
 
     //Private methods, alphabetically ordered

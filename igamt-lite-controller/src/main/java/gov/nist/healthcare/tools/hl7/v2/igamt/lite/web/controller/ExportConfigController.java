@@ -129,6 +129,25 @@ public class ExportConfigController {
     return exportFonts;
   }
 
+  @ RequestMapping(value = "/getUserExportFontConfig", method = RequestMethod.POST,
+  produces = "application/json")
+  public ExportFontConfig getUserExportFontConfig() {
+    ExportFontConfig exportFontConfig = null;
+    User u = userService.getCurrentUser();
+    try {
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (null != account) {
+      exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
+      }
+    } catch (Exception e) {
+      logger.warn("Unable to find the current config: " + e.getMessage());
+    }
+    if(exportFontConfig==null){
+      exportFontConfigService.getDefaultExportFontConfig();
+    }
+    return exportFontConfig;
+  }
+
   @RequestMapping(value = "/saveExportFontConfig", method = RequestMethod.POST, produces = "application/json")
   public ExportFont saveExportFontConfig(@RequestBody ExportFont exportFont){
     User u = userService.getCurrentUser();

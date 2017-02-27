@@ -44,6 +44,6 @@ public class ExportFontServiceImpl implements ExportFontService {
     }
 
     @Override public ExportFont findDefault() {
-        return exportFontRepository.findDefault();
+        return exportFontRepository.findByDefaultValue(true);
     }
 }

@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import org.apache.xpath.operations.Bool;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -24,13 +25,22 @@ public class ExportFontConfig {
     private Long accountId;
     private ExportFont exportFont;
     private Integer fontSize;
+    private Boolean defaultConfig;
 
     public ExportFontConfig() {
     }
 
-    public ExportFontConfig(Long accountId, ExportFont exportFont) {
+    public ExportFontConfig(Long accountId, ExportFont exportFont, Integer fontSize) {
         this.accountId = accountId;
         this.exportFont = exportFont;
+        this.fontSize = fontSize;
+        this.defaultConfig = false;
+    }
+
+    public ExportFontConfig(ExportFont exportFont, Integer fontSize, Boolean defaultConfig) {
+        this.exportFont = exportFont;
+        this.fontSize = fontSize;
+        this.defaultConfig = defaultConfig;
     }
 
     public String getId() {
@@ -63,5 +73,13 @@ public class ExportFontConfig {
 
     public void setFontSize(Integer fontSize) {
         this.fontSize = fontSize;
+    }
+
+    public Boolean getDefaultConfig() {
+        return defaultConfig;
+    }
+
+    public void setDefaultConfig(Boolean defaultConfig) {
+        this.defaultConfig = defaultConfig;
     }
 }

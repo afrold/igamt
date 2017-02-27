@@ -1,9 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportParameters;
@@ -56,13 +53,13 @@ public class ExportServiceImpl implements ExportService {
     private ProfileSerialization profileSerializationService;
 
     @Autowired
-    private ExportFontService exportFontService;
+    private ExportFontConfigService exportFontConfigService;
 
     @Override public InputStream exportIGDocumentAsDocx(IGDocument igDocument,
-        SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFont exportFont) throws IOException {
+        SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig) throws IOException {
         if (igDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(
-                DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD, exportConfig, exportFont);
+                DOCUMENT_TITLE_IMPLEMENTATION_GUIDE, true, true, EXPORT_FORMAT_WORD, exportConfig, exportFontConfig);
             igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
             return exportUtil.exportAsDocxFromXml(
                 serializationService.serializeIGDocument(igDocument, serializationLayout, exportConfig).toXML(),
@@ -74,9 +71,9 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override public InputStream exportIGDocumentAsHtml(IGDocument igDocument,
-        SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFont exportFont) throws IOException {
+        SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig) throws IOException {
         if (igDocument != null) {
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML, exportConfig, exportFont);
+            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_IMPLEMENTATION_GUIDE,true,false,EXPORT_FORMAT_HTML, exportConfig, exportFontConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService.serializeIGDocument(igDocument,
                     serializationLayout, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,igDocument.getMetaData());
@@ -98,8 +95,8 @@ public class ExportServiceImpl implements ExportService {
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
             ExportConfig exportConfig = ExportConfig.getBasicExportConfig("IG Style");
-            ExportFont exportFont = exportFontService.findDefault();
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML,exportConfig, exportFont);
+            ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML,exportConfig, exportFontConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService
                     .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,datatypeLibraryDocument.getMetaData());
@@ -112,8 +109,8 @@ public class ExportServiceImpl implements ExportService {
         DatatypeLibraryDocument datatypeLibraryDocument) {
         if (datatypeLibraryDocument != null) {
             ExportConfig exportConfig = ExportConfig.getBasicExportConfig("IG Style");
-            ExportFont exportFont = exportFontService.findDefault();
-            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD, exportConfig, exportFont);
+            ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+            ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD, exportConfig, exportFontConfig);
             return exportUtil.exportAsDocxFromXml(serializationService
                     .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
                 GLOBAL_STYLESHEET, exportParameters, datatypeLibraryDocument.getMetaData(),datatypeLibraryDocument.getDateUpdated());

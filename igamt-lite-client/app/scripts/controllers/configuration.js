@@ -44,7 +44,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         ConfigurationService.findFonts().then(function (response) {
             $scope.fonts=response;
             response.forEach(function(font) {
-                if(font.default){
+                if(font.defaultValue){
                     $scope.selectedFont=font;
                 }
             });

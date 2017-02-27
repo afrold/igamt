@@ -20,5 +20,7 @@ import org.springframework.stereotype.Service;
 public interface ExportFontConfigService {
     public ExportFontConfig findOneByAccountId(Long accountId);
     public ExportFontConfig findOne(Long id);
+    public ExportFontConfig getDefaultExportFontConfig();
     public ExportFontConfig save(ExportFontConfig exportFontConfig);
+    public void delete(ExportFontConfig exportFontConfig);
 }

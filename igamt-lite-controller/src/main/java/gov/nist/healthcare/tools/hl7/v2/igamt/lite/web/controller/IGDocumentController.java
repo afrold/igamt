@@ -609,13 +609,10 @@ public class IGDocumentController extends CommonController {
       exportConfig = ExportConfig.getBasicExportConfig(type);
     }
     ExportFontConfig exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
-    ExportFont exportFont = null;
     if(exportFontConfig == null){
-      exportFont = exportFontService.findDefault();
-    } else {
-      exportFont = exportFontConfig.getExportFont();
+      exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
     }
-    content = exportService.exportIGDocumentAsHtml(d, serializationLayout, exportConfig, exportFont);
+    content = exportService.exportIGDocumentAsHtml(d, serializationLayout, exportConfig, exportFontConfig);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
@@ -763,13 +760,10 @@ public class IGDocumentController extends CommonController {
       exportConfig = ExportConfig.getBasicExportConfig(type);
     }
     ExportFontConfig exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
-    ExportFont exportFont = null;
     if(exportFontConfig == null){
-      exportFont = exportFontService.findDefault();
-    } else {
-      exportFont = exportFontConfig.getExportFont();
+      exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
     }
-    content = exportService.exportIGDocumentAsDocx(d, serializationLayout, exportConfig, exportFont);
+    content = exportService.exportIGDocumentAsDocx(d, serializationLayout, exportConfig, exportFontConfig);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",

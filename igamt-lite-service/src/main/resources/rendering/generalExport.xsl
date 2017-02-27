@@ -18,8 +18,10 @@
     <xsl:variable name="imageLogoSrc" select="$imageLogo"/>
 
     <!-- Custom export font -->
-    <xsl:param name="userExportFont"/>
-    <xsl:variable name="exportFont" select="$userExportFont"/>
+    <xsl:param name="userFontFamily"/>
+    <xsl:variable name="fontFamily" select="$userFontFamily"/>
+    <xsl:param name="userFontSize"/>
+    <xsl:variable name="fontSize" select="$userFontSize"/>
 
     <!-- Parameters for the column filter -->
     <!-- Messages -->

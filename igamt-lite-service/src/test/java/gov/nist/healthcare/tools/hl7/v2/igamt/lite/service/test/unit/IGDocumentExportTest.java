@@ -1,8 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
@@ -39,6 +41,7 @@ public class IGDocumentExportTest {
     @Autowired IGDocumentService igDocumentService;
     @Autowired ExportService exportService;
     @Autowired ExportConfigService exportConfigService;
+    @Autowired ExportFontService exportFontService;
 
     private static final String IG_DOCUMENT_TEST_ID = "579a2fd784aeb9b94367d325";
     private static final String EXPORT_BASE_PATH = "test/ig_test";
@@ -54,8 +57,9 @@ public class IGDocumentExportTest {
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
+                ExportFont exportFont = new ExportFont("\"Times New Roman\", Times, serif","\"Times New Roman\", Times, serif;");
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,exportConfig), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,exportConfig,exportFont), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,8 +76,9 @@ public class IGDocumentExportTest {
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
+                ExportFont exportFont = exportFontService.findDefault();
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.PROFILE,exportConfig), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.PROFILE,exportConfig,exportFont), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,8 +96,9 @@ public class IGDocumentExportTest {
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
+                ExportFont exportFont = exportFontService.findDefault();
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.TABLES,exportConfig), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.TABLES,exportConfig,exportFont), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,8 +114,9 @@ public class IGDocumentExportTest {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
+                ExportFont exportFont = new ExportFont("\"Times New Roman\", Times, serif","\"Times New Roman\", Times, serif;");
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsDocx(igDocument, SerializationLayout.IGDOCUMENT,exportConfig), wordFile);
+                    .exportIGDocumentAsDocx(igDocument, SerializationLayout.IGDOCUMENT,exportConfig,exportFont), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -125,8 +132,9 @@ public class IGDocumentExportTest {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
+                ExportFont exportFont = exportFontService.findDefault();
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    SerializationLayout.PROFILE,exportConfig), wordFile);
+                    SerializationLayout.PROFILE,exportConfig,exportFont), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -142,8 +150,9 @@ public class IGDocumentExportTest {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
+                ExportFont exportFont = exportFontService.findDefault();
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    SerializationLayout.TABLES,exportConfig), wordFile);
+                    SerializationLayout.TABLES,exportConfig,exportFont), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();

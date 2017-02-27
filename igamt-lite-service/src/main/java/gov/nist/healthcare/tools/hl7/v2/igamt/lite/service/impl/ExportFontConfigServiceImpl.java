@@ -33,11 +33,19 @@ public class ExportFontConfigServiceImpl implements ExportFontConfigService{
         return exportFontConfigRepository.findOne(id);
     }
 
+    @Override public ExportFontConfig getDefaultExportFontConfig() {
+        return null;
+    }
+
     @Override public ExportFontConfig save(ExportFontConfig exportFontConfig) {
         ExportFontConfig existingExportFontConfig = exportFontConfigRepository.findOneByAccountId(exportFontConfig.getAccountId());
         if(existingExportFontConfig != null){
             exportFontConfigRepository.delete(existingExportFontConfig);
         }
         return exportFontConfigRepository.save(exportFontConfig);
+    }
+
+    @Override public void delete(ExportFontConfig exportFontConfig) {
+        exportFontConfigRepository.delete(exportFontConfig);
     }
 }

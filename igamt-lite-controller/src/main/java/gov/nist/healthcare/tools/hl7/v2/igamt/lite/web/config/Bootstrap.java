@@ -87,6 +87,9 @@ public class Bootstrap implements InitializingBean {
   ExportFontService exportFontService;
 
   @Autowired
+  ExportFontConfigService exportFontConfigService;
+
+  @Autowired
   ProfileService profileService;
   @Autowired
   DatatypeMatrixRepository matrix;
@@ -362,6 +365,12 @@ public class Bootstrap implements InitializingBean {
   private void createDefaultExportFonts(){
     ExportFont exportFont = new ExportFont("'Arial Narrow',sans-serif (Default)","'Arial Narrow',sans-serif;",true);
     exportFontService.save(exportFont);
+    ExportFontConfig defaultExportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+    if(defaultExportFontConfig!=null){
+      exportFontConfigService.delete(defaultExportFontConfig);
+    }
+    defaultExportFontConfig = new ExportFontConfig(exportFont,10,true);
+    exportFontConfigService.save(defaultExportFontConfig);
     exportFont = new ExportFont("\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif", "\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif;");
     exportFontService.save(exportFont);
     exportFont = new ExportFont("\"Times New Roman\", Times, serif","\"Times New Roman\", Times, serif;");

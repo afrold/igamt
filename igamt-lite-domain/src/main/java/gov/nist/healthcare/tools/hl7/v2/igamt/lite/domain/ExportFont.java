@@ -23,7 +23,7 @@ import javax.persistence.GenerationType;
 public class ExportFont {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long id;
+    private String id;
     private String name;
     private String value;
     private Boolean defaultValue;
@@ -43,11 +43,11 @@ public class ExportFont {
         this.defaultValue = defaultValue;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
