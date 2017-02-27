@@ -25,6 +25,13 @@ public class ExportFontConfig {
     private ExportFont exportFont;
     private Integer fontSize;
 
+    public ExportFontConfig() {
+    }
+
+    public ExportFontConfig(Long accountId, ExportFont exportFont) {
+        this.accountId = accountId;
+        this.exportFont = exportFont;
+    }
 
     public String getId() {
         return id;

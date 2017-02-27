@@ -30,6 +30,7 @@ public class ExportParameters {
     private List<NameAndPositionAndPresence> segmentsColumns;
     private List<NameAndPositionAndPresence> dataTypeColumns;
     private List<NameAndPositionAndPresence> valueSetColumns;
+    private String exportFont;
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle) {
@@ -38,14 +39,15 @@ public class ExportParameters {
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle,String imageLogo) {
-        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null);
+        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,"");
     }
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle, String imageLogo, List<NameAndPositionAndPresence> messageColumns,
         List<NameAndPositionAndPresence> segmentsColumns,
         List<NameAndPositionAndPresence> dataTypeColumns,
-        List<NameAndPositionAndPresence> valueSetColumns) {
+        List<NameAndPositionAndPresence> valueSetColumns,
+        String exportFont) {
         this.inlineConstraints = inlineConstraints;
         this.includeTOC = includeTOC;
         this.targetFormat = targetFormat;
@@ -55,6 +57,7 @@ public class ExportParameters {
         this.segmentsColumns = segmentsColumns;
         this.dataTypeColumns = dataTypeColumns;
         this.valueSetColumns = valueSetColumns;
+        this.exportFont = exportFont;
     }
 
     public ExportParameters() {
@@ -125,6 +128,7 @@ public class ExportParameters {
                 params.put(segmentsColumn+currentColumn.getName().replace(" ",""),String.valueOf(currentColumn.isPresent()));
             }
         }
+        params.put("userExportFont",exportFont);
         return params;
     }
 

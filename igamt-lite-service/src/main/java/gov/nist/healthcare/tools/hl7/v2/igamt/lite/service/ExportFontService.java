@@ -24,4 +24,5 @@ public interface ExportFontService {
     public ExportFont findOne(Long id);
     public ExportFont save(ExportFont exportFont);
     public List<ExportFont> findAll();
+    public ExportFont findDefault();
 }

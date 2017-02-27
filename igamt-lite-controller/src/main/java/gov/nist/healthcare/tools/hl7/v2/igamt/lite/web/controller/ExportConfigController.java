@@ -12,6 +12,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,9 @@ public class ExportConfigController {
 
   @Autowired
   private ExportFontService exportFontService;
+
+  @Autowired
+  ExportFontConfigService exportFontConfigService;
 
   @Autowired
   static final private Logger logger = LoggerFactory.getLogger(ExportConfigController.class);
@@ -119,9 +124,24 @@ public class ExportConfigController {
 
   @RequestMapping(value = "/findFonts", method = RequestMethod.POST,
       produces = "application/json")
-  public List<ExportFont> findFonts(@RequestBody String type) {
+  public List<ExportFont> findFonts() {
     List<ExportFont> exportFonts = exportFontService.findAll();
     return exportFonts;
+  }
+
+  @RequestMapping(value = "/saveExportFontConfig", method = RequestMethod.POST, produces = "application/json")
+  public ExportFont saveExportFontConfig(@RequestBody ExportFont exportFont){
+    User u = userService.getCurrentUser();
+    try {
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (null != account) {
+        ExportFontConfig exportFontConfig = new ExportFontConfig(account.getId(),exportFont);
+        exportFontConfigService.save(exportFontConfig);
+      }
+    } catch (Exception e) {
+      logger.warn("Unable to find the current config: " + e.getMessage());
+    }
+    return exportFont;
   }
 
 }

@@ -21,4 +21,7 @@ public interface ExportFontRepository extends MongoRepository<ExportFont, Long> 
 
     @Query("select e from ExportFont e where e.name = ?1")
     ExportFont findOneByName(String name);
+
+    @Query("select e from ExportFont e where e.default = true")
+    ExportFont findDefault();
 }
