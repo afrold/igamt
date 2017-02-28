@@ -149,18 +149,18 @@ public class ExportConfigController {
   }
 
   @RequestMapping(value = "/saveExportFontConfig", method = RequestMethod.POST, produces = "application/json")
-  public ExportFont saveExportFontConfig(@RequestBody ExportFont exportFont){
+  public ExportFontConfig saveExportFontConfig(@RequestBody ExportFontConfig exportFontConfig){
     User u = userService.getCurrentUser();
     try {
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (null != account) {
-        ExportFontConfig exportFontConfig = new ExportFontConfig(account.getId(),exportFont);
+        exportFontConfig.setAccountId(account.getId());
         exportFontConfigService.save(exportFontConfig);
       }
     } catch (Exception e) {
       logger.warn("Unable to find the current config: " + e.getMessage());
     }
-    return exportFont;
+    return exportFontConfig;
   }
 
 }

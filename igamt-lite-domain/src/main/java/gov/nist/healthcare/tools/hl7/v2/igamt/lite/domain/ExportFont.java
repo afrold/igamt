@@ -26,7 +26,6 @@ public class ExportFont {
     private String id;
     private String name;
     private String value;
-    private Boolean defaultValue;
 
     public ExportFont() {
     }
@@ -34,13 +33,6 @@ public class ExportFont {
     public ExportFont(String name, String value) {
         this.name = name;
         this.value = value;
-        this.defaultValue = false;
-    }
-
-    public ExportFont(String name, String value, Boolean defaultValue) {
-        this.name = name;
-        this.value = value;
-        this.defaultValue = defaultValue;
     }
 
     public String getId() {
@@ -67,11 +59,4 @@ public class ExportFont {
         this.value = value;
     }
 
-    public Boolean getDefaultValue() {
-        return defaultValue;
-    }
-
-    public void setDefaultValue(Boolean defaultValue) {
-        this.defaultValue = defaultValue;
-    }
 }

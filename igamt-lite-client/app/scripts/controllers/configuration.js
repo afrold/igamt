@@ -43,11 +43,9 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     $scope.initExportFont = function (){
         ConfigurationService.findFonts().then(function (response) {
             $scope.fonts=response;
-            response.forEach(function(font) {
-                if(font.defaultValue){
-                    $scope.selectedFont=font;
-                }
-            });
+        });
+        ConfigurationService.getUserExportFontConfig().then(function (response) {
+            $scope.exportFontConfig = response;
         });
     }
 

@@ -15,10 +15,10 @@
         </xsl:choose>
         <xsl:choose>
             <xsl:when test="$fontSize!=''">
-                <xsl:value-of select="concat('font-size:',$fontSize,';')"/>
+                <xsl:value-of select="concat('font-size:',$fontSize,'pt;')"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:text>font-size: 11;</xsl:text>
+                <xsl:text>font-size: 11pt;</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
         <xsl:text>
