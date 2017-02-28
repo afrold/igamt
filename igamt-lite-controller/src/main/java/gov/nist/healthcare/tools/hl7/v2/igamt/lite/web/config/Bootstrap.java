@@ -363,7 +363,7 @@ public class Bootstrap implements InitializingBean {
   }
 
   private void createDefaultExportFonts(){
-    ExportFont exportFont = new ExportFont("'Arial Narrow',sans-serif (Default)","'Arial Narrow',sans-serif;");
+    ExportFont exportFont = new ExportFont("'Arial Narrow',sans-serif","'Arial Narrow',sans-serif;");
     exportFontService.save(exportFont);
     ExportFontConfig defaultExportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
     if(defaultExportFontConfig!=null){

@@ -39,7 +39,13 @@ public class ExportFontServiceImpl implements ExportFontService {
         return exportFontRepository.save(exportFont);
     }
 
+    @Override public void deleteAll() {
+        exportFontRepository.deleteAll();
+    }
+
     @Override public List<ExportFont> findAll() {
         return exportFontRepository.findAll();
     }
+
+
 }

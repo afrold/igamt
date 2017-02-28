@@ -113,7 +113,8 @@ public class IGDocumentExportTest {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+                ExportFont exportFont = new ExportFont("\"Times New Roman\", Times, serif","\"Times New Roman\", Times, serif;");
+                ExportFontConfig exportFontConfig = new ExportFontConfig(exportFont,18,false);
                 FileUtils.copyInputStreamToFile(exportService
                     .exportIGDocumentAsDocx(igDocument, SerializationLayout.IGDOCUMENT,exportConfig,exportFontConfig), wordFile);
             }

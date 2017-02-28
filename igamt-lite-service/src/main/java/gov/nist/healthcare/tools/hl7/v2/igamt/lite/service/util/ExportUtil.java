@@ -19,7 +19,9 @@ import org.docx4j.openpackaging.parts.PartName;
 import org.docx4j.openpackaging.parts.WordprocessingML.AlternativeFormatInputPart;
 import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.CTAltChunk;
+import org.docx4j.wml.HpsMeasure;
 import org.docx4j.wml.ObjectFactory;
+import org.docx4j.wml.RPr;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -38,6 +40,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.math.BigInteger;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -79,9 +82,17 @@ public class ExportUtil {
 
             WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage
                 .load(this.getClass().getResourceAsStream("/rendering/lri_template.dotx"));
-
             ObjectFactory factory = Context.getWmlObjectFactory();
-
+            RPr runProperties = factory.createRPr();
+            HpsMeasure size = new HpsMeasure();
+            if(exportParameters.getExportFontConfig() != null) {
+                BigInteger fontSize =
+                    BigInteger.valueOf(exportParameters.getExportFontConfig().getFontSize());
+                size.setVal(fontSize);
+                runProperties.setSz(size);
+                runProperties.setSzCs(size);
+            }
+            wordMLPackage.getMainDocumentPart().addObject(runProperties);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             String formattedDateUpdated = simpleDateFormat.format(dateUpdated);
             docxExportUtil.createCoverPageForDocx4j(wordMLPackage, factory, metaData,formattedDateUpdated);

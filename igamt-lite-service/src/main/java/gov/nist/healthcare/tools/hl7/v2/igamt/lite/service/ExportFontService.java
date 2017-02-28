@@ -23,5 +23,7 @@ public interface ExportFontService {
 
     public ExportFont findOne(Long id);
     public ExportFont save(ExportFont exportFont);
+    public void deleteAll();
     public List<ExportFont> findAll();
+
 }

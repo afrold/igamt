@@ -3,7 +3,7 @@
     <xsl:template name="globalStyle">
         <xsl:text>.masterDatatypeLabel {color:red;}</xsl:text>
         <xsl:text>
-            html {
+            body {
         </xsl:text>
         <xsl:choose>
             <xsl:when test="$fontFamily!=''">

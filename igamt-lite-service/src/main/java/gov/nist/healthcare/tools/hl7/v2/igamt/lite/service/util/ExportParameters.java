@@ -140,4 +140,8 @@ public class ExportParameters {
     public void setImageLogo(String imageLogo) {
         this.imageLogo = imageLogo;
     }
+
+    public ExportFontConfig getExportFontConfig() {
+        return exportFontConfig;
+    }
 }

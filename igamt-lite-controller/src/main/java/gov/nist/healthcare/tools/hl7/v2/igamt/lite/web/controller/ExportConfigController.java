@@ -143,7 +143,7 @@ public class ExportConfigController {
       logger.warn("Unable to find the current config: " + e.getMessage());
     }
     if(exportFontConfig==null){
-      exportFontConfigService.getDefaultExportFontConfig();
+      exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
     }
     return exportFontConfig;
   }
@@ -162,5 +162,24 @@ public class ExportConfigController {
     }
     return exportFontConfig;
   }
+
+  @ RequestMapping(value = "/restoreDefaultExportFontConfig", method = RequestMethod.POST,
+      produces = "application/json")
+  public ExportFontConfig restoreDefaultExportFontConfig() {
+    ExportFontConfig exportFontConfig = null;
+    User u = userService.getCurrentUser();
+    try {
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (null != account) {
+        exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
+        exportFontConfigService.delete(exportFontConfig);
+      }
+    } catch (Exception e) {
+      logger.warn("Unable to delete the current config: " + e.getMessage());
+    }
+    exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+    return exportFontConfig;
+  }
+
 
 }
