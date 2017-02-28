@@ -30,7 +30,7 @@ public class SerializationUtil {
   }
 
   public String cleanRichtext(String richtext) {
-    richtext = StringEscapeUtils.unescapeHtml4(richtext);
+    //richtext = StringEscapeUtils.unescapeHtml4(richtext);
     richtext = richtext.replace("<br>", "<br></br>");
     richtext = richtext.replace("<p style=\"\"><br></p>", "<p></p>");
     richtext = richtext.replaceAll("[^\\p{Print}]", "?");
