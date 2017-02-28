@@ -639,7 +639,7 @@ public class IGDocumentController extends CommonController {
     content = exportService.exportIGDocumentAsXml(d);
     response.setContentType("text/xml");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+        "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_"
             + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
@@ -666,7 +666,7 @@ public class IGDocumentController extends CommonController {
     content = exportService.exportIGDocumentAsHtml(d, serializationLayout, exportConfig);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+        "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_"
             + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
@@ -719,7 +719,7 @@ public class IGDocumentController extends CommonController {
     content = igDocumentExport.exportAsZip(d);
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+        "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_"
             + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
@@ -730,14 +730,11 @@ public class IGDocumentController extends CommonController {
       @PathVariable("mIds") String[] messageIds, HttpServletRequest request,
       HttpServletResponse response)
       throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
-    log.info("Exporting as xml file profile with id=" + id + " for selected messages="
-        + Arrays.toString(messageIds));
+    log.info("Exporting as xml file profile with id=" + id + " for selected messages=" + Arrays.toString(messageIds));
     IGDocument d = findIGDocument(id);
     InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
-    response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+    response.setHeader("Content-disposition", "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -754,7 +751,7 @@ public class IGDocumentController extends CommonController {
     content = igDocumentExport.exportAsGazelleForSelectedMessages(d, messageIds);
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+        "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_"
             + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
@@ -770,7 +767,7 @@ public class IGDocumentController extends CommonController {
     content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageIds);
     response.setContentType("application/zip");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+        "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_"
             + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
@@ -785,7 +782,7 @@ public class IGDocumentController extends CommonController {
     content = igDocumentExport.exportAsPdf(d);
     response.setContentType("application/pdf");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-"
+        "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-"
             + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
@@ -814,7 +811,7 @@ public class IGDocumentController extends CommonController {
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+        "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_"
             + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
@@ -854,7 +851,7 @@ public class IGDocumentController extends CommonController {
     content = igDocumentExport.exportAsXlsx(d);
     response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     response.setHeader("Content-disposition",
-        "attachment;filename=" + escapeSpace(d.getMetaData().getTitle()) + "-" + id + "_"
+        "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_"
             + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
     FileCopyUtils.copy(content, response.getOutputStream());
   }
@@ -1162,8 +1159,8 @@ public class IGDocumentController extends CommonController {
     return null;
   }
 
-  private String escapeSpace(String str) {
-    return str.replaceAll(" ", "-");
+  private String updateFileName(String str) {
+    return str.replaceAll(" ", "-").replaceAll("\\*", "-").replaceAll("\"", "-").replaceAll(":", "-").replaceAll(";", "-").replaceAll("=", "-").replaceAll(",", "-");
   }
 
   @RequestMapping(value = "/{id}/updateChildSections", method = RequestMethod.POST)
