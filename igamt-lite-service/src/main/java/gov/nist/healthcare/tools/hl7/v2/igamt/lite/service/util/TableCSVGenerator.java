@@ -136,6 +136,7 @@ public class TableCSVGenerator {
     private static String followCVSformat(String value) {
 
         String result = value;
+        if(result == null) result = "";
         if (result.contains("\"")) {
             result = result.replace("\"", "\"\"");
         }
