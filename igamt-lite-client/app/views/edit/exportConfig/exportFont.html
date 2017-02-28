@@ -12,11 +12,10 @@
     </button>
     <form>
         <div ng-repeat="font in fonts">
-            <input type="radio" name="font.name" ng-value="font" ng-model="userExportFontConfig.exportFont" ng-change="setChanged()" /><label style="font-family:{{ font.value }}">{{ font.name }}</label>
+            <input type="radio" name="font.name" ng-value="font" ng-bind="userExportFontConfig.exportFont" ng-change="setChanged()" /><label style="font-family:{{ font.value }}">{{ font.name }}</label>
         </div>
         <div>
-            <label>Font size (HTML only): </label><input type="text" ng-model="userExportFontConfig.fontSize" ng-change="setChanged()"/>
+            <label>Font size (HTML only): </label><input type="text" ng-bind="userExportFontConfig.fontSize" ng-change="setChanged()"/>
         </div>
     </form>
-    <div>user ecport config: <pre>{{ userExportFontConfig | json }}</pre></div>
 </div>
