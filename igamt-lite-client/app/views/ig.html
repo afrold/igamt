@@ -75,8 +75,8 @@
 
         <div class="modal-header modal-wide">
             <div class="form-inline">
-                <span class="header4" style="color:white;">Create IG Document</span>
-
+                <span class="header4" style="color:white;" ng-show="clickSource==='btn'">Create IG Document</span>
+                <span class="header4" style="color:white;" ng-show="clickSource !=='btn'">Add Conformance Profile</span>
                 <button ng-show="clickSource === 'btn'" class="btn btn-raised btn-info btn-xs pull-right" type="button"
                         ng-click="ok()" ng-disabled="okDisabled || hl7VersionsDlgForm.$invalid">
                     <i class="fa fa-check"></i>Submit

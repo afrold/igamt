@@ -110,10 +110,10 @@
                 </tab-heading>
                 <div style="margin-top: 20px">
 
-                    <div ng-show="errorDetails.constraintsErrors.length === 0">
+                    <div ng-show="errorDetails.vsErrors.length === 0">
                         No error found.
                     </div>
-                    <table ng-show="errorDetails.constraintsErrors.length > 0" st-table="tmpValueSetErrors" st-safe-src="errorDetails.constraintsErrors"
+                    <table ng-show="errorDetails.vsErrors.length > 0" st-table="tmpValueSetErrors" st-safe-src="errorDetails.vsErrors"
                            class="table table-striped table-bordered table-condensed table-fix-header">
                         <thead>
                         <tr class="tbl-header" style="">
