@@ -375,6 +375,22 @@ public class Bootstrap implements InitializingBean {
     exportFontService.save(exportFont);
     exportFont = new ExportFont("\"Times New Roman\", Times, serif","\"Times New Roman\", Times, serif;");
     exportFontService.save(exportFont);
+    exportFont = new ExportFont("Georgia, serif","Georgia, serif;");
+    exportFontService.save(exportFont);
+    exportFont = new ExportFont("\"Comic Sans MS\", cursive, sans-serif","\"Comic Sans MS\", cursive, sans-serif;");
+    exportFontService.save(exportFont);
+    exportFont = new ExportFont("\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif","\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif;");
+    exportFontService.save(exportFont);
+    exportFont = new ExportFont("Tahoma, Geneva, sans-serif","Tahoma, Geneva, sans-serif;");
+    exportFontService.save(exportFont);
+    exportFont = new ExportFont("\"Trebuchet MS\", Helvetica, sans-serif","\"Trebuchet MS\", Helvetica, sans-serif;");
+    exportFontService.save(exportFont);
+    exportFont = new ExportFont("Verdana, Geneva, sans-serif","Verdana, Geneva, sans-serif;");
+    exportFontService.save(exportFont);
+    exportFont = new ExportFont("\"Courier New\", Courier, monospace","\"Courier New\", Courier, monospace;");
+    exportFontService.save(exportFont);
+    exportFont = new ExportFont("\"Lucida Console\", Monaco, monospace","\"Lucida Console\", Monaco, monospace;");
+    exportFontService.save(exportFont);
   }
 
   private void changeStatusofPHINVADSTables() {

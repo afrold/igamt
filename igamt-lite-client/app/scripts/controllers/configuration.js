@@ -77,11 +77,11 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     }
 
     $scope.updateUserFontRadio = function(){
-        $scope.fonts.forEach(function(font) {
-            if(font.id===$scope.userExportFontConfig.exportFont.id){
-                $scope.userExportFontConfig.exportFont = font;
-            }
-        });
+        $scope.userExportFontConfig.exportFont = $scope.fonts.find($scope.isFontEqualToUsers);
+    }
+
+    $scope.isFontEqualToUsers = function(font){
+        return font.name === $scope.userExportFontConfig.exportFont.name;
     }
 
     $scope.isActive=function(str){
