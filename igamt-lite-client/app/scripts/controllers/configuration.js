@@ -49,6 +49,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     }
 
     $scope.saveUserExportFontConfig = function(userExportFontConfig){
+        userExportFontConfig.defaultConfig = false;
         ConfigurationService.saveUserExportFontConfig(userExportFontConfig).then(function (response) {
             $rootScope.msg().text = "ConfigurationSaved";
             $rootScope.msg().type = "success";
