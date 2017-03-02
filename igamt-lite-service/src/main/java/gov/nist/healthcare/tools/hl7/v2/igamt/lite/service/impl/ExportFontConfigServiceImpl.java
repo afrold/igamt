@@ -34,7 +34,7 @@ public class ExportFontConfigServiceImpl implements ExportFontConfigService{
     }
 
     @Override public ExportFontConfig getDefaultExportFontConfig() {
-        return null;
+        return exportFontConfigRepository.findByDefaultConfig(true);
     }
 
     @Override public ExportFontConfig save(ExportFontConfig exportFontConfig) {

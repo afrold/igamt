@@ -21,4 +21,7 @@ public interface ExportFontConfigRepository extends
     MongoRepository<ExportFontConfig, Long> {
     @Query("select e from ExportFontConfig e where e.accountId = ?1")
     ExportFontConfig findOneByAccountId(Long accountId);
+
+    @Query("select e from ExportFontConfig e where e.defaultConfig = ?1")
+    ExportFontConfig findByDefaultConfig(Boolean defaultConfig);
 }

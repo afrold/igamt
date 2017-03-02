@@ -172,7 +172,9 @@ public class ExportConfigController {
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (null != account) {
         exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
-        exportFontConfigService.delete(exportFontConfig);
+        if(null != exportFontConfig) {
+          exportFontConfigService.delete(exportFontConfig);
+        }
       }
     } catch (Exception e) {
       logger.warn("Unable to delete the current config: " + e.getMessage());
