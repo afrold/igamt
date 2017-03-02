@@ -43,6 +43,9 @@ public class IGDocumentExportTest {
 
     private static final String IG_DOCUMENT_TEST_ID = "579a2fd784aeb9b94367d325";
     private static final String EXPORT_BASE_PATH = "test/ig_test";
+    private static final String FONT = "\"Trebuchet MS\", Helvetica, sans-serif";
+
+    private ExportFontConfig exportFontConfig = new ExportFontConfig(new ExportFont(FONT, FONT+";"), 14, false);
 
     @Test
     public void testHtmlCompactExport(){
@@ -55,8 +58,6 @@ public class IGDocumentExportTest {
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
-                ExportFont exportFont = new ExportFont("\"Times New Roman\", Times, serif","\"Times New Roman\", Times, serif;");
-                ExportFontConfig exportFontConfig = new ExportFontConfig(exportFont,18,false);
                 FileUtils.copyInputStreamToFile(exportService
                     .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,exportConfig,exportFontConfig), htmlFile);
             }
@@ -75,7 +76,6 @@ public class IGDocumentExportTest {
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
-                ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
                 FileUtils.copyInputStreamToFile(exportService
                     .exportIGDocumentAsHtml(igDocument, SerializationLayout.PROFILE,exportConfig,exportFontConfig), htmlFile);
             }
@@ -95,7 +95,6 @@ public class IGDocumentExportTest {
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
-                ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
                 FileUtils.copyInputStreamToFile(exportService
                     .exportIGDocumentAsHtml(igDocument, SerializationLayout.TABLES,exportConfig,exportFontConfig), htmlFile);
             }
@@ -113,10 +112,8 @@ public class IGDocumentExportTest {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                ExportFont exportFont = new ExportFont("\"Times New Roman\", Times, serif","\"Times New Roman\", Times, serif;");
-                ExportFontConfig exportFontConfig = new ExportFontConfig(exportFont,18,false);
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsDocx(igDocument, SerializationLayout.IGDOCUMENT,exportConfig,exportFontConfig), wordFile);
+                    .exportIGDocumentAsDocx(igDocument, SerializationLayout.IGDOCUMENT,exportConfig,this.exportFontConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -132,7 +129,6 @@ public class IGDocumentExportTest {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
                     SerializationLayout.PROFILE,exportConfig,exportFontConfig), wordFile);
             }
@@ -150,7 +146,6 @@ public class IGDocumentExportTest {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
                     SerializationLayout.TABLES,exportConfig,exportFontConfig), wordFile);
             }
