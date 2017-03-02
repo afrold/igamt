@@ -43,9 +43,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     $scope.initExportFont = function (){
         ConfigurationService.findFonts().then(function (response) {
             $scope.fonts=response;
-        });
-        ConfigurationService.getUserExportFontConfig().then(function (response) {
-            $scope.userExportFontConfig = response;
+            $scope.resetUserExportFontConfig();
         });
         $scope.changed=false;
     }
@@ -65,14 +63,24 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     $scope.resetUserExportFontConfig = function(){
         ConfigurationService.getUserExportFontConfig().then(function (response) {
             $scope.userExportFontConfig = response;
-            $scope.resetChanged();
+            $scope.updateUserFontRadio();
         });
+        $scope.resetChanged();
     }
 
     $scope.restoreDefaultExportFontConfig = function(){
         ConfigurationService.restoreDefaultExportFontConfig().then(function(response){
             $scope.userExportFontConfig = response;
+            $scope.updateUserFontRadio();
             $scope.resetChanged();
+        });
+    }
+
+    $scope.updateUserFontRadio = function(){
+        $scope.fonts.forEach(function(font) {
+            if(font.id===$scope.userExportFontConfig.exportFont.id){
+                $scope.userExportFontConfig.exportFont = font;
+            }
         });
     }
 
