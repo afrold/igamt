@@ -38,9 +38,53 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
         });
 
-
-
     }
+
+    $scope.initExportFont = function (){
+        ConfigurationService.findFonts().then(function (response) {
+            $scope.fonts=response;
+            $scope.resetUserExportFontConfig();
+        });
+        $scope.changed=false;
+    }
+
+    $scope.saveUserExportFontConfig = function(userExportFontConfig){
+        userExportFontConfig.defaultConfig = false;
+        ConfigurationService.saveUserExportFontConfig(userExportFontConfig).then(function (response) {
+            $rootScope.msg().text = "ConfigurationSaved";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+        }, function(error) {
+            $rootScope.msg().text = "ConfigurationSavedFaild";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+        });
+    }
+
+    $scope.resetUserExportFontConfig = function(){
+        ConfigurationService.getUserExportFontConfig().then(function (response) {
+            $scope.userExportFontConfig = response;
+            $scope.updateUserFontRadio();
+        });
+        $scope.resetChanged();
+    }
+
+    $scope.restoreDefaultExportFontConfig = function(){
+        ConfigurationService.restoreDefaultExportFontConfig().then(function(response){
+            $scope.userExportFontConfig = response;
+            $scope.updateUserFontRadio();
+            $scope.resetChanged();
+        });
+    }
+
+    $scope.updateUserFontRadio = function(){
+        $scope.userExportFontConfig.exportFont = $scope.fonts.find($scope.isFontEqualToUsers);
+    }
+
+    $scope.isFontEqualToUsers = function(font){
+        return font.name === $scope.userExportFontConfig.exportFont.name;
+    }
+
     $scope.isActive=function(str){
         return str==$scope.activeId;
     }
@@ -91,7 +135,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
         }
-        )
+        );
     };
     $scope.setConfigType=function(type){
         console.log(type);
