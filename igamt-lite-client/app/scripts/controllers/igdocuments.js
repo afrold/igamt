@@ -82,7 +82,7 @@ angular.module('igl')
             $rootScope.buildValidationMap($rootScope.validationResult);
             console.log($rootScope.validationMap);
             console.log($rootScope.childValidationMap);
-           
+
 
         }, function(error) {
             console.log(error);
@@ -1062,7 +1062,8 @@ angular.module('igl')
     $scope.createCompositeMessage = function() {
         var createCMInstance = $modal.open({
             templateUrl: 'createCompositeMessage.html',
-            controller: 'createCompositeMessageCtrl',
+            // controller: 'createCompositeMessageCtrl',
+            controller: 'createCompositeProfileCtrl',
             size: 'lg',
             windowClass: 'conformance-profiles-modal',
             resolve: {
@@ -1074,11 +1075,11 @@ angular.module('igl')
         }).result.then(function(results) {
             console.log("results");
             console.log(results);
-            $rootScope.editCM(results)
-                // if ($scope.profileComponentParams)
-                //     $scope.profileComponentParams.refresh();
-                // if ($scope.applyPcToParams)
-                //     $scope.applyPcToParams.refresh();
+            //$rootScope.editCM(results)
+            // if ($scope.profileComponentParams)
+            //     $scope.profileComponentParams.refresh();
+            // if ($scope.applyPcToParams)
+            //     $scope.applyPcToParams.refresh();
         });
 
     };
@@ -2190,15 +2191,15 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootSc
     };
 });
 
-angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window) {
+angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window) {
     $scope.igdocumentToSelect = igdocumentToSelect;
     $scope.xmlFormat = 'Validation';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
-    $scope.info = {text: undefined, show: false, type: null, details: null};
+    $scope.info = { text: undefined, show: false, type: null, details: null };
     $scope.redirectUrl = null;
 
-    $scope.trackSelections = function (bool, id) {
+    $scope.trackSelections = function(bool, id) {
         if (bool) {
             $scope.selectedMessagesIDs.push(id);
         } else {
@@ -2211,18 +2212,18 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     };
 
 
-    $scope.exportAsZIPforSelectedMessages = function () {
+    $scope.exportAsZIPforSelectedMessages = function() {
         $scope.loading = true;
         ExportSvc.exportAsXMLByMessageIds($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, $scope.xmlFormat);
         $scope.loading = false;
     };
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
 
 
-    $scope.viewErrors = function (errorDetails) {
+    $scope.viewErrors = function(errorDetails) {
 
         if ($scope.gvtErrorsDialog && $scope.gvtErrorsDialog != null && $scope.gvtErrorsDialog.opened) {
             $scope.gvtErrorsDialog.dismiss('cancel');
@@ -2234,7 +2235,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
             windowClass: 'conformance-profiles-modal',
             templateUrl: 'views/gvt/errorDetails.html',
             resolve: {
-                errorDetails: function () {
+                errorDetails: function() {
                     return errorDetails;
                 }
             }
@@ -2243,7 +2244,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
 
     };
 
-    $scope.exportAsZIPToGVT = function () {
+    $scope.exportAsZIPToGVT = function() {
         $scope.loading = true;
         $scope.info.text = null;
         $scope.info.show = false;
@@ -2258,15 +2259,15 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
             size: 'lg',
             templateUrl: 'views/gvt/login.html',
             resolve: {
-                user: function () {
+                user: function() {
                     return { username: null, password: null };
                 }
             }
         });
 
-        $scope.gvtLoginDialog.result.then(function (auth) {
-            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function (map) {
-                var response =  angular.fromJson(map.data);
+        $scope.gvtLoginDialog.result.then(function(auth) {
+            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function(map) {
+                var response = angular.fromJson(map.data);
                 if (response.success === false) {
                     $scope.info.text = "gvtExportFailed";
                     $scope.info['details'] = response;
@@ -2279,18 +2280,18 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
                     $scope.info.show = true;
                     $scope.info.type = 'info';
                     $scope.redirectUrl = $rootScope.appInfo.gvtUrl + $rootScope.appInfo.gvtUploadTokenContext + "?x=" + encodeURIComponent(token) + "&y=" + encodeURIComponent(auth);
-                    $timeout(function () {
+                    $timeout(function() {
                         $scope.loading = false;
-                        $window.open($scope.redirectUrl, "_target","",false);
+                        $window.open($scope.redirectUrl, "_target", "", false);
                     }, 3000);
                 }
-            }, function (error) {
+            }, function(error) {
                 $scope.info.text = "gvtExportFailed";
                 $scope.info.show = true;
                 $scope.info.type = 'danger';
                 $scope.loading = false;
             });
-        }, function () {
+        }, function() {
             $scope.info.show = false;
             $scope.loading = false;
         });
@@ -2823,7 +2824,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
         $scope.addDtFlv = function(datatype) {
             var newDatatype = angular.copy(datatype);
-            newDatatype.publicationVersion=0;
+            newDatatype.publicationVersion = 0;
 
             newDatatype.ext = $rootScope.createNewExtension(newDatatype.ext);
             newDatatype.scope = 'USER';
@@ -3565,6 +3566,50 @@ angular.module('igl').controller('createProfileComponentCtrl',
         $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
         };
+    });
+
+angular.module('igl').controller('createCompositeProfileCtrl',
+    function($scope, $rootScope, $modalInstance, $http, $filter, PcService, IgDocumentService, CompositeProfileService) {
+
+        $scope.pcList = [];
+        $scope.baseProfiles = $rootScope.messages.children;
+        $scope.pcs = $rootScope.profileComponents;
+        $scope.position = 1;
+
+         $scope.selectBaseProfile = function(baseP) {
+            $scope.baseP = angular.copy(baseP);
+        };
+        $scope.checkExist = function(pc) {
+            for (var i = 0; i < $scope.pcList.length; i++) {
+                if ($scope.pcList[i].id === pc.id) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        $scope.removePc = function(pc) {
+            var positionToRemove = pc.position;
+            var index = $scope.pcList.indexOf(pc);
+            if (index > -1) $scope.pcList.splice(index, 1);
+            for (var i = 0; i < $scope.pcList.length; i++) {
+                if ($scope.pcList[i].position >= positionToRemove) {
+                    $scope.pcList[i].position = $scope.pcList[i].position - 1;
+                }
+            }
+            $scope.position = $scope.position - 1;
+
+        };
+        $scope.selectPC = function(pc) {
+            console.log(pc);
+            pc.position = angular.copy($scope.position);
+            $scope.pcList.push(pc);
+            $scope.position = $scope.position + 1;
+        };
+
+        $scope.create = function(){
+
+        };
+
     });
 
 

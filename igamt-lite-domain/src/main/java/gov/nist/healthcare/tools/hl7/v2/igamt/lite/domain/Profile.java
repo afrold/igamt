@@ -1,22 +1,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 public class Profile extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
@@ -27,7 +16,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
     this.type = Constant.PROFILE;
     scope = IGDocumentScope.PRELOADED;
     this.id = ObjectId.get().toString();
-   }
+  }
 
   private IGDocumentScope scope;
 
@@ -44,13 +33,14 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
   private DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
 
   private Messages messages = new Messages();
-  private CompositeMessages compositeMessages=new CompositeMessages();
+  private CompositeMessages compositeMessages = new CompositeMessages();
+  private CompositeProfiles compositeProfiles = new CompositeProfiles();
 
-  
 
-@DBRef
+
+  @DBRef
   private TableLibrary tableLibrary = new TableLibrary();
-  
+
   @DBRef
   private ProfileComponentLibrary profileComponentLibrary = new ProfileComponentLibrary();
 
@@ -124,13 +114,23 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
   public void setMessages(Messages messages) {
     this.messages = messages;
   }
-  public CompositeMessages getCompositeMessages() {
-		return compositeMessages;
-	}
 
-	public void setCompositeMessages(CompositeMessages compositeMessages) {
-		this.compositeMessages = compositeMessages;
-	}
+  public CompositeMessages getCompositeMessages() {
+    return compositeMessages;
+  }
+
+  public void setCompositeMessages(CompositeMessages compositeMessages) {
+    this.compositeMessages = compositeMessages;
+  }
+
+
+  public CompositeProfiles getCompositeProfiles() {
+    return compositeProfiles;
+  }
+
+  public void setCompositeProfiles(CompositeProfiles compositeProfiles) {
+    this.compositeProfiles = compositeProfiles;
+  }
 
   public String getConstraintId() {
     return constraintId;
@@ -228,14 +228,14 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
   }
 
   public ProfileComponentLibrary getProfileComponentLibrary() {
-	return profileComponentLibrary;
-}
+    return profileComponentLibrary;
+  }
 
-public void setProfileComponentLibrary(ProfileComponentLibrary profileComponentLibrary) {
-	this.profileComponentLibrary = profileComponentLibrary;
-}
+  public void setProfileComponentLibrary(ProfileComponentLibrary profileComponentLibrary) {
+    this.profileComponentLibrary = profileComponentLibrary;
+  }
 
-public void merge(Profile p) {
+  public void merge(Profile p) {
     // Note: merge is used for creation of new profiles do we don't consider
     // constraints and annotations
     // in each profile, there is one message library with one message

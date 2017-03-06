@@ -190,6 +190,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
             $scope.changes = false;
             $scope.clearDirty();
+            console.log("------Profile Component------");
             console.log(result);
         });
         // });
