@@ -58,7 +58,7 @@ public class Constant {
   public final static int CODESIZELIMIT = 3000;
 
   public enum SCOPE {
-    HL7STANDARD, MASTER, USER, PRELOADED, PHINVADS
+    HL7STANDARD, MASTER, USER, PRELOADED, PHINVADS, INTER
   };
   public enum QUANTUM {
     BREVIS, SUMMA

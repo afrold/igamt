@@ -23,8 +23,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +30,11 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -39,6 +42,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeMatrix;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -66,6 +71,17 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DeltaService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
@@ -98,6 +114,7 @@ public class Bootstrap implements InitializingBean {
   @Autowired
   UnchangedDataRepository unchangedData;
 
+
   @Autowired
   MessageService messageService;
 
@@ -118,6 +135,11 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   private DatatypeLibraryRepository daatypeLibraryRepository;
+
+  @Autowired
+  private DeltaService deltaService;
+
+
 
   /*
    * 
@@ -162,10 +184,12 @@ public class Bootstrap implements InitializingBean {
 
     // ===============Data Type Library=====================================
 
-    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
+    CreateCollectionOfUnchanged(); // group datatype by sets of versions
     // setDtsStatus();// sets the status of all the datatypes to published or unpublished
     // setTablesStatus(); // sets the status of all the tables to published or unpublished
-    // Colorate(); // genenerates the datatypes evolution matrix.
+    Colorate(); // genenerates the datatypes evolution matrix.
+
+    CreateIntermediateFromUnchanged();
     // setSegmentStatus();
     // // ====================================================================*/
     // // this.modifyConstraint();
@@ -362,34 +386,42 @@ public class Bootstrap implements InitializingBean {
 
   }
 
-  private void createDefaultExportFonts(){
-    ExportFont exportFont = new ExportFont("'Arial Narrow',sans-serif","'Arial Narrow',sans-serif;");
+  private void createDefaultExportFonts() {
+    ExportFont exportFont =
+        new ExportFont("'Arial Narrow',sans-serif", "'Arial Narrow',sans-serif;");
     exportFontService.save(exportFont);
     ExportFontConfig defaultExportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
-    if(defaultExportFontConfig!=null){
+    if (defaultExportFontConfig != null) {
       exportFontConfigService.delete(defaultExportFontConfig);
     }
-    defaultExportFontConfig = new ExportFontConfig(exportFont,10,true);
+    defaultExportFontConfig = new ExportFontConfig(exportFont, 10, true);
     exportFontConfigService.save(defaultExportFontConfig);
-    exportFont = new ExportFont("\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif", "\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif;");
+    exportFont = new ExportFont("\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif",
+        "\"Palatino Linotype\", \"Book Antiqua\", Palatino, serif;");
     exportFontService.save(exportFont);
-    exportFont = new ExportFont("\"Times New Roman\", Times, serif","\"Times New Roman\", Times, serif;");
+    exportFont =
+        new ExportFont("\"Times New Roman\", Times, serif", "\"Times New Roman\", Times, serif;");
     exportFontService.save(exportFont);
-    exportFont = new ExportFont("Georgia, serif","Georgia, serif;");
+    exportFont = new ExportFont("Georgia, serif", "Georgia, serif;");
     exportFontService.save(exportFont);
-    exportFont = new ExportFont("\"Comic Sans MS\", cursive, sans-serif","\"Comic Sans MS\", cursive, sans-serif;");
+    exportFont = new ExportFont("\"Comic Sans MS\", cursive, sans-serif",
+        "\"Comic Sans MS\", cursive, sans-serif;");
     exportFontService.save(exportFont);
-    exportFont = new ExportFont("\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif","\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif;");
+    exportFont = new ExportFont("\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif",
+        "\"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif;");
     exportFontService.save(exportFont);
-    exportFont = new ExportFont("Tahoma, Geneva, sans-serif","Tahoma, Geneva, sans-serif;");
+    exportFont = new ExportFont("Tahoma, Geneva, sans-serif", "Tahoma, Geneva, sans-serif;");
     exportFontService.save(exportFont);
-    exportFont = new ExportFont("\"Trebuchet MS\", Helvetica, sans-serif","\"Trebuchet MS\", Helvetica, sans-serif;");
+    exportFont = new ExportFont("\"Trebuchet MS\", Helvetica, sans-serif",
+        "\"Trebuchet MS\", Helvetica, sans-serif;");
     exportFontService.save(exportFont);
-    exportFont = new ExportFont("Verdana, Geneva, sans-serif","Verdana, Geneva, sans-serif;");
+    exportFont = new ExportFont("Verdana, Geneva, sans-serif", "Verdana, Geneva, sans-serif;");
     exportFontService.save(exportFont);
-    exportFont = new ExportFont("\"Courier New\", Courier, monospace","\"Courier New\", Courier, monospace;");
+    exportFont = new ExportFont("\"Courier New\", Courier, monospace",
+        "\"Courier New\", Courier, monospace;");
     exportFontService.save(exportFont);
-    exportFont = new ExportFont("\"Lucida Console\", Monaco, monospace","\"Lucida Console\", Monaco, monospace;");
+    exportFont = new ExportFont("\"Lucida Console\", Monaco, monospace",
+        "\"Lucida Console\", Monaco, monospace;");
     exportFontService.save(exportFont);
   }
 
@@ -979,11 +1011,11 @@ public class Bootstrap implements InitializingBean {
   private void initMAp() {
     List<SCOPE> scopes = new ArrayList<SCOPE>();
     scopes.add(SCOPE.HL7STANDARD);
-    List<Datatype> dataInit = datatypeService.findByScopesAndVersion(scopes, "2.1");
+    List<Datatype> dataInit = datatypeService.findByScopesAndVersion(scopes, "2.3.1");
     for (Datatype dt : dataInit) {
       ArrayList<List<String>> temp = new ArrayList<List<String>>();
       List<String> version1 = new ArrayList<String>();
-      version1.add("2.1");
+      version1.add("2.3.1");
       temp.add(version1);
       DatatypeMap.put(dt.getName(), temp);
 
@@ -1010,7 +1042,7 @@ public class Bootstrap implements InitializingBean {
           Datatype d = datatypeService.findByNameAndVersionAndScope(dt.getName(),
               DatatypeMap.get(dt.getName()).get(i).get(0), "HL7STANDARD");
           if (d != null && !Visited.containsKey(dt.getName())) {
-            if (d.isIdentique(dt)) {
+            if (deltaService.CompareDatatypes(d, dt)) {
               DatatypeMap.get(dt.getName()).get(i).add(version);
 
               System.out.println("FOUND IDENTIQUE");
@@ -1030,8 +1062,7 @@ public class Bootstrap implements InitializingBean {
 
   public void addAllVersions() {
     initMAp();
-    String[] versions = {"2.2", "2.3", "2.3.1", "2.4", "2.5", "2.5.1", "2.6", "2.7", "2.7.1", "2.8",
-        "2.8.1", "2.8.2"};
+    String[] versions = {"2.4", "2.5", "2.5.1", "2.6", "2.7", "2.7.1", "2.8", "2.8.1", "2.8.2"};
     // String[] versions = {"2.2","2.3"};
     for (int i = 0; i < versions.length; i++) {
       AddVersiontoMap(versions[i].toString());
@@ -1053,6 +1084,54 @@ public class Bootstrap implements InitializingBean {
         }
       }
     }
+  }
+
+  public void CreateIntermediateFromUnchanged() {
+    List<UnchangedDataType> unchanged = unchangedData.findAll();
+    for (UnchangedDataType dt : unchanged) {
+      Datatype d = datatypeService.findByNameAndVersionAndScope(dt.getName(),
+          dt.getVersions().get(dt.getVersions().size() - 1), "HL7STANDARD");
+
+      Datatype newDatatype = new Datatype();
+      newDatatype = d;
+      newDatatype.setId(null);
+      newDatatype.setHl7Version("*");
+      newDatatype.setScope(SCOPE.INTER);
+      newDatatype.setHl7versions(dt.getVersions());
+
+      datatypeService.save(newDatatype);
+
+    }
+
+
+    List<Datatype> Inter = datatypeService.findByScope("INTER");
+    for (Datatype d : Inter) {
+      if (d.getComponents().size() == 0) {
+        MergeComponent(d);
+        datatypeService.save(d);
+      } else {
+
+
+      }
+
+    }
+
+  }
+
+  /**
+   * @param d
+   */
+  private void MergeComponent(Datatype d) {
+    // TODO Auto-generated method stub
+    for (Component c : d.getComponents()) {
+      if (null != c.getDatatype()) {
+        Datatype interN = datatypeService.findById(c.getDatatype().getId());
+        Datatype replacement =
+            datatypeService.findByCompatibleVersion(interN.getName(), d.getHl7Version(), "INTER");
+        c.getDatatype().setId(replacement.getId());
+      }
+    }
+
   }
 
   public void Colorate() {
@@ -1083,9 +1162,7 @@ public class Bootstrap implements InitializingBean {
   // NOTE:ADD version to preloaded segs,dts,vs
   private void addVersionAndScopetoHL7IG() {
     List<String> hl7Versions = new ArrayList<String>();
-    hl7Versions.add("2.1");
-    hl7Versions.add("2.2");
-    hl7Versions.add("2.3");
+
     hl7Versions.add("2.3.1");
     hl7Versions.add("2.4");
     hl7Versions.add("2.5");
