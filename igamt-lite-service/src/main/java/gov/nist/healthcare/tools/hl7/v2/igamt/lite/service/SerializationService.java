@@ -22,6 +22,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
 public interface SerializationService {
     public nu.xom.Document serializeIGDocument(IGDocument igDocument,
         SerializationLayout serializationLayout, ExportConfig exportConfig);
-    public nu.xom.Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument);
+    public nu.xom.Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig);
     public nu.xom.Document serializeElement(SerializableElement element);
 }

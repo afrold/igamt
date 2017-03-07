@@ -53,7 +53,8 @@ import java.util.*;
     private Messages igDocumentMessages;
 
 
-    @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument) {
+    @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig) {
+        this.exportConfig = exportConfig;
         SerializableStructure serializableStructure = new SerializableStructure();
         datatypeLibraryDocument.getMetaData().setHl7Version("");
         datatypeLibraryDocument.getDatatypeLibrary().setSectionTitle("Data Types");
@@ -64,6 +65,8 @@ import java.util.*;
             new SerializableMetadata(datatypeLibraryDocument.getMetaData(), datatypeLibraryDocument.getDateUpdated());
         serializableStructure.addSerializableElement(serializableMetadata);
         SerializableSections serializableSections = new SerializableSections();
+        this.bindedDatatypes = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
+        this.bindedTables = new ArrayList<>(datatypeLibraryDocument.getTableLibrary().getChildren());
         SerializableSection datatypeSection = this.serializeDatatypes(datatypeLibraryDocument.getDatatypeLibrary(),1,true);
         //datatypeSection.setTitle("Data Types");
         serializableSections.addSection(datatypeSection);
@@ -276,7 +279,7 @@ import java.util.*;
         Collections.sort(datatypeLinkList);
         UsageConfig datatypeComponentsUsageConfig = this.exportConfig.getComponentExport();
         for (DatatypeLink datatypeLink : datatypeLinkList) {
-            if(bindedDatatypes.contains(datatypeLink)) {
+            if(null!=bindedDatatypes && bindedDatatypes.contains(datatypeLink)) {
                 SerializableDatatype serializableDatatype = serializeDatatypeService
                     .serializeDatatype(datatypeLink,
                         prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),

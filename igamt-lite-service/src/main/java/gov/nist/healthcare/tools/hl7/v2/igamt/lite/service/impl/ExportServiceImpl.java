@@ -96,7 +96,7 @@ public class ExportServiceImpl implements ExportService {
         if (datatypeLibraryDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML,exportConfig, exportFontConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService
-                    .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
+                    .serializeDatatypeLibrary(datatypeLibraryDocument, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,datatypeLibraryDocument.getMetaData());
         } else {
             return new NullInputStream(1L);
@@ -108,7 +108,7 @@ public class ExportServiceImpl implements ExportService {
         if (datatypeLibraryDocument != null) {
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD, exportConfig, exportFontConfig);
             return exportUtil.exportAsDocxFromXml(serializationService
-                    .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
+                    .serializeDatatypeLibrary(datatypeLibraryDocument, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters, datatypeLibraryDocument.getMetaData(),datatypeLibraryDocument.getDateUpdated());
         } else {
             return new NullInputStream(1L);
