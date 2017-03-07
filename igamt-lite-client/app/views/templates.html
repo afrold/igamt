@@ -3373,18 +3373,12 @@
                         <div class="row" style="padding-top:10px">
 
                             <div class="row container">
-                                <label style="color:black !important; margin-right:8px;">Select HL7 version:</label>
-                                <div class="btn-group btn-group-sm" data-toggle="buttons">
-                                    <label class="btn btn-raised btn-info btn-xs" ng-click="setVersion(vr)" ng-class="{ 'active':vr===version1}" ng-repeat="vr in versions">
-                                                            <input type="radio" ng-value="vr" ng-model="version1">{{vr}}</input>
-                                                        </label>
-                                </div>
 
                             </div>
 
-                            <hr style="border-top: 2px solid #271e1e" ng-if="version1" />
+                            <hr style="border-top: 2px solid #271e1e" />
 
-                            <div class="row container" ng-if="version1">
+                            <div class="row container">
 
                                 <div class="panel panel-primary col-md-5">
                                     <div class="panel-heading">Source</div>
@@ -3405,17 +3399,17 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr ng-repeat="data in AllUnchanged| filter:search" ng-if="containsCurrentVersion(data)">
+                                                    <tr ng-repeat="data in hl7Datatypes| filter:search">
                                                         <td>
                                                             <span>{{data.name}}</span>
                                                         </td>
                                                         <td>
                                                             <ul>
-                                                                <li ng-repeat="version in data.versions">{{version}}</li>
+                                                                <li ng-repeat="version in data.hlversions">{{version}}</li>
                                                             </ul>
                                                         </td>
                                                         <td>
-                                                            <i ng-click="getDatatypeFromUnchanged(data)" class="fa fa-plus fa-fw" style="color:blue;cursor:pointer !important"></i>
+                                                            <i ng-click="AddDatatypeForMaster(data)" class="fa fa-plus fa-fw" style="color:blue;cursor:pointer !important"></i>
                                                         </td>
                                                     </tr>
                                                 </tbody>

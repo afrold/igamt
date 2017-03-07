@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -184,12 +185,13 @@ public class Bootstrap implements InitializingBean {
 
     // ===============Data Type Library=====================================
 
-    CreateCollectionOfUnchanged(); // group datatype by sets of versions
+    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
     // setDtsStatus();// sets the status of all the datatypes to published or unpublished
     // setTablesStatus(); // sets the status of all the tables to published or unpublished
-    Colorate(); // genenerates the datatypes evolution matrix.
+    // Colorate(); // genenerates the datatypes evolution matrix.
 
     CreateIntermediateFromUnchanged();
+    MergeComponents();
     // setSegmentStatus();
     // // ====================================================================*/
     // // this.modifyConstraint();
@@ -1076,12 +1078,11 @@ public class Bootstrap implements InitializingBean {
       String name = e.getKey();
       ArrayList<List<String>> values = e.getValue();
       for (List<String> versions : values) {
-        if (!name.equals("-")) {
-          UnchangedDataType unchanged = new UnchangedDataType();
-          unchanged.setName(name);
-          unchanged.setVersions(versions);
-          unchangedData.insert(unchanged);
-        }
+        UnchangedDataType unchanged = new UnchangedDataType();
+        unchanged.setName(name);
+        unchanged.setVersions(versions);
+        unchangedData.insert(unchanged);
+
       }
     }
   }
@@ -1094,9 +1095,9 @@ public class Bootstrap implements InitializingBean {
 
       Datatype newDatatype = new Datatype();
       newDatatype = d;
-      newDatatype.setId(null);
+      newDatatype.setId(ObjectId.get().toString());
       newDatatype.setHl7Version("*");
-      newDatatype.setScope(SCOPE.INTER);
+      newDatatype.setScope(SCOPE.INTERMASTER);
       newDatatype.setHl7versions(dt.getVersions());
 
       datatypeService.save(newDatatype);
@@ -1104,33 +1105,38 @@ public class Bootstrap implements InitializingBean {
     }
 
 
-    List<Datatype> Inter = datatypeService.findByScope("INTER");
-    for (Datatype d : Inter) {
-      if (d.getComponents().size() == 0) {
-        MergeComponent(d);
-        datatypeService.save(d);
-      } else {
-
-
-      }
-
-    }
+    // List<Datatype> Inter = datatypeService.findByScope("INTERMASTER");
+    // for (Datatype d : Inter) {
+    // if (d.getComponents().size() != 0) {
+    // MergeComponent(d);
+    // datatypeService.save(d);
+    // }
+    //
+    // }
 
   }
 
   /**
    * @param d
    */
-  private void MergeComponent(Datatype d) {
+  private void MergeComponents() {
     // TODO Auto-generated method stub
-    for (Component c : d.getComponents()) {
-      if (null != c.getDatatype()) {
-        Datatype interN = datatypeService.findById(c.getDatatype().getId());
-        Datatype replacement =
-            datatypeService.findByCompatibleVersion(interN.getName(), d.getHl7Version(), "INTER");
-        c.getDatatype().setId(replacement.getId());
+    List<Datatype> BeforeMerge = datatypeService.findByScope("INTERMASTER");
+    for (Datatype dt : BeforeMerge) {
+      if (dt.getComponents().size() != 0) {
+        for (Component c : dt.getComponents()) {
+          if (c.getDatatype() != null) {
+            Datatype current = datatypeService.findById(c.getDatatype().getId());
+            Datatype temp = datatypeService.findByCompatibleVersion(current.getName(),
+                current.getHl7Version(), "INTERMASTER");
+            c.getDatatype().setId(temp.getId());
+
+          }
+        }
       }
+      datatypeService.save(dt);
     }
+
 
   }
 

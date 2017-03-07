@@ -2819,3 +2819,43 @@ tr .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12, .col-xs-11, .col-sm-11, .col-
     padding-left: 15px;
     padding-right: 15px;
 }
+
+
+.fixed_headers {
+  table-layout: fixed;
+  border-collapse: collapse;
+  
+  th { text-decoration: underline; }
+  th, td {
+    padding: 5px;
+    width:20px;
+    text-align: left;
+
+
+  }
+  
+
+
+  thead {
+
+    tr {
+      display: block !important;
+      position: relative !important;
+      background-color: #0277bd !important;
+
+
+    }
+  }
+  tbody {
+    display: block !important;
+    overflow: auto;
+    width: 100%;
+
+  }
+}
+
+.old_ie_wrapper {
+  overflow-x: hidden;
+  overflow-y: auto;
+  tbody{ height: auto; }
+}
