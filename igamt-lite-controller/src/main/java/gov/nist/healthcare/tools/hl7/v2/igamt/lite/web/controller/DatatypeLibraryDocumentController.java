@@ -255,19 +255,32 @@ public class DatatypeLibraryDocumentController {
     @RequestMapping(value = "/{libId}/export/html", method = RequestMethod.POST, produces = "text/html")
     public void exportXml(@PathVariable String libId, HttpServletRequest request,
         HttpServletResponse response) throws IOException, UserAccountNotFoundException {
-        doExport(libId, "html", response);
+        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById(libId);
+        InputStream content = doExport(datatypeLibraryDocument, "html");
+        response.setContentType(
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        response.setHeader("Content-disposition",
+            "attachment;filename=" + escapeSpace(datatypeLibraryDocument.getMetaData().getName()) + "-"
+                + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+        FileCopyUtils.copy(content, response.getOutputStream());
     }
 
     @RequestMapping(value = "/{libId}/export/docx", method = RequestMethod.POST, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     public void exportDocx(@PathVariable String libId, HttpServletRequest request,
         HttpServletResponse response) throws IOException, UserAccountNotFoundException {
-        doExport(libId,"docx",response);
+        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById(libId);
+        InputStream content = doExport(datatypeLibraryDocument,"docx");
+        response.setContentType(
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        response.setHeader("Content-disposition",
+            "attachment;filename=" + escapeSpace(datatypeLibraryDocument.getMetaData().getName()) + "-"
+                + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+        FileCopyUtils.copy(content, response.getOutputStream());
     }
 
-    private void doExport(String datatypeLibraryDocumentId, String output, HttpServletResponse response)
+    private InputStream doExport(DatatypeLibraryDocument datatypeLibraryDocument, String output)
         throws UserAccountNotFoundException, IOException {
         log.debug("Exporting the library to "+output);
-        DatatypeLibraryDocument datatypeLibraryDocument = datatypeLibraryDocumentService.findById(datatypeLibraryDocumentId);
         User u = userService.getCurrentUser();
         Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
         if (account == null) {
@@ -285,18 +298,13 @@ public class DatatypeLibraryDocumentController {
         InputStream content = null;
         switch(output){
             case "word":
-                exportService.exportDatatypeLibraryDocumentAsDocx(datatypeLibraryDocument, exportConfig, exportFontConfig);
+                content = exportService.exportDatatypeLibraryDocumentAsDocx(datatypeLibraryDocument, exportConfig, exportFontConfig);
                 break;
             case "html":
-                exportService.exportDatatypeLibraryDocumentAsHtml(datatypeLibraryDocument,
+                content = exportService.exportDatatypeLibraryDocumentAsHtml(datatypeLibraryDocument,
                     exportConfig, exportFontConfig);
         }
-        response.setContentType(
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-        response.setHeader("Content-disposition",
-            "attachment;filename=" + escapeSpace(datatypeLibraryDocument.getMetaData().getName()) + "-"
-                + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
-        FileCopyUtils.copy(content, response.getOutputStream());
+        return content;
     }
 
 }
