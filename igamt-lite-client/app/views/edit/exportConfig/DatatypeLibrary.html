@@ -5,13 +5,13 @@
 <div class="pull-right addMargin">
     <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
             ng-disabled="!changed"
-            ng-click="override(DatatypeLibraryExportConfig,'Datatype Library')">
+            ng-click="override(datatypeLibraryExportConfig,'Datatype Library')">
         <span><i class="fa fa-check fa-fw"></i> Apply</span>
     </button>
-    <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!changed" ng-click="reset(DatatypeLibraryExportConfig,'Datatype Library')">
+    <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!changed" ng-click="reset(datatypeLibraryExportConfig,'Datatype Library')">
         <span><i class="fa fa-times fa-fw"></i> Reset</span>
     </button>
-    <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default"  ng-click="restoreDefault(DatatypeLibraryExportConfig,'Datatype Library')">
+    <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default"  ng-click="restoreDefault(datatypeLibraryExportConfig,'Datatype Library')">
         <span><i class="fa fa-refresh" aria-hidden="true"></i> Restore Default</span>
     </button>
 
@@ -31,15 +31,15 @@
                     <div class="container">
                         <label style="color:black">Components to Export:</label>
                         <br/>
-                        <input type="checkbox" ng-model="DatatypeLibraryExportConfig.componentExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
+                        <input type="checkbox" ng-model="datatypeLibraryExportConfig.componentExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
                     </label>
-                        <input type="checkbox" ng-model="DatatypeLibraryExportConfig.componentExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
+                        <input type="checkbox" ng-model="datatypeLibraryExportConfig.componentExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
                     </label>
-                        <input type="checkbox" ng-model="DatatypeLibraryExportConfig.componentExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
+                        <input type="checkbox" ng-model="datatypeLibraryExportConfig.componentExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
                     </label>
-                        <input type="checkbox" ng-model="DatatypeLibraryExportConfig.componentExport.o" ng-change="setChanged()"> <label style="color:black">O
+                        <input type="checkbox" ng-model="datatypeLibraryExportConfig.componentExport.o" ng-change="setChanged()"> <label style="color:black">O
                     </label>
-                        <input type="checkbox" ng-model="DatatypeLibraryExportConfig.componentExport.x" ng-change="setChanged()"> <label style="color:black">X
+                        <input type="checkbox" ng-model="datatypeLibraryExportConfig.componentExport.x" ng-change="setChanged()"> <label style="color:black">X
                     </label>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                     <div style="width:100%" >
 
 
-                        <div  style="padding-left:15px; " ng-repeat="c in DatatypeLibraryExportConfig.datatypeColumn.columns">
+                        <div  style="padding-left:15px; " ng-repeat="c in datatypeLibraryExportConfig.datatypeColumn.columns">
 
                             <input type="checkbox" ng-model="c.present" ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
                         </label><br/>
@@ -73,11 +73,11 @@
                     <div class="container">
                         <label style="color:black">Codes to Export:</label><br/>
 
-                        <input type="checkbox" ng-model="DatatypeLibraryExportConfig.codesExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
+                        <input type="checkbox" ng-model="datatypeLibraryExportConfig.codesExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
                     </label>
-                        <input type="checkbox" ng-model="DatatypeLibraryExportConfig.codesExport.p" ng-change="setChanged()"> <label style="color:black">P
+                        <input type="checkbox" ng-model="datatypeLibraryExportConfig.codesExport.p" ng-change="setChanged()"> <label style="color:black">P
                     </label>
-                        <input type="checkbox" ng-model="DatatypeLibraryExportConfig.codesExport.e" ng-change="setChanged()"> <label style="color:black">E
+                        <input type="checkbox" ng-model="datatypeLibraryExportConfig.codesExport.e" ng-change="setChanged()"> <label style="color:black">E
                     </label>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                 <div class="panel-heading beige"> <strong> Columns </strong></div>
                 <div class="panel-body container">
                     <div style="width:100%" >
-                        <div  style="padding-left:15px; " ng-repeat="c in DatatypeLibraryExportConfig.valueSetColumn.columns">
+                        <div  style="padding-left:15px; " ng-repeat="c in datatypeLibraryExportConfig.valueSetColumn.columns">
                             <input type="checkbox" ng-model="c.present" ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
                         </label><br/>
 
