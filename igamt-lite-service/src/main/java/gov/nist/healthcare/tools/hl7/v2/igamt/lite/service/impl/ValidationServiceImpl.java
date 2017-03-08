@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -42,6 +43,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.FieldComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
@@ -569,6 +571,9 @@ public class ValidationServiceImpl implements ValidationService {
           predicatesMap.put(target, toBeValidated.getPredicates().get(j));
         }
       }
+      FieldComparator Comp = new FieldComparator();
+      Collections.sort(reference.getFields(), Comp);
+      Collections.sort(toBeValidated.getFields(), Comp);
       for (int i = 0; i < reference.getFields().size(); i++) {
 
         if (i < toBeValidated.getFields().size()) {
