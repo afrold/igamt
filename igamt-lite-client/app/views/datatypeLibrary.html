@@ -493,12 +493,16 @@ if (self === top) {
                           <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}<span ng-if="versionAndUseMap[data.id].deprecated" class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span></span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}<i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
+
                         </div>
 						<div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForPublished" ng-if="(data.status==='PUBLISHED'&&!versionAndUseMap[data.id].deprecated)&&data.scope!=='HL7STANDARD'">
 						<span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}<span class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span></span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
                         </div>
+                               <div style="margin-top: -6px;margin-left: 12px;" ng-if="data.scope==='MASTER'">   
+                            <span class="version-badge-under" ng-repeat="version in data.hl7versions" style="margin-left:2px;">{{version}}</span>
+                            </div>
                     </li>
                 </ol>
                 <ol ui-tree-nodes="" ng-model="tables"  data-type="tables" ng-if="datatypeLibrary.scope!=='MASTER'">
@@ -526,19 +530,18 @@ if (self === top) {
 
                     <ol ui-tree-nodes="" ng-model="interMediates">
                     <div ui-tree-handle data-nodrag>
-                        <i data-nodrag class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> InterMediate <span class="badge">{{interMediate.length}}</span>
+                        <i data-nodrag class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> InterMediates <span class="badge">{{interMediate.length}}</span>
                     </div>
                     <li ng-repeat="data in interMediates |orderBy:['-scope','label']" ui-tree-node>
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;">
-                          <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}"> INTER</span>
+                          <span class="badge" style="background-color:#144d8e;"> INT</span>
                         
                         
                         
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}
                             </span>
                             <div style="margin-top: -6px;margin-left: 12px;">   
-                            <span class="version-badge" ng-repeat="version in data.hl7versions" style="background-color:beige; margin-left:2px;">{{version}}</span>
+                            <span class="version-badge-under" ng-repeat="version in data.hl7versions" style="margin-left:2px;">{{version}}</span>
                             </div>
                         </div>
                     </li>

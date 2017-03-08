@@ -2548,7 +2548,8 @@ input[type="file"] {
 }
 
 .addDatatype .modal-dialog {
-    width: 80%;
+    width: 1000px !important;
+    overflow:scroll;
     height: 60%;
 }
 
@@ -2586,19 +2587,32 @@ input[type="file"] {
     background-color: rgba(255, 255, 255, .84);
     border-radius: 10px;
 }
-
 .version-badge-label {
+    font-size: 5px;
+    min-width: 0px;
     display: inline-block;
     min-width: 2px;
-    padding: 3px 3px;
-    font-size: 9px;
+    padding: 0px 0px;
+    font-size: 11px;
     font-weight: 700;
-    color: rgba(255, 255, 255, .84);
+    color: #131010;
     line-height: 1;
     vertical-align: baseline;
     white-space: nowrap;
     text-align: center;
-    background-color: #777;
+    background-color: rgba(255, 255, 255, .84);
+    border-radius: 10px;
+}
+.version-badge-under{
+    display: inline-block;
+    min-width: 2px;
+    padding: 3;
+    font-size: 9px;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #7E9CB7;
     border-radius: 12px;
 }
 
@@ -2863,10 +2877,12 @@ body.modal-open {
     position: fixed !important;
 }
 .widthInside{
-    width: 110px !important;
-    max-width: 110px !important;
+    width: 120px !important;
+    max-width: 120px !important;
+    min-width: 120px !important;
 }
-.widthInside{
+.widthInside2{
     width: 100px !important;
     max-width: 100px !important;
+    min-width: 100px !important;
 }

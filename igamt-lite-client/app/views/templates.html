@@ -3369,21 +3369,19 @@
 
             <form name="addDT">
                 <div class="modal-body" >
-                    <div class="container" style="margin-bottom: 20px;margin-top: 10px">
+                    <div class="container" style="margin-bottom: 20px;margin-top: 10px;margin-right:10px;">
                         <div class="row" style="padding-top:10px">
 
-                            <div class="row container">
+                            <div layout="row" layout-align="center start">
 
-                            </div>
-                            <div class="row container">
-
-                                <div class="panel panel-primary col-md-5">
+                                <div class="panel panel-primary container" flex="50" style="max-width:400px !important; margin-right:5px;">
                                     <div class="panel-heading">Source</div>
-                                    <div class="panel-body container" style="height:300px;">
-
-                                        <div align="right" class="container" style="margin-top: 8px;">
+                                    <div class="panel-body container">
+                                        <div class="container">
+                                        <div style="margin-top: 8px;">
                                             <i class="icon-search"></i>
-                                            <input type="search" class="form-control" placeholder="Search Datatypes" ng-model="search.name" />
+                                            <input type="search" class="form-control" placeholder="Search Datatypes" ng-model="search.name" style="width:360px"/>
+                                        </div>
                                         </div>
                                         <div class="container">
                                             <table class="fixed_headers table-bordered">
@@ -3414,13 +3412,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-1"></div>
-                                <div class="panel panel-primary col-md-6">
+            
+                                <div class="panel panel-primary" flex="50" style="max-width:540px !important">
                                     <div class="panel-heading">Selected Data Types</div>
                                     <div class="panel-body container">
-                                        <div align="right" class="container" style="margin-top: 8px;">
+                                        <div class="container" style="margin-top: 8px;">
                                             <i class="icon-search"></i>
-                                            <input type="search" class="form-control" placeholder="Search" ng-model="search1.name" />
+                                            <input type="search" class="form-control" placeholder="Search" ng-model="search1.name" style="width:500px"/>
                                         </div>
                                         <div class="container">
                                         <table class="fixed_headers table-bordered">
