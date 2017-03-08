@@ -39,6 +39,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.CompositeProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
@@ -56,6 +57,8 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
   MessageService messageService;
   @Autowired
   ProfileComponentService profileComponentService;
+  @Autowired
+  CompositeProfileRepository compositeProfileRepository;
 
 
   @Override
@@ -73,6 +76,8 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     CompositeProfile compositeProfile = build(coreMessage, pcs);
     compositeProfile.setName(compositeProfileStructure.getName());
     compositeProfile.setDescription(compositeProfileStructure.getDescription());
+    compositeProfile.setCoreProfileId(compositeProfileStructure.getCoreProfileId());
+    compositeProfile.setProfileComponentsInfo(compositeProfileStructure.getProfileComponentsInfo());
     return compositeProfile;
   }
 
@@ -339,6 +344,14 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
       }
     }
   }
+
+
+  @Override
+  public CompositeProfileStructure getCompositeProfileStructureById(String id) {
+
+    return compositeProfileRepository.findOne(id);
+  }
+
 
 
 }

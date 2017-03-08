@@ -25,4 +25,7 @@ public interface CompositeProfileService {
       CompositeProfileStructure compositeProfileStructure);
 
   public CompositeProfile build(Message core, List<ProfileComponent> pcs);
+
+  public CompositeProfileStructure getCompositeProfileStructureById(String id);
+
 }

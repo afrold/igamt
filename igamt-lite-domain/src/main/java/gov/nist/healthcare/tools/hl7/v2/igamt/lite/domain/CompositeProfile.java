@@ -20,7 +20,7 @@ public class CompositeProfile extends DataModelWithConstraints
     implements java.io.Serializable, Cloneable, Comparable<CompositeProfile> {
 
   private String coreProfileId;
-  private List<String> profileComponentsIds;
+  private List<ApplyInfo> profileComponentsInfo;
 
 
   private String identifier;
@@ -61,12 +61,12 @@ public class CompositeProfile extends DataModelWithConstraints
     this.coreProfileId = coreProfileId;
   }
 
-  public List<String> getProfileComponentsIds() {
-    return profileComponentsIds;
+  public List<ApplyInfo> getProfileComponentsInfo() {
+    return profileComponentsInfo;
   }
 
-  public void setProfileComponentsIds(List<String> profileComponentsIds) {
-    this.profileComponentsIds = profileComponentsIds;
+  public void setProfileComponentsInfo(List<ApplyInfo> profileComponentsInfo) {
+    this.profileComponentsInfo = profileComponentsInfo;
   }
 
 

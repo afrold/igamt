@@ -34,6 +34,7 @@ public class CompositeProfileRepositoryImpl implements CompositeProfileOperation
   @Override
   public CompositeProfileStructure findById(String id) {
     CompositeProfileStructure compositeProfileStructure = new CompositeProfileStructure();
+    System.out.println("++++++");
     Criteria where = Criteria.where("id").is(id);
     Query qry = Query.query(where);
     List<CompositeProfileStructure> compositeProfileStructures =
