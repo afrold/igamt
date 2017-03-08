@@ -3570,13 +3570,17 @@ angular.module('igl').controller('createProfileComponentCtrl',
 
 angular.module('igl').controller('createCompositeProfileCtrl',
     function($scope, $rootScope, $modalInstance, $http, $filter, PcService, IgDocumentService, CompositeProfileService) {
-
+        $scope.compositeMetaData=true;
         $scope.pcList = [];
         $scope.baseProfiles = $rootScope.messages.children;
         $scope.pcs = $rootScope.profileComponents;
         $scope.position = 1;
 
-         $scope.selectBaseProfile = function(baseP) {
+        $scope.changePage = function(){
+            $scope.compositeMetaData=!$scope.compositeMetaData;
+        };
+
+        $scope.selectBaseProfile = function(baseP) {
             $scope.baseP = angular.copy(baseP);
         };
         $scope.checkExist = function(pc) {
@@ -3600,15 +3604,45 @@ angular.module('igl').controller('createCompositeProfileCtrl',
 
         };
         $scope.selectPC = function(pc) {
-            console.log(pc);
-            pc.position = angular.copy($scope.position);
-            $scope.pcList.push(pc);
+            var interPc = {
+                id: pc.id,
+                name: pc.name,
+                pcDate: pc.dateUpdated,
+                position: angular.copy($scope.position)
+            }
+            console.log(interPc);
+            $scope.pcList.push(interPc);
             $scope.position = $scope.position + 1;
         };
+        $scope.create = function() {
+            console.log("=========");
+            var compositeProfileStructure = {
+                id: new ObjectId().toString(),
+                coreProfileId: $scope.baseP.id,
+                profileComponentsInfo: $scope.pcList,
+                name:$scope.name,
+                description:$scope.description
+            };
+            CompositeProfileService.create(compositeProfileStructure, $rootScope.igdocument.id).then(function(cpStructure) {
+                console.log(cpStructure);
+                CompositeProfileService.build(cpStructure).then(function(result) {
+                    console.log("composite");
+                    console.log(result);
+                    console.log(cpStructure);
+                    $rootScope.igdocument.profile.compositeProfiles.children.push(cpStructure);
+                    console.log($rootScope.igdocument);
+                    $modalInstance.close(cpStructure);
 
-        $scope.create = function(){
+                });
+
+            });
 
         };
+
+        $scope.cancel = function() {
+            $modalInstance.dismiss('cancel');
+        };
+
 
     });
 
@@ -3661,6 +3695,7 @@ angular.module('igl').controller('createCompositeMessageCtrl',
             $scope.pcList.push(pc);
             $scope.position = $scope.position + 1;
         };
+
 
 
         $scope.create = function() {
@@ -3959,7 +3994,7 @@ angular.module('igl').controller('createCompositeMessageCtrl',
 
                 CompositeMessageService.create(processedMsg, $rootScope.igdocument.id).then(function(compositeM) {
                     console.log("=================================");
-                    console.log(profileComponents)
+                    console.log(profileComponents);
                     PcService.saveAll(profileComponents).then(function(pcs) {
                         $rootScope.igdocument.profile.compositeMessages.children.push(compositeM);
                         $modalInstance.close(compositeM);

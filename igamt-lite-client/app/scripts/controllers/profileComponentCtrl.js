@@ -130,6 +130,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 name: $rootScope.segmentsMap[pc.ref.id].label,
                 type: pc.type,
                 path: $scope.parent.structID + '.' + pc.position,
+                
+                itemId : pc.id,
                 attributes: {},
                 appliedTo: [],
                 version: ""
@@ -141,6 +143,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 name: pc.name,
                 type: pc.type,
                 path: $rootScope.segmentsMap[$scope.parent.id].label + '.' + pc.position,
+                itemId : pc.id,
                 attributes: {},
                 appliedTo: [],
                 version: ""
@@ -152,6 +155,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 id: new ObjectId().toString(),
                 name: pc.name,
                 type: pc.type,
+                itemId : pc.id,
                 path: $rootScope.datatypesMap[$scope.parent.id].label + '.' + pc.position,
                 attributes: {},
                 appliedTo: [],
@@ -713,6 +717,7 @@ angular.module('igl').controller('addComponentsCtrl',
 
                     type: pc.type,
                     path: pc.parent + '.' + pc.position,
+                    itemId : pc.id,
                     attributes: {
                         oldRef: {
                             id: $rootScope.segmentsMap[pc.ref.id].id,
@@ -746,6 +751,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     name: pc.name,
                     type: pc.type,
                     path: pc.parent + '.' + pc.position,
+                    itemId : pc.id,
                     attributes: {
                         oldUsage: pc.usage,
                         usage: pc.usage,
@@ -767,6 +773,7 @@ angular.module('igl').controller('addComponentsCtrl',
                         type: pc.type,
                         path: parent.label + '.' + pc.position,
                         pathExp: parent.label + '.' + pc.position,
+                        itemId : pc.id,
                         attributes: {
                             oldDatatype: pc.datatype,
                             oldTables: pc.tables,
@@ -795,6 +802,7 @@ angular.module('igl').controller('addComponentsCtrl',
                         name: pc.name,
                         type: pc.type,
                         path: parent.parent + '.' + $rootScope.segmentsMap[parent.ref.id].label + '.' + pc.position,
+                        itemId : pc.id,
                         attributes: {
                             oldDatatype: pc.datatype,
                             oldTables: pc.tables,
@@ -829,6 +837,7 @@ angular.module('igl').controller('addComponentsCtrl',
                         name: pc.name,
                         type: pc.type,
                         path: parent.parent + '.' + parent.position + '.' + pc.position,
+                        itemId : pc.id,
                         attributes: {
                             oldDatatype: pc.datatype,
                             oldTables: pc.tables,
@@ -861,6 +870,7 @@ angular.module('igl').controller('addComponentsCtrl',
                         type: pc.type,
                         path: parent.parent + '.' + parent.position + '.' + pc.position,
                         pathExp: parent.parent + '.' + parent.position + '.' + pc.position,
+                        itemId : pc.id,
                         attributes: {
                             oldDatatype: pc.datatype,
                             oldTables: pc.tables,
@@ -894,6 +904,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     type: pc.type,
                     path: $rootScope.segmentsMap[pc.id].label,
                     pathExp: $rootScope.segmentsMap[pc.id].label,
+                    itemId : pc.id,
                     attributes: {
                         ref: {
                             id: $rootScope.segmentsMap[pc.id].id,
@@ -921,6 +932,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     ext: $rootScope.datatypesMap[pc.id].ex,
                     type: pc.type,
                     path: $rootScope.datatypesMap[pc.id].label,
+                    itemId : pc.id,
                     attributes: {},
                     appliedTo: [],
                     version: ""

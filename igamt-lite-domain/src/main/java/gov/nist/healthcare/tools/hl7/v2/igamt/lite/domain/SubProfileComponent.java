@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.HashMap;
-
 import org.springframework.data.annotation.Id;
 
 public class SubProfileComponent implements java.io.Serializable, Cloneable {
@@ -14,10 +12,7 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   @Id
   private String id;
-
-
-
-  private HashMap<String, Object> attributes = new HashMap<String, Object>();
+  private SubProfileComponentAttributes attributes;
   private String itemId;
   private String path;
   private String pathExp;
@@ -75,11 +70,11 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
     this.path = path;
   }
 
-  public HashMap<String, Object> getAttributes() {
+  public SubProfileComponentAttributes getAttributes() {
     return attributes;
   }
 
-  public void setAttributes(HashMap<String, Object> attributes) {
+  public void setAttributes(SubProfileComponentAttributes attributes) {
     this.attributes = attributes;
   }
 

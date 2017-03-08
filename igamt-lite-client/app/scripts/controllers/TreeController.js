@@ -12,8 +12,9 @@ angular
             '$modal',
             'CompositeMessageService',
             'PcService',
+            'CompositeProfileService',
 
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService) {
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService,CompositeProfileService) {
 
                 $scope.collapsedata = false;
                 $scope.collapsePcs = true;
@@ -1562,12 +1563,15 @@ angular
                 function processEditCM(cm) {
                     console.log("================================");
                     console.log(cm);
-                    CompositeMessageService.getCm(cm.id).then(function(compositeM) {
-                        console.log("HEEEERE");
-                        console.log(compositeM);
-                        $scope.Activate(cm.id);
-                        $rootScope.compositeMessage = compositeM;
-                        $scope.$emit('event:openCm');
+                    // CompositeMessageService.getCm(cm.id).then(function(compositeM) {
+                    //     console.log("HEEEERE");
+                    //     console.log(compositeM);
+                    //     $scope.Activate(cm.id);
+                    //     $rootScope.compositeMessage = compositeM;
+                    //     $scope.$emit('event:openCm');
+                    // });
+                    CompositeProfileService.build(cm).then(function(compositeProfile){
+                        console.log(compositeProfile);
                     });
 
                 };

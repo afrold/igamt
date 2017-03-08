@@ -39,6 +39,20 @@ angular.module('igl').factory('CompositeProfileService',
                 });
                 return delay.promise;
             },
+
+            build: function(compositeProfileStructure) {
+                var delay = $q.defer();
+                $http.post('api/composite-profile/build' , compositeProfileStructure, {
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(function(response) {
+                    var saved = angular.fromJson(response.data);
+                    delay.resolve(saved);
+                    return saved;
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
            
          
 
