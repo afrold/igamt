@@ -37,6 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ComponentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -704,6 +705,9 @@ public class ValidationServiceImpl implements ValidationService {
           predicatesMap.put(target, toBeValidated.getPredicates().get(j));
         }
       }
+      ComponentComparator Comp = new ComponentComparator();
+      Collections.sort(reference.getComponents(), Comp);
+      Collections.sort(toBeValidated.getComponents(), Comp);
 
       for (int i = 0; i < reference.getComponents().size(); i++) {
         boolean validateConf = true;
