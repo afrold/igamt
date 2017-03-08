@@ -69,10 +69,12 @@ import java.util.*;
         this.bindedTables = new ArrayList<>(datatypeLibraryDocument.getTableLibrary().getChildren());
         SerializableSection datatypeSection = this.serializeDatatypes(datatypeLibraryDocument.getDatatypeLibrary(),1,true);
         //datatypeSection.setTitle("Data Types");
-        serializableSections.addSection(datatypeSection);
         SerializableSection valueSetsSection = this.serializeValueSets(datatypeLibraryDocument.getTableLibrary(),2);
         //valueSetsSection.setTitle("Value Sets");
-        serializableSections.addSection(valueSetsSection);
+        SerializableSection datatypeLibrarySection = new SerializableSection("datatypeLibrarySection","1","1","1","Datatype Library");
+        datatypeLibrarySection.addSection(datatypeSection);
+        datatypeLibrarySection.addSection(valueSetsSection);
+        serializableSections.addSection(datatypeLibrarySection);
         serializableStructure.addSerializableElement(serializableSections);
         return serializableStructure.serializeStructure();
     }

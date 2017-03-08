@@ -46,6 +46,7 @@ public class SerializeTableServiceImpl implements SerializeTableService {
             String headerLevel = String.valueOf(3);
             String defPreText,defPostText;
             defPreText = defPostText = "";
+            SerializableTable serializedTable = null;
             if(table!=null) {
                 id = table.getId();
                 title = table.getBindingIdentifier() + " - " + table.getDescription();
@@ -55,15 +56,15 @@ public class SerializeTableServiceImpl implements SerializeTableService {
                 if (table.getDefPostText() != null && !table.getDefPostText().isEmpty()) {
                     defPostText = serializationUtil.cleanRichtext(table.getDefPostText());
                 }
-            }
-            List<Code> toBeExportedCodes = new ArrayList<>();
-            for(Code code : table.getCodes()){
-                if(ExportUtil.diplayCodeUsage(code.getCodeUsage(),valueSetCodesUsageConfig)){
-                    toBeExportedCodes.add(code);
+                List<Code> toBeExportedCodes = new ArrayList<>();
+                for(Code code : table.getCodes()){
+                    if(ExportUtil.diplayCodeUsage(code.getCodeUsage(),valueSetCodesUsageConfig)){
+                        toBeExportedCodes.add(code);
+                    }
                 }
+                table.setCodes(toBeExportedCodes);
+                serializedTable = new SerializableTable(id,prefix,String.valueOf(position),headerLevel,title,table,tableLink.getBindingIdentifier(),defPreText,defPostText);
             }
-            table.setCodes(toBeExportedCodes);
-            SerializableTable serializedTable = new SerializableTable(id,prefix,String.valueOf(position),headerLevel,title,table,tableLink.getBindingIdentifier(),defPreText,defPostText);
             return serializedTable;
         }
         return null;
