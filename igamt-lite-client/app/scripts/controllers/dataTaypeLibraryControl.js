@@ -177,7 +177,13 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     		}
 
     	}
-
+        $scope.expandAll=function(){
+		$('#deltaTable').treetable('expandAll');
+        $timeout( function(){
+            $('#deltaTable').treetable('expandAll');
+        }, 100 );
+    };
+        
     	$scope.selectCellAfterCheck=function(dt,version){
     	if($scope.selectedRow && dt===$scope.selectedRow){
     		if($scope.selectedVersion1!==null){
@@ -223,9 +229,12 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     $scope.loadingSelection = false;
                     if ($scope.dynamicDt_params) {
                         console.log($scope.dataList);
+                        
                         $scope.showDelta = true;
                         $scope.dynamicDt_params.refresh();
+                         $scope.expandAll();
                     }
+                   
                 });
             });
 
