@@ -11,6 +11,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DTComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
 
@@ -74,6 +75,40 @@ public class WebBeanConfig {
 				"YYYY+-ZZZZ", "YYYYMM+-ZZZZ", "YYYYMMDD+-ZZZZ",
 				"YYYYMMDDhh+-ZZZZ", "YYYYMMDDhhmm+-ZZZZ",
 				"YYYYMMDDhhmmss+-ZZZZ", "YYYYMMDDhhmmss.sss+-ZZZZ", "Regular expression"}));
+		config.setValueSetAllowedDTs(toSet(new String[] {"ID", "IS", "CE", "CF", "CWE", "CNE", "HD"}));
+		
+		Set<DTComponent> valueSetAllowedComponents = new HashSet<DTComponent>();
+		valueSetAllowedComponents.add(new DTComponent("AD", 3));
+		valueSetAllowedComponents.add(new DTComponent("AD", 4));
+		valueSetAllowedComponents.add(new DTComponent("AD", 5));
+		valueSetAllowedComponents.add(new DTComponent("AUI", 1));
+		valueSetAllowedComponents.add(new DTComponent("CK", 1));
+		valueSetAllowedComponents.add(new DTComponent("CN", 1));
+		valueSetAllowedComponents.add(new DTComponent("CNN", 1));
+		valueSetAllowedComponents.add(new DTComponent("CNS", 7));
+		valueSetAllowedComponents.add(new DTComponent("CSU", 2));
+		valueSetAllowedComponents.add(new DTComponent("CSU", 5));
+		valueSetAllowedComponents.add(new DTComponent("CSU", 11));
+		valueSetAllowedComponents.add(new DTComponent("CSU", 14));
+		valueSetAllowedComponents.add(new DTComponent("CX", 1));
+		valueSetAllowedComponents.add(new DTComponent("EI", 1));
+		valueSetAllowedComponents.add(new DTComponent("ERL", 1));
+		valueSetAllowedComponents.add(new DTComponent("LA2", 11));
+		valueSetAllowedComponents.add(new DTComponent("LA2", 12));
+		valueSetAllowedComponents.add(new DTComponent("LA2", 13));
+		valueSetAllowedComponents.add(new DTComponent("ELD", 1));
+		valueSetAllowedComponents.add(new DTComponent("OSD", 2));
+		valueSetAllowedComponents.add(new DTComponent("OSD", 4));
+		valueSetAllowedComponents.add(new DTComponent("PLN", 1));
+		valueSetAllowedComponents.add(new DTComponent("PPN", 1));
+		valueSetAllowedComponents.add(new DTComponent("XAD", 3));
+		valueSetAllowedComponents.add(new DTComponent("XAD", 4));
+		valueSetAllowedComponents.add(new DTComponent("XAD", 5));
+		valueSetAllowedComponents.add(new DTComponent("XCN", 1));
+		valueSetAllowedComponents.add(new DTComponent("XON", 3));
+		valueSetAllowedComponents.add(new DTComponent("XON", 10));
+		
+		config.setValueSetAllowedComponents(valueSetAllowedComponents);
 		return config;
 	}
 	

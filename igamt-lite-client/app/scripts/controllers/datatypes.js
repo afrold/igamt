@@ -449,9 +449,8 @@ angular.module('igl')
             $scope.editableDT = '';
         };
 
-        $scope.getTableLabel = function(tableLink) {
-            var table = $rootScope.tablesMap[tableLink.id];
-            console.log("TABLE FOUND");
+        $scope.getTableLabel = function(binding) {
+            var table = $rootScope.tablesMap[binding.tableId];
             if (table && table.bindingIdentifier) {
                 return $scope.getLabel(table.bindingIdentifier, table.ext);
             }
@@ -465,34 +464,30 @@ angular.module('igl')
             return label;
         };
 
-        $scope.editVSModal = function(component) {
-            console.log(component.tables);
-            console.log($rootScope.tablesMap);
-            console.log($rootScope.tablesMap[component.tables[0].id]);
-            var modalInstance = $modal.open({
-                templateUrl: 'editVSModal.html',
-                controller: 'EditVSCtrl',
-                windowClass: 'edit-VS-modal',
-                resolve: {
-
-                    valueSets: function() {
-                        return $rootScope.tables;
-                    },
-
-                    field: function() {
-                        return component;
-                    }
-
-                }
-            });
-            modalInstance.result.then(function(datatype) {
-                $scope.setDirty();
-                if ($scope.segmentsParams) {
-                    $scope.segmentsParams.refresh();
-                }
-            });
-
-        };
+        // $scope.editVSModal = function(node) {
+        //     var modalInstance = $modal.open({
+        //         templateUrl: 'editVSModalForDatatype.html',
+        //         controller: 'EditVSForDatatypeCtrl',
+        //         windowClass: 'edit-VS-modal',
+        //         resolve: {
+        //             valueSets: function() {
+        //                 return $rootScope.tables;
+        //             },
+        //
+        //             node: function() {
+        //                 return node;
+        //             }
+        //
+        //         }
+        //     });
+        //     modalInstance.result.then(function(datatype) {
+        //         $scope.setDirty();
+        //         if ($scope.segmentsParams) {
+        //             $scope.segmentsParams.refresh();
+        //         }
+        //     });
+        //
+        // };
 
         $scope.editVS = function(field) {
             $scope.editableVS = field.id;
@@ -686,7 +681,7 @@ angular.module('igl')
         };
 
         $scope.redirectVS = function(valueSet) {
-            TableService.getOne(valueSet.id).then(function(valueSet) {
+            TableService.getOne(valueSet.tableId).then(function(valueSet) {
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
@@ -834,21 +829,24 @@ angular.module('igl')
             $rootScope.recordChangeForEdit2('component', 'edit', node.id, 'table', null);
         };
 
-        $scope.mapTable = function(node) {
+        $scope.editModalBindingForDT = function(node) {
             var modalInstance = $modal.open({
                 templateUrl: 'TableMappingDatatypeCtrl.html',
                 controller: 'TableMappingDatatypeCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
-                    selectedNode: function() {
+                    currentNode: function() {
                         return node;
                     }
                 }
             });
+
             modalInstance.result.then(function(node) {
-                $scope.selectedNode = node;
                 $scope.setDirty();
-            }, function() {});
+                if ($scope.segmentsParams) {
+                    $scope.segmentsParams.refresh();
+                }
+            });
         };
 
         $scope.managePredicate = function(node) {
@@ -1274,6 +1272,33 @@ angular.module('igl')
             $rootScope.saveBindingForDatatype();
         };
 
+        $scope.isAvailableForValueSet = function (currentDT, parentDT, path){
+            if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
+                    return valueSetAllowedDT == currentDT.name;
+                })) return true;
+
+            if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
+                return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == path;
+                })) return true;
+
+            return false;
+        };
+
+        $scope.findingBindings = function(path, parent) {
+            var result = _.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location == path; });
+
+            if(result && result.length > 0) return result;
+            else if(!parent) return result;
+            else {
+                if(path.indexOf('.') > -1){
+                    var subPath = path.substr(path.indexOf('.') + 1);
+                    return _.filter(parent.valueSetBindings, function(binding){ return binding.location == subPath; });
+                }else {
+                    return [];
+                }
+            }
+        };
+
     });
 
 
@@ -1562,31 +1587,26 @@ angular.module('igl').controller('DatatypeReferencesCtrl', function($scope, $mod
     };
 });
 
-angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
+angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI) {
     $scope.changed = false;
-    $scope.selectedNode = selectedNode;
-    $scope.selectedTable = null;
-    if (selectedNode.table != undefined) {
-        $scope.selectedTable = $rootScope.tablesMap[selectedNode.table.id];
-    }
+    $scope.currentNode = currentNode;
+    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location == currentNode.path; }));
 
-    $scope.selectTable = function(table) {
-        $scope.changed = true;
-        $scope.selectedTable = table;
+    $scope.deleteBinding = function(binding){
+        var index = $scope.selectedValueSetBindings.indexOf(binding);
+        if (index >= 0) {
+            $scope.selectedValueSetBindings.splice(index, 1);
+        }
     };
+    $scope.saveMapping = function() {
+        blockUI.start();
+        blockUI.stop();
 
-
-    $scope.mappingTable = function() {
-        if ($scope.selectedNode.table == null || $scope.selectedNode.table == undefined) $scope.selectedNode.table = {};
-
-        $scope.selectedNode.table.id = $scope.selectedTable.id;
-        $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
-        $rootScope.recordChanged();
-        $scope.ok();
+        $modalInstance.close();
     };
 
     $scope.ok = function() {
-        $modalInstance.close($scope.selectedNode);
+        $modalInstance.dismiss('cancel');
     };
 
 });
@@ -2738,3 +2758,16 @@ angular.module('igl').controller('AbortPublishCtl', function($scope, $rootScope,
         $modalInstance.dismiss('cancel');
     };
 });
+
+// angular.module('igl').controller('EditVSForDatatypeCtrl', function($scope, $modalInstance, valueSets, node, $rootScope, blockUI) {
+//     $scope.vsChanged = false;
+//     $scope.selectedNode = node;
+//
+//
+//
+//     $scope.cancel = function() {
+//         $modalInstance.dismiss('cancel');
+//     };
+//
+//
+// });

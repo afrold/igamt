@@ -5,39 +5,13 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  *
  */
 public class ValueSetBinding {
-	/*
-	 * Example 1: MSH-9.1 <------ AAAA Table
-	 * 
-	 * bindingType: S targetId: ObjectId of MSH Segment location: 9.1 tableId:
-	 * ObjectId of AAAA Table bindingLocation: according to Binding
-	 * Configuration bindingStrength: One of R/S/U
-	 */
-
-	protected ValueSetBindingType bindingType;
-	protected String targetId;
 	protected String location;
 	protected String tableId;
-	protected String bindingLocatoin;
+	protected String bindingLocation;
 	protected ValueSetBindingStrength bindingStrength;
 
 	public ValueSetBinding() {
 		super();
-	}
-
-	public ValueSetBindingType getBindingType() {
-		return bindingType;
-	}
-
-	public void setBindingType(ValueSetBindingType bindingType) {
-		this.bindingType = bindingType;
-	}
-
-	public String getTargetId() {
-		return targetId;
-	}
-
-	public void setTargetId(String targetId) {
-		this.targetId = targetId;
 	}
 
 	public String getLocation() {
@@ -56,12 +30,12 @@ public class ValueSetBinding {
 		this.tableId = tableId;
 	}
 
-	public String getBindingLocatoin() {
-		return bindingLocatoin;
+	public String getBindingLocation() {
+		return bindingLocation;
 	}
 
-	public void setBindingLocatoin(String bindingLocatoin) {
-		this.bindingLocatoin = bindingLocatoin;
+	public void setBindingLocation(String bindingLocation) {
+		this.bindingLocation = bindingLocation;
 	}
 
 	public ValueSetBindingStrength getBindingStrength() {
@@ -70,6 +44,20 @@ public class ValueSetBinding {
 
 	public void setBindingStrength(ValueSetBindingStrength bindingStrength) {
 		this.bindingStrength = bindingStrength;
+	}
+	
+	public void setBindingStrength(String bindingStrength) {
+		if(bindingStrength == null){
+			this.bindingStrength = ValueSetBindingStrength.R;
+		}else if(bindingStrength.equals("R")){
+			this.bindingStrength = ValueSetBindingStrength.R;
+		}else if(bindingStrength.equals("S")){
+			this.bindingStrength = ValueSetBindingStrength.S;
+		}else if(bindingStrength.equals("U")){
+			this.bindingStrength = ValueSetBindingStrength.U;
+		}else {
+			this.bindingStrength = ValueSetBindingStrength.R;			
+		}
 	}
 
 }

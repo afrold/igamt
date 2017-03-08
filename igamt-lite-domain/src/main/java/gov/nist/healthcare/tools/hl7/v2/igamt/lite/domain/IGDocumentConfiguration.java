@@ -33,6 +33,9 @@ public class IGDocumentConfiguration {
   private Set<String> statuses = new HashSet<String>();
   private Set<String> domainVersions = new HashSet<String>();
   private Set<String> schemaVersions = new HashSet<String>();
+  private Set<String> valueSetAllowedDTs = new HashSet<String>();
+  private Set<DTComponent> valueSetAllowedComponents = new HashSet<DTComponent>();
+  
 
   public Set<String> getUsages() {
     return usages;
@@ -144,6 +147,22 @@ public Set<String> getConditionalConstraintVerbs() {
 
 public void setConditionalConstraintVerbs(Set<String> conditionalConstraintVerbs) {
 	this.conditionalConstraintVerbs = conditionalConstraintVerbs;
+}
+
+public Set<String> getValueSetAllowedDTs() {
+	return valueSetAllowedDTs;
+}
+
+public void setValueSetAllowedDTs(Set<String> valueSetAllowedDTs) {
+	this.valueSetAllowedDTs = valueSetAllowedDTs;
+}
+
+public Set<DTComponent> getValueSetAllowedComponents() {
+	return valueSetAllowedComponents;
+}
+
+public void setValueSetAllowedComponents(Set<DTComponent> valueSetAllowedComponents) {
+	this.valueSetAllowedComponents = valueSetAllowedComponents;
 }
 
 }

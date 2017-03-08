@@ -186,9 +186,37 @@ public class Bootstrap implements InitializingBean {
 
     // modifyCodeUsage();
     // fixMissingData();
+    
+    
+//    updateInitAndCreateBindingVSForDatatype();
   }
 
-  private void fixMissingData() {
+  private void updateInitAndCreateBindingVSForDatatype() {
+	  List<Datatype> allDts = datatypeService.findAll();
+	  for (Datatype d : allDts) {
+		  d.setValueSetBindings(new ArrayList<ValueSetBinding>());
+		  for(Component c:d.getComponents()){
+			  if(c.getTables() != null){
+				  for(TableLink tl:c.getTables()){
+					  Table t = tableService.findById(tl.getId());
+					  if(t != null){
+						  ValueSetBinding vsb = new ValueSetBinding();
+						  vsb.setBindingLocation(tl.getBindingLocation());
+						  vsb.setBindingStrength(tl.getBindingStrength());
+						  vsb.setLocation(c.getPosition() + "");
+						  vsb.setTableId(t.getId());
+						  
+						  d.addValueSetBinding(vsb);
+					  }
+				  }
+			  }
+		  }
+		  
+		  datatypeService.save(d);
+	  }
+  }
+
+private void fixMissingData() {
     List<IGDocument> igDocuments = documentService.findAll();
     for (IGDocument document : igDocuments) {
       fixMissingData(document);

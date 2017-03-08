@@ -616,23 +616,6 @@ angular.module('igl')
             $rootScope.recordChangeForEdit2('component', 'edit', node.id, 'table', null);
         };
 
-        $scope.mapTable = function(node) {
-            var modalInstance = $modal.open({
-                templateUrl: 'TableMappingDatatypeCtrl.html',
-                controller: 'TableMappingDatatypeCtrl',
-                windowClass: 'app-modal-window',
-                resolve: {
-                    selectedNode: function() {
-                        return node;
-                    }
-                }
-            });
-            modalInstance.result.then(function(node) {
-                $scope.selectedNode = node;
-                $scope.setDirty();
-            }, function() {});
-        };
-
         $scope.managePredicate = function(node) {
             var modalInstance = $modal.open({
                 templateUrl: 'PredicateDatatypeCtrl.html',

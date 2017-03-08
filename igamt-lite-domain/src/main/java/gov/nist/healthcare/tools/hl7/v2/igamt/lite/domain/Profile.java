@@ -23,8 +23,6 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
   private String id;
 
   private ProfileMetaData metaData;
-  
-  private ValueSetBindings valueSetBindings;
 
   @JsonIgnoreProperties(value = {"accountId", "date"})
   @DBRef
@@ -239,12 +237,4 @@ public void merge(Profile p) {
       this.messages.addMessage(m);
     }
   }
-
-public ValueSetBindings getValueSetBindings() {
-	return valueSetBindings;
-}
-
-public void setValueSetBindings(ValueSetBindings valueSetBindings) {
-	this.valueSetBindings = valueSetBindings;
-}
 }

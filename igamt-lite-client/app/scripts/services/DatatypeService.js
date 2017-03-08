@@ -10,13 +10,19 @@ angular.module('igl').factory('DatatypeService',
                 if (parent && parent != null) {
                     if (parent.datatype) {
                         var dt = $rootScope.datatypesMap[parent.datatype.id];
-                        children = dt.components;
+                        children = angular.copy(dt.components);
+                        for (var i = 0, len = children.length; i < len; i++) {
+                            children[i].path = parent.path + "." + children[i].position;
+                        }
                     } else {
                         children = parent.components;
                     }
                 } else {
                     if (root != null) {
                         children = root.components;
+                        for (var i = 0, len = children.length; i < len; i++) {
+                            children[i].path = children[i].position;
+                        }
                     } else {
                         children = [];
                     }
