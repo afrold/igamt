@@ -190,8 +190,8 @@ public class Bootstrap implements InitializingBean {
     // setTablesStatus(); // sets the status of all the tables to published or unpublished
     // Colorate(); // genenerates the datatypes evolution matrix.
 
-    CreateIntermediateFromUnchanged();
-    MergeComponents();
+    // CreateIntermediateFromUnchanged();
+    // MergeComponents();
     // setSegmentStatus();
     // // ====================================================================*/
     // // this.modifyConstraint();
@@ -207,7 +207,7 @@ public class Bootstrap implements InitializingBean {
     // createDefaultConfiguration("IG Style");
     // createDefaultConfiguration("Profile Style");
     // createDefaultConfiguration("Table Style");
-    createDefaultExportFonts();
+    // createDefaultExportFonts();
     // changeStatusofPHINVADSTables();
 
     // modifyCodeUsage();

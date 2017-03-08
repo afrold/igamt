@@ -501,7 +501,7 @@ if (self === top) {
                         </div>
                     </li>
                 </ol>
-                <ol ui-tree-nodes="" ng-model="tables"  data-type="tables">
+                <ol ui-tree-nodes="" ng-model="tables"  data-type="tables" ng-if="datatypeLibrary.scope!=='MASTER'">
                     <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="addValueSetsInTableLibrary">
                         <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Value Sets <span class="badge">{{tables.length}}</span>
                     </div>
@@ -519,6 +519,27 @@ if (self === top) {
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >{{getScopeLabel(table)}}{{displayVersion(table)}} <span class="version-badge">v{{versionAndUseMap[table.id].publicationVersion}}</span></span> {{table.bindingIdentifier}}-{{table.description}}
                             </span>
+                        </div>
+                    </li>
+                </ol>
+
+
+                    <ol ui-tree-nodes="" ng-model="interMediates">
+                    <div ui-tree-handle data-nodrag>
+                        <i data-nodrag class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> InterMediate <span class="badge">{{interMediate.length}}</span>
+                    </div>
+                    <li ng-repeat="data in interMediates |orderBy:['-scope','label']" ui-tree-node>
+                        <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;">
+                          <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
+                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}"> INTER</span>
+                        
+                        
+                        
+                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}
+                            </span>
+                            <div style="margin-top: -6px;margin-left: 12px;">   
+                            <span class="version-badge" ng-repeat="version in data.hl7versions" style="background-color:beige; margin-left:2px;">{{version}}</span>
+                            </div>
                         </div>
                     </li>
                 </ol>

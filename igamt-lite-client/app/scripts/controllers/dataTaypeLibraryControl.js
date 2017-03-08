@@ -23,6 +23,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.linksForData = [];
         $rootScope.linksForTables = [];
         $scope.AllUnchanged=[];
+        $rootScope.interMediates=[];
         $scope.tabs = [{active: true}, {active: false}, {active: false}];
         // list of segment level predicates of
         $rootScope.segmentConformanceStatements = []; // list of segment level
@@ -1099,9 +1100,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             var delay = $q.defer();
             $rootScope.datatypeLibrary.type = "datatypes";
             DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.datatypeLibrary.id).then(function (children) {
-                $rootScope.datatypes = children;
+                $rootScope.datatypes = [];
+                $rootScope.interMediates=[];
                 $rootScope.datatypesMap = {};
                 angular.forEach(children, function (child) {
+                    
+                    if(child.scope=="INTERMASTER"){
+                        $rootScope.interMediates.push(child);
+                    }else{
+                        $rootScope.datatypes.push(child);
+                    }
                     this[child.id] = child;
                 }, $rootScope.datatypesMap);
                 delay.resolve(true);
