@@ -2019,6 +2019,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     // fieldObj.setDatatype(this.findDatatype(fieldElm.getAttribute("Datatype"),
     // profile).getId());
     fieldObj.setMinLength(new Integer(fieldElm.getAttribute("MinLength")));
+    fieldObj.setPosition(new Integer(fieldElm.getAttribute("Position")));
     if (fieldElm.getAttribute("MaxLength") != null) {
       fieldObj.setMaxLength(fieldElm.getAttribute("MaxLength"));
     }
