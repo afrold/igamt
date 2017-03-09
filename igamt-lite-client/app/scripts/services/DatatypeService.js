@@ -2,8 +2,7 @@
  * Created by haffo on 3/9/16.
  */
 'use strict';
-angular.module('igl').factory('DatatypeService',
-    function($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc) {
+angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc) {
         var DatatypeService = {
             getNodes: function(parent, root) {
                 var children = [];

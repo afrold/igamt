@@ -34,6 +34,8 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
   private List<Field> fields = new ArrayList<Field>();
 
   private DynamicMapping dynamicMapping = new DynamicMapping();
+  
+  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
 
   private String name;
 
@@ -83,6 +85,10 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
   public void addField(Field field) {
     field.setPosition(fields.size() + 1);
     fields.add(field);
+  }
+  
+  public void addValueSetBinding(ValueSetBinding vsb) {
+	valueSetBindings.add(vsb);
   }
 
   public Field findOneField(String id) {
@@ -243,6 +249,14 @@ public CoConstraints getCoConstraints() {
 
 public void setCoConstraints(CoConstraints coConstraints) {
 	this.coConstraints = coConstraints;
+}
+
+public List<ValueSetBinding> getValueSetBindings() {
+	return valueSetBindings;
+}
+
+public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+	this.valueSetBindings = valueSetBindings;
 }
  
 

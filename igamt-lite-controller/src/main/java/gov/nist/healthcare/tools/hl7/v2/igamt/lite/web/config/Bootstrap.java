@@ -188,9 +188,35 @@ public class Bootstrap implements InitializingBean {
     // fixMissingData();
     
     
-    updateInitAndCreateBindingVSForDatatype();
+//    updateInitAndCreateBindingVSForDatatype();
+//    updateInitAndCreateBindingVSForSegment();
   }
-
+  private void updateInitAndCreateBindingVSForSegment() {
+	  List<Segment> allSegs = segmentService.findAll();
+	  for (Segment s : allSegs) {
+		  s.setValueSetBindings(new ArrayList<ValueSetBinding>());
+		  for(Field f:s.getFields()){
+			  if(f.getTables() != null){
+				  for(TableLink tl:f.getTables()){
+					  Table t = tableService.findById(tl.getId());
+					  if(t != null){
+						  ValueSetBinding vsb = new ValueSetBinding();
+						  vsb.setBindingLocation(tl.getBindingLocation());
+						  vsb.setBindingStrength(tl.getBindingStrength());
+						  vsb.setLocation(f.getPosition() + "");
+						  vsb.setTableId(t.getId());
+						  
+						  s.addValueSetBinding(vsb);
+					  }
+				  }
+//				  f.setTables(null);
+			  }
+		  }
+		  
+		  segmentService.save(s);
+	  }
+  }
+  
   private void updateInitAndCreateBindingVSForDatatype() {
 	  List<Datatype> allDts = datatypeService.findAll();
 	  for (Datatype d : allDts) {
@@ -209,6 +235,7 @@ public class Bootstrap implements InitializingBean {
 						  d.addValueSetBinding(vsb);
 					  }
 				  }
+//				  c.setTables(null);
 			  }
 		  }
 		  

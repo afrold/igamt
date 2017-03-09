@@ -6,11 +6,43 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
     var SegmentService = {
         getNodes: function(parent, root) {
             var children = [];
-
             if (parent && parent.type && parent.type === 'case') {
-                children = $rootScope.datatypesMap[parent.datatype].components;
+                var dt = $rootScope.datatypesMap[parent.datatype];
+                children = angular.copy(dt.components);
+                for (var i = 0, len = children.length; i < len; i++) {
+                    children[i].path = parent.path + "." + children[i].position;
+                }
             } else {
-                children = parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components : parent.children : root != null ? root.fields : [];
+                // children = parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components : parent.children : root != null ? root.fields : [];
+
+                if(parent){
+                    if(parent.fields){
+                        children = parent.fields;
+                        for (var i = 0, len = children.length; i < len; i++) {
+                            children[i].path = children[i].position;
+                        }
+                    }else {
+                        if(parent.datatype){
+                            var dt = $rootScope.datatypesMap[parent.datatype.id];
+                            children = angular.copy(dt.components);
+                            for (var i = 0, len = children.length; i < len; i++) {
+                                children[i].path = parent.path + "." + children[i].position;
+                            }
+                        }else {
+                            children = parent.children;
+                        }
+                    }
+                }else {
+                    if(root != null){
+                        children = root.fields;
+                        for (var i = 0, len = children.length; i < len; i++) {
+                            children[i].path = children[i].position;
+                        }
+                    }else {
+                        children = [];
+                    }
+                }
+
 
                 if (parent && parent.datatype && $rootScope.datatypesMap[parent.datatype.id].name === 'varies') {
                     var mapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping) {

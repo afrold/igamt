@@ -968,10 +968,16 @@
             </span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a class="point" ng-show="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
-
-</a>
+            {{node.path}}
+            <!--<a class="point" ng-show="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}</a>-->
         </td>
+        <!--<td class="col-md-1 col-fixed-130" ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], null, node.position)}" ng-show="viewSettings.isVisibleColumn('valueSet')">-->
+            <!--<div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], null, node.position)">-->
+                <!--<span ng-style="binding.isMain ? {'color':'black'} : {'color':'lightgrey'}" ng-repeat="binding in findingBindings(node.path)" ng-click="redirectVS(binding)">-->
+                    <!--{{getTableLabel(binding)}}-->
+                <!--</span>-->
+            <!--</div>-->
+        <!--</td>-->
         <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left" />
@@ -1112,8 +1118,8 @@
             </span>
         </td>
         <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a type="button" class="point" ng-show="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}
-</a>
+            {{node.path}}
+            <!--<a type="button" class="point" ng-show="node.tables !=undefined && node.tables !==null" ng-repeat="table in node.tables" ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}</a>-->
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
@@ -1552,7 +1558,6 @@
         </button>
     </div>
 </script>
-
 <script type="text/ng-template" id="AddBindingForSegment.html">
     <div class="modal-header">
         <h3 class="modal-title">Add Binding for Segment : {{::getSegmentLabel(segment)}}</h3>
