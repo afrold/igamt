@@ -188,7 +188,7 @@ public class Bootstrap implements InitializingBean {
     // fixMissingData();
     
     
-//    updateInitAndCreateBindingVSForDatatype();
+    updateInitAndCreateBindingVSForDatatype();
   }
 
   private void updateInitAndCreateBindingVSForDatatype() {
