@@ -58,10 +58,7 @@ public class DeltaServiceImpl implements DeltaService {
 
   @Override
   public boolean CompareDatatypes(Datatype d1, Datatype d2) {
-    if (d1.getName().equals("AD") && d1.getHl7Version().equals("2.5.1") && d2.getName().equals("AD")
-        && d2.getHl7Version().equals("2.6")) {
-      System.out.println("Comparing UI");
-    }
+
     if (!d1.getName().equals(d2.getName())) {
 
       return false;
@@ -84,6 +81,7 @@ public class DeltaServiceImpl implements DeltaService {
 
 
   public boolean CompareComponent(Component c1, Component c2) {
+
     if (!c1.getUsage().equals(c2.getUsage())) {
       System.out.println("Comparing UI");
 
@@ -96,7 +94,13 @@ public class DeltaServiceImpl implements DeltaService {
     if (c1.getDatatype() != null && c2.getDatatype() != null) {
       Datatype d1 = datatypeService.findById(c1.getDatatype().getId());
       Datatype d2 = datatypeService.findById(c2.getDatatype().getId());
-      return CompareDatatypes(d1, d2);
+      if (d1.getComponents().size() == 0 && d2.getComponents().size() == 0
+          && d1.getName().equals(d2.getName())) {
+        return true;
+      } else {
+
+        return CompareDatatypes(d1, d2);
+      }
       // return (c1.getDatatype().getName().toLowerCase().trim() == c2.getDatatype().getName()
       // .toLowerCase().trim());
     }

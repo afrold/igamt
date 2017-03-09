@@ -68,21 +68,20 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 
   @Override
   public Datatype findByNameAndVersionAndScope(String name, String version, String scope) {
+    Datatype result = new Datatype();
     Criteria where = Criteria.where("name").is(name);
-    where.andOperator(Criteria.where("hl7Version").is(version));
+    where.andOperator(Criteria.where("hl7Version").is(version), Criteria.where("scope").is(scope));
     // where.andOperator(Criteria.where("scope").is(scope));
 
     Query qry = Query.query(where);
     List<Datatype> datatypes = mongo.find(qry, Datatype.class);
-    for (Datatype dt : datatypes) {
-      if (dt.getScope().toString().equals(scope)) {
-        return dt;
-      }
-
-    }
-    Datatype datatype = null;
-
-    return datatype;
+    // for (Datatype dt : datatypes) {
+    // if (dt.getScope().toString().equals(scope)) {
+    // result = dt;
+    // }
+    //
+    // }
+    return result;
 
   }
 

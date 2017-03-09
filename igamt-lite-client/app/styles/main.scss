@@ -2537,10 +2537,13 @@ input[type="file"] {
 
 .selected1 {
     background-color: #B5F7EC !important;
+    cursor:pointer !important;
 }
 
 .selected2 {
     background-color: #EDE1AF !important;
+    cursor:pointer !important;
+
 }
 
 .choosed {
@@ -2550,7 +2553,6 @@ input[type="file"] {
 .addDatatype .modal-dialog {
     width: 1000px !important;
     overflow:scroll;
-    height: 60%;
 }
 
 #nested-table {
@@ -2612,8 +2614,10 @@ input[type="file"] {
     vertical-align: baseline;
     white-space: nowrap;
     text-align: center;
-    background-color: #7E9CB7;
+    background-color: #5b6f82;
     border-radius: 12px;
+    color: rgba(255,255,255,.84);
+    padding: 2px !important;
 }
 
 .badge {
@@ -2885,4 +2889,7 @@ body.modal-open {
     width: 100px !important;
     max-width: 100px !important;
     min-width: 100px !important;
+}
+.panel{
+    resize: vertical;
 }

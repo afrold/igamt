@@ -47,7 +47,8 @@ public interface DatatypeService {
 
   public Datatype findByNameAndVersionAndScope(String name, String version, String scope);
 
-  public Datatype findByCompatibleVersion(String name, String version, String scope);
+  public Datatype findByCompatibleVersion(String name, String version, String scope)
+      throws Exception;
 
 
   public Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);

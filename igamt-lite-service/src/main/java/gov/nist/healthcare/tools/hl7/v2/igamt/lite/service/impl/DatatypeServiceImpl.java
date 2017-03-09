@@ -186,17 +186,21 @@ public class DatatypeServiceImpl implements DatatypeService {
    * java.lang.String, java.lang.String, java.lang.String)
    */
   @Override
-  public Datatype findByCompatibleVersion(String name, String version, String scope) {
+  public Datatype findByCompatibleVersion(String name, String version, String scope)
+      throws Exception {
     // TODO Auto-generated method stub
-    Datatype Result = new Datatype();
+    Datatype result = null;
     List<Datatype> datatypes = datatypeRepository.findByNameAndScope(name, scope);
     for (Datatype dt : datatypes) {
       for (String s : dt.getHl7versions()) {
         if (version.equals(s)) {
-          Result = dt;
+          result = dt;
         }
       }
     }
-    return Result;
+    if (result == null) {
+      throw new Exception("Cannot find Datatype");
+    }
+    return result;
   }
 }
