@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 public class CompositeProfile extends DataModelWithConstraints
     implements java.io.Serializable, Cloneable, Comparable<CompositeProfile> {
 
@@ -197,6 +199,11 @@ public class CompositeProfile extends DataModelWithConstraints
   public int compareTo(CompositeProfile o) {
     // TODO Auto-generated method stub
     return 0;
+  }
+
+  @Override
+  public String toString() {
+    return ReflectionToStringBuilder.toString(this);
   }
 
 

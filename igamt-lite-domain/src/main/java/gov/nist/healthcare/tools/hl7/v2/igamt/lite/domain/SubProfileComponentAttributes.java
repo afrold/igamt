@@ -15,6 +15,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 public class SubProfileComponentAttributes {
 
   private Usage usage;
@@ -207,6 +209,11 @@ public class SubProfileComponentAttributes {
 
   public void setOldRef(SegmentLink oldRef) {
     this.oldRef = oldRef;
+  }
+
+  @Override
+  public String toString() {
+    return ReflectionToStringBuilder.toString(this);
   }
 
 

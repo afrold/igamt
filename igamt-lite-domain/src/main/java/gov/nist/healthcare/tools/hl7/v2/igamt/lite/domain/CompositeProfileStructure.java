@@ -12,6 +12,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -70,6 +71,14 @@ public class CompositeProfileStructure {
 
   public void addProfileComponent(ApplyInfo pc) {
     profileComponentsInfo.add(pc);
+  }
+
+  public List<String> getProfileComponentIds() {
+    List<String> result = new ArrayList<String>();
+    for (ApplyInfo appInfo : this.profileComponentsInfo) {
+      result.add(appInfo.getId());
+    }
+    return result;
   }
 
 

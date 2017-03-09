@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.annotation.Id;
 
 public class SubProfileComponent implements java.io.Serializable, Cloneable {
@@ -76,6 +77,11 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   public void setAttributes(SubProfileComponentAttributes attributes) {
     this.attributes = attributes;
+  }
+
+  @Override
+  public String toString() {
+    return ReflectionToStringBuilder.toString(this);
   }
 
 }
