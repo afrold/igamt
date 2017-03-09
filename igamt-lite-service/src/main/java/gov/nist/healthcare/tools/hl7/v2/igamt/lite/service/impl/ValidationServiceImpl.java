@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,12 +37,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ComponentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.FieldComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
@@ -569,6 +572,9 @@ public class ValidationServiceImpl implements ValidationService {
           predicatesMap.put(target, toBeValidated.getPredicates().get(j));
         }
       }
+      FieldComparator Comp = new FieldComparator();
+      Collections.sort(reference.getFields(), Comp);
+      Collections.sort(toBeValidated.getFields(), Comp);
       for (int i = 0; i < reference.getFields().size(); i++) {
 
         if (i < toBeValidated.getFields().size()) {
@@ -699,6 +705,9 @@ public class ValidationServiceImpl implements ValidationService {
           predicatesMap.put(target, toBeValidated.getPredicates().get(j));
         }
       }
+      ComponentComparator Comp = new ComponentComparator();
+      Collections.sort(reference.getComponents(), Comp);
+      Collections.sort(toBeValidated.getComponents(), Comp);
 
       for (int i = 0; i < reference.getComponents().size(); i++) {
         boolean validateConf = true;

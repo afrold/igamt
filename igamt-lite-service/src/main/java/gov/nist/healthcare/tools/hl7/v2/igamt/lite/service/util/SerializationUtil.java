@@ -33,6 +33,7 @@ public class SerializationUtil {
     //richtext = StringEscapeUtils.unescapeHtml4(richtext);
     richtext = richtext.replace("<br>", "<br></br>");
     richtext = richtext.replace("<p style=\"\"><br></p>", "<p></p>");
+    richtext = richtext.replace("&lsquo;","&#39;");
     richtext = richtext.replaceAll("[^\\p{Print}]", "?");
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
     Elements elements1 = doc.select("h1");
