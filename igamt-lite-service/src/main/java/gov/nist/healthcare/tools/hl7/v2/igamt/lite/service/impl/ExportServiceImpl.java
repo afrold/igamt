@@ -92,13 +92,11 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override public InputStream exportDatatypeLibraryDocumentAsHtml(
-        DatatypeLibraryDocument datatypeLibraryDocument) {
+        DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig) {
         if (datatypeLibraryDocument != null) {
-            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("IG Style");
-            ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,false,EXPORT_FORMAT_HTML,exportConfig, exportFontConfig);
             return exportUtil.exportAsHtmlFromXsl(serializationService
-                    .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
+                    .serializeDatatypeLibrary(datatypeLibraryDocument, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters,datatypeLibraryDocument.getMetaData());
         } else {
             return new NullInputStream(1L);
@@ -106,13 +104,11 @@ public class ExportServiceImpl implements ExportService {
     }
 
     @Override public InputStream exportDatatypeLibraryDocumentAsDocx(
-        DatatypeLibraryDocument datatypeLibraryDocument) {
+        DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig) {
         if (datatypeLibraryDocument != null) {
-            ExportConfig exportConfig = ExportConfig.getBasicExportConfig("IG Style");
-            ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
             ExportParameters exportParameters = exportUtil.setExportParameters(DOCUMENT_TITLE_DATATYPE_LIBRARY,true,true,EXPORT_FORMAT_WORD, exportConfig, exportFontConfig);
             return exportUtil.exportAsDocxFromXml(serializationService
-                    .serializeDatatypeLibrary(datatypeLibraryDocument).toXML(),
+                    .serializeDatatypeLibrary(datatypeLibraryDocument, exportConfig).toXML(),
                 GLOBAL_STYLESHEET, exportParameters, datatypeLibraryDocument.getMetaData(),datatypeLibraryDocument.getDateUpdated());
         } else {
             return new NullInputStream(1L);

@@ -1,6 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import org.apache.commons.io.FileUtils;
@@ -42,6 +45,8 @@ public class DataTypeLibraryExportTest  {
 
     private static final String EXPORT_BASE_PATH = "test/dl_test";
     private static final String TEST_DOCUMENT_ID = "57b758a884aebc6c9d582cd3";
+    private static final String FONT = "\"Trebuchet MS\", Helvetica, sans-serif";
+    private ExportFontConfig exportFontConfig = new ExportFontConfig(new ExportFont(FONT, FONT+";"), 14, false);
 
     @Test
     public void testHtmlExport(){
@@ -53,7 +58,8 @@ public class DataTypeLibraryExportTest  {
                 htmlFile.delete();
             }
             if(htmlFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsHtml(datatypeLibraryDocument), htmlFile);
+                ExportConfig exportConfig = ExportConfig.getBasicExportConfig("Datatype Library");
+                FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsHtml(datatypeLibraryDocument, exportConfig, exportFontConfig), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -68,7 +74,8 @@ public class DataTypeLibraryExportTest  {
                 wordFile.delete();
             }
             if(wordFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsDocx(datatypeLibraryDocument), wordFile);
+                ExportConfig exportConfig = ExportConfig.getBasicExportConfig("Datatype Library");
+                FileUtils.copyInputStreamToFile(exportService.exportDatatypeLibraryDocumentAsDocx(datatypeLibraryDocument, exportConfig, exportFontConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
