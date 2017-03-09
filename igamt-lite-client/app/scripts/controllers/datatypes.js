@@ -464,31 +464,6 @@ angular.module('igl')
             return label;
         };
 
-        // $scope.editVSModal = function(node) {
-        //     var modalInstance = $modal.open({
-        //         templateUrl: 'editVSModalForDatatype.html',
-        //         controller: 'EditVSForDatatypeCtrl',
-        //         windowClass: 'edit-VS-modal',
-        //         resolve: {
-        //             valueSets: function() {
-        //                 return $rootScope.tables;
-        //             },
-        //
-        //             node: function() {
-        //                 return node;
-        //             }
-        //
-        //         }
-        //     });
-        //     modalInstance.result.then(function(datatype) {
-        //         $scope.setDirty();
-        //         if ($scope.segmentsParams) {
-        //             $scope.segmentsParams.refresh();
-        //         }
-        //     });
-        //
-        // };
-
         $scope.editVS = function(field) {
             $scope.editableVS = field.id;
             if (field.table !== null) {
@@ -843,8 +818,8 @@ angular.module('igl')
 
             modalInstance.result.then(function(node) {
                 $scope.setDirty();
-                if ($scope.segmentsParams) {
-                    $scope.segmentsParams.refresh();
+                if ($scope.datatypesParams) {
+                    $scope.datatypesParams.refresh();
                 }
             });
         };
@@ -1287,6 +1262,11 @@ angular.module('igl')
         $scope.findingBindings = function(path, parent) {
             var result = _.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location == path; });
 
+            for (var i = 0; i < result.length; i++) {
+                result[i].isMain = true;
+            }
+
+
             if(result && result.length > 0) return result;
             else if(!parent) return result;
             else {
@@ -1591,15 +1571,62 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
     $scope.changed = false;
     $scope.currentNode = currentNode;
     $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location == currentNode.path; }));
+    $scope.listOfBindingLocations = null;
+
+    if(_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT){
+            return valueSetAllowedDT == $rootScope.datatypesMap[$scope.currentNode.datatype.id].name;
+    })) {
+        for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+            if (!$scope.selectedValueSetBindings[i].bindingLocation || $scope.selectedValueSetBindings[i].bindingLocation == '') {
+                $scope.selectedValueSetBindings[i].bindingLocation = "1";
+            }
+        }
+
+        var hl7Version = $rootScope.datatypesMap[$scope.currentNode.datatype.id].hl7Version;
+        if(!hl7Version) hl7Version = "2.5.1";
+
+        $scope.listOfBindingLocations = $rootScope.config.bindingLocationListByHL7Version[hl7Version];
+    };
 
     $scope.deleteBinding = function(binding){
         var index = $scope.selectedValueSetBindings.indexOf(binding);
         if (index >= 0) {
             $scope.selectedValueSetBindings.splice(index, 1);
         }
+        $scope.changed = true;
     };
+
+    $scope.isSelected = function (v){
+        for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+            if($scope.selectedValueSetBindings[i].tableId == v.id) return true;
+        }
+        return false;
+    };
+
+    $scope.selectValueSet = function (v){
+        if($scope.listOfBindingLocations){
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path, bindingLocation: "1" });
+        }else {
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path });
+        }
+        $scope.changed = true;
+    };
+
+    $scope.unselectValueSet = function (v){
+        var toBeDelBinding =_.find($scope.selectedValueSetBindings, function(binding){
+            return binding.tableId == v.id;
+            });
+        var index = $scope.selectedValueSetBindings.indexOf(toBeDelBinding);
+        if (index >= 0) {
+            $scope.selectedValueSetBindings.splice(index, 1);
+        }
+        $scope.changed = true;
+    };
+
     $scope.saveMapping = function() {
         blockUI.start();
+        var otherValueSetBindings = angular.copy(_.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location != currentNode.path; }));
+        $rootScope.datatype.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 
         $modalInstance.close();

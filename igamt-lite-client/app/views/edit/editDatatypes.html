@@ -906,12 +906,12 @@
                 </div>
             </ng-form>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)">
-                <span ng-repeat="binding in findingBindings(node.path)" ng-click="redirectVS(binding)">
+        <td class="col-md-1 col-fixed-130" ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)}"  ng-show="viewSettings.isVisibleColumn('valueSet')">
+            <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)">
+                <span ng-style="binding.isMain ? {'color':'black'} : {'color':'lightgrey'}" ng-repeat="binding in findingBindings(node.path)" ng-click="redirectVS(binding)">
                     {{getTableLabel(binding)}}
                 </span>
-                <a ng-click="editModalBindingForDT(node, datatype)" class="point">
+                <a ng-click="editModalBindingForDT(node)" class="point">
                     <span><i class="fa fa-pencil fa-fw"></i></span>
                 </a>
             </div>
@@ -1002,9 +1002,9 @@
                 {{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
             </a>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130" ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)}" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)">
-                <span ng-repeat="binding in findingBindings(node.path)" ng-click="redirectVS(binding)">
+                <span ng-style="binding.isMain ? {'color':'black'} : {'color':'lightgrey'}" ng-repeat="binding in findingBindings(node.path)" ng-click="redirectVS(binding)">
                     {{getTableLabel(binding)}}
                 </span>
             </div>
@@ -1068,10 +1068,15 @@
                 </a>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" class="point" ng-show="node.tables !== null && node.tables !== undefined">
-                {{getTableLabel(table)}}
-            </a>
+        <td class="col-md-1 col-fixed-130" ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)}" ng-show="viewSettings.isVisibleColumn('valueSet')">
+            <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)">
+                <span ng-style="binding.isMain ? {'color':'black'} : {'color':'lightgrey'}" ng-repeat="binding in findingBindings(node.path, parentsMap[node.id])" ng-click="redirectVS(binding)">
+                    {{getTableLabel(binding)}}
+                </span>
+                <a ng-click="editModalBindingForDT(node)" class="point">
+                    <span><i class="fa fa-pencil fa-fw"></i></span>
+                </a>
+            </div>
         </td>
         <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
             <p ng-repeat="p in parentsMap[node.id].predicates    | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)"
@@ -1129,9 +1134,9 @@
             <a ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
             </a>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130" ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)}" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)">
-                <span ng-repeat="binding in findingBindings(node.path, parentsMap[node.id])" ng-click="redirectVS(binding)">
+                <span ng-style="binding.isMain ? {'color':'black'} : {'color':'lightgrey'}" ng-repeat="binding in findingBindings(node.path, parentsMap[node.id])" ng-click="redirectVS(binding)">
                     {{getTableLabel(binding)}}
                 </span>
             </div>
@@ -1570,7 +1575,10 @@
         <div class="row">
             <form role="form">
                 <div class="col-md-12">
-                    <span ng-hide="selectedValueSetBindings.length > 0">No ValueSet for {{::datatype.name}}.{{::currentNode.path}}</span>
+                    <div class="form-inline">
+                        <span ng-show="selectedValueSetBindings.length > 0" class="header4 pull-left">Selected Value Sets</span></span>
+                        <span ng-hide="selectedValueSetBindings.length > 0" class="header4 pull-left">No ValueSet for {{::datatype.name}}.{{::currentNode.path}}</span></span>
+                    </div>
                     <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered" ng-show="selectedValueSetBindings.length > 0">
                         <thead>
                         <tr class="tbl-header">
@@ -1590,14 +1598,18 @@
                                 {{tablesMap[b.tableId].description}}
                             </td>
                             <td class="col-md-2">
-                                <select ng-model="b.bindingStrength" class="form-control" ng-change="changed = true;">
-                                    <option value='R'>R</option>
-                                    <option value='S'>S</option>
-                                    <option value='U'>U</option>
+                                <select ng-model='b.bindingStrength' class="form-control" ng-change="changed = true;">
+                                    <option value="R">Required</option>
+                                    <option value="S">Suggested</option>
+                                    <option value="U">Unspecified</option>
                                 </select>
                             </td>
                             <td class="col-md-2">
-                                {{b.bindingLocation}}
+                                <select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' class="form-control" ng-change="changed = true;">
+                                    <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">
+                                        {{bl}}
+                                    </option>
+                                </select>
                             </td>
                             <td class="col-md-1" align="center">
                                 <a ng-click="deleteBinding(b)" class="point">
@@ -1610,37 +1622,52 @@
                 </div>
 
                 <div class="col-md-12">
-                    <table st-table="displayedTables" st-safe-src="tables" class="table table-striped table-bordered">
+                    <div class="form-inline">
+                        <span class="header4 pull-left">List of ValueSets in Library</span></span>
+                    </div>
+                    <table st-safe-src="tables" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
                         <thead>
                         <tr class="tbl-header">
-                            <th class="col-md-2">Scope</th>
-                            <th class="col-md-2">Mapping Identifier</th>
-                            <th class="col-md-5">Description</th>
-                            <th class="col-md-2">Version</th>
-                            <th class="col-md-1"></th>
+                            <th st-sort="scope" class="col-md-2">Type</th>
+                            <th st-sort="bindingIdentifier" class="col-md-4">Binding Identifier</th>
+                            <th st-sort="name" class="col-md-3">Name</th>
+                            <th st-sort="hl7Version" class="col-md-2">HL7 Version</th>
+                            <th class="col-md-1">Action</th>
+                        </tr>
+                        <tr>
+                            <th colspan="5">
+                                <input st-search="bindingIdentifier" placeholder="search for BindingIdentifier" class="input-sm form-control" type="search"/>
+                            </th>
                         </tr>
                         </thead>
+
                         <tbody>
-                        <tr ng-repeat="t in displayedTables">
+                        <tr ng-repeat="v in displayCollection">
                             <td class="col-md-2">
-                                {{t.scope}}
+                                {{v.scope}}
+                            </td>
+                            <td class="col-md-4">
+                                {{v.bindingIdentifier}}
+                            </td>
+                            <td class="col-md-3">
+                                {{v.name}}
                             </td>
                             <td class="col-md-2">
-                                {{t.bindingIdentifier}}
-                            </td>
-                            <td class="col-md-5">
-                                {{t.description}}
-                            </td>
-                            <td class="col-md-2">
-                                {{t.hl7Version}}
+                                {{v.hl7Version}}
                             </td>
                             <td class="col-md-1" align="center">
+                                <a ng-show="!isSelected(v)" ng-click="selectValueSet(v)" class="point">
+                                    <i class="fa fa-circle-thin fa-fw"></i>
+                                </a>
+                                <a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">
+                                    <i class="fa fa-check-circle fa-fw"></i>
+                                </a>
                             </td>
                         </tr>
                         </tbody>
-                        <tr ng-show="tables.length > 10">
-                            <td colspan="5" class="text-center">
-                                <div st-pagination="" st-items-by-page="10" st-displayed-pages="10"></div>
+                        <tr style="float:center !important;" ng-if="tables.length > 10">
+                            <td colspan="5" class="text-center" style="float:center !important;">
+                                <div st-pagination="" st-items-by-page="10" st-displayed-pages="10" style="float:center !important;"></div>
                             </td>
                         </tr>
                     </table>

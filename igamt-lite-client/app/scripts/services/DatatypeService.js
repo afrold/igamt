@@ -355,11 +355,8 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
 
-            saveNewElements: function() {
-              saveNewElements(false);
-            },
-
             saveNewElements: function(silent) {
+                if(!silent) silent = false;
                 var delay = $q.defer();
                 var datatypeLinks = ElementUtils.getNewDatatypeLinks();
                 if (datatypeLinks&&datatypeLinks.length > 0) {
