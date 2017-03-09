@@ -663,7 +663,7 @@ angular.module('igl').controller('addComponentsCtrl',
                             for (var i = 0; i < parent.children.length; i++) {
                                 if (parent.type === 'group') {
 
-                                    parent.children[i].parent = parent.parent + '.' + parent.name;
+                                    parent.children[i].parent = parent.parent + '.' + parent.position;
                                     if (parent.children[i].type === 'segmentRef') {
 
                                         parent.children[i].children = segmentsMap[parent.children[i].ref.id].fields;
@@ -677,7 +677,7 @@ angular.module('igl').controller('addComponentsCtrl',
 
                                     }
                                 } else if (parent.type === 'segmentRef') {
-                                    parent.children[i].parent = parent.parent + '.' + segmentsMap[parent.ref.id].label;
+                                    parent.children[i].parent = parent.parent + '.' + parent.position;
                                     parent.children[i].children = datatypesMap[parent.children[i].datatype.id].components;
                                 } else if (parent.type === 'field' || parent.type === 'component') {
                                     console.log("--------------------//////////////////-------------");
@@ -801,7 +801,7 @@ angular.module('igl').controller('addComponentsCtrl',
                         id: new ObjectId().toString(),
                         name: pc.name,
                         type: pc.type,
-                        path: parent.parent + '.' + $rootScope.segmentsMap[parent.ref.id].label + '.' + pc.position,
+                        path: parent.parent + '.' + parent.position + '.' + pc.position,
                         itemId : pc.id,
                         attributes: {
                             oldDatatype: pc.datatype,
