@@ -64,7 +64,9 @@
                          <i class="fa fa-user" aria-hidden="true"></i> 
                          ,{{datatype.owner}}
                     </span>
-                    <span>,HL7 Version: {{datatype.hl7Version}}</span>
+                    <span ng-if="datatype.scope=='USER'">,HL7 Version: {{datatype.hl7Version}}</span>
+                    <span ng-if="datatype.scope=='MASTER'||datatype.scope=='INTERMASTER'">
+                        ,Compatibility Versions: <span ng-repeat ="v in datatype.hl7versions"class="badge version-badge-under">{{v}}</span></span>
                     <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
 
                 </div>

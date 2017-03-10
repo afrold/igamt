@@ -2878,10 +2878,10 @@ tr .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12, .col-xs-11, .col-sm-11, .col-
   overflow-y: auto;
   tbody{ height: auto; }
 }
-body.modal-open {
-    overflow-y: none !important;
-    position: fixed !important;
-}
+// body.modal-open {
+//     overflow-y: none !important;
+//     position: fixed !important;
+// }
 .widthInside{
     width: 120px !important;
     max-width: 120px !important;

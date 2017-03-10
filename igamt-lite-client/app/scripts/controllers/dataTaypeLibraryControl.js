@@ -1100,6 +1100,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             var delay = $q.defer();
             $rootScope.datatypeLibrary.type = "datatypes";
             DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.datatypeLibrary.id).then(function (children) {
+                console.log("Looading")
                 $rootScope.datatypes = [];
                 $rootScope.interMediates=[];
                 $rootScope.datatypesMap = {};

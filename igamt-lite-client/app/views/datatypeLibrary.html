@@ -451,7 +451,7 @@ if (self === top) {
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}<span class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span></span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
                         </div>
-                               <div style="margin-top: -6px;margin-left: 12px;" ng-if="data.scope==='MASTER'">   
+                               <div style="margin-top: -5px;margin-left: 0px;" ng-if="data.scope==='MASTER'">   
                             <span class="version-badge-under" ng-repeat="version in data.hl7versions" style="margin-left:2px;">{{version}}</span>
                             </div>
                     </li>
@@ -491,7 +491,7 @@ if (self === top) {
                         
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}
                             </span>
-                            <div style="margin-top: -6px;margin-left: 12px;">   
+                            <div style="margin-top: -5px;margin-left: 0px;">   
                             <span class="version-badge-under" ng-repeat="version in data.hl7versions" style="margin-left:2px;">{{version}}</span>
                             </div>
                         </div>

@@ -3498,10 +3498,13 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
         var data = $rootScope.currentData;
         if (data.type && data.type === "message") {
             MessageService.reset();
+                   $scope.continue();
         } else if (data.type && data.type === "segment") {
             SegmentService.reset();
+                   $scope.continue();
         } else if (data.type && data.type === "datatype") {
             DatatypeService.reset();
+                   $scope.continue();
         } else if (data.type === "decision" || data.type === "FAQ" || data.type === "userGuide" || data.type === 'UserNote' || data.type === 'releaseNote') {
             if ($rootScope.newOne) {
 
@@ -3513,11 +3516,12 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
             $rootScope.documentation = null;
 
-            $scope.continue();
+     
         }
         $rootScope.addedSegments = [];
         $rootScope.addedDatatypes = [];
         $rootScope.addedTables = [];
+               $scope.continue();
 
     };
 
