@@ -33,8 +33,8 @@ public class Datatype extends DataModelWithConstraints
   private String ext = "";
 
   private String purposeAndUse = "";
-
-
+  
+  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
 
   protected List<Component> components = new ArrayList<Component>();
 
@@ -121,6 +121,10 @@ public class Datatype extends DataModelWithConstraints
   public void addComponent(Component c) {
     components.add(c);
   }
+  
+  public void addValueSetBinding(ValueSetBinding vsb) {
+	valueSetBindings.add(vsb);
+  }
 
   public String getComment() {
     return comment;
@@ -137,8 +141,6 @@ public class Datatype extends DataModelWithConstraints
   public void setUsageNote(String usageNote) {
     this.usageNote = usageNote;
   }
-
-
 
   public String getDefPreText() {
     return defPreText;
@@ -181,6 +183,13 @@ public class Datatype extends DataModelWithConstraints
     for (Component c : this.components) {
       clonedDT.addComponent(c.clone());
     }
+    
+    clonedDT.setValueSetBindings(new ArrayList<ValueSetBinding>());
+    for (ValueSetBinding vsb : this.valueSetBindings){
+    	clonedDT.addValueSetBinding(vsb);
+    }
+    
+    
     clonedDT.setDescription(description);
     clonedDT.setLabel(label);
     clonedDT.setName(name);
@@ -291,6 +300,14 @@ public class Datatype extends DataModelWithConstraints
   public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
     this.shareParticipantIds = shareParticipantIds;
   }
+  
+  public List<ValueSetBinding> getValueSetBindings() {
+		return valueSetBindings;
+  }
+
+	public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+		this.valueSetBindings = valueSetBindings;
+	}
 
 
 }
