@@ -1,10 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -39,9 +39,13 @@ public class IGDocumentExportTest {
     @Autowired IGDocumentService igDocumentService;
     @Autowired ExportService exportService;
     @Autowired ExportConfigService exportConfigService;
+    @Autowired ExportFontConfigService exportFontConfigService;
 
     private static final String IG_DOCUMENT_TEST_ID = "579a2fd784aeb9b94367d325";
     private static final String EXPORT_BASE_PATH = "test/ig_test";
+    private static final String FONT = "\"Trebuchet MS\", Helvetica, sans-serif";
+
+    private ExportFontConfig exportFontConfig = new ExportFontConfig(new ExportFont(FONT, FONT+";"), 14, false);
 
     @Test
     public void testHtmlCompactExport(){
@@ -55,7 +59,7 @@ public class IGDocumentExportTest {
             }
             if(htmlFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,exportConfig), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,exportConfig,exportFontConfig), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,7 +77,7 @@ public class IGDocumentExportTest {
             }
             if(htmlFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.PROFILE,exportConfig), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.PROFILE,exportConfig,exportFontConfig), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,7 +96,7 @@ public class IGDocumentExportTest {
             }
             if(htmlFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.TABLES,exportConfig), htmlFile);
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.TABLES,exportConfig,exportFontConfig), htmlFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,7 +113,7 @@ public class IGDocumentExportTest {
             }
             if(wordFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService
-                    .exportIGDocumentAsDocx(igDocument, SerializationLayout.IGDOCUMENT,exportConfig), wordFile);
+                    .exportIGDocumentAsDocx(igDocument, SerializationLayout.IGDOCUMENT,exportConfig,this.exportFontConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,7 +130,7 @@ public class IGDocumentExportTest {
             }
             if(wordFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    SerializationLayout.PROFILE,exportConfig), wordFile);
+                    SerializationLayout.PROFILE,exportConfig,exportFontConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -143,7 +147,7 @@ public class IGDocumentExportTest {
             }
             if(wordFile.createNewFile()) {
                 FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsDocx(igDocument,
-                    SerializationLayout.TABLES,exportConfig), wordFile);
+                    SerializationLayout.TABLES,exportConfig,exportFontConfig), wordFile);
             }
         } catch (IOException e) {
             e.printStackTrace();

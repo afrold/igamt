@@ -17,6 +17,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,73 +42,12 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeMessage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IgDocumentComparator;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageComparator;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PositionComparator;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SectionMap;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeMessageService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PhinvadsWSCallService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.EventWrapper;
@@ -146,6 +87,10 @@ public class IGDocumentController extends CommonController {
   AccountRepository accountRepository;
   @Autowired
   ExportConfigService exportConfigService;
+  @Autowired
+  ExportFontConfigService exportFontConfigService;
+  @Autowired
+  ExportFontService exportFontService;
   @Autowired
   private MessageRepository messageRepository;
 
@@ -663,7 +608,11 @@ public class IGDocumentController extends CommonController {
     if (exportConfig == null) {
       exportConfig = ExportConfig.getBasicExportConfig(type);
     }
-    content = exportService.exportIGDocumentAsHtml(d, serializationLayout, exportConfig);
+    ExportFontConfig exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
+    if(exportFontConfig == null){
+      exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+    }
+    content = exportService.exportIGDocumentAsHtml(d, serializationLayout, exportConfig, exportFontConfig);
     response.setContentType("text/html");
     response.setHeader("Content-disposition",
         "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_"
@@ -807,7 +756,11 @@ public class IGDocumentController extends CommonController {
     if (exportConfig == null) {
       exportConfig = ExportConfig.getBasicExportConfig(type);
     }
-    content = exportService.exportIGDocumentAsDocx(d, serializationLayout, exportConfig);
+    ExportFontConfig exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
+    if(exportFontConfig == null){
+      exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+    }
+    content = exportService.exportIGDocumentAsDocx(d, serializationLayout, exportConfig, exportFontConfig);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
@@ -1476,12 +1429,12 @@ public class IGDocumentController extends CommonController {
 
     msg.setSubject("NIST IGAMT IGDocument Shared with you.");
     msg.setTo(target.getEmail());
-    msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
-        + source.getUsername() + ")"
+    msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "(" + source
+        .getUsername() + ")"
         + " wants to share the following Implementation Guide Document with you: \n" + "\n Title: "
         + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
-        + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
-        + doc.getMetaData().getHl7Version()
+        + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:" + doc
+        .getMetaData().getHl7Version()
         + "\n If you wish to accept or reject the request please go to IGAMT tool under the 'Shared Implementation Guides' tab"
         + "\n\n" + "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
     try {

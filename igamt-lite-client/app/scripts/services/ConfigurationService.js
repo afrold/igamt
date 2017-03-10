@@ -47,7 +47,51 @@ angular.module('igl').factory('ConfigurationService',
                 });
                 return delay.promise;
 				
-			}
+			},
+
+			findFonts:function(){
+                var delay = $q.defer();
+                $http.post('api/ExportConfiguration/findFonts').then(function(response) {
+                    var fonts= angular.fromJson(response.data);
+                    delay.resolve(fonts);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+			},
+
+            getUserExportFontConfig:function(){
+                var delay = $q.defer();
+                $http.post('api/ExportConfiguration/getUserExportFontConfig').then(function(response) {
+                    var userExportFontConfig= angular.fromJson(response.data);
+                    delay.resolve(userExportFontConfig);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+			},
+
+            saveUserExportFontConfig:function(userExportFontConfig){
+                var delay = $q.defer();
+                $http.post('api/ExportConfiguration/saveExportFontConfig', userExportFontConfig).then(function(response) {
+                    var conf= angular.fromJson(response.data);
+                    delay.resolve(conf);
+                 }, function(error) {
+                     delay.reject(error);
+                 });
+                 return delay.promise;
+            },
+
+            restoreDefaultExportFontConfig:function(){
+                var delay = $q.defer();
+                $http.post('api/ExportConfiguration/restoreDefaultExportFontConfig').then(function(response) {
+                    var conf= angular.fromJson(response.data);
+                    delay.resolve(conf);
+                 }, function(error) {
+                     delay.reject(error);
+                 });
+                 return delay.promise;
+            }
 			
 	};
 	

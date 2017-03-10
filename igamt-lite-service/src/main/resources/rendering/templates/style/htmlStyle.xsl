@@ -1,7 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template name="htmlStyle">
-        <xsl:text>#sidebar { float:left; width:30%; background:#F0F0F0; overflow: auto; max-height: 100vh; font-family: 'Arial Narrow', sans-serif; margin-top: 1px; margin-bottom: 1px; }</xsl:text>
+        <xsl:text>#sidebar { float:left; width:30%; background:#F0F0F0; overflow: auto; max-height: 100vh; margin-top: 1px; margin-bottom: 1px; }</xsl:text>
         <xsl:text>#sidebar a:link { color: #000066; margin-top: 1px; margin-bottom: 1px; }</xsl:text>
         <xsl:text>#sidebar a:visited { color: green; margin-top: 1px; margin-bottom: 1px; }</xsl:text>
         <xsl:text>#sidebar a:hover { color: hotpink; margin-top: 1px; margin-bottom: 1px; }</xsl:text>

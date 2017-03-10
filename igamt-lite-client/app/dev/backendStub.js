@@ -333,9 +333,41 @@ $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, 
         return [200, datatypeLib[0], {}];
     });
 
+    $httpBackend.whenPOST('api/ExportConfiguration/findFonts').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/exportConfig/fonts.json', false);
+        request.send(null);
+        var response = angular.fromJson(request.response);
+        console.log('api/ExportConfiguration/findFonts response=' + JSON.stringify(response));
+        return [200, response, {}];
+    });
 
+    $httpBackend.whenPOST('api/ExportConfiguration/getUserExportFontConfig').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/exportConfig/userFontConfig.json', false);
+        request.send(null);
+        var response = angular.fromJson(request.response);
+        console.log('api/ExportConfiguration/getUserExportFontConfig response=' + JSON.stringify(response));
+        return [200, response, {}];
+    });
 
+    $httpBackend.whenPOST('api/ExportConfiguration/restoreDefaultExportFontConfig').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/exportConfig/defaultFontConfig.json', false);
+        request.send(null);
+        var response = angular.fromJson(request.response);
+        console.log('api/ExportConfiguration/restoreDefaultExportFontConfig response=' + response);
+        return [200, response, {}];
+    });
 
+    $httpBackend.whenPOST('api/ExportConfiguration/saveUserExportFontConfig').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/exportConfig/userFontConfig.json', false);
+        request.send(null);
+        var response = angular.fromJson(request.response);
+        console.log('api/ExportConfiguration/saveUserExportFontConfig response=' + response);
+        return [200, response, {}];
+    });
 
     $httpBackend.whenGET(/^api\/segments\/.*/).respond(function (method, url, data, headers) {
         var id = url.split('/')[2];
