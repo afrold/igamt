@@ -77,12 +77,13 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         this.segmentPosition = 1;
         UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
         UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
+        UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsExport();
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentUsageConfig,fieldsUsageConfig);
+            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             if(serializationLayout.equals(SerializationLayout.PROFILE)){
                 serializeSegment(segmentRefOrGroup,
-                    messageSegments.getPrefix() + ".", messageSegments, fieldsUsageConfig);
+                    messageSegments.getPrefix() + ".", messageSegments, segmentUsageConfig, fieldsUsageConfig);
             }
         }
         if(!messageSegments.getSerializableSectionList().isEmpty()){
@@ -91,23 +92,27 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         return serializableMessage;
     }
 
-    private void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig fieldsUsageConfig) {
-        if(segmentRefOrGroup instanceof SegmentRef){
-            SegmentLink segmentLink = ((SegmentRef) segmentRefOrGroup).getRef();
-            if(!messageSegmentsNameList.contains(segmentLink.getId())) {
-                segmentsSection.addSection(
-                    serializeSegmentService.serializeSegment(segmentLink, prefix+ String
-                        .valueOf(segmentPosition), segmentPosition, 5, fieldsUsageConfig));
-                messageSegmentsNameList.add(segmentLink.getId());
-                segmentPosition++;
-            }
-        } else if (segmentRefOrGroup instanceof Group){
+    private void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig) {
+        if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), segmentUsageConfig)) {
+            if (segmentRefOrGroup instanceof SegmentRef) {
+                SegmentLink segmentLink = ((SegmentRef) segmentRefOrGroup).getRef();
+                if (!messageSegmentsNameList.contains(segmentLink.getId())) {
+                    segmentsSection.addSection(serializeSegmentService
+                        .serializeSegment(segmentLink, prefix + String.valueOf(segmentPosition),
+                            segmentPosition, 5, fieldsUsageConfig));
+                    messageSegmentsNameList.add(segmentLink.getId());
+                    segmentPosition++;
+                }
+            } else if (segmentRefOrGroup instanceof Group) {
             /*String id = UUID.randomUUID().toString();
             String headerLevel = String.valueOf(4);
             String title = ((Group) segmentRefOrGroup).getName();
             SerializableSection serializableSection = new SerializableSection(id,prefix,String.valueOf(position),headerLevel,title);*/
-            for(SegmentRefOrGroup groupSegmentRefOrGroup : ((Group) segmentRefOrGroup).getChildren()){
-                serializeSegment(groupSegmentRefOrGroup, prefix, segmentsSection, fieldsUsageConfig);
+                for (SegmentRefOrGroup groupSegmentRefOrGroup : ((Group) segmentRefOrGroup)
+                    .getChildren()) {
+                    serializeSegment(groupSegmentRefOrGroup, prefix, segmentsSection,
+                        segmentUsageConfig, fieldsUsageConfig);
+                }
             }
         }
     }
