@@ -26,6 +26,7 @@ public class DeltaServiceImpl implements DeltaService {
   @Autowired
   private DatatypeService datatypeService;
 
+
   @Override
   public Delta findById(String id) {
     // TODO Auto-generated method stub
@@ -59,18 +60,18 @@ public class DeltaServiceImpl implements DeltaService {
   @Override
   public boolean CompareDatatypes(Datatype d1, Datatype d2) {
 
-    if (!d1.getName().equals(d2.getName())) {
+    if (!d1.getName().toLowerCase().equals(d2.getName().toLowerCase())) {
 
       return false;
-
     } else if (d1.getComponents().size() != d2.getComponents().size()) {
+
       return false;
+    } else if (d1.getComponents().size() == 0) {
+      return true;
     } else {
       for (int i = 0; i < d1.getComponents().size(); i++) {
 
         if (!CompareComponent(d1.getComponents().get(i), d2.getComponents().get(i))) {
-          System.out.println(d1.getComponents().get(i));
-          System.out.println(d2.getComponents().get(i));
           return false;
         }
 
@@ -81,31 +82,56 @@ public class DeltaServiceImpl implements DeltaService {
 
 
   public boolean CompareComponent(Component c1, Component c2) {
+    if (c1.isIdentique(c2)) {
 
-    if (!c1.getUsage().equals(c2.getUsage())) {
-      System.out.println("Comparing UI");
 
-      return false;
-    } else if (!c1.getMaxLength().equals(c2.getMaxLength())) {
-      return false;
-    } else if (!c1.getMinLength().equals(c2.getMinLength())) {
-      return false;
-    }
-    if (c1.getDatatype() != null && c2.getDatatype() != null) {
-      Datatype d1 = datatypeService.findById(c1.getDatatype().getId());
-      Datatype d2 = datatypeService.findById(c2.getDatatype().getId());
-      if (d1.getComponents().size() == 0 && d2.getComponents().size() == 0
-          && d1.getName().equals(d2.getName())) {
+      String name = c1.getDatatype().getName().toLowerCase();
+      if (name.equals("st") || name.equals("si") || name.equals("varies") || name.equals("-")
+          || name.equals("dt") || name.equals("dtm") || name.equals("id") || name.equals("is")
+          || name.equals("tx") || name.equals("fn")) {
         return true;
       } else {
 
-        return CompareDatatypes(d1, d2);
-      }
-      // return (c1.getDatatype().getName().toLowerCase().trim() == c2.getDatatype().getName()
-      // .toLowerCase().trim());
-    }
-    return true;
 
+        Datatype d1 = datatypeService.findById(c1.getDatatype().getId());
+        Datatype d2 = datatypeService.findById(c2.getDatatype().getId());
+        if (d1 != null && d2 != null) {
+          return CompareDatatypesOnLevel(d1, d2);
+        } else {
+          return true;
+        }
+
+      }
+
+    } else {
+      return false;
+
+    }
   }
 
+  /**
+   * @param d1
+   * @param d2
+   * @return
+   */
+  private boolean CompareDatatypesOnLevel(Datatype d1, Datatype d2) {
+    // TODO Auto-generated method stub
+    if (!d1.getName().toLowerCase().equals(d2.getName().toLowerCase())) {
+
+      return false;
+    } else if (d1.getComponents().size() != d2.getComponents().size()) {
+
+      return false;
+    } else if (d1.getComponents().size() == 0) {
+      return true;
+    } else {
+      for (int i = 0; i < d1.getComponents().size(); i++) {
+
+        if (!d1.getComponents().get(i).isIdentique(d2.getComponents().get(i))) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
 }

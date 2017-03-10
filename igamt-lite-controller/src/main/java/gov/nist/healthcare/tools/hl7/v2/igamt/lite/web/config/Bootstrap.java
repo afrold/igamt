@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -72,6 +73,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DeltaService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
@@ -113,6 +115,7 @@ public class Bootstrap implements InitializingBean {
   @Autowired
   UnchangedDataRepository unchangedData;
 
+
   @Autowired
   MessageService messageService;
 
@@ -133,6 +136,11 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   private DatatypeLibraryRepository daatypeLibraryRepository;
+
+  @Autowired
+  private DeltaService deltaService;
+
+
 
   /*
    * 
@@ -177,10 +185,13 @@ public class Bootstrap implements InitializingBean {
 
     // ===============Data Type Library=====================================
 
-    CreateCollectionOfUnchanged(); // group datatype by sets of versions
+    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
     // setDtsStatus();// sets the status of all the datatypes to published or unpublished
     // setTablesStatus(); // sets the status of all the tables to published or unpublished
-    Colorate(); // genenerates the datatypes evolution matrix.
+    // Colorate(); // genenerates the datatypes evolution matrix.
+
+    CreateIntermediateFromUnchanged();
+    MergeComponents();
     // setSegmentStatus();
     // // ====================================================================*/
     // // this.modifyConstraint();
@@ -196,7 +207,6 @@ public class Bootstrap implements InitializingBean {
     // createDefaultConfiguration("IG Style");
     // createDefaultConfiguration("Profile Style");
     // createDefaultConfiguration("Table Style");
-    // createDefaultConfiguration("Datatype Library");
     // createDefaultExportFonts();
     // changeStatusofPHINVADSTables();
 
@@ -1003,11 +1013,11 @@ public class Bootstrap implements InitializingBean {
   private void initMAp() {
     List<SCOPE> scopes = new ArrayList<SCOPE>();
     scopes.add(SCOPE.HL7STANDARD);
-    List<Datatype> dataInit = datatypeService.findByScopesAndVersion(scopes, "2.1");
+    List<Datatype> dataInit = datatypeService.findByScopesAndVersion(scopes, "2.3.1");
     for (Datatype dt : dataInit) {
       ArrayList<List<String>> temp = new ArrayList<List<String>>();
       List<String> version1 = new ArrayList<String>();
-      version1.add("2.1");
+      version1.add("2.3.1");
       temp.add(version1);
       DatatypeMap.put(dt.getName(), temp);
 
@@ -1033,8 +1043,9 @@ public class Bootstrap implements InitializingBean {
         for (int i = 0; i < DatatypeMap.get(dt.getName()).size(); i++) {
           Datatype d = datatypeService.findByNameAndVersionAndScope(dt.getName(),
               DatatypeMap.get(dt.getName()).get(i).get(0), "HL7STANDARD");
+
           if (d != null && !Visited.containsKey(dt.getName())) {
-            if (d.isIdentique(dt)) {
+            if (deltaService.CompareDatatypes(d, dt)) {
               DatatypeMap.get(dt.getName()).get(i).add(version);
 
               System.out.println("FOUND IDENTIQUE");
@@ -1054,8 +1065,7 @@ public class Bootstrap implements InitializingBean {
 
   public void addAllVersions() {
     initMAp();
-    String[] versions = {"2.2", "2.3", "2.3.1", "2.4", "2.5", "2.5.1", "2.6", "2.7", "2.7.1", "2.8",
-        "2.8.1", "2.8.2"};
+    String[] versions = {"2.4", "2.5", "2.5.1", "2.6", "2.7", "2.7.1", "2.8", "2.8.1", "2.8.2"};
     // String[] versions = {"2.2","2.3"};
     for (int i = 0; i < versions.length; i++) {
       AddVersiontoMap(versions[i].toString());
@@ -1069,14 +1079,67 @@ public class Bootstrap implements InitializingBean {
       String name = e.getKey();
       ArrayList<List<String>> values = e.getValue();
       for (List<String> versions : values) {
-        if (!name.equals("-")) {
-          UnchangedDataType unchanged = new UnchangedDataType();
-          unchanged.setName(name);
-          unchanged.setVersions(versions);
-          unchangedData.insert(unchanged);
-        }
+        UnchangedDataType unchanged = new UnchangedDataType();
+        unchanged.setName(name);
+        unchanged.setVersions(versions);
+        unchangedData.insert(unchanged);
+
       }
     }
+  }
+
+  public void CreateIntermediateFromUnchanged() {
+    List<UnchangedDataType> unchanged = unchangedData.findAll();
+    for (UnchangedDataType dt : unchanged) {
+      Datatype d = datatypeService.findByNameAndVersionAndScope(dt.getName(),
+          dt.getVersions().get(dt.getVersions().size() - 1), "HL7STANDARD");
+
+      Datatype newDatatype = new Datatype();
+      newDatatype = d;
+      newDatatype.setId(ObjectId.get().toString());
+      newDatatype.setHl7Version("*");
+      newDatatype.setScope(SCOPE.INTERMASTER);
+      newDatatype.setHl7versions(dt.getVersions());
+
+      datatypeService.save(newDatatype);
+
+    }
+
+
+    // List<Datatype> Inter = datatypeService.findByScope("INTERMASTER");
+    // for (Datatype d : Inter) {
+    // if (d.getComponents().size() != 0) {
+    // MergeComponent(d);
+    // datatypeService.save(d);
+    // }
+    //
+    // }
+
+  }
+
+  /**
+   * @param d
+   * @throws Exception
+   */
+  private void MergeComponents() throws Exception {
+    // TODO Auto-generated method stub
+    List<Datatype> BeforeMerge = datatypeService.findByScope("INTERMASTER");
+    for (Datatype dt : BeforeMerge) {
+      if (dt.getComponents().size() != 0) {
+        for (Component c : dt.getComponents()) {
+          if (c.getDatatype() != null) {
+            Datatype current = datatypeService.findById(c.getDatatype().getId());
+            Datatype temp = datatypeService.findByCompatibleVersion(current.getName(),
+                current.getHl7Version(), "INTERMASTER");
+            c.getDatatype().setId(temp.getId());
+
+          }
+        }
+      }
+      datatypeService.save(dt);
+    }
+
+
   }
 
   public void Colorate() {
@@ -1107,9 +1170,7 @@ public class Bootstrap implements InitializingBean {
   // NOTE:ADD version to preloaded segs,dts,vs
   private void addVersionAndScopetoHL7IG() {
     List<String> hl7Versions = new ArrayList<String>();
-    hl7Versions.add("2.1");
-    hl7Versions.add("2.2");
-    hl7Versions.add("2.3");
+
     hl7Versions.add("2.3.1");
     hl7Versions.add("2.4");
     hl7Versions.add("2.5");
