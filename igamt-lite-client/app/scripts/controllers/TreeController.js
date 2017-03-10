@@ -612,7 +612,29 @@ angular
                     ]
                 ];
 
+                $scope.DataTypeOptionsForInter = [
 
+                    ['Create a Master From',
+                        function($itemScope) {
+
+
+                            if ($rootScope.hasChanges()) {
+
+                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                    CloneDeleteSvc.copyDatatype($itemScope.data);
+                                });
+                            } else {
+                                CloneDeleteSvc.copyDatatype($itemScope.data);
+                            }
+                        }
+                    ],
+                    null, ['Delete',
+                        function($itemScope) {
+                            CloneDeleteSvc.deleteDatatype($itemScope.data);
+
+                        }
+                    ]
+                ];
 
                 $scope.DataTypeOptionsForPublished = [
                     ['Create New Version',
@@ -660,6 +682,8 @@ angular
                         }
                     ]
                 ];
+
+                
 
 
                 $scope.TableOptionsForPublished = [

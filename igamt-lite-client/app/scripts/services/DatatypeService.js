@@ -10,13 +10,19 @@ angular.module('igl').factory('DatatypeService',
                 if (parent && parent != null) {
                     if (parent.datatype) {
                         var dt = $rootScope.datatypesMap[parent.datatype.id];
-                        children = dt.components;
+                        children = angular.copy(dt.components);
+                        for (var i = 0, len = children.length; i < len; i++) {
+                            children[i].path = parent.path + "." + children[i].position;
+                        }
                     } else {
                         children = parent.components;
                     }
                 } else {
                     if (root != null) {
                         children = root.components;
+                        for (var i = 0, len = children.length; i < len; i++) {
+                            children[i].path = children[i].position;
+                        }
                     } else {
                         children = [];
                     }
@@ -349,11 +355,8 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
 
-            saveNewElements: function() {
-              saveNewElements(false);
-            },
-
             saveNewElements: function(silent) {
+                if(!silent) silent = false;
                 var delay = $q.defer();
                 var datatypeLinks = ElementUtils.getNewDatatypeLinks();
                 if (datatypeLinks&&datatypeLinks.length > 0) {
@@ -485,6 +488,15 @@ angular.module('igl').factory('DatatypeService',
             getSharedDatatypes: function(){
                 var delay = $q.defer();
                 $http.get('api/datatypes/findShared').then(function (response) {
+                    delay.resolve(response.data);
+                 }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            findByScope: function(scope){
+                var delay = $q.defer();
+                $http.post('api/datatypes/findByScope',scope).then(function (response) {
                     delay.resolve(response.data);
                  }, function (error) {
                     delay.reject(error);

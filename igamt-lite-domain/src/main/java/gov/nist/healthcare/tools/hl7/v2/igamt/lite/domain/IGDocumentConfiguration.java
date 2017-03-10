@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +34,10 @@ public class IGDocumentConfiguration {
   private Set<String> statuses = new HashSet<String>();
   private Set<String> domainVersions = new HashSet<String>();
   private Set<String> schemaVersions = new HashSet<String>();
+  private Set<String> valueSetAllowedDTs = new HashSet<String>();
+  private Set<DTComponent> valueSetAllowedComponents = new HashSet<DTComponent>();
+  private Set<String> codedElementDTs = new HashSet<String>();
+  private HashMap<String, Set<String>> bindingLocationListByHL7Version = new HashMap<String, Set<String>>();
 
   public Set<String> getUsages() {
     return usages;
@@ -144,6 +149,38 @@ public Set<String> getConditionalConstraintVerbs() {
 
 public void setConditionalConstraintVerbs(Set<String> conditionalConstraintVerbs) {
 	this.conditionalConstraintVerbs = conditionalConstraintVerbs;
+}
+
+public Set<String> getValueSetAllowedDTs() {
+	return valueSetAllowedDTs;
+}
+
+public void setValueSetAllowedDTs(Set<String> valueSetAllowedDTs) {
+	this.valueSetAllowedDTs = valueSetAllowedDTs;
+}
+
+public Set<DTComponent> getValueSetAllowedComponents() {
+	return valueSetAllowedComponents;
+}
+
+public void setValueSetAllowedComponents(Set<DTComponent> valueSetAllowedComponents) {
+	this.valueSetAllowedComponents = valueSetAllowedComponents;
+}
+
+public Set<String> getCodedElementDTs() {
+	return codedElementDTs;
+}
+
+public void setCodedElementDTs(Set<String> codedElementDTs) {
+	this.codedElementDTs = codedElementDTs;
+}
+
+public HashMap<String, Set<String>> getBindingLocationListByHL7Version() {
+	return bindingLocationListByHL7Version;
+}
+
+public void setBindingLocationListByHL7Version(HashMap<String, Set<String>> bindingLocationListByHL7Version) {
+	this.bindingLocationListByHL7Version = bindingLocationListByHL7Version;
 }
 
 }

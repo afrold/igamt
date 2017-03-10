@@ -26,8 +26,8 @@ public interface ExportService {
     InputStream exportIGDocumentAsDocx(IGDocument igDocument, SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig) throws IOException;
     InputStream exportIGDocumentAsHtml(IGDocument igDocument, SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig) throws IOException;
     InputStream exportIGDocumentAsXml(IGDocument igDocument) throws IOException;
-    InputStream exportDatatypeLibraryDocumentAsHtml(DatatypeLibraryDocument datatypeLibraryDocument);
-    InputStream exportDatatypeLibraryDocumentAsDocx(DatatypeLibraryDocument datatypeLibraryDocument);
+    InputStream exportDatatypeLibraryDocumentAsHtml(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig);
+    InputStream exportDatatypeLibraryDocumentAsDocx(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig);
 
 
 }

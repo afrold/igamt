@@ -3,7 +3,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -34,9 +33,10 @@ public class Datatype extends DataModelWithConstraints
 
   private String ext = "";
 
+
   private String purposeAndUse = "";
-
-
+  
+  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
 
   protected List<Component> components = new ArrayList<Component>();
 
@@ -93,15 +93,7 @@ public class Datatype extends DataModelWithConstraints
   }
 
   public void setComponents(List<Component> components) {
-    if (components != null) {
-      this.components.clear();
-      Iterator<Component> it = components.iterator();
-      while (it.hasNext()) {
-        addComponent(it.next());
-      }
-    } else {
-      this.components = null;
-    }
+    this.components = components;
   }
 
   public String getName() {
@@ -129,8 +121,11 @@ public class Datatype extends DataModelWithConstraints
   }
 
   public void addComponent(Component c) {
-    c.setPosition(components.size() + 1);
     components.add(c);
+  }
+  
+  public void addValueSetBinding(ValueSetBinding vsb) {
+	valueSetBindings.add(vsb);
   }
 
   public String getComment() {
@@ -148,7 +143,6 @@ public class Datatype extends DataModelWithConstraints
   public void setUsageNote(String usageNote) {
     this.usageNote = usageNote;
   }
-
 
 
   public String getDefPreText() {
@@ -194,6 +188,13 @@ public class Datatype extends DataModelWithConstraints
     for (Component c : this.components) {
       clonedDT.addComponent(c.clone());
     }
+    
+    clonedDT.setValueSetBindings(new ArrayList<ValueSetBinding>());
+    for (ValueSetBinding vsb : this.valueSetBindings){
+    	clonedDT.addValueSetBinding(vsb);
+    }
+    
+    
     clonedDT.setDescription(description);
     clonedDT.setLabel(label);
     clonedDT.setName(name);
@@ -297,6 +298,7 @@ public class Datatype extends DataModelWithConstraints
     this.timeZoneOfDTM = timeZoneOfDTM;
   }
 
+
   public Set<ShareParticipantPermission> getShareParticipantIds() {
     return shareParticipantIds;
   }
@@ -304,6 +306,14 @@ public class Datatype extends DataModelWithConstraints
   public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
     this.shareParticipantIds = shareParticipantIds;
   }
+  
+  public List<ValueSetBinding> getValueSetBindings() {
+		return valueSetBindings;
+  }
+
+	public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+		this.valueSetBindings = valueSetBindings;
+	}
 
 
 }

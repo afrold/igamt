@@ -1,7 +1,12 @@
 <style id="antiClickjack">
     body {
         display: none !important;
+        
     }
+
+
+
+    
 </style>
 <script type="text/javascript">
 if (self === top) {
@@ -292,31 +297,37 @@ if (self === top) {
         <tab heading="Data Types Evolution" ng-attr-active="tabs[2].active" ng-click="initMatrix()">
             <div style="margin-top:10px">
                 <div class="col-md-6">
-
+<!--
                     <div class="panel panel-primary">
-                        <!-- Default panel contents -->
                         <div class="panel-heading panel-heading-collapsable">
                             <i class="fa fa-bar-chart" aria-hidden="true"></i>Data Type Evolution By HL7 version
                         </div>
                         <div class="panel-body">
-                            <div>
-                                <table class="table table-bordered col-md-12">
+                            <div>-->
+                    <div align="right" style="width: 660px">
+                         <i class="icon-search"></i>
+                        <input type="search" class="form-control" placeholder="Search Datatypes" ng-model="search.name" />
+                         </div>
+                                <table class="fixed_headers table-bordered">
                                     <thead>
                                         <tr class="tbl-header">
-                                            <th ng-repeat="v in vrs">{{v}}</th>
+                                            <th ng-repeat="v in vrs" style="min-width:60px !important; width:60px !important;">{{v}}</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="scrollit">
-                                        <tr ng-repeat="dt in matrix | orderBy: 'name'">
-                                            <td class="tbl-header"><strong>{{dt.name}}</strong></td>
-                                            <td ng-disabled="true" style="color:{{getColor(dt.links[va])}}" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1]), 'grey':!dt.links[va]&& dt.links[va]!==0}"
+                                    <tbody style="max-height: 337px; overflow:scroll; display: block;">
+                                        <tr ng-repeat="dt in matrix | orderBy: 'name'|filter:search">
+                                            <td style="min-width:60px !important; width:60px !important;"><strong>{{dt.name}}</strong></td>
+                                            <td ng-disabled="true" style="color:{{getColor(dt.links[va])}}; width:60px!important;" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1]), 'grey':!dt.links[va]&& dt.links[va]!==0}"
                                                 ng-repeat='va in adjusted' ng-click="selectCell(dt,vrs[$index+1])"><strong>{{dt.links[va]}}</strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+
+
+
+                            <!--</div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
 
                 <div class="col-md-6">
@@ -327,7 +338,7 @@ if (self === top) {
                         </div>
                         <div class="panel-body ">
                             <div class="panel-body">
-                                <table tt-table tt-params="dynamicDt_params" class=" table-marginless table-bordered table-condensed">
+                                <table tt-table tt-params="dynamicDt_params" class=" table-marginless table-bordered table-condensed" id="deltaTable">
                                     <thead>
                                         <tr class="tbl-header">
                                             <th class="col-md-1" rowspan="2" style="width:14%;">Position</th>
@@ -433,15 +444,19 @@ if (self === top) {
                           <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}<span ng-if="versionAndUseMap[data.id].deprecated" class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span></span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}<i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
+
                         </div>
 						<div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForPublished" ng-if="(data.status==='PUBLISHED'&&!versionAndUseMap[data.id].deprecated)&&data.scope!=='HL7STANDARD'">
 						<span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}<span class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span></span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
                         </div>
+                               <div style="margin-top: -6px;margin-left: 12px;" ng-if="data.scope==='MASTER'">   
+                            <span class="version-badge-under" ng-repeat="version in data.hl7versions" style="margin-left:2px;">{{version}}</span>
+                            </div>
                     </li>
                 </ol>
-                <ol ui-tree-nodes="" ng-model="tables"  data-type="tables">
+                <ol ui-tree-nodes="" ng-model="tables"  data-type="tables" ng-if="datatypeLibrary.scope!=='MASTER'">
                     <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="addValueSetsInTableLibrary">
                         <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Value Sets <span class="badge">{{tables.length}}</span>
                     </div>
@@ -459,6 +474,26 @@ if (self === top) {
                                      <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
                                    'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >{{getScopeLabel(table)}}{{displayVersion(table)}} <span class="version-badge">v{{versionAndUseMap[table.id].publicationVersion}}</span></span> {{table.bindingIdentifier}}-{{table.description}}
                             </span>
+                        </div>
+                    </li>
+                </ol>
+
+
+                    <ol ui-tree-nodes="" ng-model="interMediates" ng-if="datatypeLibrary.scope=='MASTER'">
+                    <div ui-tree-handle data-nodrag>
+                        <i data-nodrag class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> InterMediates <span class="badge">{{interMediate.length}}</span>
+                    </div>
+                    <li ng-repeat="data in interMediates |orderBy:['-scope','label']" ui-tree-node>
+                        <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForInter">
+                          <span class="badge" style="background-color:#144d8e;"> INT</span>
+                        
+                        
+                        
+                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}
+                            </span>
+                            <div style="margin-top: -6px;margin-left: 12px;">   
+                            <span class="version-badge-under" ng-repeat="version in data.hl7versions" style="margin-left:2px;">{{version}}</span>
+                            </div>
                         </div>
                     </li>
                 </ol>

@@ -64,22 +64,6 @@ angular.module('igl')
             $rootScope.recordChangeForEdit2('component', 'edit', node.id, 'table', null);
         };
 
-        $scope.mapTable = function (node) {
-            var modalInstance = $modal.open({
-                templateUrl: 'TableMappingDatatypeCtrl.html',
-                controller: 'TableMappingDatatypeCtrl',
-                windowClass: 'app-modal-window',
-                resolve: {
-                    selectedNode: function () {
-                        return node;
-                    }
-                }
-            });
-            modalInstance.result.then(function (node) {
-                $scope.selectedNode = node;
-            }, function () {
-            });
-        };
 
         $scope.managePredicate = function (node) {
             var modalInstance = $modal.open({
@@ -636,31 +620,6 @@ angular.module('igl').controller('DatatypeReferencesCtrl', function ($scope, $mo
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-});
-
-angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
-    $scope.changed = false;
-    $scope.selectedNode = selectedNode;
-    $scope.selectedTable = null;
-    if (selectedNode.table != undefined) {
-        $scope.selectedTable = $rootScope.tablesMap[selectedNode.table];
-    }
-
-    $scope.selectTable = function (table) {
-        $scope.changed = true;
-        $scope.selectedTable = table;
-    };
-
-    $scope.mappingTable = function () {
-        $scope.selectedNode.table = $scope.selectedTable.id;
-        $rootScope.recordChangeForEdit2('component', 'edit', $scope.selectedNode.id, 'table', $scope.selectedTable.id);
-        $scope.ok();
-    };
-
-    $scope.ok = function () {
-        $modalInstance.close($scope.selectedNode);
-    };
-
 });
 
 angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($scope, $modalInstance, $rootScope) {

@@ -20,9 +20,9 @@ public class Component extends DataElement implements Cloneable {
 
   @Override
   public String toString() {
-    return "Component [id=" + id + ", datatype=" + datatype + ", name=" + name + ", usage=" + usage
-        + ", minLength=" + minLength + ", maxLength=" + maxLength + ", confLength=" + confLength
-        + ", table=" + table + "]";
+    return "Component [position=" + position + ", id=" + id + ", datatype=" + datatype + ", name="
+        + name + ", usage=" + usage + ", minLength=" + minLength + ", maxLength=" + maxLength
+        + ", confLength=" + confLength + ", table=" + table + "]";
   }
 
   public String getId() {
@@ -93,13 +93,19 @@ public class Component extends DataElement implements Cloneable {
   }
 
   public boolean isIdentique(Component c) {
-    if (c.getUsage() != this.getUsage()) {
+    if (!c.getName().toLowerCase().equals(this.getName().toLowerCase())) {
       return false;
     }
-    if (c.getDatatype().getName() == null
+    if (!c.getUsage().toString().equalsIgnoreCase(this.getUsage().toString())) {
+      return false;
+    } else if (!c.getMaxLength().equalsIgnoreCase(this.getMaxLength())) {
+      return false;
+    } else if (c.getMinLength() != this.getMinLength()) {
+      return false;
+    } else if (this.getDatatype() == null || c.getDatatype().getName() == null
         || !c.getDatatype().getName().equals(this.datatype.getName())) {
       return false;
-    }
-    return true;
+    } else
+      return true;
   }
 }

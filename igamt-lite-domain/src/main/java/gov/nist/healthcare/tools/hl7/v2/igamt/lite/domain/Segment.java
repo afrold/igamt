@@ -82,7 +82,6 @@ public class Segment extends DataModelWithConstraints
   }
 
   public void addField(Field field) {
-    field.setPosition(fields.size() + 1);
     fields.add(field);
   }
 

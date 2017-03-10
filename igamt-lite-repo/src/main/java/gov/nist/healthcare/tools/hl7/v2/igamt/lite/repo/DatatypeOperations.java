@@ -25,34 +25,42 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
  */
 public interface DatatypeOperations {
 
-	// List<Datatype> findByLibIds(String dtLibId);
+  // List<Datatype> findByLibIds(String dtLibId);
 
-	// List<Datatype> findFullDTsByLibIds(String dtLibId);
+  // List<Datatype> findFullDTsByLibIds(String dtLibId);
 
-	public List<Datatype> findAll();
+  public List<Datatype> findAll();
 
-	public Datatype findById(String id);
+  public Datatype findById(String id);
 
-	public List<Datatype> findByIds(Set<String> ids);
+  public List<Datatype> findByIds(Set<String> ids);
 
-	public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+  public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-	// List<Datatype> findDups(Datatype dt);
+  // List<Datatype> findDups(Datatype dt);
 
-	public List<Datatype> findUserDatatypesByIds(Set<String> ids);
+  public List<Datatype> findUserDatatypesByIds(Set<String> ids);
 
-	public List<Datatype> findByScope(String scope);
+  public List<Datatype> findByScope(String scope);
 
-	public List<Datatype> findShared(Long accountId);
+  public List<Datatype> findShared(Long accountId);
 
-	public Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+  public Datatype findByNameAndVersionAndScope(String name, String version, String scope);
 
-	public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope);
+  public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope);
 
-	public Date updateDate(String id, Date date);
+  public Date updateDate(String id, Date date);
 
-	public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String scope);
+  public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions,
+      String scope);
 
-	public void updateStatus(String id, STATUS status);
+  /**
+   * @param name
+   * @param scope
+   * @return
+   */
+  List<Datatype> findByNameAndScope(String name, String scope);
+
+  public void updateStatus(String id, STATUS status);
 
 }
