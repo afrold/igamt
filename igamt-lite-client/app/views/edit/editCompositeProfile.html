@@ -1,0 +1,272 @@
+<script type="text/ng-template" id="EditCompositeProfile.html">
+    <div ng-show="isAuthenticated()" >
+        <!--<div class="row">-->
+        <div ng-show="!isPending()">
+            <div style="padding-top:10px">
+                <div style="margin:5px">
+                    <div class="page-header" style="margin-bottom: 20px">
+                        <span class="header4">Composite Profile: {{compositeProfile.name}} </span>
+                        <div class="pull-right">
+                            <button ng-disabled="editForm.$invalid ||!editForm.$dirty" title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-click="save()">
+                                                            <span><i class="fa fa-check fa-fw"></i> Save</span>
+                                                        </button>
+                        </div>
+                    </div>
+                    <tabset active="tabStatus.active">
+                        <tab>
+                            <tab-heading>
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Composite Profile MetaData
+                            </tab-heading>
+                            <div style="margin-top: 20px">
+                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.name.$invalid}">
+                                    <label class="col-md-2 control-label">Name*</label>
+                                    <div class="controls col-md-10">
+                                        <input class="form-control" type="text" disabled name="name" ng-change="setDirty()" ng-model="compositeProfile.name" ng-disabled="viewSettings.tableReadonly">
+                                    </div>
+                                </div>
+                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
+                                    <label class="col-md-2 control-label">Identifier*</label>
+                                    <div class="controls col-md-10">
+                                        <input type="text" ng-change="setDirty()" name="identifier" class="form-control" ng-model="compositeProfile.identifier" ng-disabled="viewSettings.tableReadonly" required>
+                                    </div>
+                                </div>
+                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
+                                    <label class="col-md-2 control-label">Description</label>
+                                    <div class="controls col-md-10">
+                                        <input class="form-control" type="text" name="description" ng-change="setDirty()" ng-model="compositeProfile.description" ng-disabled="viewSettings.tableReadonly">
+                                    </div>
+                                </div>
+                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
+                                    <label class="col-md-2 control-label">Hl7 Version</label>
+                                    <div class="controls col-md-10">
+                                        <input class="form-control" type="text" name="hl7Version" ng-model="compositeProfile.hl7Version" disabled>
+                                    </div>
+                                </div>
+                                <!--<div class="form-group control-group"-->
+                                <!--ng-class="{'igl-has-error' : editForm.messageOId.$invalid}">-->
+                                <!--<label class="col-md-2 control-label">Message OID</label>-->
+                                <!--<div class="controls col-md-10"><input type="text" disabled name="messageOId"-->
+                                <!--class="form-control"-->
+                                <!--ng-model="message.messageID" required></div>-->
+                                <!--</div>-->
+                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageType.$invalid}">
+                                    <label class="col-md-2 control-label">Message Type*</label>
+                                    <div class="controls col-md-10">
+                                        <input type="text" disabled name="messageType" class="form-control" ng-model="compositeProfile.messageType" required>
+                                    </div>
+                                </div>
+                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageEvent.$invalid}">
+                                    <label class="col-md-2 control-label">Message Event*</label>
+                                    <div class="controls col-md-10">
+                                        <input type="text" disabled name="messageEvent" class="form-control" ng-model="compositeProfile.event" required ng-disabled="false">
+                                    </div>
+                                </div>
+                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageStructID.$invalid}">
+                                    <label class="col-md-2 control-label">Message Structure ID*</label>
+                                    <div class="controls col-md-10">
+                                        <input type="text" disabled name="messageStructID" class="form-control" ng-model="compositeProfile.structID" required>
+                                    </div>
+                                </div>
+                                <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.comment.$invalid}">
+                                    <label class="col-md-2 control-label">Comment</label>
+                                    <div class="controls col-md-10">
+                                        <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly" ng-change="recordDatatypeChange('message','edit',message.id,'message', message.comment)" name="comment" id="comment" class="form-control" ng-model="compositeProfile.comment" />
+                                    </div>
+                                </div>
+                                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
+                                    <label class="col-md-2 control-label">Definition Text</label>
+                                    <div class="controls col-md-10">
+                                        <div ng-show="!viewSettings.tableReadonly">
+                                            <textarea froala="froalaEditorOptions" ng-model="compositeProfile.usageNote" name="text" id="text" ng-change="setDirty()"></textarea>
+                                        </div>
+                                        <div ng-show="viewSettings.tableReadonly">
+                                            <div class="fr-view">
+                                                <div froala-view="compositeProfile.usageNote"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group control-group">
+                                    <label class="col-md-2 control-label">Date Updated</label>
+
+                                    <div class="controls col-md-10">
+                                        <span class="form-control">{{compositeProfile.dateUpdated | date:dateFormat}}</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </tab>
+                        <tab>
+                            <tab-heading>
+                                <i class="fa fa-info-circle fa-fw " aria-hidden="true "></i> Composite Profile Definition
+                            </tab-heading>
+                            <div style="margin-top: 20px ">
+
+                                <div class="col-md-12 " ng-show="compositeProfile.children.length>0">
+                                    <table id="compositeProfileTable" tt-table tt-params="compositeProfileParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                                        <thead>
+                                            <tr class="tbl-header" style="">
+                                                <th class="col-md-2 col-fixed-250" rowspan="2"> Name</th>
+                                                <th class="col-md-1 col-fixed-80" rowspan="2">Usage</th>
+                                                <th class="col-md-1 col-fixed-100" colspan="2">Cardinality</th>
+                                                <th class="col-md-1 col-fixed-100" colspan="2">Length</th>
+                                                <th class="col-md-1 col-fixed-30" rowspan="2"> ConfLength </th>
+                                                <th class="col-md-2 col-fixed-35" rowspan="2">Data Type
+                                                </th>
+                                                <th class="col-md-1 col-fixed-33" rowspan="2">Value Set
+                                                </th>
+                                                <th class="col-md-1" ng-style="predWidthx" rowspan="2">Predicate
+                                                </th>
+                                                <th class="col-md-1" ng-style="csWidthx" rowspan="2">Conformance Statement
+                                                </th>
+                                                <th class="col-md-1 col-fixed-80" rowspan="2">Definition Text
+                                                </th>
+                                                <th class="col-md-1" ng-style="commentWidth" rowspan="2">Comment
+                                                </th>
+
+
+                                            </tr>
+                                            <tr class="tbl-header">
+                                                <th class="col-xs-1 col-fixed-50" style="width:2%">min</th>
+                                                <th class="col-xs-1 col-fixed-50" style="width:2%">max</th>
+                                                <th class="col-xs-1 col-fixed-50" style="width:2%">min</th>
+                                                <th class="col-xs-1 col-fixed-50" style="width:2%">max</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+
+                                </div>
+
+
+                            </div>
+                        </tab>
+
+                    </tabset>
+
+
+
+
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+</script>
+
+
+
+
+<script type="text/ng-template" id="compositeProfileTable">
+
+    <tr tt-node is-branch="node.ref.fields.length>0||node.datatype.components.length>0||node.children.length>0">
+
+
+        <td class="col-md-2 col-fixed-250">
+            <span ng-if="node.type=='datatype'" class="label label-default label-icon">D</span>
+            <span ng-if="node.type=='group'" class="label label-success label-icon">G</span>
+            <span ng-if="node.type=='segmentRef'||node.type=='segment'" class="label label-segment label-icon">S</span>
+            <span class="label label-field label-icon" ng-if="node.type==='field'">F</span>
+            <span class="label label-component label-icon" ng-if="node.type==='component'">C</span> {{node.position}}.
+            <span ng-if="node.type==='segmentRef'">{{node.ref.label}}</span>
+            <span ng-if="node.type!=='segmentRef'">{{node.name}}</span>
+
+        </td>
+
+        <td class="col-md-1 col-fixed-80">
+            {{node.usage}}
+        </td>
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component'">
+        </td>
+        <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.min!==node.attributes.oldMin,'col-md-1 col-fixed-100':node.attributes.min===node.attributes.oldMin}" ng-if="node.type!=='component'">
+            {{node.min}}
+        </td>
+
+
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component'">
+        </td>
+        <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.max!==node.attributes.oldMax,'col-md-1 col-fixed-100':node.attributes.max===node.attributes.oldMax}" ng-if="node.type!=='component'">
+            {{node.max}}
+        </td>
+
+
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
+
+        </td>
+        <td ng-if="node.type==='field' || node.type==='component'">
+            {{node.minLength}}
+        </td>
+
+
+        <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
+        </td>
+        <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.maxLength!==node.attributes.oldMaxLength,'col-md-1 col-fixed-100':node.attributes.maxLength===node.attributes.oldMaxLength}" ng-if="node.type==='field' || node.type==='component'">
+            {{node.maxLength}}
+        </td>
+
+
+        <td class="col-md-1 col-fixed-30 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
+        </td>
+        <td ng-class="{'col-md-1 col-fixed-30 input-change ':node.attributes.confLength!==node.attributes.oldConfLength,'col-md-1 col-fixed-30':node.attributes.confLength===node.attributes.oldConfLength}" ng-if="node.type==='field' || node.type==='component'">
+            {{node.confLength}}
+        </td>
+
+
+        <td class="col-md-2 col-fixed-35 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
+
+        </td>
+        <td class="col-md-2 col-fixed-35 " ng-if="node.type==='field' || node.type==='component'">
+            <a class="point">
+                 {{node.datatype.label}}
+            </a>
+
+        </td>
+
+
+        <td class="col-md-1 col-fixed-33 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
+        </td>
+        <td class="col-md-1 col-fixed-33" ng-if="node.type==='field' || node.type==='component'">
+
+            <a class="point" ng-repeat="table in node.tables">
+                <span>{{table.bindingIdentifier}}</span>
+            </a>
+
+        </td>
+
+
+
+        <td class="col-md-1">
+        </td>
+        <td class="col-md-1">
+        </td>
+
+
+        <td class="col-md-1 col-fixed-80 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
+        </td>
+        <td class="col-md-1 col-fixed-80 " ng-if="node.type==='field' || node.type==='component'">
+
+            <a ng-click="seeText(node)" class="point">
+                <i class="fa fa-eye"></i>
+            </a>
+
+        </td>
+
+
+        <td class="col-md-1" ng-style="commentWidth">
+            <a ng-click="seeText(node)" class="point" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                <i class="fa fa-eye"></i>
+            </a>
+
+        </td>
+
+
+    </tr>
+
+</script>

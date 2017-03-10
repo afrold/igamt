@@ -112,6 +112,7 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
     clonedField.setMin(min);
     clonedField.setMinLength(minLength);
     clonedField.setName(name);
+
     clonedField.setPosition(position);
 
     clonedField.setTables(new ArrayList<TableLink>());

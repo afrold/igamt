@@ -1570,8 +1570,11 @@ angular
                     //     $rootScope.compositeMessage = compositeM;
                     //     $scope.$emit('event:openCm');
                     // });
+                    $scope.Activate(cm.id);
                     CompositeProfileService.build(cm).then(function(compositeProfile){
                         console.log(compositeProfile);
+                        $rootScope.compositeProfile = compositeProfile;
+                        $scope.$emit('event:openCP');
                     });
 
                 };

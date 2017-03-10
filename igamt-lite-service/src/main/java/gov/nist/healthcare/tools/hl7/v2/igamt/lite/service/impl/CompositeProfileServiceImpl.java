@@ -125,7 +125,9 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
       String path = core.getStructID();
       if (segRefOrGrp.getType().equalsIgnoreCase(Constant.SEGMENTREF)) {
         SegmentRef segRef = (SegmentRef) segRefOrGrp;
+
         path = path + "." + segRef.getPosition();
+
 
         buildSegmentRef((SegmentRef) segRefOrGrp, path, itemsMap, segmentflavorsMap,
             datatypeflavorsMap, segmentsMap, datatypesMap, tablesMap);
@@ -178,13 +180,14 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     for (SegmentRefOrGroup segRefOrGrp : group.getChildren()) {
       if (segRefOrGrp.getType().equalsIgnoreCase(Constant.SEGMENTREF)) {
         SegmentRef segRef = (SegmentRef) segRefOrGrp;
-        path = path + "." + segRef.getPosition();
-        buildSegmentRef((SegmentRef) segRefOrGrp, path, itemsMap, segmentflavorsMap,
+        String p = path + "." + segRef.getPosition();
+
+        buildSegmentRef((SegmentRef) segRefOrGrp, p, itemsMap, segmentflavorsMap,
             datatypeflavorsMap, segmentsMap, datatypesMap, tablesMap);
       } else if (segRefOrGrp.getType().equalsIgnoreCase(Constant.GROUP)) {
         Group grp = (Group) segRefOrGrp;
-        path = path + "." + grp.getPosition();
-        buildGroup((Group) segRefOrGrp, path, itemsMap, segmentflavorsMap, datatypeflavorsMap,
+        String p = path + "." + grp.getPosition();
+        buildGroup((Group) segRefOrGrp, p, itemsMap, segmentflavorsMap, datatypeflavorsMap,
             segmentsMap, datatypesMap, tablesMap);
       }
     }
@@ -287,54 +290,66 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
 
         } else {
           // create segment flavor, add it to flavors map and change fields
-          Segment segmentFlavor = segment;
-          segmentFlavor.setExt("pc");
-          segmentFlavor.setId(ObjectId.get().toString());
-          segmentFlavor.setScope(SCOPE.USER);
-          segmentflavorsMap.put(segmentFlavor.getId(), segmentFlavor);
+          try {
+            Segment segmentFlavor = segment.clone(null, null);
+            segmentFlavor.setExt("pc");
+            segmentFlavor.setId(ObjectId.get().toString());
+            segmentFlavor.setScope(SCOPE.USER);
+            System.out.println("11111111111111");
+            System.out.println(segment.toString());
+            System.out.println(segmentFlavor.toString());
+            segmentflavorsMap.put(segmentFlavor.getId(), segmentFlavor);
 
-          for (SubProfileComponent subPc : itemsMap.get(segmentFlavor.getFields().get(i).getId())) {
+            for (SubProfileComponent subPc : itemsMap
+                .get(segmentFlavor.getFields().get(i).getId())) {
 
-            if (subPc.getPath().equals(path)) {
-              if (subPc.getAttributes().getComment() != null) {
-                segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
-                    .setComment(subPc.getAttributes().getComment());
+              if (subPc.getPath().equals(path)) {
+                if (subPc.getAttributes().getComment() != null) {
+                  segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
+                      .setComment(subPc.getAttributes().getComment());
+                }
+                if (subPc.getAttributes().getMax() != null) {
+                  segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
+                      .setMax(subPc.getAttributes().getMax());
+                }
+                if (subPc.getAttributes().getMin() != null) {
+                  segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
+                      .setMin(subPc.getAttributes().getMin());
+                }
+                if (subPc.getAttributes().getUsage() != null) {
+                  segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
+                      .setUsage(subPc.getAttributes().getUsage());
+                }
+                if (subPc.getAttributes().getConfLength() != null) {
+                  segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
+                      .setConfLength(subPc.getAttributes().getConfLength());
+                }
+                if (subPc.getAttributes().getMaxLength() != null) {
+                  segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
+                      .setMaxLength(subPc.getAttributes().getMaxLength());
+                }
+                if (subPc.getAttributes().getMinLength() != null) {
+                  segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
+                      .setMinLength(subPc.getAttributes().getMinLength());
+                }
+
+                segRef.getRef().setId(segmentFlavor.getId());
+                segRef.getRef().setExt(segmentFlavor.getExt());
+                segRef.getRef().setName(segmentFlavor.getName());
               }
-              if (subPc.getAttributes().getMax() != null) {
-                segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
-                    .setMax(subPc.getAttributes().getMax());
-              }
-              if (subPc.getAttributes().getMin() != null) {
-                segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
-                    .setMin(subPc.getAttributes().getMin());
-              }
-              if (subPc.getAttributes().getUsage() != null) {
-                segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
-                    .setUsage(subPc.getAttributes().getUsage());
-              }
-              if (subPc.getAttributes().getConfLength() != null) {
-                segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
-                    .setConfLength(subPc.getAttributes().getConfLength());
-              }
-              if (subPc.getAttributes().getMaxLength() != null) {
-                segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
-                    .setMaxLength(subPc.getAttributes().getMaxLength());
-              }
-              if (subPc.getAttributes().getMinLength() != null) {
-                segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i)
-                    .setMinLength(subPc.getAttributes().getMinLength());
-              }
-              segRef.getRef().setId(segmentFlavor.getId());
-              segRef.getRef().setExt(segmentFlavor.getExt());
-              segRef.getRef().setName(segmentFlavor.getName());
+
+              Datatype dt = datatypesMap.get(segmentflavorsMap.get(segmentFlavor.getId())
+                  .getFields().get(i).getDatatype().getId());
+
+              buildDatatypeFromField(
+                  segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i), path, dt,
+                  datatypesMap, datatypeflavorsMap, itemsMap);
             }
-
-            Datatype dt = datatypesMap.get(segmentflavorsMap.get(segmentFlavor.getId()).getFields()
-                .get(i).getDatatype().getId());
-
-            buildDatatypeFromField(segmentflavorsMap.get(segmentFlavor.getId()).getFields().get(i),
-                path, dt, datatypesMap, datatypeflavorsMap, itemsMap);
+          } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
           }
+
 
         }
 
@@ -357,122 +372,141 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
       Segment segment, Map<String, Segment> segmentsMap, Map<String, Segment> segmentflavorsMap,
       Map<String, Datatype> datatypesMap, Map<String, Datatype> datatypeflavorsMap,
       Map<String, List<SubProfileComponent>> itemsMap) {
+    if (dt != null) {
+      for (int i = 0; i < dt.getComponents().size(); i++) {
 
-    for (int i = 0; i < dt.getComponents().size(); i++) {
+        if (itemsMap.containsKey(dt.getComponents().get(i).getId())) {
+          path = path + "." + field.getPosition() + "." + dt.getComponents().get(i).getPosition();
 
-      if (itemsMap.containsKey(dt.getComponents().get(i).getId())) {
-        path = path + "." + field.getPosition() + "." + dt.getComponents().get(i).getPosition();
+          if (datatypeflavorsMap.containsKey(dt.getId())) {
 
-        if (datatypeflavorsMap.containsKey(dt.getId())) {
+            for (SubProfileComponent subPc : itemsMap.get(dt.getComponents().get(i).getId())) {
 
-          for (SubProfileComponent subPc : itemsMap.get(dt.getComponents().get(i).getId())) {
+              if (subPc.getPath().equals(path)) {
 
-            if (subPc.getPath().equals(path)) {
+                if (subPc.getAttributes().getComment() != null) {
+                  datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
+                      .setComment(subPc.getAttributes().getComment());
+                }
 
-              if (subPc.getAttributes().getComment() != null) {
-                datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
-                    .setComment(subPc.getAttributes().getComment());
+
+                if (subPc.getAttributes().getUsage() != null) {
+                  datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
+                      .setUsage(subPc.getAttributes().getUsage());
+                }
+                if (subPc.getAttributes().getConfLength() != null) {
+                  datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
+                      .setConfLength(subPc.getAttributes().getConfLength());
+                }
+                if (subPc.getAttributes().getMaxLength() != null) {
+                  datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
+                      .setMaxLength(subPc.getAttributes().getMaxLength());
+                }
+                if (subPc.getAttributes().getMinLength() != null) {
+                  datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
+                      .setMinLength(subPc.getAttributes().getMinLength());
+                }
+                if (segmentflavorsMap.containsKey(segment.getId())) {
+                  field.getDatatype().setId(dt.getId());
+                  field.getDatatype().setName(dt.getName());
+                  field.getDatatype().setExt(dt.getExt());
+
+                } else {
+                  try {
+                    Segment segmentFlavor = segment.clone(null, null);
+                    segmentFlavor.setExt("pc");
+                    segmentFlavor.setId(ObjectId.get().toString());
+                    segmentFlavor.setScope(SCOPE.USER);
+                    segmentflavorsMap.put(segmentFlavor.getId(), segmentFlavor);
+                    field.getDatatype().setId(dt.getId());
+                    field.getDatatype().setName(dt.getName());
+                    field.getDatatype().setExt(dt.getExt());
+
+                    segRef.getRef().setId(segmentFlavor.getId());
+                    segRef.getRef().setName(segmentFlavor.getName());
+                    segRef.getRef().setExt(segmentFlavor.getExt());
+                  } catch (CloneNotSupportedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                  }
+
+                }
               }
 
-
-              if (subPc.getAttributes().getUsage() != null) {
-                datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
-                    .setUsage(subPc.getAttributes().getUsage());
-              }
-              if (subPc.getAttributes().getConfLength() != null) {
-                datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
-                    .setConfLength(subPc.getAttributes().getConfLength());
-              }
-              if (subPc.getAttributes().getMaxLength() != null) {
-                datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
-                    .setMaxLength(subPc.getAttributes().getMaxLength());
-              }
-              if (subPc.getAttributes().getMinLength() != null) {
-                datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
-                    .setMinLength(subPc.getAttributes().getMinLength());
-              }
-              if (segmentflavorsMap.containsKey(segment.getId())) {
-                field.getDatatype().setId(dt.getId());
-                field.getDatatype().setName(dt.getName());
-                field.getDatatype().setExt(dt.getExt());
-              } else {
-                Segment segmentFlavor = segment;
-                segmentFlavor.setExt("pc");
-                segmentFlavor.setId(ObjectId.get().toString());
-                segmentFlavor.setScope(SCOPE.USER);
-                segmentflavorsMap.put(segmentFlavor.getId(), segmentFlavor);
-                field.getDatatype().setId(dt.getId());
-                field.getDatatype().setName(dt.getName());
-                field.getDatatype().setExt(dt.getExt());
-                segRef.getRef().setId(segmentFlavor.getId());
-                segRef.getRef().setName(segmentFlavor.getName());
-                segRef.getRef().setExt(segmentFlavor.getExt());
-              }
+              buildDatatypeFromComponent(datatypeflavorsMap.get(dt.getId()).getComponents().get(i),
+                  path, datatypesMap, datatypeflavorsMap, itemsMap);
             }
 
-            buildDatatypeFromComponent(datatypeflavorsMap.get(dt.getId()).getComponents().get(i),
-                path, datatypesMap, datatypeflavorsMap, itemsMap);
-          }
 
+          } else {
+            try {
+              Datatype dtFlavor = dt.clone();
+              dtFlavor.setExt("pc");
+              dtFlavor.setId(ObjectId.get().toString());
+              dtFlavor.setScope(SCOPE.USER);
+              datatypeflavorsMap.put(dtFlavor.getId(), dtFlavor);
 
-        } else {
-          Datatype dtFlavor = dt;
-          dtFlavor.setExt("pc");
-          dtFlavor.setId(ObjectId.get().toString());
-          dtFlavor.setScope(SCOPE.USER);
-          datatypeflavorsMap.put(dtFlavor.getId(), dtFlavor);
+              for (SubProfileComponent subPc : itemsMap
+                  .get(dtFlavor.getComponents().get(i).getId())) {
+                if (subPc.getPath().equals(path)) {
+                  if (subPc.getAttributes().getComment() != null) {
+                    datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                        .setComment(subPc.getAttributes().getComment());
+                  }
 
-          for (SubProfileComponent subPc : itemsMap.get(dtFlavor.getComponents().get(i).getId())) {
-            if (subPc.getPath().equals(path)) {
-              if (subPc.getAttributes().getComment() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setComment(subPc.getAttributes().getComment());
-              }
+                  if (subPc.getAttributes().getUsage() != null) {
+                    datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                        .setUsage(subPc.getAttributes().getUsage());
+                  }
+                  if (subPc.getAttributes().getConfLength() != null) {
+                    datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                        .setConfLength(subPc.getAttributes().getConfLength());
+                  }
+                  if (subPc.getAttributes().getMaxLength() != null) {
+                    datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                        .setMaxLength(subPc.getAttributes().getMaxLength());
+                  }
+                  if (subPc.getAttributes().getMinLength() != null) {
+                    datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                        .setMinLength(subPc.getAttributes().getMinLength());
+                  }
+                  if (segmentflavorsMap.containsKey(segment.getId())) {
+                    field.getDatatype().setId(dtFlavor.getId());
+                    field.getDatatype().setName(dtFlavor.getName());
+                    field.getDatatype().setExt(dtFlavor.getExt());
 
-              if (subPc.getAttributes().getUsage() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setUsage(subPc.getAttributes().getUsage());
+                  } else {
+                    Segment segmentFlavor = segment.clone(null, null);
+                    segmentFlavor.setExt("pc");
+                    segmentFlavor.setId(ObjectId.get().toString());
+                    segmentFlavor.setScope(SCOPE.USER);
+                    segmentflavorsMap.put(segmentFlavor.getId(), segmentFlavor);
+
+                    field.getDatatype().setId(dtFlavor.getId());
+                    field.getDatatype().setName(dtFlavor.getName());
+                    field.getDatatype().setExt(dtFlavor.getExt());
+                    segRef.getRef().setId(segmentFlavor.getId());
+                    segRef.getRef().setName(segmentFlavor.getName());
+                    segRef.getRef().setExt(segmentFlavor.getExt());
+                  }
+                }
+
+                buildDatatypeFromComponent(
+                    datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i), path,
+                    datatypesMap, datatypeflavorsMap, itemsMap);
               }
-              if (subPc.getAttributes().getConfLength() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setConfLength(subPc.getAttributes().getConfLength());
-              }
-              if (subPc.getAttributes().getMaxLength() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setMaxLength(subPc.getAttributes().getMaxLength());
-              }
-              if (subPc.getAttributes().getMinLength() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setMinLength(subPc.getAttributes().getMinLength());
-              }
-              if (segmentflavorsMap.containsKey(segment.getId())) {
-                field.getDatatype().setId(dtFlavor.getId());
-                field.getDatatype().setName(dtFlavor.getName());
-                field.getDatatype().setExt(dtFlavor.getExt());
-              } else {
-                Segment segmentFlavor = segment;
-                segmentFlavor.setExt("pc");
-                segmentFlavor.setId(ObjectId.get().toString());
-                segmentFlavor.setScope(SCOPE.USER);
-                segmentflavorsMap.put(segmentFlavor.getId(), segmentFlavor);
-                field.getDatatype().setId(dtFlavor.getId());
-                field.getDatatype().setName(dtFlavor.getName());
-                field.getDatatype().setExt(dtFlavor.getExt());
-                segRef.getRef().setId(segmentFlavor.getId());
-                segRef.getRef().setName(segmentFlavor.getName());
-                segRef.getRef().setExt(segmentFlavor.getExt());
-              }
+            } catch (CloneNotSupportedException e) {
+
+              e.printStackTrace();
             }
 
-            buildDatatypeFromComponent(
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i), path, datatypesMap,
-                datatypeflavorsMap, itemsMap);
+
+
           }
-
-
         }
       }
     }
+
 
 
   }
@@ -482,20 +516,17 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
       Map<String, List<SubProfileComponent>> itemsMap) {
 
 
-    System.out.println("0000000");
-    System.out.println(path);
+
     for (int i = 0; i < dt.getComponents().size(); i++) {
 
       if (itemsMap.containsKey(dt.getComponents().get(i).getId())) {
         path = path + "." + dt.getComponents().get(i).getPosition();
-        System.out.println("1111111");
-        System.out.println(path);
+
         if (datatypeflavorsMap.containsKey(dt.getId())) {
           // just edit the field without creating a flavor
           // segmentflavorsMap.get(segment.getId()).getFields().get(i)
           for (SubProfileComponent subPc : itemsMap.get(dt.getComponents().get(i).getId())) {
-            System.out.println("2222222");
-            System.out.println(subPc.getPath());
+
             if (subPc.getPath().equals(path)) {
               if (subPc.getAttributes().getComment() != null) {
                 datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
@@ -527,48 +558,52 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
 
         } else {
           // create segment flavor, add it to flavors map and change fields
-          Datatype dtFlavor = dt;
+          try {
+            Datatype dtFlavor = dt.clone();
+            for (SubProfileComponent subPc : itemsMap
+                .get(dtFlavor.getComponents().get(i).getId())) {
 
+              if (subPc.getPath().equals(path)) {
+                dtFlavor.setExt("pc");
+                dtFlavor.setId(ObjectId.get().toString());
+                dtFlavor.setScope(SCOPE.USER);
+                datatypeflavorsMap.put(dtFlavor.getId(), dtFlavor);
+                if (subPc.getAttributes().getComment() != null) {
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                      .setComment(subPc.getAttributes().getComment());
+                }
 
-          for (SubProfileComponent subPc : itemsMap.get(dtFlavor.getComponents().get(i).getId())) {
-            System.out.println("33333333");
-            System.out.println(subPc.getPath());
-            if (subPc.getPath().equals(path)) {
-              dtFlavor.setExt("pc");
-              dtFlavor.setId(ObjectId.get().toString());
-              dtFlavor.setScope(SCOPE.USER);
-              datatypeflavorsMap.put(dtFlavor.getId(), dtFlavor);
-              if (subPc.getAttributes().getComment() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setComment(subPc.getAttributes().getComment());
+                if (subPc.getAttributes().getUsage() != null) {
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                      .setUsage(subPc.getAttributes().getUsage());
+                }
+                if (subPc.getAttributes().getConfLength() != null) {
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                      .setConfLength(subPc.getAttributes().getConfLength());
+                }
+                if (subPc.getAttributes().getMaxLength() != null) {
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                      .setMaxLength(subPc.getAttributes().getMaxLength());
+                }
+                if (subPc.getAttributes().getMinLength() != null) {
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                      .setMinLength(subPc.getAttributes().getMinLength());
+                }
+                field.getDatatype().setId(dtFlavor.getId());
+                field.getDatatype().setExt(dtFlavor.getExt());
+                field.getDatatype().setName(dtFlavor.getName());
               }
 
-              if (subPc.getAttributes().getUsage() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setUsage(subPc.getAttributes().getUsage());
-              }
-              if (subPc.getAttributes().getConfLength() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setConfLength(subPc.getAttributes().getConfLength());
-              }
-              if (subPc.getAttributes().getMaxLength() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setMaxLength(subPc.getAttributes().getMaxLength());
-              }
-              if (subPc.getAttributes().getMinLength() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setMinLength(subPc.getAttributes().getMinLength());
-              }
-              field.getDatatype().setId(dtFlavor.getId());
-              field.getDatatype().setExt(dtFlavor.getExt());
-              field.getDatatype().setName(dtFlavor.getName());
-              System.out.println(field.toString());
+              buildDatatypeFromComponent(
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i), path,
+                  datatypesMap, datatypeflavorsMap, itemsMap);
             }
-
-            buildDatatypeFromComponent(
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i), path, datatypesMap,
-                datatypeflavorsMap, itemsMap);
+          } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
           }
+
+
 
         }
       }
@@ -620,45 +655,53 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
           }
 
         } else {
-          Datatype dtFlavor = dt;
-          dtFlavor.setExt("pc");
-          dtFlavor.setId(ObjectId.get().toString());
-          dtFlavor.setScope(SCOPE.USER);
-          datatypeflavorsMap.put(dtFlavor.getId(), dtFlavor);
 
-          for (SubProfileComponent subPc : itemsMap.get(dtFlavor.getComponents().get(i).getId())) {
-            if (subPc.getPath().equals(path)) {
-              if (subPc.getAttributes().getComment() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setComment(subPc.getAttributes().getComment());
-              }
+          try {
+            Datatype dtFlavor = dt.clone();
+            dtFlavor.setExt("pc");
+            dtFlavor.setId(ObjectId.get().toString());
+            dtFlavor.setScope(SCOPE.USER);
+            datatypeflavorsMap.put(dtFlavor.getId(), dtFlavor);
 
-              if (subPc.getAttributes().getUsage() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setUsage(subPc.getAttributes().getUsage());
+            for (SubProfileComponent subPc : itemsMap
+                .get(dtFlavor.getComponents().get(i).getId())) {
+              if (subPc.getPath().equals(path)) {
+                if (subPc.getAttributes().getComment() != null) {
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                      .setComment(subPc.getAttributes().getComment());
+                }
+
+                if (subPc.getAttributes().getUsage() != null) {
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                      .setUsage(subPc.getAttributes().getUsage());
+                }
+                if (subPc.getAttributes().getConfLength() != null) {
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                      .setConfLength(subPc.getAttributes().getConfLength());
+                }
+                if (subPc.getAttributes().getMaxLength() != null) {
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                      .setMaxLength(subPc.getAttributes().getMaxLength());
+                }
+                if (subPc.getAttributes().getMinLength() != null) {
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
+                      .setMinLength(subPc.getAttributes().getMinLength());
+                }
+                component.getDatatype().setId(dtFlavor.getId());
+                component.getDatatype().setExt(dtFlavor.getExt());
+                component.getDatatype().setName(dtFlavor.getName());
               }
-              if (subPc.getAttributes().getConfLength() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setConfLength(subPc.getAttributes().getConfLength());
-              }
-              if (subPc.getAttributes().getMaxLength() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setMaxLength(subPc.getAttributes().getMaxLength());
-              }
-              if (subPc.getAttributes().getMinLength() != null) {
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
-                    .setMinLength(subPc.getAttributes().getMinLength());
-              }
-              component.getDatatype().setId(dtFlavor.getId());
-              component.getDatatype().setExt(dtFlavor.getExt());
-              component.getDatatype().setName(dtFlavor.getName());
+              buildDatatypeFromComponent(
+                  datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i), path,
+                  datatypesMap, datatypeflavorsMap, itemsMap);
+
+
             }
-            buildDatatypeFromComponent(
-                datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i), path, datatypesMap,
-                datatypeflavorsMap, itemsMap);
-
-
+          } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
           }
+
 
         }
       }

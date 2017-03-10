@@ -193,6 +193,10 @@ angular.module('igl')
             $rootScope.cmTree = null;
             $scope.selectCm(); // Should we open in a dialog ??
         });
+        $scope.$on('event:openCP', function(event) {
+            $rootScope.cpTree = null;
+            $scope.selectCp(); // Should we open in a dialog ??
+        });
 
         $scope.$on('event:openTable', function(event, table) {
             $scope.selectTable(table); // Should we open in a dialog ??
@@ -1533,9 +1537,7 @@ angular.module('igl')
         getNodes: function(parent) {
             if ($rootScope.igdocument.profile.compositeMessages !== undefined) {
                 console.log("$rootScope.compositeMessages");
-
                 console.log($rootScope.compositeMessage);
-
                 if (parent) {
                     if (parent.ref) {
                         return parent.ref.fields;
@@ -1548,22 +1550,7 @@ angular.module('igl')
                 } else {
                     return $rootScope.compositeMessage.children;
                 }
-                // return $rootScope.profileComponent.children;
-                // if (parent) {
-                //     if (parent.fields) {
-                //         return parent.fields;
-                //     } else if (parent.components) {
-                //         return parent.components;
-                //     } else if (parent.segments) {
-                //         return parent.segments;
-                //     } else if (parent.codes) {
-                //         return parent.codes;
-                //     }
 
-                // } else {
-                // console.log($rootScope.igdocument.profile.profileComponentLibrary.children);
-                // return $rootScope.igdocument.profile.profileComponentLibrary.children;
-                // }
 
             }
         },
@@ -1615,6 +1602,95 @@ angular.module('igl')
                     }
                 }, 100);
         });
+
+
+    };
+    $scope.compositeProfileParams = new ngTreetableParams({
+        getNodes: function(parent) {
+            if ($rootScope.igdocument.profile.compositeProfiles !== undefined) {
+                console.log("$rootScope.compositeProfile");
+                console.log($rootScope.compositeProfile);
+                if (parent) {
+                    if (parent.ref) {
+                        return parent.ref.fields;
+                    } else if (parent.datatype) {
+                        return parent.datatype.components;
+                    } else if (parent.children) {
+                        return parent.children
+                    }
+                } else {
+                    return $rootScope.compositeProfile.children;
+                }
+
+
+            }
+        },
+        getTemplate: function(node) {
+            return 'compositeProfileTable';
+        }
+    });
+    var buildCpDatatype = function(datatype, datatypesMap) {
+       // datatype.components.sort(function(a, b){return a.position-b.position});
+        for (var i = 0; i < datatype.components.length; i++) {
+            buildCpDatatype(datatypesMap[datatype.components[i].datatype.id], datatypesMap);
+            datatype.components[i].datatype = datatypesMap[datatype.components[i].datatype.id];
+        }
+    };
+    var buildCpSegment = function(segment, datatypesMap) {
+        //segment.fields.sort(function(a, b){return a.position-b.position});
+        for (var i = 0; i < segment.fields.length; i++) {
+            buildCpDatatype(datatypesMap[segment.fields[i].datatype.id], datatypesMap);
+            segment.fields[i].datatype = datatypesMap[segment.fields[i].datatype.id];
+        }
+    };
+    var buildCpSegmentRef = function(segmentRef, segmentsMap, datatypesMap) {
+        buildCpSegment(segmentsMap[segmentRef.ref.id], datatypesMap);
+        segmentRef.ref = segmentsMap[segmentRef.ref.id];
+    };
+    var buildCompositeProfile = function(children, segmentsMap, datatypesMap) {
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].type === "segmentRef") {
+                buildCpSegmentRef(children[i],segmentsMap,datatypesMap);
+            } else if (children[i].type === "group") {
+                buildCompositeProfile(children[i].children,segmentsMap,datatypesMap);
+            }
+        }
+    };
+    $scope.selectCp = function() {
+
+
+        buildCompositeProfile($rootScope.compositeProfile.children, $rootScope.compositeProfile.segmentsMap, $rootScope.compositeProfile.datatypesMap);
+        console.log($rootScope.compositeProfile.children);
+        $rootScope.subview = "EditCompositeProfile.html";
+        $scope.loadingSelection = true;
+        blockUI.start();
+        $timeout(
+            function() {
+                try {
+                    $rootScope.tableWidth = null;
+                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                    $scope.loadingSelection = false;
+                    try {
+                        if ($scope.compositeProfileParams)
+                            $scope.compositeProfileParams.refresh();
+
+                    } catch (e) {
+
+                    }
+                    $rootScope.$emit("event:initEditArea");
+                    blockUI.stop();
+                } catch (e) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                    blockUI.stop();
+                }
+            }, 100);
+
 
 
     };
@@ -3570,14 +3646,14 @@ angular.module('igl').controller('createProfileComponentCtrl',
 
 angular.module('igl').controller('createCompositeProfileCtrl',
     function($scope, $rootScope, $modalInstance, $http, $filter, PcService, IgDocumentService, CompositeProfileService) {
-        $scope.compositeMetaData=true;
+        $scope.compositeMetaData = true;
         $scope.pcList = [];
         $scope.baseProfiles = $rootScope.messages.children;
         $scope.pcs = $rootScope.profileComponents;
         $scope.position = 1;
 
-        $scope.changePage = function(){
-            $scope.compositeMetaData=!$scope.compositeMetaData;
+        $scope.changePage = function() {
+            $scope.compositeMetaData = !$scope.compositeMetaData;
         };
 
         $scope.selectBaseProfile = function(baseP) {
@@ -3620,8 +3696,8 @@ angular.module('igl').controller('createCompositeProfileCtrl',
                 id: new ObjectId().toString(),
                 coreProfileId: $scope.baseP.id,
                 profileComponentsInfo: $scope.pcList,
-                name:$scope.name,
-                description:$scope.description
+                name: $scope.name,
+                description: $scope.description
             };
             CompositeProfileService.create(compositeProfileStructure, $rootScope.igdocument.id).then(function(cpStructure) {
                 console.log(cpStructure);
