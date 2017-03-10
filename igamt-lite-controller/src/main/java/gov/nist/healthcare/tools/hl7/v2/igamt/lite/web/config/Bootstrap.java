@@ -215,8 +215,8 @@ public class Bootstrap implements InitializingBean {
 		  datatypeService.save(d);
 	  }
   }
-
-private void fixMissingData() {
+  
+  private void fixMissingData() {
     List<IGDocument> igDocuments = documentService.findAll();
     for (IGDocument document : igDocuments) {
       fixMissingData(document);
