@@ -1931,7 +1931,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         $scope.displayVersion= function(element){
 
-        	if(element){
+        	if(element.scope!=="MASTER"){
         		return element.hl7Version;
         	}
         };

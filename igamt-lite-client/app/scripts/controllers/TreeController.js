@@ -2168,7 +2168,17 @@ angular.module('igl').controller('AddDatatypeCtrlFromUserLib',
             listHL7Versions().then(function(versions) {
                 $scope.hl7Datatypes = [];
                 $scope.version1 = "";
-                $scope.versions = versions;
+                if($rootScope.igdocument){
+                    angular.forEach(versions, function(version){
+                        if(version>=$rootScope.igdocument.profile.hl7Versions){
+                            $scope.version.push(version);
+                        }
+                    });
+                }
+               else{
+                    $scope.versions = versions;
+               } 
+
                 var scopes = ['HL7STANDARD'];
             });
 
@@ -2488,6 +2498,7 @@ angular.module('igl').controller('addMAsterInLibrary',
         }
         $scope.addDt = function(datatype) {
             console.log(datatype);
+            
             $scope.selectedDatatypes.push(datatype);
             console.log("chowing map");
 
