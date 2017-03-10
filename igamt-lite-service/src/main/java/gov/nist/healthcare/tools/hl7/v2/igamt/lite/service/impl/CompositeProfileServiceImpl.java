@@ -126,8 +126,7 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
       if (segRefOrGrp.getType().equalsIgnoreCase(Constant.SEGMENTREF)) {
         SegmentRef segRef = (SegmentRef) segRefOrGrp;
         path = path + "." + segRef.getPosition();
-        System.out.println("-------");
-        System.out.println(path);
+
         buildSegmentRef((SegmentRef) segRefOrGrp, path, itemsMap, segmentflavorsMap,
             datatypeflavorsMap, segmentsMap, datatypesMap, tablesMap);
       } else if (segRefOrGrp.getType().equalsIgnoreCase(Constant.GROUP)) {
@@ -221,8 +220,7 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     }
 
     Segment seg = segmentsMap.get(segRef.getRef().getId());
-    System.out.println("0000000");
-    System.out.println(path);
+
     buildSegment(segRef, path, seg, itemsMap, segmentflavorsMap, datatypeflavorsMap, segmentsMap,
         datatypesMap, tablesMap);
   }
@@ -239,7 +237,6 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
 
       if (itemsMap.containsKey(segment.getFields().get(i).getId())) {
         path = path + "." + segment.getFields().get(i).getPosition();
-
         // change values with pc item value
         // buildDatatype
 
@@ -364,12 +361,14 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     for (int i = 0; i < dt.getComponents().size(); i++) {
 
       if (itemsMap.containsKey(dt.getComponents().get(i).getId())) {
-        path = path + "." + dt.getComponents().get(i).getPosition();
+        path = path + "." + field.getPosition() + "." + dt.getComponents().get(i).getPosition();
 
         if (datatypeflavorsMap.containsKey(dt.getId())) {
 
           for (SubProfileComponent subPc : itemsMap.get(dt.getComponents().get(i).getId())) {
+
             if (subPc.getPath().equals(path)) {
+
               if (subPc.getAttributes().getComment() != null) {
                 datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
                     .setComment(subPc.getAttributes().getComment());
@@ -483,15 +482,20 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
       Map<String, List<SubProfileComponent>> itemsMap) {
 
 
-
+    System.out.println("0000000");
+    System.out.println(path);
     for (int i = 0; i < dt.getComponents().size(); i++) {
 
       if (itemsMap.containsKey(dt.getComponents().get(i).getId())) {
         path = path + "." + dt.getComponents().get(i).getPosition();
+        System.out.println("1111111");
+        System.out.println(path);
         if (datatypeflavorsMap.containsKey(dt.getId())) {
           // just edit the field without creating a flavor
           // segmentflavorsMap.get(segment.getId()).getFields().get(i)
           for (SubProfileComponent subPc : itemsMap.get(dt.getComponents().get(i).getId())) {
+            System.out.println("2222222");
+            System.out.println(subPc.getPath());
             if (subPc.getPath().equals(path)) {
               if (subPc.getAttributes().getComment() != null) {
                 datatypeflavorsMap.get(dt.getId()).getComponents().get(i)
@@ -524,13 +528,16 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
         } else {
           // create segment flavor, add it to flavors map and change fields
           Datatype dtFlavor = dt;
-          dtFlavor.setExt("pc");
-          dtFlavor.setId(ObjectId.get().toString());
-          dtFlavor.setScope(SCOPE.USER);
-          datatypeflavorsMap.put(dtFlavor.getId(), dtFlavor);
+
 
           for (SubProfileComponent subPc : itemsMap.get(dtFlavor.getComponents().get(i).getId())) {
+            System.out.println("33333333");
+            System.out.println(subPc.getPath());
             if (subPc.getPath().equals(path)) {
+              dtFlavor.setExt("pc");
+              dtFlavor.setId(ObjectId.get().toString());
+              dtFlavor.setScope(SCOPE.USER);
+              datatypeflavorsMap.put(dtFlavor.getId(), dtFlavor);
               if (subPc.getAttributes().getComment() != null) {
                 datatypeflavorsMap.get(dtFlavor.getId()).getComponents().get(i)
                     .setComment(subPc.getAttributes().getComment());
@@ -555,6 +562,7 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
               field.getDatatype().setId(dtFlavor.getId());
               field.getDatatype().setExt(dtFlavor.getExt());
               field.getDatatype().setName(dtFlavor.getName());
+              System.out.println(field.toString());
             }
 
             buildDatatypeFromComponent(

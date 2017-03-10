@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.bson.types.ObjectId;
 
 /**
@@ -33,14 +34,14 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
   private String added;
 
   public String getAdded() {
-	return added;
-}
+    return added;
+  }
 
-public void setAdded(String added) {
-	this.added = added;
-}
+  public void setAdded(String added) {
+    this.added = added;
+  }
 
-public String getItemNo() {
+  public String getItemNo() {
     return itemNo;
   }
 
@@ -75,11 +76,12 @@ public String getItemNo() {
 
   @Override
   public String toString() {
-    return "Field [id=" + id + ", itemNo=" + itemNo + ", min=" + min + ", max=" + max + ", name="
-        + name + ", usage=" + usage + ", minLength=" + minLength + ", maxLength=" + maxLength
-        + ", confLength=" + confLength + ", table=" + table + ", datatype=" + datatype
-        + ", position=" + position + ", comment=" + comment + ", text=" + text + ", type=" + type
-        + "]";
+    // return "Field [id=" + id + ", itemNo=" + itemNo + ", min=" + min + ", max=" + max + ", name="
+    // + name + ", usage=" + usage + ", minLength=" + minLength + ", maxLength=" + maxLength
+    // + ", confLength=" + confLength + ", table=" + table + ", datatype=" + datatype
+    // + ", position=" + position + ", comment=" + comment + ", text=" + text + ", type=" + type
+    // + "]";
+    return ReflectionToStringBuilder.toString(this);
   }
 
   public int compareTo(Field o) {
@@ -111,12 +113,12 @@ public String getItemNo() {
     clonedField.setMinLength(minLength);
     clonedField.setName(name);
     clonedField.setPosition(position);
-    
+
     clonedField.setTables(new ArrayList<TableLink>());
-    for(TableLink tl:this.tables){
-    	clonedField.getTables().add(tl.clone());
+    for (TableLink tl : this.tables) {
+      clonedField.getTables().add(tl.clone());
     }
-    
+
 
     // if (table != null) {
     // if (tableRecords.containsKey(table.getId())) {
