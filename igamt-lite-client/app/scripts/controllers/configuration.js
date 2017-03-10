@@ -31,9 +31,15 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
                     //$scope.exportConfig=$scope.IGStyleExportConfig;
          
-
+                    ConfigurationService.findCurrent("Datatype Library").then(function (response) {
+                        var copy =response;
+                        $scope.datatypeLibraryExportConfigCopy=copy;
+                         $scope.datatypeLibraryExportConfig = angular.copy(response);
+                         $scope.configMap[response.id] = response;
+                    });
 
                 });
+
             });
 
         });
@@ -121,7 +127,9 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
             if($scope.exportConfig.type&& $scope.exportConfig.type==="IG Style"){
                 $scope.IGStyleExportConfig =$scope.exportConfig;
             }else if($scope.exportConfig.type&& $scope.exportConfig.type==="Profile Style"){
-                 $scope.profileStyleExportConfig=$scope.exportConfig;
+                $scope.profileStyleExportConfig=$scope.exportConfig;
+            }else if($scope.exportConfig.type&& $scope.exportConfig.type==="Datatype Library"){
+                $scope.datatypeLibraryExportConfig=$scope.exportConfig;
             }else{
                 $scope.tableStyleExportConfig=$scope.exportConfig;
             }
@@ -143,6 +151,8 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
              $scope.exportConfig=$scope.IGStyleConfig;
         }else if (type==='Profile'){
             $scope.exportConfig=$scope.profileStyleConfig;
+        }else if(type==="DatatypeLibrary"){
+            $scope.exportConfig = $scope.datatypeLibraryExportConfig;
         }else{
             $scope.exportConfig=$scope.tableStyleConfig;
         }
@@ -155,7 +165,9 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
             if(conf.type&& conf.type==="IG Style"){
                 $scope.IGStyleExportConfig = angular.copy($scope.IGStyleExportConfigCopy);
             }else if(conf.type&& conf.type==="Profile Style"){
-                 $scope.profileStyleExportConfig= angular.copy($scope.profileStyleExportConfigCopy);
+                $scope.profileStyleExportConfig= angular.copy($scope.profileStyleExportConfigCopy);
+            }else if(conf.type&& conf.type==="Datatype Library"){
+                $scope.datatypeLibraryExportConfig= angular.copy($scope.datatypeLibraryExportConfigCopy);
             }else{
                 $scope.tableStyleExportConfig=angular.copy($scope.tableStyleExportConfig);
             }

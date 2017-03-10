@@ -1,6 +1,6 @@
 <div>
     <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-    ng-disabled="!changed"
+    ng-disabled="!changed || exportFontForm.fontSizeField.$error.pattern"
     ng-click="saveUserExportFontConfig(userExportFontConfig); ">
         <span><i class="fa fa-check fa-fw"></i>Apply</span>
     </button>
@@ -10,12 +10,15 @@
     <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default" ng-click="restoreDefaultExportFontConfig()">
         <span><i class="fa fa-refresh" aria-hidden="true"></i> Restore Default</span>
     </button>
-    <form>
+    <form name="exportFontForm">
         <div ng-repeat="font in fonts track by font.name">
             <input type="radio" name="font" ng-value="font" ng-model="userExportFontConfig.exportFont" ng-change="setChanged()"/><label style="font-family:{{ font.value }}">{{ font.name }}</label>
         </div>
         <div>
-            <label>Font size (HTML only): </label><input type="text" ng-model="userExportFontConfig.fontSize" ng-change="setChanged()"/>
+            <label>Font size (HTML only): </label><input name="fontSizeField" type="text" ng-pattern="/^[0-9]*[1-9][0-9]*$/" ng-model="userExportFontConfig.fontSize" ng-change="setChanged()"/>
+        </div>
+        <div ng-show="exportFontForm.fontSizeField.$error.pattern">
+            Font size must be a number between 1 and 999!
         </div>
     </form>
 </div>
