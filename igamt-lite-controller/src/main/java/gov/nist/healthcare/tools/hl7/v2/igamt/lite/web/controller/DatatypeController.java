@@ -137,6 +137,16 @@ public class DatatypeController extends CommonController {
     return datatypes;
   }
 
+  @RequestMapping(value = "/findByScope", method = RequestMethod.POST,
+      produces = "application/json")
+  public List<Datatype> findByScope(@RequestBody String scope) {
+
+    List<Datatype> datatypes = datatypeService.findByScope(scope);
+
+    return datatypes;
+  }
+
+
 
   @RequestMapping(value = "/findOneStrandard", method = RequestMethod.POST,
       produces = "application/json")

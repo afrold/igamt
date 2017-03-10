@@ -2537,10 +2537,13 @@ input[type="file"] {
 
 .selected1 {
     background-color: #B5F7EC !important;
+    cursor:pointer !important;
 }
 
 .selected2 {
     background-color: #EDE1AF !important;
+    cursor:pointer !important;
+
 }
 
 .choosed {
@@ -2548,8 +2551,8 @@ input[type="file"] {
 }
 
 .addDatatype .modal-dialog {
-    width: 80%;
-    height: 60%;
+    width: 1000px !important;
+    overflow:scroll;
 }
 
 #nested-table {
@@ -2586,20 +2589,35 @@ input[type="file"] {
     background-color: rgba(255, 255, 255, .84);
     border-radius: 10px;
 }
-
 .version-badge-label {
+    font-size: 5px;
+    min-width: 0px;
     display: inline-block;
     min-width: 2px;
-    padding: 3px 3px;
-    font-size: 9px;
+    padding: 0px 0px;
+    font-size: 11px;
     font-weight: 700;
-    color: rgba(255, 255, 255, .84);
+    color: #131010;
     line-height: 1;
     vertical-align: baseline;
     white-space: nowrap;
     text-align: center;
-    background-color: #777;
+    background-color: rgba(255, 255, 255, .84);
+    border-radius: 10px;
+}
+.version-badge-under{
+    display: inline-block;
+    min-width: 2px;
+    padding: 3;
+    font-size: 9px;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #5b6f82;
     border-radius: 12px;
+    color: rgba(255,255,255,.84);
+    padding: 2px !important;
 }
 
 .badge {
@@ -2818,4 +2836,60 @@ tr .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12, .col-xs-11, .col-sm-11, .col-
     min-height: 1px;
     padding-left: 15px;
     padding-right: 15px;
+}
+
+
+.fixed_headers {
+  table-layout: fixed;
+  border-collapse: collapse;
+  
+  th { }
+  th, td {
+    padding: 5px;
+    width:20px;
+
+
+  }
+  
+
+
+  thead {
+
+    tr {
+      display: block !important;
+      position: relative !important;
+      background-color: #0277bd !important;
+
+
+    }
+  }
+  tbody {
+    display: block !important;
+    overflow: auto;
+    width: 100%;
+
+  }
+}
+
+.old_ie_wrapper {
+  overflow-x: hidden;
+  overflow-y: auto;
+  tbody{ height: auto; }
+}
+body.modal-open {
+    overflow-y: none !important;
+    position: fixed !important;
+}
+.widthInside{
+    width: 120px !important;
+    max-width: 120px !important;
+    min-width: 120px !important;
+}
+.widthInside2{
+    width: 100px !important;
+    max-width: 100px !important;
+    min-width: 100px !important;
+}
+.panel{
+    resize: vertical;
 }

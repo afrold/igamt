@@ -14,8 +14,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Document(collection = "segment")
-public class Segment extends DataModelWithConstraints implements java.io.Serializable, Cloneable,
-    Comparable<Segment> {
+public class Segment extends DataModelWithConstraints
+    implements java.io.Serializable, Cloneable, Comparable<Segment> {
 
   private static final long serialVersionUID = 1L;
 
@@ -46,10 +46,10 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
   private String text1 = "";
 
   private String text2 = "";
-  
+
   private CoConstraints coConstraints = new CoConstraints();
 
- 
+
   public String getId() {
     return id;
   }
@@ -83,7 +83,6 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
   }
 
   public void addField(Field field) {
-    field.setPosition(fields.size() + 1);
     fields.add(field);
   }
   
@@ -196,15 +195,13 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 
   @Override
   public int compareTo(Segment o) {
-    int x =
-        String.CASE_INSENSITIVE_ORDER.compare(
-            this.getName() != null && this.label != null ? this.getName() + this.getLabel() : "",
-            o.getName() != null && this.getLabel() != null ? o.getName() + this.getLabel() : "");
+    int x = String.CASE_INSENSITIVE_ORDER.compare(
+        this.getName() != null && this.label != null ? this.getName() + this.getLabel() : "",
+        o.getName() != null && this.getLabel() != null ? o.getName() + this.getLabel() : "");
     if (x == 0) {
-      x =
-          (this.getName() != null && this.getLabel() != null ? this.getName() + this.getLabel()
-              : "").compareTo(o.getName() != null && this.getLabel() != null ? o.getName()
-              + o.getLabel() : "");
+      x = (this.getName() != null && this.getLabel() != null ? this.getName() + this.getLabel()
+          : "").compareTo(
+              o.getName() != null && this.getLabel() != null ? o.getName() + o.getLabel() : "");
     }
     return x;
   }
@@ -234,30 +231,30 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
   }
 
   public String getLabel() {
-	  if(this.ext == null){
-		  return this.name;
-	  }else if (this.ext.equals("")){
-		  return this.name;
-	  }else {
-		  return this.name + "_" + this.ext;
-	  }
+    if (this.ext == null) {
+      return this.name;
+    } else if (this.ext.equals("")) {
+      return this.name;
+    } else {
+      return this.name + "_" + this.ext;
+    }
   }
 
-public CoConstraints getCoConstraints() {
-	return coConstraints;
-}
+  public CoConstraints getCoConstraints() {
+    return coConstraints;
+  }
 
-public void setCoConstraints(CoConstraints coConstraints) {
-	this.coConstraints = coConstraints;
-}
+  public void setCoConstraints(CoConstraints coConstraints) {
+    this.coConstraints = coConstraints;
+  }
 
-public List<ValueSetBinding> getValueSetBindings() {
+
+  public List<ValueSetBinding> getValueSetBindings() {
 	return valueSetBindings;
-}
+  }
 
-public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
 	this.valueSetBindings = valueSetBindings;
-}
- 
+  }
 
 }

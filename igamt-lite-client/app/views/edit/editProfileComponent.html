@@ -61,7 +61,7 @@
                                             <tr class="tbl-header" style="">
                                                 <th class="col-md-1 col-fixed-250" rowspan="2">Location</th>
                                                 <th class="col-md-1 col-fixed-40" rowspan="2"> Name</th>
-                                                <th class="col-md-1 col-fixed-80" rowspan="2">Usage</th>
+                                                <th class="col-md-2 col-fixed-80" rowspan="2">Usage</th>
                                                 <th class="col-md-1 col-fixed-100" colspan="2">Cardinality</th>
                                                 <th class="col-md-1 col-fixed-100" colspan="2">Length</th>
                                                 <th class="col-md-1 col-fixed-30" rowspan="2"> ConfLength </th>
@@ -174,9 +174,9 @@
 
 
         </td>
-        <td ng-class="{'col-md-1 col-fixed-80 select-change':node.attributes.usage!==node.attributes.oldUsage,'col-md-1 col-fixed-80':node.attributes.usage===node.attributes.oldUsage}">
+        <td ng-class="{'col-md-2 col-fixed-80 select-change':node.attributes.usage!==node.attributes.oldUsage,'col-md-2 col-fixed-80':node.attributes.usage===node.attributes.oldUsage}">
             <!--<a ng-click="edit=true;" ng-hide="edit || node.attributes.usage "><i class="fa fa-plus fa-fw"></i></a>-->
-            <select ng-change="setDirty()" class="form-control input-sm" ng-model="node.attributes.usage" name="usage" ng-options="usage for usage in config.usages" ng-selected="node.attributes.usage">
+            <select ng-change="setDirty()" class="form-control input-sm" ng-model="node.attributes.usage" name="usage" ng-options="usage for usage in config.usages" ng-selected="node.attributes.usage" style="width: auto;">
             </select>
 
 
