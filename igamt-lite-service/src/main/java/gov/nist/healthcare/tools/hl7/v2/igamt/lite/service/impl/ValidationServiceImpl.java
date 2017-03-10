@@ -933,51 +933,51 @@ public class ValidationServiceImpl implements ValidationService {
   @Override
   public String validateUsage(Usage reference, Usage newValueForUsage, Predicate predicate,
       String hl7Version) {
-    if (!Usage.X.toString().equalsIgnoreCase(newValueForUsage.name())) {
-      String validationResult = null;
 
-      if (predicate != null && newValueForUsage != Usage.C) {
-        return "Usage must be conditional when a predicate is defined";
-      } else if (predicate == null && newValueForUsage == Usage.C) {
-        return "Predicate is missing for conditional usage " + newValueForUsage.value();
+    String validationResult = null;
 
-      }
-
-      JsonNode node = getRulesNodeBySchemaVersion(hl7Version).path("constrainable")
-          .get(USAGE_RULES_ROOT).get(reference.value());
-      List<String> usages = new ArrayList<String>();
-      if (node != null && !node.isMissingNode()) {
-        ArrayNode array = (ArrayNode) node;
-        Iterator<JsonNode> it = array.iterator();
-        while (it.hasNext()) {
-          usages.add(it.next().textValue());
-        }
-      }
-      if (predicate != null) {
-        // C({{p.trueUsage}}/{{p.falseUsage}})
-        String predicateUsage =
-            "C(" + predicate.getTrueUsage() + "/" + predicate.getFalseUsage() + ")";
-        if (!usages.contains(predicateUsage)) {
-          validationResult = "Selected usage of " + predicateUsage
-              + " is non-compatible with base usage " + reference.value();
-          return validationResult;
-        } else {
-          return null;
-        }
-      }
-      if (!newValueForUsage.name().equals(Usage.C)) {
-        if (!usages.contains(newValueForUsage.value())) {
-          validationResult = "Selected usage of " + newValueForUsage.value()
-              + " is non-compatible with base usage " + reference.value();
-          return validationResult;
-        } else {
-          return null;
-        }
-      }
-
-
+    if (predicate != null && newValueForUsage != Usage.C) {
+      return "Usage must be conditional when a predicate is defined";
+    } else if (predicate == null && newValueForUsage == Usage.C) {
+      return "Predicate is missing for conditional usage " + newValueForUsage.value();
 
     }
+
+    JsonNode node = getRulesNodeBySchemaVersion(hl7Version).path("constrainable")
+        .get(USAGE_RULES_ROOT).get(reference.value());
+    List<String> usages = new ArrayList<String>();
+    if (node != null && !node.isMissingNode()) {
+      ArrayNode array = (ArrayNode) node;
+      Iterator<JsonNode> it = array.iterator();
+      while (it.hasNext()) {
+        usages.add(it.next().textValue());
+      }
+    }
+    if (predicate != null) {
+      // C({{p.trueUsage}}/{{p.falseUsage}})
+      String predicateUsage =
+          "C(" + predicate.getTrueUsage() + "/" + predicate.getFalseUsage() + ")";
+      if (!usages.contains(predicateUsage)) {
+        validationResult = "Selected usage of " + predicateUsage
+            + " is non-compatible with base usage " + reference.value();
+        return validationResult;
+      } else {
+        return null;
+      }
+    }
+    if (!newValueForUsage.name().equals(Usage.C)) {
+
+      if (!usages.contains(newValueForUsage.value())) {
+        validationResult = "Selected usage of " + newValueForUsage.value()
+            + " is non-compatible with base usage " + reference.value();
+        return validationResult;
+      } else {
+        return null;
+      }
+    }
+
+
+
     return null;
   }
 
@@ -1093,7 +1093,6 @@ public class ValidationServiceImpl implements ValidationService {
 
   @Override
   public String validateConfLength(String confLength, String igHl7Version) {
-    System.out.println("HEEEREEE" + igHl7Version);
     if (igHl7Version.compareTo("2.5.1") > 0) {
       if (confLength == null) {
         return "Conf. Length cannot be empty";
