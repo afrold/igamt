@@ -144,6 +144,16 @@ public class ExportConfigController {
     }
     if(exportFontConfig==null){
       exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+    } else {
+      if(exportFontConfig.getExportFont()==null||exportFontConfig.getFontSize()==null){
+        ExportFontConfig defaultExportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+        if(exportFontConfig.getExportFont()==null){
+          exportFontConfig.setExportFont(defaultExportFontConfig.getExportFont());
+        }
+        if(exportFontConfig.getFontSize()==null){
+          exportFontConfig.setFontSize(defaultExportFontConfig.getFontSize());
+        }
+      }
     }
     return exportFontConfig;
   }

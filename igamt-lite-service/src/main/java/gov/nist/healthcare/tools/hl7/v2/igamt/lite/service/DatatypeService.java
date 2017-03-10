@@ -21,40 +21,46 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 public interface DatatypeService {
 
-	public Datatype findById(String id);
+  public Datatype findById(String id);
 
-	public Datatype save(Datatype datatype);
+  public Datatype save(Datatype datatype);
 
-	public List<Datatype> findAll();
+  public List<Datatype> findAll();
 
-	public List<Datatype> findByIds(Set<String> ids);
+  public List<Datatype> findByIds(Set<String> ids);
 
-	public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+  public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-	public void delete(Datatype dt);
+  public void delete(Datatype dt);
 
-	public void delete(String id);
+  public void delete(String id);
 
-	public void save(List<Datatype> datatypes);
+  public void save(List<Datatype> datatypes);
 
-	public Set<Datatype> collectDatatypes(Datatype datatype);
+  public Set<Datatype> collectDatatypes(Datatype datatype);
 
-	public List<Datatype> findByScope(String scope);
+  public List<Datatype> findByScope(String scope);
 
-	public List<Datatype> findShared(Long accountId);
+  public List<Datatype> findShared(Long accountId);
 
-	public List<Datatype> findPendingShared(Long accountId);
+  public List<Datatype> findPendingShared(Long accountId);
 
-	public Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+  public Datatype findByNameAndVersionAndScope(String name, String version, String scope);
 
-	public Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
+  public Datatype findByCompatibleVersion(String name, String version, String scope)
+      throws Exception;
 
-	public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions, String string);
 
-	public Date updateDate(String id, Date date) throws IGDocumentException;
+  public Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
 
-	public Datatype save(Datatype datatype, Date date);
+  public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions,
+      String string);
 
-	public void updateStatus(String id, STATUS status);
+  public Date updateDate(String id, Date date) throws IGDocumentException;
+
+  public Datatype save(Datatype datatype, Date date);
+
+  public void updateStatus(String id, STATUS status);
+
 
 }

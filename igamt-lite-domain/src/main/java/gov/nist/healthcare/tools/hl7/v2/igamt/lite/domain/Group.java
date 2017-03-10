@@ -36,7 +36,6 @@ public class Group extends SegmentRefOrGroup implements Cloneable {
   }
 
   public void addSegmentsOrGroup(SegmentRefOrGroup e) {
-    e.setPosition(this.children.size() + 1);
     this.children.add(e);
   }
 
