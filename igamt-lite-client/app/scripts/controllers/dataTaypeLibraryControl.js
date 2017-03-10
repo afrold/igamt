@@ -23,6 +23,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.linksForData = [];
         $rootScope.linksForTables = [];
         $scope.AllUnchanged=[];
+        $rootScope.interMediates=[];
         $scope.tabs = [{active: true}, {active: false}, {active: false}];
         // list of segment level predicates of
         $rootScope.segmentConformanceStatements = []; // list of segment level
@@ -104,8 +105,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         }
 
-    	$scope.vrs=["#","2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7","2.7.1","2.8","2.8.1","2.8.2"];
-    	$scope.adjusted=["21","22","23","231","24","25","251","26","27","271","28","281","282"];
+    	$scope.vrs=["#","2.3.1","2.4","2.5","2.5.1","2.6","2.7","2.7.1","2.8","2.8.1","2.8.2"];
+    	$scope.adjusted=["231","24","25","251","26","27","271","28","281","282"];
     	
     	$scope.initMatrix=function(){
     		
@@ -177,7 +178,13 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     		}
 
     	}
-
+        $scope.expandAll=function(){
+		$('#deltaTable').treetable('expandAll');
+        $timeout( function(){
+            $('#deltaTable').treetable('expandAll');
+        }, 100 );
+    };
+        
     	$scope.selectCellAfterCheck=function(dt,version){
     	if($scope.selectedRow && dt===$scope.selectedRow){
     		if($scope.selectedVersion1!==null){
@@ -223,9 +230,12 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     $scope.loadingSelection = false;
                     if ($scope.dynamicDt_params) {
                         console.log($scope.dataList);
+                        
                         $scope.showDelta = true;
                         $scope.dynamicDt_params.refresh();
+                         $scope.expandAll();
                     }
+                   
                 });
             });
 
@@ -1090,9 +1100,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             var delay = $q.defer();
             $rootScope.datatypeLibrary.type = "datatypes";
             DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.datatypeLibrary.id).then(function (children) {
-                $rootScope.datatypes = children;
+                $rootScope.datatypes = [];
+                $rootScope.interMediates=[];
                 $rootScope.datatypesMap = {};
                 angular.forEach(children, function (child) {
+                    
+                    if(child.scope=="INTERMASTER"){
+                        $rootScope.interMediates.push(child);
+                    }else{
+                        $rootScope.datatypes.push(child);
+                    }
                     this[child.id] = child;
                 }, $rootScope.datatypesMap);
                 delay.resolve(true);
@@ -2915,35 +2932,17 @@ angular.module('igl').controller('AddMasterDtCtrl',
 
 	$scope.AllUnchanged=AllUnchanged;
 
-
-
-
-
 	$scope.addedDatatypes=[];
 
 
 
-    var listHL7Versions = function() {
-        return $http.get('api/igdocuments/findVersions', {
-            timeout: 60000
-        }).then(function(response) {
-            var hl7Versions = [];
-            var length = response.data.length;
-            for (var i = 0; i < length; i++) {
-                hl7Versions.push(response.data[i]);
-            }
-            console.log(hl7Versions);
-            return hl7Versions;
-        });
-    };
 
     var init = function() {
-        listHL7Versions().then(function(versions) {
-        	$scope.hl7Datatypes=[];
-            $scope.version1 = "";
-            $scope.versions = versions;
-            var scopes = ['HL7STANDARD'];
-        });
+    DatatypeService.findByScope("INTERMASTER").then(function(response){
+        console.log("ALL intermediate");
+        $scope.hl7Datatypes=response;
+    });
+    
 
     };
     init();
@@ -2961,35 +2960,13 @@ angular.module('igl').controller('AddMasterDtCtrl',
             version=versions[versions.length-1];
         }
         var name= data.name;
-    // DatatypeService.getOneStandard(name, version,versions).then(function(result) {
-    // 	var masterDt= angular.copy(result);
-    // 	masterDt.hl7versions= data.versions;
-    // 	//temporary fix
-    // 	if(masterDt.hl7versions.length&&masterDt.hl7versions.length>1){
-    // 		masterDt.hl7Version="[*]";
-    // 	}else if(masterDt.hl7versions.length&&masterDt.hl7versions.length==1){
-    // 		masterDt.hl7Version=version;
-    // 	}
 
-    //     //result.versions= versions;
-    //     $scope.AddDatatypeForMaster(masterDt);
-    // });
-
-    	DatatypeService.getLastMaster(name,$scope.version1).then(function(result){
-	    var masterDt= angular.copy(result);
-    	masterDt.hl7versions= data.versions;
-    	//temporary fix
-    	// if(masterDt.hl7versions.length&&masterDt.hl7versions.length>1){
-    	// 	masterDt.hl7Version="[*]";
-    	// }else if(masterDt.hl7versions.length&&masterDt.hl7versions.length==1){
-    	// 	masterDt.hl7Version=version;
-    	// }
-
-        //result.versions= versions;
-        $scope.AddDatatypeForMaster(masterDt);
-	    });
 
     };
+
+
+
+
 
     $scope.getLastExtesion= function(masterDt){
     	var ext=1;
@@ -3011,6 +2988,7 @@ angular.module('igl').controller('AddMasterDtCtrl',
     }
     $scope.AddDatatypeForMaster = function(datatype) {
             var dataToAdd = angular.copy(datatype);
+            dataToAdd.scope="MASTER";
             dataToAdd.id = new ObjectId().toString();
             dataToAdd.status = 'UNPUBLISHED';
             dataToAdd.scope = $rootScope.datatypeLibrary.scope;
