@@ -163,8 +163,10 @@ public class ValidationServiceImpl implements ValidationService {
     List<Datatype> userdts = datatypeService.findByIds(userdtIds);
     for (Datatype dt : userdts) {
       if (!dt.getScope().equals(SCOPE.HL7STANDARD)) {
-        Datatype referenceDatatype = datatypeService.findByNameAndVersionAndScope(dt.getName(),
-            dt.getHl7Version(), "HL7STANDARD");
+        List<Datatype> referenceDatatypes = datatypeService.findByNameAndVersionAndScope(
+            dt.getName(), dt.getHl7Version(), SCOPE.HL7STANDARD.toString());
+        Datatype referenceDatatype = referenceDatatypes != null && !referenceDatatypes.isEmpty()
+            ? referenceDatatypes.get(0) : null;
         ValidationResult valdtRes = validateDatatype(referenceDatatype, dt, null,
             ig.getProfile().getMetaData().getHl7Version());
         blocks.put(dt.getId(), valdtRes);
