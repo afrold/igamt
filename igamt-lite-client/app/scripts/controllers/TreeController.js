@@ -1779,9 +1779,11 @@ angular
                             return 'PRL';
                         } else if (leaf.scope === 'PHINVADS') {
                             return 'PVS';
-                        } else {
-                            return "";
+                        } else if(leaf.scope==='INTERMASTER') {
 
+                            return 'DRV';
+                        }else{
+                            return "";
                         }
                     }
                 };

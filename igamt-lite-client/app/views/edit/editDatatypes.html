@@ -203,7 +203,7 @@
                                             <div ng-show="datatype.components && datatype.components.length > 0" class="pull-left">
                                               <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
                                             </div>
-                                            <button ng-if="datatype.scope!=='HL7STANDARD'" class="pull-right" title="Verify Data type" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
+                                            <button ng-if="igdocument&&datatype.scope!=='HL7STANDARD'" class="pull-right" title="Verify Data type" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
                                                 ng-click="validateDatatype()"> 
                                                 Verify
                                             </button>
@@ -226,7 +226,7 @@
                                                             </th>
                                                             <th ng-if="igdocument" class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
                                                             </th>
-                                                            <th ng-if="!igdocument" class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Concept Domain
+                                                            <th ng-if="!igdocument" class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')&&datatypeLibrary.scope!=='MASTER'">Concept Domain
                                                             </th>
                                                             <th class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
                                                                 Predicate
@@ -780,7 +780,7 @@
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
         </td>
-        <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')&&datatypeLibrary.scope!=='MASTER'">
         </td>
         <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
         </td>
@@ -888,12 +888,23 @@
                     </a>
 
                     <div ng-if="editableDT===node.id">
-                        <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+                        <!--<select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                             <option ng-repeat="datatype in results" value="{{datatype}}"
                                     ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatypesMap[datatype.id])}} {{datatypesMap[datatype.id].hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
                             </option>
                             <!--<option ng-click="otherDT(node)" value=""> Others-->
-                        </select>
+                        <!--</select>-->
+
+                <md-select placeholder="Select Data type" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+                 <md-option ng-value="datatype" ng-repeat="datatype in results">
+                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(datatypesMap[datatype.id])==='HL7',
+                                'label-USE':  getScopeLabel(datatypesMap[datatype.id])==='USR','label-MASTER':getScopeLabel(datatypesMap[datatype.id])==='MAS','label-inter':getScopeLabel(datatypesMap[datatype.id])==='DRV'}">{{getScopeLabel(datatypesMap[datatype.id])}}</span>
+                     {{getDatatypeLabel(datatypesMap[datatype.id])}}-{{datatypesMap[datatype.id].description}}
+                     <div>
+                     <span class="version-badge-under" ng-repeat="version in datatypesMap[datatype.id].hl7versions">{{version}}</span>
+                     </div>
+                 </md-option>
+                </md-select>
                     </div>
                     <a ng-show="editableDT!==node.id" ng-click="editDT(node)" class="point">
                         <span><i class="fa fa-pencil fa-fw"></i></span>
@@ -908,7 +919,7 @@
                 </div>
             </ng-form>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')&& datatypeLibrary.scope!=='MASTER'">
             <div ng-show="node.tables.length!==0">
                 <a class="point" ng-repeat="table in node.tables">
                     <span ng-click="redirectVS(table)"> {{getTableLabel(table)}}</span>
@@ -1009,7 +1020,7 @@
                 {{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
             </a>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')&&datatypeLibrary.scope!=='MASTER'">
             <div>
                 <div ng-show="node.tables != undefined  && node.tables !== null">
                     <span ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">
@@ -1077,7 +1088,7 @@
                 {{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
             </a>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')&&datatypeLibrary.scope!=='MASTER'">
             <div>
                 <div ng-show="node.tables != undefined  && node.tables !== null">
                     <span ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)">
@@ -1145,7 +1156,7 @@
                 </a>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet') &&datatypeLibrary.scope!=='MASTER'">
             <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" class="point" ng-show="node.tables !== null && node.tables !== undefined">
                 {{getTableLabel(table)}}
             </a>
@@ -1206,7 +1217,7 @@
             <a ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
             </a>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
+        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')&&datatypeLibrary.scope!=='MASTER'">
             <a ng-repeat="table in node.tables track by table.id" ng-click="redirectVS(table)" ng-show="node.tables !== null && node.tables !== undefined">
                 {{getTableLabel(table.id)}}
             </a>
