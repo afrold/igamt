@@ -1332,7 +1332,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     }
 
     $rootScope.processDatatypeTree = function(element, parent) {
-
         ////console.log(element);
 
         try {

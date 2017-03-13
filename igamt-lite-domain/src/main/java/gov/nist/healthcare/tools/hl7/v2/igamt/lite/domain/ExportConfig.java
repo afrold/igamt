@@ -30,6 +30,8 @@ public class ExportConfig {
   private String name;
   private Long accountId;
   private String type;
+  private boolean unboundHL7 = false;
+  private boolean unboundCustom = false;
 
   private UsageConfig segmentORGroupsExport;
   private UsageConfig segmentsExport;
@@ -273,6 +275,34 @@ public class ExportConfig {
 
     defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
     return defaultConfiguration;
+  }
+
+  /**
+   * @return the unboundHL7
+   */
+  public boolean isUnboundHL7() {
+    return unboundHL7;
+  }
+
+  /**
+   * @param unboundHL7 the unboundHL7 to set
+   */
+  public void setUnboundHL7(boolean unboundHL7) {
+    this.unboundHL7 = unboundHL7;
+  }
+
+  /**
+   * @return the unboundCustom
+   */
+  public boolean isUnboundCustom() {
+    return unboundCustom;
+  }
+
+  /**
+   * @param unboundCustom the unboundCustom to set
+   */
+  public void setUnboundCustom(boolean unboundCustom) {
+    this.unboundCustom = unboundCustom;
   }
 
 }

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,12 +37,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ComponentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.FieldComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
@@ -569,6 +572,9 @@ public class ValidationServiceImpl implements ValidationService {
           predicatesMap.put(target, toBeValidated.getPredicates().get(j));
         }
       }
+      FieldComparator Comp = new FieldComparator();
+      Collections.sort(reference.getFields(), Comp);
+      Collections.sort(toBeValidated.getFields(), Comp);
       for (int i = 0; i < reference.getFields().size(); i++) {
 
         if (i < toBeValidated.getFields().size()) {
@@ -699,6 +705,9 @@ public class ValidationServiceImpl implements ValidationService {
           predicatesMap.put(target, toBeValidated.getPredicates().get(j));
         }
       }
+      ComponentComparator Comp = new ComponentComparator();
+      Collections.sort(reference.getComponents(), Comp);
+      Collections.sort(toBeValidated.getComponents(), Comp);
 
       for (int i = 0; i < reference.getComponents().size(); i++) {
         boolean validateConf = true;
@@ -924,51 +933,51 @@ public class ValidationServiceImpl implements ValidationService {
   @Override
   public String validateUsage(Usage reference, Usage newValueForUsage, Predicate predicate,
       String hl7Version) {
-    if (!Usage.X.toString().equalsIgnoreCase(newValueForUsage.name())) {
-      String validationResult = null;
 
-      if (predicate != null && newValueForUsage != Usage.C) {
-        return "Usage must be conditional when a predicate is defined";
-      } else if (predicate == null && newValueForUsage == Usage.C) {
-        return "Predicate is missing for conditional usage " + newValueForUsage.value();
+    String validationResult = null;
 
-      }
-
-      JsonNode node = getRulesNodeBySchemaVersion(hl7Version).path("constrainable")
-          .get(USAGE_RULES_ROOT).get(reference.value());
-      List<String> usages = new ArrayList<String>();
-      if (node != null && !node.isMissingNode()) {
-        ArrayNode array = (ArrayNode) node;
-        Iterator<JsonNode> it = array.iterator();
-        while (it.hasNext()) {
-          usages.add(it.next().textValue());
-        }
-      }
-      if (predicate != null) {
-        // C({{p.trueUsage}}/{{p.falseUsage}})
-        String predicateUsage =
-            "C(" + predicate.getTrueUsage() + "/" + predicate.getFalseUsage() + ")";
-        if (!usages.contains(predicateUsage)) {
-          validationResult = "Selected usage of " + predicateUsage
-              + " is non-compatible with base usage " + reference.value();
-          return validationResult;
-        } else {
-          return null;
-        }
-      }
-      if (!newValueForUsage.name().equals(Usage.C)) {
-        if (!usages.contains(newValueForUsage.value())) {
-          validationResult = "Selected usage of " + newValueForUsage.value()
-              + " is non-compatible with base usage " + reference.value();
-          return validationResult;
-        } else {
-          return null;
-        }
-      }
-
-
+    if (predicate != null && newValueForUsage != Usage.C) {
+      return "Usage must be conditional when a predicate is defined";
+    } else if (predicate == null && newValueForUsage == Usage.C) {
+      return "Predicate is missing for conditional usage " + newValueForUsage.value();
 
     }
+
+    JsonNode node = getRulesNodeBySchemaVersion(hl7Version).path("constrainable")
+        .get(USAGE_RULES_ROOT).get(reference.value());
+    List<String> usages = new ArrayList<String>();
+    if (node != null && !node.isMissingNode()) {
+      ArrayNode array = (ArrayNode) node;
+      Iterator<JsonNode> it = array.iterator();
+      while (it.hasNext()) {
+        usages.add(it.next().textValue());
+      }
+    }
+    if (predicate != null) {
+      // C({{p.trueUsage}}/{{p.falseUsage}})
+      String predicateUsage =
+          "C(" + predicate.getTrueUsage() + "/" + predicate.getFalseUsage() + ")";
+      if (!usages.contains(predicateUsage)) {
+        validationResult = "Selected usage of " + predicateUsage
+            + " is non-compatible with base usage " + reference.value();
+        return validationResult;
+      } else {
+        return null;
+      }
+    }
+    if (!newValueForUsage.name().equals(Usage.C)) {
+
+      if (!usages.contains(newValueForUsage.value())) {
+        validationResult = "Selected usage of " + newValueForUsage.value()
+            + " is non-compatible with base usage " + reference.value();
+        return validationResult;
+      } else {
+        return null;
+      }
+    }
+
+
+
     return null;
   }
 
@@ -1084,7 +1093,6 @@ public class ValidationServiceImpl implements ValidationService {
 
   @Override
   public String validateConfLength(String confLength, String igHl7Version) {
-    System.out.println("HEEEREEE" + igHl7Version);
     if (igHl7Version.compareTo("2.5.1") > 0) {
       if (confLength == null) {
         return "Conf. Length cannot be empty";

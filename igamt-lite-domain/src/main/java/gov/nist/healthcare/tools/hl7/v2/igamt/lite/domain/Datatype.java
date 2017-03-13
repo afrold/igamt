@@ -1,12 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -15,9 +11,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 @Document(collection = "datatype")
-public class Datatype extends DataModelWithConstraints implements java.io.Serializable, Cloneable,
-    Comparable<Datatype> {
+public class Datatype extends DataModelWithConstraints
+    implements java.io.Serializable, Cloneable, Comparable<Datatype> {
 
   private static final long serialVersionUID = 1L;
 
@@ -31,39 +30,39 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
 
   private String label;
 
-  private String ext="";
-  
+  private String ext = "";
+
   private String purposeAndUse = "";
- 
-
   
+  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
 
-protected List<Component> components = new ArrayList<Component>();
+  protected List<Component> components = new ArrayList<Component>();
 
   private String name = "";
-  private List<String> hl7versions=new ArrayList<String>(); 
-  
-  private Set<ShareParticipantPermission> shareParticipantIds = new HashSet<ShareParticipantPermission>();
+  private List<String> hl7versions = new ArrayList<String>();
+
+  private Set<ShareParticipantPermission> shareParticipantIds =
+      new HashSet<ShareParticipantPermission>();
 
   public List<String> getHl7versions() {
-	return hl7versions;
-}
+    return hl7versions;
+  }
 
-public void setHl7versions(List<String> hl7versions) {
-	this.hl7versions = hl7versions;
-}
+  public void setHl7versions(List<String> hl7versions) {
+    this.hl7versions = hl7versions;
+  }
 
-private String description = "";
+  private String description = "";
 
   protected String comment = "";
 
-  protected String usageNote = ""; 
-  
-  protected String defPreText= "";
-  
+  protected String usageNote = "";
+
+  protected String defPreText = "";
+
   protected String defPostText = "";
-  
-  
+
+
   protected int precisionOfDTM = 3;
   protected boolean timeZoneOfDTM = false;
 
@@ -92,15 +91,7 @@ private String description = "";
   }
 
   public void setComponents(List<Component> components) {
-    if (components != null) {
-      this.components.clear();
-      Iterator<Component> it = components.iterator();
-      while (it.hasNext()) {
-        addComponent(it.next());
-      }
-    } else {
-      this.components = null;
-    }
+    this.components = components;
   }
 
   public String getName() {
@@ -128,8 +119,11 @@ private String description = "";
   }
 
   public void addComponent(Component c) {
-    c.setPosition(components.size() + 1);
     components.add(c);
+  }
+  
+  public void addValueSetBinding(ValueSetBinding vsb) {
+	valueSetBindings.add(vsb);
   }
 
   public String getComment() {
@@ -147,9 +141,6 @@ private String description = "";
   public void setUsageNote(String usageNote) {
     this.usageNote = usageNote;
   }
-
-  
-
 
   public String getDefPreText() {
     return defPreText;
@@ -192,6 +183,13 @@ private String description = "";
     for (Component c : this.components) {
       clonedDT.addComponent(c.clone());
     }
+    
+    clonedDT.setValueSetBindings(new ArrayList<ValueSetBinding>());
+    for (ValueSetBinding vsb : this.valueSetBindings){
+    	clonedDT.addValueSetBinding(vsb);
+    }
+    
+    
     clonedDT.setDescription(description);
     clonedDT.setLabel(label);
     clonedDT.setName(name);
@@ -226,40 +224,37 @@ private String description = "";
 
   @Override
   public int compareTo(Datatype o) {
-    int x =
-        String.CASE_INSENSITIVE_ORDER.compare(
-            this.getName() != null && this.label != null ? this.getName() + this.getLabel() : "",
-            o.getName() != null && o.getLabel() != null ? o.getName() + o.getLabel() : "");
+    int x = String.CASE_INSENSITIVE_ORDER.compare(
+        this.getName() != null && this.label != null ? this.getName() + this.getLabel() : "",
+        o.getName() != null && o.getLabel() != null ? o.getName() + o.getLabel() : "");
     if (x == 0) {
-      x =
-          (this.getName() != null && this.getLabel() != null ? this.getName() + this.getLabel()
-              : "").compareTo(o.getName() != null && o.getLabel() != null ? o.getName()
-              + o.getLabel() : "");
+      x = (this.getName() != null && this.getLabel() != null ? this.getName() + this.getLabel()
+          : "").compareTo(
+              o.getName() != null && o.getLabel() != null ? o.getName() + o.getLabel() : "");
     }
     return x;
   }
-  
-  public boolean isIdentique(Datatype d){
-	if(!this.getName().equals(d.getName())) {
-		return false;
-	}
-	else if (d.getComponents().size()!=this.getComponents().size()){
-		return false;
-	}else{
-		for(int i= 0; i < d.getComponents().size(); i++){
-			if(!this.getComponents().get(i).isIdentique(d.getComponents().get(i))){
-			return false;
-			}
-			
-		}
-		return true;
-	} 
-	
-	
-  }
-  
 
-@Override
+  public boolean isIdentique(Datatype d) {
+    if (!this.getName().equals(d.getName())) {
+      return false;
+    } else if (d.getComponents().size() != this.getComponents().size()) {
+      return false;
+    } else {
+      for (int i = 0; i < d.getComponents().size(); i++) {
+        if (!this.getComponents().get(i).isIdentique(d.getComponents().get(i))) {
+          return false;
+        }
+
+      }
+      return true;
+    }
+
+
+  }
+
+
+  @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 31).append(id).toHashCode();
   }
@@ -276,33 +271,43 @@ private String description = "";
   }
 
   public String getLabel() {
-	  if(this.getExt()==null||this.getExt().isEmpty()) return this.getName();
-	  else return this.getName()+"_"+this.getExt();
+    if (this.getExt() == null || this.getExt().isEmpty())
+      return this.getName();
+    else
+      return this.getName() + "_" + this.getExt();
   }
 
-public int getPrecisionOfDTM() {
-	return precisionOfDTM;
-}
+  public int getPrecisionOfDTM() {
+    return precisionOfDTM;
+  }
 
-public void setPrecisionOfDTM(int precisionOfDTM) {
-	this.precisionOfDTM = precisionOfDTM;
-}
+  public void setPrecisionOfDTM(int precisionOfDTM) {
+    this.precisionOfDTM = precisionOfDTM;
+  }
 
-public boolean isTimeZoneOfDTM() {
-	return timeZoneOfDTM;
-}
+  public boolean isTimeZoneOfDTM() {
+    return timeZoneOfDTM;
+  }
 
-public void setTimeZoneOfDTM(boolean timeZoneOfDTM) {
-	this.timeZoneOfDTM = timeZoneOfDTM;
-}
+  public void setTimeZoneOfDTM(boolean timeZoneOfDTM) {
+    this.timeZoneOfDTM = timeZoneOfDTM;
+  }
 
-public Set<ShareParticipantPermission> getShareParticipantIds() {
-	return shareParticipantIds;
-}
+  public Set<ShareParticipantPermission> getShareParticipantIds() {
+    return shareParticipantIds;
+  }
 
-public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
-	this.shareParticipantIds = shareParticipantIds;
-}
+  public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
+    this.shareParticipantIds = shareParticipantIds;
+  }
   
-  
+  public List<ValueSetBinding> getValueSetBindings() {
+		return valueSetBindings;
+  }
+
+	public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+		this.valueSetBindings = valueSetBindings;
+	}
+
+
 }
