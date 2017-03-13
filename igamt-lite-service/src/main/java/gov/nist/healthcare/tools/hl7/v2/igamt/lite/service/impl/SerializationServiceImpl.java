@@ -85,19 +85,19 @@ import java.util.*;
         return serializableStructure.serializeStructure();
     }
 
-    @Override public Document serializeIGDocument(IGDocument originIgDocument,
+    @Override public Document serializeIGDocument(IGDocument igDocument,
         SerializationLayout serializationLayout, ExportConfig exportConfig) {
         this.exportConfig = exportConfig;
-        igDocumentMessages = originIgDocument.getProfile().getMessages();
+        igDocumentMessages = igDocument.getProfile().getMessages();
         this.bindedDatatypes = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
         this.bindedSegments = new ArrayList<>();
-        for (Message message : originIgDocument.getProfile().getMessages().getChildren()){
+        for (Message message : igDocument.getProfile().getMessages().getChildren()){
             for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
                 identifyBindedItems(segmentRefOrGroup);
             }
         }
-        IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
+        //IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
         SerializableStructure serializableStructure = new SerializableStructure();
         igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
         SerializableMetadata serializableMetadata =
@@ -314,7 +314,7 @@ import java.util.*;
             messageSection.addSectionContent(
                 "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
         }
-        for (Message message : profile.getMessages().getChildren()) {
+        for (Message message : this.igDocumentMessages.getChildren()) {
             SerializableMessage serializableMessage =
                 serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
             messageSection.addSection(serializableMessage);
