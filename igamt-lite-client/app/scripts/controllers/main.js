@@ -3216,10 +3216,29 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         return element.hl7Version;
 
-    }
+    };
 
-    $rootScope.getTableLabel = function(table) {
+    $rootScope.getScopeLabel = function(leaf) {
+        if (leaf) {
+            if (leaf.scope === 'HL7STANDARD') {
+                return 'HL7';
+            } else if (leaf.scope === 'USER') {
+                return 'USR';
 
+            } else if (leaf.scope === 'MASTER') {
+                return 'MAS';
+            } else if (leaf.scope === 'PRELOADED') {
+                return 'PRL';
+            } else if (leaf.scope === 'PHINVADS') {
+                return 'PVS';
+            } else {
+                return "";
+            }
+        }
+    };
+
+    $rootScope.getTableLabel = function(binding) {
+        var table = $rootScope.tablesMap[binding.tableId];
         if (table && table.bindingIdentifier) {
             return $rootScope.getLabel(table.bindingIdentifier, table.ext);
         }

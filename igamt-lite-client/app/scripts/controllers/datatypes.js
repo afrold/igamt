@@ -426,13 +426,7 @@ angular.module('igl')
             $scope.editableDT = '';
         };
 
-        $scope.getTableLabel = function(binding) {
-            var table = $rootScope.tablesMap[binding.tableId];
-            if (table && table.bindingIdentifier) {
-                return $scope.getLabel(table.bindingIdentifier, table.ext);
-            }
-            return "";
-        };
+
         $scope.getLabel = function(name, ext) {
             var label = name;
             if (ext && ext !== null && ext !== "") {
@@ -610,8 +604,8 @@ angular.module('igl')
             }
         };
 
-        $scope.redirectVS = function(valueSet) {
-            TableService.getOne(valueSet.tableId).then(function(valueSet) {
+        $scope.redirectVS = function(binding) {
+            TableService.getOne(binding.tableId).then(function(valueSet) {
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
@@ -752,26 +746,6 @@ angular.module('igl')
         $scope.deleteTable = function(node) {
             node.table = null;
             $rootScope.recordChangeForEdit2('component', 'edit', node.id, 'table', null);
-        };
-
-        $scope.editModalBindingForDT = function(node) {
-            var modalInstance = $modal.open({
-                templateUrl: 'TableMappingDatatypeCtrl.html',
-                controller: 'TableMappingDatatypeCtrl',
-                windowClass: 'app-modal-window',
-                resolve: {
-                    currentNode: function() {
-                        return node;
-                    }
-                }
-            });
-
-            modalInstance.result.then(function(node) {
-                $scope.setDirty();
-                if ($scope.datatypesParams) {
-                    $scope.datatypesParams.refresh();
-                }
-            });
         };
 
         $scope.managePredicate = function(node) {
@@ -1189,6 +1163,26 @@ angular.module('igl')
             $rootScope.saveBindingForDatatype();
         };
 
+        $scope.editModalBindingForDT = function(node) {
+            var modalInstance = $modal.open({
+                templateUrl: 'TableMappingDatatypeCtrl.html',
+                controller: 'TableMappingDatatypeCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    currentNode: function() {
+                        return node;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(node) {
+                $scope.setDirty();
+                if ($scope.datatypesParams) {
+                    $scope.datatypesParams.refresh();
+                }
+            });
+        };
+
         $scope.isAvailableForValueSet = function (currentDT, parentDT, path){
             if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
                     return valueSetAllowedDT == currentDT.name;
@@ -1221,6 +1215,13 @@ angular.module('igl')
             }
         };
 
+        $scope.deleteBinding = function(binding){
+            var index = $rootScope.datatype.valueSetBindings.indexOf(binding);
+            if (index >= 0) {
+                $rootScope.datatype.valueSetBindings.splice(index, 1);
+                $scope.setDirty();
+            }
+        };
     });
 
 

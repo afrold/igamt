@@ -361,8 +361,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     // };
 
 
-    $scope.redirectVS = function(valueSet) {
-        TableService.getOne(valueSet.id).then(function(valueSet) {
+    $scope.redirectVS = function(binding) {
+        TableService.getOne(binding.tableId).then(function(valueSet) {
             var modalInstance = $modal.open({
                 templateUrl: 'redirectCtrl.html',
                 controller: 'redirectCtrl',
@@ -372,16 +372,10 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
                         return valueSet;
                     }
                 }
-
-
-
             });
             modalInstance.result.then(function() {
                 $rootScope.editTable(valueSet);
             });
-
-
-
         });
     };
 
@@ -570,21 +564,26 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         if (node && node != null) {
             if (node.fields && node.fields.length > 0) return true;
             else {
-                if (node.type === 'case') {
-                    if ($rootScope.getDatatype(node.datatype).components && $rootScope.getDatatype(node.datatype).components.length > 0) return true;
-                } else {
                     if (node.datatype && $rootScope.getDatatype(node.datatype.id)) {
                         if ($rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0) return true;
-                        else {
-                            if ($rootScope.getDatatype(node.datatype.id).name === 'varies') {
-                                var mapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping) {
-                                    return mapping.position == node.position;
-                                });
-                                if (mapping && mapping.cases && mapping.cases.length > 0) return true;
-                            }
-                        }
                     }
-                }
+
+
+                // if (node.type === 'case') {
+                //     if ($rootScope.getDatatype(node.datatype).components && $rootScope.getDatatype(node.datatype).components.length > 0) return true;
+                // } else {
+                //     if (node.datatype && $rootScope.getDatatype(node.datatype.id)) {
+                //         if ($rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0) return true;
+                //         else {
+                //             if ($rootScope.getDatatype(node.datatype.id).name === 'varies') {
+                //                 var mapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping) {
+                //                     return mapping.position == node.position;
+                //                 });
+                //                 if (mapping && mapping.cases && mapping.cases.length > 0) return true;
+                //             }
+                //         }
+                //     }
+                // }
             }
         }
 
@@ -621,25 +620,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         node.table = null;
         $rootScope.recordChangeForEdit2('field', 'edit', node.id, 'table', null);
     };
-
-    $scope.mapTable = function(node) {
-        var modalInstance = $modal.open({
-            templateUrl: 'TableMappingSegmentCtrl.html',
-            controller: 'TableMappingSegmentCtrl',
-            windowClass: 'app-modal-window',
-            resolve: {
-                selectedNode: function() {
-                    return node;
-                }
-            }
-        });
-        modalInstance.result.then(function(node) {
-            $scope.selectedNode = node;
-            $scope.setDirty();
-        }, function() {});
-    };
-
-
 
     $scope.findDTByComponentId = function(componentId) {
         return $rootScope.parentsMap && $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId] : null;
@@ -994,35 +974,92 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         }, function() {});
     };
 
-    $scope.isAvailableForValueSet = function (currentDT, parentDT, path){
+    $scope.editModalBindingForSeg = function(node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'TableMappingSegmentCtrl.html',
+            controller: 'TableMappingSegmentCtrl',
+            windowClass: 'app-modal-window',
+            resolve: {
+                currentNode: function() {
+                    return node;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(node) {
+            $scope.setDirty();
+            if ($scope.segmentsParams) {
+                $scope.segmentsParams.refresh();
+            }
+        });
+    };
+
+
+    $scope.isAvailableForValueSet = function (node){
+        var currentDT = $rootScope.datatypesMap[node.datatype.id];
         if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
                 return valueSetAllowedDT == currentDT.name;
             })) return true;
 
-        if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
-                return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == path;
-            })) return true;
+        if(node.fieldDT && !node.componentDT){
+            var parentDT = $rootScope.datatypesMap[node.fieldDT];
+            var pathSplit = node.path.split(".");
+            if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
+                    return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[1];
+                })) return true;
+        }
+
+        if(node.componentDT){
+            var parentDT = $rootScope.datatypesMap[node.componentDT];
+            var pathSplit = node.path.split(".");
+            if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
+                    return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[2];
+                })) return true;
+        }
 
         return false;
     };
 
-    $scope.findingBindings = function(path, parent) {
-        var result = _.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location == path; });
-
+    $scope.findingBindings = function(node) {
+        var result = _.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location == node.path; });
         for (var i = 0; i < result.length; i++) {
-            result[i].isMain = true;
+            result[i].bindingFrom = 'segment';
         }
 
+        if(result && result.length > 0) {
+            return result;
+        }
 
-        if(result && result.length > 0) return result;
-        else if(!parent) return result;
-        else {
-            if(path.indexOf('.') > -1){
-                var subPath = path.substr(path.indexOf('.') + 1);
-                return _.filter(parent.valueSetBindings, function(binding){ return binding.location == subPath; });
-            }else {
-                return [];
+        if(node.fieldDT) {
+            var parentDT = $rootScope.datatypesMap[node.fieldDT];
+            var subPath = node.path.substr(node.path.indexOf('.') + 1);
+            result = _.filter(parentDT.valueSetBindings, function(binding){ return binding.location == subPath; });
+            for (var i = 0; i < result.length; i++) {
+                result[i].bindingFrom = 'field';
             }
+        }
+
+        if(result && result.length > 0) {
+            return result;
+        }
+
+        if(node.componentDT) {
+            var parentDT = $rootScope.datatypesMap[node.componentDT];
+            var subPath = node.path.substr(node.path.split('.', 2).join('.').length + 1);
+            result = _.filter(parentDT.valueSetBindings, function(binding){ return binding.location == subPath; });
+            for (var i = 0; i < result.length; i++) {
+                result[i].bindingFrom = 'component';
+            }
+        }
+
+        return result;
+    };
+
+    $scope.deleteBinding = function(binding){
+        var index = $rootScope.segment.valueSetBindings.indexOf(binding);
+        if (index >= 0) {
+            $rootScope.segment.valueSetBindings.splice(index, 1);
+            $scope.setDirty();
         }
     };
 
@@ -1074,33 +1111,6 @@ angular.module('igl').controller('DynamicMappingCtrl', function($scope, $modalIn
         $rootScope.segment.dynamicMapping.mappings.splice(index, 1);
         $rootScope.segment.dynamicMapping.mappings.unshift($scope.selectedMapping);
         $scope.changed = false;
-        $scope.ok();
-    };
-
-    $scope.ok = function() {
-        $modalInstance.close($scope.selectedNode);
-    };
-
-});
-angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
-    $scope.changed = false;
-    $scope.selectedNode = selectedNode;
-    $scope.selectedTable = null;
-    if (selectedNode.table != undefined) {
-        $scope.selectedTable = $rootScope.tablesMap[selectedNode.table.id];
-    }
-
-    $scope.selectTable = function(table) {
-        $scope.selectedTable = table;
-        $scope.changed = true;
-    };
-
-
-    $scope.mappingTable = function() {
-        if ($scope.selectedNode.table == null || $scope.selectedNode.table == undefined) $scope.selectedNode.table = {};
-        $scope.selectedNode.table.id = $scope.selectedTable.id;
-        $scope.selectedNode.table.bindingIdentifier = $scope.selectedTable.bindingIdentifier;
-        $rootScope.recordChangeForEdit2('field', 'edit', $scope.selectedNode.id, 'table', $scope.selectedNode.table.id);
         $scope.ok();
     };
 
@@ -2357,4 +2367,75 @@ angular.module('igl').controller('AddBindingForSegment', function($scope, $modal
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
+});
+
+angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI) {
+    $scope.changed = false;
+    $scope.currentNode = currentNode;
+    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location == currentNode.path; }));
+    $scope.listOfBindingLocations = null;
+
+    if(_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT){
+            return valueSetAllowedDT == $rootScope.datatypesMap[$scope.currentNode.datatype.id].name;
+        })) {
+        for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+            if (!$scope.selectedValueSetBindings[i].bindingLocation || $scope.selectedValueSetBindings[i].bindingLocation == '') {
+                $scope.selectedValueSetBindings[i].bindingLocation = "1";
+            }
+        }
+
+        var hl7Version = $rootScope.datatypesMap[$scope.currentNode.datatype.id].hl7Version;
+        if(!hl7Version) hl7Version = "2.5.1";
+
+        $scope.listOfBindingLocations = $rootScope.config.bindingLocationListByHL7Version[hl7Version];
+    };
+
+    $scope.deleteBinding = function(binding){
+        var index = $scope.selectedValueSetBindings.indexOf(binding);
+        if (index >= 0) {
+            $scope.selectedValueSetBindings.splice(index, 1);
+        }
+        $scope.changed = true;
+    };
+
+    $scope.isSelected = function (v){
+        for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+            if($scope.selectedValueSetBindings[i].tableId == v.id) return true;
+        }
+        return false;
+    };
+
+    $scope.selectValueSet = function (v){
+        if($scope.listOfBindingLocations){
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path, bindingLocation: "1" });
+        }else {
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path });
+        }
+        $scope.changed = true;
+    };
+
+    $scope.unselectValueSet = function (v){
+        var toBeDelBinding =_.find($scope.selectedValueSetBindings, function(binding){
+            return binding.tableId == v.id;
+        });
+        var index = $scope.selectedValueSetBindings.indexOf(toBeDelBinding);
+        if (index >= 0) {
+            $scope.selectedValueSetBindings.splice(index, 1);
+        }
+        $scope.changed = true;
+    };
+
+    $scope.saveMapping = function() {
+        blockUI.start();
+        var otherValueSetBindings = angular.copy(_.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location != currentNode.path; }));
+        $rootScope.segment.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
+        blockUI.stop();
+
+        $modalInstance.close();
+    };
+
+    $scope.ok = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
 });

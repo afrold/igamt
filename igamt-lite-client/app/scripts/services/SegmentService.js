@@ -6,13 +6,18 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
     var SegmentService = {
         getNodes: function(parent, root) {
             var children = [];
-            if (parent && parent.type && parent.type === 'case') {
-                var dt = $rootScope.datatypesMap[parent.datatype];
-                children = angular.copy(dt.components);
-                for (var i = 0, len = children.length; i < len; i++) {
-                    children[i].path = parent.path + "." + children[i].position;
-                }
-            } else {
+            // if (parent && parent.type && parent.type === 'case') {
+            //     var dt = $rootScope.datatypesMap[parent.datatype];
+            //     children = angular.copy(dt.components);
+            //     for (var i = 0, len = children.length; i < len; i++) {
+            //         children[i].path = parent.path + "." + children[i].position;
+            //         if(children[i].path.split(".").length - 1 == 1){
+            //             children[i].fieldDT = parent.datatype.id;
+            //         }else if(children[i].path.split(".").length - 1 == 2){
+            //             children[i].componentDT = parent.datatype.id;
+            //         }
+            //     }
+            // } else {
                 // children = parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components : parent.children : root != null ? root.fields : [];
 
                 if(parent){
@@ -27,6 +32,12 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                             children = angular.copy(dt.components);
                             for (var i = 0, len = children.length; i < len; i++) {
                                 children[i].path = parent.path + "." + children[i].position;
+                                if(children[i].path.split(".").length - 1 == 1){
+                                    children[i].fieldDT = parent.datatype.id;
+                                }else if(children[i].path.split(".").length - 1 == 2){
+                                    children[i].componentDT = parent.datatype.id;
+                                }
+
                             }
                         }else {
                             children = parent.children;
@@ -44,13 +55,15 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                 }
 
 
-                if (parent && parent.datatype && $rootScope.datatypesMap[parent.datatype.id].name === 'varies') {
-                    var mapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping) {
-                        return mapping.position == parent.position;
-                    });
-                    if (mapping) children = mapping.cases;
-                }
-            }
+                // if (parent && parent.datatype && $rootScope.datatypesMap[parent.datatype.id].name === 'varies') {
+                //     var mapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping) {
+                //         return mapping.position == parent.position;
+                //     });
+                //     if (mapping) {
+                //         children = mapping.cases;
+                //     }
+                // }
+            // }
 
             return children;
         },
@@ -69,12 +82,14 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
         },
 
         getReadTemplate: function(node, root) {
-            var template = node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : node.type === 'case' ? 'SegmentCaseReadTree.html' : 'SegmentComponentReadTree.html';
+            // var template = node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : node.type === 'case' ? 'SegmentCaseReadTree.html' : 'SegmentComponentReadTree.html';
+            var template = node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
             return template;
         },
 
         getEditTemplate: function(node, root) {
-            var template = node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : node.type === 'case' ? 'SegmentCaseReadTree.html' : 'SegmentComponentEditTree.html';
+            // var template = node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : node.type === 'case' ? 'SegmentCaseReadTree.html' : 'SegmentComponentEditTree.html';
+            var template = node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
             return template;
         },
 
