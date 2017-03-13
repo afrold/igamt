@@ -45,7 +45,7 @@ public interface DatatypeOperations {
 
   public List<Datatype> findShared(Long accountId);
 
-  public Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+  public List<Datatype> findByNameAndVersionAndScope(String name, String version, String scope);
 
   public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope);
 

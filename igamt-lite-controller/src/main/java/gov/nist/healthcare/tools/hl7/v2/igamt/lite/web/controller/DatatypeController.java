@@ -162,12 +162,12 @@ public class DatatypeController extends CommonController {
         throw new UserAccountNotFoundException();
       }
 
-      d = datatypeService.findByNameAndVersionAndScope(unchagedDatatype.getName(),
+      List<Datatype> ds = datatypeService.findByNameAndVersionAndScope(unchagedDatatype.getName(),
           unchagedDatatype.getHl7Version(), "HL7STANDARD");
-
-      if (d == null) {
+      if (ds == null || ds.isEmpty()) {
         throw new NotFoundException("no standard d");
       }
+      d = ds.get(0);
       d.setExt(max + "");
 
       Datatype temp = datatypeService.findByNameAndVersionsAndScope(unchagedDatatype.getName(),
@@ -210,8 +210,9 @@ public class DatatypeController extends CommonController {
       if (unchanged != null && !unchanged.isEmpty()) {
 
         UnchangedDataType model = unchanged.get(0);
-        d = datatypeService.findByNameAndVersionAndScope(wrapper.getName(), wrapper.getVersion(),
-            "HL7STANDARD");
+        List<Datatype> ds = datatypeService.findByNameAndVersionAndScope(wrapper.getName(),
+            wrapper.getVersion(), SCOPE.HL7STANDARD.toString());
+        d = ds != null && !ds.isEmpty() ? ds.get(0) : null;
         if (d != null) {
           d.setId(null);
           d.setHl7versions(model.getVersions());
