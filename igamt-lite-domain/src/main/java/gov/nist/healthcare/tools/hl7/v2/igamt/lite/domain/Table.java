@@ -22,8 +22,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 public class Table extends DataModel implements Serializable, Comparable<Table>, Cloneable {
 
   /**
-	 * 
-	 */
+   * 
+   */
   private static final long serialVersionUID = 734059059225906039L;
 
   @Id
@@ -31,9 +31,9 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   private String hl7Version;
   private Set<String> libIds = new HashSet<String>();
   private String bindingIdentifier;
-  private String name;  
+  private String name;
   private boolean newTable;
- 
+
 
   private String description;
   private String version;
@@ -55,15 +55,16 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   protected String date;
 
   protected STATUS status;
-  
+
   protected String comment = "";
 
-  
-  protected String defPreText= "";
-  
+
+  protected String defPreText = "";
+
   protected String defPostText = "";
-  
-  private Set<ShareParticipantPermission> shareParticipantIds = new HashSet<ShareParticipantPermission>();
+
+  private Set<ShareParticipantPermission> shareParticipantIds =
+      new HashSet<ShareParticipantPermission>();
 
   public Table() {
     super();
@@ -219,8 +220,8 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     return null;
   }
 
-  
-  
+
+
   public String getDefPreText() {
     return defPreText;
   }
@@ -242,19 +243,17 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     return "Table [id=" + id + ", bindingIdentifier=" + bindingIdentifier + ", name=" + name
         + ", description=" + description + ", version=" + version + ", oid=" + oid + ", stability="
         + stability + ", extensibility=" + extensibility + ", contentDefinition="
-        + contentDefinition + ", group=" + group + ", order=" + order + ", codes=" + codes + "]";
+        + contentDefinition + ", group=" + group + ", order=" + order + "]";
   }
 
   @Override
   public int compareTo(Table o) {
-    int x =
-        String.CASE_INSENSITIVE_ORDER.compare(
-            this.bindingIdentifier != null ? this.bindingIdentifier : "",
-            o.bindingIdentifier != null ? o.bindingIdentifier : "");
+    int x = String.CASE_INSENSITIVE_ORDER.compare(
+        this.bindingIdentifier != null ? this.bindingIdentifier : "",
+        o.bindingIdentifier != null ? o.bindingIdentifier : "");
     if (x == 0) {
-      x =
-          (this.bindingIdentifier != null ? this.bindingIdentifier : "")
-              .compareTo(o.bindingIdentifier != null ? o.bindingIdentifier : "");
+      x = (this.bindingIdentifier != null ? this.bindingIdentifier : "")
+          .compareTo(o.bindingIdentifier != null ? o.bindingIdentifier : "");
     }
     return x;
   }
@@ -312,7 +311,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   public String getDate() {
     return date;
   }
-  
+
   @Deprecated
   public void setDate(String date) {
     this.date = date;
@@ -326,30 +325,30 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     this.status = status;
   }
 
-public String getComment() {
-	return comment;
-}
+  public String getComment() {
+    return comment;
+  }
 
-public void setComment(String comment) {
-	this.comment = comment;
-}
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
 
-public boolean isNewTable() {
-	return newTable;
-}
+  public boolean isNewTable() {
+    return newTable;
+  }
 
-public void setNewTable(boolean newTable) {
-	this.newTable = newTable;
-}
+  public void setNewTable(boolean newTable) {
+    this.newTable = newTable;
+  }
 
- 
 
-public Set<ShareParticipantPermission> getShareParticipantIds() {
-	return shareParticipantIds;
-}
 
-public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
-	this.shareParticipantIds = shareParticipantIds;
-}
-  
+  public Set<ShareParticipantPermission> getShareParticipantIds() {
+    return shareParticipantIds;
+  }
+
+  public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
+    this.shareParticipantIds = shareParticipantIds;
+  }
+
 }
