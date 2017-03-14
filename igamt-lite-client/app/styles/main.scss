@@ -2877,7 +2877,7 @@ tr .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12, .col-xs-11, .col-sm-11, .col-
   tbody{ height: auto; }
 }
 body.modal-open {
-    overflow-y: none !important;
+    width: 100% !important;
     position: fixed !important;
 }
 .widthInside{
