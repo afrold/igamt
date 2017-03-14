@@ -31,7 +31,10 @@ public class SerializationUtil {
 
   public String cleanRichtext(String richtext) {
     //richtext = StringEscapeUtils.unescapeHtml4(richtext);
-    richtext = richtext.replace("<br>", "<br></br>");
+    richtext = richtext.replace("<br>", "<br />");
+    if(richtext.contains("<pre>")){
+      richtext = richtext.replace("\n", "<br />");
+    }
     richtext = richtext.replace("<p style=\"\"><br></p>", "<p></p>");
     richtext = richtext.replace("&lsquo;","&#39;");
     richtext = richtext.replaceAll("[^\\p{Print}]", "?");
@@ -49,7 +52,8 @@ public class SerializationUtil {
     Elements elements4 = doc.select("h4");
     elements4.tagName("p").attr("style",
         "display: block;font-size: 10.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
-
+    Elements elementsPre = doc.select("pre");
+    elementsPre.tagName("p").attr("class","codeParagraph");
     for (org.jsoup.nodes.Element elementImg : doc.select("img")) {
       try {
         if (elementImg.attr("src") != null && !"".equals(elementImg.attr("src"))) {
@@ -99,8 +103,9 @@ public class SerializationUtil {
 
     //Renaming strong to work as html4 
     doc.select("strong").tagName("b");
-
-    return "<div class=\"fr-view\">" + doc.body().html() + "</div>";
+    String html = doc.body().html();
+    html = html.replace("<br>", "<br />");
+    return "<div class=\"fr-view\">" + html + "</div>";
   }
 
   public void setSectionsPrefixes(Set<Section> sections, String prefix, Integer depth,
