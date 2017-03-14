@@ -32,6 +32,20 @@
                     <span ng-if="!viewSettings.tableReadonly"> <i class="fa fa-pencil fa-fw"></i>IG Document</span>
                     <span ng-if="viewSettings.tableReadonly"> <i class="fa fa-search fa-fw"></i>IG Document</span>
                 </tab-heading>
+                <span class="header4">{{igdocument.metaData.title}}</span>
+                <div style="border-bottom: 1px solid #222 !important;
+    font-style: italic;
+    color: black !important;
+    margin-top: 0px;">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                    Updated {{igdocument.dateUpdated | date:dateFormat}}
+
+                    <span ng-if="igdocument.owner" style="font-style: italic;">
+                         <i class="fa fa-user" aria-hidden="true"></i>
+                         ,{{igdocument.owner}}
+                    </span>
+                    <span>,HL7 Version: {{igdocument.profile.metaData.hl7Version}}</span>
+                </div>
                 <div ng-include="'views/edit/editIG.html'"></div>
             </tab>
         </tabset>
