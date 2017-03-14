@@ -59,6 +59,7 @@
                                     <table id="profileComponentTable" tt-table tt-params="profileComponentParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                         <thead>
                                             <tr class="tbl-header" style="">
+                                                <th class="col-md-1 col-fixed-250" rowspan="2">Position</th>
                                                 <th class="col-md-1 col-fixed-250" rowspan="2">Location</th>
                                                 <th class="col-md-1 col-fixed-40" rowspan="2"> Name</th>
                                                 <th class="col-md-2 col-fixed-80" rowspan="2">Usage</th>
@@ -145,6 +146,10 @@
 <script type="text/ng-template" id="profileComponentTable">
 
     <tr tt-node is-branch="false">
+        <td class="col-md-1 col-fixed-250">
+
+            <span ng-bind="node.position"></span>
+        </td>
         <td class="col-md-1 col-fixed-250">
             <span ng-if="node.type=='datatype'" class="label label-default label-icon">D</span>
             <span ng-if="node.type=='group'" class="label label-success label-icon">G</span>

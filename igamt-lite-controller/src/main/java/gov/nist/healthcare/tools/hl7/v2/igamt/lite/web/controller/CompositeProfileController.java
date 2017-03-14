@@ -13,6 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -72,6 +75,16 @@ public class CompositeProfileController {
     } else {
       ig.getProfile().getCompositeProfiles().addChild(compositeProfileStructure);
     }
+    List<ProfileComponent> pcs =
+        profileComponentService.findByIds(compositeProfileStructure.getProfileComponentIds());
+    for (ProfileComponent pc : pcs) {
+      System.out.println("applied pcs : " + pc.getName());
+      pc.addAppliedTo(compositeProfileStructure);
+    }
+    profileComponentService.saveAll(pcs);
+    Message core = messageService.findById(compositeProfileStructure.getCoreProfileId());
+    core.addAppliedPc(compositeProfileStructure);
+    messageService.save(core);
 
     compositeProfileStructureService.save(compositeProfileStructure);
     iGDocumentService.save(ig);

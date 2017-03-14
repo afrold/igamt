@@ -21,6 +21,11 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 public class CompositeProfile extends DataModelWithConstraints
     implements java.io.Serializable, Cloneable, Comparable<CompositeProfile> {
 
+  public CompositeProfile() {
+    super();
+    this.type = Constant.COMPOSITEPROFILE;
+  }
+
   private String coreProfileId;
   private List<ApplyInfo> profileComponentsInfo;
 

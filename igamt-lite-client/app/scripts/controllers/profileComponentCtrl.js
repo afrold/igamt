@@ -30,7 +30,6 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         } else if (type.name === 'datatype') {
             $scope.dts = angular.copy($rootScope.datatypes);
         } else if (type.name === 'message') {
-            console.log($rootScope.messages);
             $scope.msgs = angular.copy($rootScope.messages.children);
         }
     };
@@ -54,8 +53,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
         }).result.then(function(results) {
 
-            console.log("+++====+++++");
-            console.log($rootScope.profileComponent);
+        
 
             if ($scope.applyPcToParams) {
                 $scope.applyPcToParams.refresh();
@@ -113,57 +111,18 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
     };
     $scope.removePcEntry = function(node) {
-
+        $rootScope.profileComponent.children=orderByFilter($rootScope.profileComponent.children, 'position');
         var index = $rootScope.profileComponent.children.indexOf(node);
         if (index > -1) $rootScope.profileComponent.children.splice(index, 1);
+        for(var i=index;i<$rootScope.profileComponent.children.length;i++){
+            $rootScope.profileComponent.children[i].position--;
+        }
         $scope.setDirty();
         if ($scope.profileComponentParams) {
             $scope.profileComponentParams.refresh();
         }
     };
-    $scope.setPcChild = function(pc) {
-        console.log(pc);
-        if (pc.type === 'segmentRef') {
-            console.log($scope.parent);
-            $scope.newPc = {
-                id: new ObjectId().toString(),
-                name: $rootScope.segmentsMap[pc.ref.id].label,
-                type: pc.type,
-                path: $scope.parent.structID + '.' + pc.position,
-                
-                itemId : pc.id,
-                attributes: {},
-                appliedTo: [],
-                version: ""
-            };
-        } else if (pc.type === 'field') {
-            console.log($scope.parent);
-            $scope.newPc = {
-                id: new ObjectId().toString(),
-                name: pc.name,
-                type: pc.type,
-                path: $rootScope.segmentsMap[$scope.parent.id].label + '.' + pc.position,
-                itemId : pc.id,
-                attributes: {},
-                appliedTo: [],
-                version: ""
-            };
-        } else if (pc.type === 'component') {
-            console.log($scope.parent);
-
-            $scope.newPc = {
-                id: new ObjectId().toString(),
-                name: pc.name,
-                type: pc.type,
-                itemId : pc.id,
-                path: $rootScope.datatypesMap[$scope.parent.id].label + '.' + pc.position,
-                attributes: {},
-                appliedTo: [],
-                version: ""
-            };
-        }
-
-    };
+    
     $scope.addComponent = function() {
 
         PcLibraryService.addComponentToLib($rootScope.igdocument.id, $scope.newPc).then(function(ig) {
@@ -174,7 +133,6 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         });
     };
     $scope.save = function() {
-        console.log($rootScope.profileComponent);
         var children = $rootScope.profileComponent.children;
         var bindingParam = $rootScope.profileComponent.appliedTo;
 
@@ -201,7 +159,6 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
 
     $scope.editUsage = function(field) {
-        console.log(field);
         //field.oldUsage = field.usage;
 
 
@@ -305,9 +262,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.editableDT = '';
 
     $scope.selectDT = function(field, datatype) {
-        console.log("datatype");
-
-        console.log(datatype);
+    
         if (datatype && datatype !== "Others") {
             $scope.DTselected = true;
 
@@ -443,10 +398,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 });
             }
         }
-        console.log($scope.segFlavors);
     };
     $scope.selectFlavor = function(field, flavor) {
-        console.log(flavor);
         if (flavor) {
             field.attributes.ref = {
                 id: flavor.id,
@@ -465,7 +418,6 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         $scope.editableDT = field.id;
 
         $scope.loadLibrariesByFlavorName = function() {
-            console.log(field);
             var delay = $q.defer();
             $scope.ext = null;
             $scope.datatypes = [];
@@ -500,7 +452,6 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
 
         $scope.loadLibrariesByFlavorName().then(function(done) {
-            console.log($scope.results);
             // $scope.selection.selected = $scope.currentDatatype.id;
             // $scope.showSelectedDetails($scope.currentDatatype);
         });
@@ -569,11 +520,9 @@ angular.module('igl').controller('applyPcToCtrl',
             }
         });
         $scope.addApplyToMsg = function(node) {
-            console.log(node);
             $scope.applyToList.push(node);
             var index = $scope.msgs.indexOf(node);
             if (index > -1) $scope.msgs.splice(index, 1);
-            console.log($scope.msgs);
             if ($scope.ApplyToComponentParams) {
                 $scope.ApplyToComponentParams.refresh();
             }
@@ -587,9 +536,7 @@ angular.module('igl').controller('applyPcToCtrl',
             }
         };
         $scope.apply = function() {
-            console.log("$scope.applyToList");
 
-            console.log($scope.applyToList);
             for (var j = 0; j < $scope.applyToList.length; j++) {
                 $rootScope.profileComponent.appliedTo.push({
                     id: $scope.applyToList[j].id,
@@ -637,7 +584,6 @@ angular.module('igl').controller('applyPcToCtrl',
             var processedMsg = processMessage(message);
 
             CompositeMessageService.create(processedMsg).then(function(result) {
-                console.log(result);
                 $modalInstance.close();
             });
 
@@ -654,6 +600,10 @@ angular.module('igl').controller('applyPcToCtrl',
 angular.module('igl').controller('addComponentsCtrl',
     function($scope, $rootScope, $modalInstance, messages, segments, segmentsMap, datatypesMap, currentPc, PcLibraryService, datatypes, ngTreetableParams, $http, SegmentLibrarySvc, PcService) {
         $scope.selectedPC = [];
+        console.log("current pc");
+        console.log(currentPc);
+                   
+
         $scope.MsgProfileComponentParams = new ngTreetableParams({
             getNodes: function(parent) {
                 if (messages !== undefined) {
@@ -680,8 +630,7 @@ angular.module('igl').controller('addComponentsCtrl',
                                     parent.children[i].parent = parent.parent + '.' + parent.position;
                                     parent.children[i].children = datatypesMap[parent.children[i].datatype.id].components;
                                 } else if (parent.type === 'field' || parent.type === 'component') {
-                                    console.log("--------------------//////////////////-------------");
-                                    console.log(parent);
+                                   
                                     parent.children[i].parent = parent.parent + '.' + parent.position;
                                     parent.children[i].children = datatypesMap[parent.children[i].datatype.id].components;
                                 }
@@ -828,9 +777,7 @@ angular.module('igl').controller('addComponentsCtrl',
                 }
             } else if (pc.type === 'component') {
                 var splitParent = parent.parent.split(".");
-                console.log(splitParent);
-                console.log(parent);
-                console.log(pc);
+              
                 if ((splitParent.length > 1 && parent.type !== "component") || (splitParent.length > 2 && parent.type === "component")) {
                     var newPc = {
                         id: new ObjectId().toString(),
@@ -862,8 +809,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     };
 
                 } else {
-                    console.log("-------");
-                    console.log(parent);
+                    
                     var newPc = {
                         id: new ObjectId().toString(),
                         name: pc.name,
@@ -941,7 +887,6 @@ angular.module('igl').controller('addComponentsCtrl',
 
             };
             $scope.selectedPC.push(newPc);
-            console.log(newPc);
         };
 
         $scope.SegProfileComponentParams = new ngTreetableParams({
@@ -994,7 +939,6 @@ angular.module('igl').controller('addComponentsCtrl',
                         }
 
                     } else {
-                        console.log(datatypes);
                         return datatypes;
                     }
 
@@ -1012,10 +956,13 @@ angular.module('igl').controller('addComponentsCtrl',
             //     }
             //     $modalInstance.close();
             // });
-            console.log($rootScope.profileComponent);
+            var position= currentPc.children.length+1;
             for (var i = 0; i < $scope.selectedPC.length; i++) {
+                $scope.selectedPC[i].position= position;
+                position++;
                 $rootScope.profileComponent.children.push($scope.selectedPC[i]);
             }
+            console.log($rootScope.profileComponent);
             $modalInstance.close();
 
             // PcService.addPCs(currentPc.id, $scope.selectedPC).then(function(profileC) {

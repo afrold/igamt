@@ -12,8 +12,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Document(collection = "message")
-public class Message extends DataModelWithConstraints implements java.io.Serializable, Cloneable,
-    Comparable<Message> {
+public class Message extends DataModelWithConstraints
+    implements java.io.Serializable, Cloneable, Comparable<Message> {
 
   private static final long serialVersionUID = 1L;
 
@@ -38,28 +38,35 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
   private String structID; // Message/@StructID
 
   private String description; // Message/@Description
-  private List<String> appliedPcs;
+  private List<CompositeProfileStructure> appliedPcs;
 
-  public List<String> getAppliedPcs() {
-	return appliedPcs;
-}
+  public List<CompositeProfileStructure> getAppliedPcs() {
+    return appliedPcs;
+  }
 
-public void setAppliedPcs(List<String> appliedPcs) {
-	this.appliedPcs = appliedPcs;
-}
+  public void setAppliedPcs(List<CompositeProfileStructure> appliedPcs) {
+    this.appliedPcs = appliedPcs;
+  }
 
-private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
+  public void addAppliedPc(CompositeProfileStructure appliedPc) {
+    if (this.appliedPcs == null) {
+      this.appliedPcs = new ArrayList<>();
+    }
+    this.appliedPcs.add(appliedPc);
+  }
+
+  private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
   protected Integer position = 0;
 
   protected String comment = "";
 
   protected String usageNote = "";
-  
-  protected String defPreText= "";
-  
+
+  protected String defPreText = "";
+
   protected String defPostText = "";
-  
+
 
   public String getId() {
     return id;
@@ -158,26 +165,32 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     this.usageNote = usageNote;
   }
 
+  @Override
   public void addPredicate(Predicate p) {
     predicates.add(p);
   }
 
+  @Override
   public void addConformanceStatement(ConformanceStatement cs) {
     conformanceStatements.add(cs);
   }
 
+  @Override
   public List<Predicate> getPredicates() {
     return predicates;
   }
 
+  @Override
   public List<ConformanceStatement> getConformanceStatements() {
     return conformanceStatements;
   }
 
+  @Override
   public void setPredicates(List<Predicate> predicates) {
     this.predicates = predicates;
   }
 
+  @Override
   public void setConformanceStatements(List<ConformanceStatement> conformanceStatements) {
     this.conformanceStatements = conformanceStatements;
   }
@@ -219,6 +232,7 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     return null;
   }
 
+  @Override
   public Predicate findOnePredicate(String predicateId) {
     for (Predicate predicate : this.getPredicates()) {
       if (predicate.getId().equals(predicateId)) {
@@ -228,6 +242,7 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     return null;
   }
 
+  @Override
   public ConformanceStatement findOneConformanceStatement(String confId) {
     for (ConformanceStatement conf : this.getConformanceStatements()) {
       if (conf.getId().equals(confId)) {
@@ -237,11 +252,13 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     return null;
   }
 
+  @Override
   public boolean deletePredicate(String predicateId) {
     Predicate p = findOnePredicate(predicateId);
     return p != null && this.getPredicates().remove(p);
   }
 
+  @Override
   public boolean deleteConformanceStatement(String cId) {
     ConformanceStatement c = findOneConformanceStatement(cId);
     return c != null && this.getConformanceStatements().remove(c);
@@ -257,6 +274,7 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
         + predicates + ", conformanceStatements=" + conformanceStatements + "]";
   }
 
+  @Override
   public Message clone() throws CloneNotSupportedException {
     Message clonedMessage = new Message();
 
@@ -296,9 +314,8 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     return clonedMessage;
   }
 
-  public Message clone(HashMap<String, Datatype> dtRecords,
-      HashMap<String, Segment> segmentRecords, HashMap<String, Table> tableRecords)
-      throws CloneNotSupportedException {
+  public Message clone(HashMap<String, Datatype> dtRecords, HashMap<String, Segment> segmentRecords,
+      HashMap<String, Table> tableRecords) throws CloneNotSupportedException {
     Message clonedMessage = new Message();
 
     clonedMessage.setChildren(new ArrayList<SegmentRefOrGroup>());
@@ -349,8 +366,8 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
   @Override
   public int compareTo(Message o) {
-	 
-    return this.position-o.getPosition();
+
+    return this.position - o.getPosition();
   }
 
   public String getMessageID() {
@@ -361,22 +378,22 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     this.messageID = messageID;
   }
 
-public String getDefPreText() {
-	return defPreText;
-}
+  public String getDefPreText() {
+    return defPreText;
+  }
 
-public void setDefPreText(String defPreText) {
-	this.defPreText = defPreText;
-}
+  public void setDefPreText(String defPreText) {
+    this.defPreText = defPreText;
+  }
 
-public String getDefPostText() {
-	return defPostText;
-}
+  public String getDefPostText() {
+    return defPostText;
+  }
 
-public void setDefPostText(String defPostText) {
-	this.defPostText = defPostText;
-}
-  
-  
-  
+  public void setDefPostText(String defPostText) {
+    this.defPostText = defPostText;
+  }
+
+
+
 }

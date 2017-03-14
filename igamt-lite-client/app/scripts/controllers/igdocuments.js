@@ -4,7 +4,7 @@
 
 angular.module('igl')
 
-.controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService) {
+.controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService,orderByFilter) {
 
     $scope.loading = false;
     $scope.tocView = 'views/toc.html';
@@ -1467,23 +1467,7 @@ angular.module('igl')
                 console.log("$rootScope.profileComponent");
 
                 console.log($rootScope.profileComponent);
-                return $rootScope.profileComponent.children;
-                // return $rootScope.profileComponent.children;
-                // if (parent) {
-                //     if (parent.fields) {
-                //         return parent.fields;
-                //     } else if (parent.components) {
-                //         return parent.components;
-                //     } else if (parent.segments) {
-                //         return parent.segments;
-                //     } else if (parent.codes) {
-                //         return parent.codes;
-                //     }
-
-                // } else {
-                // console.log($rootScope.igdocument.profile.profileComponentLibrary.children);
-                // return $rootScope.igdocument.profile.profileComponentLibrary.children;
-                // }
+                return orderByFilter($rootScope.profileComponent.children, 'position');
 
             }
         },
@@ -1630,14 +1614,14 @@ angular.module('igl')
         }
     });
     var buildCpDatatype = function(datatype, datatypesMap) {
-       // datatype.components.sort(function(a, b){return a.position-b.position});
+        datatype.components.sort(function(a, b){return a.position-b.position});
         for (var i = 0; i < datatype.components.length; i++) {
             buildCpDatatype(datatypesMap[datatype.components[i].datatype.id], datatypesMap);
             datatype.components[i].datatype = datatypesMap[datatype.components[i].datatype.id];
         }
     };
     var buildCpSegment = function(segment, datatypesMap) {
-        //segment.fields.sort(function(a, b){return a.position-b.position});
+        segment.fields.sort(function(a, b){return a.position-b.position});
         for (var i = 0; i < segment.fields.length; i++) {
             buildCpDatatype(datatypesMap[segment.fields[i].datatype.id], datatypesMap);
             segment.fields[i].datatype = datatypesMap[segment.fields[i].datatype.id];

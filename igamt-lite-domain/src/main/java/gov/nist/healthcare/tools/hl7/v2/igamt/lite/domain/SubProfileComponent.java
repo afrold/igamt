@@ -17,6 +17,7 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   private String itemId;
   private String path;
   private String pathExp;
+  private Integer position;
 
 
   public String getId() {
@@ -77,6 +78,15 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   public void setAttributes(SubProfileComponentAttributes attributes) {
     this.attributes = attributes;
+  }
+
+
+  public Integer getPosition() {
+    return position;
+  }
+
+  public void setPosition(Integer position) {
+    this.position = position;
   }
 
   @Override

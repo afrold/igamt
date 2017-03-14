@@ -35,7 +35,7 @@ public class Datatype extends DataModelWithConstraints
 
 
   private String purposeAndUse = "";
-  
+
   private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
 
   protected List<Component> components = new ArrayList<Component>();
@@ -123,9 +123,9 @@ public class Datatype extends DataModelWithConstraints
   public void addComponent(Component c) {
     components.add(c);
   }
-  
+
   public void addValueSetBinding(ValueSetBinding vsb) {
-	valueSetBindings.add(vsb);
+    valueSetBindings.add(vsb);
   }
 
   public String getComment() {
@@ -188,13 +188,13 @@ public class Datatype extends DataModelWithConstraints
     for (Component c : this.components) {
       clonedDT.addComponent(c.clone());
     }
-    
+
     clonedDT.setValueSetBindings(new ArrayList<ValueSetBinding>());
-    for (ValueSetBinding vsb : this.valueSetBindings){
-    	clonedDT.addValueSetBinding(vsb);
+    for (ValueSetBinding vsb : this.valueSetBindings) {
+      clonedDT.addValueSetBinding(vsb);
     }
-    
-    
+
+
     clonedDT.setDescription(description);
     clonedDT.setLabel(label);
     clonedDT.setName(name);
@@ -258,6 +258,16 @@ public class Datatype extends DataModelWithConstraints
 
   }
 
+  public Component findOneComponent(String id) {
+    if (this.components != null)
+      for (Component m : this.components) {
+        if (id.equals(m.getId())) {
+          return m;
+        }
+      }
+    return null;
+  }
+
 
   @Override
   public int hashCode() {
@@ -306,14 +316,14 @@ public class Datatype extends DataModelWithConstraints
   public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
     this.shareParticipantIds = shareParticipantIds;
   }
-  
+
   public List<ValueSetBinding> getValueSetBindings() {
-		return valueSetBindings;
+    return valueSetBindings;
   }
 
-	public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
-		this.valueSetBindings = valueSetBindings;
-	}
+  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+    this.valueSetBindings = valueSetBindings;
+  }
 
 
 }

@@ -7,20 +7,28 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Ismail Mellouli (NIST) Mar 7, 2017
+ * that they have been modified. Ismail Mellouli (NIST) Mar 14, 2017
  */
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
+import java.util.Map;
 
-public interface CompositeProfileService {
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import javassist.NotFoundException;
 
-  public CompositeProfile buildCompositeProfile(
-      CompositeProfileStructure compositeProfileStructure);
+public interface QueryService {
 
+  public DataModel get(DataModel dm, String path) throws NotFoundException;
 
-  public CompositeProfileStructure getCompositeProfileStructureById(String id);
+  public void setSegmentsMap(Map<String, Segment> segmentsMap);
+
+  public void setDatatypesMap(Map<String, Datatype> datatpesMap);
+
+  public Map<String, Segment> getSegmentsMap();
+
+  public Map<String, Datatype> getDatatypesMap();
 
 }
