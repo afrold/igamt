@@ -51,17 +51,12 @@ angular.module('igl')
             $scope.setDirty();
         };
         $scope.validateDatatype = function() {
-            console.log($rootScope.datatype);
             ValidationService.validatedatatype($rootScope.datatype, $rootScope.igdocument.profile.metaData.hl7Version).then(function(result) {
                 $rootScope.validationMap = {};
                 $rootScope.childValidationMap = {};
                 $rootScope.showDtErrorNotification = true;
                 $rootScope.validationResult = result;
-                console.log($rootScope.validationResult);
                 $rootScope.buildValidationMap($rootScope.validationResult);
-                console.log($rootScope.validationMap);
-                console.log($rootScope.childValidationMap);
-
             });
         };
          $scope.isDatatypeValidated = function() {
@@ -92,7 +87,6 @@ angular.module('igl')
                 datatypeLink.ext = t.ext;
                 datatypeLink.label = t.label;
             }
-            console.log(datatypeLink);
         };
 
         $scope.dtmSliderOptions = {
@@ -115,11 +109,8 @@ angular.module('igl')
         };
 
         $scope.refreshSlider = function() {
-
-
             setTimeout(function() {
                 $scope.$broadcast('reCalcViewDimensions');
-                console.log("refreshed Slider!!");
             }, 1000);
         };
 
@@ -181,14 +172,11 @@ angular.module('igl')
 
         ];
 
-
-
         $scope.closeAlert = function(index) {
             $scope.alerts.splice(index, 1);
         };
 
         $scope.OtoX = function(message) {
-            console.log(message);
             var modalInstance = $modal.open({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
@@ -226,14 +214,10 @@ angular.module('igl')
                 derived.push(ancestor);
             });
             var all = derived;
-            console.log(all);
             VersionAndUseService.findAllByIds(all).then(function(result) {
-                console.log("==========Adding Datatypes from their IDS============");
                 //$rootScope.datatypes = result;
-                console.log(result);
                 $scope.availbleVersionOfDt = result;
                 if ($scope.dynamicDt_Evolution) {
-
                 }
 
             }, function(error) {
@@ -280,12 +264,7 @@ angular.module('igl')
             DatatypeService.getOne(id).then(function(result) {
                 $scope.dtChanged = false;
                 $scope.vsTemplate = false;
-                console.log("========dddddd");
-                console.log($rootScope.datatype);
-                console.log(result);
                 $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), [], [], [], []);
-                console.log("$scope.dataList");
-                console.log($scope.dataList);
                 $scope.hideEvolution = false;
                 $rootScope.clearChanges();
                 $scope.cleanState();
@@ -342,7 +321,6 @@ angular.module('igl')
                 field.datatype.id = JSON.parse(datatype).id;
                 field.datatype.label = JSON.parse(datatype).label;
                 field.datatype.name = JSON.parse(datatype).name;
-                console.log(field);
                 $scope.setDirty();
                 // $rootScope.processElement(field);
 
@@ -408,7 +386,6 @@ angular.module('igl')
             });
         };
         $scope.redirectDT = function(datatype) {
-            console.log(datatype);
             DatatypeService.getOne(datatype.id).then(function(datatype) {
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
@@ -449,13 +426,7 @@ angular.module('igl')
             $scope.editableDT = '';
         };
 
-        $scope.getTableLabel = function(binding) {
-            var table = $rootScope.tablesMap[binding.tableId];
-            if (table && table.bindingIdentifier) {
-                return $scope.getLabel(table.bindingIdentifier, table.ext);
-            }
-            return "";
-        };
+
         $scope.getLabel = function(name, ext) {
             var label = name;
             if (ext && ext !== null && ext !== "") {
@@ -469,8 +440,6 @@ angular.module('igl')
             if (field.table !== null) {
                 $scope.VSselected = true;
                 $scope.selectedValueSet = field.table;
-                console.log($scope.selectedValueSet);
-
             } else {
                 $scope.VSselected = false;
 
@@ -490,8 +459,6 @@ angular.module('igl')
                     bindingIdentifier: ''
 
                 };
-                console.log(field);
-
             }
 
             field.table.id = $scope.selectedValueSet.id;
@@ -521,7 +488,6 @@ angular.module('igl')
                             if ($rootScope.tablesMap[table.id].scope !== "HL7STANDARD" && $rootScope.tablesMap[table.id].status !== "PUBLISHED") {
                                 $scope.containUnpublished = true;
                                 $scope.unpublishedTables.push({ table: table, location: element.location });
-                                console.log($scope.unpublishedTables);
                             }
                         }
                     });
@@ -531,8 +497,6 @@ angular.module('igl')
 
                     if ($rootScope.datatypesMap[element.datatype.id] && $rootScope.datatypesMap[element.datatype.id]) {
                         if ($rootScope.datatypesMap[element.datatype.id].status !== "PUBLISHED" && $rootScope.datatypesMap[element.datatype.id].scope !== "HL7STANDARD") {
-                            console.log("Found Unpublished");
-                            console.log($scope.containUnpublished);
                             $scope.containUnpublished = true;
                             $scope.unpublishedDatatypes.push({ datatype: element.datatype, location: element.location });
                         }
@@ -554,33 +518,18 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function(datatypetoPublish) {
-                console.log("Saving");
-                console.log($rootScope.datatype);
-                console.log("IN LIBRARY");
-                console.log($rootScope.datatypeLibrary);
-
                 var ext = $rootScope.datatype.ext;
 
                 DatatypeService.publish($rootScope.datatype).then(function(result) {
-                    console.log("returning");
-                    console.log(result);
-                    console.log("In the map")
-
-                    console.log($rootScope.datatypesMap[result.id])
                     var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.datatypeLibrary.children);
                     var newLink = DatatypeService.getDatatypeLink(result);
                     newLink.ext = ext;
                     DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
                         DatatypeService.merge($rootScope.datatypesMap[result.id], result);
-                        console.log("After Merge")
-                        console.log($rootScope.datatypesMap[result.id]);
-
-
                         $rootScope.datatypesMap[result.id].status = "PUBLISHED";
                         $rootScope.datatype.status = "PUBLISHED";
 
                         if ($scope.editForm) {
-                            console.log("Cleeaning");
                             $scope.editForm.$setPristine();
                             $scope.editForm.$dirty = false;
                             $scope.editForm.$invalid = false;
@@ -655,8 +604,8 @@ angular.module('igl')
             }
         };
 
-        $scope.redirectVS = function(valueSet) {
-            TableService.getOne(valueSet.tableId).then(function(valueSet) {
+        $scope.redirectVS = function(binding) {
+            TableService.getOne(binding.tableId).then(function(valueSet) {
                 var modalInstance = $modal.open({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
@@ -701,12 +650,7 @@ angular.module('igl')
 
         };
 
-
-
-
-
         $scope.addComponentModal = function(datatype) {
-            console.log(datatype);
             var modalInstance = $modal.open({
                 templateUrl: 'AddComponentModal.html',
                 controller: 'AddComponentCtrl',
@@ -802,26 +746,6 @@ angular.module('igl')
         $scope.deleteTable = function(node) {
             node.table = null;
             $rootScope.recordChangeForEdit2('component', 'edit', node.id, 'table', null);
-        };
-
-        $scope.editModalBindingForDT = function(node) {
-            var modalInstance = $modal.open({
-                templateUrl: 'TableMappingDatatypeCtrl.html',
-                controller: 'TableMappingDatatypeCtrl',
-                windowClass: 'app-modal-window',
-                resolve: {
-                    currentNode: function() {
-                        return node;
-                    }
-                }
-            });
-
-            modalInstance.result.then(function(node) {
-                $scope.setDirty();
-                if ($scope.datatypesParams) {
-                    $scope.datatypesParams.refresh();
-                }
-            });
         };
 
         $scope.managePredicate = function(node) {
@@ -1043,11 +967,6 @@ angular.module('igl')
         };
 
         $scope.saveDatatype = function() {
-            console.log("Saving");
-            console.log($rootScope.datatype);
-            console.log("IN LIBRARY");
-            console.log($rootScope.datatypeLibrary);
-
             var ext = $rootScope.datatype.ext;
 
             DatatypeService.save($rootScope.datatype).then(function(result) {
@@ -1057,9 +976,6 @@ angular.module('igl')
                 DatatypeLibrarySvc.updateChild($rootScope.datatypeLibrary.id, newLink).then(function(link) {
                     DatatypeService.merge($rootScope.datatypesMap[result.id], result);
                     DatatypeService.merge($rootScope.datatype, result);
-                    console.log("datatype.components");
-                    console.log($scope.datatypesParams);
-                    console.log($rootScope.datatype.components);
                     //  if ($scope.datatypesParams){
                     //      $scope.datatypesParams
                     //         $scope.datatypesParams.refresh();
@@ -1247,6 +1163,26 @@ angular.module('igl')
             $rootScope.saveBindingForDatatype();
         };
 
+        $scope.editModalBindingForDT = function(node) {
+            var modalInstance = $modal.open({
+                templateUrl: 'TableMappingDatatypeCtrl.html',
+                controller: 'TableMappingDatatypeCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    currentNode: function() {
+                        return node;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(node) {
+                $scope.setDirty();
+                if ($scope.datatypesParams) {
+                    $scope.datatypesParams.refresh();
+                }
+            });
+        };
+
         $scope.isAvailableForValueSet = function (currentDT, parentDT, path){
             if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
                     return valueSetAllowedDT == currentDT.name;
@@ -1279,6 +1215,13 @@ angular.module('igl')
             }
         };
 
+        $scope.deleteBinding = function(binding){
+            var index = $rootScope.datatype.valueSetBindings.indexOf(binding);
+            if (index >= 0) {
+                $rootScope.datatype.valueSetBindings.splice(index, 1);
+                $scope.setDirty();
+            }
+        };
     });
 
 
@@ -1349,8 +1292,6 @@ angular.module('igl')
 
 
         $scope.hasChildren = function(node) {
-            console.log("hasChildren==============================================================");
-            console.log(node);
             return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype.id) != undefined && $rootScope.getDatatype(node.datatype.id).components != null && $rootScope.getDatatype(node.datatype.id).components.length > 0;
         };
 
@@ -1437,14 +1378,12 @@ angular.module('igl')
             $rootScope.datatypesMap[root.id] = root;
             if (indexIn(root.id, $rootScope.addedDatatypes) < 0) {
                 $rootScope.addedDatatypes.push(root);
-                console.log(child);
             }
             var tmpTables = [];
             angular.forEach(datatypes, function(child) {
                 $rootScope.datatypesMap[child.id] = child;
                 if (indexIn(child.id, $rootScope.addedDatatypes) < 0) {
                     $rootScope.addedDatatypes.push(child);
-                    console.log(child);
                     $rootScope.filteredDatatypesList.push(child);
                 }
 
@@ -1540,7 +1479,6 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function($scope, $
         if ($scope.dtToDelete.scope === 'USER' && $scope.dtToDelete.status === 'UNPUBLISHED') {
             CloneDeleteSvc.deleteDatatypeAndDatatypeLink($scope.dtToDelete);
         } else {
-            console.log("deleting");
             CloneDeleteSvc.deleteDatatypeLink($scope.dtToDelete);
         }
 
@@ -2145,11 +2083,7 @@ angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInst
             $scope.newComponent.datatype.id = $scope.DT.id;
             $scope.newComponent.datatype.name = $scope.DT.name;
             $scope.newComponent.datatype.label = $scope.DT.label;
-
-
         }
-        console.log($scope.DT);
-
     }, true);
 
     $scope.$watch('VS', function() {
@@ -2181,30 +2115,23 @@ angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInst
 
     };
     $scope.selectUsage = function(usage) {
-        console.log(usage);
         if (usage === 'X' || usage === 'W') {
             $scope.newComponent.max = 0;
             $scope.newComponent.min = 0;
             $scope.disableMin = true;
             $scope.disableMax = true;
-
         } else if (usage === 'R') {
             $scope.newComponent.min = 1;
-
             $scope.disableMin = true;
             $scope.disableMax = false;
         } else if (usage === 'RE' || usage === 'O') {
             $scope.newComponent.min = 0;
-
             $scope.disableMin = true;
             $scope.disableMax = false;
-
         } else {
             $scope.disableMin = false;
             $scope.disableMax = false;
-
         }
-
     };
 
 
@@ -2265,8 +2192,6 @@ angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInst
 angular.module('igl').controller('DeleteComponentCtrl', function($scope, $modalInstance, componentToDelete, datatype, $rootScope, SegmentService, blockUI) {
     $scope.componentToDelete = componentToDelete;
     $scope.loading = false;
-    console.log(datatype);
-    console.log($scope.componentToDelete);
     $scope.updatePosition = function(node) {
         angular.forEach(node.components, function(component) {
             component.position = node.components.indexOf(component) + 1;
@@ -2306,7 +2231,6 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
     $scope.dtChanged = false;
     $scope.isDeltaCalled = false;
     $scope.setDeltaToF = function() {
-        console.log("HEEEEEERREEEEE");
         $scope.isDeltaCalled = false;
     }
 
@@ -2369,8 +2293,6 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
                 $scope.segList1 = angular.copy($rootScope.segments);
                 $scope.dtList1 = angular.copy($rootScope.datatypes);
                 $scope.version2 = angular.copy($scope.version1);
-                console.log($scope.scopes);
-                console.log($scope.scopes[1]);
             }
             //$scope.status.isFirstOpen = true;
             $scope.scope2 = "HL7STANDARD";
@@ -2393,9 +2315,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
     //$scope.initt();
 
     $rootScope.$on('event:initDatatype', function(event) {
-        console.log("$scope.isDeltaCalled");
         $scope.getAllVersionsOfDT($rootScope.datatype.id);
-        console.log($scope.isDeltaCalled);
         if ($scope.isDeltaCalled) {
             $scope.initt();
         }
@@ -2536,11 +2456,8 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
         $scope.dtChanged = false;
         $scope.vsTemplate = false;
         $scope.dataList = CompareService.cmpDatatype(JSON.stringify(datatype1), JSON.stringify(datatype2), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
-        console.log("hg==========");
-        console.log($scope.dataList);
         $scope.loadingSelection = false;
         if ($scope.dynamicDt_params) {
-            console.log($scope.dataList);
             $scope.showDelta = true;
             $scope.status.isSecondOpen = true;
             $scope.dynamicDt_params.refresh();
@@ -2570,7 +2487,6 @@ angular.module('igl').controller('DeleteDatatypePredicateCtrl', function($scope,
 
 
 angular.module('igl').controller('AddBindingForDatatype', function($scope, $modalInstance, $rootScope, datatype) {
-    console.log($rootScope.references);
     $scope.datatype = datatype;
     $scope.selectedSegmentForBinding = null;
     $scope.selectedFieldForBinding = null;
@@ -2604,11 +2520,8 @@ angular.module('igl').controller('AddBindingForDatatype', function($scope, $moda
         $scope.currentField = null;
     };
     $scope.selectField = function() {
-        console.log($scope.selectedFieldForBinding);
         if ($scope.selectedFieldForBinding) {
             $scope.currentField = JSON.parse($scope.selectedFieldForBinding);
-            console.log($rootScope.datatypesMap[$scope.currentField.datatype.id]);
-
         }
     };
     $scope.selectComp = function() {
@@ -2676,7 +2589,6 @@ angular.module('igl').controller('ShareDatatypeCtrl', function($scope, $modalIns
                         participant.fullname = response.data.fullname;
                     },
                     function(error) {
-                        console.log(error);
                     }
                 );
         });
@@ -2703,7 +2615,6 @@ angular.module('igl').controller('ShareDatatypeCtrl', function($scope, $modalIns
             $modalInstance.close();
         }, function(error) {
             $scope.error = error.data;
-            console.log(error);
         });
     };
     $scope.cancel = function() {

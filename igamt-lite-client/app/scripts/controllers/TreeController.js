@@ -1764,27 +1764,6 @@ angular
                     return leaf.id === null || FilteringSvc.isUnused(leaf) || FilteringSvc.showToC(leaf);
                 };
 
-                $scope.getScopeLabel = function(leaf) {
-                    if (leaf) {
-
-
-                        if (leaf.scope === 'HL7STANDARD') {
-                            return 'HL7';
-                        } else if (leaf.scope === 'USER') {
-                            return 'USR';
-
-                        } else if (leaf.scope === 'MASTER') {
-                            return 'MAS';
-                        } else if (leaf.scope === 'PRELOADED') {
-                            return 'PRL';
-                        } else if (leaf.scope === 'PHINVADS') {
-                            return 'PVS';
-                        } else {
-                            return "";
-
-                        }
-                    }
-                };
                 $rootScope.addCSVTables = function(selectedTableLibary) {
                     var modalInstance = $modal.open({
                         templateUrl: 'AddCSVTableOpenCtrl.html',

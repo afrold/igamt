@@ -566,3 +566,17 @@ li.active > a{
 .form-group .checkbox label, .form-group .radio label, .form-group label {
      color: black;
  }
+
+.label-MAIN {
+    background-color: #0003f4;
+    font-weight: 400;
+}
+.label-CHILD {
+    background: rgba(0, 3, 238, 0.41);
+    font-weight: 400;
+}
+
+.label-SUBCHILD {
+    background: rgba(0, 3, 244, 0.16);
+    font-weight: 400;
+}

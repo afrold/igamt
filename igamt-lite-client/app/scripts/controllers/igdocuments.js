@@ -1263,6 +1263,7 @@ angular.module('igl')
                     try {
                         SegmentService.get(segment.id).then(function(result) {
                             $rootScope.segment = angular.copy(segment);
+                            $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
                             $rootScope.$emit("event:initSegment");
                             $rootScope.currentData = $rootScope.segment;
                             $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
