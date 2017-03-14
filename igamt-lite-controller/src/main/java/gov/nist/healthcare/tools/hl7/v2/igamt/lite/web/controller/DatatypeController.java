@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -342,6 +343,55 @@ public class DatatypeController extends CommonController {
       log.debug("saved.getId()=" + saved.getId());
       log.debug("saved.getScope()=" + saved.getScope());
       return saved;
+    }
+    return datatype;
+  }
+
+  @RequestMapping(value = "/getMergedMaster", method = RequestMethod.POST)
+  public Datatype getMergedMaster(@RequestBody Datatype datatype)
+      throws CloneNotSupportedException {
+
+    Datatype d = mergeComponent(datatype);
+    return d;
+  }
+
+  /**
+   * @param datatype
+   * @throws CloneNotSupportedException
+   */
+  private Datatype mergeComponent(Datatype datatype) throws CloneNotSupportedException {
+
+
+    Datatype result = datatypeService.findByNameAndVersionAndScope(datatype.getName(),
+        datatype.getHl7Version(), SCOPE.HL7STANDARD.toString());
+
+    if (result.getValueSetBindings() != null) {
+      datatype.setValueSetBindings(result.getValueSetBindings());
+    }
+    for (int i = 0; i < datatype.getComponents().size(); i++) {
+      Component temp = datatype.getComponents().get(i);
+      if (temp.getDatatype() != null) {
+        Datatype dtTemp = datatypeService.findById(temp.getDatatype().getId());
+        if (!dtTemp.getScope().toString().equals(SCOPE.MASTER.toString())) {
+          System.out.println(dtTemp.getId());
+          datatype.getComponents().get(i).getDatatype()
+              .setId((result.getComponents().get(i).getDatatype().getId()));
+
+        } else {
+          Datatype d = dtTemp.clone();
+          String newId = new ObjectId().toString();
+          d.setHl7Version(datatype.getHl7Version());
+          d.setId(newId);
+          if (!d.getComponents().isEmpty()) {
+            mergeComponent(d);
+          }
+          datatypeService.save(d);
+          datatype.getComponents().get(i).getDatatype().setId(newId);
+
+
+
+        }
+      }
     }
     return datatype;
   }

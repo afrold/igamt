@@ -3052,15 +3052,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         });
     };
-    $rootScope.mergeEmptyProperty = function(to, from) {
-        Object.keys(to).forEach(function(key, index) {
-            if (!to[key] && from[key])
-                to[key] = from[key];
-            // key: the name of the object key
-            // index: the ordinal position of the key within the object 
-        });
-
-    }
+    // $rootScope.mergeBindingForMaster = function(to, from) {
+    //
+    //
+    // }
     $scope.init = function() {
         if (userInfoService.isAuthenticated()) {
             VersionAndUseService.findAll().then(function(result) {

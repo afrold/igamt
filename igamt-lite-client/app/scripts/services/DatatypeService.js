@@ -263,6 +263,18 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
+            getMergedMaster: function(masterDt) {
+
+                var delay = $q.defer();
+                $http.post('api/datatypes/getMergedMaster', masterDt).then(function(response) {
+                    console.log(response);
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
 
             getLastMaster: function(name, version) {
                 var wrapper = {

@@ -3860,19 +3860,19 @@
 
                                                         <td class="col-md-3">{{datatype.label}} <span class="badge">v{{versionAndUseMap[datatype.id].publicationVersion}}</span></td>
                                                         <td class="col-md-7">
-                                                            <ul ng-if="igdocument">
-                                                                <li ng-repeat="vr in datatype.hl7versions">
-                                                                    {{vr}}
-                                                                </li>
-                                                            </ul>
-                                                            <div ng-if="!igdocument">
+                                                            <!--<ul ng-if="igdocument">-->
+                                                                <!--<li ng-repeat="vr in datatype.hl7versions">-->
+                                                                    <!--{{vr}}-->
+                                                                <!--</li>-->
+                                                            <!--</ul>-->
+                                                            <div>
                                                                 <p ng-repeat="vr in datatype.hl7versions">
                                                                     <input type="radio" ng-model="datatype.hl7Version" ng-value="vr"></input>{{vr}}
                                                                 </p>
                                                             </div>
 
                                                         </td>
-                                                        <td class="col-md-2"><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
+                                                        <td class="col-md-2"><button ng-click="addDtFlv(datatype)" ng-disable="!datatype.hl7Version"><i class="fa fa-plus fa-fw"></i>Add</a></button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
