@@ -210,8 +210,8 @@ public class Bootstrap implements InitializingBean {
     // createDefaultConfiguration("Table Style");
     // createDefaultExportFonts();
 
-    // createDefaultConfiguration("Datatype Library");
-    // createDefaultExportFonts();
+    createDefaultConfiguration("Datatype Library");
+    createDefaultExportFonts();
 
     // changeStatusofPHINVADSTables();
 
