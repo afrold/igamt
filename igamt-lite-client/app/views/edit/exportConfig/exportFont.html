@@ -1,7 +1,7 @@
 <form name="exportFontForm">
 <div class="pull-right addMargin">
         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                ng-disabled="!changed || exportFontForm.fontSizeField.$error.pattern"
+                ng-disabled="!changed"
                 ng-click="saveUserExportFontConfig(userExportFontConfig); ">
             <span><i class="fa fa-check fa-fw"></i>Apply</span>
         </button>
@@ -22,14 +22,20 @@
                     <div class="panel-heading beige"><strong>Font Types</strong></div>
                     <div class="panel-body container">
                         <div class="container" style="padding-top:10px; padding-bottom: 10px" >
-                            <div ng-repeat="font in fonts track by font.name">
-                                <input type="radio" name="font" ng-value="font"
-                                       ng-model="userExportFontConfig.exportFont" ng-change="setChanged()"/><span
-                                    style="font-family:{{ font.value }}">{{ font.name }}</span>
-                            </div>
+                            <!--<div ng-repeat="font in fonts track by font.name">-->
+                                <!--<input type="radio" name="font" ng-value="font"-->
+                                       <!--ng-model="userExportFontConfig.exportFont" ng-change="setChanged()"/><span-->
+                                    <!--style="font-family:{{ font.value }}">{{ font.name }}</span>-->
+                            <!--</div>-->
+                            <md-radio-group ng-model="userExportFontConfig.exportFont" ng-change="setChanged()">
 
+                                <md-radio-button  ng-repeat="font in fonts track by font.name" ng-value="font" class="md-primary" >{{font.name}}</md-radio-button>
+
+                            </md-radio-group>
                         </div>
                     </div>
+
+
                 </div>
         </div>
 
@@ -38,19 +44,27 @@
 
             <div class="panel-heading beige"> <strong> Font Size </strong></div>
                     <div class="panel-body container">
-                        <div class="container" style="padding-top:10px; padding-bottom: 10px">
-                            <div>
-                                <input name="fontSizeField" type="text"
-                                       ng-pattern="/^[0-9]*[1-9][0-9]*$/"
-                                       ng-model="userExportFontConfig.fontSize"
-                                       ng-change="setChanged()"/>
-                            </div>
-                            <div ng-show="exportFontForm.fontSizeField.$error.pattern" style="color:red">
-                                Font size must be a number between 1 and 999!>
-                            </div>
+                        <!--<div class="container" style="padding-top:10px; padding-bottom: 10px">-->
+                            <!--<div>-->
+                                <!--<input name="fontSizeField" type="text"-->
+                                       <!--ng-pattern="/^[0-9]*[1-9][0-9]*$/"-->
+                                       <!--ng-model="userExportFontConfig.fontSize"-->
+                                       <!--ng-change="setChanged()"/>-->
+                            <!--</div>-->
+                            <!--<div ng-show="exportFontForm.fontSizeField.$error.pattern" style="color:red">-->
+                                <!--Font size must be a number between 1 and 999!>-->
+                            <!--</div>-->
 
-                        </div>
-                    </div>
+                        <!--</div>-->
+                    <!--</div>-->
+
+                        <md-slider-container>
+                            <md-slider flex min="9" max="25" ng-model="userExportFontConfig.fontSize"  ng-change="setChanged()" class="md-primary">
+                            </md-slider>
+                            <md-input-container>
+                                <input flex type="number" ng-model="userExportFontConfig.fontSize"  ng-change="setChanged()" aria-label="red" aria-controls="red-slider">
+                            </md-input-container>
+                        </md-slider-container>
                     </div>
         </div>
     </div>

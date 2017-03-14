@@ -210,8 +210,8 @@ public class Bootstrap implements InitializingBean {
     // createDefaultConfiguration("Table Style");
     // createDefaultExportFonts();
 
-    createDefaultConfiguration("Datatype Library");
-    createDefaultExportFonts();
+    // createDefaultConfiguration("Datatype Library");
+
 
     // changeStatusofPHINVADSTables();
 
@@ -220,13 +220,14 @@ public class Bootstrap implements InitializingBean {
 
     // new Master Datatype Generation
 
-    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
-    // Colorate(); // genenerates the datatypes evolution matrix.
+    CreateCollectionOfUnchanged(); // group datatype by sets of versions
+    Colorate(); // genenerates the datatypes evolution matrix.
 
-    // CreateIntermediateFromUnchanged();
-    // MergeComponents();
+    CreateIntermediateFromUnchanged();
+    MergeComponents();
     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
+    // createDefaultExportFonts();
   }
 
 
