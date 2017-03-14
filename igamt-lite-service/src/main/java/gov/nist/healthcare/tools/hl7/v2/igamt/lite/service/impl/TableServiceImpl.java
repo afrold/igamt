@@ -154,4 +154,9 @@ public class TableServiceImpl implements TableService {
     tableRepository.updateStatus(id, status);
   }
 
+  @Override
+  public void delete(List<Table> tables) {
+    tableRepository.delete(tables);
+  }
+
 }
