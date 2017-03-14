@@ -35,6 +35,8 @@ public interface TableService {
 
   void delete(Table table);
 
+  void delete(List<Table> tables);
+
   void delete(String id);
 
   void save(List<Table> tables);

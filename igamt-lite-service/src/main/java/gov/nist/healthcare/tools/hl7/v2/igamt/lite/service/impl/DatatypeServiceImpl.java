@@ -203,4 +203,9 @@ public class DatatypeServiceImpl implements DatatypeService {
     }
     return result;
   }
+
+  @Override
+  public void delete(List<Datatype> datatypes) {
+    datatypeRepository.delete(datatypes);
+  }
 }

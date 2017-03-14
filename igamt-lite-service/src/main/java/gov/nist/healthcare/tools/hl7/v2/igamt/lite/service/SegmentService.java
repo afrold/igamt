@@ -31,6 +31,8 @@ public interface SegmentService {
 
   void delete(Segment segment);
 
+  void delete(List<Segment> segments);
+
   void delete(String id);
 
   void save(List<Segment> segments);
