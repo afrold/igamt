@@ -21,32 +21,34 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 public interface TableService {
 
-	Table findById(String id);
+  Table findById(String id);
 
-	Table save(Table table);
+  Table save(Table table);
 
-	List<Table> findAll();
+  List<Table> findAll();
 
-	List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+  List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-	List<Table> findShared(Long accountId);
+  List<Table> findShared(Long accountId);
 
-	List<Table> findPendingShared(Long accountId);
+  List<Table> findPendingShared(Long accountId);
 
-	void delete(Table table);
+  void delete(Table table);
 
-	void delete(String id);
+  void delete(String id);
 
-	void save(List<Table> tables);
+  void save(List<Table> tables);
 
-	List<Table> findAllByIds(Set<String> ids);
+  List<Table> findAllByIds(Set<String> ids);
 
-	List<Table> findShortAllByIds(Set<String> ids);
+  List<Table> findShortAllByIds(Set<String> ids);
 
-	Date updateDate(String id, Date date);
+  Date updateDate(String id, Date date);
 
-	Table save(Table table, Date date);
+  Table save(Table table, Date date);
 
-	void updateStatus(String id, STATUS status);
+  void updateStatus(String id, STATUS status);
+
+  Table findOneShortById(String id);
 
 }

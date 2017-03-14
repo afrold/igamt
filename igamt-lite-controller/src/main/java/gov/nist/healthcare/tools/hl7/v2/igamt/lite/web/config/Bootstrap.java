@@ -225,8 +225,8 @@ public class Bootstrap implements InitializingBean {
 
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
-    fixDatatypeRecursion();
-    fixDuplicateValueSets();
+    // fixDatatypeRecursion();
+    // fixDuplicateValueSets();
   }
 
 
@@ -364,12 +364,15 @@ public class Bootstrap implements InitializingBean {
 
 
   private boolean isTableDuplicated(TableLink tableLink, List<TableLink> tableLinks) {
+    Table table = tableService.findOneShortById(tableLink.getId());
     if (tableLink != null && tableLink.getId() != null && tableLinks != null
         && !tableLinks.isEmpty()) {
       for (int i = 0; i < tableLinks.size(); i++) {
         TableLink link = tableLinks.get(i);
+        Table table2 = tableService.findOneShortById(link.getId());
         if (link != null && link.getBindingIdentifier().equals(tableLink.getBindingIdentifier())
-            && !tableLink.getId().equals(link.getId())) {
+            && !tableLink.getId().equals(link.getId())
+            && table.getScope().equals(table2.getScope())) {
           return true;
         }
       }
