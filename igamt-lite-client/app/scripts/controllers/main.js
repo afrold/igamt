@@ -3516,6 +3516,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
         var data = $rootScope.currentData;
         if (data.type && data.type === "message") {
             MessageService.reset();
+
         } else if (data.type && data.type === "segment") {
             SegmentService.reset();
         } else if (data.type && data.type === "datatype") {
@@ -3531,8 +3532,9 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
             $rootScope.documentation = null;
 
-            $scope.continue();
+
         }
+        $scope.continue();
         $rootScope.addedSegments = [];
         $rootScope.addedDatatypes = [];
         $rootScope.addedTables = [];

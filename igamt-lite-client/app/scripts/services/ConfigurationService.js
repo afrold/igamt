@@ -85,6 +85,8 @@ angular.module('igl').factory('ConfigurationService',
             restoreDefaultExportFontConfig:function(){
                 var delay = $q.defer();
                 $http.post('api/ExportConfiguration/restoreDefaultExportFontConfig').then(function(response) {
+                    console.log("response");
+                    console.log(response);
                     var conf= angular.fromJson(response.data);
                     delay.resolve(conf);
                  }, function(error) {
