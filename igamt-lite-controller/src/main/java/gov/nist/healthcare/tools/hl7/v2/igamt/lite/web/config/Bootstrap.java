@@ -208,10 +208,8 @@ public class Bootstrap implements InitializingBean {
     // createDefaultConfiguration("IG Style");
     // createDefaultConfiguration("Profile Style");
     // createDefaultConfiguration("Table Style");
+    // createDefaultConfiguration("Datatype Library");
     // createDefaultExportFonts();
-
-    createDefaultConfiguration("Datatype Library");
-    createDefaultExportFonts();
 
     // changeStatusofPHINVADSTables();
 
