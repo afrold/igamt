@@ -895,7 +895,7 @@ public class IGDocumentController extends CommonController {
       throw new UserAccountNotFoundException();
     }
     ExportConfig exportConfig =
-        exportConfigService.findOneByTypeAndAccountId(type, account.getId());
+        exportConfigService.findOneByTypeAndAccountId(identifyType(type), account.getId());
     if (exportConfig == null) {
       exportConfig = ExportConfig.getBasicExportConfig(type);
     }
