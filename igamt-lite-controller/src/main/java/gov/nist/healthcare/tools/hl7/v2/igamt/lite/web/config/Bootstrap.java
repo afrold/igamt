@@ -208,8 +208,10 @@ public class Bootstrap implements InitializingBean {
     // createDefaultConfiguration("IG Style");
     // createDefaultConfiguration("Profile Style");
     // createDefaultConfiguration("Table Style");
-    // createDefaultConfiguration("Datatype Library");
     // createDefaultExportFonts();
+
+    // createDefaultConfiguration("Datatype Library");
+
 
     // changeStatusofPHINVADSTables();
 
@@ -225,6 +227,7 @@ public class Bootstrap implements InitializingBean {
     // MergeComponents();
     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
+    createDefaultExportFonts();
   }
 
 
@@ -603,7 +606,7 @@ public class Bootstrap implements InitializingBean {
 
   }
 
-  private void createDefaultExportFonts() {
+  private void createDefaultExportFonts() throws Exception {
     ExportFont exportFont =
         new ExportFont("'Arial Narrow',sans-serif", "'Arial Narrow',sans-serif;");
     exportFontService.save(exportFont);

@@ -731,8 +731,7 @@ public class IGDocumentController extends CommonController {
   @RequestMapping(value = "/{id}/export/html/{type}", method = RequestMethod.POST,
       produces = "text/html", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportHtml(@PathVariable("id") String id, @PathVariable("type") String type,
-      HttpServletRequest request, HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, UserAccountNotFoundException {
+      HttpServletRequest request, HttpServletResponse response) throws Exception {
     log.info("Exporting as html file IGDcoument with id=" + id);
     IGDocument d = this.findIGDocument(id);
     InputStream content = null;
@@ -747,7 +746,12 @@ public class IGDocumentController extends CommonController {
     if (exportConfig == null) {
       exportConfig = ExportConfig.getBasicExportConfig(type);
     }
-    ExportFontConfig exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
+    ExportFontConfig exportFontConfig = null;
+    List<ExportFontConfig> existing = exportFontConfigService.findOneByAccountId(account.getId());
+    if (!existing.isEmpty()) {
+      exportFontConfig = existing.get(0);
+
+    }
     if (exportFontConfig == null) {
       exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
     }
@@ -883,8 +887,7 @@ public class IGDocumentController extends CommonController {
       produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportDocx(@PathVariable("id") String id, @PathVariable("type") String type,
-      HttpServletRequest request, HttpServletResponse response)
-      throws IOException, IGDocumentNotFoundException, UserAccountNotFoundException {
+      HttpServletRequest request, HttpServletResponse response) throws Exception {
     log.info("Exporting as docx file profile with id=" + id);
     IGDocument d = findIGDocument(id);
     InputStream content = null;
@@ -899,9 +902,15 @@ public class IGDocumentController extends CommonController {
     if (exportConfig == null) {
       exportConfig = ExportConfig.getBasicExportConfig(type);
     }
-    ExportFontConfig exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
-    if (exportFontConfig == null) {
+    ExportFontConfig exportFontConfig = null;
+    List<ExportFontConfig> existing = exportFontConfigService.findOneByAccountId(account.getId());
+
+    if (existing.isEmpty()) {
       exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+    } else {
+
+      exportFontConfig = existing.get(0);
+
     }
     content = exportService.exportIGDocumentAsDocx(d, serializationLayout, exportConfig,
         exportFontConfig);
