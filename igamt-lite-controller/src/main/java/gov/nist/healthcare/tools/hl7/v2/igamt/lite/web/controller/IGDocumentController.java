@@ -787,7 +787,7 @@ public class IGDocumentController extends CommonController {
     String type;
     switch (layout) {
       case "IgDocument":
-        type = "Ig Document";
+        type = "IG Style";
         break;
       case "Profile":
         type = "Profile Style";
