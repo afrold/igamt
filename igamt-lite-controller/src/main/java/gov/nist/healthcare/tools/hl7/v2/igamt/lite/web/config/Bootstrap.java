@@ -220,14 +220,14 @@ public class Bootstrap implements InitializingBean {
 
     // new Master Datatype Generation
 
-    CreateCollectionOfUnchanged(); // group datatype by sets of versions
-    Colorate(); // genenerates the datatypes evolution matrix.
+    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
+    // Colorate(); // genenerates the datatypes evolution matrix.
 
-    CreateIntermediateFromUnchanged();
-    MergeComponents();
+    // CreateIntermediateFromUnchanged();
+    // MergeComponents();
     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
-    // createDefaultExportFonts();
+    createDefaultExportFonts();
   }
 
 
@@ -606,7 +606,7 @@ public class Bootstrap implements InitializingBean {
 
   }
 
-  private void createDefaultExportFonts() {
+  private void createDefaultExportFonts() throws Exception {
     ExportFont exportFont =
         new ExportFont("'Arial Narrow',sans-serif", "'Arial Narrow',sans-serif;");
     exportFontService.save(exportFont);

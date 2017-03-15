@@ -56,8 +56,8 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     }
 
     $scope.saveUserExportFontConfig = function(userExportFontConfig){
-        userExportFontConfig.defaultConfig = false;
         ConfigurationService.saveUserExportFontConfig(userExportFontConfig).then(function (response) {
+            $scope.resetChanged();
             $rootScope.msg().text = "ConfigurationSaved";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
@@ -79,6 +79,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
     $scope.restoreDefaultExportFontConfig = function(){
         ConfigurationService.restoreDefaultExportFontConfig().then(function(response){
+            $scope.resetChanged();
             $scope.userExportFontConfig = response;
             $scope.updateUserFontRadio();
             $scope.resetChanged();

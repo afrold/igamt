@@ -1,8 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.mongodb.repository.MongoRepository;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -17,11 +17,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  * <p/>
  * Created by Maxence Lefort on 2/23/17.
  */
-public interface ExportFontConfigRepository extends
-    MongoRepository<ExportFontConfig, Long> {
-    @Query("select e from ExportFontConfig e where e.accountId = ?1")
-    ExportFontConfig findOneByAccountId(Long accountId);
+public interface ExportFontConfigRepository
+    extends MongoRepository<ExportFontConfig, Long>, ExportFontConfigOperations {
 
-    @Query("select e from ExportFontConfig e where e.defaultConfig = ?1")
-    ExportFontConfig findByDefaultConfig(Boolean defaultConfig);
 }
