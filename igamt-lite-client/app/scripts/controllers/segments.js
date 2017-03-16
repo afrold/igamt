@@ -988,9 +988,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
         modalInstance.result.then(function(node) {
             $scope.setDirty();
-            if ($scope.segmentsParams) {
-                $scope.segmentsParams.refresh();
-            }
         });
     };
 

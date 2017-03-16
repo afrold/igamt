@@ -218,8 +218,8 @@ public class Bootstrap implements InitializingBean {
 
     // modifyCodeUsage();
     // fixMissingData();
-    updateInitAndCreateBindingVSForDatatype();
-    updateInitAndCreateBindingVSForSegment();
+//    updateInitAndCreateBindingVSForDatatype();
+//    updateInitAndCreateBindingVSForSegment();
 
 
     // new Master Datatype Generation
@@ -229,8 +229,8 @@ public class Bootstrap implements InitializingBean {
 
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
-    fixDatatypeRecursion();
-    fixDuplicateValueSets();
+//    fixDatatypeRecursion();
+//    fixDuplicateValueSets();
   }
 
 
