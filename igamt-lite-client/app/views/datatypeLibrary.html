@@ -319,7 +319,7 @@ if (self === top) {
                                     <tbody style="max-height: 337px; overflow:scroll; display: block;">
                                         <tr ng-repeat="dt in matrix | orderBy: 'name'|filter:search">
                                             <td style="min-width:60px !important; width:60px !important;"><strong>{{dt.name}}</strong></td>
-                                            <td ng-disabled="true" style="color:{{getColor(dt.links[va])}}; width:60px!important;" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1]), 'grey':!dt.links[va]&& dt.links[va]!==0}"
+                                            <td ng-disabled="true" style="color:{{getColor(dt.links[va])}}; width:60px!important; cursor:pointer !important" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1]), 'grey':!dt.links[va]&& dt.links[va]!==0}"
                                                 ng-repeat='va in adjusted' ng-click="selectCell(dt,vrs[$index+1])"><strong>{{dt.links[va]}}</strong></td>
                                         </tr>
                                     </tbody>
