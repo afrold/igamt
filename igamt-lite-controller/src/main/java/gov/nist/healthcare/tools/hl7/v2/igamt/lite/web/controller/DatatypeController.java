@@ -349,8 +349,7 @@ public class DatatypeController extends CommonController {
   }
 
   @RequestMapping(value = "/getMergedMaster", method = RequestMethod.POST)
-  public Datatype getMergedMaster(@RequestBody Datatype datatype)
-      throws CloneNotSupportedException {
+  public Datatype getMergedMaster(@RequestBody Datatype datatype) throws Exception {
 
     Datatype d = mergeComponent(datatype);
     return d;
@@ -358,13 +357,18 @@ public class DatatypeController extends CommonController {
 
   /**
    * @param datatype
-   * @throws CloneNotSupportedException
+   * @throws Exception
    */
-  private Datatype mergeComponent(Datatype datatype) throws CloneNotSupportedException {
+  private Datatype mergeComponent(Datatype datatype) throws Exception {
 
-
-    Datatype result = datatypeService.findByNameAndVersionAndScope(datatype.getName(),
+    Datatype result = null;
+    List<Datatype> all = datatypeService.findByNameAndVersionAndScope(datatype.getName(),
         datatype.getHl7Version(), SCOPE.HL7STANDARD.toString());
+    if (!all.isEmpty()) {
+      result = all.get(0);
+    } else {
+      throw new Exception("cannot find datatype" + datatype.getName());
+    }
 
     if (result.getValueSetBindings() != null) {
       datatype.setValueSetBindings(result.getValueSetBindings());
