@@ -1177,9 +1177,6 @@ angular.module('igl')
 
             modalInstance.result.then(function(node) {
                 $scope.setDirty();
-                if ($scope.datatypesParams) {
-                    $scope.datatypesParams.refresh();
-                }
             });
         };
 
