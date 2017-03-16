@@ -359,6 +359,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
         	blockUI.start();
         	$timeout(function () {
+                $scope.initParams();
         	$rootScope.libraryDoc= datatypeLibraryDocument;
             $rootScope.accountId=datatypeLibraryDocument.accountId;
         	$scope.viewSettings.setTableReadonly(readOnly);
@@ -1542,6 +1543,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 return DatatypeService.getTemplate(node, $rootScope.datatype);
             }
         });
+        $scope.initParams=function(){
+            $scope.datatypesParams = new ngTreetableParams({
+                getNodes: function(parent) {
+                    return DatatypeService.getNodes(parent, $rootScope.datatype);
+                },
+                getTemplate: function(node) {
+                    return DatatypeService.getTemplate(node, $rootScope.datatype);
+                }
+            });
+        }
 
         function processEditDataType(data) {
             console.log("dialog not opened");
