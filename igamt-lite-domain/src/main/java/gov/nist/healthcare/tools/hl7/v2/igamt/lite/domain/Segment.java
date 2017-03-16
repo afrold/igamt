@@ -34,6 +34,8 @@ public class Segment extends DataModelWithConstraints
   private List<Field> fields = new ArrayList<Field>();
 
   private DynamicMapping dynamicMapping = new DynamicMapping();
+  
+  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
 
   private String name;
 
@@ -82,6 +84,10 @@ public class Segment extends DataModelWithConstraints
 
   public void addField(Field field) {
     fields.add(field);
+  }
+  
+  public void addValueSetBinding(ValueSetBinding vsb) {
+	valueSetBindings.add(vsb);
   }
 
   public Field findOneField(String id) {
@@ -242,5 +248,13 @@ public class Segment extends DataModelWithConstraints
     this.coConstraints = coConstraints;
   }
 
+
+  public List<ValueSetBinding> getValueSetBindings() {
+	return valueSetBindings;
+  }
+
+  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+	this.valueSetBindings = valueSetBindings;
+  }
 
 }

@@ -15,16 +15,17 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -154,6 +155,7 @@ public class Bootstrap implements InitializingBean {
   @Override
   public void afterPropertiesSet() throws Exception {
 
+    System.out.println("bootstrap called");
     // Carefully use this. It will delete all of existing IGDocuments and
     // make new ones converted from the "igdocumentPreLibHL7",
     // "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
@@ -217,6 +219,9 @@ public class Bootstrap implements InitializingBean {
 
     // modifyCodeUsage();
     // fixMissingData();
+    // updateInitAndCreateBindingVSForDatatype();
+    // updateInitAndCreateBindingVSForSegment();
+
 
     // new Master Datatype Generation
 
@@ -225,8 +230,221 @@ public class Bootstrap implements InitializingBean {
 
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
+    // fixDatatypeRecursion();
+    // fixDuplicateValueSets();
+  }
 
-    // updateInitAndCreateBindingVSForDatatype();
+
+  private void fixDatatypeRecursion(IGDocument document) throws IGDocumentException {
+    DatatypeLibrary datatypeLibrary = document.getProfile().getDatatypeLibrary();
+    Datatype withdrawn = getWithdrawnDatatype(document.getProfile().getMetaData().getHl7Version());
+    DatatypeLink withdrawnLink =
+        new DatatypeLink(withdrawn.getId(), withdrawn.getName(), withdrawn.getExt());
+    Set<String> datatypeIds = new HashSet<String>();
+    for (DatatypeLink datatypeLink : datatypeLibrary.getChildren()) {
+      datatypeIds.add(datatypeLink.getId());
+    }
+    List<Datatype> datatypes = datatypeService.findByIds(datatypeIds);
+    for (Datatype datatype : datatypes) {
+      if (datatype != null) {
+        List<Component> components = datatype.getComponents();
+        if (components != null && !components.isEmpty()) {
+          for (Component component : components) {
+            DatatypeLink componentDatatypeLink = component.getDatatype();
+            if (componentDatatypeLink != null && componentDatatypeLink.getId() != null
+                && componentDatatypeLink.getId().equals(datatype.getId())) {
+              component.setDatatype(withdrawnLink);
+              if (!contains(withdrawnLink, datatypeLibrary)) {
+                datatypeLibrary.addDatatype(withdrawnLink);
+              }
+            }
+          }
+        }
+      }
+    }
+    datatypeService.save(datatypes);
+    daatypeLibraryRepository.save(datatypeLibrary);
+  }
+
+
+
+  private Datatype getWithdrawnDatatype(String hl7Version) throws IGDocumentException {
+    List<Datatype> datatypes =
+        datatypeService.findByNameAndVersionAndScope("-", hl7Version, SCOPE.HL7STANDARD.toString());
+    Datatype dt = datatypes != null && !datatypes.isEmpty() ? datatypes.get(0) : null;
+    if (dt == null) {
+      dt = new Datatype();
+      dt.setName("-");
+      dt.setDescription("withdrawn");
+      dt.setHl7versions(Arrays.asList(new String[] {hl7Version}));
+      dt.setHl7Version(hl7Version);
+      dt.setScope(SCOPE.HL7STANDARD);
+      dt.setDateUpdated(DateUtils.getCurrentDate());
+      dt.setStatus(STATUS.PUBLISHED);
+      dt.setPrecisionOfDTM(3);
+      datatypeService.save(dt);
+    }
+    return dt;
+  }
+
+  private void fixDatatypeRecursion() throws IGDocumentException {
+    List<IGDocument> igDocuments = documentService.findAll();
+    for (IGDocument document : igDocuments) {
+      fixDatatypeRecursion(document);
+    }
+  }
+
+
+
+  private void fixDuplicateValueSets() throws IGDocumentException {
+    List<IGDocument> igDocuments = documentService.findAllByScope(IGDocumentScope.USER);
+    for (IGDocument document : igDocuments) {
+      fixDuplicateValueSets(document);
+    }
+    igDocuments = documentService.findAllByScope(IGDocumentScope.PRELOADED);
+    for (IGDocument document : igDocuments) {
+      fixDuplicateValueSets(document);
+    }
+  }
+
+  private void fixDuplicateValueSets(IGDocument document) throws IGDocumentException {
+    DatatypeLibrary datatypeLibrary = document.getProfile().getDatatypeLibrary();
+    SegmentLibrary segmentLibrary = document.getProfile().getSegmentLibrary();
+    TableLibrary tableLibrary = document.getProfile().getTableLibrary();
+    List<TableLink> unusedDuplicates =
+        collectUnusedDuplicates(tableLibrary, datatypeLibrary, segmentLibrary);
+    if (!unusedDuplicates.isEmpty()) {
+      for (TableLink tableLink : unusedDuplicates) {
+        TableLink found = findTableLink(tableLibrary.getChildren(), tableLink);
+        if (found != null && found.getId() != null) {
+          tableLibrary.getChildren().remove(found);
+        }
+      }
+    }
+    tableLibraryRepository.save(tableLibrary);
+  }
+
+
+  private List<TableLink> collectUnusedDuplicates(TableLibrary tableLibrary,
+      DatatypeLibrary datatypeLibrary, SegmentLibrary segmentLibrary) {
+    List<TableLink> unusedDuplicates = new ArrayList<TableLink>();
+    if (tableLibrary.getChildren() != null && !tableLibrary.getChildren().isEmpty()) {
+      List<TableLink> tableLinks = new ArrayList<TableLink>();
+      tableLinks.addAll(tableLibrary.getChildren());
+      Set<String> segmentIds = new HashSet<String>();
+      for (SegmentLink segmentLink : segmentLibrary.getChildren()) {
+        segmentIds.add(segmentLink.getId());
+      }
+      List<Segment> segments = segmentService.findByIds(segmentIds);
+      Set<String> datatypeIds = new HashSet<String>();
+      for (DatatypeLink datatypeLink : datatypeLibrary.getChildren()) {
+        datatypeIds.add(datatypeLink.getId());
+      }
+      List<Datatype> datatypes = datatypeService.findByIds(datatypeIds);
+      for (int i = 0; i < tableLinks.size(); i++) {
+        if (isTableDuplicated(tableLinks.get(i), tableLinks)
+            && !isTableUsed(segments, datatypes, tableLinks.get(i))) {
+          unusedDuplicates.add(tableLinks.get(i));
+        }
+      }
+    }
+    return unusedDuplicates;
+  }
+
+  private TableLink findTableLink(Set<TableLink> tableLinks, TableLink link) {
+    if (tableLinks != null && !tableLinks.isEmpty() && link != null && link.getId() != null) {
+      Iterator<TableLink> it = tableLinks.iterator();
+      while (it.hasNext()) {
+        TableLink tableLink = it.next();
+        if (tableLink.getId() != null && tableLink.getId().equals(link.getId())) {
+          return tableLink;
+        }
+      }
+    }
+    return null;
+  }
+
+  private boolean isTableDuplicated(TableLink tableLink, List<TableLink> tableLinks) {
+    if (tableLink != null && tableLink.getId() != null && tableLinks != null
+        && !tableLinks.isEmpty()) {
+      for (int i = 0; i < tableLinks.size(); i++) {
+        TableLink link = tableLinks.get(i);
+        if (link != null && link.getBindingIdentifier().equals(tableLink.getBindingIdentifier())
+            && !tableLink.getId().equals(link.getId())) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean isTableUsed(List<Segment> segments, List<Datatype> datatypes,
+      TableLink tableLink) {
+    for (Segment segment : segments) {
+      if (isTableUsed(segment, tableLink)) {
+        return true;
+      }
+    }
+    for (Datatype datatype : datatypes) {
+      if (isTableUsed(datatype, tableLink)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+
+  private boolean isTableUsed(Segment segment, TableLink tableLink) {
+    for (Field field : segment.getFields()) {
+      if (field.getTables() != null && !field.getTables().isEmpty()) {
+        for (TableLink t : field.getTables()) {
+          if (t.getId().equals(tableLink.getId())) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean isTableUsed(Datatype datatype, TableLink tableLink) {
+    for (Component component : datatype.getComponents()) {
+      if (component.getTables() != null && !component.getTables().isEmpty()) {
+        for (TableLink t : component.getTables()) {
+          if (t.getId().equals(tableLink.getId())) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private void updateInitAndCreateBindingVSForSegment() {
+    List<Segment> allSegs = segmentService.findAll();
+    for (Segment s : allSegs) {
+      s.setValueSetBindings(new ArrayList<ValueSetBinding>());
+      for (Field f : s.getFields()) {
+        if (f.getTables() != null) {
+          for (TableLink tl : f.getTables()) {
+            Table t = tableService.findById(tl.getId());
+            if (t != null) {
+              ValueSetBinding vsb = new ValueSetBinding();
+              vsb.setBindingLocation(tl.getBindingLocation());
+              vsb.setBindingStrength(tl.getBindingStrength());
+              vsb.setLocation(f.getPosition() + "");
+              vsb.setTableId(t.getId());
+
+              s.addValueSetBinding(vsb);
+            }
+          }
+          // f.setTables(null);
+        }
+      }
+
+      segmentService.save(s);
+    }
   }
 
   private void updateInitAndCreateBindingVSForDatatype() {
@@ -247,6 +465,7 @@ public class Bootstrap implements InitializingBean {
               d.addValueSetBinding(vsb);
             }
           }
+          // c.setTables(null);
         }
       }
 
@@ -1081,9 +1300,9 @@ public class Bootstrap implements InitializingBean {
         DatatypeMap.put(dt.getName(), temp);
       } else {
         for (int i = 0; i < DatatypeMap.get(dt.getName()).size(); i++) {
-          Datatype d = datatypeService.findByNameAndVersionAndScope(dt.getName(),
+          List<Datatype> datatypes = datatypeService.findByNameAndVersionAndScope(dt.getName(),
               DatatypeMap.get(dt.getName()).get(i).get(0), "HL7STANDARD");
-
+          Datatype d = datatypes != null && !datatypes.isEmpty() ? datatypes.get(0) : null;
           if (d != null && !Visited.containsKey(dt.getName())) {
             if (deltaService.CompareDatatypes(d, dt)) {
               DatatypeMap.get(dt.getName()).get(i).add(version);
@@ -1128,19 +1347,17 @@ public class Bootstrap implements InitializingBean {
     }
   }
 
-  public void CreateIntermediateFromUnchanged() {
+  public void CreateIntermediateFromUnchanged() throws CloneNotSupportedException {
     List<UnchangedDataType> unchanged = unchangedData.findAll();
     for (UnchangedDataType dt : unchanged) {
-      Datatype d = datatypeService.findByNameAndVersionAndScope(dt.getName(),
-          dt.getVersions().get(dt.getVersions().size() - 1), "HL7STANDARD");
-
-      Datatype newDatatype = new Datatype();
-      newDatatype = d;
-      newDatatype.setId(ObjectId.get().toString());
+      List<Datatype> datatypes = datatypeService.findByNameAndVersionAndScope(dt.getName(),
+          dt.getVersions().get(dt.getVersions().size() - 1), SCOPE.HL7STANDARD.toString());
+      Datatype d = datatypes != null && !datatypes.isEmpty() ? datatypes.get(0) : null;
+      Datatype newDatatype = d.clone();
+      newDatatype.setId(null);
       newDatatype.setHl7Version("*");
       newDatatype.setScope(SCOPE.INTERMASTER);
       newDatatype.setHl7versions(dt.getVersions());
-
       datatypeService.save(newDatatype);
 
     }
