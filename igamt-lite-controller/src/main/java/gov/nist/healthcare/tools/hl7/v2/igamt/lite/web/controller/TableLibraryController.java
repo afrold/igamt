@@ -12,6 +12,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -209,6 +210,26 @@ public class TableLibraryController extends CommonController {
     lib.addTables(tableLinks);
     tableLibraryService.save(lib);
     return true;
+  }
+
+  @RequestMapping(value = "/{libId}/addChildrenByIds", method = RequestMethod.POST)
+  public List<Table> addChildrenByIds(@PathVariable String libId, @RequestBody Set<String> ids)
+      throws DatatypeSaveException {
+    Set<TableLink> links = new HashSet<TableLink>();
+    log.debug("Adding a link to the library");
+    TableLibrary lib = tableLibraryService.findById(libId);
+    List<Table> tables = tableService.findAllByIds(ids);
+    for (Table t : tables) {
+      TableLink tbl = new TableLink();
+      tbl.setBindingIdentifier(t.getBindingIdentifier());
+      tbl.setId(tbl.getId());
+      links.add(tbl);
+    }
+
+
+    lib.addTables(links);
+    tableLibraryService.save(lib);
+    return tables;
   }
 
 }

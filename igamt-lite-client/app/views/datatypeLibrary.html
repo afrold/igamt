@@ -480,8 +480,8 @@ if (self === top) {
                     </li>
                 </ol>
 
-                    <div ui-tree-handle data-nodrag>
-                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Datatypes <span class="badge">{{interMediate.length}}</span>
+                    <div ui-tree-handle data-nodrag ng-if="datatypeLibrary.scope=='MASTER'">
+                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Data Types <span class="badge">{{interMediate.length}}</span>
                     </div>
                     <ol ui-tree-nodes="" ng-model="interMediates" ng-if="datatypeLibrary.scope=='MASTER'">
   
@@ -498,8 +498,7 @@ if (self === top) {
                             </div>
                         </div>
                     </li>
-                </ol>
-
+                    </ol>
             </li>
         </ol>
     </div>

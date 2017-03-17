@@ -338,6 +338,9 @@ public class DatatypeController extends CommonController {
       versionInfo.setAccountId(account.getId());
       versionInfo.setPublicationDate(DateUtils.getCurrentTime());
       datatype.setPublicationDate(DateUtils.getCurrentTime());
+      // if (datatype.getScope().toString().equals(SCOPE.MASTER.toString())) {
+      // datatype.setName(datatype.getName() + "_" + datatype.getExt());
+      // }
       versionAndUse.save(versionInfo);
       datatype.setStatus(STATUS.PUBLISHED);
       Datatype saved = datatypeService.save(datatype);

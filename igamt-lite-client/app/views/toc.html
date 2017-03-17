@@ -164,7 +164,7 @@
                                         
                                     
                                     <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}"> {{getScopeLabel(data)}} {{hasSameVersion(data)}} <span ng-if="versionAndUseMap[data.id]&&data.status==='PUBLISHED'" class="version-badge">v{{data.publicationVersion}}</span>                                    </span>
+                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}"> {{getScopeLabel(data)}} {{hasSameVersion(data)}} <span ng-if="data.publicationVersion&&data.status==='PUBLISHED'" class="version-badge">v{{data.publicationVersion}}</span></span>
                                     {{getDatatypeLabel(data)}}-{{data.description}}
                                     </span>
                                 </div>
@@ -175,7 +175,7 @@
                                     <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
 
                                      <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}" > {{getScopeLabel(data)}} {{hasSameVersion(data)}} <span ng-if="versionAndUseMap[data.id]" class="version-badge">v{{data.publicationVersion}}</span></span>
+                                   'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS','label-PRL':getScopeLabel(data)==='PRL'}" > {{getScopeLabel(data)}} {{hasSameVersion(data)}} <span ng-if="data.publicationVersion" class="version-badge">v{{data.publicationVersion}}</span></span>
                                     {{getDatatypeLabel(data)}}-{{data.description}}
                                     </span>
                                 </div>

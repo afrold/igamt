@@ -2434,6 +2434,7 @@ angular.module('igl').controller('AddDatatypeCtrlFromUserLib',
 angular.module('igl').controller('addMAsterInLibrary',
     function($scope, $rootScope, $modalInstance, hl7Version, masterLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http, datatypeLibrary, tableLibrary, versionAndUseMap) {
         $scope.versionAndUseMap = versionAndUseMap;
+        $scope.TablesIds=[];
         $scope.newDts = [];
         $scope.checkedExt = true;
         $scope.DTlinksToAdd=[];
@@ -2552,11 +2553,14 @@ angular.module('igl').controller('addMAsterInLibrary',
 
             $scope.DatatypeToAdd = angular.copy(datatype);
             $scope.DatatypeToAdd.publicationVersion=0;
-            $scope.DatatypeToAdd.valueSetBindings=[];
+            //$scope.DatatypeToAdd.valueSetBindings=[];
                 DatatypeService.getMergedMaster($scope.DatatypeToAdd).then(function(standard) {
                     console.log("Resut of merge")
-                    console.log(standard);
+
+
+
                     $scope.DatatypeToAdd=standard;
+
                     $scope.DatatypeToAdd.participants = [];
                     $scope.DatatypeToAdd.id = new ObjectId().toString();
                     $scope.DatatypeToAdd.libIds = [];
@@ -2584,13 +2588,21 @@ angular.module('igl').controller('addMAsterInLibrary',
                     }
                     //  $scope.selectedDatatypes.push($scope.newDatatype);
                     console.log($scope.selectedDatatypes);
-                    console.log($scope.selectedDatatypes);
+                    console.log($scope.DatatypeToAdd);
+                    if($scope.DatatypeToAdd.valueSetBindings&&$scope.DatatypeToAdd.valueSetBindings.length!==0) {
+                        angular.forEach($scope.DatatypeToAdd.valueSetBindings, function (binding) {
+                            if (binding.tableId && !$rootScope.tablesMap[binding.tableId]) {
+                                var temp = [];
+                                temp.push(binding.tableId);
+                                $scope.TablesIds = _.union($scope.TablesIds, temp);
+                                console.log($scope.TablesIds);
+                            }
 
+                        })
+                    }
+                    console.log("DEBUG");
+                    console.log($scope.TablesIds);
                 });
-
-
-
-
         }
         $scope.deleteDt = function(datatype) {
             var index = $scope.selectedDatatypes.indexOf(datatype);
@@ -2736,8 +2748,16 @@ angular.module('igl').controller('addMAsterInLibrary',
                                 $rootScope.datatypes.push(datatype);
                             }
                         })
-
+                        TableLibrarySvc.addChildrenByIds(tableLibrary.id, $scope.TablesIds).then(function(result) {
+                            angular.forEach(result, function(table){
+                               if(!$rootScope.tablesMap[table.id]){
+                                   $rootScope.tables.push(table);
+                                   $rootScope.tablesMap[table.id]=table;
+                               }
+                            });
                         $modalInstance.close(datatypes);
+
+                        });
                 });
             });
         });
@@ -2761,6 +2781,19 @@ angular.module('igl').controller('addMAsterInLibrary',
                      }
 
                  });
+             }
+             console.log("DEBUG");
+             console.log(datatype);
+             if(datatype.valueSetBindings&&datatype.valueSetBindings.length>0){
+                angular.forEach(datatype.valueSetBindings,function(binding){
+                    if(binding.tableId&&!$rootScope.tablesMap[binding.tableId]){
+                        var temp=[];
+                        temp.push(binding.tableId);
+                        $scope.TablesIds=_.union($scope.TablesIds,temp);
+                        console.log($scope.TablesIds);
+                    }
+
+                })
              }
         }
 
