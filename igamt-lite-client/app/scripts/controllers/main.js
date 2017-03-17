@@ -1015,6 +1015,20 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 for (var i = 0; i < element.children.length; i++) {
                     $rootScope.fillMaps(element.children[i]);
                 }
+
+                var tableIds = [];
+                for (var i = 0; i < element.valueSetBindings.length; i++) {
+                    tableIds.push(element.valueSetBindings[i].tableId);
+                }
+
+                TableService.get(tableIds).then(function(tables) {
+                    for (var j = 0; j < tables.length; j++) {
+                        var tempTableLink = {};
+                        tempTableLink.id = tables[j].id;
+                        tempTableLink.bindingIdentifier = tables[j].bindingIdentifier;
+                        $rootScope.usedVsLink.push(tempTableLink);
+                    }
+                });
             } else if (element.type === "segmentRef") {
                 $rootScope.usedSegsLink.push(element.ref);
             } else if (element.type === "group" && element.children) {
@@ -1025,21 +1039,42 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 for (var i = 0; i < element.fields.length; i++) {
                     $rootScope.fillMaps(element.fields[i]);
                 }
-            } else if (element.type === "field") {
-                $rootScope.usedDtLink.push(element.datatype);
-                for (var i = 0; i < element.tables.length; i++) {
-                    $rootScope.usedVsLink.push(element.tables[i]);
+
+                var tableIds = [];
+                for (var i = 0; i < element.valueSetBindings.length; i++) {
+                    tableIds.push(element.valueSetBindings[i].tableId);
                 }
 
+                TableService.get(tableIds).then(function(tables) {
+                    for (var j = 0; j < tables.length; j++) {
+                        var tempTableLink = {};
+                        tempTableLink.id = tables[j].id;
+                        tempTableLink.bindingIdentifier = tables[j].bindingIdentifier;
+                        $rootScope.usedVsLink.push(tempTableLink);
+                    }
+                });
+            } else if (element.type === "field") {
+                $rootScope.usedDtLink.push(element.datatype);
             } else if (element.type === "component") {
                 $rootScope.usedDtLink.push(element.datatype);
-                for (var i = 0; i < element.tables.length; i++) {
-                    $rootScope.usedVsLink.push(element.tables[i]);
-                }
             } else if (element.type === "datatype") {
                 for (var i = 0; i < element.components.length; i++) {
                     $rootScope.fillMaps(element.components[i]);
                 }
+
+                var tableIds = [];
+                for (var i = 0; i < element.valueSetBindings.length; i++) {
+                    tableIds.push(element.valueSetBindings[i].tableId);
+                }
+
+                TableService.get(tableIds).then(function(tables) {
+                    for (var j = 0; j < tables.length; j++) {
+                        var tempTableLink = {};
+                        tempTableLink.id = tables[j].id;
+                        tempTableLink.bindingIdentifier = tables[j].bindingIdentifier;
+                        $rootScope.usedVsLink.push(tempTableLink);
+                    }
+                });
             }
         }
     };
