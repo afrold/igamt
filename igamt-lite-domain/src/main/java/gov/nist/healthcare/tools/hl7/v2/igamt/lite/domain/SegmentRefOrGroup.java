@@ -28,6 +28,7 @@ public abstract class SegmentRefOrGroup extends DataModelWithConstraints impleme
   // @Column(nullable = false, name = "SEGMENTREFORGROUP_POSITION")
   protected Integer position = 0;
 
+  @Deprecated
   protected String comment = "";
 
   public Usage getUsage() {
@@ -70,10 +71,12 @@ public abstract class SegmentRefOrGroup extends DataModelWithConstraints impleme
     this.id = id;
   }
 
+  @Deprecated
   public String getComment() {
     return comment;
   }
 
+  @Deprecated
   public void setComment(String comment) {
     this.comment = comment;
   }

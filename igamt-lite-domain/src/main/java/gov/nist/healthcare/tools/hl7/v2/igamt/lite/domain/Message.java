@@ -41,14 +41,18 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
   private List<String> appliedPcs;
   
   private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
+  
+  private List<Comment> comments = new ArrayList<Comment>();
+  
+  private List<SingleElementValue> singleElementValues = new ArrayList<SingleElementValue>();
 
   public List<String> getAppliedPcs() {
 	return appliedPcs;
-}
+  }
 
-public void setAppliedPcs(List<String> appliedPcs) {
+  public void setAppliedPcs(List<String> appliedPcs) {
 	this.appliedPcs = appliedPcs;
-}
+  }
 
 private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
@@ -123,6 +127,14 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
   public void setPosition(Integer position) {
     this.position = position;
   }
+  
+  public List<SingleElementValue> getSingleElementValues() {
+	return singleElementValues;
+  }
+
+  public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
+	this.singleElementValues = singleElementValues;
+  }
 
   public void addSegmentRefOrGroup(SegmentRefOrGroup e) {
     e.setPosition(children.size() + 1);
@@ -131,6 +143,14 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
   
   public void addValueSetBinding(ValueSetBinding vsb) {
 	valueSetBindings.add(vsb);
+  }
+  
+  public void addComment(Comment comment) {
+	comments.add(comment);
+  }
+  
+  public void addSingleElementValue(SingleElementValue sev) {
+	singleElementValues.add(sev);
   }
 
   public void setChildren(List<SegmentRefOrGroup> children) {
@@ -280,6 +300,32 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
         clonedMessage.addSegmentRefOrGroup(clone);
       }
     }
+    
+    clonedMessage.setPredicates(new ArrayList<Predicate>());
+    for (Predicate cp : this.predicates) {
+    	clonedMessage.addPredicate(cp.clone());
+    }
+    
+    clonedMessage.setConformanceStatements(new ArrayList<ConformanceStatement>());
+    for (ConformanceStatement cs : this.conformanceStatements) {
+    	clonedMessage.addConformanceStatement(cs.clone());
+    }
+    
+    clonedMessage.setValueSetBindings(new ArrayList<ValueSetBinding>());
+    for (ValueSetBinding vsb : this.valueSetBindings){
+    	clonedMessage.addValueSetBinding(vsb);
+    }
+    
+    clonedMessage.setComments(new ArrayList<Comment>());
+    for (Comment c : this.comments){
+    	clonedMessage.addComment(c);
+    }
+    
+    clonedMessage.setSingleElementValues(new ArrayList<SingleElementValue>());
+    for (SingleElementValue sev : this.singleElementValues){
+    	clonedMessage.addSingleElementValue(sev);
+    }
+    
     clonedMessage.setId(ObjectId.get().toString());
     clonedMessage.setComment(comment);
     clonedMessage.setDescription(description);
@@ -389,6 +435,14 @@ public List<ValueSetBinding> getValueSetBindings() {
 
 public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
 	this.valueSetBindings = valueSetBindings;
+}
+
+public List<Comment> getComments() {
+	return comments;
+}
+
+public void setComments(List<Comment> comments) {
+	this.comments = comments;
 }
   
   
