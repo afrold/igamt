@@ -379,13 +379,29 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     clonedMessage.setUsageNote(usageNote);
     clonedMessage.setMessageID(messageID);
     clonedMessage.setType(type);
-    clonedMessage.setConformanceStatements(new ArrayList<ConformanceStatement>());
-    for (ConformanceStatement cs : this.conformanceStatements) {
-      clonedMessage.addConformanceStatement(cs.clone());
-    }
     clonedMessage.setPredicates(new ArrayList<Predicate>());
     for (Predicate cp : this.predicates) {
-      clonedMessage.addPredicate(cp.clone());
+    	clonedMessage.addPredicate(cp.clone());
+    }
+    
+    clonedMessage.setConformanceStatements(new ArrayList<ConformanceStatement>());
+    for (ConformanceStatement cs : this.conformanceStatements) {
+    	clonedMessage.addConformanceStatement(cs.clone());
+    }
+    
+    clonedMessage.setValueSetBindings(new ArrayList<ValueSetBinding>());
+    for (ValueSetBinding vsb : this.valueSetBindings){
+    	clonedMessage.addValueSetBinding(vsb);
+    }
+    
+    clonedMessage.setComments(new ArrayList<Comment>());
+    for (Comment c : this.comments){
+    	clonedMessage.addComment(c);
+    }
+    
+    clonedMessage.setSingleElementValues(new ArrayList<SingleElementValue>());
+    for (SingleElementValue sev : this.singleElementValues){
+    	clonedMessage.addSingleElementValue(sev);
     }
 
     return clonedMessage;
