@@ -460,6 +460,7 @@ public class Bootstrap implements InitializingBean {
 	  List<Segment> allSegs = segmentService.findAll();
 	  for (Segment s : allSegs) {
 		  s.setValueSetBindings(new ArrayList<ValueSetBinding>());
+		  s.setComments(new ArrayList<Comment>());
 		  for(Field f:s.getFields()){
 			  if(f.getTables() != null){
 				  for(TableLink tl:f.getTables()){

@@ -1669,7 +1669,22 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     $rootScope.showConfLength = function() {
         return $rootScope.igVersion > "2.5.1";
-    }
+    };
+
+    $rootScope.refinePath = function (instancePath){
+        var pathArray = [];
+
+        if(instancePath) pathArray = instancePath.split('.');
+        var positionPath = '';
+        for (var i in pathArray) {
+            var position = pathArray[i].split('[')[0];
+            positionPath = positionPath + '.' + position;
+        }
+
+        if(positionPath != '') positionPath = positionPath.substr(1);
+
+        return positionPath;
+    };
 
 
 
@@ -3067,7 +3082,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         });
     };
 
-
     $rootScope.isDuplicated = function(obj, context, list) {
         if (obj == null || obj == undefined || obj[context] == null) return false;
         return _.find(_.without(list, obj), function(item) {
@@ -3886,5 +3900,43 @@ angular.module('igl').controller('confirmSwitch', function($scope, $rootScope, $
 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
+    };
+});
+
+
+angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode, currentComment, disabled, type) {
+    $scope.currentNode = currentNode;
+    $scope.currentComment = currentComment;
+    var currentPath = $rootScope.refinePath($scope.currentNode.path);
+    $scope.disabled = disabled;
+    var targetObj = type === 'datatype' ?  $rootScope.datatype: type === 'segment' ? $rootScope.segment : $rootScope.message;
+    $scope.title = '';
+
+    if(type == 'message') {
+        $scope.title = 'Comment of ' + targetObj.name + '.' + $rootScope.refinePath($scope.currentNode.locationPath);
+    }else {
+        $scope.title = 'Comment of ' + targetObj.name + '.' + $scope.currentNode.path;
+    }
+    $scope.descriptionText = '';
+
+    if($scope.currentComment) $scope.descriptionText = $scope.currentComment.description;
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        if($scope.currentComment){
+            $scope.currentComment.description = $scope.descriptionText;
+            $scope.currentComment.lastUpdatedDate = new Date();
+        }else {
+            var newComment = {};
+            newComment.description = $scope.descriptionText;
+            newComment.location = currentPath;
+            newComment.lastUpdatedDate = new Date();
+            targetObj.comments.push(newComment);
+        }
+
+        $modalInstance.close($scope.currentNode);
     };
 });
