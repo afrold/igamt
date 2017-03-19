@@ -1039,7 +1039,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.isAvailableForValueSet = function (node){
         if(node && node.datatype){
             var currentDT = $rootScope.datatypesMap[node.datatype.id];
-            if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
+            if(currentDT && _.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
                     return valueSetAllowedDT == currentDT.name;
                 })) return true;
         }
@@ -1047,7 +1047,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         if(node && node.fieldDT && !node.componentDT){
             var parentDT = $rootScope.datatypesMap[node.fieldDT];
             var pathSplit = node.path.split(".");
-            if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
+            if(parentDT && _.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
                     return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[1];
                 })) return true;
         }
@@ -1055,7 +1055,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         if(node && node.componentDT){
             var parentDT = $rootScope.datatypesMap[node.componentDT];
             var pathSplit = node.path.split(".");
-            if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
+            if(parentDT && _.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
                     return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[2];
                 })) return true;
         }
@@ -1178,19 +1178,23 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
         if(node.componentDT) {
             var componentPath = node.path.substr(node.path.split('.', 2).join('.').length + 1);
-            node.sev = _.find($rootScope.datatypesMap[node.componentDT].singleElementValues, function (sev) {
-                return sev.location == componentPath;
-            });
-            if (node.sev) {
-                node.sev.from = 'component';
+            var foundSev = _.find($rootScope.datatypesMap[node.componentDT].singleElementValues, function (sev) { return sev.location == componentPath;});
+            if (foundSev) {
+                foundSev.from = 'component';
+                node.sev = foundSev;
             }
-        }else if(node.fieldDT) {
+        }
+
+        if(node.fieldDT) {
             var fieldPath = node.path.substr(node.path.indexOf('.') + 1);
-            node.sev = _.find($rootScope.datatypesMap[node.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
-            if(node.sev) {
-                node.sev.from = 'field';
+            var foundSev = _.find($rootScope.datatypesMap[node.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+            if(foundSev) {
+                foundSev.from = 'field';
+                node.sev = foundSev;
             }
-        }else {
+        }
+
+        if(node.sev && node.sev.from == 'segment'){
             node.sev = null;
         }
     }

@@ -992,6 +992,75 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         });
     };
 
+    $scope.confirmDatatypeSingleElementDuplicated = function (node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'ConfirmSingleElementDuplicatedCtrl.html',
+            controller: 'ConfirmSingleElementDuplicatedCtrl',
+            resolve: {
+                selectedNode: function () {
+                    return node;
+                }
+            }
+        });
+        modalInstance.result.then(function (node) {
+            $scope.addSev(node);
+        }, function () {
+        });
+    };
+
+    $scope.addSev = function (node){
+        var sev = {};
+        sev.location = $rootScope.refinePath(node.path);
+        sev.value = '';
+        sev.profilePath = $rootScope.refinePath(node.locationPath);
+        sev.name = node.obj.name;
+        console.log(sev);
+        $rootScope.message.singleElementValues.push(sev);
+        node.sev = sev;
+        node.sev.from = 'message';
+        $scope.setDirty();
+    };
+
+    $scope.deleteSev = function (node){
+        var index = $rootScope.message.singleElementValues.indexOf(node.sev);
+        if (index >= 0) {
+            $rootScope.message.singleElementValues.splice(index, 1);
+            $scope.setDirty();
+        }
+
+        if(node.componentDT) {
+            var componentPath = node.segmentPath.substr(node.segmentPath.split('.', 2).join('.').length + 1);
+            var foundSev = _.find($rootScope.datatypesMap[node.componentDT].singleElementValues, function (sev) {return sev.location == componentPath;});
+            if (foundSev) {
+                foundSev.from = 'component';
+                node.sev = foundSev;
+            }
+        }
+
+        if(node.fieldDT) {
+            var fieldPath = node.segmentPath.substr(node.segmentPath.indexOf('.') + 1);
+            var foundSev = _.find($rootScope.datatypesMap[node.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+            if(foundSev) {
+                foundSev.from = 'field';
+                node.sev = foundSev;
+            }
+        }
+
+        if(node.segment) {
+            var foundSev = _.find($rootScope.segmentsMap[node.segment].singleElementValues, function(sev){ return sev.location  ==  node.segmentPath; });
+            if(foundSev) {
+                foundSev.from = 'segment';
+                node.sev = foundSev;
+            }
+        }
+
+        if(node.sev && node.sev.from == 'message'){
+            node.sev = null;
+        }
+    }
+
+
+
 
 });
 
