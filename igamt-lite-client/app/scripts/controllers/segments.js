@@ -1020,6 +1020,21 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
     };
 
+    $scope.confirmDatatypeSingleElementDuplicated = function (node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'ConfirmSingleElementDuplicatedCtrl.html',
+            controller: 'ConfirmSingleElementDuplicatedCtrl',
+            resolve: {
+                selectedNode: function () {
+                    return node;
+                }
+            }
+        });
+        modalInstance.result.then(function (node) {
+            $scope.addSev(node);
+        }, function () {
+        });
+    };
 
     $scope.isAvailableForValueSet = function (node){
         if(node && node.datatype){
@@ -1140,6 +1155,45 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             $scope.setDirty();
         }
     };
+
+    $scope.addSev = function (node){
+        var sev = {};
+        sev.location = node.path;
+        sev.value = '';
+        sev.profilePath = $rootScope.getSegmentLabel($rootScope.segment) + "." + node.path;
+        sev.name = node.name;
+        console.log(sev);
+        $rootScope.segment.singleElementValues.push(sev);
+        node.sev = sev;
+        node.sev.from = 'segment';
+        $scope.setDirty();
+    };
+
+    $scope.deleteSev = function (node){
+        var index = $rootScope.segment.singleElementValues.indexOf(node.sev);
+        if (index >= 0) {
+            $rootScope.segment.singleElementValues.splice(index, 1);
+            $scope.setDirty();
+        }
+
+        if(node.componentDT) {
+            var componentPath = node.path.substr(node.path.split('.', 2).join('.').length + 1);
+            node.sev = _.find($rootScope.datatypesMap[node.componentDT].singleElementValues, function (sev) {
+                return sev.location == componentPath;
+            });
+            if (node.sev) {
+                node.sev.from = 'component';
+            }
+        }else if(node.fieldDT) {
+            var fieldPath = node.path.substr(node.path.indexOf('.') + 1);
+            node.sev = _.find($rootScope.datatypesMap[node.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+            if(node.sev) {
+                node.sev.from = 'field';
+            }
+        }else {
+            node.sev = null;
+        }
+    }
 
 });
 angular.module('igl').controller('SegmentRowCtrl', function($scope, $filter) {

@@ -1211,8 +1211,8 @@ angular.module('igl')
 
         $scope.confirmDatatypeSingleElementDuplicated = function (node) {
             var modalInstance = $modal.open({
-                templateUrl: 'ConfirmDatatypeSingleElementDuplicatedCtrl.html',
-                controller: 'ConfirmDatatypeSingleElementDuplicatedCtrl',
+                templateUrl: 'ConfirmSingleElementDuplicatedCtrl.html',
+                controller: 'ConfirmSingleElementDuplicatedCtrl',
                 resolve: {
                     selectedNode: function () {
                         return node;
@@ -1597,16 +1597,6 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function($scope, $
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-});
-
-angular.module('igl').controller('ConfirmDatatypeSingleElementDuplicatedCtrl', function($scope, $modalInstance, $rootScope, selectedNode) {
-    $scope.yes = function() {
-        $modalInstance.close(selectedNode);
-    };
-
-    $scope.no = function() {
         $modalInstance.dismiss('cancel');
     };
 });

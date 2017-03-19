@@ -3940,3 +3940,13 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
         $modalInstance.close($scope.currentNode);
     };
 });
+
+angular.module('igl').controller('ConfirmSingleElementDuplicatedCtrl', function($scope, $modalInstance, $rootScope, selectedNode) {
+    $scope.yes = function() {
+        $modalInstance.close(selectedNode);
+    };
+
+    $scope.no = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
