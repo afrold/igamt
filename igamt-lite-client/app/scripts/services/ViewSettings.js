@@ -10,7 +10,8 @@ angular.module('igl').factory('ViewSettings',
             { id: "predicate", label: "Predicate"},
             { id: "confStatement", label: "Conf. Statement"},
             { id: "defText", label: "Defin. Text"},
-            { id: "comment", label: "Comment"}
+            { id: "comment", label: "Comment"},
+            { id: "singleElm", label: "Single Elm."}
         ];
         var selectedColumns =  {
             "datatype": true,
@@ -18,7 +19,8 @@ angular.module('igl').factory('ViewSettings',
             "predicate": true,
             "confStatement": true,
             "defText": true,
-            "comment": true
+            "comment": true,
+            "singleElm": true
         };
 
 //        var visibleColumns = StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY) == null ? angular.copy(columnOptions) : angular.fromJson(StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY));

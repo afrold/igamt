@@ -7,7 +7,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 public class SingleElementValue {
 	protected String location;
 	protected String value;
-	protected String path;
+	protected String profilePath;
 	protected String name;
 
 	public SingleElementValue() {
@@ -30,12 +30,12 @@ public class SingleElementValue {
 		this.value = value;
 	}
 
-	public String getPath() {
-		return path;
+	public String getProfilePath() {
+		return profilePath;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
+	public void setProfilePath(String profilePath) {
+		this.profilePath = profilePath;
 	}
 
 	public String getName() {

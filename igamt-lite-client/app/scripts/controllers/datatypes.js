@@ -1209,6 +1209,22 @@ angular.module('igl')
             });
         };
 
+        $scope.confirmDatatypeSingleElementDuplicated = function (node) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmDatatypeSingleElementDuplicatedCtrl.html',
+                controller: 'ConfirmDatatypeSingleElementDuplicatedCtrl',
+                resolve: {
+                    selectedNode: function () {
+                        return node;
+                    }
+                }
+            });
+            modalInstance.result.then(function (node) {
+                $scope.addSev(node);
+            }, function () {
+            });
+        };
+
         $scope.isAvailableForValueSet = function (currentDT, parentDT, path){
             if(currentDT){
                 if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
@@ -1290,12 +1306,39 @@ angular.module('igl')
                 $scope.setDirty();
             }
         };
+
+        $scope.addSev = function (node){
+            var sev = {};
+            sev.location = node.path;
+            sev.value = '';
+            sev.profilePath = $rootScope.getDatatypeLabel($rootScope.datatype) + "." + node.path;
+            sev.name = node.name;
+            console.log(sev);
+            $rootScope.datatype.singleElementValues.push(sev);
+            node.sev = sev;
+            node.sev.isMain = true;
+            $scope.setDirty();
+        };
+
+        $scope.deleteSev = function (node, parent){
+            var index = $rootScope.datatype.singleElementValues.indexOf(node.sev);
+            if (index >= 0) {
+                $rootScope.datatype.singleElementValues.splice(index, 1);
+                $scope.setDirty();
+            }
+            if(parent){
+                node.sev = _.find(parent.singleElementValues, function(sev){ return sev.location  ==  node.position; });
+                if(node.sev) {
+                    node.sev.isMain = false;
+                }
+            }else {
+                node.sev = null;
+            }
+        }
     });
 
 
-angular.module('igl')
-    .controller('DatatypeRowCtrl', function($scope, $filter) {
-
+angular.module('igl').controller('DatatypeRowCtrl', function($scope, $filter) {
         $scope.init = function(node) {
             $scope.node = node;
         }
@@ -1303,8 +1346,7 @@ angular.module('igl')
         $scope.formName = "form_" + new Date().getTime();
     });
 
-angular.module('igl')
-    .controller('SelectDatatypeFlavorCtrl', function($scope, $filter, $modalInstance, $rootScope, $http, currentDatatype, DatatypeService, $rootScope, hl7Version, ngTreetableParams, ViewSettings, DatatypeLibrarySvc, $q, datatypeLibrary, TableService) {
+angular.module('igl').controller('SelectDatatypeFlavorCtrl', function($scope, $filter, $modalInstance, $rootScope, $http, currentDatatype, DatatypeService, $rootScope, hl7Version, ngTreetableParams, ViewSettings, DatatypeLibrarySvc, $q, datatypeLibrary, TableService) {
         $scope.resultsError = null;
         $scope.viewSettings = ViewSettings;
         $scope.resultsLoading = null;
@@ -1559,6 +1601,15 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function($scope, $
     };
 });
 
+angular.module('igl').controller('ConfirmDatatypeSingleElementDuplicatedCtrl', function($scope, $modalInstance, $rootScope, selectedNode) {
+    $scope.yes = function() {
+        $modalInstance.close(selectedNode);
+    };
+
+    $scope.no = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
 
 angular.module('igl').controller('DatatypeReferencesCtrl', function($scope, $modalInstance, dtToDelete) {
 
