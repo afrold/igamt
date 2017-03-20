@@ -1623,6 +1623,47 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
     };
 
+    $rootScope.findValueSetBindings = function(){
+        $rootScope.references = [];
+        angular.forEach($rootScope.messages.children, function(message) {
+            angular.forEach(message.valueSetBindings, function(vsb){
+                if(vsb.tableId == $rootScope.table.id){
+                    var found = angular.copy(vsb);
+                    found.type = 'message';
+                    found.id = message.id;
+
+                    $rootScope.references.push(found);
+                }
+            });
+        });
+
+        angular.forEach($rootScope.segments, function(segment) {
+            angular.forEach(segment.valueSetBindings, function(vsb){
+                if(vsb.tableId == $rootScope.table.id){
+                    var found = angular.copy(vsb);
+                    found.type = 'segment';
+                    found.id = segment.id;
+
+                    $rootScope.references.push(found);
+                }
+            });
+        });
+
+        angular.forEach($rootScope.datatypes, function(dt) {
+            angular.forEach(dt.valueSetBindings, function(vsb){
+                if(vsb.tableId == $rootScope.table.id){
+                    var found = angular.copy(vsb);
+                    found.type = 'datatype';
+                    found.id = dt.id;
+
+                    $rootScope.references.push(found);
+                }
+            });
+        });
+
+        //Need CoConstraints, Constraints, DynamicMapping
+    };
+
     $rootScope.findTableRefs = function(table, obj, path, target) {
         if (obj != null && obj != undefined) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {

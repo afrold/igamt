@@ -1643,13 +1643,7 @@ angular.module('igl')
                     }
                 }
                 $rootScope.table.smallCodes = $rootScope.table.codes.slice(0, 1000);
-                $rootScope.references = [];
-                angular.forEach($rootScope.segments, function(segment) {
-                    $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
-                });
-                angular.forEach($rootScope.datatypes, function(dt) {
-                    $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
-                });
+                $rootScope.findValueSetBindings();
                 $scope.loadingSelection = false;
                 $rootScope.$emit("event:initEditArea");
                 blockUI.stop();
