@@ -230,9 +230,9 @@ public class Bootstrap implements InitializingBean {
 //    fixDatatypeRecursion();
 //    fixDuplicateValueSets();
 	  
-//	    updateInitAndCreateBindingAndCommentsVSForDatatype();
-//	    updateInitAndCreateBindingAndCommentsVSForSegment();
-//		updateInitAndCreateCommentsForMessage();
+	    updateInitAndCreateBindingAndCommentsVSForDatatype();
+	    updateInitAndCreateBindingAndCommentsVSForSegment();
+		updateInitAndCreateCommentsForMessage();
   }
 
 
