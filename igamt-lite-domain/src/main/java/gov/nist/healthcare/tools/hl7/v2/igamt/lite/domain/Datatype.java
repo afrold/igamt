@@ -36,6 +36,10 @@ public class Datatype extends DataModelWithConstraints
   private String purposeAndUse = "";
   
   private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
+  
+  private List<Comment> comments = new ArrayList<Comment>();
+  
+  private List<SingleElementValue> singleElementValues = new ArrayList<SingleElementValue>();
 
   protected List<Component> components = new ArrayList<Component>();
 
@@ -126,6 +130,14 @@ public class Datatype extends DataModelWithConstraints
   public void addValueSetBinding(ValueSetBinding vsb) {
 	valueSetBindings.add(vsb);
   }
+  
+  public void addComment(Comment comment) {
+	comments.add(comment);
+  }
+  
+  public void addSingleElementValue(SingleElementValue sev) {
+	singleElementValues.add(sev);
+  }
 
   public String getComment() {
     return comment;
@@ -190,6 +202,15 @@ public class Datatype extends DataModelWithConstraints
     	clonedDT.addValueSetBinding(vsb);
     }
     
+    clonedDT.setComments(new ArrayList<Comment>());
+    for (Comment c : this.comments){
+    	clonedDT.addComment(c);
+    }
+    
+    clonedDT.setSingleElementValues(new ArrayList<SingleElementValue>());
+    for (SingleElementValue sev : this.singleElementValues){
+    	clonedDT.addSingleElementValue(sev);
+    }
     
     clonedDT.setDescription(description);
     clonedDT.setLabel(label);
@@ -312,6 +333,22 @@ public class Datatype extends DataModelWithConstraints
 
 	public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
 		this.valueSetBindings = valueSetBindings;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public List<SingleElementValue> getSingleElementValues() {
+		return singleElementValues;
+	}
+
+	public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
+		this.singleElementValues = singleElementValues;
 	}
 
 

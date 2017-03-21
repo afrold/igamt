@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -218,9 +219,6 @@ public class Bootstrap implements InitializingBean {
 
     // modifyCodeUsage();
     // fixMissingData();
-//    updateInitAndCreateBindingVSForDatatype();
-//    updateInitAndCreateBindingVSForSegment();
-
 
     // new Master Datatype Generation
 
@@ -229,10 +227,13 @@ public class Bootstrap implements InitializingBean {
 
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
-    // fixDatatypeRecursion();
+     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
     createDefaultExportFonts();
-  }
+	    updateInitAndCreateBindingAndCommentsVSForDatatype();
+	    updateInitAndCreateBindingAndCommentsVSForSegment();
+		updateInitAndCreateCommentsForMessage();
+   }
 
 
   private void fixDatatypeRecursion(IGDocument document) throws IGDocumentException {
@@ -429,11 +430,46 @@ public class Bootstrap implements InitializingBean {
     }
     return false;
   }
+  
+  private void updateInitAndCreateCommentsForMessage(){
+	  List<Message> allMsgs = messageService.findAll();
+	  for (Message m : allMsgs) {
+		  m.setComments(new ArrayList<Comment>());
+		  for(SegmentRefOrGroup child : m.getChildren()){
+			  updateCommentForSegRefOrGroup(m, child, null);
+		  }
+		  
+		  messageService.save(m);
+	  }
+  }
 
-  private void updateInitAndCreateBindingVSForSegment() {
+  private void updateCommentForSegRefOrGroup(Message m, SegmentRefOrGroup srog, String parentPath) {
+	String currentPath = null;
+	if(parentPath == null) currentPath = srog.getPosition() + "";
+	else currentPath = parentPath + "." + srog.getPosition();
+	
+	if(srog.getComment() != null && !srog.getComment().equals("")){
+		  Comment comment = new Comment();
+		  comment.setDescription(srog.getComment());
+		  comment.setLastUpdatedDate(new Date());
+		  comment.setLocation(currentPath);
+		  
+		  m.addComment(comment);
+		  System.out.println("FOUND!!!!!!!!" + comment.getDescription());
+//		  srog.setComment(null);
+	}
+	if(srog instanceof Group){
+		for(SegmentRefOrGroup child : ((Group)srog).getChildren()){
+			updateCommentForSegRefOrGroup(m, child, currentPath);
+		}	
+	}
+  }
+
+  private void updateInitAndCreateBindingAndCommentsVSForSegment() {
 	  List<Segment> allSegs = segmentService.findAll();
 	  for (Segment s : allSegs) {
 		  s.setValueSetBindings(new ArrayList<ValueSetBinding>());
+		  s.setComments(new ArrayList<Comment>());
 		  for(Field f:s.getFields()){
 			  if(f.getTables() != null){
 				  for(TableLink tl:f.getTables()){
@@ -450,16 +486,26 @@ public class Bootstrap implements InitializingBean {
 				  }
 //				  f.setTables(null);
 			  }
+			  if(f.getComment() != null && !f.getComment().equals("")){
+				  Comment comment = new Comment();
+				  comment.setDescription(f.getComment());
+				  comment.setLastUpdatedDate(new Date());
+				  comment.setLocation(f.getPosition() + "");
+				  
+				  s.addComment(comment);
+//				  s.setComment(null);
+			  }
 		  }
 		  
 		  segmentService.save(s);
 	  }
   }
   
-  private void updateInitAndCreateBindingVSForDatatype() {
+  private void updateInitAndCreateBindingAndCommentsVSForDatatype() {
 	  List<Datatype> allDts = datatypeService.findAll();
 	  for (Datatype d : allDts) {
 		  d.setValueSetBindings(new ArrayList<ValueSetBinding>());
+		  d.setComments(new ArrayList<Comment>());
 		  for(Component c:d.getComponents()){
 			  if(c.getTables() != null){
 				  for(TableLink tl:c.getTables()){
@@ -474,10 +520,18 @@ public class Bootstrap implements InitializingBean {
 						  d.addValueSetBinding(vsb);
 					  }
 				  }
-//				  c.setTables(null);
+//			  	  c.setTables(null);
+			  }  
+			  if(c.getComment() != null && !c.getComment().equals("")){
+				  Comment comment = new Comment();
+				  comment.setDescription(c.getComment());
+				  comment.setLastUpdatedDate(new Date());
+				  comment.setLocation(c.getPosition() + "");
+				  
+				  d.addComment(comment);
+//				  c.setComment(null);
 			  }
 		  }
-		  
 		  datatypeService.save(d);
 	  }
   }

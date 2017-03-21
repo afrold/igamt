@@ -625,6 +625,35 @@
         </button>
         </div>
     </script>
+
+<script type="text/ng-template " id="EditComment.html">
+    <div class="modal-header ">
+        <h3>{{title}}</h3>
+
+    </div>
+    <div class="modal-body ">
+        <form class="form-horizontal " novalidate>
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <textarea rows="10 " type="text " ng-disabled="disabled" style="width:100%;" autofocus name="inputEditor" class="form-control" ng-model="descriptionText"></textarea>
+                </div>
+                <div class="col-md-12 ">
+                    <p ng-show="!currentComment" style="text-align: right">New Comments</p>
+                    <p ng-show="currentComment" style="text-align: right">Last updated at {{currentComment.lastUpdatedDate|date:dateFormat}}</p>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
+            &nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+            &nbsp; </i>Save</span>
+        </button>
+    </div>
+</script>
 <script type="text/ng-template " id="tree_node ">
 
         <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined) ">
@@ -4555,5 +4584,20 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</script>
+<script type="text/ng-template" id="ConfirmSingleElementDuplicatedCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Warning for duplicated Single Element Value</h3>
+    </div>
+    <div class="modal-body">
+        <p>Single element value is already presence at child node. Do you want to override it and want to define a new single element value at current node?</p>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-click="no()"><span><i class="fa fa-times fa-fw">&nbsp; </i>No</span>
+        </button>
+        <button class="btn btn-raised btn-default btn-sm" ng-click="yes()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Yes</span>
+        </button>
     </div>
 </script>

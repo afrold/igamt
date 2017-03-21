@@ -491,6 +491,11 @@ public class IGDocumentController extends CommonController {
       Profile profile) {
     for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
       Segment s = segmentService.findById(sl.getId());
+      for(ValueSetBinding vsb : s.getValueSetBindings()){
+    	  vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+      }
+      
+      
       for (Field f : s.getFields()) {
         if (f.getDatatype() != null && f.getDatatype().getId() != null
             && datatypeIdChangeMap.containsKey(f.getDatatype().getId()))
@@ -515,6 +520,9 @@ public class IGDocumentController extends CommonController {
 
     for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
       Datatype d = datatypeService.findById(dl.getId());
+      for(ValueSetBinding vsb : d.getValueSetBindings()){
+    	  vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+      }
       for (Component c : d.getComponents()) {
         if (c.getDatatype() != null && c.getDatatype().getId() != null
             && datatypeIdChangeMap.containsKey(c.getDatatype().getId()))
@@ -531,6 +539,9 @@ public class IGDocumentController extends CommonController {
     }
 
     for (Message m : profile.getMessages().getChildren()) {
+    	for(ValueSetBinding vsb : m.getValueSetBindings()){
+      	  vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+        }
       for (SegmentRefOrGroup sog : m.getChildren()) {
         this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap, sog);
       }

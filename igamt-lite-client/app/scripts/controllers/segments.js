@@ -991,25 +991,71 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
     };
 
+    $scope.editCommentDlg = function(node, comment, disabled, type) {
+        var modalInstance = $modal.open({
+            templateUrl: 'EditComment.html',
+            controller: 'EditCommentCtrl',
+            backdrop: true,
+            keyboard: true,
+            windowClass: 'input-text-modal-window',
+            backdropClick: false,
+            resolve: {
+                currentNode: function() {
+                    return node;
+                },
+                currentComment: function() {
+                    return comment;
+                },
+                disabled: function() {
+                    return disabled;
+                },
+                type: function() {
+                    return type;
+                }
+            }
+        });
+
+        modalInstance.result.then(function() {
+            $scope.setDirty();
+        });
+    };
+
+    $scope.confirmDatatypeSingleElementDuplicated = function (node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'ConfirmSingleElementDuplicatedCtrl.html',
+            controller: 'ConfirmSingleElementDuplicatedCtrl',
+            resolve: {
+                selectedNode: function () {
+                    return node;
+                }
+            }
+        });
+        modalInstance.result.then(function (node) {
+            $scope.addSev(node);
+        }, function () {
+        });
+    };
 
     $scope.isAvailableForValueSet = function (node){
-        var currentDT = $rootScope.datatypesMap[node.datatype.id];
-        if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
-                return valueSetAllowedDT == currentDT.name;
-            })) return true;
+        if(node && node.datatype){
+            var currentDT = $rootScope.datatypesMap[node.datatype.id];
+            if(currentDT && _.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
+                    return valueSetAllowedDT == currentDT.name;
+                })) return true;
+        }
 
-        if(node.fieldDT && !node.componentDT){
+        if(node && node.fieldDT && !node.componentDT){
             var parentDT = $rootScope.datatypesMap[node.fieldDT];
             var pathSplit = node.path.split(".");
-            if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
+            if(parentDT && _.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
                     return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[1];
                 })) return true;
         }
 
-        if(node.componentDT){
+        if(node && node.componentDT){
             var parentDT = $rootScope.datatypesMap[node.componentDT];
             var pathSplit = node.path.split(".");
-            if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
+            if(parentDT && _.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
                     return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[2];
                 })) return true;
         }
@@ -1017,37 +1063,79 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         return false;
     };
 
+    $scope.findingComments = function(node) {
+        var result = [];
+        if(node && $rootScope.segment){
+            result = _.filter($rootScope.segment.comments, function(comment){ return comment.location == node.path; });
+            for (var i = 0; i < result.length; i++) {
+                result[i].from = 'segment';
+                result[i].index = i + 1;
+            }
+
+
+            if(node.fieldDT) {
+                var parentDT = $rootScope.datatypesMap[node.fieldDT];
+                var subPath = node.path.substr(node.path.indexOf('.') + 1);
+                var subResult = _.filter(parentDT.comments, function(comment){ return comment.location == subPath; });
+                for (var i = 0; i < subResult.length; i++) {
+                    subResult[i].from = 'field';
+                    subResult[i].index = i + 1;
+                }
+
+                result = result.concat(subResult);
+            }
+
+
+            if(node.componentDT) {
+                var parentDT = $rootScope.datatypesMap[node.componentDT];
+                var subPath = node.path.substr(node.path.split('.', 2).join('.').length + 1);
+                var subSubResult = _.filter(parentDT.comments, function(comment){ return comment.location == subPath; });
+                for (var i = 0; i < subSubResult.length; i++) {
+                    subSubResult[i].from = 'component';
+                    subSubResult[i].index = i + 1;
+                }
+
+                result = result.concat(subSubResult);
+            }
+        }
+        return result;
+    };
+
     $scope.findingBindings = function(node) {
-        var result = _.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location == node.path; });
-        for (var i = 0; i < result.length; i++) {
-            result[i].bindingFrom = 'segment';
-        }
-
-        if(result && result.length > 0) {
-            return result;
-        }
-
-        if(node.fieldDT) {
-            var parentDT = $rootScope.datatypesMap[node.fieldDT];
-            var subPath = node.path.substr(node.path.indexOf('.') + 1);
-            result = _.filter(parentDT.valueSetBindings, function(binding){ return binding.location == subPath; });
+        var result = [];
+        if(node && $rootScope.segment){
+            result = _.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location == node.path; });
             for (var i = 0; i < result.length; i++) {
-                result[i].bindingFrom = 'field';
+                result[i].bindingFrom = 'segment';
+            }
+
+            if(result && result.length > 0) {
+                return result;
+            }
+
+            if(node.fieldDT) {
+                var parentDT = $rootScope.datatypesMap[node.fieldDT];
+                var subPath = node.path.substr(node.path.indexOf('.') + 1);
+                result = _.filter(parentDT.valueSetBindings, function(binding){ return binding.location == subPath; });
+                for (var i = 0; i < result.length; i++) {
+                    result[i].bindingFrom = 'field';
+                }
+            }
+
+            if(result && result.length > 0) {
+                return result;
+            }
+
+            if(node.componentDT) {
+                var parentDT = $rootScope.datatypesMap[node.componentDT];
+                var subPath = node.path.substr(node.path.split('.', 2).join('.').length + 1);
+                result = _.filter(parentDT.valueSetBindings, function(binding){ return binding.location == subPath; });
+                for (var i = 0; i < result.length; i++) {
+                    result[i].bindingFrom = 'component';
+                }
             }
         }
 
-        if(result && result.length > 0) {
-            return result;
-        }
-
-        if(node.componentDT) {
-            var parentDT = $rootScope.datatypesMap[node.componentDT];
-            var subPath = node.path.substr(node.path.split('.', 2).join('.').length + 1);
-            result = _.filter(parentDT.valueSetBindings, function(binding){ return binding.location == subPath; });
-            for (var i = 0; i < result.length; i++) {
-                result[i].bindingFrom = 'component';
-            }
-        }
 
         return result;
     };
@@ -1059,6 +1147,57 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             $scope.setDirty();
         }
     };
+
+    $scope.deleteComment = function(comment){
+        var index = $rootScope.segment.comments.indexOf(comment);
+        if (index >= 0) {
+            $rootScope.segment.comments.splice(index, 1);
+            $scope.setDirty();
+        }
+    };
+
+    $scope.addSev = function (node){
+        var sev = {};
+        sev.location = node.path;
+        sev.value = '';
+        sev.profilePath = $rootScope.getSegmentLabel($rootScope.segment) + "." + node.path;
+        sev.name = node.name;
+        console.log(sev);
+        $rootScope.segment.singleElementValues.push(sev);
+        node.sev = sev;
+        node.sev.from = 'segment';
+        $scope.setDirty();
+    };
+
+    $scope.deleteSev = function (node){
+        var index = $rootScope.segment.singleElementValues.indexOf(node.sev);
+        if (index >= 0) {
+            $rootScope.segment.singleElementValues.splice(index, 1);
+            $scope.setDirty();
+        }
+
+        if(node.componentDT) {
+            var componentPath = node.path.substr(node.path.split('.', 2).join('.').length + 1);
+            var foundSev = _.find($rootScope.datatypesMap[node.componentDT].singleElementValues, function (sev) { return sev.location == componentPath;});
+            if (foundSev) {
+                foundSev.from = 'component';
+                node.sev = foundSev;
+            }
+        }
+
+        if(node.fieldDT) {
+            var fieldPath = node.path.substr(node.path.indexOf('.') + 1);
+            var foundSev = _.find($rootScope.datatypesMap[node.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+            if(foundSev) {
+                foundSev.from = 'field';
+                node.sev = foundSev;
+            }
+        }
+
+        if(node.sev && node.sev.from == 'segment'){
+            node.sev = null;
+        }
+    }
 
 });
 angular.module('igl').controller('SegmentRowCtrl', function($scope, $filter) {

@@ -584,3 +584,11 @@ li.active > a{
     background: rgba(0, 3, 244, 0.24);
     font-weight: 400;
 }
+.valueset-DropDown {
+    max-height: 200px;
+    width: 60px;
+    overflow: auto;
+}
+.valueset-search {
+    padding: 5px 10px;
+}

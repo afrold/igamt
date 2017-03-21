@@ -202,7 +202,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
     clonedProfile.setChanges(changes);
     clonedProfile.setComment(comment);
     clonedProfile.setDatatypeLibrary(datatypeLibrary.clone(dtRecords, tabRecords));
-    // clonedProfile.setSegmentLibrary(segmentLibrary.clone(segRecords, dtRecords, tabRecords));
+//     clonedProfile.setSegmentLibrary(segmentLibrary.clone(segRecords, dtRecords, tabRecords));
     clonedProfile.setTableLibrary(tableLibrary.clone(tabRecords));
     clonedProfile.setMessages(messages.clone(dtRecords, segRecords, tabRecords));
     clonedProfile.setMetaData(metaData.clone());

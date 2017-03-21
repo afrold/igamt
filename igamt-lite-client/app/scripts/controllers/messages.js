@@ -792,28 +792,15 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         });
     };
 
-    $scope.refinePath = function (instancePath){
-        var pathArray = [];
-
-        if(instancePath) pathArray = instancePath.split('.');
-        var positionPath = '';
-        for (var i in pathArray) {
-            var position = pathArray[i].split('[')[0];
-            positionPath = positionPath + '.' + position;
+    $scope.isAvailableForValueSet = function (node){
+        if(node && node.obj){
+            var currentDT = $rootScope.datatypesMap[node.obj.datatype.id];
+            if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
+                    return valueSetAllowedDT == currentDT.name;
+                })) return true;
         }
 
-        if(positionPath != '') positionPath = positionPath.substr(1);
-
-        return positionPath;
-    };
-
-    $scope.isAvailableForValueSet = function (node){
-        var currentDT = $rootScope.datatypesMap[node.obj.datatype.id];
-        if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
-                return valueSetAllowedDT == currentDT.name;
-            })) return true;
-
-        if(node.fieldDT && !node.componentDT){
+        if(node && node.fieldDT && !node.componentDT){
             var parentDT = $rootScope.datatypesMap[node.fieldDT];
             var pathSplit = node.segmentPath.split(".");
             if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
@@ -821,7 +808,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
                 })) return true;
         }
 
-        if(node.componentDT){
+        if(node && node.componentDT){
             var parentDT = $rootScope.datatypesMap[node.componentDT];
             var pathSplit = node.segmentPath.split(".");
             if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
@@ -833,54 +820,110 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     };
 
     $scope.findingBindings = function(node) {
-        var result = _.filter($rootScope.message.valueSetBindings, function(binding){
-            return binding.location == $scope.refinePath(node.path);
-        });
-        for (var i = 0; i < result.length; i++) {
-            result[i].bindingFrom = 'message';
-        }
-
-        if(result && result.length > 0) {
-            return result;
-        }
-
-        if(node.segment) {
-            var parentSeg = $rootScope.segmentsMap[node.segment];
-            result = _.filter(parentSeg.valueSetBindings, function(binding){
-                return binding.location == node.segmentPath;
+        var result = [];
+        if(node && $rootScope.message){
+            result = _.filter($rootScope.message.valueSetBindings, function(binding){
+                return binding.location == $rootScope.refinePath(node.path);
             });
             for (var i = 0; i < result.length; i++) {
-                result[i].bindingFrom = 'segment';
+                result[i].bindingFrom = 'message';
+            }
+
+            if(result && result.length > 0) {
+                return result;
+            }
+
+            if(node.segment) {
+                var parentSeg = $rootScope.segmentsMap[node.segment];
+                result = _.filter(parentSeg.valueSetBindings, function(binding){
+                    return binding.location == node.segmentPath;
+                });
+                for (var i = 0; i < result.length; i++) {
+                    result[i].bindingFrom = 'segment';
+                }
+            }
+
+            if(result && result.length > 0) {
+                return result;
+            }
+
+            if(node.fieldDT) {
+                var parentDT = $rootScope.datatypesMap[node.fieldDT];
+                var subPath = node.segmentPath.substr(node.segmentPath.indexOf('.') + 1);
+                result = _.filter(parentDT.valueSetBindings, function(binding){
+                    return binding.location == subPath;
+                });
+                for (var i = 0; i < result.length; i++) {
+                    result[i].bindingFrom = 'field';
+                }
+            }
+
+            if(result && result.length > 0) {
+                return result;
+            }
+
+            if(node.componentDT) {
+                var parentDT = $rootScope.datatypesMap[node.componentDT];
+                var subPath = node.segmentPath.substr(node.segmentPath.split('.', 2).join('.').length + 1);
+                result = _.filter(parentDT.valueSetBindings, function(binding){
+                    return binding.location == subPath;
+                });
+                for (var i = 0; i < result.length; i++) {
+                    result[i].bindingFrom = 'component';
+                }
             }
         }
 
-        if(result && result.length > 0) {
-            return result;
-        }
+        return result;
+    };
 
-        if(node.fieldDT) {
-            var parentDT = $rootScope.datatypesMap[node.fieldDT];
-            var subPath = node.segmentPath.substr(node.segmentPath.indexOf('.') + 1);
-            result = _.filter(parentDT.valueSetBindings, function(binding){
-                return binding.location == subPath;
+    $scope.findingComments = function(node) {
+        var result = [];
+        if(node && $rootScope.message){
+            result = _.filter($rootScope.message.comments, function(comment){
+                return comment.location == $rootScope.refinePath(node.path);
             });
             for (var i = 0; i < result.length; i++) {
-                result[i].bindingFrom = 'field';
+                result[i].from = 'message';
+                result[i].index = i + 1;
             }
-        }
 
-        if(result && result.length > 0) {
-            return result;
-        }
+            if(node.segment) {
+                var parentSeg = $rootScope.segmentsMap[node.segment];
+                var subResult = _.filter(parentSeg.comments, function(comment){
+                    return comment.location == node.segmentPath;
+                });
+                for (var i = 0; i < subResult.length; i++) {
+                    subResult[i].from = 'segment';
+                    subResult[i].index = i + 1;
+                }
+                result = result.concat(subResult);
+            }
 
-        if(node.componentDT) {
-            var parentDT = $rootScope.datatypesMap[node.componentDT];
-            var subPath = node.segmentPath.substr(node.segmentPath.split('.', 2).join('.').length + 1);
-            result = _.filter(parentDT.valueSetBindings, function(binding){
-                return binding.location == subPath;
-            });
-            for (var i = 0; i < result.length; i++) {
-                result[i].bindingFrom = 'component';
+            if(node.fieldDT) {
+                var parentDT = $rootScope.datatypesMap[node.fieldDT];
+                var subPath = node.segmentPath.substr(node.segmentPath.indexOf('.') + 1);
+                var subSubResult = _.filter(parentDT.comments, function(comment){
+                    return comment.location == subPath;
+                });
+                for (var i = 0; i < subSubResult.length; i++) {
+                    subSubResult[i].from = 'field';
+                    subSubResult[i].index = i + 1;
+                }
+                result = result.concat(subSubResult);
+            }
+
+            if(node.componentDT) {
+                var parentDT = $rootScope.datatypesMap[node.componentDT];
+                var subPath = node.segmentPath.substr(node.segmentPath.split('.', 2).join('.').length + 1);
+                var subSubSubResult = _.filter(parentDT.comments, function(comment){
+                    return comment.location == subPath;
+                });
+                for (var i = 0; i < subSubSubResult.length; i++) {
+                    subSubSubResult[i].from = 'component';
+                    subSubSubResult[i].index = i + 1;
+                }
+                result = result.concat(subSubSubResult);
             }
         }
 
@@ -891,6 +934,14 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         var index = $rootScope.message.valueSetBindings.indexOf(binding);
         if (index >= 0) {
             $rootScope.message.valueSetBindings.splice(index, 1);
+            $scope.setDirty();
+        }
+    };
+
+    $scope.deleteComment = function(comment){
+        var index = $rootScope.segment.comments.indexOf(comment);
+        if (index >= 0) {
+            $rootScope.segment.comments.splice(index, 1);
             $scope.setDirty();
         }
     };
@@ -911,6 +962,104 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             $scope.setDirty();
         });
     };
+
+    $scope.editCommentDlg = function(node, comment, disabled, type) {
+        var modalInstance = $modal.open({
+            templateUrl: 'EditComment.html',
+            controller: 'EditCommentCtrl',
+            backdrop: true,
+            keyboard: true,
+            windowClass: 'input-text-modal-window',
+            backdropClick: false,
+            resolve: {
+                currentNode: function() {
+                    return node;
+                },
+                currentComment: function() {
+                    return comment;
+                },
+                disabled: function() {
+                    return disabled;
+                },
+                type: function() {
+                    return type;
+                }
+            }
+        });
+
+        modalInstance.result.then(function() {
+            $scope.setDirty();
+        });
+    };
+
+    $scope.confirmDatatypeSingleElementDuplicated = function (node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'ConfirmSingleElementDuplicatedCtrl.html',
+            controller: 'ConfirmSingleElementDuplicatedCtrl',
+            resolve: {
+                selectedNode: function () {
+                    return node;
+                }
+            }
+        });
+        modalInstance.result.then(function (node) {
+            $scope.addSev(node);
+        }, function () {
+        });
+    };
+
+    $scope.addSev = function (node){
+        var sev = {};
+        sev.location = $rootScope.refinePath(node.path);
+        sev.value = '';
+        sev.profilePath = $rootScope.refinePath(node.locationPath);
+        sev.name = node.obj.name;
+        console.log(sev);
+        $rootScope.message.singleElementValues.push(sev);
+        node.sev = sev;
+        node.sev.from = 'message';
+        $scope.setDirty();
+    };
+
+    $scope.deleteSev = function (node){
+        var index = $rootScope.message.singleElementValues.indexOf(node.sev);
+        if (index >= 0) {
+            $rootScope.message.singleElementValues.splice(index, 1);
+            $scope.setDirty();
+        }
+
+        if(node.componentDT) {
+            var componentPath = node.segmentPath.substr(node.segmentPath.split('.', 2).join('.').length + 1);
+            var foundSev = _.find($rootScope.datatypesMap[node.componentDT].singleElementValues, function (sev) {return sev.location == componentPath;});
+            if (foundSev) {
+                foundSev.from = 'component';
+                node.sev = foundSev;
+            }
+        }
+
+        if(node.fieldDT) {
+            var fieldPath = node.segmentPath.substr(node.segmentPath.indexOf('.') + 1);
+            var foundSev = _.find($rootScope.datatypesMap[node.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+            if(foundSev) {
+                foundSev.from = 'field';
+                node.sev = foundSev;
+            }
+        }
+
+        if(node.segment) {
+            var foundSev = _.find($rootScope.segmentsMap[node.segment].singleElementValues, function(sev){ return sev.location  ==  node.segmentPath; });
+            if(foundSev) {
+                foundSev.from = 'segment';
+                node.sev = foundSev;
+            }
+        }
+
+        if(node.sev && node.sev.from == 'message'){
+            node.sev = null;
+        }
+    }
+
+
 
 
 });
