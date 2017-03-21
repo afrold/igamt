@@ -450,25 +450,6 @@
                                             </td>
                                             <td st-ratio="30">
                                                 {{tablesMap[ref.tableId].bindingIdentifier}}
-                                                <div class="dropdown dropdown-scroll">
-                                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">Select
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu valueset-DropDown" role="menu" aria-labelledby="dropdownMenu1">
-                                                        <li role="presentation">
-                                                            <div class="input-group input-group-sm search-control valueset-search">
-                                                                <span class="input-group-addon">
-                                                                    <span class="glyphicon glyphicon-search"></span>
-                                                                </span>
-                                                                <input type="text" class="form-control" placeholder="Query" ng-model="query"></input>
-                                                            </div>
-                                                        </li>
-                                                        <li role="presentation" ng-repeat='t in tables | filter:query'>
-                                                            <a href="#">{{t.bindingIdentifier}}
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
                                             </td>
                                             <td st-ratio="15">
                                                 {{::ref.bindingLocation}}

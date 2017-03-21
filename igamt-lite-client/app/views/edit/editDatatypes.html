@@ -896,7 +896,7 @@
                 </a>
             </div>
         </td>
-        <td ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
             <div ng-repeat="comment in findingComments(node.path)">
                 <span class="badge" ng-class="{'label-MAIN' : comment.isMain, 'label-CHILD' : !comment.isMain}">
                     <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.isMain" ng-click="editCommentDlg(node, comment, false, 'datatype')">Comments_{{comment.index}}</span>

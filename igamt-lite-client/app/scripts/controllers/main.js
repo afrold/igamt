@@ -3995,7 +3995,13 @@ angular.module('igl').controller('confirmSwitch', function($scope, $rootScope, $
 angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode, currentComment, disabled, type) {
     $scope.currentNode = currentNode;
     $scope.currentComment = currentComment;
-    var currentPath = $rootScope.refinePath($scope.currentNode.path);
+    var currentPath = null;
+    if(type == 'message') {
+        currentPath = $rootScope.refinePath($scope.currentNode.path);
+    }else {
+        currentPath = $scope.currentNode.path;
+    }
+
     $scope.disabled = disabled;
     var targetObj = type === 'datatype' ?  $rootScope.datatype: type === 'segment' ? $rootScope.segment : $rootScope.message;
     $scope.title = '';
