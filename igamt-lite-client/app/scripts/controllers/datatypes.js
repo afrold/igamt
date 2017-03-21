@@ -1282,7 +1282,12 @@ angular.module('igl')
                 else {
                     if(path.indexOf('.') > -1){
                         var subPath = path.substr(path.indexOf('.') + 1);
-                        return _.filter(parent.valueSetBindings, function(binding){ return binding.location == subPath; });
+                        var subResult = _.filter(parent.valueSetBindings, function(binding){ return binding.location == subPath; });
+
+                        for (var i = 0; i < subResult.length; i++) {
+                            subResult[i].isMain = false;
+                        }
+                        return subResult;
                     }else {
                         return [];
                     }
