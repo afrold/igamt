@@ -6,9 +6,11 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  */
 public class SingleElementValue {
 	protected String location;
-	protected String value;
-	protected String profilePath;
-	protected String name;
+	protected String value; //AAA
+	protected String profilePath;  //MSH-3.1
+	protected String name; // Identifier
+	
+	// MSH-3.1 (Identifier) should be AAA.
 
 	public SingleElementValue() {
 		super();
@@ -45,4 +47,5 @@ public class SingleElementValue {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 }

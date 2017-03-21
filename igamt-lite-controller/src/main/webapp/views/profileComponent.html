@@ -1,5 +1,4 @@
-<script type="text/ng-template" id="Pc.html">
-    <div ng-show="isAuthenticated()">
+<script type="text/ng-template" id="Pc.html"><div ng-show="isAuthenticated()">
         <!--<div class="row">-->
         <div ng-show="!isPending()">
             <div style="padding-top:10px">
@@ -117,15 +116,7 @@
         <div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto">
             <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
         </div>
-    </div>
-</script>
-
-
-
-
-<script type="text/ng-template" id="profileComponentT">
-
-    <tr>
+    </div></script> <script type="text/ng-template" id="profileComponentT"><tr>
         <td class="col-md-1 col-fixed-60">
             <span ng-bind="node.path"></span>
         </td>
@@ -175,13 +166,7 @@
         </td>
         <td class="col-md-1" ng-style="commentWidth">
         </td>
-    </tr>
-
-</script>
-
-
-<script type="text/ng-template" id="addProfileComponent.html">
-    <div class="modal-header">
+    </tr></script> <script type="text/ng-template" id="addProfileComponent.html"><div class="modal-header">
         <h3 class="modal-title">Create Profile Component</h3>
     </div>
     <div class="modal-body">
@@ -229,11 +214,7 @@
         </button>
         <button class="btn btn-raised btn-info btn-sm" ng-click="create()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Create</span>
         </button>
-    </div>
-</script>
-
-<script type="text/ng-template" id="addComponent.html">
-    <div class="modal-header">
+    </div></script> <script type="text/ng-template" id="addComponent.html"><div class="modal-header">
         <h3 class="modal-title">Add Components</h3>
     </div>
     <div class="modal-body">
@@ -319,5 +300,4 @@
         </button>
         <button class="btn btn-raised btn-info btn-sm" ng-click="create()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Create</span>
         </button>
-    </div>
-</script>
+    </div></script>
