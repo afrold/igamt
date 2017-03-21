@@ -1179,6 +1179,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     var f = {};
                     f.obj = element;
                     f.path = parent.path + "." + element.position + "[1]";
+                    f.segmentPath = element.position;
+                    f.segment = parent.obj.ref.id;
                     f.locationPath = parent.locationPath + "." + element.position + "[1]";
                     f.children = [];
                     var d = $rootScope.datatypesMap[f.obj.datatype.id];
@@ -1209,6 +1211,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
                     c.obj = element;
                     c.path = parent.path + "." + element.position + "[1]";
+                    c.segmentPath = parent.segmentPath + "." + element.position;
+                    if(c.segmentPath.split(".").length - 1 == 1){
+                        c.fieldDT = parent.obj.datatype.id;
+                    }else if(c.segmentPath.split(".").length - 1 == 2){
+                        c.fieldDT = parent.fieldDT;
+                        c.componentDT = parent.obj.datatype.id;
+                    }
+
                     c.locationPath = parent.locationPath + "." + element.position + "[1]";
                     c.children = [];
                     var d = $rootScope.datatypesMap[c.obj.datatype.id];
@@ -1332,7 +1342,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     }
 
     $rootScope.processDatatypeTree = function(element, parent) {
-
         ////console.log(element);
 
         try {
@@ -3217,10 +3226,28 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         return element.hl7Version;
 
-    }
+    };
 
-    $rootScope.getTableLabel = function(table) {
+    $rootScope.getScopeLabel = function(leaf) {
+        if (leaf) {
+            if (leaf.scope === 'HL7STANDARD') {
+                return 'HL7';
+            } else if (leaf.scope === 'USER') {
+                return 'USR';
+            } else if (leaf.scope === 'MASTER') {
+                return 'MAS';
+            } else if (leaf.scope === 'PRELOADED') {
+                return 'PRL';
+            } else if (leaf.scope === 'PHINVADS') {
+                return 'PVS';
+            } else {
+                return "";
+            }
+        }
+    };
 
+    $rootScope.getTableLabel = function(binding) {
+        var table = $rootScope.tablesMap[binding.tableId];
         if (table && table.bindingIdentifier) {
             return $rootScope.getLabel(table.bindingIdentifier, table.ext);
         }

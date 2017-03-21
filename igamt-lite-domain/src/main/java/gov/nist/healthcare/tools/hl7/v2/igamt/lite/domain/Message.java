@@ -39,6 +39,8 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
 
   private String description; // Message/@Description
   private List<String> appliedPcs;
+  
+  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
 
   public List<String> getAppliedPcs() {
 	return appliedPcs;
@@ -125,6 +127,10 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
   public void addSegmentRefOrGroup(SegmentRefOrGroup e) {
     e.setPosition(children.size() + 1);
     this.children.add(e);
+  }
+  
+  public void addValueSetBinding(ValueSetBinding vsb) {
+	valueSetBindings.add(vsb);
   }
 
   public void setChildren(List<SegmentRefOrGroup> children) {
@@ -375,6 +381,14 @@ public String getDefPostText() {
 
 public void setDefPostText(String defPostText) {
 	this.defPostText = defPostText;
+}
+
+public List<ValueSetBinding> getValueSetBindings() {
+	return valueSetBindings;
+}
+
+public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+	this.valueSetBindings = valueSetBindings;
 }
   
   

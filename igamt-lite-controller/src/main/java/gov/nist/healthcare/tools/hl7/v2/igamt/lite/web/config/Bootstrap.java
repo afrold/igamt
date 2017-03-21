@@ -66,6 +66,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
@@ -217,6 +218,9 @@ public class Bootstrap implements InitializingBean {
 
     // modifyCodeUsage();
     // fixMissingData();
+//    updateInitAndCreateBindingVSForDatatype();
+//    updateInitAndCreateBindingVSForSegment();
+
 
     // new Master Datatype Generation
 
@@ -282,8 +286,6 @@ public class Bootstrap implements InitializingBean {
     }
     return dt;
   }
-
-
 
   private void fixDatatypeRecursion() throws IGDocumentException {
     List<IGDocument> igDocuments = documentService.findAll();
@@ -362,8 +364,6 @@ public class Bootstrap implements InitializingBean {
     return null;
   }
 
-
-
   private boolean isTableDuplicated(TableLink tableLink, List<TableLink> tableLinks) {
     if (tableLink != null && tableLink.getId() != null && tableLinks != null
         && !tableLinks.isEmpty()) {
@@ -430,8 +430,58 @@ public class Bootstrap implements InitializingBean {
     return false;
   }
 
-
-
+  private void updateInitAndCreateBindingVSForSegment() {
+	  List<Segment> allSegs = segmentService.findAll();
+	  for (Segment s : allSegs) {
+		  s.setValueSetBindings(new ArrayList<ValueSetBinding>());
+		  for(Field f:s.getFields()){
+			  if(f.getTables() != null){
+				  for(TableLink tl:f.getTables()){
+					  Table t = tableService.findById(tl.getId());
+					  if(t != null){
+						  ValueSetBinding vsb = new ValueSetBinding();
+						  vsb.setBindingLocation(tl.getBindingLocation());
+						  vsb.setBindingStrength(tl.getBindingStrength());
+						  vsb.setLocation(f.getPosition() + "");
+						  vsb.setTableId(t.getId());
+						  
+						  s.addValueSetBinding(vsb);
+					  }
+				  }
+//				  f.setTables(null);
+			  }
+		  }
+		  
+		  segmentService.save(s);
+	  }
+  }
+  
+  private void updateInitAndCreateBindingVSForDatatype() {
+	  List<Datatype> allDts = datatypeService.findAll();
+	  for (Datatype d : allDts) {
+		  d.setValueSetBindings(new ArrayList<ValueSetBinding>());
+		  for(Component c:d.getComponents()){
+			  if(c.getTables() != null){
+				  for(TableLink tl:c.getTables()){
+					  Table t = tableService.findById(tl.getId());
+					  if(t != null){
+						  ValueSetBinding vsb = new ValueSetBinding();
+						  vsb.setBindingLocation(tl.getBindingLocation());
+						  vsb.setBindingStrength(tl.getBindingStrength());
+						  vsb.setLocation(c.getPosition() + "");
+						  vsb.setTableId(t.getId());
+						  
+						  d.addValueSetBinding(vsb);
+					  }
+				  }
+//				  c.setTables(null);
+			  }
+		  }
+		  
+		  datatypeService.save(d);
+	  }
+  }
+  
   private void fixMissingData() {
     List<IGDocument> igDocuments = documentService.findAll();
     for (IGDocument document : igDocuments) {

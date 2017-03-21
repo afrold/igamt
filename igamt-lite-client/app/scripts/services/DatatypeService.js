@@ -2,21 +2,26 @@
  * Created by haffo on 3/9/16.
  */
 'use strict';
-angular.module('igl').factory('DatatypeService',
-    function($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc) {
+angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc) {
         var DatatypeService = {
             getNodes: function(parent, root) {
                 var children = [];
                 if (parent && parent != null) {
                     if (parent.datatype) {
                         var dt = $rootScope.datatypesMap[parent.datatype.id];
-                        children = dt.components;
+                        children = angular.copy(dt.components);
+                        for (var i = 0, len = children.length; i < len; i++) {
+                            children[i].path = parent.path + "." + children[i].position;
+                        }
                     } else {
                         children = parent.components;
                     }
                 } else {
                     if (root != null) {
                         children = root.components;
+                        for (var i = 0, len = children.length; i < len; i++) {
+                            children[i].path = children[i].position;
+                        }
                     } else {
                         children = [];
                     }
@@ -349,11 +354,8 @@ angular.module('igl').factory('DatatypeService',
                 return delay.promise;
             },
 
-            saveNewElements: function() {
-              saveNewElements(false);
-            },
-
             saveNewElements: function(silent) {
+                if(!silent) silent = false;
                 var delay = $q.defer();
                 var datatypeLinks = ElementUtils.getNewDatatypeLinks();
                 if (datatypeLinks&&datatypeLinks.length > 0) {

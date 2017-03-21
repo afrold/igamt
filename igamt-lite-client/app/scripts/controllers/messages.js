@@ -110,8 +110,8 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
         });
     };
-    $scope.redirectVS = function(valueSet) {
-        TableService.getOne(valueSet.id).then(function(valueSet) {
+    $scope.redirectVS = function(binding) {
+        TableService.getOne(binding.tableId).then(function(valueSet) {
             var modalInstance = $modal.open({
                 templateUrl: 'redirectCtrl.html',
                 controller: 'redirectCtrl',
@@ -128,9 +128,6 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             modalInstance.result.then(function() {
                 $rootScope.editTable(valueSet);
             });
-
-
-
         });
     };
 
@@ -794,6 +791,127 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             $scope.findAllGlobalConstraints();
         });
     };
+
+    $scope.refinePath = function (instancePath){
+        var pathArray = [];
+
+        if(instancePath) pathArray = instancePath.split('.');
+        var positionPath = '';
+        for (var i in pathArray) {
+            var position = pathArray[i].split('[')[0];
+            positionPath = positionPath + '.' + position;
+        }
+
+        if(positionPath != '') positionPath = positionPath.substr(1);
+
+        return positionPath;
+    };
+
+    $scope.isAvailableForValueSet = function (node){
+        var currentDT = $rootScope.datatypesMap[node.obj.datatype.id];
+        if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
+                return valueSetAllowedDT == currentDT.name;
+            })) return true;
+
+        if(node.fieldDT && !node.componentDT){
+            var parentDT = $rootScope.datatypesMap[node.fieldDT];
+            var pathSplit = node.segmentPath.split(".");
+            if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
+                    return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[1];
+                })) return true;
+        }
+
+        if(node.componentDT){
+            var parentDT = $rootScope.datatypesMap[node.componentDT];
+            var pathSplit = node.segmentPath.split(".");
+            if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
+                    return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[2];
+                })) return true;
+        }
+
+        return false;
+    };
+
+    $scope.findingBindings = function(node) {
+        var result = _.filter($rootScope.message.valueSetBindings, function(binding){
+            return binding.location == $scope.refinePath(node.path);
+        });
+        for (var i = 0; i < result.length; i++) {
+            result[i].bindingFrom = 'message';
+        }
+
+        if(result && result.length > 0) {
+            return result;
+        }
+
+        if(node.segment) {
+            var parentSeg = $rootScope.segmentsMap[node.segment];
+            result = _.filter(parentSeg.valueSetBindings, function(binding){
+                return binding.location == node.segmentPath;
+            });
+            for (var i = 0; i < result.length; i++) {
+                result[i].bindingFrom = 'segment';
+            }
+        }
+
+        if(result && result.length > 0) {
+            return result;
+        }
+
+        if(node.fieldDT) {
+            var parentDT = $rootScope.datatypesMap[node.fieldDT];
+            var subPath = node.segmentPath.substr(node.segmentPath.indexOf('.') + 1);
+            result = _.filter(parentDT.valueSetBindings, function(binding){
+                return binding.location == subPath;
+            });
+            for (var i = 0; i < result.length; i++) {
+                result[i].bindingFrom = 'field';
+            }
+        }
+
+        if(result && result.length > 0) {
+            return result;
+        }
+
+        if(node.componentDT) {
+            var parentDT = $rootScope.datatypesMap[node.componentDT];
+            var subPath = node.segmentPath.substr(node.segmentPath.split('.', 2).join('.').length + 1);
+            result = _.filter(parentDT.valueSetBindings, function(binding){
+                return binding.location == subPath;
+            });
+            for (var i = 0; i < result.length; i++) {
+                result[i].bindingFrom = 'component';
+            }
+        }
+
+        return result;
+    };
+
+    $scope.deleteBinding = function(binding){
+        var index = $rootScope.message.valueSetBindings.indexOf(binding);
+        if (index >= 0) {
+            $rootScope.message.valueSetBindings.splice(index, 1);
+            $scope.setDirty();
+        }
+    };
+
+    $scope.editModalBindingForMsg = function(node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'TableMappingMessageCtrl.html',
+            controller: 'TableMappingMessageCtrl',
+            windowClass: 'app-modal-window',
+            resolve: {
+                currentNode: function() {
+                    return node;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(node) {
+            $scope.setDirty();
+        });
+    };
+
 
 });
 
@@ -2467,4 +2585,83 @@ angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
+});
+
+angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI) {
+    $scope.changed = false;
+    $scope.currentNode = currentNode.obj;
+    var pathArray = [];
+    if(currentNode.path) pathArray = currentNode.path.split('.');
+    var positionPath = '';
+    for (var i in pathArray) {
+        var position = pathArray[i].split('[')[0];
+        positionPath = positionPath + '.' + position;
+    }
+    if(positionPath != '') positionPath = positionPath.substr(1);
+    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return binding.location == positionPath; }));
+    $scope.listOfBindingLocations = null;
+
+    if(_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT){
+            return valueSetAllowedDT == $rootScope.datatypesMap[$scope.currentNode.datatype.id].name;
+        })) {
+        for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+            if (!$scope.selectedValueSetBindings[i].bindingLocation || $scope.selectedValueSetBindings[i].bindingLocation == '') {
+                $scope.selectedValueSetBindings[i].bindingLocation = "1";
+            }
+        }
+
+        var hl7Version = $rootScope.datatypesMap[$scope.currentNode.datatype.id].hl7Version;
+        if(!hl7Version) hl7Version = "2.5.1";
+
+        $scope.listOfBindingLocations = $rootScope.config.bindingLocationListByHL7Version[hl7Version];
+    };
+
+    $scope.deleteBinding = function(binding){
+        var index = $scope.selectedValueSetBindings.indexOf(binding);
+        if (index >= 0) {
+            $scope.selectedValueSetBindings.splice(index, 1);
+        }
+        $scope.changed = true;
+    };
+
+    $scope.isSelected = function (v){
+        for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+            if($scope.selectedValueSetBindings[i].tableId == v.id) return true;
+        }
+        return false;
+    };
+
+    $scope.selectValueSet = function (v){
+        if($scope.listOfBindingLocations){
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, bindingLocation: "1" });
+        }else {
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath });
+        }
+        $scope.changed = true;
+    };
+
+    $scope.unselectValueSet = function (v){
+        var toBeDelBinding =_.find($scope.selectedValueSetBindings, function(binding){
+            return binding.tableId == v.id;
+        });
+        var index = $scope.selectedValueSetBindings.indexOf(toBeDelBinding);
+        if (index >= 0) {
+            $scope.selectedValueSetBindings.splice(index, 1);
+        }
+        $scope.changed = true;
+    };
+
+    $scope.saveMapping = function() {
+        blockUI.start();
+        var otherValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return binding.location != positionPath; }));
+        $rootScope.message.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
+        blockUI.stop();
+
+        $modalInstance.close();
+    };
+
+    $scope.ok = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
 });
