@@ -214,7 +214,7 @@
                                                     </span>
                                                     <span class="form-group">
                                                         <label> Codes By Page </label>
-                                                        <input class="input-sm form group" name="items" id="items" type="number" ng-model="itemsByPage"/>
+                                                        <input class="input-sm form group" type="number" ng-model="itemsByPage" no-dirty-check/>
                                                     </span>
                                                     <div class="">
                                                         <div ng-if="table.codes.length >= 1000" style="margin-bottom: 10px">
@@ -283,7 +283,7 @@
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
-                                                            <tr style="float:center !important;" ng-if="table.smallCodes.length > 30">
+                                                            <tr style="float:center !important;" ng-show="table.smallCodes.length > itemsByPage">
                                                                 <td colspan="6" class="text-center" style="float:center !important;">
                                                                     <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7" style="float:center !important;"></div>
                                                                 </td>
@@ -656,8 +656,7 @@
                                         <label class="col-md-2 control-label">Date Updated</label>
 
                                         <div class="controls col-md-10">
-                                             <span
-                                                     class="form-control">{{table.dateUpdated | date:dateFormat}}</span>
+                                             <span class="form-control">{{table.dateUpdated | date:dateFormat}}</span>
                                         </div>
                                     </div>
 
@@ -673,7 +672,10 @@
                                 <div class="el-def" style="margin-top: 20px">
                                     <div class="">
                                         <div class="">
-
+                                            <span class="form-group">
+                                                <label> Codes By Page </label>
+                                                <input class="input-sm form group" type="number" ng-model="itemsByPage" no-dirty-check/>
+                                            </span>
                                             <div ng-if="table.codes.length > 1000" style="margin-bottom: 10px">
                                                 <div class="alert alert-warning" role="alert">
                                                     Due to the large size of the codes, only the first 1000 of {{table.codes.length}} codes will be displayed.
@@ -697,12 +699,9 @@
                                                     <th>
                                                         <input st-search="'label'" placeholder="search for description" class="input-sm form-control" type="search" />
                                                     </th>
-                                                    <th>
-                                                    </th>
-                                                    <th>
-                                                    </th>
-                                                    <th>
-                                                    </th>
+                                                    <th/>
+                                                    <th/>
+                                                    <th/>
                                                 </tr>
                                                 </thead>
 
@@ -727,9 +726,9 @@
                                                     </td>
                                                 </tr>
                                                 </tbody>
-                                                 <tr style="float:center !important;" ng-if="table.smallCodes.length > 30">
+                                                 <tr style="float:center !important;" ng-if="table.smallCodes.length > itemsByPage">
                                                      <td colspan="6" class="text-center" style="float:center !important;">
-                                                         <div st-pagination="" st-items-by-page="30" st-displayed-pages="7" style="float:center !important;"></div>
+                                                         <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7" style="float:center !important;"></div>
                                                      </td>
                                                  </tr>
 
