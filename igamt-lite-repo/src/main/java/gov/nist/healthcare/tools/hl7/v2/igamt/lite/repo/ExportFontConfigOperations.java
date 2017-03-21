@@ -1,11 +1,3 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
-
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
-
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
  * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
@@ -15,19 +7,21 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified.
- * <p/>
- * Created by Maxence Lefort on 2/23/17.
+ * that they have been modified. Abdelghani EL OUAKILI (NIST) Mar 15, 2017
  */
-@Service
-public interface ExportFontConfigService {
-  public List<ExportFontConfig> findOneByAccountId(Long accountId);
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-  public ExportFontConfig findOne(Long id);
+import java.util.List;
 
-  public ExportFontConfig getDefaultExportFontConfig() throws Exception;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 
-  public ExportFontConfig save(ExportFontConfig exportFontConfig);
+/**
+ * @author Abdelghani EL Ouakili (NIST)
+ *
+ */
+public interface ExportFontConfigOperations {
+  List<ExportFontConfig> findOneByAccountId(Long accountId);
 
-  public void delete(ExportFontConfig exportFontConfig);
+
+  ExportFontConfig findByDefaultConfig(Boolean defaultConfig) throws Exception;
 }

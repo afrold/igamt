@@ -13,7 +13,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,57 +31,55 @@ import java.util.Map;
  * <p>
  * Created by Maxence Lefort on 12/12/16.
  */
-@Service
-public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
+@Service public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
 
-    @Autowired
-    DatatypeService datatypeService;
+    @Autowired DatatypeService datatypeService;
 
-    @Autowired
-    TableService tableService;
+    @Autowired TableService tableService;
 
-    @Autowired
-    SerializationUtil serializationUtil;
+    @Autowired SerializationUtil serializationUtil;
 
-    @Autowired
-    SerializeConstraintService serializeConstraintService;
+    @Autowired SerializeConstraintService serializeConstraintService;
 
     private static final String REQUIRED = "Required";
     private static final String OPTIONAL = "Optional";
 
-    @Override public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix, Integer position, UsageConfig datatypeUsageConfig) {
-        if(datatypeLink!=null && datatypeLink.getId()!=null) {
+    @Override
+    public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
+        Integer position, UsageConfig datatypeUsageConfig) {
+        if (datatypeLink != null && datatypeLink.getId() != null) {
             Datatype datatype = datatypeService.findById(datatypeLink.getId());
-            if(hasComponentsToBeExported(datatype,datatypeUsageConfig)) {
-                String id = datatypeLink.getId();
-                String title = "ID not found: " + datatypeLink.getId();
-                String headerLevel = String.valueOf(3);
-                if (datatype != null) {
-                    id = datatype.getId();
-                    title = datatype.getLabel() + " - " + datatype.getDescription();
-                }
-                List<SerializableConstraint> constraintsList =
-                    serializeConstraintService.serializeConstraints(datatype, datatype.getName());
-                String defPreText, defPostText, usageNote;
-                defPreText = defPostText = usageNote = "";
-                if (datatype.getDefPreText() != null && !datatype.getDefPreText().isEmpty()) {
-                    defPreText = serializationUtil.cleanRichtext(datatype.getDefPreText());
-                }
-                if (datatype.getDefPostText() != null && !datatype.getDefPostText().isEmpty()) {
-                    defPostText = serializationUtil.cleanRichtext(datatype.getDefPostText());
-                }
-                if (datatype.getUsageNote() != null && !datatype.getUsageNote().isEmpty()) {
-                    usageNote = serializationUtil.cleanRichtext(datatype.getDefPreText());
-                }
-                Map<Component, Datatype> componentDatatypeMap = new HashMap<>();
-                Map<Component, List<Table>> componentTablesMap = new HashMap<>();
-                Map<Component, String> componentTextMap = new HashMap<>();
-                ArrayList<Component> toBeRemovedComponents = new ArrayList<>();
+            String id = datatypeLink.getId();
+            String title = "ID not found: " + datatypeLink.getId();
+            String headerLevel = String.valueOf(3);
+            if (datatype != null) {
+                id = datatype.getId();
+                title = datatype.getLabel() + " - " + datatype.getDescription();
+            }
+            List<SerializableConstraint> constraintsList =
+                serializeConstraintService.serializeConstraints(datatype, datatype.getName());
+            String defPreText, defPostText, usageNote;
+            defPreText = defPostText = usageNote = "";
+            if (datatype.getDefPreText() != null && !datatype.getDefPreText().isEmpty()) {
+                defPreText = serializationUtil.cleanRichtext(datatype.getDefPreText());
+            }
+            if (datatype.getDefPostText() != null && !datatype.getDefPostText().isEmpty()) {
+                defPostText = serializationUtil.cleanRichtext(datatype.getDefPostText());
+            }
+            if (datatype.getUsageNote() != null && !datatype.getUsageNote().isEmpty()) {
+                usageNote = serializationUtil.cleanRichtext(datatype.getDefPreText());
+            }
+            Map<Component, Datatype> componentDatatypeMap = new HashMap<>();
+            Map<Component, List<Table>> componentTablesMap = new HashMap<>();
+            Map<Component, String> componentTextMap = new HashMap<>();
+            ArrayList<Component> toBeRemovedComponents = new ArrayList<>();
+            if (hasComponentsToBeExported(datatype, datatypeUsageConfig)) {
                 for (Component component : datatype.getComponents()) {
-                    if(ExportUtil.diplayUsage(component.getUsage(), datatypeUsageConfig)) {
+                    if (ExportUtil.diplayUsage(component.getUsage(), datatypeUsageConfig)) {
                         if (component.getDatatype() != null && !component.getDatatype().getId()
                             .isEmpty()) {
-                            Datatype componentDatatype = datatypeService.findById(component.getDatatype().getId());
+                            Datatype componentDatatype =
+                                datatypeService.findById(component.getDatatype().getId());
                             componentDatatypeMap.put(component, componentDatatype);
                         }
                         if (component.getTables().size() > 0) {
@@ -105,38 +102,37 @@ public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
                         toBeRemovedComponents.add(component);
                     }
                 }
-                for(Component component : toBeRemovedComponents){
+                for (Component component : toBeRemovedComponents) {
                     datatype.getComponents().remove(component);
                 }
-                Boolean showConfLength = serializationUtil.isShowConfLength(datatype.getHl7Version());
-                SerializableDatatype serializedDatatype = null;
-                if (datatype.getName().equals("DTM")) {
-                    Map<String, String> dateValues =
-                        getDtmDateValues(datatype.getPrecisionOfDTM(), datatype.isTimeZoneOfDTM());
-                    serializedDatatype =
-                        new SerializableDateTimeDatatype(id, prefix, String.valueOf(position),
-                            headerLevel, title, datatype, defPreText, defPostText, usageNote,
-                            constraintsList, componentDatatypeMap, componentTablesMap,
-                            componentTextMap, showConfLength, dateValues);
-                } else {
-                    serializedDatatype =
-                        new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,
-                            title, datatype, defPreText, defPostText, usageNote, constraintsList,
-                            componentDatatypeMap, componentTablesMap, componentTextMap,
-                            showConfLength);
-                }
-                return serializedDatatype;
             }
+            Boolean showConfLength = serializationUtil.isShowConfLength(datatype.getHl7Version());
+            SerializableDatatype serializedDatatype = null;
+            if (datatype.getName().equals("DTM")) {
+                Map<String, String> dateValues =
+                    getDtmDateValues(datatype.getPrecisionOfDTM(), datatype.isTimeZoneOfDTM());
+                serializedDatatype =
+                    new SerializableDateTimeDatatype(id, prefix, String.valueOf(position),
+                        headerLevel, title, datatype, defPreText, defPostText, usageNote,
+                        constraintsList, componentDatatypeMap, componentTablesMap, componentTextMap,
+                        showConfLength, dateValues);
+            } else {
+                serializedDatatype =
+                    new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,
+                        title, datatype, defPreText, defPostText, usageNote, constraintsList,
+                        componentDatatypeMap, componentTablesMap, componentTextMap, showConfLength);
+            }
+            return serializedDatatype;
         }
         return null;
     }
 
-    private boolean hasComponentsToBeExported(Datatype datatype, UsageConfig datatypeUsageConfig){
+    private boolean hasComponentsToBeExported(Datatype datatype, UsageConfig datatypeUsageConfig) {
         //If the datatype has at least 1 component
-        if(datatype.getComponents().size()>0){
-            if(datatypeUsageConfig!=null){
-                for(Component component : datatype.getComponents()){
-                    if(ExportUtil.diplayUsage(component.getUsage(),datatypeUsageConfig)){
+        if (datatype.getComponents().size() > 0) {
+            if (datatypeUsageConfig != null) {
+                for (Component component : datatype.getComponents()) {
+                    if (ExportUtil.diplayUsage(component.getUsage(), datatypeUsageConfig)) {
                         //that means there is at least 1 component to be exported
                         return true;
                     }
@@ -149,16 +145,16 @@ public class SerializeDatatypeServiceImpl implements SerializeDatatypeService {
         return false;
     }
 
-    private Map<String,String> getDtmDateValues(int precisionOfDTM, boolean timeZoneOfDTM) {
-        HashMap<String,String> dateValue = new HashMap<>();
-        dateValue.put("YYYY",precisionOfDTM>=1?this.REQUIRED:this.OPTIONAL);
-        dateValue.put("MM",precisionOfDTM>=2?this.REQUIRED:this.OPTIONAL);
-        dateValue.put("DD",precisionOfDTM>=3?this.REQUIRED:this.OPTIONAL);
-        dateValue.put("hh",precisionOfDTM>=4?this.REQUIRED:this.OPTIONAL);
-        dateValue.put("mm",precisionOfDTM>=5?this.REQUIRED:this.OPTIONAL);
-        dateValue.put("ss",precisionOfDTM>=6?this.REQUIRED:this.OPTIONAL);
-        dateValue.put("ssss",precisionOfDTM>=7?this.REQUIRED:this.OPTIONAL);
-        dateValue.put("timeZone",timeZoneOfDTM?this.REQUIRED:this.OPTIONAL);
+    private Map<String, String> getDtmDateValues(int precisionOfDTM, boolean timeZoneOfDTM) {
+        HashMap<String, String> dateValue = new HashMap<>();
+        dateValue.put("YYYY", precisionOfDTM >= 1 ? this.REQUIRED : this.OPTIONAL);
+        dateValue.put("MM", precisionOfDTM >= 2 ? this.REQUIRED : this.OPTIONAL);
+        dateValue.put("DD", precisionOfDTM >= 3 ? this.REQUIRED : this.OPTIONAL);
+        dateValue.put("hh", precisionOfDTM >= 4 ? this.REQUIRED : this.OPTIONAL);
+        dateValue.put("mm", precisionOfDTM >= 5 ? this.REQUIRED : this.OPTIONAL);
+        dateValue.put("ss", precisionOfDTM >= 6 ? this.REQUIRED : this.OPTIONAL);
+        dateValue.put("ssss", precisionOfDTM >= 7 ? this.REQUIRED : this.OPTIONAL);
+        dateValue.put("timeZone", timeZoneOfDTM ? this.REQUIRED : this.OPTIONAL);
         return dateValue;
     }
 }
