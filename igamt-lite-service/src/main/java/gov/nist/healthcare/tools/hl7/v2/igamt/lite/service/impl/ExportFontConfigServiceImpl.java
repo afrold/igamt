@@ -1,10 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportFontConfigRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -20,32 +23,53 @@ import org.springframework.stereotype.Service;
  * Created by Maxence Lefort on 2/23/17.
  */
 @Service
-public class ExportFontConfigServiceImpl implements ExportFontConfigService{
+public class ExportFontConfigServiceImpl implements ExportFontConfigService {
 
-    @Autowired
-    ExportFontConfigRepository exportFontConfigRepository;
+  @Autowired
+  ExportFontConfigRepository exportFontConfigRepository;
 
-    @Override public ExportFontConfig findOneByAccountId(Long accountId) {
-        return exportFontConfigRepository.findOneByAccountId(accountId);
-    }
 
-    @Override public ExportFontConfig findOne(Long id) {
-        return exportFontConfigRepository.findOne(id);
-    }
+  @Override
+  public ExportFontConfig findOne(Long id) {
+    return exportFontConfigRepository.findOne(id);
+  }
 
-    @Override public ExportFontConfig getDefaultExportFontConfig() {
-        return exportFontConfigRepository.findByDefaultConfig(true);
-    }
 
-    @Override public ExportFontConfig save(ExportFontConfig exportFontConfig) {
-        ExportFontConfig existingExportFontConfig = exportFontConfigRepository.findOneByAccountId(exportFontConfig.getAccountId());
-        if(existingExportFontConfig != null){
-            exportFontConfigRepository.delete(existingExportFontConfig);
-        }
-        return exportFontConfigRepository.save(exportFontConfig);
-    }
+  @Override
+  public ExportFontConfig save(ExportFontConfig exportFontConfig) {
 
-    @Override public void delete(ExportFontConfig exportFontConfig) {
-        exportFontConfigRepository.delete(exportFontConfig);
-    }
+    return exportFontConfigRepository.save(exportFontConfig);
+  }
+
+  @Override
+  public void delete(ExportFontConfig exportFontConfig) {
+    exportFontConfigRepository.delete(exportFontConfig);
+  }
+
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService#findOneByAccountId(
+   * java.lang.Long)
+   */
+  @Override
+  public List<ExportFontConfig> findOneByAccountId(Long accountId) {
+    // TODO Auto-generated method stub
+    return exportFontConfigRepository.findOneByAccountId(accountId);
+  }
+
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService#
+   * getDefaultExportFontConfig()
+   */
+  @Override
+  public ExportFontConfig getDefaultExportFontConfig() throws Exception {
+    // TODO Auto-generated method stub
+    return exportFontConfigRepository.findByDefaultConfig(true);
+  }
 }

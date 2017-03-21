@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -219,6 +220,10 @@ public class Datatype extends DataModelWithConstraints
     clonedDT.setDefPostText(defPostText);
     clonedDT.setPrecisionOfDTM(precisionOfDTM);
     clonedDT.setTimeZoneOfDTM(timeZoneOfDTM);
+    clonedDT.setStatus(this.getStatus());
+    clonedDT.setPublicationVersion(this.getPublicationVersion());
+    this.setHl7versions(this.hl7versions);
+    this.setDateUpdated(new Date());
     return clonedDT;
   }
 

@@ -50,13 +50,14 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         ConfigurationService.findFonts().then(function (response) {
             $scope.fonts=response;
             $scope.resetUserExportFontConfig();
+            $scope.changed=false;
         });
-        $scope.changed=false;
+
     }
 
     $scope.saveUserExportFontConfig = function(userExportFontConfig){
-        userExportFontConfig.defaultConfig = false;
         ConfigurationService.saveUserExportFontConfig(userExportFontConfig).then(function (response) {
+            $scope.resetChanged();
             $rootScope.msg().text = "ConfigurationSaved";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
@@ -71,12 +72,14 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         ConfigurationService.getUserExportFontConfig().then(function (response) {
             $scope.userExportFontConfig = response;
             $scope.updateUserFontRadio();
+            $scope.resetChanged();
         });
-        $scope.resetChanged();
+
     }
 
     $scope.restoreDefaultExportFontConfig = function(){
         ConfigurationService.restoreDefaultExportFontConfig().then(function(response){
+            $scope.resetChanged();
             $scope.userExportFontConfig = response;
             $scope.updateUserFontRadio();
             $scope.resetChanged();

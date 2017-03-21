@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -44,6 +45,8 @@ import java.util.*;
     @Autowired SegmentService segmentService;
 
     @Autowired TableService tableService;
+
+    @Autowired DatatypeService datatypeService;
 
     private ExportConfig exportConfig;
 
@@ -351,6 +354,19 @@ import java.util.*;
             for (Field field : segment.getFields()) {
                 if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getDatatypesExport())) {
                     bindedDatatypes.add(field.getDatatype());
+                    Datatype datatype = datatypeService.findById(field.getDatatype().getId());
+                    for(Component component : datatype.getComponents()){
+                        if(!bindedDatatypes.contains(component.getDatatype())&&ExportUtil.diplayUsage(component.getUsage(),
+                            this.exportConfig.getDatatypesExport())){
+                            bindedDatatypes.add(component.getDatatype());
+                        }
+                        for (TableLink tableLink : component.getTables()) {
+                            this.unbindedTables.remove(tableLink);
+                            if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(component.getUsage(),this.exportConfig.getValueSetsExport())) {
+                                bindedTables.add(tableLink);
+                            }
+                        }
+                    }
                 }
                 for (TableLink tableLink : field.getTables()) {
                     this.unbindedTables.remove(tableLink);
