@@ -25,6 +25,10 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                         children = parent.fields;
                         for (var i = 0, len = children.length; i < len; i++) {
                             children[i].path = children[i].position;
+                            if($rootScope.segment){
+                                children[i].sev = _.find($rootScope.segment.singleElementValues, function(sev){ return sev.location  ==  children[i].path; });
+                                if(children[i].sev) children[i].sev.from = 'segment';
+                            }
                         }
                     }else {
                         if(parent.datatype){
@@ -34,10 +38,40 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                                 children[i].path = parent.path + "." + children[i].position;
                                 if(children[i].path.split(".").length - 1 == 1){
                                     children[i].fieldDT = parent.datatype.id;
+                                    if($rootScope.segment){
+                                        children[i].sev = _.find($rootScope.segment.singleElementValues, function(sev){ return sev.location  ==  children[i].path; });
+                                        if(children[i].sev) {
+                                            children[i].sev.from = 'segment';
+                                        }else {
+                                            var fieldPath = children[i].path.substr(children[i].path.indexOf('.') + 1);
+                                            children[i].sev = _.find($rootScope.datatypesMap[children[i].fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+                                            if(children[i].sev) {
+                                                children[i].sev.from = 'field';
+                                            }
+                                        }
+                                    }
                                 }else if(children[i].path.split(".").length - 1 == 2){
+                                    children[i].fieldDT = parent.fieldDT;
                                     children[i].componentDT = parent.datatype.id;
+                                    if($rootScope.segment){
+                                        children[i].sev = _.find($rootScope.segment.singleElementValues, function(sev){ return sev.location  ==  children[i].path; });
+                                        if(children[i].sev) {
+                                            children[i].sev.from = 'segment';
+                                        }else {
+                                            var fieldPath = children[i].path.substr(children[i].path.indexOf('.') + 1);
+                                            children[i].sev = _.find($rootScope.datatypesMap[children[i].fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+                                            if(children[i].sev) {
+                                                children[i].sev.from = 'field';
+                                            }else {
+                                                var componentPath = children[i].path.substr(children[i].path.split('.', 2).join('.').length + 1);
+                                                children[i].sev = _.find($rootScope.datatypesMap[children[i].componentDT].singleElementValues, function(sev){ return sev.location  ==  componentPath; });
+                                                if(children[i].sev) {
+                                                    children[i].sev.from = 'component';
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-
                             }
                         }else {
                             children = parent.children;
@@ -48,6 +82,10 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                         children = root.fields;
                         for (var i = 0, len = children.length; i < len; i++) {
                             children[i].path = children[i].position;
+                            if($rootScope.segment){
+                                children[i].sev = _.find($rootScope.segment.singleElementValues, function(sev){ return sev.location  ==  children[i].path; });
+                                if(children[i].sev) children[i].sev.from = 'segment';
+                            }
                         }
                     }else {
                         children = [];

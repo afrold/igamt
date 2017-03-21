@@ -1217,6 +1217,17 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     f.segmentPath = element.position;
                     f.segment = parent.obj.ref.id;
                     f.locationPath = parent.locationPath + "." + element.position + "[1]";
+
+                    if($rootScope.message){
+                        f.sev = _.find($rootScope.message.singleElementValues, function(sev){ return sev.location  ==  $rootScope.refinePath(f.path); });
+                        if(f.sev) {
+                            f.sev.from = 'message';
+                        }else {
+                            f.sev = _.find($rootScope.segmentsMap[f.segment].singleElementValues, function(sev){ return sev.location  ==  f.segmentPath; });
+                            if(f.sev) f.sev.from = 'segment';
+                        }
+                    }
+
                     f.children = [];
                     var d = $rootScope.datatypesMap[f.obj.datatype.id];
                     if (d === undefined) {
@@ -1224,11 +1235,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     }
                     f.obj.datatype.ext = $rootScope.datatypesMap[f.obj.datatype.id].ext;
                     f.obj.datatype.label = $rootScope.getLabel(f.obj.datatype.name, f.obj.datatype.ext);
-                    // for (var i = 0; i < f.obj.tables.length; i++) {
-                    //     if($rootScope.tablesMap[f.obj.tables[i].id]){
-                    //         f.obj.tables[i].bindingIdentifier=$rootScope.tablesMap[f.obj.tables[i].id].bindingIdentifier;
-                    //     }
-                    // };
                     parent.children.push(f);
 
                     $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
@@ -1237,7 +1243,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         angular.forEach(element.tables, function(table) {
                             $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
                         });
-                        // $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                     }
                     $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
                     $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], f);
@@ -1247,11 +1252,52 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     c.obj = element;
                     c.path = parent.path + "." + element.position + "[1]";
                     c.segmentPath = parent.segmentPath + "." + element.position;
+                    c.segment = parent.segment;
                     if(c.segmentPath.split(".").length - 1 == 1){
                         c.fieldDT = parent.obj.datatype.id;
+                        if($rootScope.message){
+                            c.sev = _.find($rootScope.message.singleElementValues, function(sev){ return sev.location  ==  $rootScope.refinePath(c.path); });
+                            if(c.sev) {
+                                c.sev.from = 'message';
+                            }else{
+                                c.sev = _.find($rootScope.segmentsMap[c.segment].singleElementValues, function(sev){ return sev.location  ==  c.segmentPath; });
+                                if(c.sev) {
+                                    c.sev.from = 'segment';
+                                }else {
+                                    var fieldPath = c.segmentPath.substr(c.segmentPath.indexOf('.') + 1);
+                                    c.sev = _.find($rootScope.datatypesMap[c.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+                                    if(c.sev) {
+                                        c.sev.from = 'field';
+                                    }
+                                }
+                            }
+                        }
                     }else if(c.segmentPath.split(".").length - 1 == 2){
                         c.fieldDT = parent.fieldDT;
                         c.componentDT = parent.obj.datatype.id;
+                        if($rootScope.message){
+                            c.sev = _.find($rootScope.message.singleElementValues, function(sev){ return sev.location  ==  $rootScope.refinePath(c.path); });
+                            if(c.sev) {
+                                c.sev.from = 'message';
+                            }else{
+                                c.sev = _.find($rootScope.segmentsMap[c.segment].singleElementValues, function(sev){ return sev.location  ==  c.segmentPath; });
+                                if(c.sev) {
+                                    c.sev.from = 'segment';
+                                }else {
+                                    var fieldPath = c.segmentPath.substr(c.segmentPath.indexOf('.') + 1);
+                                    c.sev = _.find($rootScope.datatypesMap[c.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+                                    if(c.sev) {
+                                        c.sev.from = 'field';
+                                    }else {
+                                        var componentPath = c.segmentPath.substr(c.segmentPath.split('.', 2).join('.').length + 1);
+                                        c.sev = _.find($rootScope.datatypesMap[c.componentDT].singleElementValues, function(sev){ return sev.location  ==  componentPath; });
+                                        if(c.sev) {
+                                            c.sev.from = 'component';
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     c.locationPath = parent.locationPath + "." + element.position + "[1]";
@@ -1269,7 +1315,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         angular.forEach(element.tables, function(table) {
                             $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
                         });
-                        //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                     }
                     $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
                     $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], c);
@@ -3938,5 +3983,15 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
         }
 
         $modalInstance.close($scope.currentNode);
+    };
+});
+
+angular.module('igl').controller('ConfirmSingleElementDuplicatedCtrl', function($scope, $modalInstance, $rootScope, selectedNode) {
+    $scope.yes = function() {
+        $modalInstance.close(selectedNode);
+    };
+
+    $scope.no = function() {
+        $modalInstance.dismiss('cancel');
     };
 });

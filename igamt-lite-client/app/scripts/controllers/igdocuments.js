@@ -1356,9 +1356,9 @@ angular.module('igl')
                             $rootScope.datatype["type"] = "datatype";
                             $rootScope.tableWidth = null;
                             $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                            $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 890);
-                            $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 890);
-                            $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                            $rootScope.csWidth = $rootScope.getDynamicWidth(1, 5, 890);
+                            $rootScope.predWidth = $rootScope.getDynamicWidth(1, 5, 890);
+                            $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 5, 890);
                             $scope.loadingSelection = false;
                             try {
                                 if ($scope.datatypesParams)
