@@ -524,18 +524,17 @@
 
         </td>
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
-
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', false)" class="point" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-pencil fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
-                <i class="fa fa-plus fa-fw" ng-show="node.obj.comment === '' || node.obj.comment === null"></i>
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge" ng-class="{'label-MAIN' : comment.from == 'message', 'label-CHILD' : comment.from == 'segment', 'label-SUBCHILD' : comment.from == 'field', 'label-SUBSUBCHILD' : comment.from == 'component'}">
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, false, 'message')">Comments_{{comment.index}}</span>
+                        <span title="Delete This Comments" ng-show="comment.from != 'segment'" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw"></i></span>
+                    </span>
+            </div>
+            <a ng-click="editCommentDlg(node, null, false, 'message')" class="point">
+                <span><i class="fa fa-plus fa-fw"></i></span>
             </a>
-            <a ng-click="clearComments(node.obj,'comment')" ng-show="node.obj.comment !== '' && node.obj.comment !== null">
-                <i class="fa fa-times fa-fw"></i>
-            </a>
-
-
         </td>
     </tr>
 </script>
@@ -631,14 +630,15 @@
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
         </td>
 
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', false)" class="point" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-pencil fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
-                <i class="fa fa-plus fa-fw" ng-show="node.obj.comment === '' || node.obj.comment === null"></i>
-            </a>
-            <a ng-click="clearComments(node.obj,'comment')" ng-show="node.obj.comment !== '' && node.obj.comment !== null">
-                <i class="fa fa-times fa-fw"></i>
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge" ng-class="{'label-MAIN' : comment.from == 'message', 'label-CHILD' : comment.from == 'segment', 'label-SUBCHILD' : comment.from == 'field', 'label-SUBSUBCHILD' : comment.from == 'component'}">
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, false, 'message')">Comments_{{comment.index}}</span>
+                        <span title="Delete This Comments" ng-show="comment.from != 'segment'" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw"></i></span>
+                    </span>
+            </div>
+            <a ng-click="editCommentDlg(node, null, false, 'message')" class="point">
+                <span><i class="fa fa-plus fa-fw"></i></span>
             </a>
         </td>
     </tr>
@@ -681,7 +681,10 @@
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
                     <span class="badge" ng-class="{'label-MAIN' : binding.bindingFrom == 'message', 'label-CHILD' : binding.bindingFrom == 'segment', 'label-SUBCHILD' : binding.bindingFrom == 'field', 'label-SUBSUBCHILD' : binding.bindingFrom == 'component'}">
-                        <span title="GoTo ValueSet" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For this message" ng-show="binding.bindingFrom == 'message'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getSegmentLabel(segmentsMap[node.segment])}}" ng-show="binding.bindingFrom == 'segment'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                         <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw"></i></span>
                     </span>
                 </div>
@@ -714,10 +717,18 @@
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
-                tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge" ng-class="{'label-MAIN' : comment.from == 'message', 'label-CHILD' : comment.from == 'segment', 'label-SUBCHILD' : comment.from == 'field', 'label-SUBSUBCHILD' : comment.from == 'component'}">
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, false, 'message')">Comments_{{comment.index}}</span>
+                        <span title="For {{getSegmentLabel(segmentsMap[node.segment])}}" ng-show="comment.from == 'segment'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="comment.from == 'field'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="comment.from == 'component'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
+                        <span title="Delete This Comments" ng-show="comment.from == 'message'" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw"></i></span>
+                    </span>
+            </div>
+            <a ng-click="editCommentDlg(node, null, false, 'message')" class="point">
+                <span><i class="fa fa-plus fa-fw"></i></span>
             </a>
         </td>
     </tr>
@@ -759,7 +770,10 @@
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
                     <span class="badge" ng-class="{'label-MAIN' : binding.bindingFrom == 'message', 'label-CHILD' : binding.bindingFrom == 'segment', 'label-SUBCHILD' : binding.bindingFrom == 'field', 'label-SUBSUBCHILD' : binding.bindingFrom == 'component'}">
-                        <span title="GoTo ValueSet" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For this message" ng-show="binding.bindingFrom == 'message'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getSegmentLabel(segmentsMap[node.segment])}}" ng-show="binding.bindingFrom == 'segment'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                         <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw"></i></span>
                     </span>
                 </div>
@@ -793,10 +807,18 @@
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
-                tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge" ng-class="{'label-MAIN' : comment.from == 'message', 'label-CHILD' : comment.from == 'segment', 'label-SUBCHILD' : comment.from == 'field', 'label-SUBSUBCHILD' : comment.from == 'component'}">
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, false, 'message')">Comments_{{comment.index}}</span>
+                        <span title="For {{getSegmentLabel(node.segment)}}" ng-show="comment.from == 'segment'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="comment.from == 'field'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="comment.from == 'component'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
+                        <span title="Delete This Comments" ng-show="comment.from == 'message'" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw"></i></span>
+                    </span>
+            </div>
+            <a ng-click="editCommentDlg(node, null, false, 'message')" class="point">
+                <span><i class="fa fa-plus fa-fw"></i></span>
             </a>
         </td>
     </tr>
@@ -866,13 +888,12 @@
         </td>
         <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <!--<p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment" ng-show="node.obj.comment != null && node.obj.comment != ''">-->
-            <!--</p>-->
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
-                tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-eye fa-fw"></i>
-            </a>
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge" ng-class="{'label-MAIN' : comment.from == 'message', 'label-CHILD' : comment.from == 'segment', 'label-SUBCHILD' : comment.from == 'field', 'label-SUBSUBCHILD' : comment.from == 'component'}">
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
+                    </span>
+            </div>
         </td>
     </tr>
 </script>
@@ -918,13 +939,12 @@
         <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <div>-</div>
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <!--<p class="form-control" style="width:100%;height:100%" ng-bindl="node.obj.comment" ng-show="node.obj.comment !== '' && node.obj.comment !== null">-->
-            <!--</p>-->
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
-                tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
-            </a>
+        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge" ng-class="{'label-MAIN' : comment.from == 'message', 'label-CHILD' : comment.from == 'segment', 'label-SUBCHILD' : comment.from == 'field', 'label-SUBSUBCHILD' : comment.from == 'component'}">
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
+                    </span>
+            </div>
         </td>
     </tr>
 </script>

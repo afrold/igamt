@@ -1180,42 +1180,113 @@ angular.module('igl')
             });
         };
 
-        $scope.isAvailableForValueSet = function (currentDT, parentDT, path){
-            if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
-                    return valueSetAllowedDT == currentDT.name;
-                })) return true;
+        $scope.editCommentDlg = function(node, comment, disabled, type) {
+            var modalInstance = $modal.open({
+                templateUrl: 'EditComment.html',
+                controller: 'EditCommentCtrl',
+                backdrop: true,
+                keyboard: true,
+                windowClass: 'input-text-modal-window',
+                backdropClick: false,
+                resolve: {
+                    currentNode: function() {
+                        return node;
+                    },
+                    currentComment: function() {
+                        return comment;
+                    },
+                    disabled: function() {
+                        return disabled;
+                    },
+                    type: function() {
+                        return type;
+                    }
+                }
+            });
 
-            if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
-                return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == path;
-                })) return true;
+            modalInstance.result.then(function() {
+                $scope.setDirty();
+            });
+        };
+
+        $scope.isAvailableForValueSet = function (currentDT, parentDT, path){
+            if(currentDT){
+                if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
+                        return valueSetAllowedDT == currentDT.name;
+                    })) return true;
+            }
+
+            if(parentDT && path){
+                if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
+                        return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == path;
+                    })) return true;
+            }
 
             return false;
         };
 
-        $scope.findingBindings = function(path, parent) {
-            var result = _.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location == path; });
+        $scope.findingComments = function(path, parent) {
+            var result = [];
+            if($rootScope.datatype){
+                result = result.concat(_.filter($rootScope.datatype.comments, function(comment){ return comment.location == path; }));
 
-            for (var i = 0; i < result.length; i++) {
-                result[i].isMain = true;
-            }
+                for (var i = 0; i < result.length; i++) {
+                    result[i].isMain = true;
+                    result[i].index = i + 1;
+                }
+                if(parent){
+                    if(path.indexOf('.') > -1){
+                        var subPath = path.substr(path.indexOf('.') + 1);
+                        var subResult = _.filter(parent.comments, function(comment){ return comment.location == subPath; });
 
+                        for (var i = 0; i < subResult.length; i++) {
+                            subResult[i].index = (i + 1);
+                            subResult[i].isMain = false;
+                        }
 
-            if(result && result.length > 0) return result;
-            else if(!parent) return result;
-            else {
-                if(path.indexOf('.') > -1){
-                    var subPath = path.substr(path.indexOf('.') + 1);
-                    return _.filter(parent.valueSetBindings, function(binding){ return binding.location == subPath; });
-                }else {
-                    return [];
+                        result = result.concat(subResult);
+                    }
                 }
             }
+            return result;
+        };
+
+        $scope.findingBindings = function(path, parent) {
+            var result = [];
+            if($rootScope.datatype){
+                result = _.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location == path; });
+
+                for (var i = 0; i < result.length; i++) {
+                    result[i].isMain = true;
+                }
+
+
+                if(result && result.length > 0) return result;
+                else if(!parent) return result;
+                else {
+                    if(path.indexOf('.') > -1){
+                        var subPath = path.substr(path.indexOf('.') + 1);
+                        return _.filter(parent.valueSetBindings, function(binding){ return binding.location == subPath; });
+                    }else {
+                        return [];
+                    }
+                }
+            }
+            return result;
         };
 
         $scope.deleteBinding = function(binding){
             var index = $rootScope.datatype.valueSetBindings.indexOf(binding);
             if (index >= 0) {
                 $rootScope.datatype.valueSetBindings.splice(index, 1);
+                $scope.setDirty();
+            }
+        };
+
+        $scope.deleteComment = function(comment){
+            var index = $rootScope.datatype.comments.indexOf(comment);
+            if (index >= 0) {
+                $rootScope.datatype.comments.splice(index, 1);
                 $scope.setDirty();
             }
         };
@@ -2693,6 +2764,7 @@ angular.module('igl').controller('AbortPublishCtl', function($scope, $rootScope,
         $modalInstance.dismiss('cancel');
     };
 });
+
 
 // angular.module('igl').controller('EditVSForDatatypeCtrl', function($scope, $modalInstance, valueSets, node, $rootScope, blockUI) {
 //     $scope.vsChanged = false;
