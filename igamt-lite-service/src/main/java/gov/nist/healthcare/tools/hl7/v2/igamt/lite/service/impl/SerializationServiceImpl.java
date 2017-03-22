@@ -351,33 +351,36 @@ import java.util.*;
             }
             Segment segment = segmentService.findById(
                 ((SegmentRef) segmentRefOrGroup).getRef().getId());
+            for(ValueSetBinding valueSetBinding : segment.getValueSetBindings()){
+                this.removeFromUnbindedTables(valueSetBinding.getTableId());
+            }
             for (Field field : segment.getFields()) {
                 if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getDatatypesExport())) {
                     bindedDatatypes.add(field.getDatatype());
                     Datatype datatype = datatypeService.findById(field.getDatatype().getId());
+                    for(ValueSetBinding valueSetBinding : datatype.getValueSetBindings()){
+                        this.removeFromUnbindedTables(valueSetBinding.getTableId());
+                    }
                     for(Component component : datatype.getComponents()){
                         if(!bindedDatatypes.contains(component.getDatatype())&&ExportUtil.diplayUsage(component.getUsage(),
                             this.exportConfig.getDatatypesExport())){
                             bindedDatatypes.add(component.getDatatype());
                         }
-                        for (TableLink tableLink : component.getTables()) {
-                            this.unbindedTables.remove(tableLink);
-                            if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(component.getUsage(),this.exportConfig.getValueSetsExport())) {
-                                bindedTables.add(tableLink);
-                            }
-                        }
-                    }
-                }
-                for (TableLink tableLink : field.getTables()) {
-                    this.unbindedTables.remove(tableLink);
-                    if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getValueSetsExport())) {
-                        bindedTables.add(tableLink);
                     }
                 }
             }
         } else if(segmentRefOrGroup instanceof Group){
             for(SegmentRefOrGroup children : ((Group) segmentRefOrGroup).getChildren()){
                 identifyBindedItems(children);
+            }
+        }
+    }
+
+    private void removeFromUnbindedTables(String tableId) {
+        for(TableLink tableLink : this.unbindedTables){
+            if(tableLink.getId().equals(tableId)){
+                this.unbindedTables.remove(tableLink);
+                break;
             }
         }
     }
