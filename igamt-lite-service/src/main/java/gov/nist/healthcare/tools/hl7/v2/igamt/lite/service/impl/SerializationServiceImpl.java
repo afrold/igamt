@@ -60,6 +60,8 @@ import java.util.*;
 
     private Messages igDocumentMessages;
 
+    private List<TableLink> tableLibrary;
+
 
     @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig) {
         this.exportConfig = exportConfig;
@@ -102,6 +104,7 @@ import java.util.*;
         this.bindedDatatypes = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
         this.bindedSegments = new ArrayList<>();
+        this.tableLibrary = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         for (Message message : igDocument.getProfile().getMessages().getChildren()){
             for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
@@ -353,6 +356,11 @@ import java.util.*;
                 ((SegmentRef) segmentRefOrGroup).getRef().getId());
             for(ValueSetBinding valueSetBinding : segment.getValueSetBindings()){
                 this.removeFromUnbindedTables(valueSetBinding.getTableId());
+                //TODO add usage check when added to valueSetBinding
+                TableLink tableLink = this.findTableLink(valueSetBinding.getTableId());
+                if(tableLink!=null) {
+                    this.bindedTables.add(tableLink);
+                }
             }
             for (Field field : segment.getFields()) {
                 if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getDatatypesExport())) {
@@ -360,6 +368,11 @@ import java.util.*;
                     Datatype datatype = datatypeService.findById(field.getDatatype().getId());
                     for(ValueSetBinding valueSetBinding : datatype.getValueSetBindings()){
                         this.removeFromUnbindedTables(valueSetBinding.getTableId());
+                        //TODO add usage check when added to valueSetBinding
+                        TableLink tableLink = this.findTableLink(valueSetBinding.getTableId());
+                        if(tableLink!=null) {
+                            this.bindedTables.add(tableLink);
+                        }
                     }
                     for(Component component : datatype.getComponents()){
                         if(!bindedDatatypes.contains(component.getDatatype())&&ExportUtil.diplayUsage(component.getUsage(),
@@ -374,6 +387,15 @@ import java.util.*;
                 identifyBindedItems(children);
             }
         }
+    }
+
+    private TableLink findTableLink(String tableId) {
+        for(TableLink tableLink : this.tableLibrary){
+            if(tableLink.getId().equals(tableId)){
+                return tableLink;
+            }
+        }
+        return null;
     }
 
     private void removeFromUnbindedTables(String tableId) {
