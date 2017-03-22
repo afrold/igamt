@@ -4,8 +4,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
@@ -42,6 +44,10 @@ import java.util.*;
 
     @Autowired SegmentService segmentService;
 
+    @Autowired TableService tableService;
+
+    @Autowired DatatypeService datatypeService;
+
     private ExportConfig exportConfig;
 
     private List<SegmentLink> bindedSegments;
@@ -50,11 +56,14 @@ import java.util.*;
 
     private List<TableLink> bindedTables;
 
+    private List<TableLink> unbindedTables;
+
     private Messages igDocumentMessages;
 
 
     @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig) {
         this.exportConfig = exportConfig;
+        this.unbindedTables = null;
         SerializableStructure serializableStructure = new SerializableStructure();
         datatypeLibraryDocument.getMetaData().setHl7Version("");
         datatypeLibraryDocument.getDatatypeLibrary().setSectionTitle("Data Types");
@@ -67,7 +76,8 @@ import java.util.*;
         SerializableSections serializableSections = new SerializableSections();
         this.bindedDatatypes = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
         this.bindedTables = new ArrayList<>(datatypeLibraryDocument.getTableLibrary().getChildren());
-        SerializableSection datatypeSection = this.serializeDatatypes(datatypeLibraryDocument.getDatatypeLibrary(),1,true);
+        SerializableSection datatypeSection = this.serializeDatatypes(
+            datatypeLibraryDocument.getDatatypeLibrary(), 1, true);
         //datatypeSection.setTitle("Data Types");
         SerializableSection valueSetsSection = this.serializeValueSets(datatypeLibraryDocument.getTableLibrary(),2);
         //valueSetsSection.setTitle("Value Sets");
@@ -85,19 +95,20 @@ import java.util.*;
         return serializableStructure.serializeStructure();
     }
 
-    @Override public Document serializeIGDocument(IGDocument originIgDocument,
+    @Override public Document serializeIGDocument(IGDocument igDocument,
         SerializationLayout serializationLayout, ExportConfig exportConfig) {
         this.exportConfig = exportConfig;
-        igDocumentMessages = originIgDocument.getProfile().getMessages();
+        igDocumentMessages = igDocument.getProfile().getMessages();
         this.bindedDatatypes = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
         this.bindedSegments = new ArrayList<>();
-        for (Message message : originIgDocument.getProfile().getMessages().getChildren()){
+        this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
+        for (Message message : igDocument.getProfile().getMessages().getChildren()){
             for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
                 identifyBindedItems(segmentRefOrGroup);
             }
         }
-        IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
+        //IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
         SerializableStructure serializableStructure = new SerializableStructure();
         igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
         SerializableMetadata serializableMetadata =
@@ -249,6 +260,17 @@ import java.util.*;
                         prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
                         tableLinkList.indexOf(tableLink),valueSetCodesUsageConfig);
                 valueSetsSection.addSection(serializableTable);
+            } else if(this.unbindedTables!=null && this.unbindedTables.contains(tableLink)){
+                if(exportConfig.isUnboundCustom()||exportConfig.isUnboundHL7()){
+                    Table table = tableService.findById(tableLink.getId());
+                    if(table != null && ExportUtil.displayUnbindedTable(exportConfig,table)){
+                        SerializableTable serializableTable = serializeTableService
+                            .serializeTable(tableLink,
+                                prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
+                                tableLinkList.indexOf(tableLink),valueSetCodesUsageConfig);
+                        valueSetsSection.addSection(serializableTable);
+                    }
+                }
             }
         }
         return valueSetsSection;
@@ -314,7 +336,7 @@ import java.util.*;
             messageSection.addSectionContent(
                 "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
         }
-        for (Message message : profile.getMessages().getChildren()) {
+        for (Message message : this.igDocumentMessages.getChildren()) {
             SerializableMessage serializableMessage =
                 serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
             messageSection.addSection(serializableMessage);
@@ -332,8 +354,22 @@ import java.util.*;
             for (Field field : segment.getFields()) {
                 if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getDatatypesExport())) {
                     bindedDatatypes.add(field.getDatatype());
+                    Datatype datatype = datatypeService.findById(field.getDatatype().getId());
+                    for(Component component : datatype.getComponents()){
+                        if(!bindedDatatypes.contains(component.getDatatype())&&ExportUtil.diplayUsage(component.getUsage(),
+                            this.exportConfig.getDatatypesExport())){
+                            bindedDatatypes.add(component.getDatatype());
+                        }
+                        for (TableLink tableLink : component.getTables()) {
+                            this.unbindedTables.remove(tableLink);
+                            if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(component.getUsage(),this.exportConfig.getValueSetsExport())) {
+                                bindedTables.add(tableLink);
+                            }
+                        }
+                    }
                 }
                 for (TableLink tableLink : field.getTables()) {
+                    this.unbindedTables.remove(tableLink);
                     if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getValueSetsExport())) {
                         bindedTables.add(tableLink);
                     }

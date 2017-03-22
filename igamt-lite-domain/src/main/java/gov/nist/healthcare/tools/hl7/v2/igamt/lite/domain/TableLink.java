@@ -81,6 +81,7 @@ public class TableLink extends AbstractLink implements Cloneable, Comparable<Tab
     return true;
   }
 
+  @Override
   public TableLink clone() {
     TableLink clonedLink = new TableLink();
     clonedLink.setBindingIdentifier(this.getBindingIdentifier());
@@ -92,14 +93,12 @@ public class TableLink extends AbstractLink implements Cloneable, Comparable<Tab
 
   @Override
   public int compareTo(TableLink o) {
-    int x =
-        String.CASE_INSENSITIVE_ORDER.compare(
-            this.getBindingIdentifier() != null ? this.getBindingIdentifier() : "",
-            o.getBindingIdentifier() != null ? o.getBindingIdentifier() : "");
+    int x = String.CASE_INSENSITIVE_ORDER.compare(
+        this.getBindingIdentifier() != null ? this.getBindingIdentifier() : "",
+        o.getBindingIdentifier() != null ? o.getBindingIdentifier() : "");
     if (x == 0) {
-      x =
-          (this.getBindingIdentifier() != null ? this.getBindingIdentifier() : "").compareTo(o
-              .getBindingIdentifier() != null ? o.getBindingIdentifier() : "");
+      x = (this.getBindingIdentifier() != null ? this.getBindingIdentifier() : "")
+          .compareTo(o.getBindingIdentifier() != null ? o.getBindingIdentifier() : "");
     }
     return x;
   }
@@ -119,4 +118,14 @@ public class TableLink extends AbstractLink implements Cloneable, Comparable<Tab
   public void setBindingLocation(String bindingLocation) {
     this.bindingLocation = bindingLocation;
   }
+
+
+  @Override
+  public String toString() {
+    return "TableLink [bindingIdentifier=" + bindingIdentifier + ", bindingStrength="
+        + bindingStrength + ", bindingLocation=" + bindingLocation + ", id=" + id + "]";
+  }
+
+
+
 }

@@ -207,7 +207,7 @@
                                                     </span>
                                                     <span class="form-group">
                                                         <label> Codes By Page </label>
-                                                        <input class="input-sm form group" name="items" id="items" type="number" ng-model="itemsByPage"/>
+                                                        <input class="input-sm form group" type="number" ng-model="itemsByPage" no-dirty-check/>
                                                     </span>
                                                     <div class="">
                                                         <div ng-if="table.codes.length >= 1000" style="margin-bottom: 10px">
@@ -276,7 +276,7 @@
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
-                                                            <tr style="float:center !important;" ng-if="table.smallCodes.length > 30">
+                                                            <tr style="float:center !important;" ng-show="table.smallCodes.length > itemsByPage">
                                                                 <td colspan="6" class="text-center" style="float:center !important;">
                                                                     <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7" style="float:center !important;"></div>
                                                                 </td>
@@ -419,57 +419,36 @@
                                     <i class="fa fa-link" aria-hidden="true"></i> Value Set Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
-                                    <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary">
-                                        <button type="button" ng-click="AddBindingForValueSet(table)" class="btn btn-raised btn-info btn-md"><i class="fa fa-plus"></i> Add Binding</button>
-                                    </span>
                                     <table st-safe-src="references" st-table="displayReferences" class="table table-striped table-bordered table-condensed">
                                         <thead>
                                         <tr class="tbl-header">
-                                            <td st-ratio="5">#</td>
-                                            <th st-ratio="35">Path</th>
-                                            <th st-ratio="15">Name</th>
-                                            <th st-ratio="10">Usage</th>
-                                            <th st-ratio="10">DataType</th>
-                                            <th st-ratio="20">Value Set</th>
-                                    
-                                            <th st-ratio="5">Status</th>
+                                            <td st-ratio="10">#</td>
+                                            <th st-ratio="30">Location</th>
+                                            <th st-ratio="30">ValueSet</th>
+                                            <th st-ratio="15">bindingLocation</th>
+                                            <th st-ratio="15">bindingStrength</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="ref in displayReferences">
-                                            <td st-ratio="5">{{$index + 1}}
-                                                <span ng-if="ref.type === 'field'" class="label label-field label-icon">F</span>
-                                                <span ng-if="ref.type === 'component'" class="label label-component label-icon">C</span>
+                                            <td st-ratio="10">{{$index + 1}}
+                                                <span class="badge" ng-if="ref.type === 'message'">Message</span>
+                                                <span class="badge" ng-if="ref.type === 'segment'">Segment</span>
+                                                <span class="badge" ng-if="ref.type === 'datatype'">Datatype</span>
                                             </td>
-                                            <td st-ratio="35">
-                                                <a ng-if="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.path}}</a>
-                                                <a ng-if="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.path}}</a>
-
+                                            <td st-ratio="30">
+                                                <span ng-if="ref.type === 'message'">{{messagesMap[ref.id].name}}.{{ref.location}}</span>
+                                                <span ng-if="ref.type === 'segment'">{{getSegmentLabel(segmentsMap[ref.id])}}-{{ref.location}}</span>
+                                                <span ng-if="ref.type === 'datatype'">{{getDatatypeLabel(datatypesMap[ref.id])}}.{{ref.location}}</span>
+                                            </td>
+                                            <td st-ratio="30">
+                                                {{tablesMap[ref.tableId].bindingIdentifier}}
                                             </td>
                                             <td st-ratio="15">
-                                                {{::ref.name}}
+                                                {{::ref.bindingLocation}}
                                             </td>
-                                            <td st-ratio="10">
-                                                {{::ref.usage}}
-                                            </td>
-                                            <td st-ratio="10">
-                                                <a ng-click="redirectDT(ref.datatype)">{{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}</a>
-                                            </td>
-
-                                            <td st-ratio="20">
-                                                <span ng-if="ref.target.scope == 'PUBLISHED'">
-                                                    {{::tablesMap[ref.tableLink.id].bindingIdentifier}}-{{::tablesMap[ref.tableLink.id].description}}
-                                                </span>
-                                                <select ng-if="ref.target.scope !== 'PUBLISHED'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.id">
-                                                    <option value="">No Value Set</option>
-                                                    <option ng-repeat="t in tables |orderBy:'+bindingIdentifier'" value="{{t.id}}">
-                                                        {{::t.bindingIdentifier}}-{{::t.description}}
-                                                    </option>
-                                                </select>
-                                            </td>
-                                            <td st-ratio="5">
-                                                <span ng-if="ref.tableLink.isNew">New</span>
-                                                <span ng-if="!ref.tableLink.isNew && ref.tableLink.isChanged">Changed</span>
+                                            <td st-ratio="15">
+                                                {{::ref.bindingStrength}}
                                             </td>
                                         </tr>
                                         </tbody>
@@ -645,8 +624,7 @@
                                         <label class="col-md-2 control-label">Date Updated</label>
 
                                         <div class="controls col-md-10">
-                                             <span
-                                                     class="form-control">{{table.dateUpdated | date:dateFormat}}</span>
+                                             <span class="form-control">{{table.dateUpdated | date:dateFormat}}</span>
                                         </div>
                                     </div>
 
@@ -662,7 +640,10 @@
                                 <div class="el-def" style="margin-top: 20px">
                                     <div class="">
                                         <div class="">
-
+                                            <span class="form-group">
+                                                <label> Codes By Page </label>
+                                                <input class="input-sm form group" type="number" ng-model="itemsByPage" no-dirty-check/>
+                                            </span>
                                             <div ng-if="table.codes.length > 1000" style="margin-bottom: 10px">
                                                 <div class="alert alert-warning" role="alert">
                                                     Due to the large size of the codes, only the first 1000 of {{table.codes.length}} codes will be displayed.
@@ -686,12 +667,9 @@
                                                     <th>
                                                         <input st-search="'label'" placeholder="search for description" class="input-sm form-control" type="search" />
                                                     </th>
-                                                    <th>
-                                                    </th>
-                                                    <th>
-                                                    </th>
-                                                    <th>
-                                                    </th>
+                                                    <th/>
+                                                    <th/>
+                                                    <th/>
                                                 </tr>
                                                 </thead>
 
@@ -716,9 +694,9 @@
                                                     </td>
                                                 </tr>
                                                 </tbody>
-                                                 <tr style="float:center !important;" ng-if="table.smallCodes.length > 30">
+                                                 <tr style="float:center !important;" ng-if="table.smallCodes.length > itemsByPage">
                                                      <td colspan="6" class="text-center" style="float:center !important;">
-                                                         <div st-pagination="" st-items-by-page="30" st-displayed-pages="7" style="float:center !important;"></div>
+                                                         <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7" style="float:center !important;"></div>
                                                      </td>
                                                  </tr>
 
@@ -733,54 +711,36 @@
                                     <i class="fa fa-link" aria-hidden="true"></i> Value Set Cross-References <span class="badge">{{references.length}}</span>
                                 </tab-heading>
                                 <div class="el-def" style="margin-top:20px">
-                                    <span class="pull-right">
-                                        <button ng-click="AddBindingForValueSet(table)" class="btn btn-raised btn-info btn-md"><i class="fa fa-plus"></i> Add Binding</button>
-                                    </span>
                                     <table st-safe-src="references" st-table="displayReferences" class="table table-striped table-bordered table-condensed">
                                         <thead>
                                         <tr class="tbl-header">
-                                            <td st-ratio="5">#</td>
-                                            <th st-ratio="35">Path</th>
-                                            <th st-ratio="15">Name</th>
-                                            <th st-ratio="10">Usage</th>
-                                            <th st-ratio="10">DataType</th>
-                                            <th st-ratio="20">Value Set</th>
-                                            <th st-ratio="5">Status</th>
+                                            <td st-ratio="10">#</td>
+                                            <th st-ratio="30">Location</th>
+                                            <th st-ratio="30">ValueSet</th>
+                                            <th st-ratio="15">bindingLocation</th>
+                                            <th st-ratio="15">bindingStrength</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="ref in displayReferences">
-                                            <td st-ratio="5">{{$index + 1}}
-                                                <span ng-if="ref.type === 'field'" class="label label-field label-icon">F</span>
-                                                <span ng-if="ref.type === 'component'" class="label label-component label-icon">C</span>
+                                            <td st-ratio="10">{{$index + 1}}
+                                                <span class="badge" ng-if="ref.type === 'message'">Message</span>
+                                                <span class="badge" ng-if="ref.type === 'segment'">Segment</span>
+                                                <span class="badge" ng-if="ref.type === 'datatype'">Datatype</span>
                                             </td>
-                                            <td st-ratio="35">
-                                                {{::ref.path}}
+                                            <td st-ratio="30">
+                                                <span ng-if="ref.type === 'message'">{{messagesMap[ref.id].name}}.{{ref.location}}</span>
+                                                <span ng-if="ref.type === 'segment'">{{getSegmentLabel(segmentsMap[ref.id])}}-{{ref.location}}</span>
+                                                <span ng-if="ref.type === 'datatype'">{{getDatatypeLabel(datatypesMap[ref.id])}}.{{ref.location}}</span>
+                                            </td>
+                                            <td st-ratio="30">
+                                                {{::table.bindingIdentifier}}
                                             </td>
                                             <td st-ratio="15">
-                                                {{::ref.name}}
+                                                {{::ref.bindingLocation}}
                                             </td>
-                                            <td st-ratio="10">
-                                                {{::ref.usage}}
-                                            </td>
-                                            <td st-ratio="10">
-                                                {{::getDatatypeLabel(datatypesMap[ref.datatype.id])}}
-                                            </td>
-                                            <td st-ratio="20">
-                                                <span ng-if="ref.target.status == 'PUBLISHED'">
-                                                    {{::tablesMap[ref.tableLink.id].bindingIdentifier}}-{{::tablesMap[ref.tableLink.id].description}}
-                                                </span>
-                                                <select ng-if="ref.target.status !== 'PUBLISHED'" class="form-control" ng-change="changeTableLink(ref.tableLink)" ng-model="ref.tableLink.id">
-                                                    <option value="">No Value Set</option>
-                                                    <option ng-repeat="t in tables |orderBy:'+bindingIdentifier'" value="{{t.id}}">
-                                                        {{::t.bindingIdentifier}}-{{::t.description}}
-                                                    </option>
-                                                </select>
-                                            </td>
-                                            </td>
-                                            <td st-ratio="5">
-                                                <span ng-if="ref.tableLink.isNew">New</span>
-                                                <span ng-if="!ref.tableLink.isNew && ref.tableLink.isChanged">Changed</span>
+                                            <td st-ratio="15">
+                                                {{::ref.bindingStrength}}
                                             </td>
                                         </tr>
                                         </tbody>

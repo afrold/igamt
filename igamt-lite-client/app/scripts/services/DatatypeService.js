@@ -2,8 +2,7 @@
  * Created by haffo on 3/9/16.
  */
 'use strict';
-angular.module('igl').factory('DatatypeService',
-    function($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc) {
+angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc) {
         var DatatypeService = {
             getNodes: function(parent, root) {
                 var children = [];
@@ -13,6 +12,17 @@ angular.module('igl').factory('DatatypeService',
                         children = angular.copy(dt.components);
                         for (var i = 0, len = children.length; i < len; i++) {
                             children[i].path = parent.path + "." + children[i].position;
+                            if($rootScope.datatype){
+                                children[i].sev = _.find($rootScope.datatype.singleElementValues, function(sev){ return sev.location  ==  children[i].path; });
+                                if(children[i].sev) {
+                                    children[i].sev.isMain = true;
+                                }else {
+                                    children[i].sev = _.find(dt.singleElementValues, function(sev){ return sev.location  ==  children[i].position; });
+                                    if(children[i].sev) {
+                                        children[i].sev.isMain = false;
+                                    }
+                                }
+                            }
                         }
                     } else {
                         children = parent.components;
@@ -22,6 +32,10 @@ angular.module('igl').factory('DatatypeService',
                         children = root.components;
                         for (var i = 0, len = children.length; i < len; i++) {
                             children[i].path = children[i].position;
+                            if($rootScope.datatype){
+                                children[i].sev = _.find($rootScope.datatype.singleElementValues, function(sev){ return sev.location  ==  children[i].path; });
+                                if(children[i].sev) children[i].sev.isMain = true;
+                            }
                         }
                     } else {
                         children = [];

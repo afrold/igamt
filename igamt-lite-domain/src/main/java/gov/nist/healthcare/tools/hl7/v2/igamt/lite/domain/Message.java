@@ -42,6 +42,15 @@ public class Message extends DataModelWithConstraints
 
 
 
+  
+  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
+  
+  private List<Comment> comments = new ArrayList<Comment>();
+  
+  private List<SingleElementValue> singleElementValues = new ArrayList<SingleElementValue>();
+
+  
+
   public List<String> getCompositeProfileStructureList() {
     return compositeProfileStructureList;
   }
@@ -143,10 +152,30 @@ public class Message extends DataModelWithConstraints
   public void setPosition(Integer position) {
     this.position = position;
   }
+  
+  public List<SingleElementValue> getSingleElementValues() {
+	return singleElementValues;
+  }
+
+  public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
+	this.singleElementValues = singleElementValues;
+  }
 
   public void addSegmentRefOrGroup(SegmentRefOrGroup e) {
     e.setPosition(children.size() + 1);
     this.children.add(e);
+  }
+  
+  public void addValueSetBinding(ValueSetBinding vsb) {
+	valueSetBindings.add(vsb);
+  }
+  
+  public void addComment(Comment comment) {
+	comments.add(comment);
+  }
+  
+  public void addSingleElementValue(SingleElementValue sev) {
+	singleElementValues.add(sev);
   }
 
   public void setChildren(List<SegmentRefOrGroup> children) {
@@ -307,6 +336,32 @@ public class Message extends DataModelWithConstraints
         clonedMessage.addSegmentRefOrGroup(clone);
       }
     }
+    
+    clonedMessage.setPredicates(new ArrayList<Predicate>());
+    for (Predicate cp : this.predicates) {
+    	clonedMessage.addPredicate(cp.clone());
+    }
+    
+    clonedMessage.setConformanceStatements(new ArrayList<ConformanceStatement>());
+    for (ConformanceStatement cs : this.conformanceStatements) {
+    	clonedMessage.addConformanceStatement(cs.clone());
+    }
+    
+    clonedMessage.setValueSetBindings(new ArrayList<ValueSetBinding>());
+    for (ValueSetBinding vsb : this.valueSetBindings){
+    	clonedMessage.addValueSetBinding(vsb);
+    }
+    
+    clonedMessage.setComments(new ArrayList<Comment>());
+    for (Comment c : this.comments){
+    	clonedMessage.addComment(c);
+    }
+    
+    clonedMessage.setSingleElementValues(new ArrayList<SingleElementValue>());
+    for (SingleElementValue sev : this.singleElementValues){
+    	clonedMessage.addSingleElementValue(sev);
+    }
+    
     clonedMessage.setId(ObjectId.get().toString());
     clonedMessage.setComment(comment);
     clonedMessage.setDescription(description);
@@ -359,13 +414,29 @@ public class Message extends DataModelWithConstraints
     clonedMessage.setUsageNote(usageNote);
     clonedMessage.setMessageID(messageID);
     clonedMessage.setType(type);
-    clonedMessage.setConformanceStatements(new ArrayList<ConformanceStatement>());
-    for (ConformanceStatement cs : this.conformanceStatements) {
-      clonedMessage.addConformanceStatement(cs.clone());
-    }
     clonedMessage.setPredicates(new ArrayList<Predicate>());
     for (Predicate cp : this.predicates) {
-      clonedMessage.addPredicate(cp.clone());
+    	clonedMessage.addPredicate(cp.clone());
+    }
+    
+    clonedMessage.setConformanceStatements(new ArrayList<ConformanceStatement>());
+    for (ConformanceStatement cs : this.conformanceStatements) {
+    	clonedMessage.addConformanceStatement(cs.clone());
+    }
+    
+    clonedMessage.setValueSetBindings(new ArrayList<ValueSetBinding>());
+    for (ValueSetBinding vsb : this.valueSetBindings){
+    	clonedMessage.addValueSetBinding(vsb);
+    }
+    
+    clonedMessage.setComments(new ArrayList<Comment>());
+    for (Comment c : this.comments){
+    	clonedMessage.addComment(c);
+    }
+    
+    clonedMessage.setSingleElementValues(new ArrayList<SingleElementValue>());
+    for (SingleElementValue sev : this.singleElementValues){
+    	clonedMessage.addSingleElementValue(sev);
     }
 
     return clonedMessage;
@@ -411,4 +482,27 @@ public class Message extends DataModelWithConstraints
 
 
 
+
+public void setDefPostText(String defPostText) {
+	this.defPostText = defPostText;
+}
+
+public List<ValueSetBinding> getValueSetBindings() {
+	return valueSetBindings;
+}
+
+public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+	this.valueSetBindings = valueSetBindings;
+}
+
+public List<Comment> getComments() {
+	return comments;
+}
+
+public void setComments(List<Comment> comments) {
+	this.comments = comments;
+}
+  
+  
+  
 }

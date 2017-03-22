@@ -41,8 +41,10 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
   // //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
   // CascadeType.PERSIST, CascadeType.MERGE })
   // //@JoinColumn(name = "TABLE_ID")
+  @Deprecated
   protected TableLink table;
   
+  @Deprecated
   protected List<TableLink> tables = new ArrayList<TableLink>();
 
 
@@ -60,6 +62,7 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
   protected Integer position = 0;
 
   // //@Column(name = "COMMENT")
+  @Deprecated
   protected String comment = "";
 
   protected String text = "";
@@ -150,10 +153,12 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
   // this.datatypeLabel = datatypeLabel;
   // }
 
+  @Deprecated
   public String getComment() {
     return comment;
   }
 
+  @Deprecated
   public void setComment(String comment) {
     this.comment = comment;
   }
@@ -174,10 +179,12 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
     this.hide = hide;
   }
 
+  @Deprecated
   public List<TableLink> getTables() {
 	return tables;
   }
 
+  @Deprecated
   public void setTables(List<TableLink> tables) {
 	this.tables = tables;
   }

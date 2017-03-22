@@ -35,6 +35,12 @@ public class Segment extends DataModelWithConstraints
   private List<Field> fields = new ArrayList<Field>();
 
   private DynamicMapping dynamicMapping = new DynamicMapping();
+  
+  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
+  
+  private List<SingleElementValue> singleElementValues = new ArrayList<SingleElementValue>();
+  
+  private List<Comment> comments = new ArrayList<Comment>();
 
   private String name;
 
@@ -83,6 +89,18 @@ public class Segment extends DataModelWithConstraints
 
   public void addField(Field field) {
     fields.add(field);
+  }
+  
+  public void addValueSetBinding(ValueSetBinding vsb) {
+	valueSetBindings.add(vsb);
+  }
+  
+  public void addComment(Comment comment) {
+	comments.add(comment);
+  }
+  
+  public void addSingleElementValue(SingleElementValue sev) {
+	singleElementValues.add(sev);
   }
 
   public Field findOneField(String id) {
@@ -163,10 +181,7 @@ public class Segment extends DataModelWithConstraints
       throws CloneNotSupportedException {
     Segment clonedSegment = new Segment();
     clonedSegment.setComment(comment);
-    clonedSegment.setConformanceStatements(new ArrayList<ConformanceStatement>());
-    for (ConformanceStatement cs : this.conformanceStatements) {
-      clonedSegment.addConformanceStatement(cs.clone());
-    }
+    
     clonedSegment.setDescription(description);
 
     clonedSegment.setDynamicMapping(new DynamicMapping());
@@ -177,12 +192,34 @@ public class Segment extends DataModelWithConstraints
     for (Field f : this.fields) {
       clonedSegment.addField(f.clone(dtRecords, tableRecords));
     }
-    clonedSegment.setLabel(label);
-    clonedSegment.setName(name);
+    
+    clonedSegment.setValueSetBindings(new ArrayList<ValueSetBinding>());
+    for (ValueSetBinding vsb : this.valueSetBindings){
+    	clonedSegment.addValueSetBinding(vsb);
+    }
+    
+    clonedSegment.setComments(new ArrayList<Comment>());
+    for (Comment c : this.comments){
+    	clonedSegment.addComment(c);
+    }
+    
+    clonedSegment.setSingleElementValues(new ArrayList<SingleElementValue>());
+    for (SingleElementValue sev : this.singleElementValues){
+    	clonedSegment.addSingleElementValue(sev);
+    }
+    
     clonedSegment.setPredicates(new ArrayList<Predicate>());
     for (Predicate cp : this.predicates) {
       clonedSegment.addPredicate(cp.clone());
     }
+    
+    clonedSegment.setConformanceStatements(new ArrayList<ConformanceStatement>());
+    for (ConformanceStatement cs : this.conformanceStatements) {
+      clonedSegment.addConformanceStatement(cs.clone());
+    }
+    
+    clonedSegment.setLabel(label);
+    clonedSegment.setName(name); 
     clonedSegment.setText1(text1);
     clonedSegment.setText2(text2);
 
@@ -244,5 +281,29 @@ public class Segment extends DataModelWithConstraints
     this.coConstraints = coConstraints;
   }
 
+
+  public List<ValueSetBinding> getValueSetBindings() {
+	return valueSetBindings;
+  }
+
+  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+	this.valueSetBindings = valueSetBindings;
+  }
+
+public List<Comment> getComments() {
+	return comments;
+}
+
+public void setComments(List<Comment> comments) {
+	this.comments = comments;
+}
+
+public List<SingleElementValue> getSingleElementValues() {
+	return singleElementValues;
+}
+
+public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
+	this.singleElementValues = singleElementValues;
+}
 
 }

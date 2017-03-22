@@ -37,6 +37,8 @@ public interface DatatypeService {
 
   public void save(List<Datatype> datatypes);
 
+  public void delete(List<Datatype> datatypes);
+
   public Set<Datatype> collectDatatypes(Datatype datatype);
 
   public List<Datatype> findByScope(String scope);
@@ -45,7 +47,7 @@ public interface DatatypeService {
 
   public List<Datatype> findPendingShared(Long accountId);
 
-  public Datatype findByNameAndVersionAndScope(String name, String version, String scope);
+  public List<Datatype> findByNameAndVersionAndScope(String name, String version, String scope);
 
   public Datatype findByCompatibleVersion(String name, String version, String scope)
       throws Exception;

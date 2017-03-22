@@ -31,15 +31,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         blockUI.start();
         cleanState();
         $rootScope.table = angular.copy($rootScope.tablesMap[$rootScope.table.id]);
-
-        $rootScope.references = [];
-        angular.forEach($rootScope.segments, function(segment) {
-            $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
-        });
-        angular.forEach($rootScope.datatypes, function(dt) {
-            $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
-        });
-
+        $rootScope.findValueSetBindings();
         blockUI.stop();
     };
     $scope.redirectSeg = function(segmentRef) {

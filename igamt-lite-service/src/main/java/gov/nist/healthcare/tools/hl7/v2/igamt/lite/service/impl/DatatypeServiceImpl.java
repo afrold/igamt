@@ -144,7 +144,7 @@ public class DatatypeServiceImpl implements DatatypeService {
   }
 
   @Override
-  public Datatype findByNameAndVersionAndScope(String name, String version, String scope) {
+  public List<Datatype> findByNameAndVersionAndScope(String name, String version, String scope) {
     // TODO Auto-generated method stub
     return datatypeRepository.findByNameAndVersionAndScope(name, version, scope);
   }
@@ -202,5 +202,10 @@ public class DatatypeServiceImpl implements DatatypeService {
       throw new Exception("Cannot find Datatype");
     }
     return result;
+  }
+
+  @Override
+  public void delete(List<Datatype> datatypes) {
+    datatypeRepository.delete(datatypes);
   }
 }

@@ -13,6 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.io.InvalidObjectException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,10 +68,11 @@ public class ValidationController extends CommonController {
       produces = "application/json")
   public ValidationResult validateDatatype(@PathVariable("igHl7Version") String igHl7Version,
       @RequestBody Datatype userDatatype) throws InvalidObjectException {
-    Datatype hl7Datatype = datatypeService.findByNameAndVersionAndScope(userDatatype.getName(),
-        userDatatype.getHl7Version(), "HL7STANDARD");
-    return validationService.validateDatatype(hl7Datatype, userDatatype, userDatatype.getId(),
-        igHl7Version);
+    List<Datatype> hl7Datatypes = datatypeService.findByNameAndVersionAndScope(
+        userDatatype.getName(), userDatatype.getHl7Version(), "HL7STANDARD");
+    return validationService.validateDatatype(
+        hl7Datatypes != null && !hl7Datatypes.isEmpty() ? hl7Datatypes.get(0) : null, userDatatype,
+        userDatatype.getId(), igHl7Version);
 
   }
 

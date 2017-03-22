@@ -78,10 +78,16 @@ public class SerializableMessage extends SerializableSection {
         }
 
         for (SerializableSegmentRefOrGroup serializableSegmentRefOrGroup : this.serializableSegmentRefOrGroups) {
-            messageElement.appendChild(serializableSegmentRefOrGroup.serializeElement());
+            if(serializableSegmentRefOrGroup!=null) {
+                messageElement.appendChild(serializableSegmentRefOrGroup.serializeElement());
+            }
         }
-        messageElement.appendChild(serializableConformanceStatements.serializeElement());
-        messageElement.appendChild(serializablePredicates.serializeElement());
+        if(serializableConformanceStatements!=null) {
+            messageElement.appendChild(serializableConformanceStatements.serializeElement());
+        }
+        if(serializablePredicates!=null) {
+            messageElement.appendChild(serializablePredicates.serializeElement());
+        }
         List<SerializableSection> segmentsSections = super.getSerializableSectionList();
         if(!segmentsSections.isEmpty()){
             for(SerializableSection segmentSection : segmentsSections){

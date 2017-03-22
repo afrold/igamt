@@ -54,6 +54,7 @@ public class ProfileComponentServiceImpl implements ProfileComponentService {
   }
 
   @Override
+
   public void delete(String id) {
     profileComponentRepository.delete(id);
   }
@@ -62,6 +63,7 @@ public class ProfileComponentServiceImpl implements ProfileComponentService {
   public List<ProfileComponent> findByIds(List<String> pcIds) {
 
     return profileComponentRepository.findAllByIds(pcIds);
+
   }
 
 
