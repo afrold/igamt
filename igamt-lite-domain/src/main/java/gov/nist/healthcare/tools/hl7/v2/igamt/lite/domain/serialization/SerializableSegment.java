@@ -77,6 +77,13 @@ public class SerializableSegment extends SerializableSection {
                 }
             }
 
+            if(segment.getValueSetBindings()!=null && !segment.getValueSetBindings().isEmpty()) {
+                Element valueSetBindingListElement = super.createValueSetBindingListElement(segment.getValueSetBindings());
+                if(valueSetBindingListElement!=null){
+                    segmentElement.appendChild(valueSetBindingListElement);
+                }
+            }
+
             for (int i = 0; i < segment.getFields().size(); i++) {
                 Field field = segment.getFields().get(i);
                 Element fieldElement = new Element("Field");
@@ -106,30 +113,6 @@ public class SerializableSegment extends SerializableSection {
                 fieldElement.addAttribute(new Attribute("complex",String.valueOf(isComplex)));
                 fieldElement.addAttribute(new Attribute("Min", String.valueOf(field.getMin())));
                 fieldElement.addAttribute(new Attribute("Max", field.getMax()));
-                if (field.getTables() != null && !field.getTables().isEmpty()) {
-                    List<Table> fieldTables = fieldTableMap.get(field);
-                    String temp = "";
-                    boolean isFirst = true;
-                    if (fieldTables != null && fieldTables.size() > 0) {
-                        for (Table table : fieldTables) {
-                        	if(table != null){
-                        		String bindingIdentifier = table.getBindingIdentifier();
-                                if(!isFirst){
-                                    temp += ",";
-                                } else {
-                                    isFirst = false;
-                                }
-                                if((bindingIdentifier != null && !bindingIdentifier.equals(""))){
-                                    temp += bindingIdentifier;
-                                } else {
-                                    temp += " ! DEBUG: COULD NOT FIND binding identifier " + table
-                                        .getBindingIdentifier();
-                                }	
-                        	}
-                        }
-                    }
-                    fieldElement.addAttribute(new Attribute("Binding", temp));
-                }
                 if (field.getItemNo() != null && !field.getItemNo().equals(""))
                     fieldElement.addAttribute(new Attribute("ItemNo", field.getItemNo()));
                 if (field.getComment() != null && !field.getComment().isEmpty())

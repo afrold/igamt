@@ -71,6 +71,12 @@ public class SerializableDatatype extends SerializableSection {
             for(SerializableConstraint constraint : constraints){
                 datatypeElement.appendChild(constraint.serializeElement());
             }
+            if(datatype.getValueSetBindings()!=null && !datatype.getValueSetBindings().isEmpty()) {
+                Element valueSetBindingListElement = super.createValueSetBindingListElement(datatype.getValueSetBindings());
+                if(valueSetBindingListElement!=null){
+                    datatypeElement.appendChild(valueSetBindingListElement);
+                }
+            }
             if (datatype.getComponents() != null) {
                 for (int i = 0; i < datatype.getComponents().size(); i++) {
                     Component component = datatype.getComponents().get(i);
@@ -118,20 +124,6 @@ public class SerializableDatatype extends SerializableSection {
                     if (componentText != null && !componentText.isEmpty()) {
                         componentElement.appendChild(
                             this.createTextElement("Text", componentText));
-                    }
-                    if (component.getTables() != null && (component.getTables().size() > 0)) {
-                        String bindingIdentifiers = "";
-                        if(componentTableMap!=null && componentTableMap.size()>0 && componentTableMap.containsKey(component)) {
-                            for (Table table : componentTableMap.get(component)) {
-                                if (table != null) {
-                                    String bindingIdentifier = table.getBindingIdentifier();
-                                    bindingIdentifiers = !bindingIdentifiers.equals("") ?
-                                        bindingIdentifiers + "," + bindingIdentifier :
-                                        bindingIdentifier;
-                                }
-                            }
-                        }
-                        componentElement.addAttribute(new Attribute("Binding", bindingIdentifiers));
                     }
                     componentElement.addAttribute(new Attribute("complex",String.valueOf(isComplex)));
                     datatypeElement.appendChild(componentElement);
