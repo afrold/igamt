@@ -18,6 +18,7 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   private String path;
   private String pathExp;
   private Integer position;
+  private Integer priority;
 
 
   public String getId() {
@@ -87,6 +88,14 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   public void setPosition(Integer position) {
     this.position = position;
+  }
+
+  public Integer getPriority() {
+    return priority;
+  }
+
+  public void setPriority(Integer priority) {
+    this.priority = priority;
   }
 
   @Override

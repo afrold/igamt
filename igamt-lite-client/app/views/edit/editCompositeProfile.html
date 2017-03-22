@@ -1,18 +1,121 @@
 <script type="text/ng-template" id="EditCompositeProfile.html">
-    <div ng-show="isAuthenticated()" >
+    <div ng-show="isAuthenticated()" ng-controller="ListCompositeProfileCtrl">
         <!--<div class="row">-->
         <div ng-show="!isPending()">
             <div style="padding-top:10px">
                 <div style="margin:5px">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Composite Profile: {{compositeProfile.name}} </span>
+                        <span class="header4">Composite Profile: {{compositeProfileStructure.name}} </span>
                         <div class="pull-right">
                             <button ng-disabled="editForm.$invalid ||!editForm.$dirty" title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-click="save()">
                                                             <span><i class="fa fa-check fa-fw"></i> Save</span>
                                                         </button>
                         </div>
                     </div>
+                    <div class="static_info">
+                        <i class="fa fa-calendar" aria-hidden="true"></i> Updated {{compositeProfile.dateUpdated | date:dateFormat}}
+
+
+                    </div>
                     <tabset active="tabStatus.active">
+                        <tab>
+                            <tab-heading>
+                                <i class="fa fa-code-fork fa-fw" aria-hidden="true"></i> Composite Profile Structure
+                            </tab-heading>
+                            <div style="margin-top: 20px" >
+                                <div class="row margin-0 full-width hidden-xs">
+                                    <div class="yy-timeline-box" ng-class-odd="'left'" ng-class-even="'right'">
+                                        <div class="yy-timeline-box-inner">
+                                            <div class="yy-timeline-image-container">
+                                                <img src="images/square.jpg" alt="" style="margin-top:-55px;" />
+                                            </div>
+                                            <div class="yy-timeline-content" style="margin-top:-40px;">
+                                                <div align="center">
+                                                    <h5>Core Profile </h5>
+                                                </div>
+                                                <div>
+                                                    <table>
+                                                        <tr>
+                                                            <td>Name : </td>
+                                                            <td>{{compositeProfile.coreMessageMetaData.name}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Description : </td>
+                                                            <td>{{compositeProfile.coreMessageMetaData.description}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Identifier : </td>
+                                                            <td>{{compositeProfile.coreMessageMetaData.identifier}}</td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+                                                <!--<div align="right">
+                                            <button class="btn btn-raised btn-primary btn-xs" ng-click="removePc(pc)"><span><i class="fa fa-times fa-fw">
+                                                        &nbsp; </i>remove</span>
+                                                    </button>
+                                        </div>-->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div dnd-list="compositeProfile.appliedProfileComponents">
+                                <div class="column margin-0 full-width hidden-xs" ng-repeat="pcInfo in compositeProfile.appliedProfileComponents" dnd-draggable="pcInfo" dnd-moved="compositeProfile.appliedProfileComponents.splice($index, 1);changePosition()">
+                                    
+                                    <div class="yy-timeline-box" ng-class-odd="'left'" ng-class-even="'right'">
+                                        <div class="yy-timeline-box-inner">
+                                            <span class="yy-timeline-date"> {{pcInfo.position}} </span>
+                                           
+                                            <div class="yy-timeline-image-container"  >
+                                                <img src="images/circle.gif" alt="" />
+                                            </div>
+                                            <div class="yy-timeline-content" >
+                                                <div align="center">
+                                                    <h5>Profile Component {{pcInfo.position}}</h5>
+                                                </div>
+                                                <div>
+                                                    <table>
+                                                        <tr>
+                                                            <td>Name : </td>
+                                                            <td>{{pcInfo.pc.name}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Description : </td>
+                                                            <td>{{pcInfo.pc.description}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Comment : </td>
+                                                            <td>{{pcInfo.pc.comment}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Date Updated : </td>
+                                                            <td>{{pcInfo.pc.dateUpdated | date:dateFormat}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Date Applied : </td>
+                                                            <td>{{pcInfo.pcDate | date:dateFormat}}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div align="right">
+                                                    <button class="btn btn-raised btn-primary btn-xs" ng-click="removePc(pcInfo.pc.id)"><span><i class="fa fa-times fa-fw">
+                                                        &nbsp; </i>remove</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                <div class="dndPlaceholder" style="height:100px;" align="center">Drop Here</div>
+
+                                </div>
+
+                            </div>
+                        </tab>
                         <tab>
                             <tab-heading>
                                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Composite Profile MetaData
@@ -21,19 +124,19 @@
                                 <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.name.$invalid}">
                                     <label class="col-md-2 control-label">Name*</label>
                                     <div class="controls col-md-10">
-                                        <input class="form-control" type="text" disabled name="name" ng-change="setDirty()" ng-model="compositeProfile.name" ng-disabled="viewSettings.tableReadonly">
+                                        <input class="form-control" type="text" disabled name="name" ng-change="setDirty()" ng-model="compositeProfileStructure.name" ng-disabled="viewSettings.tableReadonly">
                                     </div>
                                 </div>
                                 <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
                                     <label class="col-md-2 control-label">Identifier*</label>
                                     <div class="controls col-md-10">
-                                        <input type="text" ng-change="setDirty()" name="identifier" class="form-control" ng-model="compositeProfile.identifier" ng-disabled="viewSettings.tableReadonly" required>
+                                        <input type="text" ng-change="setDirty()" name="identifier" class="form-control" ng-model="compositeProfile.identifier" ng-disabled="viewSettings.tableReadonly" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
                                     <label class="col-md-2 control-label">Description</label>
                                     <div class="controls col-md-10">
-                                        <input class="form-control" type="text" name="description" ng-change="setDirty()" ng-model="compositeProfile.description" ng-disabled="viewSettings.tableReadonly">
+                                        <input class="form-control" type="text" name="description" ng-change="setDirty()" ng-model="compositeProfileStructure.description" ng-disabled="viewSettings.tableReadonly">
                                     </div>
                                 </div>
                                 <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
@@ -42,13 +145,7 @@
                                         <input class="form-control" type="text" name="hl7Version" ng-model="compositeProfile.hl7Version" disabled>
                                     </div>
                                 </div>
-                                <!--<div class="form-group control-group"-->
-                                <!--ng-class="{'igl-has-error' : editForm.messageOId.$invalid}">-->
-                                <!--<label class="col-md-2 control-label">Message OID</label>-->
-                                <!--<div class="controls col-md-10"><input type="text" disabled name="messageOId"-->
-                                <!--class="form-control"-->
-                                <!--ng-model="message.messageID" required></div>-->
-                                <!--</div>-->
+
                                 <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageType.$invalid}">
                                     <label class="col-md-2 control-label">Message Type*</label>
                                     <div class="controls col-md-10">
@@ -58,7 +155,7 @@
                                 <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageEvent.$invalid}">
                                     <label class="col-md-2 control-label">Message Event*</label>
                                     <div class="controls col-md-10">
-                                        <input type="text" disabled name="messageEvent" class="form-control" ng-model="compositeProfile.event" required ng-disabled="false">
+                                        <input type="text" disabled name="messageEvent" class="form-control" ng-model="compositeProfile.event" required>
                                     </div>
                                 </div>
                                 <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageStructID.$invalid}">
@@ -70,7 +167,7 @@
                                 <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.comment.$invalid}">
                                     <label class="col-md-2 control-label">Comment</label>
                                     <div class="controls col-md-10">
-                                        <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly" ng-change="recordDatatypeChange('message','edit',message.id,'message', message.comment)" name="comment" id="comment" class="form-control" ng-model="compositeProfile.comment" />
+                                        <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly" name="comment" id="comment" class="form-control" ng-model="compositeProfileStructure.comment" />
                                     </div>
                                 </div>
                                 <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
@@ -99,7 +196,7 @@
                         </tab>
                         <tab>
                             <tab-heading>
-                                <i class="fa fa-info-circle fa-fw " aria-hidden="true "></i> Composite Profile Definition
+                                <i class="fa fa-table fa-fw" aria-hidden="true "></i> Composite Profile Definition
                             </tab-heading>
                             <div style="margin-top: 20px ">
 

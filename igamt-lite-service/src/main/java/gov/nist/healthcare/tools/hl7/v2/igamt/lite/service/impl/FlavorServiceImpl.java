@@ -44,6 +44,7 @@ public class FlavorServiceImpl implements FlavorService {
       SegmentRef segRef = (SegmentRef) dm;
       if (attributes != null && !attributes.isEmpty()) {
         for (SubProfileComponentAttributes attr : attributes) {
+
           if (attr.getComment() != null) {
             segRef.setComment(attr.getComment());
           }
@@ -62,7 +63,7 @@ public class FlavorServiceImpl implements FlavorService {
         Segment originalSeg = queryService.getSegmentsMap().get(segRef.getRef().getId());
         try {
           Segment segmentFlavor = originalSeg.clone(null, null);
-          segmentFlavor.setExt("pc" + "_" + segRef.getPosition());
+          segmentFlavor.setExt("PC" + "_" + segRef.getPosition());
           segmentFlavor.setId(ObjectId.get().toString());
           segmentFlavor.setScope(SCOPE.USER);
           queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
@@ -110,7 +111,7 @@ public class FlavorServiceImpl implements FlavorService {
         Datatype originalDt = queryService.getDatatypesMap().get(field.getDatatype().getId());
         try {
           Datatype datatypeFlavor = originalDt.clone();
-          datatypeFlavor.setExt("pc" + "_" + field.getPosition());
+          datatypeFlavor.setExt("PC" + "_" + field.getPosition());
           datatypeFlavor.setId(ObjectId.get().toString());
           datatypeFlavor.setScope(SCOPE.USER);
           queryService.getDatatypesMap().put(datatypeFlavor.getId(), datatypeFlavor);
@@ -149,7 +150,7 @@ public class FlavorServiceImpl implements FlavorService {
         Datatype originalDt = queryService.getDatatypesMap().get(component.getDatatype().getId());;
         try {
           Datatype datatypeFlavor = originalDt.clone();
-          datatypeFlavor.setExt("pc" + "_" + component.getPosition());
+          datatypeFlavor.setExt("PC" + "_" + component.getPosition());
           datatypeFlavor.setId(ObjectId.get().toString());
           datatypeFlavor.setScope(SCOPE.USER);
           queryService.getDatatypesMap().put(datatypeFlavor.getId(), datatypeFlavor);

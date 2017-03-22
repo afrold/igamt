@@ -39,4 +39,12 @@ public class CompoisteProfileStructureServiceImpl implements CompositeProfileStr
     return compositeProfileRepository.save(compositeProfileStructure);
   }
 
+
+
+  @Override
+  public void delete(String id) {
+    compositeProfileRepository.delete(id);
+
+  }
+
 }

@@ -38,22 +38,37 @@ public class Message extends DataModelWithConstraints
   private String structID; // Message/@StructID
 
   private String description; // Message/@Description
-  private List<CompositeProfileStructure> appliedPcs;
+  private List<String> compositeProfileStructureList;
 
-  public List<CompositeProfileStructure> getAppliedPcs() {
-    return appliedPcs;
+
+
+  public List<String> getCompositeProfileStructureList() {
+    return compositeProfileStructureList;
   }
 
-  public void setAppliedPcs(List<CompositeProfileStructure> appliedPcs) {
-    this.appliedPcs = appliedPcs;
+  public void setCompositeProfileStructureList(List<String> compositeProfileStructureList) {
+    this.compositeProfileStructureList = compositeProfileStructureList;
   }
 
-  public void addAppliedPc(CompositeProfileStructure appliedPc) {
-    if (this.appliedPcs == null) {
-      this.appliedPcs = new ArrayList<>();
+  public void addCompositeProfileStructure(String id) {
+    if (this.compositeProfileStructureList == null) {
+      this.compositeProfileStructureList = new ArrayList<>();
     }
-    this.appliedPcs.add(appliedPc);
+    this.compositeProfileStructureList.add(id);
   }
+
+  public void removeCompositeProfileStructure(String id) {
+    String toRemove = "";
+    for (String s : this.compositeProfileStructureList) {
+      if (s.equals(id)) {
+        toRemove = s;
+
+      }
+    }
+    this.compositeProfileStructureList.remove(toRemove);
+  }
+
+
 
   private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 

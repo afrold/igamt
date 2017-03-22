@@ -17,7 +17,7 @@ angular.module('igl').factory('CompositeProfileService',
             },
             save: function(compositeProfileStructure) {
                 var delay = $q.defer();
-                $http.post('api/composite-profile/save', message, {
+                $http.post('api/composite-profile/save', compositeProfileStructure, {
                     headers: { 'Content-Type': 'application/json' }
                 }).then(function(response) {
                     var saved = angular.fromJson(response.data);
@@ -28,11 +28,35 @@ angular.module('igl').factory('CompositeProfileService',
                 });
                 return delay.promise;
             },
-            delete: function(cmID) {
+            addPcs: function(pcs,cpId) {
                 var delay = $q.defer();
-                $http.get('api/composite-messages/delete/' + cmID).then(function() {
-
-
+                $http.post('api/composite-profile/addPcs/'+cpId, pcs, {
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(function(response) {
+                    var saved = angular.fromJson(response.data);
+                    delay.resolve(saved);
+                    return saved;
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            removePc: function(cps,pcId) {
+                var delay = $q.defer();
+                $http.post('api/composite-profile/removePc/'+pcId, cps, {
+                    headers: { 'Content-Type': 'application/json' }
+                }).then(function(response) {
+                    var saved = angular.fromJson(response.data);
+                    delay.resolve(saved);
+                    return saved;
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            delete: function(cpID,igId) {
+                var delay = $q.defer();
+                $http.get('api/composite-profile/delete/' + cpID+'/'+igId).then(function() {
                     delay.resolve(true);
                 }, function(error) {
                     delay.reject(error);

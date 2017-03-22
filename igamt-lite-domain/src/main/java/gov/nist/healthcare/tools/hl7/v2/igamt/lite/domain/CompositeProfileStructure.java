@@ -13,6 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -25,7 +26,9 @@ public class CompositeProfileStructure {
   private String id;
   private String name;
   private String description;
+  private String comment;
   private String coreProfileId;
+  private Date dateUpdated;
   private List<ApplyInfo> profileComponentsInfo;
 
   public String getId() {
@@ -53,12 +56,30 @@ public class CompositeProfileStructure {
     this.description = description;
   }
 
+
+  public String getComment() {
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
+
   public String getCoreProfileId() {
     return coreProfileId;
   }
 
   public void setCoreProfileId(String coreProfileId) {
     this.coreProfileId = coreProfileId;
+  }
+
+
+  public Date getDateUpdated() {
+    return dateUpdated;
+  }
+
+  public void setDateUpdated(Date dateUpdated) {
+    this.dateUpdated = dateUpdated;
   }
 
   public List<ApplyInfo> getProfileComponentsInfo() {

@@ -34,8 +34,6 @@ public class PathGroupServiceImpl implements PathGroupService {
   @Override
   public List<PathGroup> buildPathGroups(Message coreMessage, List<ProfileComponent> pcs) {
     List<PathGroup> pathGroups = new ArrayList<>();
-    System.out.println("BUILDPATHGROUPS");
-
 
     for (ProfileComponent pc : pcs) {
       List<SubProfileComponent> toRemove = new ArrayList<>();
@@ -51,7 +49,9 @@ public class PathGroupServiceImpl implements PathGroupService {
           toAdd.addAll(newSubPcs);
           System.out.println("MULtiple: " + subPc.getPath());
         } else {
-          System.out.println("ELSEEEE" + subPc.getPath());
+          System.out
+              .println("pc : " + pc.getName() + " Usage : " + subPc.getAttributes().getUsage());
+
         }
 
       }

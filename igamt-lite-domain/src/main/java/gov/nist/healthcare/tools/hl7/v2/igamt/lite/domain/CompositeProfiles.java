@@ -56,4 +56,15 @@ public class CompositeProfiles extends TextbasedSectionModel
   public void addChild(CompositeProfileStructure child) {
     this.children.add(child);
   }
+
+  public void removeChild(String id) {
+    CompositeProfileStructure toRemove = new CompositeProfileStructure();
+    for (CompositeProfileStructure cps : this.children) {
+      if (cps.getId().equals(id)) {
+        toRemove = cps;
+      }
+    }
+    this.children.remove(toRemove);
+  }
+
 }

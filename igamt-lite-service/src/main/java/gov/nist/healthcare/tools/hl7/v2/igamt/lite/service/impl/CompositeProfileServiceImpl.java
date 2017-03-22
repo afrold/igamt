@@ -13,6 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfoComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
@@ -97,11 +99,13 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     createSegAndDtMaps(coreMessage, segmentsMap, datatypesMap);
     queryService.setSegmentsMap(segmentsMap);
     queryService.setDatatypesMap(datatypesMap);
-    List<String> pcIds = new ArrayList<String>();
+    List<ProfileComponent> pcs = new ArrayList<>();
+    ApplyInfoComparator Comp = new ApplyInfoComparator();
+    Collections.sort(compositeProfileStructure.getProfileComponentsInfo(), Comp);
     for (ApplyInfo pc : compositeProfileStructure.getProfileComponentsInfo()) {
-      pcIds.add(pc.getId());
+      pcs.add(profileComponentService.findById(pc.getId()));
     }
-    List<ProfileComponent> pcs = profileComponentService.findByIds(pcIds);
+
     List<PathGroup> pathGroups = pathGroupService.buildPathGroups(coreMessage, pcs);
     if (!pathGroups.isEmpty()) {
       pathGroups = pathGroups.get(0).getChildren();
@@ -119,8 +123,10 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     compositeProfile.setDatatypesMap(queryService.getDatatypesMap());
     compositeProfile.setName(compositeProfileStructure.getName());
     compositeProfile.setDescription(compositeProfileStructure.getDescription());
+    compositeProfile.setComment(compositeProfileStructure.getComment());
     compositeProfile.setCoreProfileId(compositeProfileStructure.getCoreProfileId());
-    compositeProfile.setProfileComponentsInfo(compositeProfileStructure.getProfileComponentsInfo());
+    compositeProfile.setProfileComponents(compositeProfileStructure.getProfileComponentsInfo());
+    compositeProfile.setDateUpdated(compositeProfileStructure.getDateUpdated());
     return compositeProfile;
   }
 

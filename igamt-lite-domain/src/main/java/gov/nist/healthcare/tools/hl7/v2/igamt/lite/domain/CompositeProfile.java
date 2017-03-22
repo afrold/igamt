@@ -27,7 +27,7 @@ public class CompositeProfile extends DataModelWithConstraints
   }
 
   private String coreProfileId;
-  private List<ApplyInfo> profileComponentsInfo;
+  private List<ApplyInfo> profileComponents;
 
 
   private String identifier;
@@ -68,15 +68,15 @@ public class CompositeProfile extends DataModelWithConstraints
     this.coreProfileId = coreProfileId;
   }
 
-  public List<ApplyInfo> getProfileComponentsInfo() {
-    return profileComponentsInfo;
+
+
+  public List<ApplyInfo> getProfileComponents() {
+    return profileComponents;
   }
 
-  public void setProfileComponentsInfo(List<ApplyInfo> profileComponentsInfo) {
-    this.profileComponentsInfo = profileComponentsInfo;
+  public void setProfileComponents(List<ApplyInfo> profileComponents) {
+    this.profileComponents = profileComponents;
   }
-
-
 
   public String getIdentifier() {
     return identifier;

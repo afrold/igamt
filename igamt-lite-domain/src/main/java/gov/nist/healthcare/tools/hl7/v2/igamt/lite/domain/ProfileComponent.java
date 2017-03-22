@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -22,24 +23,39 @@ public class ProfileComponent
   private String description;
   private String Comment;
   private Date dateUpdated;
-
-
-  private List<CompositeProfileStructure> appliedTo;
+  private List<String> compositeProfileStructureList;
   private Set<SubProfileComponent> children = new HashSet<SubProfileComponent>();
 
-  public List<CompositeProfileStructure> getAppliedTo() {
-    return appliedTo;
+
+
+  public void addCompositeProfileStructure(String id) {
+    if (this.compositeProfileStructureList == null) {
+      this.compositeProfileStructureList = new ArrayList<>();
+    }
+    this.compositeProfileStructureList.add(id);
+  }
+
+  public void removeCompositeProfileStructure(String id) {
+    String toRemove = "";
+    for (String s : this.compositeProfileStructureList) {
+      if (s.equals(id)) {
+        toRemove = s;
+
+      }
+    }
+    this.compositeProfileStructureList.remove(toRemove);
   }
 
 
-  public void setAppliedTo(List<CompositeProfileStructure> appliedTo) {
-    this.appliedTo = appliedTo;
+
+  public List<String> getCompositeProfileStructureList() {
+    return compositeProfileStructureList;
   }
 
-  public void addAppliedTo(CompositeProfileStructure appliedTo) {
-    this.appliedTo.add(appliedTo);
-  }
 
+  public void setCompositeProfileStructureList(List<String> compositeProfileStructureList) {
+    this.compositeProfileStructureList = compositeProfileStructureList;
+  }
 
 
   public String getId() {

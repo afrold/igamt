@@ -12,6 +12,8 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -66,6 +69,7 @@ public class CompositeProfileController {
       produces = "application/json")
   public CompositeProfileStructure createCompositeProfile(@PathVariable String igId,
       @RequestBody CompositeProfileStructure compositeProfileStructure) throws IGDocumentException {
+    compositeProfileStructure.setDateUpdated(new Date());
     IGDocument ig = iGDocumentService.findById(igId);
 
     if (ig.getProfile().getCompositeProfiles() == null) {
@@ -78,17 +82,69 @@ public class CompositeProfileController {
     List<ProfileComponent> pcs =
         profileComponentService.findByIds(compositeProfileStructure.getProfileComponentIds());
     for (ProfileComponent pc : pcs) {
-      System.out.println("applied pcs : " + pc.getName());
-      pc.addAppliedTo(compositeProfileStructure);
+      pc.addCompositeProfileStructure(compositeProfileStructure.getId());
     }
     profileComponentService.saveAll(pcs);
     Message core = messageService.findById(compositeProfileStructure.getCoreProfileId());
-    core.addAppliedPc(compositeProfileStructure);
+    core.addCompositeProfileStructure(compositeProfileStructure.getId());
     messageService.save(core);
 
     compositeProfileStructureService.save(compositeProfileStructure);
     iGDocumentService.save(ig);
     return compositeProfileStructure;
+  }
+
+
+  @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json")
+  public CompositeProfileStructure saveCompositeProfile(
+      @RequestBody CompositeProfileStructure compositeProfileStructure) throws IGDocumentException {
+    compositeProfileStructure.setDateUpdated(new Date());
+
+    compositeProfileStructureService.save(compositeProfileStructure);
+    return compositeProfileStructure;
+  }
+
+  @RequestMapping(value = "/removePc/{pcId}", method = RequestMethod.POST,
+      produces = "application/json")
+  public CompositeProfileStructure removeProfileComponents(@PathVariable String pcId,
+      @RequestBody CompositeProfileStructure compositeProfileStructure) throws IGDocumentException {
+    compositeProfileStructure.setDateUpdated(new Date());
+    ProfileComponent pc = profileComponentService.findById(pcId);
+    String toRemove = "";
+    for (String s : pc.getCompositeProfileStructureList()) {
+      if (s.equals(compositeProfileStructure.getId())) {
+        toRemove = s;
+      }
+    }
+    pc.getCompositeProfileStructureList().remove(toRemove);
+    profileComponentService.save(pc);
+
+    compositeProfileStructureService.save(compositeProfileStructure);
+    return compositeProfileStructure;
+  }
+
+  @RequestMapping(value = "/addPcs/{cpId}", method = RequestMethod.POST,
+      produces = "application/json")
+  public CompositeProfileStructure addPcs(@PathVariable String cpId,
+      @RequestBody List<ApplyInfo> pcs) {
+    CompositeProfileStructure cp = compositeProfileStructureService.findById(cpId);
+    cp.setDateUpdated(new Date());
+    List<String> profileComponentsIds = new ArrayList<>();
+    for (ApplyInfo info : pcs) {
+      info.setPcDate(new Date());
+      cp.addProfileComponent(info);
+      profileComponentsIds.add(info.getId());
+    }
+    List<ProfileComponent> profileComponents =
+        profileComponentService.findByIds(profileComponentsIds);
+
+    for (ProfileComponent pc : profileComponents) {
+      pc.addCompositeProfileStructure(cp.getId());
+    }
+    profileComponentService.saveAll(profileComponents);
+    compositeProfileStructureService.save(cp);
+    return cp;
+
   }
 
 
@@ -98,6 +154,29 @@ public class CompositeProfileController {
       @RequestBody CompositeProfileStructure compositeProfileStructure) {
 
     return compositeProfileService.buildCompositeProfile(compositeProfileStructure);
+  }
+
+  @RequestMapping(value = "delete/{id}/{igId}", method = RequestMethod.GET,
+      produces = "application/json")
+  public void deleteCompositeProfileById(@PathVariable("id") String id,
+      @PathVariable("igId") String igId) throws IGDocumentException {
+
+
+    CompositeProfileStructure cpToDelete = compositeProfileStructureService.findById(id);
+    IGDocument ig = iGDocumentService.findById(igId);
+    ig.getProfile().getCompositeProfiles().removeChild(cpToDelete.getId());
+    Message msg = messageService.findById(cpToDelete.getCoreProfileId());
+    msg.removeCompositeProfileStructure(id);
+    List<ProfileComponent> pcs =
+        profileComponentService.findByIds(cpToDelete.getProfileComponentIds());
+    for (ProfileComponent pc : pcs) {
+      pc.removeCompositeProfileStructure(id);
+    }
+    iGDocumentService.save(ig);
+    profileComponentService.saveAll(pcs);
+    messageService.save(msg);
+    compositeProfileStructureService.delete(id);
+
   }
 
 

@@ -4,7 +4,7 @@
 
 angular.module('igl')
 
-.controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService,orderByFilter) {
+.controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService, orderByFilter) {
 
     $scope.loading = false;
     $scope.tocView = 'views/toc.html';
@@ -189,13 +189,10 @@ angular.module('igl')
             $rootScope.pcTree = null;
             $scope.selectPc(); // Should we open in a dialog ??
         });
-        $scope.$on('event:openCm', function(event) {
-            $rootScope.cmTree = null;
-            $scope.selectCm(); // Should we open in a dialog ??
-        });
-        $scope.$on('event:openCP', function(event) {
+
+        $scope.$on('event:openCP', function(event, cp) {
             $rootScope.cpTree = null;
-            $scope.selectCp(); // Should we open in a dialog ??
+            $scope.selectCp(cp); // Should we open in a dialog ??
         });
 
         $scope.$on('event:openTable', function(event, table) {
@@ -687,9 +684,18 @@ angular.module('igl')
     };
     $scope.loadCm = function() {
 
-        if ($rootScope.igdocument.profile.compositeMessages) {
-            $rootScope.compositeMessages = $rootScope.igdocument.profile.compositeMessages.children;
+        if ($rootScope.igdocument.profile.compositeProfiles) {
+            $rootScope.compositeProfiles = $rootScope.igdocument.profile.compositeProfiles.children;
         }
+        $rootScope.compositeProfilesStructureMap = {};
+        console.log("$rootScope.compositeProfiles");
+        console.log($rootScope.compositeProfiles);
+        angular.forEach($rootScope.compositeProfiles, function(child) {
+            this[child.id] = child;
+        }, $rootScope.compositeProfilesStructureMap);
+        console.log("compositeProfilesStructureMap");
+        console.log($rootScope.compositeProfiles);
+        console.log($rootScope.compositeProfilesStructureMap);
 
 
     };
@@ -843,10 +849,29 @@ angular.module('igl')
 
         }, function() {});
     };
-    $rootScope.deleteCompositeMessage = function(compositeMessage) {
+    $rootScope.addMorePcsToCompositeProfile = function(compositeProfile) {
+        var createCMInstance = $modal.open({
+            templateUrl: 'addMorePcsToCompositeProfile.html',
+            controller: 'addMorePcsToCompositeProfileCtrl',
+
+            windowClass: 'composite-profiles-modal',
+            resolve: {
+                compositeProfileStructure: function() {
+                    return compositeProfile;
+                }
+
+            }
+        }).result.then(function(results) {
+            console.log("$rootScope.compositeProfilesStructureMap");
+            console.log($rootScope.compositeProfilesStructureMap);
+            $rootScope.editCM(results);
+
+        });
+    };
+    $rootScope.deleteCompositeProfile = function(compositeMessage) {
         var modalInstance = $modal.open({
-            templateUrl: 'DeleteCompositeMessageCtrl.html',
-            controller: 'DeleteCompositeMessageCtrl',
+            templateUrl: 'DeleteCompositeProfileCtrl.html',
+            controller: 'DeleteCompositeProfileCtrl',
             resolve: {
                 compositeMessageToDelete: function() {
                     return compositeMessage;
@@ -857,6 +882,21 @@ angular.module('igl')
 
         }, function() {});
 
+    };
+    $rootScope.cantDeleteMsg = function(msg) {
+        var modalInstance = $modal.open({
+            templateUrl: 'CantDeleteMsgCtrl.html',
+            controller: 'CantDeleteMsgCtrl',
+            resolve: {
+                msg: function() {
+                    return msg;
+                },
+
+            }
+        });
+        modalInstance.result.then(function(msg) {
+
+        }, function() {});
     };
 
     $rootScope.cantDeletePc = function(profileComponent) {
@@ -1053,8 +1093,7 @@ angular.module('igl')
 
             }
         }).result.then(function(results) {
-            console.log("results");
-            console.log(results);
+           
             $rootScope.editPC(results)
             if ($scope.profileComponentParams)
                 $scope.profileComponentParams.refresh();
@@ -1063,27 +1102,22 @@ angular.module('igl')
         });
 
     };
-    $scope.createCompositeMessage = function() {
+    $scope.createCompositeProfile = function() {
         var createCMInstance = $modal.open({
-            templateUrl: 'createCompositeMessage.html',
-            // controller: 'createCompositeMessageCtrl',
+            templateUrl: 'createCompositeProfile.html',
             controller: 'createCompositeProfileCtrl',
-            size: 'lg',
-            windowClass: 'conformance-profiles-modal',
+            windowClass: 'app-modal-window',
+
+            // windowClass: 'composite-profiles-modal',
             resolve: {
-                // PcLibrary: function() {
-                //     return $rootScope.igdocument.profile.profileComponentLibrary;
-                // }
+
 
             }
         }).result.then(function(results) {
             console.log("results");
             console.log(results);
-            //$rootScope.editCM(results)
-            // if ($scope.profileComponentParams)
-            //     $scope.profileComponentParams.refresh();
-            // if ($scope.applyPcToParams)
-            //     $scope.applyPcToParams.refresh();
+            $rootScope.editCM(results);
+
         });
 
     };
@@ -1447,12 +1481,44 @@ angular.module('igl')
                 }
             }, 100);
     };
+    var getAppliedProfileComponentsById = function(cp) {
+        var result = [];
+        for (var i = 0; i < cp.profileComponentIds.length; i++) {
+            result.push($rootScope.profileComponentsMap[cp.profileComponentIds[i]]);
+        }
+        return result;
+    }
+    var getAppliedCompositeProfilesByIds = function(cpIds) {
+        var result = [];
+
+        for (var i = 0; i < cpIds.length; i++) {
+            result.push({
+                compositeName: $rootScope.compositeProfilesStructureMap[cpIds[i]].name,
+                pcs: getAppliedProfileComponentsById($rootScope.compositeProfilesStructureMap[cpIds[i]]),
+                coreMessageName: $rootScope.messagesMap[$rootScope.compositeProfilesStructureMap[cpIds[i]].coreProfileId].name
+            });
+        }
+        return result;
+
+    }
+    $scope.appliedPcInMsgParams = new ngTreetableParams({
+        getNodes: function(parent) {
+            if ($rootScope.message.compositeProfileStructureList && $rootScope.message.compositeProfileStructureList.length > 0) {
+
+                return getAppliedCompositeProfilesByIds($rootScope.message.compositeProfileStructureList);
+
+
+            }
+        },
+        getTemplate: function(node) {
+            return 'applyPcToTable';
+        }
+    });
     $scope.applyPcToParams = new ngTreetableParams({
         getNodes: function(parent) {
-            if ($rootScope.profileComponent.appliedTo && $rootScope.profileComponent.appliedTo.length > 0) {
-                console.log("==========");
-                console.log($rootScope.profileComponent);
-                return $rootScope.profileComponent.appliedTo;
+            if ($rootScope.profileComponent.compositeProfileStructureList && $rootScope.profileComponent.compositeProfileStructureList.length > 0) {
+              
+                return getAppliedCompositeProfilesByIds($rootScope.profileComponent.compositeProfileStructureList);
 
 
             }
@@ -1464,9 +1530,7 @@ angular.module('igl')
     $scope.profileComponentParams = new ngTreetableParams({
         getNodes: function(parent) {
             if ($rootScope.igdocument.profile.profileComponentLibrary !== undefined) {
-                console.log("$rootScope.profileComponent");
-
-                console.log($rootScope.profileComponent);
+               
                 return orderByFilter($rootScope.profileComponent.children, 'position');
 
             }
@@ -1476,8 +1540,7 @@ angular.module('igl')
         }
     });
     $scope.selectPc = function() {
-        console.log("=++++++++====");
-        console.log($rootScope.profileComponents);
+        
         $rootScope.Activate($rootScope.profileComponent.id);
         $rootScope.subview = "EditProfileComponent.html";
         $scope.loadingSelection = true;
@@ -1542,53 +1605,7 @@ angular.module('igl')
             return 'compositeMessageTable';
         }
     });
-    $scope.selectCm = function() {
-        CompositeMessageService.getSegOrGrp($rootScope.compositeMessage.children).then(function(children) {
-            console.log("=++++++++=/////////////////===");
-            $rootScope.compositeMessage.children = children;
-            console.log($rootScope.compositeMessage);
-            $rootScope.Activate($rootScope.compositeMessage.id);
-            $rootScope.subview = "EditCompositeMessage.html";
-            $scope.loadingSelection = true;
-            blockUI.start();
-            $timeout(
-                function() {
-                    try {
 
-
-
-                        // $rootScope.originalCmLib = $rootScope.igdocument.profile.profileComponentLibrary;
-                        //$rootScope.profileComponentLib = angular.copy($rootScope.igdocument.profile.profileComponentLibrary);
-                        // $rootScope.currentData = $rootScope.profileComponentLib;
-                        //$rootScope.processMessageTree($rootScope.message);
-                        $rootScope.tableWidth = null;
-                        $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                        $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 630);
-                        $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
-                        $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
-                        $scope.loadingSelection = false;
-                        try {
-                            if ($scope.compositeMessageParams)
-                                $scope.compositeMessageParams.refresh();
-                            // if ($scope.applyPcToParams)
-                            //     $scope.applyPcToParams.refresh();
-                        } catch (e) {
-
-                        }
-                        $rootScope.$emit("event:initEditArea");
-                        blockUI.stop();
-                    } catch (e) {
-                        $scope.loadingSelection = false;
-                        $rootScope.msg().text = "An error occured. DEBUG: \n" + e;
-                        $rootScope.msg().type = "danger";
-                        $rootScope.msg().show = true;
-                        blockUI.stop();
-                    }
-                }, 100);
-        });
-
-
-    };
     $scope.compositeProfileParams = new ngTreetableParams({
         getNodes: function(parent) {
             if ($rootScope.igdocument.profile.compositeProfiles !== undefined) {
@@ -1614,14 +1631,14 @@ angular.module('igl')
         }
     });
     var buildCpDatatype = function(datatype, datatypesMap) {
-        datatype.components.sort(function(a, b){return a.position-b.position});
+        datatype.components.sort(function(a, b) { return a.position - b.position });
         for (var i = 0; i < datatype.components.length; i++) {
             buildCpDatatype(datatypesMap[datatype.components[i].datatype.id], datatypesMap);
             datatype.components[i].datatype = datatypesMap[datatype.components[i].datatype.id];
         }
     };
     var buildCpSegment = function(segment, datatypesMap) {
-        segment.fields.sort(function(a, b){return a.position-b.position});
+        segment.fields.sort(function(a, b) { return a.position - b.position });
         for (var i = 0; i < segment.fields.length; i++) {
             buildCpDatatype(datatypesMap[segment.fields[i].datatype.id], datatypesMap);
             segment.fields[i].datatype = datatypesMap[segment.fields[i].datatype.id];
@@ -1634,17 +1651,36 @@ angular.module('igl')
     var buildCompositeProfile = function(children, segmentsMap, datatypesMap) {
         for (var i = 0; i < children.length; i++) {
             if (children[i].type === "segmentRef") {
-                buildCpSegmentRef(children[i],segmentsMap,datatypesMap);
+                buildCpSegmentRef(children[i], segmentsMap, datatypesMap);
             } else if (children[i].type === "group") {
-                buildCompositeProfile(children[i].children,segmentsMap,datatypesMap);
+                buildCompositeProfile(children[i].children, segmentsMap, datatypesMap);
             }
         }
     };
-    $scope.selectCp = function() {
-
+    $scope.selectCp = function(cp) {
+        $rootScope.originalCompositeProfileStructure = cp;
+        $rootScope.compositeProfileStructure = angular.copy(cp);
 
         buildCompositeProfile($rootScope.compositeProfile.children, $rootScope.compositeProfile.segmentsMap, $rootScope.compositeProfile.datatypesMap);
-        console.log($rootScope.compositeProfile.children);
+        console.log("$rootScope.compositeProfile");
+        console.log($rootScope.compositeProfile);
+        console.log($rootScope.messages.children);
+        console.log($rootScope.profileComponents);
+
+        $rootScope.compositeProfile.coreMessageMetaData = {
+            name: $rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].name,
+            identifier : $rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].identifier,
+            description:$rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].description,
+            comment:$rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].comment
+        };
+        $rootScope.compositeProfile.appliedProfileComponents = [];
+        for (var i = 0; i < $rootScope.compositeProfile.profileComponents.length; i++) {
+            $rootScope.compositeProfile.appliedProfileComponents.push({
+                position: $rootScope.compositeProfile.profileComponents[i].position,
+                pc: $rootScope.profileComponentsMap[$rootScope.compositeProfile.profileComponents[i].id],
+                pcDate: $rootScope.compositeProfile.profileComponents[i].pcDate
+            });
+        }
         $rootScope.subview = "EditCompositeProfile.html";
         $scope.loadingSelection = true;
         blockUI.start();
@@ -1927,57 +1963,66 @@ angular.module('igl').controller('DeleteProfileComponentCtrl', function($scope, 
     };
 });
 
-angular.module('igl').controller('DeleteCompositeMessageCtrl', function($scope, $modalInstance, compositeMessageToDelete, $rootScope, $http, CompositeMessageService, PcService) {
+angular.module('igl').controller('DeleteCompositeProfileCtrl', function($scope, $modalInstance, compositeMessageToDelete, $rootScope, $http, CompositeProfileService, PcService) {
 
     $scope.compositeMessageToDelete = compositeMessageToDelete;
     var pcsToChange = [];
-    var removeApplyInfoFromPc = function(pcId) {
-        console.log("pcId");
-        console.log(pcId);
-        console.log($rootScope.profileComponentsMap);
-        if ($rootScope.profileComponentsMap[pcId].appliedTo && $rootScope.profileComponentsMap[pcId].appliedTo !== null) {
-            for (var i = 0; i < $rootScope.profileComponentsMap[pcId].appliedTo.length; i++) {
-                if ($rootScope.profileComponentsMap[pcId].appliedTo[i].id === $scope.compositeMessageToDelete.id) {
-                    $rootScope.profileComponentsMap[pcId].appliedTo.splice(i, 1);
-                    pcsToChange.push($rootScope.profileComponentsMap[pcId]);
 
-                }
-            }
-        }
-
-    }
 
     $scope.loading = false;
     $scope.delete = function() {
         $scope.loading = true;
+        console.log("$rootScope.igdocument.profile.messages.children");
+        console.log($rootScope.igdocument.profile.messages.children);
+        console.log("$scope.compositeMessageToDelete");
+        console.log($scope.compositeMessageToDelete);
+        console.log("$rootScope.profileComponents");
+        console.log($rootScope.profileComponents);
+        CompositeProfileService.delete($scope.compositeMessageToDelete.id, $rootScope.igdocument.id).then(function() {
+            var index = $rootScope.compositeProfiles.indexOf($scope.compositeMessageToDelete);
+            if (index > -1) {
+                $rootScope.compositeProfiles.splice(index, 1);
+            }
+            var index1 = $rootScope.igdocument.profile.compositeProfiles.children.indexOf($scope.compositeMessageToDelete);
+            if (index1 > -1) {
+                $rootScope.igdocument.profile.compositeProfiles.children.splice(index1, 1);
+            }
+            $rootScope.compositeProfilesStructureMap[$scope.compositeMessageToDelete.id] = null;
 
-        CompositeMessageService.delete($scope.compositeMessageToDelete.id).then(function() {
-            console.log($rootScope.igdocument.profile.compositeMessages.children);
-            console.log($scope.compositeMessageToDelete);
-            for (var i = 0; i < $rootScope.igdocument.profile.compositeMessages.children.length; i++) {
-                if ($rootScope.igdocument.profile.compositeMessages.children[i] !== null && ($rootScope.igdocument.profile.compositeMessages.children[i].id === $scope.compositeMessageToDelete.id)) {
-                    console.log("TRIIIE");
-                    $rootScope.igdocument.profile.compositeMessages.children.splice(i, 1);
+            for (var i = 0; i < $rootScope.igdocument.profile.messages.children.length; i++) {
+                if ($rootScope.igdocument.profile.messages.children[i].id === $scope.compositeMessageToDelete.coreProfileId) {
+
+                    var index = $rootScope.igdocument.profile.messages.children[i].compositeProfileStructureList.indexOf($scope.compositeMessageToDelete.id);
+                    if (index > -1) {
+                        $rootScope.igdocument.profile.messages.children[i].compositeProfileStructureList.splice(index, 1);
+                    }
+                    $rootScope.messagesMap[$rootScope.igdocument.profile.messages.children[i].id] = $rootScope.igdocument.profile.messages.children[i];
                 }
             }
 
-            for (var j = 0; j < $scope.compositeMessageToDelete.appliedPcs.length; j++) {
-                removeApplyInfoFromPc($scope.compositeMessageToDelete.appliedPcs[j].id);
-
-            }
-            console.log("pcsToChange");
-            console.log(pcsToChange);
-            PcService.saveAll(pcsToChange).then(function(result) {
-                if ($rootScope.compositeMessage && $rootScope.compositeMessage.id === $scope.compositeMessageToDelete.id) {
-                    $rootScope.compositeMessage = null;
-                    $rootScope.subview = null;
+            for (var i = 0; i < $scope.compositeMessageToDelete.profileComponentIds.length; i++) {
+                for (var j = 0; j < $rootScope.profileComponents.length; j++) {
+                    if ($rootScope.profileComponents[j].id === $scope.compositeMessageToDelete.profileComponentIds[i]) {
+                        var index = $rootScope.profileComponents[j].compositeProfileStructureList.indexOf($scope.compositeMessageToDelete.id);
+                        if (index > -1) {
+                            $rootScope.profileComponents[j].compositeProfileStructureList.splice(index, 1);
+                        }
+                        $rootScope.profileComponentsMap[$rootScope.profileComponents[j].id] = $rootScope.profileComponents[j];
+                    }
                 }
-                $modalInstance.close();
-            });
-
-
-
+            }
+            if ($rootScope.compositeProfileStructure != null && $rootScope.compositeProfileStructure.id === $scope.compositeMessageToDelete.id) {
+                $rootScope.subview = null;
+                $rootScope.compositeProfileStructure = null;
+            }
+            $rootScope.msg().text = "compositeProfileDeleteSuccess";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+            $rootScope.manualHandle = true;
+            $scope.loading = false;
+            $modalInstance.close($scope.compositeMessageToDelete);
         });
+
 
     };
 
@@ -1986,23 +2031,87 @@ angular.module('igl').controller('DeleteCompositeMessageCtrl', function($scope, 
     };
 });
 
-angular.module('igl').controller('CantDeletePcCtrl', function($scope, $modalInstance, profileComponent, $rootScope, $http, PcService) {
+angular.module('igl').controller('CantDeletePcCtrl', function($scope, $modalInstance, ngTreetableParams, profileComponent, $rootScope, $http, PcService) {
     $scope.profileComponent = profileComponent;
     $scope.loading = false;
-    // $scope.delete = function() {
-    //     $scope.loading = true;
-    //     PcService.delete(pcLibId, $scope.profileComponentToDelete).then(function(profileComponentLib) {
-    //         console.log(profileComponentLib);
-    //         $rootScope.igdocument.profile.profileComponentLibrary = profileComponentLib;
-    //         if ($rootScope.profileComponent && $rootScope.profileComponent.id === $scope.profileComponentToDelete.id) {
-    //             $rootScope.profileComponent = null;
-    //             $rootScope.subview = null;
-    //         }
-    //         $modalInstance.close();
+    var getAppliedProfileComponentsById = function(cp) {
+        var result = [];
+        for (var i = 0; i < cp.profileComponentIds.length; i++) {
+            result.push($rootScope.profileComponentsMap[cp.profileComponentIds[i]]);
+        }
+        return result;
+    }
+    var getAppliedCompositeProfilesByIds = function(cpIds) {
+        var result = [];
 
-    //     });
+        for (var i = 0; i < cpIds.length; i++) {
+            result.push({
+                compositeName: $rootScope.compositeProfilesStructureMap[cpIds[i]].name,
+                pcs: getAppliedProfileComponentsById($rootScope.compositeProfilesStructureMap[cpIds[i]]),
+                coreMessageName: $rootScope.messagesMap[$rootScope.compositeProfilesStructureMap[cpIds[i]].coreProfileId].name
+            });
+        }
+        return result;
 
-    // };
+    }
+
+    $scope.cantDeletePcParams = new ngTreetableParams({
+        getNodes: function(parent) {
+            if ($scope.profileComponent.compositeProfileStructureList && $scope.profileComponent.compositeProfileStructureList.length > 0) {
+
+                return getAppliedCompositeProfilesByIds($scope.profileComponent.compositeProfileStructureList);
+
+
+            }
+        },
+        getTemplate: function(node) {
+            return 'applyPcToTable';
+        }
+    });
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+angular.module('igl').controller('CantDeleteMsgCtrl', function($scope, ngTreetableParams, $modalInstance, msg, $rootScope, $http, PcService) {
+    $scope.msg = msg;
+    $scope.loading = false;
+    var getAppliedProfileComponentsById = function(cp) {
+        var result = [];
+        for (var i = 0; i < cp.profileComponentIds.length; i++) {
+            result.push($rootScope.profileComponentsMap[cp.profileComponentIds[i]]);
+        }
+        return result;
+    }
+    var getAppliedCompositeProfilesByIds = function(cpIds) {
+        var result = [];
+
+        for (var i = 0; i < cpIds.length; i++) {
+            result.push({
+                compositeName: $rootScope.compositeProfilesStructureMap[cpIds[i]].name,
+                pcs: getAppliedProfileComponentsById($rootScope.compositeProfilesStructureMap[cpIds[i]]),
+                coreMessageName: $rootScope.messagesMap[$rootScope.compositeProfilesStructureMap[cpIds[i]].coreProfileId].name
+            });
+        }
+        return result;
+
+    }
+
+    $scope.cantDeleteMsgParams = new ngTreetableParams({
+        getNodes: function(parent) {
+            if ($scope.msg.compositeProfileStructureList && $scope.msg.compositeProfileStructureList.length > 0) {
+
+                return getAppliedCompositeProfilesByIds($scope.msg.compositeProfileStructureList);
+
+
+            }
+        },
+        getTemplate: function(node) {
+            return 'applyPcToTable';
+        }
+    });
 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
@@ -3628,6 +3737,134 @@ angular.module('igl').controller('createProfileComponentCtrl',
         };
     });
 
+angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
+    function($scope, $rootScope, $modalInstance, $http, $filter, compositeProfileStructure, PcService, IgDocumentService, CompositeProfileService) {
+
+        $scope.compositeProfileStructure = compositeProfileStructure;
+        $rootScope.coreMessageMetaData = {
+            name: $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].name,
+            identifier : $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].identifier,
+            description:$rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].description,
+            comment:$rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].comment
+        };
+        var usedPcs = [];
+        for (var i = 0; i < $rootScope.profileComponents.length; i++) {
+            if ($rootScope.profileComponents[i].compositeProfileStructureList) {
+                for (var j = 0; j < $rootScope.profileComponents[i].compositeProfileStructureList.length; j++) {
+                    if ($rootScope.profileComponents[i].compositeProfileStructureList[j] === $scope.compositeProfileStructure.id) {
+                        usedPcs.push($rootScope.profileComponents[i]);
+                    }
+                }
+            }
+
+        }
+        console.log("pcs");
+        console.log($rootScope.profileComponents);
+        console.log($scope.compositeProfileStructure);
+        $scope.pcs = _.difference($rootScope.profileComponents, usedPcs);
+        console.log($scope.pcs);
+        $scope.position = $scope.compositeProfileStructure.profileComponentsInfo.length + 1;
+        $scope.pcList = [];
+        $scope.existingPcList = usedPcs;
+
+
+
+        $scope.checkExist = function(pc) {
+            for (var i = 0; i < $scope.pcList.length; i++) {
+                if ($scope.pcList[i].id === pc.id) {
+                    return true;
+                }
+            }
+            for (var i = 0; i < $scope.existingPcList.length; i++) {
+                if ($scope.existingPcList[i].id === pc.id) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+        $scope.removePc = function(pc) {
+            var positionToRemove = pc.position;
+            var index = $scope.pcList.indexOf(pc);
+            if (index > -1) $scope.pcList.splice(index, 1);
+            for (var i = 0; i < $scope.pcList.length; i++) {
+                if ($scope.pcList[i].position >= positionToRemove) {
+                    $scope.pcList[i].position = $scope.pcList[i].position - 1;
+                }
+            }
+            $scope.position = $scope.position - 1;
+        };
+        $scope.selectPC = function(pc) {
+            var interPc = {
+                id: pc.id,
+                name: pc.name,
+                description: pc.description,
+                comment: pc.comment,
+                pcDate: pc.dateUpdated,
+                position: angular.copy($scope.position)
+            }
+            console.log(interPc);
+            $scope.pcList.push(interPc);
+            $scope.position = $scope.position + 1;
+        };
+        $scope.update = function() {
+
+            for (var i = 0; i < $scope.pcList.length; i++) {
+                $scope.compositeProfileStructure.profileComponentsInfo.push($scope.pcList[i]);
+            }
+
+            CompositeProfileService.addPcs($scope.pcList, $scope.compositeProfileStructure.id).then(function(cpStructure) {
+                //new tp update pcs and messages in the front end
+
+                CompositeProfileService.build(cpStructure).then(function(result) {
+
+                    for (var i = 0; i < $rootScope.igdocument.profile.compositeProfiles.children.length; i++) {
+                        if ($rootScope.igdocument.profile.compositeProfiles.children[i].id === cpStructure.id) {
+                            $rootScope.igdocument.profile.compositeProfiles.children[i] = cpStructure;
+                            $rootScope.compositeProfilesStructureMap[cpStructure.id] = cpStructure;
+                        }
+                    }
+                    // for (var i = 0; i < $rootScope.igdocument.profile.messages.children.length; i++) {
+                    //     if ($rootScope.igdocument.profile.messages.children[i].compositeProfileStructureList === null) {
+                    //         $rootScope.igdocument.profile.messages.children[i].compositeProfileStructureList = [];
+                    //     }
+                    //     for (var j = 0; j < $rootScope.igdocument.profile.messages.children[i].compositeProfileStructureList.length; j++) {
+                    //         if ($rootScope.igdocument.profile.messages.children[i].compositeProfileStructureList[j] === cpStructure.id) {
+                    //             $rootScope.igdocument.profile.messages.children[i].compositeProfileStructureList[j] = cpStructure;
+                    //             $rootScope.messagesMap[$rootScope.igdocument.profile.messages.children[i].id] = $rootScope.igdocument.profile.messages.children[i];
+                    //         }
+                    //     }
+                    // }
+                    console.log($rootScope.profileComponents);
+                    for (var i = 0; i < $rootScope.profileComponents.length; i++) {
+                        if ($rootScope.profileComponents[i].compositeProfileStructureList === null) {
+                            $rootScope.profileComponents[i].compositeProfileStructureList = [];
+                        }
+                        for (var j = 0; j < $rootScope.profileComponents[i].compositeProfileStructureList.length; j++) {
+                            if ($rootScope.profileComponents[i].compositeProfileStructureList[j].id === cpStructure.id) {
+                                $rootScope.profileComponents[i].compositeProfileStructureList[j] = cpStructure;
+                                $rootScope.profileComponentsMap[$rootScope.profileComponents[i].id] = $rootScope.igdocument.profile.messages.children[i];
+                            }
+                        }
+                    }
+
+                    console.log($rootScope.igdocument);
+                    $modalInstance.close(cpStructure);
+
+                });
+
+            });
+
+        };
+
+        $scope.cancel = function() {
+            $modalInstance.dismiss('cancel');
+        };
+
+
+    });
+
+
 angular.module('igl').controller('createCompositeProfileCtrl',
     function($scope, $rootScope, $modalInstance, $http, $filter, PcService, IgDocumentService, CompositeProfileService) {
         $scope.compositeMetaData = true;
@@ -3667,7 +3904,9 @@ angular.module('igl').controller('createCompositeProfileCtrl',
             var interPc = {
                 id: pc.id,
                 name: pc.name,
-                pcDate: pc.dateUpdated,
+                description: pc.description,
+                comment: pc.comment,
+                pcDate: new Date(),
                 position: angular.copy($scope.position)
             }
             console.log(interPc);
@@ -3681,7 +3920,8 @@ angular.module('igl').controller('createCompositeProfileCtrl',
                 coreProfileId: $scope.baseP.id,
                 profileComponentsInfo: $scope.pcList,
                 name: $scope.name,
-                description: $scope.description
+                description: $scope.description,
+                comment: $scope.comment
             };
             CompositeProfileService.create(compositeProfileStructure, $rootScope.igdocument.id).then(function(cpStructure) {
                 console.log(cpStructure);
@@ -3690,6 +3930,27 @@ angular.module('igl').controller('createCompositeProfileCtrl',
                     console.log(result);
                     console.log(cpStructure);
                     $rootScope.igdocument.profile.compositeProfiles.children.push(cpStructure);
+                    for (var i = 0; i < $rootScope.igdocument.profile.messages.children.length; i++) {
+                        if ($rootScope.igdocument.profile.messages.children[i].id === cpStructure.coreProfileId) {
+                            if ($rootScope.igdocument.profile.messages.children[i].compositeProfileStructureList === null) {
+                                $rootScope.igdocument.profile.messages.children[i].compositeProfileStructureList = [];
+                            }
+                            $rootScope.igdocument.profile.messages.children[i].compositeProfileStructureList.push(cpStructure.id);
+                            $rootScope.messagesMap[$rootScope.igdocument.profile.messages.children[i].id] = $rootScope.igdocument.profile.messages.children[i];
+                        }
+                    }
+                    for (var i = 0; i < cpStructure.profileComponentIds.length; i++) {
+                        for (var j = 0; j < $rootScope.profileComponents.length; j++) {
+                            if (cpStructure.profileComponentIds[i] === $rootScope.profileComponents[j].id) {
+                                if ($rootScope.profileComponents[j].compositeProfileStructureList === null) {
+                                    $rootScope.profileComponents[j].compositeProfileStructureList = [];
+                                }
+                                $rootScope.profileComponents[j].compositeProfileStructureList.push(cpStructure.id);
+                                $rootScope.profileComponentsMap[$rootScope.profileComponents[j].id] = $rootScope.profileComponents[j];
+                            }
+                        }
+                    }
+                    $rootScope.compositeProfilesStructureMap[cpStructure.id] = cpStructure;
                     console.log($rootScope.igdocument);
                     $modalInstance.close(cpStructure);
 
@@ -3707,372 +3968,6 @@ angular.module('igl').controller('createCompositeProfileCtrl',
     });
 
 
-angular.module('igl').controller('createCompositeMessageCtrl',
-    function($scope, $rootScope, $modalInstance, $http, $filter, PcService, IgDocumentService, CompositeMessageService) {
-
-
-
-
-        $scope.pcList = [];
-        $scope.baseProfiles = $rootScope.messages.children;
-        $scope.pcs = $rootScope.profileComponents;
-        $scope.position = 1;
-
-        // $scope.start = function(event, ui, bp) {
-        //     $scope.compositeMessage = bp;
-        // };
-        // $scope.baseProfileOption = {
-        //     activate: function(event, ui) {
-        //     }
-        // };
-
-        $scope.selectBaseProfile = function(baseP) {
-            $scope.baseP = angular.copy(baseP);
-        };
-        $scope.checkExist = function(pc) {
-            for (var i = 0; i < $scope.pcList.length; i++) {
-                if ($scope.pcList[i].id === pc.id) {
-                    return true;
-                }
-            }
-            return false;
-        };
-        $scope.removePc = function(pc) {
-            var positionToRemove = pc.position;
-            var index = $scope.pcList.indexOf(pc);
-            if (index > -1) $scope.pcList.splice(index, 1);
-            for (var i = 0; i < $scope.pcList.length; i++) {
-                if ($scope.pcList[i].position >= positionToRemove) {
-                    $scope.pcList[i].position = $scope.pcList[i].position - 1;
-                }
-            }
-            $scope.position = $scope.position - 1;
-
-        };
-        $scope.selectPC = function(pc) {
-            console.log(pc);
-            pc.position = angular.copy($scope.position);
-            $scope.pcList.push(pc);
-            $scope.position = $scope.position + 1;
-        };
-
-
-
-        $scope.create = function() {
-            $scope.baseP.id = new ObjectId().toString();
-
-            var processFields = function(fields) {
-                for (var i = 0; i < fields.length; i++) {
-                    fields[i].datatype = angular.copy($rootScope.datatypesMap[fields[i].datatype.id]);
-                    if (fields[i].datatype.components.length > 0) {
-                        fields[i].datatype.components = processFields(fields[i].datatype.components);
-                    }
-                    for (var j = 0; j < fields[i].tables.length; j++) {
-                        fields[i].tables[j] = angular.copy($rootScope.tablesMap[fields[i].tables[j].id]);
-                    }
-
-                }
-                return fields;
-            };
-            var processMessage = function(message) {
-                for (var i = 0; i < message.children.length; i++) {
-                    message.children[i].id = new ObjectId().toString();
-                    if (message.children[i].type === "segmentRef") {
-                        message.children[i].ref = angular.copy($rootScope.segmentsMap[message.children[i].ref.id]);
-                        message.children[i].ref.fields = processFields(message.children[i].ref.fields);
-                    } else if (message.children[i].type === "group") {
-                        processMessage(message.children[i]);
-                    }
-
-                }
-                return message;
-            };
-
-            var message = angular.copy($scope.baseP);
-
-            var getObjectFromPath = function(pathType, path, message) {
-                var splitPath = path.split(".");
-                if (pathType === "pathExp") {
-                    console.log("exp");
-                    console.log(splitPath);
-                    for (var i = 1; i < splitPath.length; i++) {
-                        console.log(splitPath[i]);
-                    }
-                } else {
-                    console.log("noExp");
-                    console.log(splitPath);
-                    if (splitPath[0] === message.structID) {
-                        console.log("can");
-                    } else {
-                        console.log("cant");
-
-                    }
-                    for (var i = 1; i < splitPath.length; i++) {
-                        console.log(splitPath[i]);
-
-                    }
-
-                }
-            };
-
-            $scope.Map = [];
-            var buildMap = function(parentPath, element) {
-                var path = "";
-                if (element.type === "segmentRef") {
-                    path = parentPath + '.' + element.position;
-                    $scope.Map[path] = element;
-                } else if (element.type === "group" || element.type === "message") {
-                    for (var i = 0; i < element.children.length; i++) {
-                        if (element.children[i].type === "group") {
-                            grpPath = parentPath + '.' + element.children[i].position;
-                            path = parentPath + '.' + element.children[i].name;
-
-                            $scope.Map[grpPath] = element.children[i];
-                            buildMap(path, element.children[i]);
-                        } else if (element.children[i].type === "segmentRef") {
-                            segPath = parentPath + '.' + element.children[i].position;
-                            path = parentPath + '.' + element.children[i].ref.label;
-                            $scope.Map[segPath] = element.children[i];
-                            buildMap(path, element.children[i].ref);
-                            // buildMap(path, element.children[i]);
-                        }
-                    }
-                } else if (element.type === "segment") {
-                    for (var i = 0; i < element.fields.length; i++) {
-                        fieldPath = parentPath + '.' + element.fields[i].position;
-                        $scope.Map[fieldPath] = element.fields[i];
-                        buildMap(fieldPath, element.fields[i].datatype);
-                    }
-                } else if (element.type === "datatype") {
-                    for (var i = 0; i < element.components.length; i++) {
-                        componentPath = parentPath + '.' + element.components[i].position;
-                        $scope.Map[componentPath] = element.components[i];
-                        buildMap(componentPath, element.components[i].datatype);
-                    }
-                }
-                // for (var i = 0; i < element.children.length; i++) {
-                //     if (element.children[i].type === "group") {
-                //         $scope.Map[path] = element.children[i];
-                //         buildMap(path, element.children[i]);
-                //     } else if (element.children[i].type === "segmentRef") {
-                //         $scope.Map[path] = element.children[i];
-
-                //     }
-                // }
-            };
-
-            var processedMsg = processMessage(message);
-            buildMap(processedMsg.structID, processedMsg);
-
-            var getSegs = function(list, segLabel, resultList) {
-
-
-                for (var i = 0; i < list.children.length; i++) {
-                    if (list.children[i].type === "segmentRef") {
-                        if (list.children[i].ref.label === segLabel) {
-                            resultList.push(list.children[i]);
-                        }
-
-                    } else {
-                        getSegs(list.children[i], segLabel, resultList);
-                    }
-                }
-                return resultList;
-            };
-
-
-
-
-            var orderedList = $filter('orderBy')($scope.pcList, 'position');
-            console.log(orderedList);
-            for (var i = 0; i < orderedList.length; i++) {
-
-                for (var j = 0; j < orderedList[i].children.length; j++) {
-                    if (orderedList[i].children[j].pathExp) {
-                        var resultList = [];
-                        var label = orderedList[i].children[j].path.split('.');
-                        var segList = getSegs(processedMsg, label[0], resultList);
-                        for (var k = 0; k < segList.length; k++) {
-                            if (orderedList[i].children[j].type === "segment") {
-                                if (orderedList[i].children[j].attributes.usage) {
-                                    segList[k].usage = orderedList[i].children[j].attributes.usage;
-                                }
-                                if (orderedList[i].children[j].attributes.min) {
-                                    segList[k].min = orderedList[i].children[j].attributes.min;
-                                }
-                                if (orderedList[i].children[j].attributes.max) {
-                                    segList[k].max = orderedList[i].children[j].attributes.max;
-                                }
-                            } else if (orderedList[i].children[j].type === "field") {
-
-                                if (orderedList[i].children[j].attributes.usage) {
-                                    segList[k].ref.fields[label[1] - 1].usage = orderedList[i].children[j].attributes.usage;
-                                }
-                                if (orderedList[i].children[j].attributes.min) {
-                                    segList[k].ref.fields[label[1] - 1].min = orderedList[i].children[j].attributes.min;
-                                }
-                                if (orderedList[i].children[j].attributes.max) {
-                                    segList[k].ref.fields[label[1] - 1].max = orderedList[i].children[j].attributes.max;
-                                }
-                                if (orderedList[i].children[j].attributes.confLength) {
-                                    segList[k].ref.fields[label[1] - 1].confLength = orderedList[i].children[j].attributes.confLength;
-                                }
-                                if (orderedList[i].children[j].attributes.minLength) {
-                                    segList[k].ref.fields[label[1] - 1].minLength = orderedList[i].children[j].attributes.minLength;
-                                }
-                                if (orderedList[i].children[j].attributes.maxLength) {
-                                    segList[k].ref.fields[label[1] - 1].maxLength = orderedList[i].children[j].attributes.maxLength;
-                                }
-                                if (orderedList[i].children[j].attributes.minLength) {
-                                    segList[k].ref.fields[label[1] - 1].minLength = orderedList[i].children[j].attributes.minLength;
-                                }
-                                if (orderedList[i].children[j].attributes.datatype) {
-                                    segList[k].ref.fields[label[1] - 1].datatype = angular.copy($rootScope.datatypesMap[orderedList[i].children[j].attributes.datatype.id]);
-                                }
-                                if (orderedList[i].children[j].attributes.tables) {
-                                    segList[k].ref.fields[label[1] - 1].tables = [];
-                                    for (var k = 0; k < orderedList[i].children[j].attributes.tables.length; k++) {
-                                        segList[k].ref.fields[label[1] - 1].tables.push(angular.copy($rootScope.tablesMap[orderedList[i].children[j].attributes.tables[k].id]));
-
-                                    }
-                                }
-                            } else if (orderedList[i].children[j].type === "component") {
-
-                                if (label.length === 3) {
-                                    var comp = segList[k].ref.fields[label[1] - 1].datatype.components[label[2] - 1];
-                                } else if (label.length === 4) {
-                                    var comp = segList[k].ref.fields[label[1] - 1].datatype.components[label[2] - 1].datatype.components[label[3] - 1];
-                                }
-                                if (orderedList[i].children[j].attributes.usage) {
-                                    comp.usage = orderedList[i].children[j].attributes.usage;
-                                }
-                                if (orderedList[i].children[j].attributes.min) {
-                                    comp.min = orderedList[i].children[j].attributes.min;
-                                }
-                                if (orderedList[i].children[j].attributes.max) {
-                                    comp.max = orderedList[i].children[j].attributes.max;
-                                }
-                                if (orderedList[i].children[j].attributes.confLength) {
-                                    comp.confLength = orderedList[i].children[j].attributes.confLength;
-                                }
-                                if (orderedList[i].children[j].attributes.minLength) {
-                                    comp.minLength = orderedList[i].children[j].attributes.minLength;
-                                }
-                                if (orderedList[i].children[j].attributes.maxLength) {
-                                    comp.maxLength = orderedList[i].children[j].attributes.maxLength;
-                                }
-                                if (orderedList[i].children[j].attributes.minLength) {
-                                    comp.minLength = orderedList[i].children[j].attributes.minLength;
-                                }
-                                if (orderedList[i].children[j].attributes.datatype) {
-                                    comp.datatype = angular.copy($rootScope.datatypesMap[orderedList[i].children[j].attributes.datatype.id]);
-                                }
-                                if (orderedList[i].children[j].attributes.tables) {
-                                    comp.tables = [];
-                                    for (var k = 0; k < orderedList[i].children[j].attributes.tables.length; k++) {
-                                        comp.tables.push(angular.copy($rootScope.tablesMap[orderedList[i].children[j].attributes.tables[k].id]));
-
-                                    }
-                                }
-
-                            }
-                        }
-
-
-
-                        //getObjectFromPath("pathExp", orderedList[i].children[j].pathExp, processedMsg);
-                    } else {
-                        //getObjectFromPath("path", orderedList[i].children[j].path, processedMsg);
-
-
-                        if (orderedList[i].children[j].attributes.usage) {
-                            console.log($scope.Map[orderedList[i].children[j].path]);
-                            $scope.Map[orderedList[i].children[j].path].usage = orderedList[i].children[j].attributes.usage;
-                        }
-                        if (orderedList[i].children[j].attributes.min) {
-                            $scope.Map[orderedList[i].children[j].path].min = orderedList[i].children[j].attributes.min;
-                        }
-                        if (orderedList[i].children[j].attributes.max) {
-                            $scope.Map[orderedList[i].children[j].path].max = orderedList[i].children[j].attributes.max;
-                        }
-                        if (orderedList[i].children[j].attributes.confLength) {
-                            $scope.Map[orderedList[i].children[j].path].confLength = orderedList[i].children[j].attributes.confLength;
-                        }
-                        if (orderedList[i].children[j].attributes.minLength) {
-                            $scope.Map[orderedList[i].children[j].path].minLength = orderedList[i].children[j].attributes.minLength;
-                        }
-                        if (orderedList[i].children[j].attributes.maxLength) {
-                            $scope.Map[orderedList[i].children[j].path].maxLength = orderedList[i].children[j].attributes.maxLength;
-                        }
-                        if (orderedList[i].children[j].attributes.minLength) {
-                            $scope.Map[orderedList[i].children[j].path].minLength = orderedList[i].children[j].attributes.minLength;
-                        }
-                        if (orderedList[i].children[j].attributes.datatype) {
-                            $scope.Map[orderedList[i].children[j].path].datatype = angular.copy($rootScope.datatypesMap[orderedList[i].children[j].attributes.datatype.id]);
-                        }
-                        if (orderedList[i].children[j].attributes.tables) {
-                            $scope.Map[orderedList[i].children[j].path].tables = [];
-                            for (var k = 0; k < orderedList[i].children[j].attributes.tables.length; k++) {
-                                $scope.Map[orderedList[i].children[j].path].tables.push(angular.copy($rootScope.tablesMap[orderedList[i].children[j].attributes.tables[k].id]));
-
-                            }
-                        }
-                    }
-
-                }
-            }
-
-            processedMsg.id = new ObjectId().toString();
-            var profileComponents = [];
-            for (var t = 0; t < $scope.pcList.length; t++) {
-                if ($scope.pcList[t].appliedTo === null) {
-                    $scope.pcList[t].appliedTo = [];
-                }
-                if (processedMsg.appliedPcs === null) {
-                    processedMsg.appliedPcs = [];
-                }
-                processedMsg.appliedPcs.push({
-                    id: $scope.pcList[t].id,
-                    name: $scope.pcList[t].name,
-                    pcDate: $scope.pcList[t].dateUpdated,
-                    position: $scope.pcList[t].position
-                });
-                $scope.pcList[t].appliedTo.push({
-                    id: processedMsg.id,
-                    name: processedMsg.name,
-                    pcDate: $scope.pcList[t].dateUpdated,
-                    position: $scope.pcList[t].position
-                });
-                var pComponent = angular.copy($scope.pcList[t]);
-                delete pComponent.position;
-                $rootScope.profileComponentsMap[pComponent.id] = pComponent;
-                profileComponents.push(pComponent);
-            }
-
-
-            CompositeMessageService.SaveGroupOrSegment(processedMsg.children).then(function(grpOrSeg) {
-
-                CompositeMessageService.create(processedMsg, $rootScope.igdocument.id).then(function(compositeM) {
-                    console.log("=================================");
-                    console.log(profileComponents);
-                    PcService.saveAll(profileComponents).then(function(pcs) {
-                        $rootScope.igdocument.profile.compositeMessages.children.push(compositeM);
-                        $modalInstance.close(compositeM);
-                    });
-
-
-
-                });
-            });
-
-
-        };
-
-        $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
-        };
-
-    });
 
 angular.module('igl').controller('CustomExportCtrl', function($scope, $modalInstance, $http, IgDocumentService, $rootScope) {
     $scope.selectedType = {};
