@@ -20,5 +20,6 @@ public interface ProfileComponentService {
 
   List<ProfileComponent> findByIds(List<String> pcIds);
 
+  void delete(List<ProfileComponent> profileComponents);
 
 }

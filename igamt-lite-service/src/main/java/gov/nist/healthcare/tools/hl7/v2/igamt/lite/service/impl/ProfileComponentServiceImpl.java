@@ -67,4 +67,11 @@ public class ProfileComponentServiceImpl implements ProfileComponentService {
   }
 
 
+  @Override
+  public void delete(List<ProfileComponent> profileComponents) {
+    profileComponentRepository.delete(profileComponents);
+
+  }
+
+
 }
