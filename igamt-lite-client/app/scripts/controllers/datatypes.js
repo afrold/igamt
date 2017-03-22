@@ -466,9 +466,6 @@ angular.module('igl')
         };
 
         $scope.editVSModal = function(component) {
-            console.log(component.tables);
-            console.log($rootScope.tablesMap);
-            console.log($rootScope.tablesMap[component.tables[0].id]);
             var modalInstance = $modal.open({
                 templateUrl: 'editVSModal.html',
                 controller: 'EditVSCtrl',
