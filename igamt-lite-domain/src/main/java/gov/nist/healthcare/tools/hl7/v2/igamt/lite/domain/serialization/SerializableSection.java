@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -97,5 +98,17 @@ public class SerializableSection extends SerializableElement {
         this.title = title;
         this.titleAttribute = new Attribute("title", title);
         this.sectionElement.addAttribute(titleAttribute);
+    }
+
+    protected Element createValueSetBindingListElement(List<ValueSetBinding> valueSetBindings){
+        Element valueSetBindingListElement = new Element("ValueSetBindingList");
+        for(ValueSetBinding valueSetBinding : valueSetBindings){
+            Element valueSetBindingElement = new Element("ValueSetBinding");
+            valueSetBindingElement.addAttribute(new Attribute("BindingLocation",valueSetBinding.getBindingLocation()));
+            valueSetBindingElement.addAttribute(new Attribute("Location",valueSetBinding.getLocation()));
+            valueSetBindingElement.addAttribute(new Attribute("BindingStrength",valueSetBinding.getBindingStrength().value()));
+            valueSetBindingListElement.appendChild(valueSetBindingElement);
+        }
+        return valueSetBindingListElement;
     }
 }
