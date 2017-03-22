@@ -654,6 +654,33 @@
         </button>
     </div>
 </script>
+
+<script type="text/ng-template " id="EditSingleElement.html">
+    <div class="modal-header ">
+        <h3>Single Element Value of {{currentNode.path}}</h3>
+
+    </div>
+    <div class="modal-body ">
+        <form class="form-horizontal " novalidate>
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <input style="width:100%;" class="form-control" type="text" ng-model="sevVale" required/>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
+            &nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+            &nbsp; </i>Save</span>
+        </button>
+    </div>
+</script>
+
+
 <script type="text/ng-template " id="tree_node ">
 
         <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined) ">

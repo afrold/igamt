@@ -1036,6 +1036,28 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
     };
 
+    $scope.openDialogForEditSev = function(node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'EditSingleElement.html',
+            controller: 'EditSingleElementCtrl',
+            backdrop: true,
+            keyboard: true,
+            windowClass: 'input-text-modal-window',
+            backdropClick: false,
+            resolve: {
+                currentNode: function() {
+                    return node;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(value) {
+            $scope.addSev(node);
+            node.sev.value = value;
+            $scope.setDirty();
+        });
+    };
+
     $scope.isAvailableForValueSet = function (node){
         if(node && node.datatype){
             var currentDT = $rootScope.datatypesMap[node.datatype.id];

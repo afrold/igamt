@@ -1209,6 +1209,28 @@ angular.module('igl')
             });
         };
 
+        $scope.openDialogForEditSev = function(node) {
+            var modalInstance = $modal.open({
+                templateUrl: 'EditSingleElement.html',
+                controller: 'EditSingleElementCtrl',
+                backdrop: true,
+                keyboard: true,
+                windowClass: 'input-text-modal-window',
+                backdropClick: false,
+                resolve: {
+                    currentNode: function() {
+                        return node;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(value) {
+                $scope.addSev(node);
+                node.sev.value = value;
+                $scope.setDirty();
+            });
+        };
+
         $scope.confirmDatatypeSingleElementDuplicated = function (node) {
             var modalInstance = $modal.open({
                 templateUrl: 'ConfirmSingleElementDuplicatedCtrl.html',
@@ -1220,7 +1242,7 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (node) {
-                $scope.addSev(node);
+                $scope.openDialogForEditSev(node);
             }, function () {
             });
         };
