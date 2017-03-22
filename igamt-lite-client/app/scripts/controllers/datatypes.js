@@ -1679,9 +1679,9 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
 
     $scope.selectValueSet = function (v){
         if($scope.listOfBindingLocations){
-            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path, bindingLocation: "1" });
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path, bindingLocation: "1",  usage: currentNode.usage});
         }else {
-            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path });
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path, usage: currentNode.usage});
         }
         $scope.changed = true;
     };

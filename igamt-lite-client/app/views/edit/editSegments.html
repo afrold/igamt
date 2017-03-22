@@ -181,23 +181,23 @@
                                                                     <button type="button" ng-show="(segment.scope === 'USER') && !viewSettings.tableReadonly && (segment.fields.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(segment)">O to X
                                                                     </button>
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100">Cardinality
+                                                                <th class="col-md-1 col-fixed-100" style="text-align:center">Cardinality
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100">Length
+                                                                <th class="col-md-1 col-fixed-100" style="text-align:center">Length
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-80" ng-show="showConfLength()">Conformance Length
+                                                                <th class="col-md-1 col-fixed-80" ng-show="showConfLength()" style="text-align:center">Conformance Length
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:center">Data Type
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Value Set
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('singleElm')">Single Element
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">Single Element
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('predicate')" style="text-align:center">Predicate
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
+                                                                <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">Definition Text
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('comment')">Comment
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">Comment
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -692,9 +692,9 @@
                 </ng-form>
             </span>
             <p ng-show="node.usage==='C' && countPredicate(node.position) !==0" ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                <span class="badge label-field">
+                <span class="badge label-white">
                     <span>C({{p.trueUsage}}/{{p.falseUsage}})</span>
-                    <span title="Delete Predicate and Change Usage" ng-click="deletePredicateByPosition(node.position, segment)"><i class="fa fa-pencil fa-fw"></i></span>
+                    <span title="Delete Predicate and Change Usage" ng-click="deletePredicateByPosition(node.position, segment)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
                 </span>
             </p>
         </td>
@@ -755,10 +755,10 @@
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:center">
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                 <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
-                    <span class="badge label-field" ng-show="editableDT!==node.id">
+                    <span class="badge label-white" ng-show="editableDT!==node.id">
                         <span title="{{datatypesMap[node.datatype.id].hl7Version}}" ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
                         <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
-                        <span title="Change Datatype" ng-click="editDT(node)"><i class="fa fa-pencil fa-fw"></i></span>
+                        <span title="Change Datatype" ng-click="editDT(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
                     </span>
 
                     <div ng-if="editableDT===node.id">
@@ -781,9 +781,12 @@
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
-                    <span class="badge" ng-class="{'label-field' : binding.bindingFrom == 'segment', 'label-component' : binding.bindingFrom == 'field', 'label-sub-component' : binding.bindingFrom == 'component'}">
+                    <span class="badge label-white">
+                        <span ng-class="{'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}">
+                            <i class="fa fa-circle fa-fw"/>
+                        </span>
                         <span title="For {{getSegmentLabel(segment)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'segment'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw"></i></span>
+                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'segment'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                     </span>
                 </div>
                 <a ng-click="editModalBindingForSeg(node)" class="point">
@@ -793,18 +796,18 @@
         </td>
         <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
             <div ng-show="!hasChildren(node)">
-                <span ng-show="node.sev" class="badge" ng-class="{'label-field' : binding.bindingFrom == 'segment', 'label-component' : binding.bindingFrom == 'field', 'label-sub-component' : binding.bindingFrom == 'component'}">
+                <span ng-show="node.sev" class="badge label-white">
+                    <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
-                    <span title="Edit SingleElement" ng-show="node.sev.from == 'segment'" ng-click="openDialogForEditSev(node)"><i class="fa fa-pencil fa-fw"></i></span>
-                    <span title="Add SingleElement" ng-show="node.sev.from != 'segment'" ng-click="confirmDatatypeSingleElementDuplicated(node)"><i class="fa fa-plus fa-fw"></i></span>
-                    <span title="Delete SingleElement" ng-show="node.sev.from == 'segment'" ng-click="deleteSev(node)"><i class="fa fa-times fa-fw"></i></span>
+                    <span title="Edit SingleElement" ng-click="openDialogForEditSev(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                    <span title="Delete SingleElement" ng-click="deleteSev(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                 </span>
                 <a ng-show="!node.sev" class="point" ng-click="openDialogForEditSev(node)">
                     <span><i class="fa fa-plus fa-fw"></i></span>
                 </a>
             </div>
         </td>
-        <td ng-class="{'has-error': node.usage === 'C' && countPredicate(node.position) != 1}" ng-show="viewSettings.isVisibleColumn('predicate')" style="text-align:center">
+        <td ng-class="{'has-error': node.usage === 'C' && countPredicate(node.position) != 1, 'emptyCol':node.usage !== 'C'}" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="countPredicate(node.position) === 0 && node.usage === 'C'">
                     <a ng-click="managePredicate(node)" class="point">
@@ -816,10 +819,11 @@
 
                 <div ng-show="countPredicate(node.position) !== 0 && node.usage === 'C'">
                     <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                        <span title="{{getPredicateAsString(p)}}" class="badge label-field">
+                        <span title="{{getPredicateAsString(p)}}" class="badge label-white">
+                            <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
                             <span ng-click="managePredicate(node)">{{getConstraintAsTruncatedString(p, 15)}}</span>
-                            <span ng-click="managePredicate(node)"><i class="fa fa-pencil fa-fw"></i></span>
-                            <span ng-click="deletePredicateByPosition(node.position, segment)"><i class="fa fa-times fa-fw"></i></span>
+                            <span ng-click="managePredicate(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                            <span ng-click="deletePredicateByPosition(node.position, segment)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                         </span>
                     </p>
                     <div ng-show="countPredicate(node.position) > 1">
@@ -841,9 +845,10 @@
         </td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
             <div ng-repeat="comment in findingComments(node)">
-                <span class="badge" ng-class="{'label-field' : binding.bindingFrom == 'segment', 'label-component' : binding.bindingFrom == 'field', 'label-sub-component' : binding.bindingFrom == 'component'}">
-                    <span title="{{comment.description}}" ng-show="comment.isMain" ng-click="editCommentDlg(node, comment, false, 'segment')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
-                    <span title="Delete This Comments" ng-show="comment.from == 'segment'" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw"></i></span>
+                <span class="badge label-white">
+                    <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
+                    <span title="{{comment.description}}" ng-click="editCommentDlg(node, comment, false, 'segment')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                    <span title="Delete This Comments" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                 </span>
             </div>
             <a ng-click="editCommentDlg(node, null, false, 'segment')" class="point">
@@ -952,19 +957,18 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:center">
-            <span ng-show="node.type==='component' && node.path.split('.').length - 1 == 1" class="badge" ng-class="{'label-component' : node.path.split('.').length - 1 == 1, 'label-sub-component' : node.path.split('.').length - 1 == 2}">
-                <span title="Go to datatype" ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
-                <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
-            </span>
+            <span title="Go to datatype" ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
+            <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
         </td>
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
-                    <span class="badge" ng-class="{'label-MAIN' : binding.bindingFrom == 'segment', 'label-CHILD' : binding.bindingFrom == 'field', 'label-SUBCHILD' : binding.bindingFrom == 'component'}">
+                    <span class="badge label-white">
+                        <span ng-class="{'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                         <span title="For {{getSegmentLabel(segment)}}" ng-show="binding.bindingFrom == 'segment'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                         <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                         <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'segment'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw"></i></span>
+                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'segment'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                     </span>
                 </div>
 
@@ -975,24 +979,24 @@
         </td>
         <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
             <div ng-show="!hasChildren(node)">
-                <input ng-show="node.sev && node.sev.from == 'segment'" class="form-control" type="text" name="singleElement" ng-change="setDirty()" ng-model="node.sev.value" />
-                <input ng-show="node.sev && node.sev.from != 'segment'" class="form-control" type="text" name="singleElement" disabled ng-model="node.sev.value" />
-                <a ng-show="node.sev && node.sev.from != 'segment'" class="point" ng-click="confirmDatatypeSingleElementDuplicated(node)">
+                <span ng-show="node.sev" class="badge label-white">
+                    <span ng-class="{'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                    <span>{{node.sev.value}}</span>
+                    <span title="Edit SingleElement" ng-show="node.sev.from == 'segment'" ng-click="openDialogForEditSev(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                    <span title="Add SingleElement" ng-show="node.sev.from != 'segment'" ng-click="confirmDatatypeSingleElementDuplicated(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                    <span title="Delete SingleElement" ng-show="node.sev.from == 'segment'" ng-click="deleteSev(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                </span>
+                <a ng-show="!node.sev" class="point" ng-click="openDialogForEditSev(node)">
                     <span><i class="fa fa-plus fa-fw"></i></span>
-                </a>
-                <a ng-show="!node.sev" class="point" ng-click="addSev(node)">
-                    <span><i class="fa fa-plus fa-fw"></i></span>
-                </a>
-                <a ng-show="node.sev && node.sev.from == 'segment'" class="point" ng-click="deleteSev(node)">
-                    <span><i class="fa fa-times fa-fw"></i></span>
                 </a>
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('predicate')">
-            <div>
-                <p ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
-                   tooltip-animation="false" tooltip-placement="left">
-                </p>
+        <td ng-show="viewSettings.isVisibleColumn('predicate')" ng-class="{'emptyCol':node.usage !== 'C'}">
+            <div ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                <span title="{{getPredicateAsString(p)}}" class="badge label-white">
+                    <span ng-class="{'label-component-icon' : node.path.split('.').length - 1 == 1, 'label-sub-component-icon' : node.path.split('.').length - 1 == 2}"><i class="fa fa-circle fa-fw"/></span>
+                    <span>{{getConstraintAsTruncatedString(p, 15)}}</span>
+                </span>
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('defText')">
@@ -1004,11 +1008,12 @@
         </td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
             <div ng-repeat="comment in findingComments(node)">
-                <span class="badge" ng-class="{'label-MAIN' : comment.from == 'segment', 'label-CHILD' : comment.from == 'field', 'label-SUBCHILD' : comment.from == 'component'}">
-                    <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'segment'" ng-click="editCommentDlg(node, comment, false, 'segment')">Comments_{{comment.index}}</span>
-                    <span title="[{{getDatatypeLabel(datatypesMap[node.fieldDT])}}]{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'field'" ng-click="editCommentDlg(node, comment, true, 'segment')">Comments_{{comment.index}}</span>
-                    <span title="[{{getDatatypeLabel(datatypesMap[node.componentDT])}}]{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'component'" ng-click="editCommentDlg(node, comment, true, 'segment')">Comments_{{comment.index}}</span>
-                    <span title="Delete This Comments" ng-show="comment.from == 'segment'" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw"></i></span>
+                <span class="badge label-white">
+                    <span ng-class="{'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                    <span title="{{comment.description}}" ng-show="comment.from == 'segment'" ng-click="editCommentDlg(node, comment, false, 'segment')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                    <span title="[{{getDatatypeLabel(datatypesMap[node.fieldDT])}}]{{comment.description}}" ng-show="comment.from == 'field'" ng-click="editCommentDlg(node, comment, true, 'segment')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                    <span title="[{{getDatatypeLabel(datatypesMap[node.componentDT])}}]{{comment.description}}" ng-show="comment.from == 'component'" ng-click="editCommentDlg(node, comment, true, 'segment')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                    <span title="Delete This Comments" ng-show="comment.from == 'segment'" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                 </span>
             </div>
             <a ng-click="editCommentDlg(node, null, false, 'segment')" class="point">

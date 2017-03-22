@@ -899,7 +899,7 @@
                 </a>
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('comment')">
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
             <div ng-repeat="comment in findingComments(node.path)">
                 <span class="badge label-white">
                     <span ng-class="{'label-component-icon' : comment.isMain, 'label-sub-component-icon' : !comment.isMain}"><i class="fa fa-circle fa-fw"/></span>
@@ -1052,7 +1052,7 @@
                 </a>
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('comment')">
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
             <div ng-repeat="comment in findingComments(node.path, parentsMap[node.id])">
                 <span class="badge label-white">
                     <span ng-class="{'label-component-icon' : comment.isMain, 'label-sub-component-icon' : !comment.isMain}"><i class="fa fa-circle fa-fw"/></span>

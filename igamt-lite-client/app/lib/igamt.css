@@ -606,6 +606,10 @@ li.active > a{
     color:black;
 }
 
+.label-field-icon {
+    color: #f24a08;
+}
+
 .label-component-icon {
     color:#f2c60d;
 }
@@ -616,4 +620,8 @@ li.active > a{
 
 .edit-icon {
     color:#428bca;
+}
+
+.label-message-icon {
+    color:green;
 }
