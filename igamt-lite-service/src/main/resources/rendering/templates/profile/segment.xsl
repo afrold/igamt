@@ -1,6 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:import href="/rendering/templates/profile/segmentField.xsl"/>
+    <xsl:import href="/rendering/templates/profile/valueSetBindingList.xsl"/>
 
     <xsl:template match="Segment" mode="toc">
         <xsl:element name="a">
@@ -235,6 +236,7 @@
                 </xsl:element>
             </xsl:if>
         </xsl:for-each>
+        <xsl:apply-templates select="./ValueSetBindingList"/>
     </xsl:template>
 
     <xsl:template match="coconstraints">

@@ -3,6 +3,7 @@
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:import href="/rendering/templates/profile/definitionText.xsl"/>
     <xsl:import href="/rendering/templates/profile/DateTimeDatatype.xsl"/>
+    <xsl:import href="/rendering/templates/profile/valueSetBindingList.xsl"/>
     <xsl:template match="Datatype">
         <!--xsl:if test="not(@PurposeAndUse='')">
             <xsl:element name="p">
@@ -195,6 +196,7 @@
                               select="Text[@Type='UsageNote']"/>
             </xsl:element>
         </xsl:if>
+        <xsl:apply-templates select="./ValueSetBindingList"/>
     </xsl:template>
 
     <xsl:template match="Datatype" mode="toc">

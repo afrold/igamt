@@ -135,8 +135,17 @@ import java.util.Map;
                     }
                 }
             }
+            List<Table> tables = new ArrayList<>();
+            for(ValueSetBinding valueSetBinding : segment.getValueSetBindings()){
+                if(valueSetBinding.getTableId()!=null && !valueSetBinding.getTableId().isEmpty()){
+                    Table table = tableService.findById(valueSetBinding.getTableId());
+                    if(table!=null){
+                        tables.add(table);
+                    }
+                }
+            }
             Boolean showConfLength = serializationUtil.isShowConfLength(segment.getHl7Version());
-            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldTableMap, coConstraintValueTableMap,showConfLength);
+            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, tables, coConstraintValueTableMap,showConfLength);
             serializableSegmentSection.addSection(serializableSegment);
             return serializableSegmentSection;
         }

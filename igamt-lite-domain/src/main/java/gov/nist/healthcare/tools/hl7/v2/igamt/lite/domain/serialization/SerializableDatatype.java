@@ -31,17 +31,17 @@ public class SerializableDatatype extends SerializableSection {
     private Datatype datatype;
     private List<SerializableConstraint> constraints;
     private Map<Component,Datatype> componentDatatypeMap;
-    private Map<Component,List<Table>> componentTableMap;
     private String defPreText, defPostText, usageNote;
     private Map<Component,String> componentTextMap;
     private Boolean showConfLength;
+    private List<Table> tables;
 
     public List<SerializableConstraint> getConstraints() {
         return constraints;
     }
 
     public SerializableDatatype(String id, String prefix, String position, String headerLevel, String title,
-        Datatype datatype, String defPreText, String defPostText, String usageNote, List<SerializableConstraint> constraints,Map<Component,Datatype> componentDatatypeMap,Map<Component,List<Table>> componentTableMap, Map<Component,String> componentTextMap, Boolean showConfLength) {
+        Datatype datatype, String defPreText, String defPostText, String usageNote, List<SerializableConstraint> constraints,Map<Component,Datatype> componentDatatypeMap,List<Table> tables, Map<Component,String> componentTextMap, Boolean showConfLength) {
         super(id, prefix, position, headerLevel, title);
         this.datatype = datatype;
         this.defPreText = defPreText;
@@ -49,7 +49,7 @@ public class SerializableDatatype extends SerializableSection {
         this.usageNote = usageNote;
         this.constraints = constraints;
         this.componentDatatypeMap = componentDatatypeMap;
-        this.componentTableMap = componentTableMap;
+        this.tables = tables;
         this.componentTextMap = componentTextMap;
         this.showConfLength = showConfLength;
     }
@@ -72,7 +72,7 @@ public class SerializableDatatype extends SerializableSection {
                 datatypeElement.appendChild(constraint.serializeElement());
             }
             if(datatype.getValueSetBindings()!=null && !datatype.getValueSetBindings().isEmpty()) {
-                Element valueSetBindingListElement = super.createValueSetBindingListElement(datatype.getValueSetBindings());
+                Element valueSetBindingListElement = super.createValueSetBindingListElement(datatype.getValueSetBindings(), this.tables, datatype.getLabel());
                 if(valueSetBindingListElement!=null){
                     datatypeElement.appendChild(valueSetBindingListElement);
                 }

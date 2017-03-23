@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
@@ -100,25 +101,50 @@ public class SerializableSection extends SerializableElement {
         this.sectionElement.addAttribute(titleAttribute);
     }
 
-    protected Element createValueSetBindingListElement(List<ValueSetBinding> valueSetBindings){
+    protected Element createValueSetBindingListElement(List<ValueSetBinding> valueSetBindings, List<Table> tables,String locationPrefix){
         Element valueSetBindingListElement = new Element("ValueSetBindingList");
         for(ValueSetBinding valueSetBinding : valueSetBindings){
             if(valueSetBinding!=null) {
                 Element valueSetBindingElement = new Element("ValueSetBinding");
-                if(valueSetBinding.getBindingLocation()!=null) {
-                    valueSetBindingElement.addAttribute(new Attribute("BindingLocation", valueSetBinding.getBindingLocation()));
+                Table table = findTable(tables,valueSetBinding.getTableId());
+                if(table!=null) {
+                    if(table.getBindingIdentifier()!=null){
+                        valueSetBindingElement.addAttribute(new Attribute("BindingIdentifier",table.getBindingIdentifier()));
+                    }
+                    if(table.getName()!=null){
+                        valueSetBindingElement.addAttribute(new Attribute("Name", table.getName()));
+                    }
+                    if (valueSetBinding.getBindingLocation() != null) {
+                        valueSetBindingElement.addAttribute(new Attribute("BindingLocation", valueSetBinding.getBindingLocation()));
+                    }
+                    if (valueSetBinding.getLocation() != null) {
+                        String location = "";
+                        if(locationPrefix!=null && !locationPrefix.isEmpty()){
+                            location+=locationPrefix+"-";
+                        }
+                        location+=valueSetBinding.getLocation();
+                        valueSetBindingElement
+                            .addAttribute(new Attribute("Location", location));
+                    }
+                    if (valueSetBinding.getBindingStrength() != null) {
+                        valueSetBindingElement.addAttribute(new Attribute("BindingStrength",
+                            valueSetBinding.getBindingStrength().value()));
+                    }
+                    valueSetBindingListElement.appendChild(valueSetBindingElement);
                 }
-                if(valueSetBinding.getBindingLocation()!=null) {
-                    valueSetBindingElement
-                        .addAttribute(new Attribute("Location", valueSetBinding.getLocation()));
-                }
-                if(valueSetBinding.getBindingLocation()!=null) {
-                    valueSetBindingElement.addAttribute(new Attribute("BindingStrength",
-                        valueSetBinding.getBindingStrength().value()));
-                }
-                valueSetBindingListElement.appendChild(valueSetBindingElement);
             }
         }
         return valueSetBindingListElement;
+    }
+
+    private Table findTable(List<Table> tables, String tableId){
+        if(tableId!=null && !tableId.isEmpty()) {
+            for (Table table : tables) {
+                if (table != null && table.getId() != null && table.getId().equals(tableId)) {
+                    return table;
+                }
+            }
+        }
+        return null;
     }
 }

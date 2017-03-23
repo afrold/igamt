@@ -27,13 +27,13 @@ public class SerializableSegment extends SerializableSection {
     private String defPreText,defPostText,name,label,description,comment;
     private List<SerializableConstraint> constraints;
     private Map<Field,Datatype> fieldDatatypeMap;
-    private Map<Field,List<Table>> fieldTableMap;
+    private List<Table> tables;
     private Map<CCValue,Table> coConstraintValueTableMap;
     private Boolean showConfLength;
 
 
     public SerializableSegment(String id, String prefix, String position, String headerLevel, String title,
-        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap, Boolean showConfLength) {
+        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,List<Table> tables, Map<CCValue,Table> coConstraintValueTableMap, Boolean showConfLength) {
         super(id, prefix, position, headerLevel, title);
         this.segment = segment;
         this.name = name;
@@ -44,7 +44,7 @@ public class SerializableSegment extends SerializableSection {
         this.defPostText = defPostText;
         this.constraints = constraints;
         this.fieldDatatypeMap = fieldDatatypeMap;
-        this.fieldTableMap = fieldTableMap;
+        this.tables = tables;
         this.coConstraintValueTableMap = coConstraintValueTableMap;
         this.showConfLength = showConfLength;
     }
@@ -78,7 +78,7 @@ public class SerializableSegment extends SerializableSection {
             }
 
             if(segment.getValueSetBindings()!=null && !segment.getValueSetBindings().isEmpty()) {
-                Element valueSetBindingListElement = super.createValueSetBindingListElement(segment.getValueSetBindings());
+                Element valueSetBindingListElement = super.createValueSetBindingListElement(segment.getValueSetBindings(), this.tables, segment.getLabel());
                 if(valueSetBindingListElement!=null){
                     segmentElement.appendChild(valueSetBindingListElement);
                 }

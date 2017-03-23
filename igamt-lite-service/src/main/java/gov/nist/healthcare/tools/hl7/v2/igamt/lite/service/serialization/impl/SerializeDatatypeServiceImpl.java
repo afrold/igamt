@@ -70,7 +70,7 @@ import java.util.Map;
                 usageNote = serializationUtil.cleanRichtext(datatype.getDefPreText());
             }
             Map<Component, Datatype> componentDatatypeMap = new HashMap<>();
-            Map<Component, List<Table>> componentTablesMap = new HashMap<>();
+            List<Table> tables = new ArrayList<>();
             Map<Component, String> componentTextMap = new HashMap<>();
             ArrayList<Component> toBeRemovedComponents = new ArrayList<>();
             if (hasComponentsToBeExported(datatype, datatypeUsageConfig)) {
@@ -82,18 +82,7 @@ import java.util.Map;
                                 datatypeService.findById(component.getDatatype().getId());
                             componentDatatypeMap.put(component, componentDatatype);
                         }
-                        if (component.getTables().size() > 0) {
-                            List<Table> componentTables = new ArrayList<>();
-                            for (TableLink tableLink : component.getTables()) {
-                                if (tableLink != null && !tableLink.getId().isEmpty()) {
-                                    Table componentTable = tableService.findById(tableLink.getId());
-                                    componentTables.add(componentTable);
-                                }
-                            }
-                            if (componentTables.size() > 0) {
-                                componentTablesMap.put(component, componentTables);
-                            }
-                        }
+
                         if (component.getText() != null && !component.getText().isEmpty()) {
                             String text = serializationUtil.cleanRichtext(component.getText());
                             componentTextMap.put(component, text);
@@ -106,6 +95,14 @@ import java.util.Map;
                     datatype.getComponents().remove(component);
                 }
             }
+            for(ValueSetBinding valueSetBinding : datatype.getValueSetBindings()){
+                if(valueSetBinding.getTableId()!=null && !valueSetBinding.getTableId().isEmpty()){
+                    Table table = tableService.findById(valueSetBinding.getTableId());
+                    if(table!=null){
+                        tables.add(table);
+                    }
+                }
+            }
             Boolean showConfLength = serializationUtil.isShowConfLength(datatype.getHl7Version());
             SerializableDatatype serializedDatatype = null;
             if (datatype.getName().equals("DTM")) {
@@ -114,13 +111,13 @@ import java.util.Map;
                 serializedDatatype =
                     new SerializableDateTimeDatatype(id, prefix, String.valueOf(position),
                         headerLevel, title, datatype, defPreText, defPostText, usageNote,
-                        constraintsList, componentDatatypeMap, componentTablesMap, componentTextMap,
+                        constraintsList, componentDatatypeMap, tables, componentTextMap,
                         showConfLength, dateValues);
             } else {
                 serializedDatatype =
                     new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,
                         title, datatype, defPreText, defPostText, usageNote, constraintsList,
-                        componentDatatypeMap, componentTablesMap, componentTextMap, showConfLength);
+                        componentDatatypeMap, tables, componentTextMap, showConfLength);
             }
             return serializedDatatype;
         }

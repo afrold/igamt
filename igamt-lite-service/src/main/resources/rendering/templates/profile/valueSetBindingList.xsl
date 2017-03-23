@@ -1,0 +1,92 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <xsl:template match="ValueSetBindingList">
+        <xsl:element name="h4">
+            <xsl:text>Value Set Bindings</xsl:text>
+        </xsl:element>
+        <xsl:element name="table">
+            <xsl:attribute name="class">
+                <xsl:text>contentTable</xsl:text>
+            </xsl:attribute>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>20%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>20%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>20%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>20%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>20%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="thead">
+                <xsl:attribute name="class">
+                    <xsl:text>contentThead</xsl:text>
+                </xsl:attribute>
+                <xsl:element name="tr">
+                    <xsl:element name="th">
+                        <xsl:text>Location</xsl:text>
+                    </xsl:element>
+                    <xsl:element name="th">
+                        <xsl:text>Binding Identifier</xsl:text>
+                    </xsl:element>
+                    <xsl:element name="th">
+                        <xsl:text>Name</xsl:text>
+                    </xsl:element>
+                    <xsl:element name="th">
+                        <xsl:text>Binding Strength</xsl:text>
+                    </xsl:element>
+                    <xsl:element name="th">
+                        <xsl:text>Binding Location</xsl:text>
+                    </xsl:element>
+                </xsl:element>
+            </xsl:element>
+            <xsl:element name="tbody">
+                <xsl:for-each select="ValueSetBinding">
+                    <xsl:element name="tr">
+                        <xsl:attribute name="class">
+                            <xsl:text>contentTr</xsl:text>
+                        </xsl:attribute>
+                        <xsl:element name="td">
+                            <xsl:value-of select="@Location"/>
+                        </xsl:element>
+                        <xsl:element name="td">
+                            <xsl:value-of select="@BindingIdentifier"/>
+                        </xsl:element>
+                        <xsl:element name="td">
+                            <xsl:value-of select="@Name"/>
+                        </xsl:element>
+                        <xsl:element name="td">
+                            <xsl:value-of select="@BindingStrength"/>
+                        </xsl:element>
+                        <xsl:element name="td">
+                            <xsl:choose>
+                                <xsl:when test="normalize-space(@BindingLocation) = ''">
+                                    <xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="@BindingLocation"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:element>
+                    </xsl:element>
+                </xsl:for-each>
+            </xsl:element>
+        </xsl:element>
+    </xsl:template>
+
+</xsl:stylesheet>
