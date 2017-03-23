@@ -184,9 +184,14 @@ angular.module('igl')
                         }
                     }
                 });
-                modalInstance.result.then(function (accountToDelete,accountList ) {
+                modalInstance.result.then(function (accountToDelete) {
                     $scope.accountToDelete = accountToDelete;
-                    $scope.accountList = accountList;
+                    var rowIndex = $scope.accountList.indexOf(accountToDelete);
+                    if(rowIndex !== -1){
+                        $scope.accountList.splice(rowIndex,1);
+                    }
+                    $scope.tmpAccountList = [].concat($scope.accountList);
+                    $scope.account =null;
                 }, function () {
                 });
             };
@@ -217,23 +222,17 @@ angular.module('igl')
 
 
 
-angular.module('igl').controller('ConfirmAccountDeleteCtrl', function ($scope, $modalInstance, accountToDelete,accountList,Account) {
+angular.module('igl').controller('ConfirmAccountDeleteCtrl', function ($scope, $modalInstance, accountToDelete,accountList,Account,Notification) {
 
     $scope.accountToDelete = accountToDelete;
     $scope.accountList = accountList;
     $scope.delete = function () {
-        //console.log('Delete for', $scope.accountList[rowIndex]);
-        Account.remove({id:accountToDelete.id},
+         Account.remove({id:accountToDelete.id},
             function() {
-                var rowIndex = $scope.accountList.indexOf(accountToDelete);
-                if(index !== -1){
-                    $scope.accountList.splice(rowIndex,1);
-                }
                 $modalInstance.close($scope.accountToDelete);
             },
             function() {
-//                            console.log('There was an error deleting the account');
-            }
+             }
         );
     };
 
