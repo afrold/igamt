@@ -390,19 +390,23 @@ import java.util.*;
     }
 
     private TableLink findTableLink(String tableId) {
-        for(TableLink tableLink : this.tableLibrary){
-            if(tableLink.getId().equals(tableId)){
-                return tableLink;
+        if(tableId!=null) {
+            for (TableLink tableLink : this.tableLibrary) {
+                if (tableLink.getId() != null && tableLink.getId().equals(tableId)) {
+                    return tableLink;
+                }
             }
         }
         return null;
     }
 
     private void removeFromUnbindedTables(String tableId) {
-        for(TableLink tableLink : this.unbindedTables){
-            if(tableLink.getId().equals(tableId)){
-                this.unbindedTables.remove(tableLink);
-                break;
+        if(tableId!=null) {
+            for (TableLink tableLink : this.unbindedTables) {
+                if (tableLink.getId()!=null && tableLink.getId().equals(tableId)) {
+                    this.unbindedTables.remove(tableLink);
+                    break;
+                }
             }
         }
     }

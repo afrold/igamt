@@ -103,11 +103,21 @@ public class SerializableSection extends SerializableElement {
     protected Element createValueSetBindingListElement(List<ValueSetBinding> valueSetBindings){
         Element valueSetBindingListElement = new Element("ValueSetBindingList");
         for(ValueSetBinding valueSetBinding : valueSetBindings){
-            Element valueSetBindingElement = new Element("ValueSetBinding");
-            valueSetBindingElement.addAttribute(new Attribute("BindingLocation",valueSetBinding.getBindingLocation()));
-            valueSetBindingElement.addAttribute(new Attribute("Location",valueSetBinding.getLocation()));
-            valueSetBindingElement.addAttribute(new Attribute("BindingStrength",valueSetBinding.getBindingStrength().value()));
-            valueSetBindingListElement.appendChild(valueSetBindingElement);
+            if(valueSetBinding!=null) {
+                Element valueSetBindingElement = new Element("ValueSetBinding");
+                if(valueSetBinding.getBindingLocation()!=null) {
+                    valueSetBindingElement.addAttribute(new Attribute("BindingLocation", valueSetBinding.getBindingLocation()));
+                }
+                if(valueSetBinding.getBindingLocation()!=null) {
+                    valueSetBindingElement
+                        .addAttribute(new Attribute("Location", valueSetBinding.getLocation()));
+                }
+                if(valueSetBinding.getBindingLocation()!=null) {
+                    valueSetBindingElement.addAttribute(new Attribute("BindingStrength",
+                        valueSetBinding.getBindingStrength().value()));
+                }
+                valueSetBindingListElement.appendChild(valueSetBindingElement);
+            }
         }
         return valueSetBindingListElement;
     }
