@@ -3273,6 +3273,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return null;
     };
 
+    $rootScope.getConstraintAsTruncatedString= function(constraint, num) {
+        if (constraint) return constraint.description.substring(0, num) + "...";
+        return null;
+    };
+
     $rootScope.getTextValue = function(value) {
         return value;
     };
@@ -3988,6 +3993,22 @@ angular.module('igl').controller('confirmSwitch', function($scope, $rootScope, $
 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('igl').controller('EditSingleElementCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode) {
+    $scope.currentNode = currentNode;
+
+    $scope.sevVale = '';
+
+    if($scope.currentNode.sev) $scope.sevVale = $scope.currentNode.sev.value;
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        $modalInstance.close($scope.sevVale);
     };
 });
 

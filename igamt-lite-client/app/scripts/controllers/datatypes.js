@@ -1209,6 +1209,28 @@ angular.module('igl')
             });
         };
 
+        $scope.openDialogForEditSev = function(node) {
+            var modalInstance = $modal.open({
+                templateUrl: 'EditSingleElement.html',
+                controller: 'EditSingleElementCtrl',
+                backdrop: true,
+                keyboard: true,
+                windowClass: 'input-text-modal-window',
+                backdropClick: false,
+                resolve: {
+                    currentNode: function() {
+                        return node;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(value) {
+                $scope.addSev(node);
+                node.sev.value = value;
+                $scope.setDirty();
+            });
+        };
+
         $scope.confirmDatatypeSingleElementDuplicated = function (node) {
             var modalInstance = $modal.open({
                 templateUrl: 'ConfirmSingleElementDuplicatedCtrl.html',
@@ -1220,7 +1242,7 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (node) {
-                $scope.addSev(node);
+                $scope.openDialogForEditSev(node);
             }, function () {
             });
         };
@@ -1657,9 +1679,9 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
 
     $scope.selectValueSet = function (v){
         if($scope.listOfBindingLocations){
-            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path, bindingLocation: "1" });
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path, bindingLocation: "1",  usage: currentNode.usage});
         }else {
-            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path });
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: currentNode.path, usage: currentNode.usage});
         }
         $scope.changed = true;
     };

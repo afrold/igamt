@@ -229,7 +229,7 @@ public class Bootstrap implements InitializingBean {
     // MergeComponents();
      // fixDatatypeRecursion();
     // fixDuplicateValueSets();
-	  createDefaultExportFonts();
+//	  createDefaultExportFonts();
 	  updateInitAndCreateBindingAndCommentsVSForDatatype();
 	  updateInitAndCreateBindingAndCommentsVSForSegment();
 	  updateInitAndCreateCommentsForMessage();
@@ -480,6 +480,7 @@ public class Bootstrap implements InitializingBean {
 						  vsb.setBindingStrength(tl.getBindingStrength());
 						  vsb.setLocation(f.getPosition() + "");
 						  vsb.setTableId(t.getId());
+						  vsb.setUsage(f.getUsage());
 						  
 						  s.addValueSetBinding(vsb);
 					  }
@@ -515,6 +516,7 @@ public class Bootstrap implements InitializingBean {
 						  vsb.setBindingLocation(tl.getBindingLocation());
 						  vsb.setBindingStrength(tl.getBindingStrength());
 						  vsb.setLocation(c.getPosition() + "");
+						  vsb.setUsage(c.getUsage());
 						  vsb.setTableId(t.getId());
 						  
 						  d.addValueSetBinding(vsb);
