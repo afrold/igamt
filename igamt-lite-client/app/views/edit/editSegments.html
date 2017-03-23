@@ -770,9 +770,11 @@
                     </div>
 
                     <div align="center">
-
                         <a ng-show="editableDT===node.id" ng-click="backDT()" class="point">
                             <span><i class="glyphicon glyphicon-remove"></i></span>
+                        </a>
+                        <a ng-show="datatypesMap[node.datatype.id].name.toUpperCase() === 'varies'.toUpperCase()" ng-click="showEditDynamicMappingDlg(node)" class="point">
+                            <span><i class="fa fa-cog" aria-hidden="true"></i></span>
                         </a>
                     </div>
                 </div>
