@@ -81,6 +81,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermis
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
