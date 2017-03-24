@@ -1015,6 +1015,20 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 for (var i = 0; i < element.children.length; i++) {
                     $rootScope.fillMaps(element.children[i]);
                 }
+
+                var tableIds = [];
+                for (var i = 0; i < element.valueSetBindings.length; i++) {
+                    tableIds.push(element.valueSetBindings[i].tableId);
+                }
+
+                TableService.get(tableIds).then(function(tables) {
+                    for (var j = 0; j < tables.length; j++) {
+                        var tempTableLink = {};
+                        tempTableLink.id = tables[j].id;
+                        tempTableLink.bindingIdentifier = tables[j].bindingIdentifier;
+                        $rootScope.usedVsLink.push(tempTableLink);
+                    }
+                });
             } else if (element.type === "segmentRef") {
                 $rootScope.usedSegsLink.push(element.ref);
             } else if (element.type === "group" && element.children) {
@@ -1025,21 +1039,42 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 for (var i = 0; i < element.fields.length; i++) {
                     $rootScope.fillMaps(element.fields[i]);
                 }
-            } else if (element.type === "field") {
-                $rootScope.usedDtLink.push(element.datatype);
-                for (var i = 0; i < element.tables.length; i++) {
-                    $rootScope.usedVsLink.push(element.tables[i]);
+
+                var tableIds = [];
+                for (var i = 0; i < element.valueSetBindings.length; i++) {
+                    tableIds.push(element.valueSetBindings[i].tableId);
                 }
 
+                TableService.get(tableIds).then(function(tables) {
+                    for (var j = 0; j < tables.length; j++) {
+                        var tempTableLink = {};
+                        tempTableLink.id = tables[j].id;
+                        tempTableLink.bindingIdentifier = tables[j].bindingIdentifier;
+                        $rootScope.usedVsLink.push(tempTableLink);
+                    }
+                });
+            } else if (element.type === "field") {
+                $rootScope.usedDtLink.push(element.datatype);
             } else if (element.type === "component") {
                 $rootScope.usedDtLink.push(element.datatype);
-                for (var i = 0; i < element.tables.length; i++) {
-                    $rootScope.usedVsLink.push(element.tables[i]);
-                }
             } else if (element.type === "datatype") {
                 for (var i = 0; i < element.components.length; i++) {
                     $rootScope.fillMaps(element.components[i]);
                 }
+
+                var tableIds = [];
+                for (var i = 0; i < element.valueSetBindings.length; i++) {
+                    tableIds.push(element.valueSetBindings[i].tableId);
+                }
+
+                TableService.get(tableIds).then(function(tables) {
+                    for (var j = 0; j < tables.length; j++) {
+                        var tempTableLink = {};
+                        tempTableLink.id = tables[j].id;
+                        tempTableLink.bindingIdentifier = tables[j].bindingIdentifier;
+                        $rootScope.usedVsLink.push(tempTableLink);
+                    }
+                });
             }
         }
     };
@@ -1182,6 +1217,17 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     f.segmentPath = element.position;
                     f.segment = parent.obj.ref.id;
                     f.locationPath = parent.locationPath + "." + element.position + "[1]";
+
+                    if($rootScope.message){
+                        f.sev = _.find($rootScope.message.singleElementValues, function(sev){ return sev.location  ==  $rootScope.refinePath(f.path); });
+                        if(f.sev) {
+                            f.sev.from = 'message';
+                        }else {
+                            f.sev = _.find($rootScope.segmentsMap[f.segment].singleElementValues, function(sev){ return sev.location  ==  f.segmentPath; });
+                            if(f.sev) f.sev.from = 'segment';
+                        }
+                    }
+
                     f.children = [];
                     var d = $rootScope.datatypesMap[f.obj.datatype.id];
                     if (d === undefined) {
@@ -1189,11 +1235,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     }
                     f.obj.datatype.ext = $rootScope.datatypesMap[f.obj.datatype.id].ext;
                     f.obj.datatype.label = $rootScope.getLabel(f.obj.datatype.name, f.obj.datatype.ext);
-                    // for (var i = 0; i < f.obj.tables.length; i++) {
-                    //     if($rootScope.tablesMap[f.obj.tables[i].id]){
-                    //         f.obj.tables[i].bindingIdentifier=$rootScope.tablesMap[f.obj.tables[i].id].bindingIdentifier;
-                    //     }
-                    // };
                     parent.children.push(f);
 
                     $rootScope.filteredDatatypesList.push($rootScope.datatypesMap[element.datatype.id]);
@@ -1202,7 +1243,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         angular.forEach(element.tables, function(table) {
                             $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
                         });
-                        // $rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                     }
                     $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
                     $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], f);
@@ -1212,11 +1252,52 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     c.obj = element;
                     c.path = parent.path + "." + element.position + "[1]";
                     c.segmentPath = parent.segmentPath + "." + element.position;
+                    c.segment = parent.segment;
                     if(c.segmentPath.split(".").length - 1 == 1){
                         c.fieldDT = parent.obj.datatype.id;
+                        if($rootScope.message){
+                            c.sev = _.find($rootScope.message.singleElementValues, function(sev){ return sev.location  ==  $rootScope.refinePath(c.path); });
+                            if(c.sev) {
+                                c.sev.from = 'message';
+                            }else{
+                                c.sev = _.find($rootScope.segmentsMap[c.segment].singleElementValues, function(sev){ return sev.location  ==  c.segmentPath; });
+                                if(c.sev) {
+                                    c.sev.from = 'segment';
+                                }else {
+                                    var fieldPath = c.segmentPath.substr(c.segmentPath.indexOf('.') + 1);
+                                    c.sev = _.find($rootScope.datatypesMap[c.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+                                    if(c.sev) {
+                                        c.sev.from = 'field';
+                                    }
+                                }
+                            }
+                        }
                     }else if(c.segmentPath.split(".").length - 1 == 2){
                         c.fieldDT = parent.fieldDT;
                         c.componentDT = parent.obj.datatype.id;
+                        if($rootScope.message){
+                            c.sev = _.find($rootScope.message.singleElementValues, function(sev){ return sev.location  ==  $rootScope.refinePath(c.path); });
+                            if(c.sev) {
+                                c.sev.from = 'message';
+                            }else{
+                                c.sev = _.find($rootScope.segmentsMap[c.segment].singleElementValues, function(sev){ return sev.location  ==  c.segmentPath; });
+                                if(c.sev) {
+                                    c.sev.from = 'segment';
+                                }else {
+                                    var fieldPath = c.segmentPath.substr(c.segmentPath.indexOf('.') + 1);
+                                    c.sev = _.find($rootScope.datatypesMap[c.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
+                                    if(c.sev) {
+                                        c.sev.from = 'field';
+                                    }else {
+                                        var componentPath = c.segmentPath.substr(c.segmentPath.split('.', 2).join('.').length + 1);
+                                        c.sev = _.find($rootScope.datatypesMap[c.componentDT].singleElementValues, function(sev){ return sev.location  ==  componentPath; });
+                                        if(c.sev) {
+                                            c.sev.from = 'component';
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     c.locationPath = parent.locationPath + "." + element.position + "[1]";
@@ -1234,7 +1315,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         angular.forEach(element.tables, function(table) {
                             $rootScope.filteredTablesList.push($rootScope.tablesMap[table.id]);
                         });
-                        //$rootScope.filteredTablesList.push($rootScope.tablesMap[element.table.id]);
                     }
                     $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
                     $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype.id], c);
@@ -1543,6 +1623,47 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
     };
 
+    $rootScope.findValueSetBindings = function(){
+        $rootScope.references = [];
+        angular.forEach($rootScope.messages.children, function(message) {
+            angular.forEach(message.valueSetBindings, function(vsb){
+                if(vsb.tableId == $rootScope.table.id){
+                    var found = angular.copy(vsb);
+                    found.type = 'message';
+                    found.id = message.id;
+
+                    $rootScope.references.push(found);
+                }
+            });
+        });
+
+        angular.forEach($rootScope.segments, function(segment) {
+            angular.forEach(segment.valueSetBindings, function(vsb){
+                if(vsb.tableId == $rootScope.table.id){
+                    var found = angular.copy(vsb);
+                    found.type = 'segment';
+                    found.id = segment.id;
+
+                    $rootScope.references.push(found);
+                }
+            });
+        });
+
+        angular.forEach($rootScope.datatypes, function(dt) {
+            angular.forEach(dt.valueSetBindings, function(vsb){
+                if(vsb.tableId == $rootScope.table.id){
+                    var found = angular.copy(vsb);
+                    found.type = 'datatype';
+                    found.id = dt.id;
+
+                    $rootScope.references.push(found);
+                }
+            });
+        });
+
+        //Need CoConstraints, Constraints, DynamicMapping
+    };
+
     $rootScope.findTableRefs = function(table, obj, path, target) {
         if (obj != null && obj != undefined) {
             if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
@@ -1634,7 +1755,22 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     $rootScope.showConfLength = function() {
         return $rootScope.igVersion > "2.5.1";
-    }
+    };
+
+    $rootScope.refinePath = function (instancePath){
+        var pathArray = [];
+
+        if(instancePath) pathArray = instancePath.split('.');
+        var positionPath = '';
+        for (var i in pathArray) {
+            var position = pathArray[i].split('[')[0];
+            positionPath = positionPath + '.' + position;
+        }
+
+        if(positionPath != '') positionPath = positionPath.substr(1);
+
+        return positionPath;
+    };
 
 
 
@@ -3032,7 +3168,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         });
     };
 
-
     $rootScope.isDuplicated = function(obj, context, list) {
         if (obj == null || obj == undefined || obj[context] == null) return false;
         return _.find(_.without(list, obj), function(item) {
@@ -3062,10 +3197,15 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             }
         });
     };
-    // $rootScope.mergeBindingForMaster = function(to, from) {
-    //
-    //
-    // }
+    $rootScope.mergeEmptyProperty = function(to, from) {
+        Object.keys(to).forEach(function(key, index) {
+            if (!to[key] && from[key])
+                to[key] = from[key];
+            // key: the name of the object key
+            // index: the ordinal position of the key within the object 
+        });
+
+    }
     $scope.init = function() {
         if (userInfoService.isAuthenticated()) {
             VersionAndUseService.findAll().then(function(result) {
@@ -3130,6 +3270,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     $rootScope.getPredicateAsString = function(constraint) {
         if (constraint) return constraint.description;
+        return null;
+    };
+
+    $rootScope.getConstraintAsTruncatedString= function(constraint, num) {
+        if (constraint) return constraint.description.substring(0, num) + "...";
         return null;
     };
 
@@ -3520,13 +3665,11 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
         var data = $rootScope.currentData;
         if (data.type && data.type === "message") {
             MessageService.reset();
-                   $scope.continue();
+
         } else if (data.type && data.type === "segment") {
             SegmentService.reset();
-                   $scope.continue();
         } else if (data.type && data.type === "datatype") {
             DatatypeService.reset();
-                   $scope.continue();
         } else if (data.type === "decision" || data.type === "FAQ" || data.type === "userGuide" || data.type === 'UserNote' || data.type === 'releaseNote') {
             if ($rootScope.newOne) {
 
@@ -3538,12 +3681,12 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
             }
             $rootScope.documentation = null;
 
-     
+
         }
+        $scope.continue();
         $rootScope.addedSegments = [];
         $rootScope.addedDatatypes = [];
         $rootScope.addedTables = [];
-               $scope.continue();
 
     };
 
@@ -3849,6 +3992,76 @@ angular.module('igl').controller('confirmSwitch', function($scope, $rootScope, $
     };
 
     $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('igl').controller('EditSingleElementCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode) {
+    $scope.currentNode = currentNode;
+
+    $scope.sevVale = '';
+
+    if($scope.currentNode.sev) $scope.sevVale = $scope.currentNode.sev.value;
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        $modalInstance.close($scope.sevVale);
+    };
+});
+
+
+angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode, currentComment, disabled, type) {
+    $scope.currentNode = currentNode;
+    $scope.currentComment = currentComment;
+    var currentPath = null;
+    if(type == 'message') {
+        currentPath = $rootScope.refinePath($scope.currentNode.path);
+    }else {
+        currentPath = $scope.currentNode.path;
+    }
+
+    $scope.disabled = disabled;
+    var targetObj = type === 'datatype' ?  $rootScope.datatype: type === 'segment' ? $rootScope.segment : $rootScope.message;
+    $scope.title = '';
+
+    if(type == 'message') {
+        $scope.title = 'Comment of ' + targetObj.name + '.' + $rootScope.refinePath($scope.currentNode.locationPath);
+    }else {
+        $scope.title = 'Comment of ' + targetObj.name + '.' + $scope.currentNode.path;
+    }
+    $scope.descriptionText = '';
+
+    if($scope.currentComment) $scope.descriptionText = $scope.currentComment.description;
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        if($scope.currentComment){
+            $scope.currentComment.description = $scope.descriptionText;
+            $scope.currentComment.lastUpdatedDate = new Date();
+        }else {
+            var newComment = {};
+            newComment.description = $scope.descriptionText;
+            newComment.location = currentPath;
+            newComment.lastUpdatedDate = new Date();
+            targetObj.comments.push(newComment);
+        }
+
+        $modalInstance.close($scope.currentNode);
+    };
+});
+
+angular.module('igl').controller('ConfirmSingleElementDuplicatedCtrl', function($scope, $modalInstance, $rootScope, selectedNode) {
+    $scope.yes = function() {
+        $modalInstance.close(selectedNode);
+    };
+
+    $scope.no = function() {
         $modalInstance.dismiss('cancel');
     };
 });

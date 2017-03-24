@@ -37,6 +37,8 @@ public interface DatatypeService {
 
   public void save(List<Datatype> datatypes);
 
+  public void delete(List<Datatype> datatypes);
+
   public Set<Datatype> collectDatatypes(Datatype datatype);
 
   public List<Datatype> findByScope(String scope);

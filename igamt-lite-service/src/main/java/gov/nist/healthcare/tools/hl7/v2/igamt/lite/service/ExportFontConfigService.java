@@ -1,7 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -18,9 +21,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface ExportFontConfigService {
-    public ExportFontConfig findOneByAccountId(Long accountId);
-    public ExportFontConfig findOne(Long id);
-    public ExportFontConfig getDefaultExportFontConfig();
-    public ExportFontConfig save(ExportFontConfig exportFontConfig);
-    public void delete(ExportFontConfig exportFontConfig);
+  public List<ExportFontConfig> findOneByAccountId(Long accountId);
+
+  public ExportFontConfig findOne(Long id);
+
+  public ExportFontConfig getDefaultExportFontConfig() throws Exception;
+
+  public ExportFontConfig save(ExportFontConfig exportFontConfig);
+
+  public void delete(ExportFontConfig exportFontConfig);
 }

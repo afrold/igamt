@@ -1356,9 +1356,9 @@ angular.module('igl')
                             $rootScope.datatype["type"] = "datatype";
                             $rootScope.tableWidth = null;
                             $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                            $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 890);
-                            $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 890);
-                            $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                            $rootScope.csWidth = $rootScope.getDynamicWidth(1, 5, 890);
+                            $rootScope.predWidth = $rootScope.getDynamicWidth(1, 5, 890);
+                            $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 5, 890);
                             $scope.loadingSelection = false;
                             try {
                                 if ($scope.datatypesParams)
@@ -1643,13 +1643,7 @@ angular.module('igl')
                     }
                 }
                 $rootScope.table.smallCodes = $rootScope.table.codes.slice(0, 1000);
-                $rootScope.references = [];
-                angular.forEach($rootScope.segments, function(segment) {
-                    $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment), segment);
-                });
-                angular.forEach($rootScope.datatypes, function(dt) {
-                    $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
-                });
+                $rootScope.findValueSetBindings();
                 $scope.loadingSelection = false;
                 $rootScope.$emit("event:initEditArea");
                 blockUI.stop();

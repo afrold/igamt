@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -155,7 +156,6 @@ public class Bootstrap implements InitializingBean {
   @Override
   public void afterPropertiesSet() throws Exception {
 
-    System.out.println("bootstrap called");
     // Carefully use this. It will delete all of existing IGDocuments and
     // make new ones converted from the "igdocumentPreLibHL7",
     // "igdocumentPreLibPRELOADED" , and ""igdocumentPreLibUSER"
@@ -213,15 +213,12 @@ public class Bootstrap implements InitializingBean {
     // createDefaultExportFonts();
 
     // createDefaultConfiguration("Datatype Library");
-    // createDefaultExportFonts();
+
 
     // changeStatusofPHINVADSTables();
 
     // modifyCodeUsage();
     // fixMissingData();
-    // updateInitAndCreateBindingVSForDatatype();
-    // updateInitAndCreateBindingVSForSegment();
-
 
     // new Master Datatype Generation
 
@@ -230,9 +227,13 @@ public class Bootstrap implements InitializingBean {
 
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
-    // fixDatatypeRecursion();
+     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
-  }
+//	  createDefaultExportFonts();
+	  updateInitAndCreateBindingAndCommentsVSForDatatype();
+	  updateInitAndCreateBindingAndCommentsVSForSegment();
+	  updateInitAndCreateCommentsForMessage();
+   }
 
 
   private void fixDatatypeRecursion(IGDocument document) throws IGDocumentException {
@@ -367,15 +368,24 @@ public class Bootstrap implements InitializingBean {
   private boolean isTableDuplicated(TableLink tableLink, List<TableLink> tableLinks) {
     if (tableLink != null && tableLink.getId() != null && tableLinks != null
         && !tableLinks.isEmpty()) {
-      for (int i = 0; i < tableLinks.size(); i++) {
-        TableLink link = tableLinks.get(i);
-        if (link != null && link.getBindingIdentifier().equals(tableLink.getBindingIdentifier())
-            && !tableLink.getId().equals(link.getId())) {
-          return true;
+      Table table = tableService.findOneShortById(tableLink.getId());
+      if (table != null) {
+        for (int i = 0; i < tableLinks.size(); i++) {
+          TableLink link = tableLinks.get(i);
+          if (link != null && link.getBindingIdentifier() != null
+              && link.getBindingIdentifier().equals(tableLink.getBindingIdentifier())
+              && !tableLink.getId().equals(link.getId()) && sameScope(table, link)) {
+            return true;
+          }
         }
       }
     }
     return false;
+  }
+
+  private boolean sameScope(Table table, TableLink link) {
+    Table table2 = tableService.findOneShortById(link.getId());
+    return table2 != null && table.getScope().equals(table2.getScope());
   }
 
   private boolean isTableUsed(List<Segment> segments, List<Datatype> datatypes,
@@ -420,59 +430,114 @@ public class Bootstrap implements InitializingBean {
     }
     return false;
   }
-
-  private void updateInitAndCreateBindingVSForSegment() {
-    List<Segment> allSegs = segmentService.findAll();
-    for (Segment s : allSegs) {
-      s.setValueSetBindings(new ArrayList<ValueSetBinding>());
-      for (Field f : s.getFields()) {
-        if (f.getTables() != null) {
-          for (TableLink tl : f.getTables()) {
-            Table t = tableService.findById(tl.getId());
-            if (t != null) {
-              ValueSetBinding vsb = new ValueSetBinding();
-              vsb.setBindingLocation(tl.getBindingLocation());
-              vsb.setBindingStrength(tl.getBindingStrength());
-              vsb.setLocation(f.getPosition() + "");
-              vsb.setTableId(t.getId());
-
-              s.addValueSetBinding(vsb);
-            }
-          }
-          // f.setTables(null);
-        }
-      }
-
-      segmentService.save(s);
-    }
+  
+  private void updateInitAndCreateCommentsForMessage(){
+	  List<Message> allMsgs = messageService.findAll();
+	  for (Message m : allMsgs) {
+		  m.setComments(new ArrayList<Comment>());
+		  for(SegmentRefOrGroup child : m.getChildren()){
+			  updateCommentForSegRefOrGroup(m, child, null);
+		  }
+		  
+		  messageService.save(m);
+	  }
   }
 
-  private void updateInitAndCreateBindingVSForDatatype() {
-    List<Datatype> allDts = datatypeService.findAll();
-    for (Datatype d : allDts) {
-      d.setValueSetBindings(new ArrayList<ValueSetBinding>());
-      for (Component c : d.getComponents()) {
-        if (c.getTables() != null) {
-          for (TableLink tl : c.getTables()) {
-            Table t = tableService.findById(tl.getId());
-            if (t != null) {
-              ValueSetBinding vsb = new ValueSetBinding();
-              vsb.setBindingLocation(tl.getBindingLocation());
-              vsb.setBindingStrength(tl.getBindingStrength());
-              vsb.setLocation(c.getPosition() + "");
-              vsb.setTableId(t.getId());
-
-              d.addValueSetBinding(vsb);
-            }
-          }
-          // c.setTables(null);
-        }
-      }
-
-      datatypeService.save(d);
-    }
+  private void updateCommentForSegRefOrGroup(Message m, SegmentRefOrGroup srog, String parentPath) {
+	String currentPath = null;
+	if(parentPath == null) currentPath = srog.getPosition() + "";
+	else currentPath = parentPath + "." + srog.getPosition();
+	
+	if(srog.getComment() != null && !srog.getComment().equals("")){
+		  Comment comment = new Comment();
+		  comment.setDescription(srog.getComment());
+		  comment.setLastUpdatedDate(new Date());
+		  comment.setLocation(currentPath);
+		  
+		  m.addComment(comment);
+		  System.out.println("FOUND!!!!!!!!" + comment.getDescription());
+//		  srog.setComment(null);
+	}
+	if(srog instanceof Group){
+		for(SegmentRefOrGroup child : ((Group)srog).getChildren()){
+			updateCommentForSegRefOrGroup(m, child, currentPath);
+		}	
+	}
   }
 
+  private void updateInitAndCreateBindingAndCommentsVSForSegment() {
+	  List<Segment> allSegs = segmentService.findAll();
+	  for (Segment s : allSegs) {
+		  s.setValueSetBindings(new ArrayList<ValueSetBinding>());
+		  s.setComments(new ArrayList<Comment>());
+		  for(Field f:s.getFields()){
+			  if(f.getTables() != null){
+				  for(TableLink tl:f.getTables()){
+					  Table t = tableService.findById(tl.getId());
+					  if(t != null){
+						  ValueSetBinding vsb = new ValueSetBinding();
+						  vsb.setBindingLocation(tl.getBindingLocation());
+						  vsb.setBindingStrength(tl.getBindingStrength());
+						  vsb.setLocation(f.getPosition() + "");
+						  vsb.setTableId(t.getId());
+						  vsb.setUsage(f.getUsage());
+						  
+						  s.addValueSetBinding(vsb);
+					  }
+				  }
+//				  f.setTables(null);
+			  }
+			  if(f.getComment() != null && !f.getComment().equals("")){
+				  Comment comment = new Comment();
+				  comment.setDescription(f.getComment());
+				  comment.setLastUpdatedDate(new Date());
+				  comment.setLocation(f.getPosition() + "");
+				  
+				  s.addComment(comment);
+//				  s.setComment(null);
+			  }
+		  }
+		  
+		  segmentService.save(s);
+	  }
+  }
+  
+  private void updateInitAndCreateBindingAndCommentsVSForDatatype() {
+	  List<Datatype> allDts = datatypeService.findAll();
+	  for (Datatype d : allDts) {
+		  d.setValueSetBindings(new ArrayList<ValueSetBinding>());
+		  d.setComments(new ArrayList<Comment>());
+		  for(Component c:d.getComponents()){
+			  if(c.getTables() != null){
+				  for(TableLink tl:c.getTables()){
+					  Table t = tableService.findById(tl.getId());
+					  if(t != null){
+						  ValueSetBinding vsb = new ValueSetBinding();
+						  vsb.setBindingLocation(tl.getBindingLocation());
+						  vsb.setBindingStrength(tl.getBindingStrength());
+						  vsb.setLocation(c.getPosition() + "");
+						  vsb.setUsage(c.getUsage());
+						  vsb.setTableId(t.getId());
+						  
+						  d.addValueSetBinding(vsb);
+					  }
+				  }
+//			  	  c.setTables(null);
+			  }  
+			  if(c.getComment() != null && !c.getComment().equals("")){
+				  Comment comment = new Comment();
+				  comment.setDescription(c.getComment());
+				  comment.setLastUpdatedDate(new Date());
+				  comment.setLocation(c.getPosition() + "");
+				  
+				  d.addComment(comment);
+//				  c.setComment(null);
+			  }
+		  }
+		  datatypeService.save(d);
+	  }
+  }
+  
   private void fixMissingData() {
     List<IGDocument> igDocuments = documentService.findAll();
     for (IGDocument document : igDocuments) {
@@ -647,7 +712,7 @@ public class Bootstrap implements InitializingBean {
 
   }
 
-  private void createDefaultExportFonts() {
+  private void createDefaultExportFonts() throws Exception {
     ExportFont exportFont =
         new ExportFont("'Arial Narrow',sans-serif", "'Arial Narrow',sans-serif;");
     exportFontService.save(exportFont);

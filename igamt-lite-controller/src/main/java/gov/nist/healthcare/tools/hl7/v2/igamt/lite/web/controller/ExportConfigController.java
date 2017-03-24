@@ -11,10 +11,8 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +26,11 @@ import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
-
-import java.util.List;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
@@ -122,68 +122,77 @@ public class ExportConfigController {
   }
 
 
-  @RequestMapping(value = "/findFonts", method = RequestMethod.POST,
-      produces = "application/json")
+  @RequestMapping(value = "/findFonts", method = RequestMethod.POST, produces = "application/json")
   public List<ExportFont> findFonts() {
     List<ExportFont> exportFonts = exportFontService.findAll();
     return exportFonts;
   }
 
-  @ RequestMapping(value = "/getUserExportFontConfig", method = RequestMethod.POST,
-  produces = "application/json")
-  public ExportFontConfig getUserExportFontConfig() {
-    ExportFontConfig exportFontConfig = null;
-    User u = userService.getCurrentUser();
-    try {
-      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-      if (null != account) {
-      exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
-      }
-    } catch (Exception e) {
-      logger.warn("Unable to find the current config: " + e.getMessage());
-    }
-    if(exportFontConfig==null){
-      exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
-    } else {
-      if(exportFontConfig.getExportFont()==null||exportFontConfig.getFontSize()==null){
-        ExportFontConfig defaultExportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
-        if(exportFontConfig.getExportFont()==null){
-          exportFontConfig.setExportFont(defaultExportFontConfig.getExportFont());
-        }
-        if(exportFontConfig.getFontSize()==null){
-          exportFontConfig.setFontSize(defaultExportFontConfig.getFontSize());
-        }
-      }
-    }
-    return exportFontConfig;
-  }
-
-  @RequestMapping(value = "/saveExportFontConfig", method = RequestMethod.POST, produces = "application/json")
-  public ExportFontConfig saveExportFontConfig(@RequestBody ExportFontConfig exportFontConfig){
-    User u = userService.getCurrentUser();
-    try {
-      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-      if (null != account) {
-        exportFontConfig.setAccountId(account.getId());
-        exportFontConfigService.save(exportFontConfig);
-      }
-    } catch (Exception e) {
-      logger.warn("Unable to find the current config: " + e.getMessage());
-    }
-    return exportFontConfig;
-  }
-
-  @ RequestMapping(value = "/restoreDefaultExportFontConfig", method = RequestMethod.POST,
+  @RequestMapping(value = "/getUserExportFontConfig", method = RequestMethod.POST,
       produces = "application/json")
-  public ExportFontConfig restoreDefaultExportFontConfig() {
+  public ExportFontConfig getUserExportFontConfig() throws Exception {
     ExportFontConfig exportFontConfig = null;
     User u = userService.getCurrentUser();
     try {
       Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
       if (null != account) {
-        exportFontConfig = exportFontConfigService.findOneByAccountId(account.getId());
-        if(null != exportFontConfig) {
-          exportFontConfigService.delete(exportFontConfig);
+        List<ExportFontConfig> existing =
+            exportFontConfigService.findOneByAccountId(account.getId());
+        if (!existing.isEmpty()) {
+          exportFontConfig = existing.get(0);
+        } else {
+          exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+        }
+      }
+    } catch (Exception e) {
+      logger.warn("Unable to find the current config: " + e.getMessage());
+    }
+
+    return exportFontConfig;
+  }
+
+  @RequestMapping(value = "/saveExportFontConfig", method = RequestMethod.POST,
+      produces = "application/json")
+  public ExportFontConfig saveExportFontConfig(@RequestBody ExportFontConfig exportFontConfig) {
+    User u = userService.getCurrentUser();
+    try {
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (null != account) {
+        List<ExportFontConfig> existing =
+            exportFontConfigService.findOneByAccountId(account.getId());
+        if (!existing.isEmpty()) {
+          for (ExportFontConfig exp : existing) {
+            exportFontConfigService.delete(exp);
+          }
+        }
+        exportFontConfig.setAccountId(account.getId());
+        exportFontConfig.setDefaultConfig(false);
+        exportFontConfig.setId(null);
+        exportFontConfigService.save(exportFontConfig);
+
+
+
+      }
+    } catch (Exception e) {
+      logger.warn("Unable to find the current config: " + e.getMessage());
+    }
+    return exportFontConfig;
+  }
+
+  @RequestMapping(value = "/restoreDefaultExportFontConfig", method = RequestMethod.POST,
+      produces = "application/json")
+  public ExportFontConfig restoreDefaultExportFontConfig() throws Exception {
+    ExportFontConfig exportFontConfig = null;
+    User u = userService.getCurrentUser();
+    try {
+      Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+      if (null != account) {
+        List<ExportFontConfig> existing =
+            exportFontConfigService.findOneByAccountId(account.getId());
+        if (!existing.isEmpty()) {
+          for (ExportFontConfig exp : existing) {
+            exportFontConfigService.delete(exp);
+          }
         }
       }
     } catch (Exception e) {

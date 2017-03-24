@@ -9,6 +9,7 @@ public class ValueSetBinding {
 	protected String tableId;
 	protected String bindingLocation;
 	protected ValueSetBindingStrength bindingStrength;
+	protected Usage usage;
 
 	public ValueSetBinding() {
 		super();
@@ -46,6 +47,14 @@ public class ValueSetBinding {
 		this.bindingStrength = bindingStrength;
 	}
 	
+	public Usage getUsage() {
+		return usage;
+	}
+
+	public void setUsage(Usage usage) {
+		this.usage = usage;
+	}
+
 	public void setBindingStrength(String bindingStrength) {
 		if(bindingStrength == null){
 			this.bindingStrength = ValueSetBindingStrength.R;

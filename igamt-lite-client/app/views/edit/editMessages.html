@@ -43,7 +43,7 @@
                     <span ng-if="message.publicationVersion">,Version: {{message.publicationVersion}}</span>
 
                 </div>
-                    <div class="col-md-12" ng-controller="cmpMessageCtrl as cmpMsg">
+                    <div class="" ng-controller="cmpMessageCtrl as cmpMsg">
                         <tabset active="tabStatus.active">
                             <tab ng-click="setDeltaToF()">
                                 <tab-heading>
@@ -193,17 +193,18 @@
                                                 <thead>
                                                     <tr class="tbl-header" style="">
                                                         <th class="col-md-2 col-fixed-250">Name</th>
-                                                        <th class="col-md-1 col-fixed-80">Usage
+                                                        <th class="col-md-1 col-fixed-80" style="text-align:center">Usage
                                                             <button type="button" ng-show="(message.scope === 'USER') && !viewSettings.tableReadonly && (message.children.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(message)">O to X</button>
                                                         </th>
-                                                        <th class="col-md-1 col-fixed-100">Cardinality</th>
-                                                        <th class="col-md-1 col-fixed-100">Length</th>
-                                                        <th class="col-md-1 col-fixed-80" ng-show="showConfLength()">ConfLength</th>
-                                                        <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Data Type</th>
-                                                        <th class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set</th>
-                                                        <th class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">Predicate</th>
-                                                        <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">Definition Text</th>
-                                                        <th class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">Comment</th>
+                                                        <th class="col-md-1 col-fixed-100" style="text-align:center">Cardinality</th>
+                                                        <th class="col-md-1 col-fixed-100" style="text-align:center">Length</th>
+                                                        <th class="col-md-1 col-fixed-80" ng-show="showConfLength()" style="text-align:center">ConfLength</th>
+                                                        <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:center">Data Type</th>
+                                                        <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Value Set</th>
+                                                        <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">Single Element</th>
+                                                        <th class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('predicate')" style="text-align:center">Predicate</th>
+                                                        <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">Definition Text</th>
+                                                        <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">Comment</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
@@ -405,35 +406,9 @@
     </div>
     </div>
 </script>
-<script type="text/ng-template" id="MessageEditTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
-        <td class="col-md-2 col-fixed-250">
-            <span>{{node.obj.event}}^{{node.obj.structID}}:{{node.obj.description}}</span>
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol">
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol">
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol">
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="showConfLength()">
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
-        </td>
-        <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
-        </td>
-        <td class="col-md-1 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
-        </td>
-        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-        </td>
-    </tr>
-</script>
 <script type="text/ng-template" id="MessageSegmentRefEditTree.html">
-
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
-        <td class="col-md-2 col-fixed-250">
+        <td>
             <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
             <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <a ng-show="editableSeg!==node.obj.id" ng-click="editSgmt(node,message)" class="point">
@@ -444,19 +419,14 @@
             </a>
             <ng-form class="form-inline">
                 <span id="segEditTree" class="label label-segment label-icon">S</span>
-
-                <a ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref)" class="point">
-                {{getSegmentRefNodeName(node.obj)}}
-            </a>
-
+                <a ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref)" class="point">{{getSegmentRefNodeName(node.obj)}}</a>
                 <select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%" class="form-control input-sm">
-                    <option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position"> {{child.position}}
+                    <option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position"> {{child.position}}</option>
                 </select>
                 <select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%" class="form-control input-sm">
-                    <option ng-repeat="segmentRef in tmpResults" value="{{segmentRef}}"  ng-selected="node.obj.ref.id===segmentRef.id"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}
+                    <option ng-repeat="segmentRef in tmpResults" value="{{segmentRef}}"  ng-selected="node.obj.ref.id===segmentRef.id"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}</option>
                 </select>
                 <div align="center">
-
                     <a ng-show="editableSeg===node.obj.id" ng-click="backSeg()">
                         <span><i align="center" class="glyphicon glyphicon-remove"></i></span>
                     </a>
@@ -470,17 +440,14 @@
                             ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
                 </span>
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
-                    <p ng-show="findPredicateByPath(node.path)">
-                        C({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})
-                    </p>
-                    <a ng-click="deletePredicateByPath(node.path, message)" class="point">
-                        <span title="Delete Predicate and Change Usage"><i class="fa fa-times fa-fw"></i></span>
-                    </a>
+                    <span class="badge label-white">
+                        <span ng-show="findPredicateByPath(node.path)">C({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})</span>
+                        <span title="Delete Predicate and Change Usage" ng-click="deletePredicateByPath(node.path, message)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                    </span>
                 </div>
             </div>
         </td>
-
-        <td class="col-md-1 col-fixed-100" ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
+        <td ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
             <div ng-controller="MessageRowCtrl">
                 <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:45%" class="form-control"
@@ -500,15 +467,12 @@
                                             </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100 emptyCol">
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="showConfLength()">
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
-        </td>
-        <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
-        </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-class="{'has-error': node.obj.usage === 'C' && countPredicate(node.path) != 1}" ng-show="viewSettings.isVisibleColumn('predicate')">
+        <td class="emptyCol"></td>
+        <td class="emptyCol" ng-show="showConfLength()"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('singleElm')"></td>
+        <td ng-class="{'has-error': node.obj.usage === 'C' && countPredicate(node.path) != 1, 'emptyCol':node.obj.usage !== 'C'}" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="countPredicate(node.path)===0 && node.obj.usage==='C'">
                     <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
@@ -516,32 +480,76 @@
                         <p class="warning" >Need predicate</p>
                     </a>
                 </div>
-                <div ng-show="countPredicate(node.path) !==0 && node.obj.usage==='C'">
-                    <a ng-click="openAddGlobalPredicateDialog(node, message)" tooltip-html="getPredicateAsString(findPredicateByPath(node.path))" tooltip-append-to-body="true" class="point" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(findPredicateByPath(node.path))"
-                        tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
+                <div ng-show="countPredicate(node.path) !== 0 && node.obj.usage === 'C'">
+                    <span title="{{getPredicateAsString(findPredicateByPath(node.path))}}" class="badge label-white">
+                            <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                            <span ng-click="openAddGlobalPredicateDialog(node, message)">{{getConstraintAsTruncatedString(findPredicateByPath(node.path), 15)}}</span>
+                            <span ng-click="openAddGlobalPredicateDialog(node, message)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                            <span ng-click="deletePredicateByPath(node.path, message)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                    </span>
+                    <div ng-show="countPredicate(node.path) > 1">
+                        <p class="warning">Multiple predicates</p>
+                    </div>
                 </div>
+
+
             </div>
-
         </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
-
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('defText')"></td>
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge label-white">
+                        <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                        <span title="{{comment.description}}" ng-click="editCommentDlg(node, comment, false, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="Delete This Comments" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw"></i></span>
+                    </span>
+            </div>
+            <a ng-click="editCommentDlg(node, null, false, 'message')" class="point">
+                <span><i class="fa fa-plus fa-fw"></i></span>
+            </a>
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', false)" class="point" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-pencil fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
-                <i class="fa fa-plus fa-fw" ng-show="node.obj.comment === '' || node.obj.comment === null"></i>
-            </a>
-            <a ng-click="clearComments(node.obj,'comment')" ng-show="node.obj.comment !== '' && node.obj.comment !== null">
-                <i class="fa fa-times fa-fw"></i>
-            </a>
-
-
+    </tr>
+</script>
+<script type="text/ng-template" id="MessageSegmentRefReadTree.html">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
+        <td>
+            <span class="label label-segment label-icon">S</span>
+            <span>
+                {{getSegmentLabel(segmentsMap[node.obj.ref.id])}}
+            </span>
+        </td>
+        <td>
+            <span ng-bind="node.obj.usage"></span>
+            <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+                    ({{::p.trueUsage}}/{{::p.falseUsage}})
+            </span>
+        </td>
+        <td>[{{::node.obj.min}}, {{::node.obj.max}}]</td>
+        <td class="emptyCol"></td>
+        <td class="emptyCol" ng-show="showConfLength()"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('singleElm')"></td>
+        <td ng-show="viewSettings.isVisibleColumn('predicate')">
+            <div>
+                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
+                   tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                </p>
+            </div>
+        </td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('defText')"></td>
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge" ng-class="{'label-MAIN' : comment.from == 'message', 'label-CHILD' : comment.from == 'segment', 'label-SUBCHILD' : comment.from == 'field', 'label-SUBSUBCHILD' : comment.from == 'component'}">
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
+                    </span>
+            </div>
         </td>
     </tr>
 </script>
 <script type="text/ng-template" id="MessageGroupEditTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) && (node.obj.usage==='R' ||node.obj.usage==='C' ||node.obj.usage==='RE' ) && $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
-        <td class="col-md-2 col-fixed-250" context-menu="segOption">
+        <td context-menu="segOption">
             <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
             <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
             <a ng-show="editableGrp!==node.obj.id" ng-click="editGrp(node,message)" class="point">
@@ -554,7 +562,7 @@
                 <span class="label label-success label-icon">G</span>
                 <span ng-show="editableGrp===node.obj.id">
                     <select ng-show="editableGrp===node.obj.id" ng-model="position" ng-change="selectPos()"  style="width:15%" class="form-control input-sm">
-                        <option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position"> {{child.position}}
+                        <option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position"> {{child.position}}</option>
                     </select>
                     <input style="width:55%" class="form-control"  ng-model="grpName" type="text"/>
                  </span>
@@ -572,20 +580,18 @@
         <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
             <div>
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
-                    <select class="form-control input-sm" name="usage" ng-change="setCardinalities(node.obj);setDirty(); openPredicateDialog(node);" required
+                    <select class="form-control input-sm" name="usage" ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node);" required
                             ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
                 </span>
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
-                    <p ng-show="findPredicateByPath(node.path)">
-                        C({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})
-                    </p>
-                    <a ng-click="deletePredicateByPath(node.path, message)" class="point">
-                        <span title="Delete Predicate and Change Usage"><i class="fa fa-times fa-fw"></i></span>
-                    </a>
+                    <span class="badge label-white">
+                        <span ng-show="findPredicateByPath(node.path)">C({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})</span>
+                        <span title="Delete Predicate and Change Usage" ng-click="deletePredicateByPath(node.path, message)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                    </span>
                 </div>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100" ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
+        <td ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
             <div ng-controller="MessageRowCtrl" class="form-inline">
                 <span ng-form name="{{formName}}">
                     <input style="width:45%" class="form-control"
@@ -605,287 +611,58 @@
                 </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100 emptyCol">
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="showConfLength()">
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
-        </td>
-        <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
-        </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
+        <td class="emptyCol"></td>
+        <td class="emptyCol" ng-show="showConfLength()"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('singleElm')"></td>
+        <td ng-class="{'has-error': node.obj.usage === 'C' && countPredicate(node.path) != 1, 'emptyCol':node.obj.usage !== 'C'}" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <div ng-show="countPredicate(node.path)===0 && node.obj.usage==='C'">
                     <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                        <p class="warning" >Need predicate</p>
+                        <p class="warning">Need predicate</p>
                     </a>
                 </div>
-                <div ng-show="countPredicate(node.path) !==0 && node.obj.usage==='C'">
-                    <a ng-click="openAddGlobalPredicateDialog(node, message)" tooltip-html="getPredicateAsString(findPredicateByPath(node.path))" tooltip-append-to-body="true" class="point" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(findPredicateByPath(node.path))"
-                        tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
-                </div>
-            </div>
-        </td>
-
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
-        </td>
-
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', false)" class="point" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-pencil fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
-                <i class="fa fa-plus fa-fw" ng-show="node.obj.comment === '' || node.obj.comment === null"></i>
-            </a>
-            <a ng-click="clearComments(node.obj,'comment')" ng-show="node.obj.comment !== '' && node.obj.comment !== null">
-                <i class="fa fa-times fa-fw"></i>
-            </a>
-        </td>
-    </tr>
-</script>
-<script type="text/ng-template" id="MessageFieldViewTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
-
-        <td class="col-md-2 col-fixed-250">
-            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
-            <span class="label label-field label-icon" ng-show="node.obj.type==='field'">F</span>
-            <span class="label label-sub-component label-icon" ng-show="node.obj.type==='subcomponent'">S</span>
-            <span class="label label-component label-icon" ng-show="node.obj.type==='component'">C</span>
-
-            <span tooltip-html="getFieldNodeName(node.obj)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node.obj)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
-        </td>
-        <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
-            <span>{{node.obj.usage}}</span>
-            <span ng-show="findPredicateByPath(node.path)">({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})</span>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
-            <span>[{{::node.obj.min}},{{::node.obj.max}}]</span>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
-            <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
-            <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}">
-            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}} <span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span></span>
-        </td>
-        <!--<td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">-->
-            <!--(1){{refinePath(node.path)}}-->
-            <!--(2){{node.segmentPath}}-->
-            <!--(3){{node.fieldDT}}({{getDatatypeLabel(datatypesMap[node.fieldDT])}})-->
-            <!--(4){{node.componentDT}}({{getDatatypeLabel(datatypesMap[node.componentDT])}})-->
-        <!--</td>-->
-        <td class="col-md-1 col-fixed-130" ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
-            <div ng-show="isAvailableForValueSet(node)">
-                <div ng-repeat="binding in findingBindings(node)">
-                    <span class="badge" ng-class="{'label-MAIN' : binding.bindingFrom == 'message', 'label-CHILD' : binding.bindingFrom == 'segment', 'label-SUBCHILD' : binding.bindingFrom == 'field', 'label-SUBSUBCHILD' : binding.bindingFrom == 'component'}">
-                        <span title="GoTo ValueSet" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw"></i></span>
+                <div ng-show="countPredicate(node.path) !== 0 && node.obj.usage === 'C'">
+                    <span title="{{getPredicateAsString(findPredicateByPath(node.path))}}" class="badge label-white">
+                            <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                            <span ng-click="openAddGlobalPredicateDialog(node, message)">{{getConstraintAsTruncatedString(findPredicateByPath(node.path), 15)}}</span>
+                            <span ng-click="openAddGlobalPredicateDialog(node, message)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                            <span ng-click="deletePredicateByPath(node.path, message)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                     </span>
+                    <div ng-show="countPredicate(node.path) > 1">
+                        <p class="warning">Multiple predicates</p>
+                    </div>
                 </div>
-                <a ng-click="editModalBindingForMsg(node)" class="point">
-                    <span><i class="fa fa-plus fa-fw"></i></span>
-                </a>
-            </div>
-        </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
-            <div ng-show="viewSettings.tableReadonly">
-                <p tooltip-html="getPredicateAsString(findPredicateByPath(node.path))" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(findPredicateByPath(node.path))" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></p>
-            </div>
-            <p ng-repeat="constraint in filteredSubConstraints=( parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
-                ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></p>
-            <div ng-show="!viewSettings.tableReadonly">
-                <div ng-show="findPredicateByPath(node.path)">
-                    <a ng-click="openAddGlobalPredicateDialog(node, message)" tooltip-html="getPredicateAsString(findPredicateByPath(node.path))" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(findPredicateByPath(node.path))"
-                        tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
-                </div>
-                <div ng-hide="findPredicateByPath(node.path) || filteredSubConstraints.length || viewSettings.tableReadonly || node.obj.usage !=='C'">
-                    <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
-                        <span><i class="fa fa-plus fa-fw"></i></span>
-                        <p class="warning" >Need predicate</p>
-                    </a>
-                </div>
-            </div>
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
-            <a ng-show="node.obj.text !=='' && node.obj.text !==null && node.obj.text !==undefined " ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
-                <i class="fa fa-eye fa-fw"></i>
-            </a>
-        </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
-                tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
-            </a>
-        </td>
-    </tr>
-</script>
-<script type="text/ng-template" id="MessageComponentViewTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
 
-        <td class="col-md-2 col-fixed-250">
-            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
-            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
-            <span>
-                <span class="label label-field label-icon" ng-show="node.obj.type==='field'">F</span>
-            <span class="label label-component label-icon" ng-show="node.obj.type==='component' && node.segmentPath.split('.').length - 1 == 1">C</span>
-            <span class="label label-sub-component label-icon" ng-show="node.obj.type==='component' && node.segmentPath.split('.').length - 1 == 2">S</span>
-            <span ng-bind="getComponentNodeName(node.obj)">
-                </span>
-            </span>
-        </td>
-        <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
-            <span>{{node.obj.usage}}</span>
-            <span ng-show="findPredicateByPath(node.path)">({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})</span>
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol">
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
-            <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">
-                [{{::node.obj.minLength}},{{::node.obj.maxLength}}]
-            </div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
-            <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0" ng-bind="::node.obj.confLength">
-            </div>
-        </td>
 
-        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}">
-            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}<span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span>            </span>
+            </div>
         </td>
-        <td class="col-md-1 col-fixed-130" ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
-            <div ng-show="isAvailableForValueSet(node)">
-                <div ng-repeat="binding in findingBindings(node)">
-                    <span class="badge" ng-class="{'label-MAIN' : binding.bindingFrom == 'message', 'label-CHILD' : binding.bindingFrom == 'segment', 'label-SUBCHILD' : binding.bindingFrom == 'field', 'label-SUBSUBCHILD' : binding.bindingFrom == 'component'}">
-                        <span title="GoTo ValueSet" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw"></i></span>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('defText')"></td>
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge label-white">
+                        <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                        <span title="{{comment.description}}" ng-click="editCommentDlg(node, comment, false, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="Delete This Comments" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw"></i></span>
                     </span>
-                </div>
-                <a ng-click="editModalBindingForMsg(node)" class="point">
-                    <span><i class="fa fa-plus fa-fw"></i></span>
-                </a>
             </div>
-        </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
-            <div ng-show="viewSettings.tableReadonly">
-                <p tooltip-html="getPredicateAsString(findPredicateByPath(node.path))" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(findPredicateByPath(node.path))" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></p>
-            </div>
-            <p ng-repeat="constraint in filteredSubConstraints=( parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip"
-                ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></p>
-            <div ng-show="!viewSettings.tableReadonly">
-                <div ng-show="findPredicateByPath(node.path)">
-                    <a ng-click="openAddGlobalPredicateDialog(node, message)" tooltip-html="getPredicateAsString(findPredicateByPath(node.path))" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(findPredicateByPath(node.path))"
-                        tooltip-trigger tooltip-animation="false" tooltip-placement="left"></a>
-                </div>
-                <div ng-hide="findPredicateByPath(node.path) || filteredSubConstraints.length || viewSettings.tableReadonly || node.obj.usage !=='C'">
-                    <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
-                        <span><i class="fa fa-plus fa-fw"></i></span>
-                        <p class="warning" >Need predicate</p>
-                    </a>
-                </div>
-            </div>
-        </td>
-
-        <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
-            <a ng-show="node.obj.text !=='' && node.obj.text !==null && node.obj.text !==undefined " ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
-                <i class="fa fa-eye fa-fw"></i>
-            </a>
-        </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
-                tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
-            </a>
-        </td>
-    </tr>
-</script>
-<script type="text/ng-template" id="MessageReadTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
-        <td class="col-md-2 col-fixed-250">
-            <span>{{::node.obj.event}}^{{::node.obj.structID}}:{{::node.obj.description}}</span>
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol">
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol">
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol">
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="showConfLength()">
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
-        </td>
-        <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
-        </td>
-        <td class="col-md-2 emptyCol" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
-        </td>
-        <td class="col-md-1 emptyCol" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-        </td>
-    </tr>
-</script>
-<script type="text/ng-template" id="MessageSegmentRefReadTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
-        <td class="col-md-2 col-fixed-250">
-            <span class="label label-segment label-icon">S</span>
-            <!--<a-->
-            <!--tooltip-html="getGroupNodeName(node.obj)" tooltip-append-to-body="true"-->
-            <!--class="point"-->
-            <!--ng-click="goToSegment(node.obj.ref)"-->
-            <!--tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node.obj)" tooltip-trigger-->
-            <!--tooltip-animation="false" tooltip-placement="left"-->
-            <span>
-                {{getSegmentLabel(segmentsMap[node.obj.ref.id])}}
-            </span>
-        </td>
-        <td class="col-md-1 col-fixed-80">
-            <span ng-bind="node.obj.usage"></span>
-            <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
-                    ({{::p.trueUsage}}/{{::p.falseUsage}})
-            </span>
-        </td>
-        <td class="col-md-1 col-fixed-100">
-            [{{::node.obj.min}}, {{::node.obj.max}}]
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol">
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="showConfLength()">
-        </td>
-        <td class="col-md-1 col-fixed-100 emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')">
-        </td>
-        <td class="col-md-1 col-fixed-130 emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')">
-        </td>
-        <td class="col-md-2" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
-            <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
-                    tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-                </p>
-            </div>
-        </td>
-        <td class="col-md-1 col-fixed-80 emptyCol" ng-show="viewSettings.isVisibleColumn('defText')">
-        </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <!--<p class="form-control" style="width:100%;height:100%" ng-bind="node.obj.comment" ng-show="node.obj.comment != null && node.obj.comment != ''">-->
-            <!--</p>-->
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
-                tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-eye fa-fw"></i>
+            <a ng-click="editCommentDlg(node, null, false, 'message')" class="point">
+                <span><i class="fa fa-plus fa-fw"></i></span>
             </a>
         </td>
     </tr>
 </script>
 <script type="text/ng-template" id="MessageGroupReadTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
-        <td class="col-md-2 col-fixed-250">
+        <td>
             <span>
-
-                                           <span class="label label-success label-icon">G</span>
-            <span ng-bind="::getGroupNodeName(node.obj)"></span>
+                <span class="label label-success label-icon">G</span>
+                <span ng-bind="::getGroupNodeName(node.obj)"></span>
             </span>
         </td>
-        <td class="col-md-1 col-fixed-80">
+        <td>
             <div>
                 <span ng-bind="node.obj.usage"></span>
                 <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) ">
@@ -893,41 +670,254 @@
                 </span>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-100">
+        <td>
             [{{::node.obj.min}}, {{::node.obj.max}}]
         </td>
-        <td class="col-md-1 col-fixed-100">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-80" ng-show="showConfLength()">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
-            <div>-</div>
-        </td>
-        <td class="col-md-1" ng-style="predWidthx" ng-show="viewSettings.isVisibleColumn('predicate')">
+        <td class="emptyCol"></td>
+        <td class="emptyCol" ng-show="showConfLength()"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('datatype')"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('valueSet')"></td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('singleElm')"></td>
+        <td ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) " tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
-                    tooltip-trigger tooltip-animation="false" tooltip-placement="left">
+                   tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
         </td>
-        <td class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
-            <div>-</div>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('defText')"></td>
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge" ng-class="{'label-MAIN' : comment.from == 'message', 'label-CHILD' : comment.from == 'segment', 'label-SUBCHILD' : comment.from == 'field', 'label-SUBSUBCHILD' : comment.from == 'component'}">
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, true, 'message')">Comments_{{comment.index}}</span>
+                    </span>
+            </div>
         </td>
-        <td class="col-md-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <!--<p class="form-control" style="width:100%;height:100%" ng-bindl="node.obj.comment" ng-show="node.obj.comment !== '' && node.obj.comment !== null">-->
-            <!--</p>-->
-            <a ng-click="openInputTextDlg(node.obj, 'comment','Comment', true)" class="point" ng-show="node.obj.comment !== '' && node.obj.comment !== null" tooltip-html="node.obj.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
-                tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-eye fa-fw" ng-show="node.obj.comment !== '' && node.obj.comment !== null"></i>
+    </tr>
+</script>
+<script type="text/ng-template" id="MessageFieldViewTree.html">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
+        <td>
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span class="label label-field label-icon" ng-show="node.obj.type==='field'">F</span>
+            <span class="label label-sub-component label-icon" ng-show="node.obj.type==='subcomponent'">S</span>
+            <span class="label label-component label-icon" ng-show="node.obj.type==='component'">C</span>
+            <span tooltip-html="getFieldNodeName(node.obj)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node.obj)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
+        </td>
+        <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
+            <span>{{node.obj.usage}}</span>
+            <span ng-show="findPredicateByPath(node.path)">({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})</span>
+        </td>
+        <td ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
+            <span>[{{::node.obj.min}},{{::node.obj.max}}]</span>
+        </td>
+        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
+            <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
+        </td>
+        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
+            <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
+        </td>
+        <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:center">
+            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}} <span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span></span>
+        </td>
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+            <div ng-show="isAvailableForValueSet(node)">
+                <div ng-repeat="binding in findingBindings(node)">
+                    <span class="badge label-white">
+                        <span ng-class="{'label-message-icon' : binding.bindingFrom == 'message', 'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                        <span title="For this message" ng-show="binding.bindingFrom == 'message'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getSegmentLabel(segmentsMap[node.segment])}}" ng-show="binding.bindingFrom == 'segment'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                    </span>
+                </div>
+                <a ng-click="editModalBindingForMsg(node)" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
+            </div>
+        </td>
+        <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="!hasChildren(node)">
+                <span ng-show="node.sev" class="badge label-white">
+                    <span ng-class="{'label-message-icon' : node.sev.from == 'message', 'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                    <span>{{node.sev.value}}</span>
+                    <span title="Edit SingleElement" ng-show="node.sev.from == 'message'" ng-click="openDialogForEditSev(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                    <span title="Add SingleElement" ng-show="node.sev.from != 'message'" ng-click="confirmDatatypeSingleElementDuplicated(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                    <span title="Delete SingleElement" ng-show="node.sev.from == 'message'" ng-click="deleteSev(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                </span>
+                <a ng-show="!node.sev" class="point" ng-click="openDialogForEditSev(node)">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
+            </div>
+        </td>
+        <td ng-show="viewSettings.isVisibleColumn('predicate')">
+            <div ng-show="viewSettings.tableReadonly && findPredicateByPath(node.path)">
+                <span title="{{getPredicateAsString(findPredicateByPath(node.path))}}" class="badge label-white">
+                    <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                    <span>{{getConstraintAsTruncatedString(findPredicateByPath(node.path), 15)}}</span>
+                </span>
+            </div>
+            <div ng-repeat="p in filteredSubConstraints=(parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true)">
+                <span title="{{getPredicateAsString(p)}}" class="badge label-white">
+                    <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
+                    <span>{{getConstraintAsTruncatedString(p, 15)}}</span>
+                </span>
+            </div>
+            <div ng-show="!viewSettings.tableReadonly">
+                <div ng-show="findPredicateByPath(node.path)">
+                    <span title="{{getPredicateAsString(findPredicateByPath(node.path))}}" class="badge label-white">
+                        <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                        <span>{{getConstraintAsTruncatedString(findPredicateByPath(node.path), 15)}}</span>
+                        <span ng-click="openAddGlobalPredicateDialog(node, message)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                        <span ng-click="deletePredicateByPath(node.path, message)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                    </span>
+                </div>
+                <div ng-hide="findPredicateByPath(node.path) || filteredSubConstraints.length || viewSettings.tableReadonly || node.obj.usage !=='C'">
+                    <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
+                        <span><i class="fa fa-plus fa-fw"></i></span>
+                        <p class="warning" >Need predicate</p>
+                    </a>
+                </div>
+            </div>
+        </td>
+        <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">
+            <a ng-show="node.obj.text !=='' && node.obj.text !==null && node.obj.text !==undefined " ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
+                <i class="fa fa-eye fa-fw"></i>
+            </a>
+        </td>
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge label-white">
+                        <span ng-class="{'label-message-icon' : comment.from == 'message', 'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, false, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="For {{getSegmentLabel(segmentsMap[node.segment])}}" ng-show="comment.from == 'segment'" ng-click="editCommentDlg(node, comment, true, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="comment.from == 'field'" ng-click="editCommentDlg(node, comment, true, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="comment.from == 'component'" ng-click="editCommentDlg(node, comment, true, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="Delete This Comments" ng-show="comment.from == 'message'" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                    </span>
+            </div>
+            <a ng-click="editCommentDlg(node, null, false, 'message')" class="point">
+                <span><i class="fa fa-plus fa-fw"></i></span>
             </a>
         </td>
     </tr>
 </script>
+<script type="text/ng-template" id="MessageComponentViewTree.html">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisibleInner(node.obj, parentsMap[node.obj.id])">
+        <td>
+            <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
+            <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
+            <span>
+                <span class="label label-field label-icon" ng-show="node.obj.type==='field'">F</span>
+                <span class="label label-component label-icon" ng-show="node.obj.type==='component' && node.segmentPath.split('.').length - 1 == 1">C</span>
+                <span class="label label-sub-component label-icon" ng-show="node.obj.type==='component' && node.segmentPath.split('.').length - 1 == 2">S</span>
+                <span ng-bind="getComponentNodeName(node.obj)"/>
+            </span>
+        </td>
+        <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
+            <span>{{node.obj.usage}}</span>
+            <span ng-show="findPredicateByPath(node.path)">({{findPredicateByPath(node.path).trueUsage}}/{{findPredicateByPath(node.path).falseUsage}})</span>
+        </td>
+        <td class="emptyCol">
+        </td>
+        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
+            <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">
+                [{{::node.obj.minLength}},{{::node.obj.maxLength}}]
+            </div>
+        </td>
+        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
+            <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0" ng-bind="::node.obj.confLength">
+            </div>
+        </td>
+        <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:center">
+            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}<span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span>            </span>
+        </td>
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+            <div ng-show="isAvailableForValueSet(node)">
+                <div ng-repeat="binding in findingBindings(node)">
+                    <span class="badge label-white">
+                        <span ng-class="{'label-message-icon' : binding.bindingFrom == 'message', 'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                        <span title="For this message" ng-show="binding.bindingFrom == 'message'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getSegmentLabel(segmentsMap[node.segment])}}" ng-show="binding.bindingFrom == 'segment'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                    </span>
+                </div>
+                <a ng-click="editModalBindingForMsg(node)" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
+            </div>
+        </td>
+        <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="!hasChildren(node)">
+                <span ng-show="node.sev" class="badge label-white">
+                    <span ng-class="{'label-message-icon' : node.sev.from == 'message', 'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                    <span>{{node.sev.value}}</span>
+                    <span title="Edit SingleElement" ng-show="node.sev.from == 'message'" ng-click="openDialogForEditSev(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                    <span title="Add SingleElement" ng-show="node.sev.from != 'message'" ng-click="confirmDatatypeSingleElementDuplicated(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                    <span title="Delete SingleElement" ng-show="node.sev.from == 'message'" ng-click="deleteSev(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                </span>
+                <a ng-show="!node.sev" class="point" ng-click="openDialogForEditSev(node)">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
+            </div>
+        </td>
+        <td ng-show="viewSettings.isVisibleColumn('predicate')">
+            <div ng-show="viewSettings.tableReadonly && findPredicateByPath(node.path)">
+                <span title="{{getPredicateAsString(findPredicateByPath(node.path))}}" class="badge label-white">
+                    <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                    <span>{{getConstraintAsTruncatedString(findPredicateByPath(node.path), 15)}}</span>
+                </span>
+            </div>
+            <div ng-repeat="p in filteredSubConstraints=(parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true)">
+                <span title="{{getPredicateAsString(p)}}" class="badge label-white">
+                    <span ng-class="{'label-component-icon' : node.segmentPath.split('.').length - 1 == 1, 'label-sub-component-icon' : node.segmentPath.split('.').length - 1 == 2}"><i class="fa fa-circle fa-fw"/></span>
+                    <span>{{getConstraintAsTruncatedString(p, 15)}}</span>
+                </span>
+            </div>
+            <div ng-show="!viewSettings.tableReadonly">
+                <div ng-show="findPredicateByPath(node.path)">
+                    <span title="{{getPredicateAsString(findPredicateByPath(node.path))}}" class="badge label-white">
+                        <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                        <span>{{getConstraintAsTruncatedString(findPredicateByPath(node.path), 15)}}</span>
+                        <span ng-click="openAddGlobalPredicateDialog(node, message)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                        <span ng-click="deletePredicateByPath(node.path, message)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                    </span>
+                </div>
+                <div ng-hide="findPredicateByPath(node.path) || filteredSubConstraints.length || viewSettings.tableReadonly || node.obj.usage !=='C'">
+                    <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
+                        <span><i class="fa fa-plus fa-fw"></i></span>
+                        <p class="warning" >Need predicate</p>
+                    </a>
+                </div>
+            </div>
+        </td>
+        <td ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">
+            <a ng-show="node.obj.text !=='' && node.obj.text !==null && node.obj.text !==undefined " ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
+                <i class="fa fa-eye fa-fw"></i>
+            </a>
+        </td>
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge label-white">
+                        <span ng-class="{'label-message-icon' : comment.from == 'message', 'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.from == 'message'" ng-click="editCommentDlg(node, comment, false, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="For {{getSegmentLabel(segmentsMap[node.segment])}}" ng-show="comment.from == 'segment'" ng-click="editCommentDlg(node, comment, true, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="comment.from == 'field'" ng-click="editCommentDlg(node, comment, true, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="comment.from == 'component'" ng-click="editCommentDlg(node, comment, true, 'message')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="Delete This Comments" ng-show="comment.from == 'message'" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                    </span>
+            </div>
+            <a ng-click="editCommentDlg(node, null, false, 'message')" class="point">
+                <span><i class="fa fa-plus fa-fw"></i></span>
+            </a>
+        </td>
+    </tr>
+</script>
+
 <script type="text/ng-template" id="AddSegmentModal.html">
     <div class="modal-header modal-wide">
         <div class="form-inline">

@@ -109,6 +109,11 @@ public class SegmentServiceImpl implements SegmentService {
     segmentRepository.updateStatus(id, status);
   }
 
+  @Override
+  public void delete(List<Segment> segments) {
+    segmentRepository.delete(segments);
+  }
+
 
 
 }
