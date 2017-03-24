@@ -234,6 +234,7 @@ public class Bootstrap implements InitializingBean {
     // updateInitAndCreateBindingAndCommentsVSForSegment();
     // updateInitAndCreateCommentsForMessage();
     // fixUserDatatypesScope();
+    // fixValueSetNameAndDescription();
   }
 
 
@@ -244,7 +245,18 @@ public class Bootstrap implements InitializingBean {
     }
     datatypeService.save(datatypes);
   }
-
+ 
+  private void fixValueSetNameAndDescription() {
+	    List<Table> allTables = tableService.findAll();
+	    for (Table t : allTables) {
+	      if (null != t) {
+	        t.setName(t.getDescription());
+	        t.setDescription(null);
+	        tableService.save(t);
+	      }
+	    }
+	  }
+  
 
   private void fixDatatypeRecursion(IGDocument document) throws IGDocumentException {
     DatatypeLibrary datatypeLibrary = document.getProfile().getDatatypeLibrary();
