@@ -242,7 +242,9 @@ public class Bootstrap implements InitializingBean {
 	    List<Table> allTables = tableService.findAll();
 	    for (Table t : allTables) {
 	      if (null != t) {
-	        t.setName(t.getDescription());
+	    	if(t.getDescription() != null){
+	    		t.setName(t.getDescription());	
+	    	}
 	        t.setDescription(null);
 	        tableService.save(t);
 	      }

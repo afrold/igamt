@@ -206,7 +206,7 @@
     "type" : "code",
     "id" : "565f3ab7d4c6e52cfd4473cf",
     "value" : "XX",
-    "label" : "Organizaiton Indentifier",
+    "label" : "Organization Identifier",
     "codeSystem" : "HL70203",
     "codeSystemVersion" : null,
     "codeUsage" : "P",
