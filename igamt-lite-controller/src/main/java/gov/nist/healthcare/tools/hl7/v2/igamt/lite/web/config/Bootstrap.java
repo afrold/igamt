@@ -227,17 +227,25 @@ public class Bootstrap implements InitializingBean {
 
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
-     // fixDatatypeRecursion();
+    // fixDatatypeRecursion();
     // fixDuplicateValueSets();
-//	  createDefaultExportFonts();
-//	  updateInitAndCreateBindingAndCommentsVSForDatatype();
-//	  updateInitAndCreateBindingAndCommentsVSForSegment();
-//	  updateInitAndCreateCommentsForMessage();
-	  
-	  fixValueSetNameAndDescription();
-   }
+    // createDefaultExportFonts();
+    // updateInitAndCreateBindingAndCommentsVSForDatatype();
+    // updateInitAndCreateBindingAndCommentsVSForSegment();
+    // updateInitAndCreateCommentsForMessage();
+    // fixUserDatatypesScope();
+    // fixValueSetNameAndDescription();
+  }
 
-  
+
+  private void fixUserDatatypesScope() throws IGDocumentException {
+    List<Datatype> datatypes = datatypeService.findByScope(SCOPE.USER.toString());
+    for (Datatype datatype : datatypes) {
+      datatype.setStatus(STATUS.UNPUBLISHED);
+    }
+    datatypeService.save(datatypes);
+  }
+ 
   private void fixValueSetNameAndDescription() {
 	    List<Table> allTables = tableService.findAll();
 	    for (Table t : allTables) {
@@ -446,114 +454,116 @@ public class Bootstrap implements InitializingBean {
     }
     return false;
   }
-  
-  private void updateInitAndCreateCommentsForMessage(){
-	  List<Message> allMsgs = messageService.findAll();
-	  for (Message m : allMsgs) {
-		  m.setComments(new ArrayList<Comment>());
-		  for(SegmentRefOrGroup child : m.getChildren()){
-			  updateCommentForSegRefOrGroup(m, child, null);
-		  }
-		  
-		  messageService.save(m);
-	  }
+
+  private void updateInitAndCreateCommentsForMessage() {
+    List<Message> allMsgs = messageService.findAll();
+    for (Message m : allMsgs) {
+      m.setComments(new ArrayList<Comment>());
+      for (SegmentRefOrGroup child : m.getChildren()) {
+        updateCommentForSegRefOrGroup(m, child, null);
+      }
+
+      messageService.save(m);
+    }
   }
 
   private void updateCommentForSegRefOrGroup(Message m, SegmentRefOrGroup srog, String parentPath) {
-	String currentPath = null;
-	if(parentPath == null) currentPath = srog.getPosition() + "";
-	else currentPath = parentPath + "." + srog.getPosition();
-	
-	if(srog.getComment() != null && !srog.getComment().equals("")){
-		  Comment comment = new Comment();
-		  comment.setDescription(srog.getComment());
-		  comment.setLastUpdatedDate(new Date());
-		  comment.setLocation(currentPath);
-		  
-		  m.addComment(comment);
-		  System.out.println("FOUND!!!!!!!!" + comment.getDescription());
-//		  srog.setComment(null);
-	}
-	if(srog instanceof Group){
-		for(SegmentRefOrGroup child : ((Group)srog).getChildren()){
-			updateCommentForSegRefOrGroup(m, child, currentPath);
-		}	
-	}
+    String currentPath = null;
+    if (parentPath == null)
+      currentPath = srog.getPosition() + "";
+    else
+      currentPath = parentPath + "." + srog.getPosition();
+
+    if (srog.getComment() != null && !srog.getComment().equals("")) {
+      Comment comment = new Comment();
+      comment.setDescription(srog.getComment());
+      comment.setLastUpdatedDate(new Date());
+      comment.setLocation(currentPath);
+
+      m.addComment(comment);
+      System.out.println("FOUND!!!!!!!!" + comment.getDescription());
+      // srog.setComment(null);
+    }
+    if (srog instanceof Group) {
+      for (SegmentRefOrGroup child : ((Group) srog).getChildren()) {
+        updateCommentForSegRefOrGroup(m, child, currentPath);
+      }
+    }
   }
 
   private void updateInitAndCreateBindingAndCommentsVSForSegment() {
-	  List<Segment> allSegs = segmentService.findAll();
-	  for (Segment s : allSegs) {
-		  s.setValueSetBindings(new ArrayList<ValueSetBinding>());
-		  s.setComments(new ArrayList<Comment>());
-		  for(Field f:s.getFields()){
-			  if(f.getTables() != null){
-				  for(TableLink tl:f.getTables()){
-					  Table t = tableService.findById(tl.getId());
-					  if(t != null){
-						  ValueSetBinding vsb = new ValueSetBinding();
-						  vsb.setBindingLocation(tl.getBindingLocation());
-						  vsb.setBindingStrength(tl.getBindingStrength());
-						  vsb.setLocation(f.getPosition() + "");
-						  vsb.setTableId(t.getId());
-						  vsb.setUsage(f.getUsage());
-						  
-						  s.addValueSetBinding(vsb);
-					  }
-				  }
-//				  f.setTables(null);
-			  }
-			  if(f.getComment() != null && !f.getComment().equals("")){
-				  Comment comment = new Comment();
-				  comment.setDescription(f.getComment());
-				  comment.setLastUpdatedDate(new Date());
-				  comment.setLocation(f.getPosition() + "");
-				  
-				  s.addComment(comment);
-//				  s.setComment(null);
-			  }
-		  }
-		  
-		  segmentService.save(s);
-	  }
+    List<Segment> allSegs = segmentService.findAll();
+    for (Segment s : allSegs) {
+      s.setValueSetBindings(new ArrayList<ValueSetBinding>());
+      s.setComments(new ArrayList<Comment>());
+      for (Field f : s.getFields()) {
+        if (f.getTables() != null) {
+          for (TableLink tl : f.getTables()) {
+            Table t = tableService.findById(tl.getId());
+            if (t != null) {
+              ValueSetBinding vsb = new ValueSetBinding();
+              vsb.setBindingLocation(tl.getBindingLocation());
+              vsb.setBindingStrength(tl.getBindingStrength());
+              vsb.setLocation(f.getPosition() + "");
+              vsb.setTableId(t.getId());
+              vsb.setUsage(f.getUsage());
+
+              s.addValueSetBinding(vsb);
+            }
+          }
+          // f.setTables(null);
+        }
+        if (f.getComment() != null && !f.getComment().equals("")) {
+          Comment comment = new Comment();
+          comment.setDescription(f.getComment());
+          comment.setLastUpdatedDate(new Date());
+          comment.setLocation(f.getPosition() + "");
+
+          s.addComment(comment);
+          // s.setComment(null);
+        }
+      }
+
+      segmentService.save(s);
+    }
   }
-  
+
   private void updateInitAndCreateBindingAndCommentsVSForDatatype() {
-	  List<Datatype> allDts = datatypeService.findAll();
-	  for (Datatype d : allDts) {
-		  d.setValueSetBindings(new ArrayList<ValueSetBinding>());
-		  d.setComments(new ArrayList<Comment>());
-		  for(Component c:d.getComponents()){
-			  if(c.getTables() != null){
-				  for(TableLink tl:c.getTables()){
-					  Table t = tableService.findById(tl.getId());
-					  if(t != null){
-						  ValueSetBinding vsb = new ValueSetBinding();
-						  vsb.setBindingLocation(tl.getBindingLocation());
-						  vsb.setBindingStrength(tl.getBindingStrength());
-						  vsb.setLocation(c.getPosition() + "");
-						  vsb.setUsage(c.getUsage());
-						  vsb.setTableId(t.getId());
-						  
-						  d.addValueSetBinding(vsb);
-					  }
-				  }
-//			  	  c.setTables(null);
-			  }  
-			  if(c.getComment() != null && !c.getComment().equals("")){
-				  Comment comment = new Comment();
-				  comment.setDescription(c.getComment());
-				  comment.setLastUpdatedDate(new Date());
-				  comment.setLocation(c.getPosition() + "");
-				  
-				  d.addComment(comment);
-//				  c.setComment(null);
-			  }
-		  }
-		  datatypeService.save(d);
-	  }
+    List<Datatype> allDts = datatypeService.findAll();
+    for (Datatype d : allDts) {
+      d.setValueSetBindings(new ArrayList<ValueSetBinding>());
+      d.setComments(new ArrayList<Comment>());
+      for (Component c : d.getComponents()) {
+        if (c.getTables() != null) {
+          for (TableLink tl : c.getTables()) {
+            Table t = tableService.findById(tl.getId());
+            if (t != null) {
+              ValueSetBinding vsb = new ValueSetBinding();
+              vsb.setBindingLocation(tl.getBindingLocation());
+              vsb.setBindingStrength(tl.getBindingStrength());
+              vsb.setLocation(c.getPosition() + "");
+              vsb.setUsage(c.getUsage());
+              vsb.setTableId(t.getId());
+
+              d.addValueSetBinding(vsb);
+            }
+          }
+          // c.setTables(null);
+        }
+        if (c.getComment() != null && !c.getComment().equals("")) {
+          Comment comment = new Comment();
+          comment.setDescription(c.getComment());
+          comment.setLastUpdatedDate(new Date());
+          comment.setLocation(c.getPosition() + "");
+
+          d.addComment(comment);
+          // c.setComment(null);
+        }
+      }
+      datatypeService.save(d);
+    }
   }
-  
+
   private void fixMissingData() {
     List<IGDocument> igDocuments = documentService.findAll();
     for (IGDocument document : igDocuments) {
