@@ -198,13 +198,25 @@
                                                     </div>
                                                 </div>
 
-                                            <div ng-show="datatype.components && datatype.components.length > 0" class="pull-left">
-                                              <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
+                                            <div class="pull-left">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item">
+                                                        <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                        From Component Datatype
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                        From SubComponent Datatype
+                                                    </li>
+                                                </ul>
                                             </div>
+
                                             <button ng-if="igdocument&&datatype.scope!=='HL7STANDARD'" class="pull-right" title="Verify Data type" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
                                                 ng-click="validateDatatype()"> 
                                                 Verify
                                             </button>
+
+                                            <div class="pull-right" ng-dropdown-multiselect="" ng-show="datatype.components && datatype.components.length > 0" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
 
                                             <div ng-show="datatype.components && datatype.components.length > 0" class="igl-def-table-container">
                                                 <table id="treeTable" tt-table tt-params="datatypesParams" class="table table-bordered table-fix-header table-condensed profile-table ">
@@ -946,10 +958,11 @@
                 {{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
             </a>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)}"  ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)">
                 <div ng-repeat="binding in findingBindings(node.path)">
-                    <span class="badge" ng-class="{'label-MAIN' : binding.isMain, 'label-CHILD' : !binding.isMain}">
+                    <span class="badge label-white">
+                        <span ng-class="{'label-component-icon' : binding.isMain, 'label-sub-component-icon' : !binding.isMain}"><i class="fa fa-circle fa-fw"/></span>
                         <span title="For {{getDatatypeLabel(datatype)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                     </span>
                 </div>
@@ -957,23 +970,34 @@
         </td>
         <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
             <div ng-show="!hasChildren(node)">
-                <input ng-show="node.sev" class="form-control" type="text" name="singleElement" disabled ng-model="node.sev.value" />
+                <span ng-show="node.sev" class="badge label-white">
+                    <span ng-class="{'label-component-icon' : node.sev.isMain, 'label-sub-component-icon' : !node.sev.isMain}"><i class="fa fa-circle fa-fw"/></span>
+                    <span>{{node.sev.value}}</span>
+                </span>
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('predicate')">
-            <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
-                <span tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
-            </p>
+        <td ng-class="{'has-error': node.usage === 'C' && countPredicate(node.position) != 1, 'emptyCol':node.usage !== 'C'}" ng-show="viewSettings.isVisibleColumn('predicate')">
+            <div>
+                <div ng-show="countPredicate(node.position) !== 0 && node.usage === 'C'">
+                    <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
+                        <span title="{{getPredicateAsString(p)}}" class="badge label-white">
+                            <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                            <span>{{getConstraintAsTruncatedString(p, 15)}}</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-show="node.text && node.text !== '' && node.text !==null && node.text !==undefined " ng-click="openRichTextDlg(node, 'text','Definition Text', true)" class="point">
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
-        <td ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
             <div ng-repeat="comment in findingComments(node.path)">
-                <span class="badge" ng-class="{'label-MAIN' : comment.isMain, 'label-CHILD' : !comment.isMain}">
-                    <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.isMain" ng-click="editCommentDlg(node, comment, true, 'datatype')">Comments_{{comment.index}}</span>
+                <span class="badge label-white">
+                    <span ng-class="{'label-component-icon' : comment.isMain, 'label-sub-component-icon' : !comment.isMain}"><i class="fa fa-circle fa-fw"/></span>
+                    <span title="{{comment.description}}" ng-show="comment.isMain" ng-click="editCommentDlg(node, comment, true, 'datatype')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
                 </span>
             </div>
         </td>
@@ -1099,7 +1123,8 @@
         <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)">
                 <div ng-repeat="binding in findingBindings(node.path, parentsMap[node.id])">
-                    <span class="badge" ng-class="{'label-MAIN' : binding.isMain, 'label-CHILD' : !binding.isMain}">
+                    <span class="badge label-white">
+                        <span ng-class="{'label-component-icon' : binding.isMain, 'label-sub-component-icon' : !binding.isMain}"><i class="fa fa-circle fa-fw"/></span>
                         <span title="For {{getDatatypeLabel(datatype)}}" ng-show="binding.isMain" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                         <span title="For {{getDatatypeLabel(parentsMap[node.id])}}" ng-show="!binding.isMain" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                     </span>
@@ -1108,13 +1133,17 @@
         </td>
         <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
             <div ng-show="!hasChildren(node)">
-                <input ng-show="node.sev" class="form-control" type="text" name="singleElement" disabled ng-model="node.sev.value" />
+                <span ng-show="node.sev" class="badge label-white">
+                    <span ng-class="{'label-component-icon' : node.sev.isMain, 'label-sub-component-icon' : !node.sev.isMain}"><i class="fa fa-circle fa-fw"/></span>
+                    <span>{{node.sev.value}}</span>
+                </span>
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('predicate')">
-            <p ng-repeat="p in parentsMap[node.id].predicates   | filter:{constraintTarget:node.position + '[1]'}:true" tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)"
-                tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-            </p>
+        <td ng-show="viewSettings.isVisibleColumn('predicate')" ng-class="{'emptyCol':node.usage !== 'C'}">
+            <span ng-repeat="p in parentsMap[node.id].predicates|filter:{constraintTarget:node.position + '[1]'}:true">
+                <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                <span title="{{getPredicateAsString(p)}}">{{getConstraintAsTruncatedString(p, 15)}}</span>
+            </span>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-show="node.text && node.text !== '' && node.text !==null && node.text !==undefined " ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="point">
@@ -1123,9 +1152,10 @@
         </td>
         <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
             <div ng-repeat="comment in findingComments(node.path, parentsMap[node.id])">
-                <span class="badge" ng-class="{'label-MAIN' : comment.isMain, 'label-CHILD' : !comment.isMain}">
-                    <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="comment.isMain" ng-click="editCommentDlg(node, comment, true, 'datatype')">Comments_{{comment.index}}</span>
-                    <span title="[{{getDatatypeLabel(parentsMap[node.id])}}]{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-show="!comment.isMain" ng-click="editCommentDlg(node, comment, true, 'datatype')">Comments_{{comment.index}}</span>
+                <span class="badge label-white">
+                    <span ng-class="{'label-component-icon' : comment.isMain, 'label-sub-component-icon' : !comment.isMain}"><i class="fa fa-circle fa-fw"/></span>
+                    <span title="{{comment.description}}" ng-show="comment.isMain" ng-click="editCommentDlg(node, comment, true, 'datatype')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                    <span title="[{{getDatatypeLabel(parentsMap[node.id])}}]{{comment.description}}" ng-show="!comment.isMain" ng-click="editCommentDlg(node, comment, true, 'datatype')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
                 </span>
             </div>
         </td>
