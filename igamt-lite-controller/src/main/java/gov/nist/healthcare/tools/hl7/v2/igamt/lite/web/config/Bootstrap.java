@@ -233,8 +233,22 @@ public class Bootstrap implements InitializingBean {
 //	  updateInitAndCreateBindingAndCommentsVSForDatatype();
 //	  updateInitAndCreateBindingAndCommentsVSForSegment();
 //	  updateInitAndCreateCommentsForMessage();
+	  
+	  fixValueSetNameAndDescription();
    }
 
+  
+  private void fixValueSetNameAndDescription() {
+	    List<Table> allTables = tableService.findAll();
+	    for (Table t : allTables) {
+	      if (null != t) {
+	        t.setName(t.getDescription());
+	        t.setDescription(null);
+	        tableService.save(t);
+	      }
+	    }
+	  }
+  
 
   private void fixDatatypeRecursion(IGDocument document) throws IGDocumentException {
     DatatypeLibrary datatypeLibrary = document.getProfile().getDatatypeLibrary();
