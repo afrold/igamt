@@ -625,3 +625,7 @@ li.active > a{
 .edit-icon {
     color:#428bca;
 }
+
+.edit-icon-white{
+    color:white;
+}

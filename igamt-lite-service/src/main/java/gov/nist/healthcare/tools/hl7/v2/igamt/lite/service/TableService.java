@@ -29,6 +29,8 @@ public interface TableService {
 
   List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
+  Table findByScopeAndVersionAndBindingIdentifier(SCOPE scope, String hl7Version, String bindingIdentifier);
+
   List<Table> findShared(Long accountId);
 
   List<Table> findPendingShared(Long accountId);

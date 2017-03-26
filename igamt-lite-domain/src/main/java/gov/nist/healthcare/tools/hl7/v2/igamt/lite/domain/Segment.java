@@ -33,7 +33,10 @@ public class Segment extends DataModelWithConstraints
 
   private List<Field> fields = new ArrayList<Field>();
 
+  @Deprecated
   private DynamicMapping dynamicMapping = new DynamicMapping();
+  
+  private DynamicMappingDefinition dynamicMappingDefinition;
   
   private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
   
@@ -122,6 +125,7 @@ public class Segment extends DataModelWithConstraints
     return null;
   }
 
+  @Deprecated
   public Mapping findOneMappingByPositionAndByReference(int position, int reference) {
     if (this.dynamicMapping != null) {
       for (Mapping m : this.dynamicMapping.getMappings()) {
@@ -167,10 +171,12 @@ public class Segment extends DataModelWithConstraints
     this.text2 = text2;
   }
 
+  @Deprecated
   public DynamicMapping getDynamicMapping() {
     return dynamicMapping;
   }
 
+  @Deprecated
   public void setDynamicMapping(DynamicMapping dynamicMapping) {
     this.dynamicMapping = dynamicMapping;
   }
@@ -182,10 +188,6 @@ public class Segment extends DataModelWithConstraints
     
     clonedSegment.setDescription(description);
 
-    clonedSegment.setDynamicMapping(new DynamicMapping());
-    for (Mapping mapping : this.dynamicMapping.getMappings()) {
-      clonedSegment.getDynamicMapping().addMapping(mapping.clone());
-    }
     clonedSegment.setFields(new ArrayList<Field>());
     for (Field f : this.fields) {
       clonedSegment.addField(f.clone(dtRecords, tableRecords));
@@ -302,6 +304,14 @@ public List<SingleElementValue> getSingleElementValues() {
 
 public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
 	this.singleElementValues = singleElementValues;
+}
+
+public DynamicMappingDefinition getDynamicMappingDefinition() {
+	return dynamicMappingDefinition;
+}
+
+public void setDynamicMappingDefinition(DynamicMappingDefinition dynamicMappingDefinition) {
+	this.dynamicMappingDefinition = dynamicMappingDefinition;
 }
 
 }

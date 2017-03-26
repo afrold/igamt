@@ -48,6 +48,8 @@ public interface DatatypeService {
   public List<Datatype> findPendingShared(Long accountId);
 
   public List<Datatype> findByNameAndVersionAndScope(String name, String version, String scope);
+  
+  public Datatype findByNameAndVesionAndScope(String name, String version, String scope);
 
   public Datatype findByCompatibleVersion(String name, String version, String scope)
       throws Exception;
