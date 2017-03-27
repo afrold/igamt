@@ -356,10 +356,12 @@ import java.util.*;
                 ((SegmentRef) segmentRefOrGroup).getRef().getId());
             for(ValueSetBinding valueSetBinding : segment.getValueSetBindings()){
                 this.removeFromUnbindedTables(valueSetBinding.getTableId());
-                //TODO add usage check when added to valueSetBinding
-                TableLink tableLink = this.findTableLink(valueSetBinding.getTableId());
-                if(tableLink!=null) {
-                    this.bindedTables.add(tableLink);
+                if(valueSetBinding.getUsage()!=null && ExportUtil.diplayUsage(
+                    valueSetBinding.getUsage(), this.exportConfig.getValueSetsExport())) {
+                    TableLink tableLink = this.findTableLink(valueSetBinding.getTableId());
+                    if (tableLink != null) {
+                        this.bindedTables.add(tableLink);
+                    }
                 }
             }
             for (Field field : segment.getFields()) {
@@ -368,10 +370,11 @@ import java.util.*;
                     Datatype datatype = datatypeService.findById(field.getDatatype().getId());
                     for(ValueSetBinding valueSetBinding : datatype.getValueSetBindings()){
                         this.removeFromUnbindedTables(valueSetBinding.getTableId());
-                        //TODO add usage check when added to valueSetBinding
-                        TableLink tableLink = this.findTableLink(valueSetBinding.getTableId());
-                        if(tableLink!=null) {
-                            this.bindedTables.add(tableLink);
+                        if(valueSetBinding.getUsage()!=null && ExportUtil.diplayUsage(valueSetBinding.getUsage(),this.exportConfig.getValueSetsExport())) {
+                            TableLink tableLink = this.findTableLink(valueSetBinding.getTableId());
+                            if(tableLink!=null) {
+                                this.bindedTables.add(tableLink);
+                            }
                         }
                     }
                     for(Component component : datatype.getComponents()){
