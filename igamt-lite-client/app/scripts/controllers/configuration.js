@@ -2,8 +2,10 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
 
 
     $scope.activeId="content";
-
+    $scope.felxwidth=50;
+    $scope.includePC=false;
     $scope.init = function () {
+
         $scope.tabActivity=[true,false,false,false];
 
         console.log("INIT called");
@@ -195,6 +197,16 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
          }else{
              return gray;
          }
+     }
+
+     $scope.updateWidth=function(felxwidth){
+        if(felxwidth){
+            $scope.felxwidth=100/3;
+
+        }else{
+            $scope.felxwidth=100/2;
+        }
+
      }
 
 });

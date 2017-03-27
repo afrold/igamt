@@ -32,19 +32,66 @@ public class ExportConfig {
   private String type;
   private boolean unboundHL7 = false;
   private boolean unboundCustom = false;
+  private boolean includePC = true;
 
   private UsageConfig segmentORGroupsExport;
+  private UsageConfig segmentORGroupsExportPC;
   private UsageConfig segmentsExport;
+  private UsageConfig segmentsExportPC;
+
   private UsageConfig fieldsExport;
+  private UsageConfig fieldsExportPC;
 
   private UsageConfig valueSetsExport;
   private CodeUsageConfig codesExport;
 
   private UsageConfig datatypesExport;
   private UsageConfig componentExport;
-
   private ColumnsConfig messageColumn;
+
+  public boolean isIncludePC() {
+    return includePC;
+  }
+
+  public void setIncludePC(boolean includePC) {
+    this.includePC = includePC;
+  }
+
+  public UsageConfig getSegmentORGroupsExportPC() {
+    return segmentORGroupsExportPC;
+  }
+
+  public void setSegmentORGroupsExportPC(UsageConfig segmentORGroupsExportPC) {
+    this.segmentORGroupsExportPC = segmentORGroupsExportPC;
+  }
+
+  public UsageConfig getSegmentsExportPC() {
+    return segmentsExportPC;
+  }
+
+  public void setSegmentsExportPC(UsageConfig segmentsExportPC) {
+    this.segmentsExportPC = segmentsExportPC;
+  }
+
+  public ColumnsConfig getMessageColumnPC() {
+    return messageColumnPC;
+  }
+
+  public void setMessageColumnPC(ColumnsConfig messageColumnPC) {
+    this.messageColumnPC = messageColumnPC;
+  }
+
+  public ColumnsConfig getSegmentColumnPC() {
+    return segmentColumnPC;
+  }
+
+  public void setSegmentColumnPC(ColumnsConfig segmentColumnPC) {
+    this.segmentColumnPC = segmentColumnPC;
+  }
+
+  private ColumnsConfig messageColumnPC;
   private ColumnsConfig segmentColumn;
+  private ColumnsConfig segmentColumnPC;
   public ColumnsConfig datatypeColumn;
   public ColumnsConfig valueSetColumn;
 
@@ -211,15 +258,19 @@ public class ExportConfig {
     displayAll.setR(true);
 
     defaultConfiguration.setSegmentORGroupsExport(displayAll);
+    defaultConfiguration.setSegmentORGroupsExportPC(displayAll);
 
     defaultConfiguration.setComponentExport(displayAll);
 
     defaultConfiguration.setFieldsExport(displayAll);
+    defaultConfiguration.setFieldsExportPC(displayAll);
 
     defaultConfiguration.setCodesExport(codeUsageExport);
 
     defaultConfiguration.setDatatypesExport(displaySelectives);
     defaultConfiguration.setSegmentsExport(displaySelectives);
+    defaultConfiguration.setSegmentsExportPC(displaySelectives);
+
     defaultConfiguration.setValueSetsExport(displaySelectives);
 
     // Default column
@@ -264,6 +315,8 @@ public class ExportConfig {
     defaultConfiguration.setDatatypeColumn(new ColumnsConfig(dataTypeColumnsDefaultList));
     defaultConfiguration.setSegmentColumn(new ColumnsConfig(segmentColumnsDefaultList));
     defaultConfiguration.setMessageColumn(new ColumnsConfig(messageColumnsDefaultList));
+    defaultConfiguration.setSegmentColumnPC(new ColumnsConfig(segmentColumnsDefaultList));
+    defaultConfiguration.setMessageColumnPC(new ColumnsConfig(messageColumnsDefaultList));
 
     ArrayList<NameAndPositionAndPresence> valueSetsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
@@ -303,6 +356,20 @@ public class ExportConfig {
    */
   public void setUnboundCustom(boolean unboundCustom) {
     this.unboundCustom = unboundCustom;
+  }
+
+  /**
+   * @return the fieldsExportPC
+   */
+  public UsageConfig getFieldsExportPC() {
+    return fieldsExportPC;
+  }
+
+  /**
+   * @param fieldsExportPC the fieldsExportPC to set
+   */
+  public void setFieldsExportPC(UsageConfig fieldsExportPC) {
+    this.fieldsExportPC = fieldsExportPC;
   }
 
 }
