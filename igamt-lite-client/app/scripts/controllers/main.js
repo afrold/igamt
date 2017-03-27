@@ -4101,6 +4101,7 @@ angular.module('igl').controller('ConfirmSingleElementDuplicatedCtrl', function(
 
 angular.module('igl').controller('labelController', function($scope) {
    $scope.getLabel=function(element) {
+
        if(element.type==='table'){
            if (!element.ext || element.ext == "") {
                return element.bindingIdentifier;
@@ -4135,7 +4136,10 @@ angular.module('igl').controller('labelController', function($scope) {
                 return 'HL7';
             } else if (leaf.scope === 'USER') {
                 return 'USR';
-            } else if (leaf.scope === 'MASTER') {
+            }else if(leaf.scope ==='INTERMASTER'){
+                return 'DRV';
+            }
+            else if (leaf.scope === 'MASTER') {
                 return 'MAS';
             } else if (leaf.scope === 'PRELOADED') {
                 return 'PRL';
@@ -4144,6 +4148,7 @@ angular.module('igl').controller('labelController', function($scope) {
             } else {
                 return "";
             }
+
         }
     };
 
