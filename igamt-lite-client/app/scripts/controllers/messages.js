@@ -939,7 +939,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     };
 
     $scope.deleteComment = function(comment){
-        var index = $rootScope.segment.comments.indexOf(comment);
+        var index = $rootScope.message.comments.indexOf(comment);
         if (index >= 0) {
             $rootScope.segment.comments.splice(index, 1);
             $scope.setDirty();
@@ -992,6 +992,28 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         });
     };
 
+    $scope.openDialogForEditSev = function(node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'EditSingleElement.html',
+            controller: 'EditSingleElementCtrl',
+            backdrop: true,
+            keyboard: true,
+            windowClass: 'input-text-modal-window',
+            backdropClick: false,
+            resolve: {
+                currentNode: function() {
+                    return node;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(value) {
+            $scope.addSev(node);
+            node.sev.value = value;
+            $scope.setDirty();
+        });
+    };
+
     $scope.confirmDatatypeSingleElementDuplicated = function (node) {
         var modalInstance = $modal.open({
             templateUrl: 'ConfirmSingleElementDuplicatedCtrl.html',
@@ -1003,7 +1025,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             }
         });
         modalInstance.result.then(function (node) {
-            $scope.addSev(node);
+            $scope.openDialogForEditSev(node);
         }, function () {
         });
     };
@@ -2783,9 +2805,9 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $mo
 
     $scope.selectValueSet = function (v){
         if($scope.listOfBindingLocations){
-            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, bindingLocation: "1" });
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, bindingLocation: "1", usage: currentNode.obj.usage });
         }else {
-            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath });
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, usage: currentNode.obj.usage });
         }
         $scope.changed = true;
     };

@@ -343,6 +343,7 @@ public class IGDocumentController extends CommonController {
         m.setId(null);
         if (m.getScope() == SCOPE.PRELOADED) {
           m.setScope(SCOPE.USER);
+          m.setStatus(STATUS.UNPUBLISHED);
         }
         messageService.save(m);
       }
@@ -399,6 +400,7 @@ public class IGDocumentController extends CommonController {
             d.setCreatedFrom(oldDatatypeId);
             d.setId(null);
             d.setLibId(new HashSet<String>());
+            d.setStatus(STATUS.UNPUBLISHED);
           }
 
           d.getLibIds().add(clonedDatatypeLibrary.getId());
@@ -423,6 +425,8 @@ public class IGDocumentController extends CommonController {
             s.setCreatedFrom(oldSegmentId);
             s.setId(null);
             s.setLibId(new HashSet<String>());
+            s.setStatus(STATUS.UNPUBLISHED);
+
           }
           s.getLibIds().add(clonedSegmentLibrary.getId());
           segmentService.save(s);
@@ -447,6 +451,7 @@ public class IGDocumentController extends CommonController {
             t.setCreatedFrom(oldTableId);
             t.setId(null);
             t.setLibIds(new HashSet<String>());
+            t.setStatus(STATUS.UNPUBLISHED);
           }
           t.getLibIds().add(clonedTableLibrary.getId());
           tableService.save(t);
@@ -492,11 +497,11 @@ public class IGDocumentController extends CommonController {
       Profile profile) {
     for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
       Segment s = segmentService.findById(sl.getId());
-      for(ValueSetBinding vsb : s.getValueSetBindings()){
-    	  vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+      for (ValueSetBinding vsb : s.getValueSetBindings()) {
+        vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
       }
-      
-      
+
+
       for (Field f : s.getFields()) {
         if (f.getDatatype() != null && f.getDatatype().getId() != null
             && datatypeIdChangeMap.containsKey(f.getDatatype().getId()))
@@ -521,8 +526,8 @@ public class IGDocumentController extends CommonController {
 
     for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
       Datatype d = datatypeService.findById(dl.getId());
-      for(ValueSetBinding vsb : d.getValueSetBindings()){
-    	  vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+      for (ValueSetBinding vsb : d.getValueSetBindings()) {
+        vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
       }
       for (Component c : d.getComponents()) {
         if (c.getDatatype() != null && c.getDatatype().getId() != null
@@ -540,9 +545,9 @@ public class IGDocumentController extends CommonController {
     }
 
     for (Message m : profile.getMessages().getChildren()) {
-    	for(ValueSetBinding vsb : m.getValueSetBindings()){
-      	  vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
-        }
+      for (ValueSetBinding vsb : m.getValueSetBindings()) {
+        vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+      }
       for (SegmentRefOrGroup sog : m.getChildren()) {
         this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap, sog);
       }

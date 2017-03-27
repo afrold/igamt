@@ -113,10 +113,14 @@ input.igl-has-error,select.igl-has-error {
 
 .label-field {
     background-color: #f24a08;
+    font-weight: 400;
+    margin-bottom: 1.0px;
 }
 
 .label-component {
     background-color: #f2c60d;
+    font-weight: 400;
+    margin-bottom: 1.0px;
 }
 
 .label-dynamicCase {
@@ -125,6 +129,8 @@ input.igl-has-error,select.igl-has-error {
 
 .label-sub-component {
     background-color: rgba(0, 0, 0, 0.91);
+    font-weight: 400;
+    margin-bottom: 1.0px;
 }
 
 .label-datatype {
@@ -570,17 +576,52 @@ li.active > a{
 .label-MAIN {
     background-color: #00037a;
     font-weight: 400;
+    margin-bottom: 1.0px;
 }
 .label-CHILD {
     background: rgb(0, 3, 246);
     font-weight: 400;
+    margin-bottom: 1.0px;
 }
 
 .label-SUBCHILD {
     background: rgba(0, 3, 244, 0.46);
     font-weight: 400;
+    margin-bottom: 1.0px;
 }
 .label-SUBSUBCHILD {
     background: rgba(0, 3, 244, 0.24);
     font-weight: 400;
+    margin-bottom: 1.0px;
+}
+
+.label-SubComponentItems {
+    background-color: rgba(0, 0, 0, 0.91);
+    font-weight: 400;
+    margin-bottom: 1.0px;
+}
+
+.label-white {
+    background-color: white;
+    color:black;
+}
+
+.label-field-icon {
+    color: blue;
+}
+
+.label-component-icon {
+    color:purple;
+}
+
+.label-sub-component-icon {
+    color:#d400d4;
+}
+
+.label-message-icon {
+    color:green;
+}
+
+.edit-icon {
+    color:#428bca;
 }
