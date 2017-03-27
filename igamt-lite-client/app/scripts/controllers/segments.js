@@ -10,6 +10,9 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         isSecondOpen: true,
         isThirdOpen: true,
         isFourthOpen: true,
+        isFifthOpen: true,
+        isSixthOpen: true,
+        isSeventhOpen: true,
         isFirstDisabled: false
     };
 
@@ -21,10 +24,13 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
-            isFirstOpen: true,
-            isSecondOpen: false,
+            isFirstOpen: false,
+            isSecondOpen: true,
             isThirdOpen: false,
             isFourthOpen: false,
+            isFifthOpen: false,
+            isSixthOpen: false,
+            isSeventhOpen: false,
             isFirstDisabled: false
         };
 
@@ -63,6 +69,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
                 $scope.segmentsParams.refresh();
         });
     };
+
+
 
     $scope.openPredicateDialog = function(node) {
         if (node.usage == 'C') $scope.managePredicate(node);
@@ -861,6 +869,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
                 $rootScope.processSegmentsTree($rootScope.segment, null);
             }
 
+            $rootScope.updateDynamicMappingInfo();
+
             var oldLink = SegmentLibrarySvc.findOneChild(result.id, $rootScope.igdocument.profile.segmentLibrary.children);
             var newLink = SegmentService.getSegmentLink(result);
             SegmentLibrarySvc.updateChild($rootScope.igdocument.profile.segmentLibrary.id, newLink).then(function(link) {
@@ -1218,12 +1228,151 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         if(node.sev && node.sev.from == 'segment'){
             node.sev = null;
         }
-    }
+    };
+
+    $scope.editDMSecondReferenceDlg = function() {
+        var modalInstance = $modal.open({
+            templateUrl: 'EditDMSecondReference.html',
+            controller: 'EditDMSecondReferenceCtrl',
+            backdrop: true,
+            keyboard: true,
+            windowClass: 'input-text-modal-window',
+            backdropClick: false,
+            resolve: {
+                currentMappingStructure: function() {
+                    return $rootScope.segment.dynamicMappingDefinition.mappingStructure;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(currentMappingStructure) {
+            $rootScope.segment.dynamicMappingDefinition.mappingStructure = currentMappingStructure;
+            console.log($rootScope.segment.dynamicMappingDefinition);
+            $scope.setDirty();
+        });
+    };
+
+    $scope.deleteMappingItem = function (item){
+        var index = $rootScope.segment.dynamicMappingDefinition.dynamicMappingItems.indexOf(item);
+        if (index >= 0) {
+            $rootScope.segment.dynamicMappingDefinition.dynamicMappingItems.splice(index, 1);
+            $scope.setDirty();
+        }
+    };
+
+    $scope.addMappingItem = function () {
+        var newItem = {};
+        newItem.firstReferenceValue = null;
+        newItem.secondReferenceValue = null;
+        newItem.datatypeId = null;
+        $rootScope.segment.dynamicMappingDefinition.dynamicMappingItems.push(newItem);
+        $scope.setDirty();
+    };
+
+    $scope.getDefaultStatus = function (code) {
+        var item = _.find($rootScope.segment.dynamicMappingDefinition.dynamicMappingItems, function(item) {
+            return item.firstReferenceValue == code.value;
+        });
+
+        if(!item) return 'full';
+        if(item){
+            if(item.secondReferenceValue && item.secondReferenceValue != '') return 'partial';
+            return 'empty';
+        }
+    };
 
 });
 angular.module('igl').controller('SegmentRowCtrl', function($scope, $filter) {
     $scope.formName = "form_" + new Date().getTime();
 });
+angular.module('igl').controller('EditDMSecondReferenceCtrl', function($scope, $modalInstance, currentMappingStructure, $rootScope) {
+    $scope.currentMappingStructure = angular.copy(currentMappingStructure);
+    $scope.selectedFieldPosition = null;
+    $scope.selectedComponentPosition = null;
+    $scope.selectedSubComponentPosition = null;
+    $scope.components = null;
+    $scope.subComponents = null;
+
+    if($scope.currentMappingStructure.secondRefereceLocation){
+        var splitLocation = $scope.currentMappingStructure.secondRefereceLocation.split('.');
+        if(splitLocation.length > 0){
+            $scope.selectedFieldPosition = splitLocation[0];
+
+            var field = _.find($rootScope.segment.fields, function(f) {
+                return f.position == splitLocation[0];
+            });
+
+            if(field && $rootScope.datatypesMap[field.datatype.id].components.length > 0){
+                $scope.components = $rootScope.datatypesMap[field.datatype.id].components;
+            }
+
+            if(splitLocation.length > 1 && $scope.components){
+                $scope.selectedComponentPosition = splitLocation[1];
+                var component =  _.find($scope.components, function(c) {
+                    return c.position == splitLocation[1];
+                });
+                if(component && $rootScope.datatypesMap[component.datatype.id].components.length > 0){
+                    $scope.subComponents = $rootScope.datatypesMap[component.datatype.id].components;
+                }
+
+                if(splitLocation.length > 2 && $scope.subComponents){
+                    $scope.selectedSubComponentPosition = splitLocation[2];
+                }
+
+            }
+        }
+    };
+
+    $scope.updateField = function(){
+        $scope.selectedComponentPosition = null;
+        $scope.selectedSubComponentPosition = null;
+        $scope.components = null;
+        $scope.subComponents = null;
+
+        var field = _.find($rootScope.segment.fields, function(f) {
+            return f.position == $scope.selectedFieldPosition;
+        });
+
+        if(field && $rootScope.datatypesMap[field.datatype.id].components.length > 0){
+            $scope.components = $rootScope.datatypesMap[field.datatype.id].components;
+        }
+    };
+
+    $scope.updateComponent = function(){
+        $scope.selectedSubComponentPosition = null;
+        $scope.subComponents = null;
+
+        var component =  _.find($scope.components, function(c) {
+            return c.position == $scope.selectedComponentPosition;
+        });
+        if(component && $rootScope.datatypesMap[component.datatype.id].components.length > 0){
+            $scope.subComponents = $rootScope.datatypesMap[component.datatype.id].components;
+        }
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        var path = null;
+        if($scope.selectedFieldPosition){
+            var path = $scope.selectedFieldPosition;
+            if($scope.selectedComponentPosition){
+                path = path + "." + $scope.selectedComponentPosition;
+                if($scope.selectedSubComponentPosition){
+                    path = path + "." + $scope.selectedSubComponentPosition;
+                }
+            }
+        }
+
+        if(path){
+            $scope.currentMappingStructure.secondRefereceLocation = path;
+        }
+        $modalInstance.close($scope.currentMappingStructure);
+    };
+});
+
 angular.module('igl').controller('DynamicMappingCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.changed = false;
     $scope.selectedNode = selectedNode;

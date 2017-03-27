@@ -16,6 +16,7 @@ public class Case implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Deprecated
 	public Case() {
 		super();
 		this.id = ObjectId.get().toString();

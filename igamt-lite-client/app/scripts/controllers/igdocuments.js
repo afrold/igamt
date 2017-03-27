@@ -1281,10 +1281,13 @@ angular.module('igl')
 
                             }
 
+                            $rootScope.updateDynamicMappingInfo();
+
                             $rootScope.references = [];
                             angular.forEach($rootScope.igdocument.profile.messages.children, function(message) {
                                 $rootScope.findSegmentRefs($rootScope.segment, message, '', '', message);
                             });
+
                             $scope.loadingSelection = false;
                             $rootScope.$emit("event:initEditArea");
                             blockUI.stop();

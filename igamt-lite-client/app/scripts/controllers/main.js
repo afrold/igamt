@@ -1413,6 +1413,39 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
     };
 
+    $rootScope.updateDynamicMappingInfo = function (){
+        $rootScope.isDynamicMappingSegment = false;
+        $rootScope.dynamicMappingTable = null;
+
+        var mappingStructure = _.find($rootScope.config.variesMapItems, function(item) {
+            return item.hl7Version == $rootScope.segment.hl7Version && item.segmentName == $rootScope.segment.name;
+        });
+
+        if(mappingStructure){
+            $rootScope.isDynamicMappingSegment = true;
+            console.log("=========This is DM segment!!=========");
+
+            if($rootScope.segment.dynamicMappingDefinition && $rootScope.segment.dynamicMappingDefinition.mappingStructure){
+                console.log("=========Found mapping structure!!=========");
+                mappingStructure = $rootScope.segment.dynamicMappingDefinition.mappingStructure;
+            }else{
+                console.log("=========Not Found mapping structure and Default setting will be used!!=========");
+            }
+
+            var valueSetBinding = _.find($rootScope.segment.valueSetBindings, function(vsb) {
+                return vsb.location == mappingStructure.referenceLocation;
+            });
+
+            if(valueSetBinding) {
+                TableService.getOne(valueSetBinding.tableId).then(function(tbl) {
+                    $rootScope.dynamicMappingTable = tbl;
+                }, function() {
+
+                });
+            }
+        }
+    };
+
     $rootScope.checkedDatatype = null;
 
     $rootScope.rebuildTreeFromDatatype = function(data) {
