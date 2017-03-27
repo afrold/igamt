@@ -1093,7 +1093,7 @@ angular.module('igl')
 
             }
         }).result.then(function(results) {
-           
+
             $rootScope.editPC(results)
             if ($scope.profileComponentParams)
                 $scope.profileComponentParams.refresh();
@@ -1302,6 +1302,8 @@ angular.module('igl')
                     try {
                         SegmentService.get(segment.id).then(function(result) {
                             $rootScope.segment = angular.copy(segment);
+                            console.log("$rootscope.segment");
+                            console.log($rootScope.segment);
                             $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
                             $rootScope.$emit("event:initSegment");
                             $rootScope.currentData = $rootScope.segment;
@@ -1375,7 +1377,6 @@ angular.module('igl')
     };
 
     $scope.selectDatatype = function(datatype) {
-        console.log(datatype);
         $rootScope.Activate(datatype.id);
         $rootScope.subview = "EditDatatypes.html";
         if (datatype && datatype != null) {
@@ -1386,6 +1387,8 @@ angular.module('igl')
                     try {
                         DatatypeService.getOne(datatype.id).then(function(result) {
                             $rootScope.datatype = angular.copy(result);
+                            console.log("$rootscope.datatype");
+                            console.log($rootScope.datatype);
                             $rootScope.$emit("event:initDatatype");
 
                             $rootScope.currentData = datatype;
@@ -1518,7 +1521,7 @@ angular.module('igl')
     $scope.applyPcToParams = new ngTreetableParams({
         getNodes: function(parent) {
             if ($rootScope.profileComponent.compositeProfileStructureList && $rootScope.profileComponent.compositeProfileStructureList.length > 0) {
-              
+
                 return getAppliedCompositeProfilesByIds($rootScope.profileComponent.compositeProfileStructureList);
 
 
@@ -1531,7 +1534,7 @@ angular.module('igl')
     $scope.profileComponentParams = new ngTreetableParams({
         getNodes: function(parent) {
             if ($rootScope.igdocument.profile.profileComponentLibrary !== undefined) {
-               
+
                 return orderByFilter($rootScope.profileComponent.children, 'position');
 
             }
@@ -1541,7 +1544,7 @@ angular.module('igl')
         }
     });
     $scope.selectPc = function() {
-        
+
         $rootScope.Activate($rootScope.profileComponent.id);
         $rootScope.subview = "EditProfileComponent.html";
         $scope.loadingSelection = true;
@@ -1631,38 +1634,65 @@ angular.module('igl')
             return 'compositeProfileTable';
         }
     });
-    var buildCpDatatype = function(datatype, datatypesMap) {
+    var buildCpDatatype = function(path, segPath, segmentId, type, fieldDatatype, datatype, datatypesMap) {
         datatype.components.sort(function(a, b) { return a.position - b.position });
         for (var i = 0; i < datatype.components.length; i++) {
-            buildCpDatatype(datatypesMap[datatype.components[i].datatype.id], datatypesMap);
-            datatype.components[i].datatype = datatypesMap[datatype.components[i].datatype.id];
+            datatype.components[i].path = path + "." + datatype.components[i].position + "[1]";
+            datatype.components[i].segmentPath = segPath + "." + datatype.components[i].position;
+            datatype.components[i].segment = segmentId;
+            if (type === "field") {
+                datatype.components[i].fieldDT = datatype.id;
+            } else if (type === "component") {
+                datatype.components[i].componentDT = datatype.id;
+                datatype.components[i].fieldDT = fieldDatatype;
+
+            }
+            var dt = angular.copy(datatypesMap[datatype.components[i].datatype.id]);
+            buildCpDatatype(datatype.components[i].path, datatype.components[i].segmentPath, datatype.components[i].segment, "component",fieldDatatype, dt, datatypesMap);
+            datatype.components[i].datatype = dt;
         }
     };
-    var buildCpSegment = function(segment, datatypesMap) {
+    var buildCpSegment = function(path, segment, datatypesMap) {
         segment.fields.sort(function(a, b) { return a.position - b.position });
+
         for (var i = 0; i < segment.fields.length; i++) {
-            buildCpDatatype(datatypesMap[segment.fields[i].datatype.id], datatypesMap);
-            segment.fields[i].datatype = datatypesMap[segment.fields[i].datatype.id];
+            segment.fields[i].path = path + "." + segment.fields[i].position + "[1]";
+            segment.fields[i].segmentPath = segment.fields[i].position;
+            segment.fields[i].segment = segment.id;
+            var dt = angular.copy(datatypesMap[segment.fields[i].datatype.id]);
+            buildCpDatatype(segment.fields[i].path, segment.fields[i].segmentPath, segment.fields[i].segment, "field", segment.fields[i].datatype.id, dt, datatypesMap);
+            segment.fields[i].datatype = dt;
         }
     };
-    var buildCpSegmentRef = function(segmentRef, segmentsMap, datatypesMap) {
-        buildCpSegment(segmentsMap[segmentRef.ref.id], datatypesMap);
-        segmentRef.ref = segmentsMap[segmentRef.ref.id];
+    var buildCpSegmentRef = function(path, segmentRef, segmentsMap, datatypesMap) {
+        var seg = angular.copy(segmentsMap[segmentRef.ref.id]);
+        buildCpSegment(path, seg, datatypesMap);
+        segmentRef.ref = seg;
     };
-    var buildCompositeProfile = function(children, segmentsMap, datatypesMap) {
+    var buildCompositeProfile = function(path, children, segmentsMap, datatypesMap) {
         for (var i = 0; i < children.length; i++) {
+            if (path === null) {
+                children[i].path = children[i].position + "[1]";
+
+            } else {
+                children[i].path = path + "." + children[i].position + "[1]";
+
+            }
             if (children[i].type === "segmentRef") {
-                buildCpSegmentRef(children[i], segmentsMap, datatypesMap);
+                buildCpSegmentRef(children[i].path, children[i], segmentsMap, datatypesMap);
             } else if (children[i].type === "group") {
-                buildCompositeProfile(children[i].children, segmentsMap, datatypesMap);
+                buildCompositeProfile(children[i].path, children[i].children, segmentsMap, datatypesMap);
             }
         }
     };
     $scope.selectCp = function(cp) {
         $rootScope.originalCompositeProfileStructure = cp;
         $rootScope.compositeProfileStructure = angular.copy(cp);
+        // for (var i = 0; i < $rootScope.compositeProfile.children.length; i++) {
+        //     $rootScope.compositeProfile.children[i].path = "1[1]";
+        // }
 
-        buildCompositeProfile($rootScope.compositeProfile.children, $rootScope.compositeProfile.segmentsMap, $rootScope.compositeProfile.datatypesMap);
+        buildCompositeProfile(null, $rootScope.compositeProfile.children, $rootScope.compositeProfile.segmentsMap, $rootScope.compositeProfile.datatypesMap);
         console.log("$rootScope.compositeProfile");
         console.log($rootScope.compositeProfile);
         console.log($rootScope.messages.children);
@@ -1670,9 +1700,9 @@ angular.module('igl')
 
         $rootScope.compositeProfile.coreMessageMetaData = {
             name: $rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].name,
-            identifier : $rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].identifier,
-            description:$rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].description,
-            comment:$rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].comment
+            identifier: $rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].identifier,
+            description: $rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].description,
+            comment: $rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].comment
         };
         $rootScope.compositeProfile.appliedProfileComponents = [];
         for (var i = 0; i < $rootScope.compositeProfile.profileComponents.length; i++) {
@@ -3738,9 +3768,9 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
         $scope.compositeProfileStructure = compositeProfileStructure;
         $rootScope.coreMessageMetaData = {
             name: $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].name,
-            identifier : $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].identifier,
-            description:$rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].description,
-            comment:$rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].comment
+            identifier: $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].identifier,
+            description: $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].description,
+            comment: $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].comment
         };
         var usedPcs = [];
         for (var i = 0; i < $rootScope.profileComponents.length; i++) {

@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 " ng-show="profileComponent.children.length>0">
-                                    <table  class="table table-bordered table-fix-header table-condensed profile-table">
+                                    <table class="table table-bordered table-fix-header table-condensed profile-table">
                                         <thead>
                                             <tr class="tbl-header" style="">
                                                 <th class="col-md-1 col-fixed-250" rowspan="2">Position</th>
@@ -130,9 +130,6 @@
 
                                                 </td>
                                                 <td ng-class="{'col-md-2 col-fixed-80 select-change':node.attributes.usage,'col-md-2 col-fixed-80':!node.attributes.usage}">
-                                                    <!--<a ng-click="edit=true;" ng-hide="edit || node.attributes.usage "><i class="fa fa-plus fa-fw"></i></a>-->
-                                                    <!--<select ng-change="setDirty()" class="form-control input-sm" ng-model="node.attributes.usage" name="usage" ng-options="usage for usage in config.usages" ng-selected="node.attributes.oldUsage" style="width: auto;">-->
-                                                    <!--</select> ng-selected="node.attributes.usage===null && node.attributes.oldUsage===usage"-->
                                                     <select ng-init="initUsage(node)" name="usage" ng-change="setDirty();updateUsage(node);" class="form-control input-sm" ng-model="node.usage">
                                                         <option ng-repeat="usage in config.usages">{{usage}}</option>
                                                     </select>
@@ -184,26 +181,26 @@
                                                 <td ng-show="showConfLength()" class="col-md-2 col-fixed-350 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
 
                                                 </td>
-                                                <td class="col-md-2 col-fixed-350 " ng-if="node.type==='field' || node.type==='component'">
-                                                    <a class="point" ng-show="editableDT!==node.id" ng-click="redirectDT(node.attributes.datatype)">
-                                                        {{getDatatypeLabel(datatypesMap[node.attributes.datatype.id])}}
+                                                <td ng-class="{'col-md-2 col-fixed-350 input-change ':node.attributes.datatype,'col-md-2 col-fixed-350':!node.attributes.datatype}" ng-if="node.type==='field' || node.type==='component'">
+                                                    <a ng-init="initDatatype(node)" class="point" ng-show="editableDT!==node.id" ng-click="redirectDT(node.datatype)">
+                                                        {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
                                                     </a>
-                                                    <a ng-show="editableDT!==node.id&&node.attributes.datatype" ng-click="editDT(node)" class="point">
+                                                    <a ng-show="editableDT!==node.id&&node.datatype" ng-click="editDT(node)" class="point">
                                                         <span><i class="fa fa-pencil fa-fw"></i></span>
                                                     </a>
-                                                    <a ng-click="editDatatype=true;editDT(node);" ng-hide="node.attributes.datatype||editableDT===node.id"><i class="fa fa-plus fa-fw"></i></a>
-                                                    <select ng-show="editableDT===node.id" ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control">
-                                                        <option ng-repeat="datatype in datatypes" value="{{datatype}}" > {{getDatatypeLabel(datatype)}} {{::datatype.hl7Version}}
+                                                    <a ng-click="editDatatype=true;editDT(node);" ng-hide="node.datatype||editableDT===node.id"><i class="fa fa-plus fa-fw"></i></a>
+                                                    <select ng-show="editableDT===node.id" ng-model="node.datatype" ng-change="selectDT(node)" class="form-control">
+                                                        <option ng-repeat="datatype in datatypes" value="{{datatype}}" ng-selected="node.datatype.id===datatype.id"> {{getDatatypeLabel(datatype)}} {{::datatype.hl7Version}}
                                                         </option>
                                                         <option ng-click="otherDT(node)" value="Others"> Others</option>
                                                     </select>
-                                                    <a ng-click="editDatatype=false;cancelDatatype(node)" ng-show="node.attributes.datatype||editableDT===node.id"><i class="fa fa-remove fa-fw"></i></a>
+                                                    <a ng-click="editDatatype=false;cancelDatatype(node)" ng-show="node.datatype||editableDT===node.id"><i class="fa fa-remove fa-fw"></i></a>
                                                 </td>
 
 
                                                 <td class="col-md-1 col-fixed-330 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
                                                 </td>
-                                                <td class="col-md-1 col-fixed-330" ng-if="node.type==='field' || node.type==='component'">
+                                                <!--<td class="col-md-1 col-fixed-330" ng-if="node.type==='field' || node.type==='component'">
 
                                                     <div ng-if="node.attributes.tables && node.attributes.tables.length!==0 ">
                                                         <a class="point" ng-repeat="table in node.attributes.tables">
@@ -221,6 +218,21 @@
                                                     </div>
                                                     <a ng-click="cancelTables(node)" ng-show="node.attributes.tables"><i class="fa fa-remove fa-fw"></i></a>
 
+                                                </td>-->
+                                                <td ng-class="{'emptyCol':!isAvailableForValueSet(node),'input-change':(node.valueSetBindings && node.valueSetBindings.length>0)}" style="text-align:center">
+                                                    <div ng-show="isAvailableForValueSet(node)">
+                                                        <div ng-repeat="binding in findingBindings(node)">
+                                                            <span class="badge" ng-class="{'label-MAIN' : !binding.bindingFrom, 'label-CHILD' : binding.bindingFrom == 'segment', 'label-SUBCHILD' : binding.bindingFrom == 'component'}">
+                                                                <span title="For {{getValueSetContext(node)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                                                            <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'segment'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw"></i></span>
+                                                            </span>
+                                                        </div>
+                                                        <a  class="point">
+                                                            <span ng-click="editModalBindingForMsg(node)"><i class="fa fa-plus fa-fw"></i></span>
+                                                            <a ng-click="cancelBinding(node)"><i class="fa fa-remove fa-fw"></i></a>
+
+                                                        </a>
+                                                    </div>
                                                 </td>
 
 
@@ -263,7 +275,8 @@
                                                 </td>
                                             </tr>
                                             <tr class="dndPlaceholder">
-                                                <td colspan="13" style="height:20px; background-color:lightgrey"> Drop Here</td> </tr>
+                                                <td colspan="13" style="height:20px; background-color:lightgrey"> Drop Here</td>
+                                            </tr>
                                         </tbody>
                                     </table>
 

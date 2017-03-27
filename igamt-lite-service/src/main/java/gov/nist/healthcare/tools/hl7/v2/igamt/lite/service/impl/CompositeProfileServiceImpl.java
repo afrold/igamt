@@ -106,7 +106,7 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
       pcs.add(profileComponentService.findById(pc.getId()));
     }
 
-    List<PathGroup> pathGroups = pathGroupService.buildPathGroups(coreMessage, pcs);
+    List<PathGroup> pathGroups = pathGroupService.buildPathGroups(coreMessage, pcs, segmentsMap);
     if (!pathGroups.isEmpty()) {
       pathGroups = pathGroups.get(0).getChildren();
     }
@@ -118,6 +118,9 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     compositeProfile.setMessageType(coreMessage.getMessageType());
     compositeProfile.setIdentifier(coreMessage.getIdentifier());
     compositeProfile.setChildren(coreMessage.getChildren());
+    compositeProfile.setValueSetBindings(coreMessage.getValueSetBindings());
+    compositeProfile.setSingleElementValues(coreMessage.getSingleElementValues());
+    compositeProfile.setComments(coreMessage.getComments());
     browse(compositeProfile, pathGroups);
     compositeProfile.setSegmentsMap(queryService.getSegmentsMap());
     compositeProfile.setDatatypesMap(queryService.getDatatypesMap());

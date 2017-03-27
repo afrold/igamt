@@ -7,20 +7,18 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Ismail Mellouli (NIST) Mar 14, 2017
+ * that they have been modified. Ismail Mellouli (NIST) Mar 24, 2017
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Comparator;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PathGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+public class SubProfileComponentComparator implements Comparator<SubProfileComponent> {
 
-public interface PathGroupService {
-  public List<PathGroup> buildPathGroups(Message coreMessage, List<ProfileComponent> pcs,
-      Map<String, Segment> segmentsMap);
+  @Override
+  public int compare(SubProfileComponent s1, SubProfileComponent s2) {
+    return s1.getPosition() - s2.getPosition();
+  }
+
 }

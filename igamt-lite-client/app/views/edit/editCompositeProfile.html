@@ -22,7 +22,7 @@
                             <tab-heading>
                                 <i class="fa fa-code-fork fa-fw" aria-hidden="true"></i> Composite Profile Structure
                             </tab-heading>
-                            <div style="margin-top: 20px" >
+                            <div style="margin-top: 20px">
                                 <div class="row margin-0 full-width hidden-xs">
                                     <div class="yy-timeline-box" ng-class-odd="'left'" ng-class-even="'right'">
                                         <div class="yy-timeline-box-inner">
@@ -61,56 +61,56 @@
                                     </div>
                                 </div>
                                 <div dnd-list="compositeProfile.appliedProfileComponents">
-                                <div class="column margin-0 full-width hidden-xs" ng-repeat="pcInfo in compositeProfile.appliedProfileComponents" dnd-draggable="pcInfo" dnd-moved="compositeProfile.appliedProfileComponents.splice($index, 1);changePosition()">
-                                    
-                                    <div class="yy-timeline-box" ng-class-odd="'left'" ng-class-even="'right'">
-                                        <div class="yy-timeline-box-inner">
-                                            <span class="yy-timeline-date"> {{pcInfo.position}} </span>
-                                           
-                                            <div class="yy-timeline-image-container"  >
-                                                <img src="images/circle.gif" alt="" />
-                                            </div>
-                                            <div class="yy-timeline-content" >
-                                                <div align="center">
-                                                    <h5>Profile Component {{pcInfo.position}}</h5>
+                                    <div class="column margin-0 full-width hidden-xs" ng-repeat="pcInfo in compositeProfile.appliedProfileComponents" dnd-draggable="pcInfo" dnd-moved="compositeProfile.appliedProfileComponents.splice($index, 1);changePosition()">
+
+                                        <div class="yy-timeline-box" ng-class-odd="'left'" ng-class-even="'right'">
+                                            <div class="yy-timeline-box-inner">
+                                                <span class="yy-timeline-date"> {{pcInfo.position}} </span>
+
+                                                <div class="yy-timeline-image-container">
+                                                    <img src="images/circle.gif" alt="" />
                                                 </div>
-                                                <div>
-                                                    <table>
-                                                        <tr>
-                                                            <td>Name : </td>
-                                                            <td>{{pcInfo.pc.name}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Description : </td>
-                                                            <td>{{pcInfo.pc.description}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Comment : </td>
-                                                            <td>{{pcInfo.pc.comment}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Date Updated : </td>
-                                                            <td>{{pcInfo.pc.dateUpdated | date:dateFormat}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Date Applied : </td>
-                                                            <td>{{pcInfo.pcDate | date:dateFormat}}</td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div align="right">
-                                                    <button class="btn btn-raised btn-primary btn-xs" ng-click="removePc(pcInfo.pc.id)"><span><i class="fa fa-times fa-fw">
+                                                <div class="yy-timeline-content">
+                                                    <div align="center">
+                                                        <h5>Profile Component {{pcInfo.position}}</h5>
+                                                    </div>
+                                                    <div>
+                                                        <table>
+                                                            <tr>
+                                                                <td>Name : </td>
+                                                                <td>{{pcInfo.pc.name}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Description : </td>
+                                                                <td>{{pcInfo.pc.description}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Comment : </td>
+                                                                <td>{{pcInfo.pc.comment}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Date Updated : </td>
+                                                                <td>{{pcInfo.pc.dateUpdated | date:dateFormat}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Date Applied : </td>
+                                                                <td>{{pcInfo.pcDate | date:dateFormat}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div align="right">
+                                                        <button class="btn btn-raised btn-primary btn-xs" ng-click="removePc(pcInfo.pc.id)"><span><i class="fa fa-times fa-fw">
                                                         &nbsp; </i>remove</span>
                                                     </button>
+                                                    </div>
+
                                                 </div>
 
                                             </div>
-                                           
                                         </div>
+
                                     </div>
-                                   
-                                </div>
-                                <div class="dndPlaceholder" style="height:100px;" align="center">Drop Here</div>
+                                    <div class="dndPlaceholder" style="height:100px;" align="center">Drop Here</div>
 
                                 </div>
 
@@ -329,12 +329,28 @@
 
         <td class="col-md-1 col-fixed-33 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
         </td>
-        <td class="col-md-1 col-fixed-33" ng-if="node.type==='field' || node.type==='component'">
+        <!--<td class="col-md-1 col-fixed-33" ng-if="node.type==='field' || node.type==='component'">
 
             <a class="point" ng-repeat="table in node.tables">
                 <span>{{table.bindingIdentifier}}</span>
             </a>
 
+        </td>-->
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}"  style="text-align:center">
+            <div ng-show="isAvailableForValueSet(node)">
+                <div ng-repeat="binding in findingBindings(node)">
+                    <span class="badge" ng-class="{'label-MAIN' : binding.bindingFrom == 'compositeProfile', 'label-CHILD' : binding.bindingFrom == 'segment', 'label-SUBCHILD' : binding.bindingFrom == 'field', 'label-SUBSUBCHILD' : binding.bindingFrom == 'component'}">
+                        <span title="For this compositeProfile" ng-show="binding.bindingFrom == 'compositeProfile'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                    <span title="For {{getSegmentLabel(compositeProfile.segmentsMap[node.segment])}}" ng-show="binding.bindingFrom == 'segment'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                    <span title="For {{getDatatypeLabel(compositeProfile.datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                    <span title="For {{getDatatypeLabel(compositeProfile.datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                    <!--<span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'compositeProfile'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw"></i></span>-->
+                    </span>
+                </div>
+                <!--<a ng-click="editModalBindingForMsg(node)" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>-->
+            </div>
         </td>
 
 

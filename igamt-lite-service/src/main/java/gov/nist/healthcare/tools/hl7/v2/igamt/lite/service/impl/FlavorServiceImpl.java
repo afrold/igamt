@@ -27,6 +27,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PathGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FlavorService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.QueryService;
 
@@ -36,6 +37,8 @@ public class FlavorServiceImpl implements FlavorService {
 
   @Autowired
   QueryService queryService;
+  @Autowired
+  DatatypeService datatypeService;
 
   @Override
   public DataModel createFlavor(DataModel dm, List<SubProfileComponentAttributes> attributes,
@@ -44,7 +47,6 @@ public class FlavorServiceImpl implements FlavorService {
       SegmentRef segRef = (SegmentRef) dm;
       if (attributes != null && !attributes.isEmpty()) {
         for (SubProfileComponentAttributes attr : attributes) {
-
           if (attr.getComment() != null) {
             segRef.setComment(attr.getComment());
           }
@@ -82,6 +84,7 @@ public class FlavorServiceImpl implements FlavorService {
 
     } else if (dm instanceof Field) {
       Field field = (Field) dm;
+      System.out.println("FIELD : " + field.getName());
       if (attributes != null && !attributes.isEmpty()) {
         for (SubProfileComponentAttributes attr : attributes) {
           if (attr.getComment() != null) {
@@ -105,6 +108,14 @@ public class FlavorServiceImpl implements FlavorService {
           if (attr.getMinLength() != null) {
             field.setMinLength(attr.getMinLength());
           }
+          if (attr.getDatatype() != null) {
+            if (!queryService.getDatatypesMap().containsKey(attr.getDatatype().getId())) {
+              Datatype d = datatypeService.findById(attr.getDatatype().getId());
+              queryService.getDatatypesMap().put(d.getId(), d);
+            }
+            field.setDatatype(attr.getDatatype());
+
+          }
         }
       }
       if (!pathGroups.isEmpty()) {
@@ -126,7 +137,9 @@ public class FlavorServiceImpl implements FlavorService {
       return field;
 
     } else if (dm instanceof Component) {
+
       Component component = (Component) dm;
+      System.out.println("COMPONENT: " + component.getName());
       if (attributes != null && !attributes.isEmpty()) {
         for (SubProfileComponentAttributes attr : attributes) {
           if (attr.getComment() != null) {
@@ -143,6 +156,13 @@ public class FlavorServiceImpl implements FlavorService {
           }
           if (attr.getMinLength() != null) {
             component.setMinLength(attr.getMinLength());
+          }
+          if (attr.getDatatype() != null) {
+            if (!queryService.getDatatypesMap().containsKey(attr.getDatatype().getId())) {
+              Datatype d = datatypeService.findById(attr.getDatatype().getId());
+              queryService.getDatatypesMap().put(d.getId(), d);
+            }
+            component.setDatatype(attr.getDatatype());
           }
         }
       }

@@ -2,7 +2,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +23,7 @@ public class ProfileComponent
   private String Comment;
   private Date dateUpdated;
   private List<String> compositeProfileStructureList;
-  private Set<SubProfileComponent> children = new HashSet<SubProfileComponent>();
+  private List<SubProfileComponent> children = new ArrayList<SubProfileComponent>();
 
 
 
@@ -109,12 +108,12 @@ public class ProfileComponent
 
 
 
-  public Set<SubProfileComponent> getChildren() {
+  public List<SubProfileComponent> getChildren() {
     return children;
   }
 
 
-  public void setChildren(Set<SubProfileComponent> children) {
+  public void setChildren(List<SubProfileComponent> children) {
     this.children = children;
   }
 

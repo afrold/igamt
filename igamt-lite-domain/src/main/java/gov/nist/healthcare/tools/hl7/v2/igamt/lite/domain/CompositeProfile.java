@@ -59,6 +59,13 @@ public class CompositeProfile extends DataModelWithConstraints
   Map<String, Table> tablesMap;
 
 
+  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
+
+  private List<Comment> comments = new ArrayList<Comment>();
+
+  private List<SingleElementValue> singleElementValues = new ArrayList<SingleElementValue>();
+
+
 
   public String getCoreProfileId() {
     return coreProfileId;
@@ -198,6 +205,31 @@ public class CompositeProfile extends DataModelWithConstraints
 
   public void setTablesMap(Map<String, Table> tablesMap) {
     this.tablesMap = tablesMap;
+  }
+
+
+  public List<ValueSetBinding> getValueSetBindings() {
+    return valueSetBindings;
+  }
+
+  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+    this.valueSetBindings = valueSetBindings;
+  }
+
+  public List<Comment> getComments() {
+    return comments;
+  }
+
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
+  }
+
+  public List<SingleElementValue> getSingleElementValues() {
+    return singleElementValues;
+  }
+
+  public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
+    this.singleElementValues = singleElementValues;
   }
 
   @Override

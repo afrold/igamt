@@ -153,7 +153,7 @@ public class compositeProfileControllerTest {
   }
 
   public ProfileComponent createProfileComponent(String name, String id,
-      Set<SubProfileComponent> subPc) {
+      List<SubProfileComponent> subPc) {
     ProfileComponent pc = new ProfileComponent();
     pc.setName(name);
     pc.setId(id);
@@ -184,7 +184,6 @@ public class compositeProfileControllerTest {
   public SubProfileComponent createSubProfileComponent(String itemId,
       SubProfileComponentAttributes attributes) {
     SubProfileComponent subPc = new SubProfileComponent();
-    subPc.setItemId(itemId);
     subPc.setAttributes(attributes);
     return subPc;
   }
@@ -192,7 +191,6 @@ public class compositeProfileControllerTest {
   public ApplyInfo createApplyInfo(Integer position, ProfileComponent pc) {
     ApplyInfo a = new ApplyInfo();
     a.setPosition(position);
-    a.setName(pc.getName());
     a.setId(pc.getId());
     return a;
   }
@@ -240,7 +238,7 @@ public class compositeProfileControllerTest {
 
     SubProfileComponent subPc2 =
         createSubProfileComponent("segRef1", createPcAttributesForSegmentRef(Usage.RE, 1, "2"));
-    Set<SubProfileComponent> subPcs = new HashSet<>();
+    List<SubProfileComponent> subPcs = new ArrayList<>();
     subPcs.add(subPc1);
     subPcs.add(subPc2);
     ProfileComponent profileComponent = createProfileComponent("pc1", "pc1", subPcs);
@@ -289,7 +287,6 @@ public class compositeProfileControllerTest {
     for (ProfileComponent pc : profileComponentService
         .findByIds(compositeProfileStructure.getProfileComponentIds())) {
       for (SubProfileComponent subPc : pc.getChildren()) {
-        itemsMap.put(subPc.getItemId(), subPc.getAttributes());
       }
     }
     for (SegmentRefOrGroup segRefOrGrp : comp.getChildren()) {

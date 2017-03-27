@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.annotation.Id;
 
@@ -14,11 +17,14 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   @Id
   private String id;
   private SubProfileComponentAttributes attributes;
-  private String itemId;
+
   private String path;
-  private String pathExp;
   private Integer position;
   private Integer priority;
+  private String type;
+  private String name;
+  private List<ValueSetBinding> oldValueSetBindings = new ArrayList<ValueSetBinding>();
+  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
 
 
   public String getId() {
@@ -30,24 +36,6 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   }
 
 
-  public String getItemId() {
-    return itemId;
-  }
-
-  public void setItemId(String itemId) {
-    this.itemId = itemId;
-  }
-
-  public String getPathExp() {
-    return pathExp;
-  }
-
-  public void setPathExp(String pathExp) {
-    this.pathExp = pathExp;
-  }
-
-  private String type;
-  private String name;
 
   public String getName() {
     return name;
@@ -96,6 +84,24 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   public void setPriority(Integer priority) {
     this.priority = priority;
+  }
+
+
+
+  public List<ValueSetBinding> getOldValueSetBindings() {
+    return oldValueSetBindings;
+  }
+
+  public void setOldValueSetBindings(List<ValueSetBinding> oldValueSetBindings) {
+    this.oldValueSetBindings = oldValueSetBindings;
+  }
+
+  public List<ValueSetBinding> getValueSetBindings() {
+    return valueSetBindings;
+  }
+
+  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+    this.valueSetBindings = valueSetBindings;
   }
 
   @Override

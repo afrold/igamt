@@ -2146,12 +2146,13 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance,
         field.datatype = {
             id: $scope.newDt.id,
             name: $scope.newDt.name,
-            ext: $scope.newDt.ext
+            ext: $scope.newDt.ext,
+            label:$scope.newDt.label
         };
 
         blockUI.stop();
 
-        $modalInstance.close();
+        $modalInstance.close(field);
 
 
     };

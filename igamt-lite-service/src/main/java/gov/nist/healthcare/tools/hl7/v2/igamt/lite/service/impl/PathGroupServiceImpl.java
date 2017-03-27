@@ -13,7 +13,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -21,10 +23,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PathGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentComparator;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PathGroupService;
 
 @Service
@@ -32,7 +37,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PathGroupService;
 public class PathGroupServiceImpl implements PathGroupService {
 
   @Override
-  public List<PathGroup> buildPathGroups(Message coreMessage, List<ProfileComponent> pcs) {
+  public List<PathGroup> buildPathGroups(Message coreMessage, List<ProfileComponent> pcs,
+      Map<String, Segment> segmentsMap) {
     List<PathGroup> pathGroups = new ArrayList<>();
 
     for (ProfileComponent pc : pcs) {
@@ -43,14 +49,12 @@ public class PathGroupServiceImpl implements PathGroupService {
           String[] elements = subPc.getPath().split("\\.", 2);
           String segName = elements[0];
           String segPath = coreMessage.getStructID();
-          List<SubProfileComponent> newSubPcs =
-              addMultipleFromSegmentName(subPc, coreMessage.getChildren(), segName, segPath);
+          List<SubProfileComponent> newSubPcs = addMultipleFromSegmentName(subPc,
+              coreMessage.getChildren(), segName, segPath, segmentsMap);
           toRemove.add(subPc);
           toAdd.addAll(newSubPcs);
-          System.out.println("MULtiple: " + subPc.getPath());
         } else {
-          System.out
-              .println("pc : " + pc.getName() + " Usage : " + subPc.getAttributes().getUsage());
+
 
         }
 
@@ -58,10 +62,36 @@ public class PathGroupServiceImpl implements PathGroupService {
       pc.getChildren().removeAll(toRemove);
       pc.getChildren().addAll(toAdd);
     }
+    for (ProfileComponent p : pcs) {
+      for (SubProfileComponent sub : p.getChildren()) {
+        List<ValueSetBinding> toRemove = new ArrayList<>();
+        if (!sub.getPath().startsWith(coreMessage.getStructID())) {
+
+        } else {
+          if (sub.getValueSetBindings() != null) {
+            for (ValueSetBinding v : sub.getValueSetBindings()) {
+              for (ValueSetBinding vsb : coreMessage.getValueSetBindings()) {
+                if (v.getLocation().equals(vsb.getLocation())) {
+                  toRemove.add(vsb);
+                }
+              }
+            }
+            coreMessage.getValueSetBindings().removeAll(toRemove);
+            coreMessage.getValueSetBindings().addAll(sub.getValueSetBindings());
+
+
+          }
+
+        }
+      }
+    }
 
 
 
     for (ProfileComponent pc : pcs) {
+      // order subPcs
+      SubProfileComponentComparator Comp = new SubProfileComponentComparator();
+      Collections.sort(pc.getChildren(), Comp);
       for (SubProfileComponent subPc : pc.getChildren()) {
         add(pathGroups, subPc.getPath(), subPc.getAttributes());
 
@@ -75,15 +105,32 @@ public class PathGroupServiceImpl implements PathGroupService {
 
 
   private List<SubProfileComponent> addMultipleFromSegmentName(SubProfileComponent subPc,
-      List<SegmentRefOrGroup> children, String segLabel, String path) {
+      List<SegmentRefOrGroup> children, String segLabel, String path,
+      Map<String, Segment> segmentsMap) {
     List<SubProfileComponent> result = new ArrayList<>();
     for (SegmentRefOrGroup child : children) {
       if (child instanceof Group) {
         Group grp = (Group) child;
         String p = path + "." + grp.getPosition();
-        result.addAll(addMultipleFromSegmentName(subPc, grp.getChildren(), segLabel, p));
+        result
+            .addAll(addMultipleFromSegmentName(subPc, grp.getChildren(), segLabel, p, segmentsMap));
       } else if (child instanceof SegmentRef) {
         SegmentRef segRef = (SegmentRef) child;
+        Segment seg = segmentsMap.get(segRef.getRef().getId());
+        List<ValueSetBinding> toRemove = new ArrayList<>();
+        if (subPc.getValueSetBindings() != null) {
+          for (ValueSetBinding v : subPc.getValueSetBindings()) {
+            for (ValueSetBinding vsb : seg.getValueSetBindings()) {
+              if (v.getLocation().equals(vsb.getLocation())) {
+                toRemove.add(vsb);
+              }
+            }
+          }
+          seg.getValueSetBindings().removeAll(toRemove);
+          seg.getValueSetBindings().addAll(subPc.getValueSetBindings());
+
+
+        }
         String p = path + "." + segRef.getPosition();
         if (segRef.getRef().getLabel().equals(segLabel)) {
           SubProfileComponent sub = new SubProfileComponent();
