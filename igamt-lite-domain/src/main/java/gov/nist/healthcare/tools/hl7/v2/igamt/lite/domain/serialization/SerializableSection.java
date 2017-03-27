@@ -137,7 +137,7 @@ public class SerializableSection extends SerializableElement {
         return valueSetBindingListElement;
     }
 
-    private Table findTable(List<Table> tables, String tableId){
+    protected Table findTable(List<Table> tables, String tableId){
         if(tableId!=null && !tableId.isEmpty()) {
             for (Table table : tables) {
                 if (table != null && table.getId() != null && table.getId().equals(tableId)) {

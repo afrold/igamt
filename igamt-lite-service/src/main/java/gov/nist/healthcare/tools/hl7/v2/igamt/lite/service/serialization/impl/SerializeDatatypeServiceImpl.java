@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
+import gov.cdc.vocab.service.bean.ValueSet;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
@@ -70,9 +71,18 @@ import java.util.Map;
                 usageNote = serializationUtil.cleanRichtext(datatype.getDefPreText());
             }
             Map<Component, Datatype> componentDatatypeMap = new HashMap<>();
+            Map<Component, List<ValueSetBinding>> componentValueSetBindingsMap = new HashMap<>();
             List<Table> tables = new ArrayList<>();
             Map<Component, String> componentTextMap = new HashMap<>();
             ArrayList<Component> toBeRemovedComponents = new ArrayList<>();
+            for(ValueSetBinding valueSetBinding : datatype.getValueSetBindings()){
+                if(valueSetBinding.getTableId()!=null && !valueSetBinding.getTableId().isEmpty()){
+                    Table table = tableService.findById(valueSetBinding.getTableId());
+                    if(table!=null){
+                        tables.add(table);
+                    }
+                }
+            }
             if (hasComponentsToBeExported(datatype, datatypeUsageConfig)) {
                 for (Component component : datatype.getComponents()) {
                     if (ExportUtil.diplayUsage(component.getUsage(), datatypeUsageConfig)) {
@@ -81,6 +91,13 @@ import java.util.Map;
                             Datatype componentDatatype =
                                 datatypeService.findById(component.getDatatype().getId());
                             componentDatatypeMap.put(component, componentDatatype);
+                            List<ValueSetBinding> componentValueSetBindings = new ArrayList<>();
+                            for(ValueSetBinding valueSetBinding : datatype.getValueSetBindings()){
+                                if(valueSetBinding.getLocation().equals(String.valueOf(component.getPosition()))){
+                                    componentValueSetBindings.add(valueSetBinding);
+                                }
+                            }
+                            componentValueSetBindingsMap.put(component,componentValueSetBindings);
                         }
 
                         if (component.getText() != null && !component.getText().isEmpty()) {
@@ -95,14 +112,6 @@ import java.util.Map;
                     datatype.getComponents().remove(component);
                 }
             }
-            for(ValueSetBinding valueSetBinding : datatype.getValueSetBindings()){
-                if(valueSetBinding.getTableId()!=null && !valueSetBinding.getTableId().isEmpty()){
-                    Table table = tableService.findById(valueSetBinding.getTableId());
-                    if(table!=null){
-                        tables.add(table);
-                    }
-                }
-            }
             Boolean showConfLength = serializationUtil.isShowConfLength(datatype.getHl7Version());
             SerializableDatatype serializedDatatype = null;
             if (datatype.getName().equals("DTM")) {
@@ -111,13 +120,13 @@ import java.util.Map;
                 serializedDatatype =
                     new SerializableDateTimeDatatype(id, prefix, String.valueOf(position),
                         headerLevel, title, datatype, defPreText, defPostText, usageNote,
-                        constraintsList, componentDatatypeMap, tables, componentTextMap,
+                        constraintsList, componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap,
                         showConfLength, dateValues);
             } else {
                 serializedDatatype =
                     new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,
                         title, datatype, defPreText, defPostText, usageNote, constraintsList,
-                        componentDatatypeMap, tables, componentTextMap, showConfLength);
+                        componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap, showConfLength);
             }
             return serializedDatatype;
         }

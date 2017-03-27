@@ -1,15 +1,14 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
 import nu.xom.Element;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +30,7 @@ public class SerializableDatatype extends SerializableSection {
     private Datatype datatype;
     private List<SerializableConstraint> constraints;
     private Map<Component,Datatype> componentDatatypeMap;
+    private Map<Component,List<ValueSetBinding>> componentValueSetBindingsMap;
     private String defPreText, defPostText, usageNote;
     private Map<Component,String> componentTextMap;
     private Boolean showConfLength;
@@ -40,8 +40,11 @@ public class SerializableDatatype extends SerializableSection {
         return constraints;
     }
 
-    public SerializableDatatype(String id, String prefix, String position, String headerLevel, String title,
-        Datatype datatype, String defPreText, String defPostText, String usageNote, List<SerializableConstraint> constraints,Map<Component,Datatype> componentDatatypeMap,List<Table> tables, Map<Component,String> componentTextMap, Boolean showConfLength) {
+    public SerializableDatatype(String id, String prefix, String position, String headerLevel,
+        String title, Datatype datatype, String defPreText, String defPostText, String usageNote,
+        List<SerializableConstraint> constraints, Map<Component, Datatype> componentDatatypeMap,
+        Map<Component, List<ValueSetBinding>> componentValueSetBindingsMap, List<Table> tables,
+        Map<Component, String> componentTextMap, Boolean showConfLength) {
         super(id, prefix, position, headerLevel, title);
         this.datatype = datatype;
         this.defPreText = defPreText;
@@ -49,6 +52,7 @@ public class SerializableDatatype extends SerializableSection {
         this.usageNote = usageNote;
         this.constraints = constraints;
         this.componentDatatypeMap = componentDatatypeMap;
+        this.componentValueSetBindingsMap = componentValueSetBindingsMap;
         this.tables = tables;
         this.componentTextMap = componentTextMap;
         this.showConfLength = showConfLength;
@@ -113,6 +117,23 @@ public class SerializableDatatype extends SerializableSection {
                                 componentElement.addAttribute(new Attribute("MinLength", ""));
                                 componentElement.addAttribute(new Attribute("MaxLength", ""));
                                 componentElement.addAttribute(new Attribute("ConfLength", ""));
+                            }
+                        }
+                    }
+                    if(this.componentValueSetBindingsMap.containsKey(component)){
+                        List<ValueSetBinding> valueSetBindings = this.componentValueSetBindingsMap.get(component);
+                        if(valueSetBindings!=null && !valueSetBindings.isEmpty()){
+                            List<String> bindingIdentifierList = new ArrayList<>();
+                            for(ValueSetBinding valueSetBinding : valueSetBindings){
+                                if(valueSetBinding!=null && valueSetBinding.getTableId()!=null&&!valueSetBinding.getTableId().isEmpty()) {
+                                    Table table = super.findTable(tables, valueSetBinding.getTableId());
+                                    bindingIdentifierList.add(table.getBindingIdentifier());
+                                }
+                            }
+                            String bindingIdentifier = StringUtils.join(bindingIdentifierList,",");
+                            if(bindingIdentifier!=null && !bindingIdentifier.isEmpty()) {
+                                componentElement.addAttribute(
+                                    new Attribute("BindingIdentifier", bindingIdentifier));
                             }
                         }
                     }
