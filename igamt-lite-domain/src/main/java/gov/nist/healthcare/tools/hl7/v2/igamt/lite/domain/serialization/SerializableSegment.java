@@ -90,7 +90,12 @@ public class SerializableSegment extends SerializableSection {
                     segmentElement.appendChild(valueSetBindingListElement);
                 }
             }
-
+            if(segment.getComments()!=null && !segment.getComments().isEmpty()){
+                Element commentListElement = super.createCommentListElement(segment.getComments(),segment.getLabel());
+                if(commentListElement!=null){
+                    segmentElement.appendChild(commentListElement);
+                }
+            }
             for (int i = 0; i < segment.getFields().size(); i++) {
                 Field field = segment.getFields().get(i);
                 Element fieldElement = new Element("Field");
@@ -139,8 +144,9 @@ public class SerializableSegment extends SerializableSection {
                 fieldElement.addAttribute(new Attribute("Max", field.getMax()));
                 if (field.getItemNo() != null && !field.getItemNo().equals(""))
                     fieldElement.addAttribute(new Attribute("ItemNo", field.getItemNo()));
-                if (field.getComment() != null && !field.getComment().isEmpty())
-                    fieldElement.addAttribute(new Attribute("Comment", field.getComment()));
+                String comments = super.findComments(field.getPosition(),segment.getComments());
+                if (comments != null && !comments.isEmpty())
+                    fieldElement.addAttribute(new Attribute("Comment", comments));
                 fieldElement.addAttribute(
                     new Attribute("Position", String.valueOf(field.getPosition())));
 

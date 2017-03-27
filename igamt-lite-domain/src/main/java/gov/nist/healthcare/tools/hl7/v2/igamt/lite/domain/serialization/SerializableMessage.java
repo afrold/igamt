@@ -1,10 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,6 +86,9 @@ public class SerializableMessage extends SerializableSection {
 
         for (SerializableSegmentRefOrGroup serializableSegmentRefOrGroup : this.serializableSegmentRefOrGroups) {
             if(serializableSegmentRefOrGroup!=null) {
+                if(message.getComments()!=null && !message.getComments().isEmpty()) {
+                    this.addComments(serializableSegmentRefOrGroup);
+                }
                 messageElement.appendChild(serializableSegmentRefOrGroup.serializeElement());
             }
         }
@@ -99,9 +104,37 @@ public class SerializableMessage extends SerializableSection {
                 messageElement.appendChild(segmentSection.serializeElement());
             }
         }
-        super.createValueSetBindingListElement(message.getValueSetBindings(),tables,message.getName());
+        if(message.getValueSetBindings()!=null && !message.getValueSetBindings().isEmpty()) {
+            Element valueSetBindingListElement = super
+                .createValueSetBindingListElement(message.getValueSetBindings(), tables,
+                    message.getName());
+            if (valueSetBindingListElement != null) {
+                messageElement.appendChild(valueSetBindingListElement);
+            }
+        }
+        if(message.getComments()!=null && !message.getComments().isEmpty()) {
+            Element commentListElement = super.createCommentListElement(message.getComments(),message.getName());
+            if (commentListElement != null) {
+                messageElement.appendChild(commentListElement);
+            }
+        }
         super.sectionElement.appendChild(messageElement);
         return super.sectionElement;
+    }
+
+    private void addComments(SerializableSegmentRefOrGroup serializableSegmentRefOrGroup) {
+        String comments = "";
+        if(serializableSegmentRefOrGroup.getSegmentRef()!=null) {
+            comments = super
+                .findComments(serializableSegmentRefOrGroup.getSegmentRef().getPosition(),
+                    message.getComments());
+            serializableSegmentRefOrGroup.setComments(comments);
+        }
+        if(serializableSegmentRefOrGroup.getSegmentRefOrGroup() instanceof Group){
+            for(SerializableSegmentRefOrGroup serializableSegmentRefOrGroupChildren : serializableSegmentRefOrGroup.getSerializableSegmentRefOrGroups()){
+                addComments(serializableSegmentRefOrGroupChildren);
+            }
+        }
     }
 
     public SerializableConstraints getSerializableConformanceStatements() {

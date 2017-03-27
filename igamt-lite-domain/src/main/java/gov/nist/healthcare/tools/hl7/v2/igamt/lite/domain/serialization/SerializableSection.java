@@ -1,11 +1,14 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
 import nu.xom.Element;
+import org.apache.commons.lang3.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +104,39 @@ public class SerializableSection extends SerializableElement {
         this.sectionElement.addAttribute(titleAttribute);
     }
 
+    protected Element createCommentListElement(List<Comment> commentList, String locationPrefix){
+        Element commentListElement = new Element("CommentList");
+        if(commentList!=null && !commentList.isEmpty()){
+            for(Comment comment : commentList){
+                if(comment!=null){
+                    Element commentElement = new Element("Comment");
+                    if (comment.getLocation() != null) {
+                        String location = "";
+                        if(locationPrefix!=null && !locationPrefix.isEmpty()){
+                            location+=locationPrefix+"-";
+                        }
+                        location+=comment.getLocation();
+                        commentElement
+                            .addAttribute(new Attribute("Location", location));
+                    }
+                    if(comment.getAuthorId()!=null){
+                        commentElement.addAttribute(new Attribute("AuthorId",String.valueOf(
+                            comment.getAuthorId())));
+                    }
+                    if(comment.getLastUpdatedDate()!=null){
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm/dd/yyyy HH:mm");
+                        commentElement.addAttribute(new Attribute("Date",simpleDateFormat.format(comment.getLastUpdatedDate())));
+                    }
+                    if(comment.getDescription()!=null){
+                        commentElement.addAttribute(new Attribute("Description",comment.getDescription()));
+                    }
+                    commentListElement.appendChild(commentElement);
+                }
+            }
+        }
+        return commentListElement;
+    }
+
     protected Element createValueSetBindingListElement(List<ValueSetBinding> valueSetBindings, List<Table> tables,String locationPrefix){
         Element valueSetBindingListElement = new Element("ValueSetBindingList");
         for(ValueSetBinding valueSetBinding : valueSetBindings){
@@ -146,5 +182,15 @@ public class SerializableSection extends SerializableElement {
             }
         }
         return null;
+    }
+
+    public String findComments(Integer position, List<Comment> comments) {
+        List<String> elementComments = new ArrayList<>();
+        for(Comment comment : comments){
+            if(comment.getLocation().equals(String.valueOf(position))){
+                elementComments.add(comment.getDescription());
+            }
+        }
+        return StringUtils.join(elementComments, ", ");
     }
 }

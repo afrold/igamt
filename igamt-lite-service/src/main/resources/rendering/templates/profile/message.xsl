@@ -179,5 +179,6 @@
             </xsl:element>
         </xsl:if>
         <xsl:apply-templates select="./ValueSetBindingList"/>
+        <xsl:apply-templates select="./CommentList"/>
     </xsl:template>
 </xsl:stylesheet>

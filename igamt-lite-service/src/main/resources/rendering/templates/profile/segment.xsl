@@ -237,6 +237,7 @@
             </xsl:if>
         </xsl:for-each>
         <xsl:apply-templates select="./ValueSetBindingList"/>
+        <xsl:apply-templates select="./CommentList"/>
     </xsl:template>
 
     <xsl:template match="coconstraints">
