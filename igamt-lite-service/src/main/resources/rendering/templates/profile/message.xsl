@@ -178,5 +178,6 @@
                               select="Text[@Type='UsageNote']"/>
             </xsl:element>
         </xsl:if>
+        <xsl:apply-templates select="./ValueSetBindingList"/>
     </xsl:template>
 </xsl:stylesheet>

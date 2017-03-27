@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -28,8 +29,11 @@ public class SerializableMessage extends SerializableSection {
     private String usageNote;
     private String defPreText;
     private String defPostText;
+    private List<Table> tables;
     private boolean showConfLength;
-    public SerializableMessage(Message message, String prefix, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, SerializableConstraints serializableConformanceStatements, SerializableConstraints serializablePredicates, String usageNote,String defPreText,String defPostText, Boolean showConfLength) {
+    public SerializableMessage(Message message, String prefix, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups,
+        SerializableConstraints serializableConformanceStatements, SerializableConstraints serializablePredicates, String usageNote,
+        String defPreText, String defPostText, List<Table> tables, Boolean showConfLength) {
         super(message.getId(),
             prefix + "." + String.valueOf(message.getPosition()),
             String.valueOf(message.getPosition() + 1),
@@ -45,6 +49,7 @@ public class SerializableMessage extends SerializableSection {
         this.usageNote = usageNote;
         this.defPreText = defPreText;
         this.defPostText = defPostText;
+        this.tables = tables;
         this.showConfLength = showConfLength;
     }
 
@@ -94,6 +99,7 @@ public class SerializableMessage extends SerializableSection {
                 messageElement.appendChild(segmentSection.serializeElement());
             }
         }
+        super.createValueSetBindingListElement(message.getValueSetBindings(),tables,message.getName());
         super.sectionElement.appendChild(messageElement);
         return super.sectionElement;
     }
