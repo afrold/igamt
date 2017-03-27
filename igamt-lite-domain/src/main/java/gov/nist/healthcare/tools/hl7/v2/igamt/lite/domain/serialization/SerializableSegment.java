@@ -4,7 +4,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.*;
 import nu.xom.Attribute;
 import nu.xom.Element;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +29,17 @@ public class SerializableSegment extends SerializableSection {
     private String defPreText,defPostText,name,label,description,comment;
     private List<SerializableConstraint> constraints;
     private Map<Field,Datatype> fieldDatatypeMap;
+    private Map<Field,List<ValueSetBinding>> fieldValueSetBindingsMap;
     private List<Table> tables;
     private Map<CCValue,Table> coConstraintValueTableMap;
     private Boolean showConfLength;
 
 
     public SerializableSegment(String id, String prefix, String position, String headerLevel, String title,
-        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,List<Table> tables, Map<CCValue,Table> coConstraintValueTableMap, Boolean showConfLength) {
+        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText,
+        List<SerializableConstraint> constraints, Map<Field, Datatype> fieldDatatypeMap,
+        Map<Field, List<ValueSetBinding>> fieldValueSetBindingsMap, List<Table> tables,
+        Map<CCValue, Table> coConstraintValueTableMap, Boolean showConfLength) {
         super(id, prefix, position, headerLevel, title);
         this.segment = segment;
         this.name = name;
@@ -44,6 +50,7 @@ public class SerializableSegment extends SerializableSection {
         this.defPostText = defPostText;
         this.constraints = constraints;
         this.fieldDatatypeMap = fieldDatatypeMap;
+        this.fieldValueSetBindingsMap = fieldValueSetBindingsMap;
         this.tables = tables;
         this.coConstraintValueTableMap = coConstraintValueTableMap;
         this.showConfLength = showConfLength;
@@ -109,6 +116,23 @@ public class SerializableSegment extends SerializableSection {
                                 fieldElement
                                     .addAttribute(new Attribute("MaxLength", field.getMaxLength()));
                         }
+                }
+                if(this.fieldValueSetBindingsMap.containsKey(field)){
+                    List<ValueSetBinding> valueSetBindings = this.fieldValueSetBindingsMap.get(field);
+                    if(valueSetBindings!=null && !valueSetBindings.isEmpty()){
+                        List<String> bindingIdentifierList = new ArrayList<>();
+                        for(ValueSetBinding valueSetBinding : valueSetBindings){
+                            if(valueSetBinding!=null && valueSetBinding.getTableId()!=null&&!valueSetBinding.getTableId().isEmpty()) {
+                                Table table = super.findTable(tables, valueSetBinding.getTableId());
+                                bindingIdentifierList.add(table.getBindingIdentifier());
+                            }
+                        }
+                        String bindingIdentifier = StringUtils.join(bindingIdentifierList, ",");
+                        if(bindingIdentifier!=null && !bindingIdentifier.isEmpty()) {
+                            fieldElement.addAttribute(
+                                new Attribute("BindingIdentifier", bindingIdentifier));
+                        }
+                    }
                 }
                 fieldElement.addAttribute(new Attribute("complex",String.valueOf(isComplex)));
                 fieldElement.addAttribute(new Attribute("Min", String.valueOf(field.getMin())));
