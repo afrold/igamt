@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DTComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VariesMapItem;
 
 /**
  * @author Harold Affo (NIST)
@@ -115,6 +116,41 @@ public class WebBeanConfig {
 		bindingLocationListByHL7Version.put("2.8.2", toSet(new String[] {"1", "4", "10", "1 or 4", "1 or 4 or 10"}));
 		config.setBindingLocationListByHL7Version(bindingLocationListByHL7Version);
 		
+		Set<VariesMapItem> variesMapItems = new HashSet<VariesMapItem>();
+		variesMapItems.add(new VariesMapItem("2.8.2", "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.8.2", "MFA", "5", "6", "0355"));
+		variesMapItems.add(new VariesMapItem("2.8.2", "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.8.1", "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.8.1", "MFA", "5", "6", "0355"));
+		variesMapItems.add(new VariesMapItem("2.8.1", "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.8",   "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.8",   "MFA", "5", "6", "0355"));
+		variesMapItems.add(new VariesMapItem("2.8",   "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.7.1", "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.7.1", "MFA", "5", "6", "0355"));
+		variesMapItems.add(new VariesMapItem("2.7.1", "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.7",   "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.7",   "MFA", "5", "6", "0355"));
+		variesMapItems.add(new VariesMapItem("2.7",   "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.6",   "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.6",   "MFA", "5", "6", "0355"));
+		variesMapItems.add(new VariesMapItem("2.6",   "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.5.1", "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.5.1", "MFA", "5", "6", "0355"));
+		variesMapItems.add(new VariesMapItem("2.5.1", "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.5",   "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.5",   "MFA", "5", "6", "0355"));
+		variesMapItems.add(new VariesMapItem("2.5",   "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.4",   "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.4",   "MFA", "5", "6", "0355"));
+		variesMapItems.add(new VariesMapItem("2.4",   "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.3.1", "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.3.1", "MFA", "5", "6", "0355"));
+		variesMapItems.add(new VariesMapItem("2.3.1", "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.3",   "OBX", "5", "2", "0125"));
+		variesMapItems.add(new VariesMapItem("2.3",   "MFE", "4", "5", "0355"));
+		variesMapItems.add(new VariesMapItem("2.2",   "OBX", "5", "2", "0125"));
+		config.setVariesMapItems(variesMapItems);
 		return config;
 	}
 	

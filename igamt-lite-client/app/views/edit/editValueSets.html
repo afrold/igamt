@@ -67,11 +67,11 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Value Set MetaData
                                 </tab-heading>
                                 <div class="igl-def-table-container" style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIndentifier.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIdentifier.$invalid}">
                                         <label class="col-md-2 control-label">Mapping Identifier*</label>
 
                                         <div class="controls col-md-10">
-                                            <input ng-disabled="versionAndUseMap[table.id].sourceId" type="text" name="tableIndentifier" class="form-control" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
+                                            <input ng-disabled="versionAndUseMap[table.id].sourceId" type="text" name="tableIdentifier" class="form-control" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
                                         </div>
                                     </div>
 
@@ -532,11 +532,11 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Value Set MetaData
                                 </tab-heading>
                                 <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIndentifier.$invalid}">
+                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIdentifier.$invalid}">
                                         <label class="col-md-2 control-label">Mapping Identifier</label>
 
                                         <div class="controls col-md-10">
-                                            <input type="text" disabled name="tableIndentifier" class="form-control" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
+                                            <input type="text" disabled name="tableIdentifier" class="form-control" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
                                         </div>
                                     </div>
 

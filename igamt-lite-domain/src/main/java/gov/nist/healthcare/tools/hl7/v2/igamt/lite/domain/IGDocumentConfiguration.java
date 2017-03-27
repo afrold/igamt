@@ -20,167 +20,176 @@ import java.util.Set;
  */
 public class IGDocumentConfiguration {
 
-  private Set<String> usages = new HashSet<String>();
-  private Set<String> conditionalUsage = new HashSet<String>();
-  private Set<String> codeUsages = new HashSet<String>();
-  private Set<String> codeSources = new HashSet<String>();
-  private Set<String> tableStabilities = new HashSet<String>();
-  private Set<String> tableContentDefinitions = new HashSet<String>();
-  private Set<String> tableExtensibilities = new HashSet<String>();
-  private Set<String> constraintVerbs = new HashSet<String>();
-  private Set<String> conditionalConstraintVerbs = new HashSet<String>();
-  private Set<String> constraintTypes = new HashSet<String>();
-  private Set<String> predefinedFormats = new HashSet<String>();
-  private Set<String> statuses = new HashSet<String>();
-  private Set<String> domainVersions = new HashSet<String>();
-  private Set<String> schemaVersions = new HashSet<String>();
-  private Set<String> valueSetAllowedDTs = new HashSet<String>();
-  private Set<DTComponent> valueSetAllowedComponents = new HashSet<DTComponent>();
-  private Set<String> codedElementDTs = new HashSet<String>();
-  private HashMap<String, Set<String>> bindingLocationListByHL7Version = new HashMap<String, Set<String>>();
+	private Set<String> usages = new HashSet<String>();
+	private Set<String> conditionalUsage = new HashSet<String>();
+	private Set<String> codeUsages = new HashSet<String>();
+	private Set<String> codeSources = new HashSet<String>();
+	private Set<String> tableStabilities = new HashSet<String>();
+	private Set<String> tableContentDefinitions = new HashSet<String>();
+	private Set<String> tableExtensibilities = new HashSet<String>();
+	private Set<String> constraintVerbs = new HashSet<String>();
+	private Set<String> conditionalConstraintVerbs = new HashSet<String>();
+	private Set<String> constraintTypes = new HashSet<String>();
+	private Set<String> predefinedFormats = new HashSet<String>();
+	private Set<String> statuses = new HashSet<String>();
+	private Set<String> domainVersions = new HashSet<String>();
+	private Set<String> schemaVersions = new HashSet<String>();
+	private Set<String> valueSetAllowedDTs = new HashSet<String>();
+	private Set<DTComponent> valueSetAllowedComponents = new HashSet<DTComponent>();
+	private Set<String> codedElementDTs = new HashSet<String>();
+	private HashMap<String, Set<String>> bindingLocationListByHL7Version = new HashMap<String, Set<String>>();
+	private Set<VariesMapItem> variesMapItems = new HashSet<VariesMapItem>();
 
-  public Set<String> getUsages() {
-    return usages;
-  }
+	public Set<String> getUsages() {
+		return usages;
+	}
 
-  public Set<String> getCodeUsages() {
-    return codeUsages;
-  }
+	public Set<String> getCodeUsages() {
+		return codeUsages;
+	}
 
-  public Set<String> getTableStabilities() {
-    return tableStabilities;
-  }
+	public Set<String> getTableStabilities() {
+		return tableStabilities;
+	}
 
-  public Set<String> getTableExtensibilities() {
-    return tableExtensibilities;
-  }
+	public Set<String> getTableExtensibilities() {
+		return tableExtensibilities;
+	}
 
-  public Set<String> getConstraintVerbs() {
-    return constraintVerbs;
-  }
+	public Set<String> getConstraintVerbs() {
+		return constraintVerbs;
+	}
 
-  public Set<String> getConstraintTypes() {
-    return constraintTypes;
-  }
+	public Set<String> getConstraintTypes() {
+		return constraintTypes;
+	}
 
-  public Set<String> getPredefinedFormats() {
-    return predefinedFormats;
-  }
+	public Set<String> getPredefinedFormats() {
+		return predefinedFormats;
+	}
 
-  public Set<String> getStatuses() {
-    return statuses;
-  }
+	public Set<String> getStatuses() {
+		return statuses;
+	}
 
-  public Set<String> getDomainVersions() {
-    return domainVersions;
-  }
+	public Set<String> getDomainVersions() {
+		return domainVersions;
+	}
 
-  public Set<String> getSchemaVersions() {
-    return schemaVersions;
-  }
+	public Set<String> getSchemaVersions() {
+		return schemaVersions;
+	}
 
-  public void setUsages(Set<String> usages) {
-    this.usages = usages;
-  }
+	public void setUsages(Set<String> usages) {
+		this.usages = usages;
+	}
 
-  public void setCodeUsages(Set<String> codeUsages) {
-    this.codeUsages = codeUsages;
-  }
+	public void setCodeUsages(Set<String> codeUsages) {
+		this.codeUsages = codeUsages;
+	}
 
-  public void setTableStabilities(Set<String> tableStabilities) {
-    this.tableStabilities = tableStabilities;
-  }
+	public void setTableStabilities(Set<String> tableStabilities) {
+		this.tableStabilities = tableStabilities;
+	}
 
-  public void setTableExtensibilities(Set<String> tableExtensibilities) {
-    this.tableExtensibilities = tableExtensibilities;
-  }
+	public void setTableExtensibilities(Set<String> tableExtensibilities) {
+		this.tableExtensibilities = tableExtensibilities;
+	}
 
-  public void setConstraintVerbs(Set<String> constraintVerbs) {
-    this.constraintVerbs = constraintVerbs;
-  }
+	public void setConstraintVerbs(Set<String> constraintVerbs) {
+		this.constraintVerbs = constraintVerbs;
+	}
 
-  public void setConstraintTypes(Set<String> constraintTypes) {
-    this.constraintTypes = constraintTypes;
-  }
+	public void setConstraintTypes(Set<String> constraintTypes) {
+		this.constraintTypes = constraintTypes;
+	}
 
-  public void setPredefinedFormats(Set<String> predefinedFormats) {
-    this.predefinedFormats = predefinedFormats;
-  }
+	public void setPredefinedFormats(Set<String> predefinedFormats) {
+		this.predefinedFormats = predefinedFormats;
+	}
 
-  public void setStatuses(Set<String> statuses) {
-    this.statuses = statuses;
-  }
+	public void setStatuses(Set<String> statuses) {
+		this.statuses = statuses;
+	}
 
-  public void setDomainVersions(Set<String> domainVersions) {
-    this.domainVersions = domainVersions;
-  }
+	public void setDomainVersions(Set<String> domainVersions) {
+		this.domainVersions = domainVersions;
+	}
 
-  public void setSchemaVersions(Set<String> schemaVersions) {
-    this.schemaVersions = schemaVersions;
-  }
+	public void setSchemaVersions(Set<String> schemaVersions) {
+		this.schemaVersions = schemaVersions;
+	}
 
-  public Set<String> getCodeSources() {
-    return codeSources;
-  }
+	public Set<String> getCodeSources() {
+		return codeSources;
+	}
 
-  public void setCodeSources(Set<String> codeSources) {
-    this.codeSources = codeSources;
-  }
+	public void setCodeSources(Set<String> codeSources) {
+		this.codeSources = codeSources;
+	}
 
-  public Set<String> getTableContentDefinitions() {
-    return tableContentDefinitions;
-  }
+	public Set<String> getTableContentDefinitions() {
+		return tableContentDefinitions;
+	}
 
-  public void setTableContentDefinitions(Set<String> tableContentDefinitions) {
-    this.tableContentDefinitions = tableContentDefinitions;
-  }
+	public void setTableContentDefinitions(Set<String> tableContentDefinitions) {
+		this.tableContentDefinitions = tableContentDefinitions;
+	}
 
-  public Set<String> getConditionalUsage() {
-    return conditionalUsage;
-  }
+	public Set<String> getConditionalUsage() {
+		return conditionalUsage;
+	}
 
-  public void setConditionalUsage(Set<String> conditionalUsage) {
-    this.conditionalUsage = conditionalUsage;
-  }
+	public void setConditionalUsage(Set<String> conditionalUsage) {
+		this.conditionalUsage = conditionalUsage;
+	}
 
-public Set<String> getConditionalConstraintVerbs() {
-	return conditionalConstraintVerbs;
-}
+	public Set<String> getConditionalConstraintVerbs() {
+		return conditionalConstraintVerbs;
+	}
 
-public void setConditionalConstraintVerbs(Set<String> conditionalConstraintVerbs) {
-	this.conditionalConstraintVerbs = conditionalConstraintVerbs;
-}
+	public void setConditionalConstraintVerbs(Set<String> conditionalConstraintVerbs) {
+		this.conditionalConstraintVerbs = conditionalConstraintVerbs;
+	}
 
-public Set<String> getValueSetAllowedDTs() {
-	return valueSetAllowedDTs;
-}
+	public Set<String> getValueSetAllowedDTs() {
+		return valueSetAllowedDTs;
+	}
 
-public void setValueSetAllowedDTs(Set<String> valueSetAllowedDTs) {
-	this.valueSetAllowedDTs = valueSetAllowedDTs;
-}
+	public void setValueSetAllowedDTs(Set<String> valueSetAllowedDTs) {
+		this.valueSetAllowedDTs = valueSetAllowedDTs;
+	}
 
-public Set<DTComponent> getValueSetAllowedComponents() {
-	return valueSetAllowedComponents;
-}
+	public Set<DTComponent> getValueSetAllowedComponents() {
+		return valueSetAllowedComponents;
+	}
 
-public void setValueSetAllowedComponents(Set<DTComponent> valueSetAllowedComponents) {
-	this.valueSetAllowedComponents = valueSetAllowedComponents;
-}
+	public void setValueSetAllowedComponents(Set<DTComponent> valueSetAllowedComponents) {
+		this.valueSetAllowedComponents = valueSetAllowedComponents;
+	}
 
-public Set<String> getCodedElementDTs() {
-	return codedElementDTs;
-}
+	public Set<String> getCodedElementDTs() {
+		return codedElementDTs;
+	}
 
-public void setCodedElementDTs(Set<String> codedElementDTs) {
-	this.codedElementDTs = codedElementDTs;
-}
+	public void setCodedElementDTs(Set<String> codedElementDTs) {
+		this.codedElementDTs = codedElementDTs;
+	}
 
-public HashMap<String, Set<String>> getBindingLocationListByHL7Version() {
-	return bindingLocationListByHL7Version;
-}
+	public HashMap<String, Set<String>> getBindingLocationListByHL7Version() {
+		return bindingLocationListByHL7Version;
+	}
 
-public void setBindingLocationListByHL7Version(HashMap<String, Set<String>> bindingLocationListByHL7Version) {
-	this.bindingLocationListByHL7Version = bindingLocationListByHL7Version;
-}
+	public void setBindingLocationListByHL7Version(HashMap<String, Set<String>> bindingLocationListByHL7Version) {
+		this.bindingLocationListByHL7Version = bindingLocationListByHL7Version;
+	}
+
+	public Set<VariesMapItem> getVariesMapItems() {
+		return variesMapItems;
+	}
+
+	public void setVariesMapItems(Set<VariesMapItem> variesMapItems) {
+		this.variesMapItems = variesMapItems;
+	}
 
 }
