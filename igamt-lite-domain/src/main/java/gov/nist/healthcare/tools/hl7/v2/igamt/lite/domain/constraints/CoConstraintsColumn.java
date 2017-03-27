@@ -2,6 +2,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 
+
+@Deprecated
 public class CoConstraintsColumn implements Comparable<CoConstraintsColumn> {
 
   private Field field;

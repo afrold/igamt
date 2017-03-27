@@ -1959,6 +1959,78 @@
     </tr>
 </script>
 
+<script type="text/ng-template " id="CoConstraintCtrl.html ">
+    <div class="modal-header ">
+        <h3 class="header4 ">Define CoConstraint Structure for {{::segment.name}}</h3>
+    </div>
+    <div class="modal-body ">
+        <form role="form ">
+            <div class="col-md-6">
+                <div class="panel panel-default ">
+                    <div class="panel-heading ">Description</div>
+                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                        blur blur~~
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default ">
+                    <div class="panel-heading ">Segment Tree</div>
+                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                        <table class="table table-striped ">
+                            <tbody ng-repeat="data in treeDataForContext " ng-include=" 'segment_tree_CoCon_item.html' ">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default ">
+                    <div class="panel-heading">Hypothesis</div>
+                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;" data-drop="true" ng-model="dataContainer" jqyoui-droppable="{onDrop:'dropCallbackForIF'}">
+                        <div ng-repeat="constraint in selectedCoConstraintsDefinition.ifConstraintList">
+                            <span class="badge label-white">
+                                <span ng-show="constraint.targetType=='field'" class="label label-field label-icon">F</span>
+                                <span ng-show="constraint.targetType=='component'" class="label label-component label-icon">C</span>
+                                <span>{{segment.name}}-{{constraint.targetPath}}</span>
+                                <span>{{constraint.type}}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default ">
+                    <div class="panel-heading ">Conclusion</div>
+                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                        blur blur~~
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default ">
+                    <div class="panel-heading ">Dynamic Datatype</div>
+                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                        blur blur~~
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default ">
+                    <div class="panel-heading ">Description</div>
+                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                        blur blur~~
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" style="padding-top:5px">
+        <button class="btn btn-raised btn-warning btn-sm" ng-click="cancle()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+        <button class="btn btn-raised btn-success btn-sm" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
+    </div>
+</script>
+
 <script type="text/ng-template " id="ConformanceStatementSegmentCtrl.html ">
     <div class="modal-header ">
         <h3 class="header4 ">Conformance statement for {{::segment.name}}</h3>
@@ -2267,12 +2339,12 @@
             </div>
         </div>
         </form>
-        </div>
-        <div class="modal-footer" style="padding-top:5px">
-            <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-            <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
-        </div>
-    </script>
+    </div>
+    <div class="modal-footer" style="padding-top:5px">
+        <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+        <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
+    </div>
+</script>
 <script type="text/ng-template" id="PredicateSegmentCtrl.html">
         <div class="modal-header">
             <h3 class="header4">Predicate for {{::segment.name}}.{{::selectedNode.position}}</h3>
@@ -2624,6 +2696,80 @@
             <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ng-click="saveclose()"><span><i class="fa fa-check fa-fw"> &nbsp; </i>Save</span></button>
         </div>
     </script>
+<script type="text/ng-template" id="segment_tree_CoCon_item.html">
+    <tr style="width:100%">
+        <td ng-if="data.folderClass">
+            <div ng-if="data.type === 'segment'">
+                <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
+            </div>
+            <div ng-if="data.type === 'field' || data.type === 'component'">
+                <div ng-if="data.child.components &&  data.child.components.length > 0">
+                    <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
+                </div>
+                <div ng-if="!data.child.components ||  data.child.components.length == 0">
+                    <i class="fa fa-check" />
+                </div>
+            </div>
+        </td>
+        <td ng-if="!data.folderClass">
+            <div ng-if="data.type === 'segment'">
+                <i class="fa fa-plus" ng-click="toggleChildren(data)"></i>
+            </div>
+            <div ng-if="data.type === 'field' || data.type === 'component'">
+                <div ng-if="data.child.components &&  data.child.components.length > 0">
+                    <i class="fa fa-plus" ng-click="toggleChildren(data)"></i>
+                </div>
+                <div ng-if="!data.child.components ||  data.child.components.length == 0">
+                    <i class="fa fa-check" />
+                </div>
+            </div>
+        </td>
+        <td>
+            <div ng-if="data.type === 'segment'">
+                <div>
+                    <span class="label label-segment label-icon">S</span>
+                    <span>&nbsp;{{::data.name}}</span>
+                </div>
+                <div id="expanded-data" ng-if="data.childrenVisible">
+                    <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.fields" ng-include="'segment_tree_CoCon_item.html'"></div>
+                    </table>
+                </div>
+            </div>
+            <div ng-if="data.type === 'field'">
+                <div ng-if="!data.child.components || data.child.components.length == 0" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                    <span class="label label-field label-icon">F</span>
+                    <span>&nbsp;{{::data.position}}. &nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}] {{::data.name}}</span>
+                </div>
+                <div ng-if="data.child.components.length > 0">
+                    <span class="label label-field label-icon">F</span>
+                    <span>&nbsp;{{::data.position}}. &nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}] {{::data.name}}</span>
+                </div>
+                <div id="expanded-data" ng-if="data.childrenVisible">
+                    <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.child.components" ng-include="'segment_tree_CoCon_item.html'"></div>
+                    </table>
+                </div>
+            </div>
+            <div ng-if="data.type === 'component'">
+                <div ng-if="!data.child.components || data.child.components.length == 0" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                    <span class="label label-component label-icon">C</span>
+                    <span>&nbsp;{{::data.position}}. &nbsp;[{{::data.usage}}] {{::data.name}}</span>
+                </div>
+                <div ng-if="data.child.components.length > 0">
+                    <span class="label label-component label-icon">C</span>
+                    <span>&nbsp;{{::data.position}}. &nbsp;[{{::data.usage}}] {{::data.name}}</span>
+                </div>
+                <div id="expanded-data" ng-if="data.childrenVisible">
+                    <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.child.components" ng-include="'segment_tree_CoCon_item.html'"></div>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+</script>
+
 <script type="text/ng-template" id="segment_tree_item.html">
         <tr style="width:100%">
             <td ng-if="data.folderClass">

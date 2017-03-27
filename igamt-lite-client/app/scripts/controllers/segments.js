@@ -675,6 +675,19 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
     };
 
+    $scope.manageCoConstraint = function() {
+        var modalInstance = $modal.open({
+            templateUrl: 'CoConstraintCtrl.html',
+            controller: 'CoConstraintCtrl',
+            windowClass: 'app-modal-window',
+            resolve: {}
+        });
+        modalInstance.result.then(function(segment) {
+                $scope.setDirty();
+        }, function() {
+        });
+    };
+
     $scope.show = function(segment) {
         return true;
     };
@@ -1739,6 +1752,123 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
     $scope.existingPredicate = $scope.findExistingPredicate();
 
 });
+
+angular.module('igl').controller('CoConstraintCtrl', function($scope, $modalInstance, $rootScope, $q) {
+    $scope.selectedCoConstraintsDefinition = angular.copy($rootScope.segment.coConstraintsDefinition);
+    $scope.dataContainer = null;
+
+    if(!$scope.selectedCoConstraintsDefinition){
+        $scope.selectedCoConstraintsDefinition = {};
+        $scope.selectedCoConstraintsDefinition.ifConstraintList = [];
+        $scope.selectedCoConstraintsDefinition.thenConstraintList = [];
+        $scope.selectedCoConstraintsDefinition.listCoConstraintDesc = [];
+    }
+
+    $scope.dropCallbackForIF = function(event, ui) {
+        console.log($scope.dataContainer);
+
+
+        var simpleConstraint = {};
+        simpleConstraint.id = new ObjectId();
+        simpleConstraint.type = "value";
+        simpleConstraint.targetName = $scope.dataContainer.name;
+        simpleConstraint.targetType = $scope.dataContainer.type;
+
+        if ($scope.dataContainer.pathInfoSet) {
+            var targetPath = '';
+            var targetConstraintPath = '';
+            for (var i in $scope.dataContainer.pathInfoSet) {
+                if (i > 0) {
+                    var pathInfo = $scope.dataContainer.pathInfoSet[i];
+                    targetPath = targetPath + "." + pathInfo.positionNumber;
+                    targetConstraintPath = targetConstraintPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
+
+                    if (i == $scope.dataContainer.pathInfoSet.length - 1) {
+                        targetConstraintPath = targetConstraintPath + " (" + pathInfo.nodeName + ")";
+                    }
+                }
+            }
+            simpleConstraint.targetPath = targetPath.substr(1);
+            simpleConstraint.targetConstraintPath = $rootScope.segment.name + '-' + targetConstraintPath.substr(1);
+        }
+
+        $scope.selectedCoConstraintsDefinition.ifConstraintList.push(simpleConstraint);
+
+
+        /*
+         private String targetPath;
+         private String targetConstraintPath;
+         */
+
+    };
+
+    $scope.treeDataForContext = [];
+    $scope.treeDataForContext.push(angular.copy($rootScope.segment));
+    $scope.treeDataForContext[0].pathInfoSet = [];
+    $scope.generatePathInfo = function(current, positionNumber, locationName, instanceNumber, isInstanceNumberEditable, nodeName) {
+        var pathInfo = {};
+        pathInfo.positionNumber = positionNumber;
+        pathInfo.locationName = locationName;
+        pathInfo.nodeName = nodeName;
+        pathInfo.instanceNumber = instanceNumber;
+        pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
+        current.pathInfoSet.push(pathInfo);
+
+        if (current.type == 'segment') {
+            var seg = current;
+            for (var i in seg.fields) {
+                var f = seg.fields[i];
+                f.pathInfoSet = angular.copy(current.pathInfoSet);
+
+                var childPositionNumber = f.position;
+                var childLocationName = f.position;
+                var childNodeName = f.name;
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
+                if (f.max != '1') {
+                    childInstanceNumber = '*';
+                    childisInstanceNumberEditable = true;
+                }
+                var child = angular.copy($rootScope.datatypesMap[f.datatype.id]);
+                child.id = new ObjectId().toString();
+                f.child = child;
+                $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
+            }
+        } else if (current.type == 'field' || current.type == 'component') {
+            var dt = current.child;
+            for (var i in dt.components) {
+                var c = dt.components[i];
+                c.pathInfoSet = angular.copy(current.pathInfoSet);
+                var childPositionNumber = c.position;
+                var childLocationName = c.position;
+                var childNodeName = c.name;
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
+                var child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
+                child.id = new ObjectId().toString();
+                c.child = child;
+                $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
+            }
+        }
+    };
+
+    $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
+
+    $scope.toggleChildren = function(data) {
+        data.childrenVisible = !data.childrenVisible;
+        data.folderClass = data.childrenVisible ? "fa-minus" : "fa-plus";
+    };
+
+    $scope.cancle = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.saveclose = function() {
+        $modalInstance.close();
+    };
+});
+
+
 angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, $modalInstance, $rootScope, $q) {
     $scope.constraintType = 'Plain';
     $scope.constraints = [];
