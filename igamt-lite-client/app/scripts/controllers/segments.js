@@ -1293,7 +1293,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             return 'empty';
         }
     };
-
 });
 angular.module('igl').controller('SegmentRowCtrl', function($scope, $filter) {
     $scope.formName = "form_" + new Date().getTime();
@@ -1762,17 +1761,61 @@ angular.module('igl').controller('CoConstraintCtrl', function($scope, $modalInst
         $scope.selectedCoConstraintsDefinition.ifConstraintList = [];
         $scope.selectedCoConstraintsDefinition.thenConstraintList = [];
         $scope.selectedCoConstraintsDefinition.listCoConstraintDesc = [];
-    }
+    };
 
-    $scope.dropCallbackForIF = function(event, ui) {
-        console.log($scope.dataContainer);
-
-
+    $scope.dropCallbackForTHEN = function(event, ui) {
         var simpleConstraint = {};
         simpleConstraint.id = new ObjectId();
         simpleConstraint.type = "value";
         simpleConstraint.targetName = $scope.dataContainer.name;
         simpleConstraint.targetType = $scope.dataContainer.type;
+        simpleConstraint.isEditable = true;
+        if ($scope.dataContainer.pathInfoSet) {
+            var targetPath = '';
+            var targetConstraintPath = '';
+            for (var i in $scope.dataContainer.pathInfoSet) {
+                if (i > 0) {
+                    var pathInfo = $scope.dataContainer.pathInfoSet[i];
+                    targetPath = targetPath + "." + pathInfo.positionNumber;
+                    targetConstraintPath = targetConstraintPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
+
+                    if (i == $scope.dataContainer.pathInfoSet.length - 1) {
+                        targetConstraintPath = targetConstraintPath + " (" + pathInfo.nodeName + ")";
+                    }
+                }
+            }
+            simpleConstraint.targetPath = targetPath.substr(1);
+            simpleConstraint.targetConstraintPath = $rootScope.segment.name + '-' + targetConstraintPath.substr(1);
+        }
+
+
+        if($rootScope.isDynamicMappingSegment){
+            var targetLocation = $rootScope.segment.dynamicMappingDefinition.mappingStructure.targetLocation;
+            var referenceLocation = $rootScope.segment.dynamicMappingDefinition.mappingStructure.referenceLocation;
+            var secondRefereceLocation = $rootScope.segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation;
+
+            if(targetLocation == simpleConstraint.targetPath){
+                console.log("Cannot Do this");
+            }else if(referenceLocation == simpleConstraint.targetPath){
+                console.log("Cannot Do this");
+            }else if(secondRefereceLocation && secondRefereceLocation == simpleConstraint.targetPath){
+                console.log("Cannot Do this");
+            }else {
+                $scope.selectedCoConstraintsDefinition.thenConstraintList.push(simpleConstraint);
+            }
+
+        }else {
+            $scope.selectedCoConstraintsDefinition.thenConstraintList.push(simpleConstraint);
+        }
+    };
+
+    $scope.dropCallbackForIF = function(event, ui) {
+        var simpleConstraint = {};
+        simpleConstraint.id = new ObjectId();
+        simpleConstraint.type = "value";
+        simpleConstraint.targetName = $scope.dataContainer.name;
+        simpleConstraint.targetType = $scope.dataContainer.type;
+        simpleConstraint.isEditable = true;
 
         if ($scope.dataContainer.pathInfoSet) {
             var targetPath = '';
@@ -1792,14 +1835,24 @@ angular.module('igl').controller('CoConstraintCtrl', function($scope, $modalInst
             simpleConstraint.targetConstraintPath = $rootScope.segment.name + '-' + targetConstraintPath.substr(1);
         }
 
-        $scope.selectedCoConstraintsDefinition.ifConstraintList.push(simpleConstraint);
+        if($rootScope.isDynamicMappingSegment){
+            var targetLocation = $rootScope.segment.dynamicMappingDefinition.mappingStructure.targetLocation;
+            var referenceLocation = $rootScope.segment.dynamicMappingDefinition.mappingStructure.referenceLocation;
+            var secondRefereceLocation = $rootScope.segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation;
 
+            if(targetLocation == simpleConstraint.targetPath){
+                console.log("Cannot Do this");
+            }else if(referenceLocation == simpleConstraint.targetPath){
+                console.log("Cannot Do this");
+            }else if(secondRefereceLocation && secondRefereceLocation == simpleConstraint.targetPath){
+                console.log("Cannot Do this");
+            }else {
+                $scope.selectedCoConstraintsDefinition.ifConstraintList.push(simpleConstraint);
+            }
 
-        /*
-         private String targetPath;
-         private String targetConstraintPath;
-         */
-
+        }else {
+            $scope.selectedCoConstraintsDefinition.ifConstraintList.push(simpleConstraint);
+        }
     };
 
     $scope.treeDataForContext = [];
@@ -1850,6 +1903,51 @@ angular.module('igl').controller('CoConstraintCtrl', function($scope, $modalInst
                 $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
         }
+
+        if($rootScope.isDynamicMappingSegment){
+            var targetLocation = $rootScope.segment.dynamicMappingDefinition.mappingStructure.targetLocation;
+            var referenceLocation = $rootScope.segment.dynamicMappingDefinition.mappingStructure.referenceLocation;
+            var secondRefereceLocation = $rootScope.segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation;
+
+            if(targetLocation && referenceLocation && secondRefereceLocation){
+                var simpleConstraint = {};
+                simpleConstraint.id = new ObjectId();
+                simpleConstraint.type = "value";
+                simpleConstraint.targetName = current.name;
+                simpleConstraint.targetType = current.type;
+
+                if (current.pathInfoSet) {
+                    var targetPath = '';
+                    var targetConstraintPath = '';
+                    for (var i in current.pathInfoSet) {
+                        if (i > 0) {
+                            var pathInfo = current.pathInfoSet[i];
+                            targetPath = targetPath + "." + pathInfo.positionNumber;
+                            targetConstraintPath = targetConstraintPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
+
+                            if (i == current.pathInfoSet.length - 1) {
+                                targetConstraintPath = targetConstraintPath + " (" + pathInfo.nodeName + ")";
+                            }
+                        }
+                    }
+                    simpleConstraint.targetPath = targetPath.substr(1);
+                    simpleConstraint.targetConstraintPath = $rootScope.segment.name + '-' + targetConstraintPath.substr(1);
+
+                    if(targetLocation == simpleConstraint.targetPath) {
+                        simpleConstraint.type = 'datatype';
+                        $scope.selectedCoConstraintsDefinition.dynamicDatatypeConstraint = simpleConstraint;
+                    }
+
+                    if(referenceLocation == simpleConstraint.targetPath) {
+                        $scope.selectedCoConstraintsDefinition.thenConstraintList.push(simpleConstraint);
+                    }
+
+                    if(secondRefereceLocation == simpleConstraint.targetPath) {
+                        $scope.selectedCoConstraintsDefinition.ifConstraintList.push(simpleConstraint);
+                    }
+                }
+            }
+        }
     };
 
     $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
@@ -1857,6 +1955,40 @@ angular.module('igl').controller('CoConstraintCtrl', function($scope, $modalInst
     $scope.toggleChildren = function(data) {
         data.childrenVisible = !data.childrenVisible;
         data.folderClass = data.childrenVisible ? "fa-minus" : "fa-plus";
+    };
+
+    $scope.changeConstraintType = function (constraint){
+        if(constraint.type == 'value')  constraint.type = 'valueset';
+        else constraint.type = 'value';
+    };
+
+    $scope.deleteConstraintDefinitionForIF = function (constraint){
+        var index = $scope.selectedCoConstraintsDefinition.ifConstraintList.indexOf(constraint);
+        if (index >= 0) {
+            $scope.selectedCoConstraintsDefinition.ifConstraintList.splice(index, 1);
+        }
+    };
+
+    $scope.deleteConstraintDefinitionForTHEN = function (constraint){
+        var index = $scope.selectedCoConstraintsDefinition.thenConstraintList.indexOf(constraint);
+        if (index >= 0) {
+            $scope.selectedCoConstraintsDefinition.thenConstraintList.splice(index, 1);
+        }
+    };
+
+    $scope.deleteTextItem = function (textItem) {
+        var index = $scope.selectedCoConstraintsDefinition.listCoConstraintDesc.indexOf(textItem);
+        if (index >= 0) {
+            $scope.selectedCoConstraintsDefinition.listCoConstraintDesc.splice(index, 1);
+        }
+    };
+
+    $scope.addTextItem = function(){
+        var newTestItem = {};
+        newTestItem.id = new ObjectId();
+        newTestItem.title = 'New Title';
+
+        $scope.selectedCoConstraintsDefinition.listCoConstraintDesc.push(newTestItem);
     };
 
     $scope.cancle = function() {

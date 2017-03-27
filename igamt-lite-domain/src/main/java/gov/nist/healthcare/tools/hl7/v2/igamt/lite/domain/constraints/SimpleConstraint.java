@@ -8,6 +8,7 @@ public class SimpleConstraint {
 	private String targetType;
 	private String targetName;
 	private String type = "value"; // valueset, value, dm
+	private boolean isEditable = false;
 
 	public SimpleConstraint() {
 		super();
@@ -59,6 +60,14 @@ public class SimpleConstraint {
 
 	public void setTargetType(String targetType) {
 		this.targetType = targetType;
+	}
+
+	public boolean isEditable() {
+		return isEditable;
+	}
+
+	public void setEditable(boolean isEditable) {
+		this.isEditable = isEditable;
 	}
 
 }

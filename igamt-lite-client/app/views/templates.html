@@ -1965,15 +1965,7 @@
     </div>
     <div class="modal-body ">
         <form role="form ">
-            <div class="col-md-6">
-                <div class="panel panel-default ">
-                    <div class="panel-heading ">Description</div>
-                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
-                        blur blur~~
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="panel panel-default ">
                     <div class="panel-heading ">Segment Tree</div>
                     <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
@@ -1986,14 +1978,16 @@
             </div>
             <div class="col-md-3">
                 <div class="panel panel-default ">
-                    <div class="panel-heading">Hypothesis</div>
+                    <div class="panel-heading">IF</div>
                     <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;" data-drop="true" ng-model="dataContainer" jqyoui-droppable="{onDrop:'dropCallbackForIF'}">
                         <div ng-repeat="constraint in selectedCoConstraintsDefinition.ifConstraintList">
                             <span class="badge label-white">
                                 <span ng-show="constraint.targetType=='field'" class="label label-field label-icon">F</span>
                                 <span ng-show="constraint.targetType=='component'" class="label label-component label-icon">C</span>
-                                <span>{{segment.name}}-{{constraint.targetPath}}</span>
-                                <span>{{constraint.type}}</span>
+                                <span ng-show="constraint.type=='value'">Value of {{segment.name}}-{{constraint.targetPath}}</span>
+                                <span ng-show="constraint.type=='valueset'">ValueSet of {{segment.name}}-{{constraint.targetPath}}</span>
+                                <span ng-show="constraint.isEditable" ng-click="changeConstraintType(constraint)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                <span ng-show="constraint.isEditable" ng-click="deleteConstraintDefinitionForIF(constraint)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                             </span>
                         </div>
                     </div>
@@ -2001,17 +1995,32 @@
             </div>
             <div class="col-md-3">
                 <div class="panel panel-default ">
-                    <div class="panel-heading ">Conclusion</div>
-                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
-                        blur blur~~
+                    <div class="panel-heading ">Then (General)</div>
+                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;" data-drop="true" ng-model="dataContainer" jqyoui-droppable="{onDrop:'dropCallbackForTHEN'}">
+                        <div ng-repeat="constraint in selectedCoConstraintsDefinition.thenConstraintList">
+                            <span class="badge label-white">
+                                <span ng-show="constraint.targetType=='field'" class="label label-field label-icon">F</span>
+                                <span ng-show="constraint.targetType=='component'" class="label label-component label-icon">C</span>
+                                <span ng-show="constraint.type=='value'">Value of {{segment.name}}-{{constraint.targetPath}}</span>
+                                <span ng-show="constraint.type=='valueset'">ValueSet of {{segment.name}}-{{constraint.targetPath}}</span>
+                                <span ng-show="constraint.isEditable" ng-click="changeConstraintType(constraint)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                <span ng-show="constraint.isEditable" ng-click="deleteConstraintDefinitionForTHEN(constraint)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="panel panel-default ">
-                    <div class="panel-heading ">Dynamic Datatype</div>
+                    <div class="panel-heading ">Then (Dynamic Datatype)</div>
                     <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
-                        blur blur~~
+                        <div ng-show="selectedCoConstraintsDefinition.dynamicDatatypeConstraint">
+                            <span class="badge label-white">
+                                <span ng-show="selectedCoConstraintsDefinition.dynamicDatatypeConstraint.targetType=='field'" class="label label-field label-icon">F</span>
+                                <span ng-show="selectedCoConstraintsDefinition.dynamicDatatypeConstraint.targetType=='component'" class="label label-component label-icon">C</span>
+                                <span>Dynamic Datatype of {{segment.name}}-{{selectedCoConstraintsDefinition.dynamicDatatypeConstraint.targetPath}}</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2019,7 +2028,16 @@
                 <div class="panel panel-default ">
                     <div class="panel-heading ">Description</div>
                     <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
-                        blur blur~~
+                        <div ng-repeat="textItem in selectedCoConstraintsDefinition.listCoConstraintDesc">
+                                <span class="label label-field-icon label-icon">TEXT
+                                    <span ng-click="deleteTextItem(textItem)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                                </span>
+                                <input style="width:80%" class="form-control" ng-model="textItem.title"/>
+
+                        </div>
+                        <a ng-click="addTextItem()" class="point">
+                            <span><i class="fa fa-plus fa-fw edit-icon"></i></span>
+                        </a>
                     </div>
                 </div>
             </div>

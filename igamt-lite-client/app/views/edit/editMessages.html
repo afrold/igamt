@@ -749,8 +749,8 @@
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node)">
+        <td ng-class="{'emptyCol':hasChildren(node.obj)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="!hasChildren(node.obj)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-message-icon' : node.sev.from == 'message', 'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
@@ -758,7 +758,7 @@
                     <span title="Add SingleElement" ng-show="node.sev.from != 'message'" ng-click="confirmDatatypeSingleElementDuplicated(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
                     <span title="Delete SingleElement" ng-show="node.sev.from == 'message'" ng-click="deleteSev(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                 </span>
-                <a ng-show="!node.sev" class="point" ng-click="openDialogForEditSev(node)">
+                <a ng-show="!node.sev && !hasChildren(node.obj)" class="point" ng-click="openDialogForEditSev(node)">
                     <span><i class="fa fa-plus fa-fw"></i></span>
                 </a>
             </div>
@@ -862,8 +862,8 @@
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node)">
+        <td ng-class="{'emptyCol':hasChildren(node.obj)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="!hasChildren(node.obj)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-message-icon' : node.sev.from == 'message', 'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
@@ -871,7 +871,7 @@
                     <span title="Add SingleElement" ng-show="node.sev.from != 'message'" ng-click="confirmDatatypeSingleElementDuplicated(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
                     <span title="Delete SingleElement" ng-show="node.sev.from == 'message'" ng-click="deleteSev(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                 </span>
-                <a ng-show="!node.sev" class="point" ng-click="openDialogForEditSev(node)">
+                <a ng-show="!node.sev && !hasChildren(node.obj)" class="point" ng-click="openDialogForEditSev(node)">
                     <span><i class="fa fa-plus fa-fw"></i></span>
                 </a>
             </div>

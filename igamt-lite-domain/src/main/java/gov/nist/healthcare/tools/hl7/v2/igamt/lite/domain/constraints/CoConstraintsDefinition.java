@@ -7,7 +7,7 @@ public class CoConstraintsDefinition {
 
 	private List<SimpleConstraint> ifConstraintList = new ArrayList<SimpleConstraint>();
 	private List<SimpleConstraint> thenConstraintList = new ArrayList<SimpleConstraint>();
-	private SimpleConstraint dynamicDatatypeConstrinat;
+	private SimpleConstraint dynamicDatatypeConstraint;
 	private List<CoConstraintDesc> listCoConstraintDesc = new ArrayList<CoConstraintDesc>();
 
 	public CoConstraintsDefinition() {
@@ -30,13 +30,6 @@ public class CoConstraintsDefinition {
 		this.thenConstraintList = thenConstraintList;
 	}
 
-	public SimpleConstraint getDynamicDatatypeConstrinat() {
-		return dynamicDatatypeConstrinat;
-	}
-
-	public void setDynamicDatatypeConstrinat(SimpleConstraint dynamicDatatypeConstrinat) {
-		this.dynamicDatatypeConstrinat = dynamicDatatypeConstrinat;
-	}
 
 	public List<CoConstraintDesc> getListCoConstraintDesc() {
 		return listCoConstraintDesc;
@@ -44,6 +37,14 @@ public class CoConstraintsDefinition {
 
 	public void setListCoConstraintDesc(List<CoConstraintDesc> listCoConstraintDesc) {
 		this.listCoConstraintDesc = listCoConstraintDesc;
+	}
+
+	public SimpleConstraint getDynamicDatatypeConstraint() {
+		return dynamicDatatypeConstraint;
+	}
+
+	public void setDynamicDatatypeConstraint(SimpleConstraint dynamicDatatypeConstraint) {
+		this.dynamicDatatypeConstraint = dynamicDatatypeConstraint;
 	}
 
 }
