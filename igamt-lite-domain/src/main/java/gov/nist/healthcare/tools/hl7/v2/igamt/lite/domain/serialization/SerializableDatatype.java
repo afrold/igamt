@@ -81,6 +81,13 @@ public class SerializableDatatype extends SerializableSection {
                     datatypeElement.appendChild(valueSetBindingListElement);
                 }
             }
+            if(datatype.getComments()!=null && !datatype.getComments().isEmpty()){
+                Element commentListElement = super.createCommentListElement(datatype.getComments(),
+                    datatype.getLabel());
+                if(commentListElement!=null){
+                    datatypeElement.appendChild(commentListElement);
+                }
+            }
             if (datatype.getComponents() != null) {
                 for (int i = 0; i < datatype.getComponents().size(); i++) {
                     Component component = datatype.getComponents().get(i);
@@ -137,8 +144,9 @@ public class SerializableDatatype extends SerializableSection {
                             }
                         }
                     }
-                    if (component.getComment() != null && !component.getComment().equals(""))
-                        componentElement.addAttribute(new Attribute("Comment", component.getComment()));
+                    String comments = super.findComments(component.getPosition(),datatype.getComments());
+                    if (comments != null && !comments.isEmpty())
+                        componentElement.addAttribute(new Attribute("Comment", comments));
                     componentElement
                         .addAttribute(new Attribute("Position", component.getPosition().toString()));
                     String componentText = componentTextMap.get(component);
