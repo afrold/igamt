@@ -437,6 +437,21 @@
                 <select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%" class="form-control input-sm">
                     <option ng-repeat="segmentRef in tmpResults" value="{{segmentRef}}"  ng-selected="node.obj.ref.id===segmentRef.id"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}</option>
                 </select>
+
+
+
+
+                <!--<md-select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%"">-->
+                    <!--<md-option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position">-->
+                      <!--{{child.position}}-->
+                    <!--</md-option>-->
+                <!--</md-select>-->
+                <!--<md-select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%"">-->
+                    <!--<md-option ng-value="segmentRef" ng-repeat="segmentRef in tmpResults">-->
+                        <!--<display-label of="segmentsMap[segmentRef.id]" desc="false"></display-label>-->
+                    <!--</md-option>-->
+                <!--</md-select>-->
+
                 <div align="center">
                     <a ng-show="editableSeg===node.obj.id" ng-click="backSeg()">
                         <span><i align="center" class="glyphicon glyphicon-remove"></i></span>
@@ -730,7 +745,9 @@
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:center">
-            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}} <span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span></span>
+            <span class="point" ng-click="redirectDT(node.obj.datatype)">
+                 <display-label of="datatypesMap[node.obj.datatype.id]" desc="false"></display-label>
+            </span>
         </td>
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(node)">
@@ -843,7 +860,9 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:center">
-            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}<span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span>            </span>
+            <span class="point" ng-click="redirectDT(node.obj.datatype)">
+                 <display-label of="datatypesMap[node.obj.datatype.id]" desc="false"></display-label>
+            </span>
         </td>
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(node)">
