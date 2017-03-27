@@ -655,6 +655,54 @@
     </div>
 </script>
 
+<script type="text/ng-template " id="EditDMSecondReference.html">
+    <div class="modal-header ">
+        <h3>Select Second Reference</h3>
+    </div>
+    <div class="modal-body ">
+        <form class="form-horizontal " novalidate>
+            <div class="row ">
+                <div class="col-md-4 ">
+                    <select class="form-control"
+                            ng-model='selectedFieldPosition'
+                            ng-change="updateField();">
+                        <option ng-repeat="field in segment.fields" value="{{field.position}}">
+                            {{field.position}}. {{field.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4 ">
+                    <select class="form-control"
+                            ng-show="components"
+                            ng-model='selectedComponentPosition'
+                            ng-change="updateComponent();">
+                        <option ng-repeat="component in components" value="{{component.position}}">
+                            {{component.position}}. {{component.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4 ">
+                    <select class="form-control"
+                            ng-show="subComponents"
+                            ng-model='selectedSubComponentPosition'>
+                        <option ng-repeat="component in subComponents" value="{{component.position}}">
+                            {{component.position}}. {{component.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
+            &nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+            &nbsp; </i>Save</span>
+        </button>
+    </div>
+</script>
+
 <script type="text/ng-template " id="EditSingleElement.html">
     <div class="modal-header ">
         <h3>Single Element Value of {{currentNode.path}}</h3>
@@ -4627,4 +4675,12 @@
         <button class="btn btn-raised btn-default btn-sm" ng-click="yes()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Yes</span>
         </button>
     </div>
+</script>
+
+
+<script type="text/ng-template" id="label.html">
+    <span class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
+                                   'label-USE':  getScopeLabel(element)==='USR','label-MASTER':getScopeLabel(element)==='MAS','label-PRL':getScopeLabel(element)==='PRL'}"> {{getScopeLabel(element)}} {{hasHl7Version(element)}} <span ng-if="element.publicationVersion&&element.status==='PUBLISHED'" class="version-badge">v{{element.publicationVersion}}</span></span>
+     {{getLabel(element)}}<span ng-if="description">-{{getDescriptionLabel(element)}}</span>
+    </span>
 </script>

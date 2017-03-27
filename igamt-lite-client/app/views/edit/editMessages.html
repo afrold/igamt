@@ -162,33 +162,44 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <span class="pull-left">
-                                               <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations">
-											   </div>
+                                                <div class="pull-left">
+                                                    <ul class="list-group">
+                                                        <li class="list-group-item">
+                                                           <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                                From This Message
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                                From Segment
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                                From Field's Data Type
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                                From Component's Data Type
+                                                        </li>
+                                                    </ul>
+                                                </div>
 
-                                                </span>
-                                                <button ng-if="message.scope!=='HL7STANDARD'" class="pull-right" title="Verify Message" type="button" ng-class="'btn btn-raised btn-sm btn-success'"
-                                                    ng-click="validateMessage()"> 
-                                                
-                                                  
-                                                    Verify
-                                                
-                                            </button>
-                                                <span class="pull-right" ng-show="!viewSettings.tableReadonly">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-raised btn-sm btn-info">
-                                                            <span><i class="fa fa-plus"></i> Add</span>
-                                                </button>
-                                                <button type="button" class="btn btn-raised btn-sm btn-info" data-toggle="dropdown" aria-expanded="false">
-                                                            <span class="caret"></span>
-                                                            <span class="sr-only">Toggle Dropdown</span>
-                                                        </button>
-                                                <ul class="dropdown-menu igl-menu" role="menu">
-                                                    <li><a class="point" ng-click="addSegmentModal(message)"><i class="fa fa-plus fa-fw"></i> Add Segment</a></li>
-                                                    <li><a class="point" ng-click="addGroupModal(message)"><i class="fa fa-plus fa-fw"></i> Add Group</a></li>
-                                                </ul>
-                                            </div>
-                                            </span>
+                                                <div class="btn-group pull-right" ng-show="!viewSettings.tableReadonly">
+                                                    <button type="button" class="btn btn-raised btn-sm btn-info">
+                                                        <span><i class="fa fa-plus"></i> Add</span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-raised btn-sm btn-info" data-toggle="dropdown" aria-expanded="false">
+                                                        <span class="caret"></span>
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu igl-menu" role="menu">
+                                                        <li><a class="point" ng-click="addSegmentModal(message)"><i class="fa fa-plus fa-fw"></i> Add Segment</a></li>
+                                                        <li><a class="point" ng-click="addGroupModal(message)"><i class="fa fa-plus fa-fw"></i> Add Group</a></li>
+                                                    </ul>
+                                                </div>
+                                                <button ng-if="message.scope!=='HL7STANDARD'" class="pull-right" title="Verify Message" type="button" ng-class="'btn btn-raised btn-sm btn-success'" ng-click="validateMessage()">Verify</button>
+                                                <div ng-dropdown-multiselect="" class="pull-right" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>
+
+
                                             <table id="treeTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                 <thead>
                                                     <tr class="tbl-header" style="">
@@ -426,6 +437,21 @@
                 <select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%" class="form-control input-sm">
                     <option ng-repeat="segmentRef in tmpResults" value="{{segmentRef}}"  ng-selected="node.obj.ref.id===segmentRef.id"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}</option>
                 </select>
+
+
+
+
+                <!--<md-select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%"">-->
+                    <!--<md-option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position">-->
+                      <!--{{child.position}}-->
+                    <!--</md-option>-->
+                <!--</md-select>-->
+                <!--<md-select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%"">-->
+                    <!--<md-option ng-value="segmentRef" ng-repeat="segmentRef in tmpResults">-->
+                        <!--<display-label of="segmentsMap[segmentRef.id]" desc="false"></display-label>-->
+                    <!--</md-option>-->
+                <!--</md-select>-->
+
                 <div align="center">
                     <a ng-show="editableSeg===node.obj.id" ng-click="backSeg()">
                         <span><i align="center" class="glyphicon glyphicon-remove"></i></span>
@@ -719,7 +745,9 @@
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:center">
-            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}} <span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span></span>
+            <span class="point" ng-click="redirectDT(node.obj.datatype)">
+                 <display-label of="datatypesMap[node.obj.datatype.id]" desc="false"></display-label>
+            </span>
         </td>
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(node)">
@@ -832,7 +860,9 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:center">
-            <span class="point" ng-click="redirectDT(node.obj.datatype)">{{getDatatypeLabel(node.obj.datatype)}}<span class="version-badge-label" ng-if="datatypesMap[node.obj.datatype.id].publicationVersion">v{{datatypesMap[node.obj.datatype.id].publicationVersion}}</span>            </span>
+            <span class="point" ng-click="redirectDT(node.obj.datatype)">
+                 <display-label of="datatypesMap[node.obj.datatype.id]" desc="false"></display-label>
+            </span>
         </td>
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(node)">

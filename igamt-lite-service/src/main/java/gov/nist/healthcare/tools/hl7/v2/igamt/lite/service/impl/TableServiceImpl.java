@@ -35,128 +35,139 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 @Service
 public class TableServiceImpl implements TableService {
 
-  Logger log = LoggerFactory.getLogger(TableServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(TableServiceImpl.class);
 
-  @Autowired
-  private TableRepository tableRepository;
+	@Autowired
+	private TableRepository tableRepository;
 
-  @Override
-  public List<Table> findAll() {
-    return tableRepository.findAll();
-  }
+	@Override
+	public List<Table> findAll() {
+		return tableRepository.findAll();
+	}
 
-  @Override
-  public Table findById(String id) {
-    if (id != null) {
-      log.info("TableServiceImpl.findById=" + id);
-      return tableRepository.findOne(id);
-    }
-    return null;
-  }
+	@Override
+	public Table findById(String id) {
+		if (id != null) {
+			log.info("TableServiceImpl.findById=" + id);
+			return tableRepository.findOne(id);
+		}
+		return null;
+	}
 
-  @Override
-  public Table findOneShortById(String id) {
-    if (id != null) {
-      log.info("TableServiceImpl.findOneShortById=" + id);
-      return tableRepository.findOneShortById(id);
-    }
-    return null;
-  }
+	@Override
+	public Table findOneShortById(String id) {
+		if (id != null) {
+			log.info("TableServiceImpl.findOneShortById=" + id);
+			return tableRepository.findOneShortById(id);
+		}
+		return null;
+	}
 
+	@Override
+	public List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		List<Table> tables = tableRepository.findByScopesAndVersion(scopes, hl7Version);
+		log.info("TableServiceImpl.findByScopeAndVersion=" + tables.size());
+		return tables;
+	}
 
-  @Override
-  public List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-    List<Table> tables = tableRepository.findByScopesAndVersion(scopes, hl7Version);
-    log.info("TableServiceImpl.findByScopeAndVersion=" + tables.size());
-    return tables;
-  }
+	@Override
+	public Table findByScopeAndVersionAndBindingIdentifier(SCOPE scope, String hl7Version, String bindingIdentifier) {
+		List<SCOPE> scopes = new ArrayList<SCOPE>();
+		scopes.add(scope);
+		
+		List<Table> tables = this.findByScopesAndVersion(scopes, hl7Version);
+		
+		for(Table t : tables){
+			if(t.getBindingIdentifier().equals(bindingIdentifier)) return t;
+		}
+		return null;
+	}
 
-  @Override
-  public List<Table> findShared(Long accountId) {
-    // TODO Auto-generated method stub
-    List<Table> tables = tableRepository.findShared(accountId);
-    List<Table> sharedWithAccount = new ArrayList<Table>();
-    for (Table t : tables) {
-      for (ShareParticipantPermission p : t.getShareParticipantIds()) {
-        if (p.getAccountId() == accountId && !p.isPendingApproval()) {
-          sharedWithAccount.add(t);
-        }
-      }
-    }
-    return sharedWithAccount;
-  }
+	@Override
+	public List<Table> findShared(Long accountId) {
+		// TODO Auto-generated method stub
+		List<Table> tables = tableRepository.findShared(accountId);
+		List<Table> sharedWithAccount = new ArrayList<Table>();
+		for (Table t : tables) {
+			for (ShareParticipantPermission p : t.getShareParticipantIds()) {
+				if (p.getAccountId() == accountId && !p.isPendingApproval()) {
+					sharedWithAccount.add(t);
+				}
+			}
+		}
+		return sharedWithAccount;
+	}
 
-  @Override
-  public List<Table> findPendingShared(Long accountId) {
-    // TODO Auto-generated method stub
-    List<Table> tables = tableRepository.findShared(accountId);
-    List<Table> sharedWithAccount = new ArrayList<Table>();
-    for (Table t : tables) {
-      for (ShareParticipantPermission p : t.getShareParticipantIds()) {
-        if (p.getAccountId() == accountId && p.isPendingApproval()) {
-          sharedWithAccount.add(t);
-        }
-      }
-    }
-    return sharedWithAccount;
-  }
+	@Override
+	public List<Table> findPendingShared(Long accountId) {
+		// TODO Auto-generated method stub
+		List<Table> tables = tableRepository.findShared(accountId);
+		List<Table> sharedWithAccount = new ArrayList<Table>();
+		for (Table t : tables) {
+			for (ShareParticipantPermission p : t.getShareParticipantIds()) {
+				if (p.getAccountId() == accountId && p.isPendingApproval()) {
+					sharedWithAccount.add(t);
+				}
+			}
+		}
+		return sharedWithAccount;
+	}
 
-  @Override
-  public Table save(Table table) {
-    log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
-    return tableRepository.save(table);
-  }
+	@Override
+	public Table save(Table table) {
+		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
+		return tableRepository.save(table);
+	}
 
-  @Override
-  public void delete(Table table) {
-    log.info("TableServiceImpl.delete=" + table.getBindingIdentifier());
-    tableRepository.delete(table);
-  }
+	@Override
+	public void delete(Table table) {
+		log.info("TableServiceImpl.delete=" + table.getBindingIdentifier());
+		tableRepository.delete(table);
+	}
 
-  @Override
-  public void delete(String id) {
-    log.info("TableServiceImpl.delete=" + id);
-    tableRepository.delete(id);
-  }
+	@Override
+	public void delete(String id) {
+		log.info("TableServiceImpl.delete=" + id);
+		tableRepository.delete(id);
+	}
 
-  @Override
-  public void save(List<Table> tables) {
-    // TODO Auto-generated method stub
-    tableRepository.save(tables);
-  }
+	@Override
+	public void save(List<Table> tables) {
+		// TODO Auto-generated method stub
+		tableRepository.save(tables);
+	}
 
-  @Override
-  public List<Table> findAllByIds(Set<String> ids) {
-    // TODO Auto-generated method stub
-    return tableRepository.findAllByIds(ids);
-  }
+	@Override
+	public List<Table> findAllByIds(Set<String> ids) {
+		// TODO Auto-generated method stub
+		return tableRepository.findAllByIds(ids);
+	}
 
-  @Override
-  public List<Table> findShortAllByIds(Set<String> ids) {
-    // TODO Auto-generated method stub
-    return tableRepository.findShortAllByIds(ids);
-  }
+	@Override
+	public List<Table> findShortAllByIds(Set<String> ids) {
+		// TODO Auto-generated method stub
+		return tableRepository.findShortAllByIds(ids);
+	}
 
-  @Override
-  public Table save(Table table, Date date) {
-    log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
-    table.setDateUpdated(date);
-    return tableRepository.save(table);
-  }
+	@Override
+	public Table save(Table table, Date date) {
+		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
+		table.setDateUpdated(date);
+		return tableRepository.save(table);
+	}
 
-  @Override
-  public Date updateDate(String id, Date date) {
-    return tableRepository.updateDate(id, date);
-  }
+	@Override
+	public Date updateDate(String id, Date date) {
+		return tableRepository.updateDate(id, date);
+	}
 
-  @Override
-  public void updateStatus(String id, STATUS status) {
-    tableRepository.updateStatus(id, status);
-  }
+	@Override
+	public void updateStatus(String id, STATUS status) {
+		tableRepository.updateStatus(id, status);
+	}
 
-  @Override
-  public void delete(List<Table> tables) {
-    tableRepository.delete(tables);
-  }
-
+	@Override
+	public void delete(List<Table> tables) {
+		tableRepository.delete(tables);
+	}
 }

@@ -607,21 +607,25 @@ li.active > a{
 }
 
 .label-field-icon {
-    color: #f24a08;
+    color: blue;
 }
 
 .label-component-icon {
-    color:#f2c60d;
+    color:purple;
 }
 
 .label-sub-component-icon {
-    color:rgba(0, 0, 0, 0.91);
+    color:#d400d4;
+}
+
+.label-message-icon {
+    color:green;
 }
 
 .edit-icon {
     color:#428bca;
 }
 
-.label-message-icon {
-    color:green;
+.edit-icon-white{
+    color:white;
 }
