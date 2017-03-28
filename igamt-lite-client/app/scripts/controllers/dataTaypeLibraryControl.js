@@ -603,6 +603,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                         }).result.then(function(results) {
                         	console.log(results);
                         	$scope.submit(results);
+
+
                             });
         };
 
@@ -720,31 +722,38 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             });
 
             angular.forEach($scope.addedDatatypes, function(datatype) {
-
+                if(!$rootScope.datatypesMap[datatype.id]){
                 var newLink = {};
                 newLink = angular.fromJson({
                     id: datatype.id,
                     name: datatype.name,
                     ext: datatype.ext
                 });
+
+
                 $scope.linksForData.push(newLink);
+                }
             });
             $rootScope.datatypeLibrary.children = _.union($rootScope.datatypeLibrary.children, $scope.linksForData);
-            $rootScope.tableLibrary.children = _.union($scope.tableLibrary.children, $rootScope.linksForTables);
+            //$rootScope.tableLibrary.children = _.union($scope.tableLibrary.children, $rootScope.linksForTables);
             $rootScope.tablesMap = {};
             $rootScope.datatypesMap = {};
             $scope.addedDatatypes=[];
+
+
             DatatypeLibrarySvc.addChildren($rootScope.datatypeLibrary.id, $scope.linksForData).then(function(results) {
-                TableLibrarySvc.addChildren($rootScope.tableLibrary.id, $rootScope.linksForTables).then(function(tables) {
+                // TableLibrarySvc.addChildren($rootScope.tableLibrary.id, $rootScope.linksForTables).then(function(tables) {
                     $scope.loadDatatypes().then(function() {
+                        //
+                        // $scope.loadTables().then(function() {
+                        //
+                        // }, function() {});
 
-                        $scope.loadTables().then(function() {
 
-                        }, function() {});
                     }, function() {});
                 });
-            });
-
+            // });
+        //
         };
 
 
@@ -2953,6 +2962,7 @@ angular.module('igl').controller('AddDatatypeTemplate',
     DatatypeService.findByScope("INTERMASTER").then(function(response){
         console.log("ALL intermediate");
         $scope.hl7Datatypes=response;
+
     });
     
 

@@ -409,13 +409,18 @@ angular.module('igl')
 
 
         $scope.editDT = function(field) {
+            $scope.editDTMap={};
             $scope.editableDT = field.id;
 
             $scope.results = [];
             angular.forEach($rootScope.datatypeLibrary.children, function(dtLink) {
                 if (dtLink.name && dtLink.name === field.datatype.name) {
+                    if(!$scope.editDTMap[dtLink.id]){
+                        $scope.editDTMap[dtLink.id]=dtLink;
 
-                    $scope.results.push(dtLink);
+                        $scope.results.push(dtLink);
+                    }
+
                 }
             });
         };
