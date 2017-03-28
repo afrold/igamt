@@ -359,6 +359,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.editLibrary = function(datatypeLibraryDocument, readOnly) {
         	blockUI.start();
         	$timeout(function () {
+                $scope.initParams();
         	$rootScope.libraryDoc= datatypeLibraryDocument;
             $rootScope.accountId=datatypeLibraryDocument.accountId;
         	$scope.viewSettings.setTableReadonly(readOnly);
@@ -1100,6 +1101,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             var delay = $q.defer();
             $rootScope.datatypeLibrary.type = "datatypes";
             DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.datatypeLibrary.id).then(function (children) {
+                console.log("Looading")
                 $rootScope.datatypes = [];
                 $rootScope.interMediates=[];
                 $rootScope.datatypesMap = {};
@@ -1541,6 +1543,16 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 return DatatypeService.getTemplate(node, $rootScope.datatype);
             }
         });
+        $scope.initParams=function(){
+            $scope.datatypesParams = new ngTreetableParams({
+                getNodes: function(parent) {
+                    return DatatypeService.getNodes(parent, $rootScope.datatype);
+                },
+                getTemplate: function(node) {
+                    return DatatypeService.getTemplate(node, $rootScope.datatype);
+                }
+            });
+        }
 
         function processEditDataType(data) {
             console.log("dialog not opened");
@@ -1931,7 +1943,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         $scope.displayVersion= function(element){
 
-        	if(element){
+        	if(element.scope!=="MASTER"){
         		return element.hl7Version;
         	}
         };

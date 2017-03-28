@@ -235,9 +235,9 @@
                                                             </th>
                                                             <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:center">Data Type
                                                             </th>
-                                                            <th ng-if="igdocument" class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Value Set
+                                                            <th ng-if="igdocument" class="col-md-1 col-fixed-100" ng-show="igdocument&&viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Value Set
                                                             </th>
-                                                            <th ng-if="!igdocument" class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Concept Domain
+                                                            <th ng-if="!igdocument" class="col-md-1 col-fixed-100" ng-show="igdocument&&viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Concept Domain
                                                             </th>
                                                             <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">Single Element
                                                             </th>
@@ -549,7 +549,7 @@
                                                         <th class="col-md-1" colspan="2" style="width:4%">Length</th>
                                                         <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
                                                         <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
-                                                        <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
+                                                        <th class="col-md-1" rowspan="2" style="width:16%" ng-if="igdocument">Value Set</th>
                                                     </tr>
                                                     <tr class="tbl-header">
                                                         <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
@@ -593,7 +593,7 @@
                                                 <th st-ratio="15">Name</th>
                                                 <th st-ratio="10">Usage</th>
                                                 <th st-ratio="20">DataType</th>
-                                                <th st-ratio="10">Value Set</th>
+                                                <th st-ratio="10" ng-if="igdocument">Value Set</th>
                                                 <th st-ratio="5">Status</th>
                                             </tr>
 
@@ -716,7 +716,7 @@
                                             <th class="col-md-1" colspan="2" style="width:4%">Length</th>
                                             <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
                                             <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
-                                            <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
+                                            <th class="col-md-1" rowspan="2" style="width:16%" ng-if="igdocument">Value Set</th>
                                         </tr>
                                         <tr class="tbl-header">
                                             <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
@@ -860,7 +860,7 @@
                 </div>
             </ng-form>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)}"  ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)}"  ng-show="viewSettings.isVisibleColumn('valueSet')&&igdocument" style="text-align:center">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)">
                 <div ng-repeat="binding in findingBindings(node.path)">
                     <span class="badge label-white">
@@ -971,7 +971,7 @@
                 <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </a>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)}"  ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)}"  ng-show="viewSettings.isVisibleColumn('valueSet')&&igdocument" style="text-align:center">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], datatype, node.position)">
                 <div ng-repeat="binding in findingBindings(node.path)">
                     <span class="badge label-white">
@@ -1048,7 +1048,7 @@
                 <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </span>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)}" ng-show="viewSettings.isVisibleColumn('valueSet')&&igdocument" style="text-align:center">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)">
                 <div ng-repeat="binding in findingBindings(node.path, parentsMap[node.id])">
                     <span class="badge label-white">
@@ -1136,7 +1136,7 @@
                <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </a>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)}" ng-show="viewSettings.isVisibleColumn('valueSet')&&igdocument" style="text-align:center">
             <div ng-show="isAvailableForValueSet(datatypesMap[node.datatype.id], parentsMap[node.id], node.position)">
                 <div ng-repeat="binding in findingBindings(node.path, parentsMap[node.id])">
                     <span class="badge label-white">

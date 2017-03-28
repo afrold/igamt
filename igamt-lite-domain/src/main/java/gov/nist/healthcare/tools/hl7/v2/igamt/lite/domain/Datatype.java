@@ -34,11 +34,11 @@ public class Datatype extends DataModelWithConstraints
   private String ext = "";
 
   private String purposeAndUse = "";
-  
+
   private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
-  
+
   private List<Comment> comments = new ArrayList<Comment>();
-  
+
   private List<SingleElementValue> singleElementValues = new ArrayList<SingleElementValue>();
 
   protected List<Component> components = new ArrayList<Component>();
@@ -126,17 +126,17 @@ public class Datatype extends DataModelWithConstraints
   public void addComponent(Component c) {
     components.add(c);
   }
-  
+
   public void addValueSetBinding(ValueSetBinding vsb) {
-	valueSetBindings.add(vsb);
+    valueSetBindings.add(vsb);
   }
-  
+
   public void addComment(Comment comment) {
-	comments.add(comment);
+    comments.add(comment);
   }
-  
+
   public void addSingleElementValue(SingleElementValue sev) {
-	singleElementValues.add(sev);
+    singleElementValues.add(sev);
   }
 
   public String getComment() {
@@ -196,30 +196,34 @@ public class Datatype extends DataModelWithConstraints
     for (Component c : this.components) {
       clonedDT.addComponent(c.clone());
     }
-    
+
     clonedDT.setValueSetBindings(new ArrayList<ValueSetBinding>());
-    for (ValueSetBinding vsb : this.valueSetBindings){
-    	clonedDT.addValueSetBinding(vsb);
+    for (ValueSetBinding vsb : this.valueSetBindings) {
+      clonedDT.addValueSetBinding(vsb);
     }
-    
+
     clonedDT.setComments(new ArrayList<Comment>());
-    for (Comment c : this.comments){
-    	clonedDT.addComment(c);
+    for (Comment c : this.comments) {
+      clonedDT.addComment(c);
     }
-    
+
     clonedDT.setSingleElementValues(new ArrayList<SingleElementValue>());
-    for (SingleElementValue sev : this.singleElementValues){
-    	clonedDT.addSingleElementValue(sev);
+    for (SingleElementValue sev : this.singleElementValues) {
+      clonedDT.addSingleElementValue(sev);
     }
-    
+
     clonedDT.setDescription(description);
     clonedDT.setLabel(label);
+    clonedDT.setExt(this.ext);
     clonedDT.setName(name);
     clonedDT.setUsageNote(usageNote);
     clonedDT.setDefPreText(defPreText);
     clonedDT.setDefPostText(defPostText);
     clonedDT.setPrecisionOfDTM(precisionOfDTM);
     clonedDT.setTimeZoneOfDTM(timeZoneOfDTM);
+    clonedDT.setScope(this.scope);
+    clonedDT.setStatus(this.status);
+    clonedDT.setHl7versions(this.hl7versions);
     clonedDT.setStatus(this.getStatus());
     clonedDT.setPublicationVersion(this.getPublicationVersion());
     this.setHl7versions(this.hl7versions);
@@ -326,30 +330,30 @@ public class Datatype extends DataModelWithConstraints
   public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
     this.shareParticipantIds = shareParticipantIds;
   }
-  
+
   public List<ValueSetBinding> getValueSetBindings() {
-		return valueSetBindings;
+    return valueSetBindings;
   }
 
-	public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
-		this.valueSetBindings = valueSetBindings;
-	}
+  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+    this.valueSetBindings = valueSetBindings;
+  }
 
-	public List<Comment> getComments() {
-		return comments;
-	}
+  public List<Comment> getComments() {
+    return comments;
+  }
 
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
+  }
 
-	public List<SingleElementValue> getSingleElementValues() {
-		return singleElementValues;
-	}
+  public List<SingleElementValue> getSingleElementValues() {
+    return singleElementValues;
+  }
 
-	public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
-		this.singleElementValues = singleElementValues;
-	}
+  public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
+    this.singleElementValues = singleElementValues;
+  }
 
 
 }

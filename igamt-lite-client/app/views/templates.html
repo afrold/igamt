@@ -3964,19 +3964,19 @@
 
                                                         <td class="col-md-3">{{datatype.label}} <span class="badge">v{{versionAndUseMap[datatype.id].publicationVersion}}</span></td>
                                                         <td class="col-md-7">
-                                                            <ul ng-if="igdocument">
-                                                                <li ng-repeat="vr in datatype.hl7versions">
-                                                                    {{vr}}
-                                                                </li>
-                                                            </ul>
-                                                            <div ng-if="!igdocument">
+                                                            <!--<ul ng-if="igdocument">-->
+                                                                <!--<li ng-repeat="vr in datatype.hl7versions">-->
+                                                                    <!--{{vr}}-->
+                                                                <!--</li>-->
+                                                            <!--</ul>-->
+                                                            <div>
                                                                 <p ng-repeat="vr in datatype.hl7versions">
                                                                     <input type="radio" ng-model="datatype.hl7Version" ng-value="vr"></input>{{vr}}
                                                                 </p>
                                                             </div>
 
                                                         </td>
-                                                        <td class="col-md-2"><a class="pointer" ng-click="addDtFlv(datatype)"><i class="fa fa-plus fa-fw"></i></a>
+                                                        <td class="col-md-2"><button class="btn btn-primary" ng-click="addDtFlv(datatype)" ng-disable="!datatype.hl7Version||datatype.hl7Version==null"><i class="fa fa-plus fa-fw"></i></a></button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -4679,8 +4679,31 @@
 
 
 <script type="text/ng-template" id="label.html">
-    <span class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
-                                   'label-USE':  getScopeLabel(element)==='USR','label-MASTER':getScopeLabel(element)==='MAS','label-PRL':getScopeLabel(element)==='PRL'}"> {{getScopeLabel(element)}} {{hasHl7Version(element)}} <span ng-if="element.publicationVersion&&element.status==='PUBLISHED'" class="version-badge">v{{element.publicationVersion}}</span></span>
-     {{getLabel(element)}}<span ng-if="description">-{{getDescriptionLabel(element)}}</span>
+    <span ng-if="element.scope!=='INTERMASTER'">
+    <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
+                                   'label-USE':  getScopeLabel(element)==='USR','label-MASTER':getScopeLabel(element)==='MAS','label-PRL':getScopeLabel(element)==='PRL','label-DRV':getScopeLabel(element)==='DRV'}">
+
+
+        {{getScopeLabel(element)}} {{hasHl7Version(element)}}
+
+        <span ng-if="element.publicationVersion&&element.status==='PUBLISHED'" class="version-badge">v{{element.publicationVersion}}</span>
+
     </span>
+     {{getLabel(element)}}
+
+        <span ng-if="description">-{{getDescriptionLabel(element)}}</span>
+
+    </span>
+
+
+    <span ng-if="element.scope=='INTERMASTER'">
+              <span  class="badge" style="background-color: #0b58a2; color:white;"> {{getScopeLabel(element)}} </span>
+            {{getLabel(element)}}<span ng-if="description">-{{getDescriptionLabel(element)}}</span>
+             <br/>
+    <span class="version-badge-under" ng-repeat="version in element.hl7versions" style="margin-left:2px;">{{version}}</span>
+    </span>
+
+
+
+
 </script>

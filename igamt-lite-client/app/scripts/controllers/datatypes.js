@@ -423,6 +423,7 @@ angular.module('igl')
 
 
         $scope.backDT = function() {
+            
             $scope.editableDT = '';
         };
 
