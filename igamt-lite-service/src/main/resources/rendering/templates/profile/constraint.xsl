@@ -4,6 +4,7 @@
         <xsl:param name="title" />
         <xsl:param name="type" />
         <xsl:param name="constraintMode" />
+        <xsl:param name="headerLevel"/>
         <xsl:choose>
             <xsl:when test="$type='pre'">
                 <xsl:if test="count(./Constraint[@Type='pre'])  &gt; 0">
@@ -11,6 +12,7 @@
                         <xsl:with-param name="constraintMode" select="$constraintMode"/>
                         <xsl:with-param name="title" select="$title"/>
                         <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="headerLevel" select="$headerLevel"/>
                     </xsl:call-template>
                 </xsl:if>
             </xsl:when>
@@ -20,6 +22,7 @@
                         <xsl:with-param name="constraintMode" select="$constraintMode"/>
                         <xsl:with-param name="title" select="$title"/>
                         <xsl:with-param name="type" select="$type"/>
+                        <xsl:with-param name="headerLevel" select="$headerLevel"/>
                     </xsl:call-template>
                 </xsl:if>
             </xsl:when>
