@@ -6,6 +6,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeMessageService;
@@ -16,9 +17,7 @@ import nu.xom.Attribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -42,6 +41,9 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
     SerializeConstraintService serializeConstraintService;
     @Autowired
     SerializationUtil serializationUtil;
+
+    @Autowired TableService tableService;
+
 
     @Autowired
     SerializeSegmentService serializeSegmentService;
@@ -71,7 +73,16 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
             defPostText = serializationUtil.cleanRichtext(message.getDefPostText());
         }
         Boolean showConfLength = serializationUtil.isShowConfLength(hl7Version);
-        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText, showConfLength);
+        List<Table> tables = new ArrayList<>();
+        for(ValueSetBinding valueSetBinding : message.getValueSetBindings()){
+            if(valueSetBinding.getTableId()!=null && !valueSetBinding.getTableId().isEmpty()){
+                Table table = tableService.findById(valueSetBinding.getTableId());
+                if(table!=null){
+                    tables.add(table);
+                }
+            }
+        }
+        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,showConfLength);
         SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+"."+String.valueOf(message.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
         this.messageSegmentsNameList = new ArrayList<>();
         this.segmentPosition = 1;
