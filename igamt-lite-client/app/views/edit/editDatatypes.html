@@ -22,7 +22,7 @@
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="container">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}<span class="version-badge-label" ng-if="datatype.publicationVersion">v{{datatype.publicationVersion}}</span></span>
+                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}</span>
                         <span class="pull-right" ng-if="!typeOfSharing">
 
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'" style="margin-bottom: 0px;" ng-if="!igdocument">

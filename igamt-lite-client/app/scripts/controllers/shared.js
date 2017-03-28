@@ -96,10 +96,16 @@ angular
                 $scope.hasPending = false;
 
                 DatatypeService.getSharedDatatypes().then(function(result){
+
                     $scope.datatypes = result;
+
+
+
+
                     angular.forEach($scope.datatypes, function(datatype){
                       $scope.getOwnerName(datatype);
                     	$rootScope.datatypesMap[datatype.id]=datatype;
+                        $scope.processDatatype(datatype);
 
                     });
                     blockUI.stop();
@@ -171,8 +177,24 @@ angular
 
         };
 
+        // $scope.processDatatype=function(datatype){
+        //         listDtIDs=[];
+        //    if(datatype.components&&datatype.components.length>0){
+        //
+        //        angular.forEach(datatype.components,function(cp){
+        //
+        //
+        //        });
+        //
+        //
+        //    }
+
+
+       // }
+
         $scope.confirmShareDocument = function(datatype) {
                 $http.get('api/shareDtconfimation/' + datatype.id).then(function(response) {
+
                     $rootScope.msg().text = "dtSharedConfirmationSuccessful";
                     $rootScope.msg().type ="success";
                     $rootScope.msg().show = true;

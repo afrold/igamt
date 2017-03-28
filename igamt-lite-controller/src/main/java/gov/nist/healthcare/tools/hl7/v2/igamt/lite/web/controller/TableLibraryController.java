@@ -222,7 +222,9 @@ public class TableLibraryController extends CommonController {
     for (Table t : tables) {
       TableLink tbl = new TableLink();
       tbl.setBindingIdentifier(t.getBindingIdentifier());
-      tbl.setId(tbl.getId());
+      String temp = t.getId();
+      System.out.println(temp);
+      tbl.setId(t.getId());
       links.add(tbl);
     }
 

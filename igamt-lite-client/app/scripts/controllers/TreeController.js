@@ -1097,20 +1097,19 @@ angular
                 ];
 
                 $scope.MasterDataTypeLibraryOptions = [
-                    [' Add Datatypes',
+                    [' Create Master Data Types',
                         function($itemScope) {
-                            console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                    $scope.addMasterDt();
+                                    $scope.addDatatypeTemplate();
 
 
 
                                 });
 
                             } else {
-                                $scope.addMasterDt();
+                                $scope.addDatatypeTemplate();
 
                             }
                         }
@@ -1118,29 +1117,25 @@ angular
                 ];
 
                 $scope.UserDataTypeLibraryOptions = [
-                    ['Add HL7 Datatypes',
+                    [' Create User Data Types',
                         function($itemScope) {
-                            console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
-
-                                    $scope.addDatatypeForUser("2.1");
+                                    $scope.addDatatypeTemplate();
 
 
 
                                 });
 
                             } else {
-
-                                $scope.addDatatypeForUser("2.1");
+                                $scope.addDatatypeTemplate();
 
                             }
                         }
                     ],
                     ['Add USER Datatypes',
                         function($itemScope) {
-                            console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -1160,7 +1155,6 @@ angular
                     ],
                     ['Add Master Datatypes',
                         function($itemScope) {
-                            console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -1180,7 +1174,6 @@ angular
                     ],
                     ['Add Shared Datatypes',
                         function($itemScope) {
-                            console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -1198,14 +1191,6 @@ angular
                             }
                         }
                     ]
-
-
-
-
-
-
-
-
                 ];
 
 
@@ -2749,6 +2734,7 @@ angular.module('igl').controller('addMAsterInLibrary',
                             }
                         })
                         TableLibrarySvc.addChildrenByIds(tableLibrary.id, $scope.TablesIds).then(function(result) {
+                            console.log(result);
                             angular.forEach(result, function(table){
                                if(!$rootScope.tablesMap[table.id]){
                                    $rootScope.tables.push(table);
