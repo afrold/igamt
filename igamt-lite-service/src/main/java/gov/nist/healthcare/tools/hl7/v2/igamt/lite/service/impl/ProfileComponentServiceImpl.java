@@ -47,13 +47,30 @@ public class ProfileComponentServiceImpl implements ProfileComponentService {
   }
 
   @Override
+  public List<ProfileComponent> saveAll(List<ProfileComponent> pcs) {
+    profileComponentRepository.save(pcs);
+    return pcs;
+
+  }
+
+  @Override
+
   public void delete(String id) {
     profileComponentRepository.delete(id);
   }
 
   @Override
+  public List<ProfileComponent> findByIds(List<String> pcIds) {
+
+    return profileComponentRepository.findAllByIds(pcIds);
+
+  }
+
+
+  @Override
   public void delete(List<ProfileComponent> profileComponents) {
     profileComponentRepository.delete(profileComponents);
+
   }
 
 

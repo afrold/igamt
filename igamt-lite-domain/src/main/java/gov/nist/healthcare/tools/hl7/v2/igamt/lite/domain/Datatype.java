@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -33,9 +34,12 @@ public class Datatype extends DataModelWithConstraints
 
   private String ext = "";
 
+
   private String purposeAndUse = "";
 
-  private List<ValueSetOrSingleCodeBinding> valueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
+
+  private List<ValueSetOrSingleCodeBinding> valueSetBindings =
+      new ArrayList<ValueSetOrSingleCodeBinding>();
 
   private List<Comment> comments = new ArrayList<Comment>();
 
@@ -127,6 +131,7 @@ public class Datatype extends DataModelWithConstraints
     components.add(c);
   }
 
+
   public void addValueSetBinding(ValueSetOrSingleCodeBinding vsb) {
     valueSetBindings.add(vsb);
   }
@@ -155,6 +160,7 @@ public class Datatype extends DataModelWithConstraints
     this.usageNote = usageNote;
   }
 
+
   public String getDefPreText() {
     return defPreText;
   }
@@ -173,8 +179,10 @@ public class Datatype extends DataModelWithConstraints
 
   @Override
   public String toString() {
-    return "Datatype [id=" + id + ", label=" + label + ", name=" + name + ", description="
-        + description + ", components=" + components + "]";
+    // return "Datatype [id=" + id + ", label=" + label + ", name=" + name + ", description="
+    // + description + ", components=" + components + "]";
+    return ReflectionToStringBuilder.toString(this);
+
   }
 
   @Override
@@ -196,6 +204,7 @@ public class Datatype extends DataModelWithConstraints
     for (Component c : this.components) {
       clonedDT.addComponent(c.clone());
     }
+
 
     clonedDT.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
     for (ValueSetOrSingleCodeBinding vsb : this.valueSetBindings) {
@@ -283,6 +292,16 @@ public class Datatype extends DataModelWithConstraints
 
   }
 
+  public Component findOneComponent(String id) {
+    if (this.components != null)
+      for (Component m : this.components) {
+        if (id.equals(m.getId())) {
+          return m;
+        }
+      }
+    return null;
+  }
+
 
   @Override
   public int hashCode() {
@@ -323,6 +342,7 @@ public class Datatype extends DataModelWithConstraints
     this.timeZoneOfDTM = timeZoneOfDTM;
   }
 
+
   public Set<ShareParticipantPermission> getShareParticipantIds() {
     return shareParticipantIds;
   }
@@ -330,6 +350,7 @@ public class Datatype extends DataModelWithConstraints
   public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
     this.shareParticipantIds = shareParticipantIds;
   }
+
 
   public List<ValueSetOrSingleCodeBinding> getValueSetBindings() {
     return valueSetBindings;
