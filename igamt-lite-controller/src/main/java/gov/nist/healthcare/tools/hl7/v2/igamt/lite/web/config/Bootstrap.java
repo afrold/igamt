@@ -240,14 +240,16 @@ public class Bootstrap implements InitializingBean {
     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
     // createDefaultExportFonts();
+
+    // Next release bootstrap codes
     // updateInitAndCreateBindingAndCommentsVSForDatatype();
     // updateInitAndCreateBindingAndCommentsVSForSegment();
     // updateInitAndCreateCommentsForMessage();
     // fixUserDatatypesScope();
     // fixValueSetNameAndDescription(); Do not use for now.
-
     // updateDMofSegment();
     // updateProfileForMissingDTs();
+
   }
 
   private void updateProfileForMissingDTs() throws Exception {
