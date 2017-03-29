@@ -1,7 +1,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:import href="/rendering/templates/profile/segmentField.xsl"/>
-
+    <xsl:import href="/rendering/templates/profile/valueSetBindingList.xsl"/>
+    <xsl:import href="/rendering/templates/profile/commentList.xsl"/>
     <xsl:template match="Segment" mode="toc">
         <xsl:element name="a">
             <xsl:attribute name="href">
@@ -149,12 +150,8 @@
         </xsl:element>
         <xsl:if test="count(Constraint) &gt; 0">
             <xsl:if test="count(Constraint[@Type='cs']) &gt; 0">
-                <xsl:element name="p">
-                    <xsl:element name="strong">
-                        <xsl:element name="u">
-                            <xsl:text>Conformance Statements</xsl:text>
-                        </xsl:element>
-                    </xsl:element>
+                <xsl:element name="h4">
+                    <xsl:text>Conformance Statements</xsl:text>
                 </xsl:element>
                 <xsl:element name="table">
                     <xsl:attribute name="class">
@@ -180,12 +177,8 @@
                 </xsl:element>
             </xsl:if>
             <xsl:if test="count(Constraint[@Type='pre']) &gt; 0">
-                <xsl:element name="p">
-                    <xsl:element name="strong">
-                        <xsl:element name="u">
-                            <xsl:text>Conditional Predicates</xsl:text>
-                        </xsl:element>
-                    </xsl:element>
+                <xsl:element name="h4">
+                    <xsl:text>Conditional Predicates</xsl:text>
                 </xsl:element>
                 <xsl:element name="table">
                     <xsl:attribute name="class">
@@ -213,6 +206,8 @@
         </xsl:if>
         
         <xsl:apply-templates select="./coconstraints"></xsl:apply-templates>
+        <xsl:apply-templates select="./ValueSetBindingList"/>
+        <xsl:apply-templates select="./CommentList"/>
 
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
             <xsl:element name="p">

@@ -6,12 +6,9 @@
         <xsl:param name="title"/>
         <xsl:param name="type"/>
         <xsl:param name="constraintMode"/>
-        <xsl:element name="p">
-            <xsl:element name="strong">
-                <xsl:element name="u">
-                    <xsl:value-of select="$title"/>
-                </xsl:element>
-            </xsl:element>
+        <xsl:param name="headerLevel"/>
+        <xsl:element name="{$headerLevel}">
+            <xsl:value-of select="$title"/>
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>

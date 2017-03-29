@@ -3,6 +3,8 @@
     <xsl:include href="/rendering/templates/profile/messageSegment.xsl"/>
     <xsl:include href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:include href="/rendering/templates/profile/messageSegmentsOrGroups.xsl"/>
+    <xsl:include href="/rendering/templates/profile/valueSetBindingList.xsl"/>
+    <xsl:include href="/rendering/templates/profile/commentList.xsl"/>
     <xsl:template match="Message">
         <!--xsl:value-of select="@Comment"/-->
         <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
@@ -107,6 +109,9 @@
                         <xsl:with-param name="type">
                             <xsl:text>cs</xsl:text>
                         </xsl:with-param>
+                        <xsl:with-param name="headerLevel">
+                            <xsl:text>h5</xsl:text>
+                        </xsl:with-param>
                     </xsl:call-template>
                 </xsl:if>
             </xsl:for-each>
@@ -122,6 +127,9 @@
                         </xsl:with-param>
                         <xsl:with-param name="type">
                             <xsl:text>cs</xsl:text>
+                        </xsl:with-param>
+                        <xsl:with-param name="headerLevel">
+                            <xsl:text>h5</xsl:text>
                         </xsl:with-param>
                     </xsl:call-template>
                 </xsl:if>
@@ -143,6 +151,9 @@
                         <xsl:with-param name="type">
                             <xsl:text>pre</xsl:text>
                         </xsl:with-param>
+                        <xsl:with-param name="headerLevel">
+                            <xsl:text>h5</xsl:text>
+                        </xsl:with-param>
                     </xsl:call-template>
                 </xsl:if>
             </xsl:for-each>
@@ -159,10 +170,15 @@
                         <xsl:with-param name="type">
                             <xsl:text>pre</xsl:text>
                         </xsl:with-param>
+                        <xsl:with-param name="headerLevel">
+                            <xsl:text>h5</xsl:text>
+                        </xsl:with-param>
                     </xsl:call-template>
                 </xsl:if>
             </xsl:for-each>
         </xsl:if>
+        <xsl:apply-templates select="./ValueSetBindingList"/>
+        <xsl:apply-templates select="./CommentList"/>
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
             <xsl:call-template name="definitionText">
                 <xsl:with-param name="type">

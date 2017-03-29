@@ -91,8 +91,17 @@ import java.util.Map;
             List<SerializableConstraint> constraints =
                 serializeConstraintService.serializeConstraints(segment, segment.getName() + "-");
             Map<Field, Datatype> fieldDatatypeMap = new HashMap<>();
-            Map<Field, List<Table>> fieldTableMap = new HashMap<>();
+            Map<Field, List<ValueSetBinding>> fieldValueSetBindingsMap = new HashMap<>();
             Map<CCValue, Table> coConstraintValueTableMap = new HashMap<>();
+            List<Table> tables = new ArrayList<>();
+            for(ValueSetBinding valueSetBinding : segment.getValueSetBindings()){
+                if(valueSetBinding.getTableId()!=null && !valueSetBinding.getTableId().isEmpty()){
+                    Table table = tableService.findById(valueSetBinding.getTableId());
+                    if(table!=null){
+                        tables.add(table);
+                    }
+                }
+            }
             List<Field> fieldsToBeRemoved = new ArrayList<>();
             for (Field field : segment.getFields()) {
                 if(ExportUtil.diplayUsage(field.getUsage(),fieldUsageConfig)) {
@@ -100,14 +109,13 @@ import java.util.Map;
                         Datatype datatype = datatypeService.findById(field.getDatatype().getId());
                         fieldDatatypeMap.put(field, datatype);
                     }
-                    if (field.getTables() != null && !field.getTables().isEmpty()) {
-                        List<Table> tables = new ArrayList<>();
-                        for (TableLink tableLink : field.getTables()) {
-                            Table table = tableService.findById(tableLink.getId());
-                            tables.add(table);
+                    List<ValueSetBinding> fieldValueSetBindings = new ArrayList<>();
+                    for(ValueSetBinding valueSetBinding : segment.getValueSetBindings()){
+                        if(valueSetBinding.getLocation().equals(String.valueOf(field.getPosition()))){
+                            fieldValueSetBindings.add(valueSetBinding);
                         }
-                        fieldTableMap.put(field, tables);
                     }
+                    fieldValueSetBindingsMap.put(field,fieldValueSetBindings);
                 } else {
                     fieldsToBeRemoved.add(field);
                 }
@@ -136,7 +144,7 @@ import java.util.Map;
                 }
             }
             Boolean showConfLength = serializationUtil.isShowConfLength(segment.getHl7Version());
-            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldTableMap, coConstraintValueTableMap,showConfLength);
+            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables, coConstraintValueTableMap,showConfLength);
             serializableSegmentSection.addSection(serializableSegment);
             return serializableSegmentSection;
         }
