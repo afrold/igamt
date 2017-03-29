@@ -1,6 +1,26 @@
-angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http,$modal, CompositeProfileService) {
+angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http, $modal, CompositeProfileService,TableService) {
+
+    $scope.redirectVS = function(binding) {
+        
+        TableService.getOne(binding.tableId).then(function(valueSet) {
+            var modalInstance = $modal.open({
+                templateUrl: 'redirectCtrl.html',
+                controller: 'redirectCtrl',
+                size: 'md',
+                resolve: {
+                    destination: function() {
+                        return valueSet;
+                    }
+                }
 
 
+
+            });
+            modalInstance.result.then(function() {
+                $rootScope.editTable(valueSet);
+            });
+        });
+    };
 
     $scope.save = function() {
         console.log($rootScope.compositeProfileStructure);

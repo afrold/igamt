@@ -93,6 +93,9 @@ public class FlavorServiceImpl implements FlavorService {
           if (attr.getMax() != null) {
             field.setMax(attr.getMax());
           }
+          if (attr.getText() != null) {
+            field.setText(attr.getText());;
+          }
           if (attr.getMin() != null) {
             field.setMin(attr.getMin());
           }
@@ -150,6 +153,9 @@ public class FlavorServiceImpl implements FlavorService {
           }
           if (attr.getConfLength() != null) {
             component.setConfLength(attr.getConfLength());
+          }
+          if (attr.getText() != null) {
+            component.setText(attr.getText());;
           }
           if (attr.getMaxLength() != null) {
             component.setMaxLength(attr.getMaxLength());

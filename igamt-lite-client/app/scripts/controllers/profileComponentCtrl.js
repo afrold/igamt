@@ -1,4 +1,4 @@
-angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $modal, orderByFilter, $rootScope, $q, $interval, PcLibraryService, PcService, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService) {
+angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $modal, orderByFilter, $rootScope, $q, $interval, PcLibraryService, PcService, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService,TableService) {
     $scope.changes = false;
 
     $scope.editProfileComponent = false;
@@ -9,6 +9,28 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         isFirstOpen: true,
         isSecondOpen: false,
         isFirstDisabled: false
+    };
+    $scope.redirectVS = function(binding) {
+        console.log("bindiiing");
+        console.log(binding);
+        TableService.getOne(binding.tableId).then(function(valueSet) {
+            var modalInstance = $modal.open({
+                templateUrl: 'redirectCtrl.html',
+                controller: 'redirectCtrl',
+                size: 'md',
+                resolve: {
+                    destination: function() {
+                        return valueSet;
+                    }
+                }
+
+
+
+            });
+            modalInstance.result.then(function() {
+                $rootScope.editTable(valueSet);
+            });
+        });
     };
     $scope.getValueSetContext = function(node) {
         if (node.path) {
@@ -250,7 +272,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                     return $rootScope.datatypesMap[node.attributes.datatype.id] && $rootScope.datatypesMap[node.attributes.datatype.id].components && $rootScope.datatypesMap[node.attributes.datatype.id].components.length > 0;
 
                 } else {
-                return $rootScope.datatypesMap[node.attributes.oldDatatype.id] && $rootScope.datatypesMap[node.attributes.oldDatatype.id].components && $rootScope.datatypesMap[node.attributes.oldDatatype.id].components.length > 0;
+                    return $rootScope.datatypesMap[node.attributes.oldDatatype.id] && $rootScope.datatypesMap[node.attributes.oldDatatype.id].components && $rootScope.datatypesMap[node.attributes.oldDatatype.id].components.length > 0;
 
                 }
             }
@@ -1357,11 +1379,27 @@ angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootSc
 
 
 
-angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI) {
+angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI,TableService) {
     $scope.changed = false;
     console.log(currentNode);
     $scope.currentNode = currentNode;
     $scope.currentNode.locationPath = currentNode.path;
+    $scope.isSingleValueSetAllowed = false;
+    $scope.valueSetSelectedForSingleCode = null;
+
+    $scope.singleCodeInit = function() {
+        $scope.valueSetSelectedForSingleCode = null;
+    };
+
+    if (_.find($rootScope.config.singleValueSetDTs, function(singleValueSetDTs) {
+            if ($scope.currentNode.attributes.datatype) {
+                return singleValueSetDTs == $rootScope.datatypesMap[$scope.currentNode.attributes.datatype.id].name;
+
+            } else {
+                return singleValueSetDTs == $rootScope.datatypesMap[$scope.currentNode.attributes.oldDatatype.id].name;
+
+            }
+        })) $scope.isSingleValueSetAllowed = true;
 
     var positionPath = '';
 
@@ -1377,15 +1415,27 @@ angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $mod
     $scope.listOfBindingLocations = null;
 
     if (_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT) {
-            return valueSetAllowedDT == $rootScope.datatypesMap[$scope.currentNode.attributes.oldDatatype.id].name;
+            if ($scope.currentNode.attributes.datatype) {
+                return valueSetAllowedDT == $rootScope.datatypesMap[$scope.currentNode.attributes.datatype.id].name;
+
+            } else {
+                return valueSetAllowedDT == $rootScope.datatypesMap[$scope.currentNode.attributes.oldDatatype.id].name;
+
+            }
         })) {
         for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
             if (!$scope.selectedValueSetBindings[i].bindingLocation || $scope.selectedValueSetBindings[i].bindingLocation == '') {
                 $scope.selectedValueSetBindings[i].bindingLocation = "1";
             }
         }
+        var hl7Version = null
+        if ($scope.currentNode.attributes.datatype) {
+        hl7Version = $rootScope.datatypesMap[$scope.currentNode.attributes.datatype.id].hl7Version;
 
-        var hl7Version = $rootScope.datatypesMap[$scope.currentNode.attributes.oldDatatype.id].hl7Version;
+        } else {
+        hl7Version = $rootScope.datatypesMap[$scope.currentNode.attributes.oldDatatype.id].hl7Version;
+
+        }
         if (!hl7Version) hl7Version = "2.5.1";
 
         $scope.listOfBindingLocations = $rootScope.config.bindingLocationListByHL7Version[hl7Version];
@@ -1407,10 +1457,12 @@ angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $mod
     };
 
     $scope.selectValueSet = function(v) {
-        if ($scope.listOfBindingLocations) {
-            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, bindingLocation: "1" });
-        } else {
-            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath });
+        if($scope.isSingleValueSetAllowed) $scope.selectedValueSetBindings = [];
+        if($scope.selectedValueSetBindings.length > 0 && $scope.selectedValueSetBindings[0].type == 'singlecode') $scope.selectedValueSetBindings = [];
+        if($scope.listOfBindingLocations){
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, bindingLocation: "1", usage: currentNode.usage, type: "valueset" });
+        }else {
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, usage: currentNode.usage, type: "valueset" });
         }
         $scope.changed = true;
     };
@@ -1425,6 +1477,31 @@ angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $mod
         }
         $scope.changed = true;
     };
+    $scope.selectValueSetForSingleCode = function (v){
+        console.log(v);
+        TableService.getOne(v.id).then(function(tbl) {
+            $scope.valueSetSelectedForSingleCode = tbl;
+        }, function() {
+        });
+    };
+    $scope.isCodeSelected = function (c){
+        for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
+            if($scope.selectedValueSetBindings[i].code){
+                if($scope.selectedValueSetBindings[i].code.id == c.id) return true;
+            }
+        }
+        return false;
+    };
+    $scope.selectCode = function (c){
+        $scope.selectedValueSetBindings = [];
+        $scope.selectedValueSetBindings.push({ tableId: $scope.valueSetSelectedForSingleCode.id, location: positionPath, usage: currentNode.usage, type: "singlecode", code : c});
+        $scope.changed = true;
+    };
+     $scope.unselectCode = function(c){
+        $scope.selectedValueSetBindings = [];
+        $scope.changed = true;
+    };
+
 
     $scope.saveMapping = function() {
         blockUI.start();

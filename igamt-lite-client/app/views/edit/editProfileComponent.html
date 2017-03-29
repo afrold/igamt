@@ -71,7 +71,7 @@
                                         <button type="button " class="btn btn-raised btn-info btn-xs " style="padding-top:10px " ng-click="addPComponents() "><i class="fa fa-plus "></i> Add Items </button>
                                     </div>
                                 </div>
-                                <div class="col-md-12 " ng-show="profileComponent.children.length>0">
+                                <div class="col-md-12 " ng-show="profileComponent.children.length>0" style="overflow-y:auto;">
                                     <table class="table table-bordered table-fix-header table-condensed profile-table">
                                         <thead>
                                             <tr class="tbl-header" style="">
@@ -84,9 +84,9 @@
                                                 <th class="col-md-1 col-fixed-30" rowspan="2" ng-show="showConfLength()"> ConfLength </th>
                                                 <th class="col-md-2 col-fixed-350" rowspan="2">Data Type
                                                 </th>
-                                                <th class="col-md-1 col-fixed-330" rowspan="2">Value Set
+                                                <th class="col-md-1 col-fixed-330" rowspan="2">Value Set/Single Code
                                                 </th>
-                                                <th class="col-md-1 col-fixed-330" rowspan="2">Single Element
+                                                <th class="col-md-1 col-fixed-330" rowspan="2">Constant Value	
                                                 </th>
                                                 <th class="col-md-1" ng-style="predWidthx" rowspan="2">Predicate
                                                 </th>
@@ -211,16 +211,18 @@
                                                 </td>
 
 
-                                                <!--<td class="col-md-1 col-fixed-330 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
-                                                </td>-->
 
-                                                <td ng-class="{'emptyCol':!isAvailableForValueSet(node),'input-change':(node.valueSetBindings && node.valueSetBindings.length>0)}" style="text-align:center">
+
+                                                <td ng-class="{'col-md-1 col-fixed-330 emptyCol':!isAvailableForValueSet(node),'col-md-1 col-fixed-330 input-change':(node.valueSetBindings && node.valueSetBindings.length>0)}" style="text-align:center">
 
                                                     <div ng-show="isAvailableForValueSet(node)">
                                                         <div ng-repeat="binding in findingBindings(node)">
                                                             <span class="badge label-white">
                                                                 <span ng-class="{'label-message-icon' : binding.bindingFrom == 'message', 'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
-                                                            <span title="For {{getValueSetContext(node)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                                                              
+                                                            <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                                                            </span>
+                                                            <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
                                                             </span>
                                                         </div>
                                                         <a class="point">
@@ -275,7 +277,7 @@
                                                         <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-click="editCommentDlg(node, comment, false, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
                                                         </span>
                                                     </div>
-                                                    <a  class="point">
+                                                    <a class="point">
                                                         <span ng-click="editCommentDlg(node, null, false, 'message')"><i class="fa fa-plus fa-fw"></i></span>
                                                         <a ng-click="cancelComments(node)"><i class="fa fa-remove fa-fw"></i></a>
 
