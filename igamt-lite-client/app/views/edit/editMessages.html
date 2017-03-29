@@ -770,8 +770,8 @@
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node.obj) || hasSingleCode(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node.obj) && !hasSingleCode(node)">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="isAvailableConstantValue(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-message-icon' : node.sev.from == 'message', 'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
@@ -889,8 +889,8 @@
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node.obj) || hasSingleCode(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node.obj) && !hasSingleCode(node)">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="isAvailableConstantValue(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-message-icon' : node.sev.from == 'message', 'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>

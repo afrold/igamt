@@ -236,15 +236,15 @@ public class Bootstrap implements InitializingBean {
 		// CreateCollectionOfUnchanged(); // group datatype by sets of versions
 		// Colorate(); // genenerates the datatypes evolution matrix.
 
-		// CreateIntermediateFromUnchanged();
-		// MergeComponents();
-		// fixDatatypeRecursion();
-		// fixDuplicateValueSets();
-//		 createDefaultExportFonts();
+//		 CreateIntermediateFromUnchanged();
+//		 MergeComponents();
+		 fixDatatypeRecursion();
+		 fixDuplicateValueSets();
+		 createDefaultExportFonts();
 		 updateInitAndCreateBindingAndCommentsVSForDatatype();
 		 updateInitAndCreateBindingAndCommentsVSForSegment();
 		 updateInitAndCreateCommentsForMessage();
-//		 fixUserDatatypesScope();
+		 fixUserDatatypesScope();
 		updateDMofSegment();
 		updateProfileForMissingDTs();
 	}
