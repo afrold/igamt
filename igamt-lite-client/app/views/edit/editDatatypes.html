@@ -72,11 +72,13 @@
 
                 </div>
                 <div class="" ng-controller="cmpDatatypeCtrl as cmp">
-                    <tabset active="tabStatus.active">
-                        <tab ng-click="setDeltaToF()">
-                            <tab-heading>
-                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Data Type MetaData
-                            </tab-heading>
+                    <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+                        <md-tab md-on-select="setDeltaToF(0)">
+                            <md-tab-label>
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
+                            </md-tab-label>
+                            <md-tab-body>
+
                             <div style="margin-top: 20px">
                                 <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.name.$invalid}">
                                     <label class="col-md-2 control-label">Name*</label>
@@ -156,12 +158,13 @@
                                     </div>
                                 </div>
                             </div>
-                        </tab>
-                        <tab ng-click="setDeltaToF(); refreshSlider();">
-                            <tab-heading>
-                                <i class="fa fa-table" aria-hidden="true"></i> Data Type Definition
-                            </tab-heading>
-
+                            </md-tab-body>
+                        </md-tab>
+                        <md-tab md-on-select="setDeltaToF(0);refreshSlider();">
+                            <md-tab-label>
+                                <i class="fa fa-table" aria-hidden="true"></i>Definition
+                            </md-tab-label>
+                            <md-tab-body>
                             <div class="el-def" style="margin-top: 5px">
                                 <accordion>
 
@@ -442,11 +445,14 @@
 
                                 </accordion>
                             </div>
-                        </tab>
-                        <tab ng-click="callDTDelta()" ng-if="igdocument">
-                            <tab-heading>
-                                <i class="fa fa-table fa-fw" aria-hidden="true"></i> Datatype Delta
-                            </tab-heading>
+                            </md-tab-body>
+                        </md-tab>
+                        <md-tab md-on-select="callDTDelta()" ng-if="igdocument">
+                            <md-tab-label>
+                                <i class="fa fa-table fa-fw" aria-hidden="true"></i>Delta
+                            </md-tab-label>
+                            <md-tab-body>
+
                             <div class="panel-body" style="margin:5px;">
                                 <accordion>
                                     <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
@@ -569,15 +575,17 @@
 
                             </div>
 
-                        </tab>
+                            </md-tab-body>
+                        </md-tab>
 
 
 
+                        <md-tab md-on-select="setDeltaToF()">
+                            <md-tab-label>
+                                <i class="fa fa-link" aria-hidden="true"></i>Cross-References <span class="badge">{{references.length}}</span>
+                            </md-tab-label>
+                            <md-tab-body>
 
-                        <tab ng-click="setDeltaToF()">
-                            <tab-heading>
-                                <i class="fa fa-link" aria-hidden="true"></i> Data Type Cross-References <span class="badge">{{references.length}}</span>
-                            </tab-heading>
                             <div class="el-def" style="margin-top:20px">
 
                                 <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary" ng-hide="typeOfSharing ">
@@ -653,13 +661,13 @@
 
                             </div>
 
-                        </tab>
-                        <tab ng-click="setDeltaToF(); getAllVersionsOfDT(datatype.id)" ng-if="versionAndUseMap[datatype.id]&&datatypeLibrary!=null">
-                            <tab-heading>
+                            </md-tab-body>
+                        </md-tab>
+                        <md-tab md-on-select="setDeltaToF();getAllVersionsOfDT(datatype.id)" ng-if="versionAndUseMap[datatype.id]&&datatypeLibrary!=null">
+                            <md-tab-label>
                                 <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
-                            </tab-heading>
-
-
+                            </md-tab-label>
+                            <md-tab-body>
                             <div class="panel-body">
 
 
@@ -730,10 +738,9 @@
 
                             </div>
 
-                        </tab>
-
-
-                    </tabset>
+                            </md-tab-body>
+                        </md-tab>
+                    </md-tabs>
                 </div>
             </div>
         </div>
