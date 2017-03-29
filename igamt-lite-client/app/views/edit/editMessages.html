@@ -32,23 +32,24 @@
                         </button>
                         </span>
                     </div>
-                    <div class="static_info">
-                        <i class="fa fa-calendar" aria-hidden="true"></i> Updated {{message.dateUpdated | date:dateFormat}}
-                        <span ng-if="message.owner" style="font-style: italic;">
+                 <div class="static_info">
+                 <i class="fa fa-calendar" aria-hidden="true"></i>
+					Updated {{message.dateUpdated | date:dateFormat}}
+                     <span ng-if="message.owner" style="font-style: italic;">
                          <i class="fa fa-user" aria-hidden="true"></i> 
                          ,{{datatype.owner}}
                     </span>
-                        <span ng-if="message.hl7Version">,HL7 Version: {{message.hl7Version}}</span>
-                        <span ng-if="message.publicationVersion">,Version: {{message.publicationVersion}}</span>
-
+                    <span ng-if="message.hl7Version">,HL7 Version: {{message.hl7Version}}</span>
+                    <span ng-if="message.publicationVersion">,Version: {{message.publicationVersion}}</span>
 
                 </div>
                     <div class="" ng-controller="cmpMessageCtrl as cmpMsg">
-                        <tabset active="tabStatus.active">
-                            <tab ng-click="setDeltaToF()">
-                                <tab-heading>
-                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Conformance Profile MetaData
-                                </tab-heading>
+                        <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+                            <md-tab md-on-select="setDeltaToF()">
+                                <md-tab-label>
+                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
+                                </md-tab-label>
+                                <md-tab-body>
                                 <div style="margin-top: 20px">
                                     <div class="form-group control-group" ng-class="{'has-error' : editForm.name.$invalid}">
                                         <label class="col-md-2 control-label">Name*</label>
@@ -122,11 +123,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            </tab>
-                            <tab heading="Conformance Profile Definition" ng-click="setDeltaToF()">
-                                <tab-heading>
-                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i> Conformance Profile Definition
-                                </tab-heading>
+                                </md-tab-body>
+                            </md-tab>
+
+                            <md-tab md-on-select="setDeltaToF()">
+                                <md-tab-label>
+                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i>Definition
+                                </md-tab-label>
+                                <md-tab-body>
+
                                 <div class="el-def" style="margin-top: 5px">
                                     <accordion>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFifthOpen">
@@ -198,7 +203,6 @@
                                                 </div>
                                                 <button ng-if="message.scope!=='HL7STANDARD'" class="pull-right" title="Verify Message" type="button" ng-class="'btn btn-raised btn-sm btn-success'" ng-click="validateMessage()">Verify</button>
                                                 <div ng-dropdown-multiselect="" class="pull-right" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>
-
 
 
                                             <table id="treeTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
@@ -304,11 +308,14 @@
                                 </div>
                                 </accordion>
                     </div>
-                    </tab>
-                    <tab ng-click="callMsgDelta()">
-                        <tab-heading>
-                            <i class="fa fa-table fa-fw" aria-hidden="true"></i> Conformance Profile Delta
-                        </tab-heading>
+                                </md-tab-body>
+                            </md-tab>
+                            <md-tab md-on-select="callMsgDelta()">
+                                <md-tab-label>
+                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i>Delta
+                                </md-tab-label>
+                                <md-tab-body>
+
                         <div class="panel-body" style="margin:5px;">
                             <accordion>
                                 <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
@@ -410,61 +417,15 @@
                                 </div>
                             </accordion>
                         </div>
-                    </tab>
-                    <tab ng-click="setDeltaToF()">
-                        <tab-heading>
-                            <i class="fa fa-link fa-fw" aria-hidden="true"></i> Profile Component Cross-References
-                        </tab-heading>
-                        <div style="margin-top: 20px">
-                            <div class="col-md-12">
-                                <div class="pull-right">
-
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <table id="appliedPcInMsgTable" tt-table tt-params="appliedPcInMsgParams" class="table table-bordered table-fix-header table-condensed profile-table">
-                                    <thead>
-                                        <tr class="tbl-header" style="">
-                                            <th class="col-md-3">Composite Profile Name</th>
-                                            <th class="col-md-3">Core Profile Name</th>
-                                            <th class="col-md-3">Applied Profile Components</th>
-
-                                        </tr>
-
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </tab>
-                    </tabset>
+                                </md-tab-body>
+                            </md-tab>
+                        </md-tabs>
                 </div>
             </div>
         </div>
     </div>
     </div>
 </script>
-<script type="text/ng-template" id="appliedPcInMsgTable">
-
-    <tr tt-node is-branch="false">
-        <td class="col-md-3">
-            <span ng-bind="node.compositeName"></span>
-        </td>
-         <td class="col-md-3">
-            <span ng-bind="node.coreMessageName"></span>
-        </td>
-        <td class="col-md-3">
-            <span ng-repeat="pcInfo in node.pcs">{{pcInfo.name}}<br></span>
-        </td>
-        
-
-    </tr>
-
-</script>
-
-
-
 <script type="text/ng-template" id="MessageSegmentRefEditTree.html">
     <tr tt-node is-branch="hasChildren(node.obj)" ng-show="(isVisible(node.obj) &&( node.obj.usage==='R' ||node.obj.usage==='RE' ||node.obj.usage==='C' )&& $root.usageF) || (isVisible(node.obj) && !$root.usageF)">
         <td>
@@ -551,7 +512,7 @@
                 <div ng-show="countPredicate(node.path)===0 && node.obj.usage==='C'">
                     <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                        <p class="warning">Need predicate</p>
+                        <p class="warning" >Need predicate</p>
                     </a>
                 </div>
                 <div ng-show="countPredicate(node.path) !== 0 && node.obj.usage === 'C'">
@@ -789,7 +750,6 @@
         <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
         </td>
-
         <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
         </td>
@@ -858,7 +818,7 @@
                 <div ng-hide="findPredicateByPath(node.path) || filteredSubConstraints.length || viewSettings.tableReadonly || node.obj.usage !=='C'">
                     <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                        <p class="warning">Need predicate</p>
+                        <p class="warning" >Need predicate</p>
                     </a>
                 </div>
             </div>
@@ -908,7 +868,6 @@
                 [{{::node.obj.minLength}},{{::node.obj.maxLength}}]
             </div>
         </td>
-
         <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
             <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0" ng-bind="::node.obj.confLength">
             </div>
@@ -978,7 +937,7 @@
                 <div ng-hide="findPredicateByPath(node.path) || filteredSubConstraints.length || viewSettings.tableReadonly || node.obj.usage !=='C'">
                     <a ng-click="openAddGlobalPredicateDialog(node, message)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                        <p class="warning">Need predicate</p>
+                        <p class="warning" >Need predicate</p>
                     </a>
                 </div>
             </div>
