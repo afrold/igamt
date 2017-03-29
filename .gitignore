@@ -36,10 +36,10 @@ plugins.0500cd7b.js
 scripts.7e4951a9.js
 editDatatypeInLibrary.html
 index-1.html
-*webapp/*
-*webapp/* >> .gitignorewebapp/WEB-INF/web.xml
-*webapp/WEB-INF/web.xml
-*webapp/index.html
+igamt-lite-controller/src/main/webapp/*
+igamt-lite-controller/src/main/webapp/* >> .gitignorewebapp/WEB-INF/web.xml
+!igamt-lite-controller/src/main/webapp/WEB-INF/web.xml
+igamt-lite-controller/src/main/webapp/index.html
 igamt-lite-service/export_all_report20170327_165622_all_xml.txt
 igamt-lite-service/export_report20170327_165600_all_user_html.txt
 igamt-lite-service/export_report20170327_165602_all_user_html.txt
