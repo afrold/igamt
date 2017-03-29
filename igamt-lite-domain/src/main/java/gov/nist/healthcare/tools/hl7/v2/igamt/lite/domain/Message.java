@@ -39,11 +39,9 @@ public class Message extends DataModelWithConstraints
 
   private String description; // Message/@Description
   private List<String> compositeProfileStructureList;
-
-
-
-  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
-
+  
+  private List<ValueSetOrSingleCodeBinding> valueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
+  
   private List<Comment> comments = new ArrayList<Comment>();
 
   private List<SingleElementValue> singleElementValues = new ArrayList<SingleElementValue>();
@@ -165,8 +163,9 @@ public class Message extends DataModelWithConstraints
     this.children.add(e);
   }
 
-  public void addValueSetBinding(ValueSetBinding vsb) {
-    valueSetBindings.add(vsb);
+  
+  public void addValueSetBinding(ValueSetOrSingleCodeBinding vsb) {
+	 valueSetBindings.add(vsb);
   }
 
   public void addComment(Comment comment) {
@@ -346,9 +345,10 @@ public class Message extends DataModelWithConstraints
       clonedMessage.addConformanceStatement(cs.clone());
     }
 
-    clonedMessage.setValueSetBindings(new ArrayList<ValueSetBinding>());
-    for (ValueSetBinding vsb : this.valueSetBindings) {
-      clonedMessage.addValueSetBinding(vsb);
+    
+    clonedMessage.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
+    for (ValueSetOrSingleCodeBinding vsb : this.valueSetBindings){
+    	clonedMessage.addValueSetBinding(vsb);
     }
 
     clonedMessage.setComments(new ArrayList<Comment>());
@@ -423,9 +423,10 @@ public class Message extends DataModelWithConstraints
       clonedMessage.addConformanceStatement(cs.clone());
     }
 
-    clonedMessage.setValueSetBindings(new ArrayList<ValueSetBinding>());
-    for (ValueSetBinding vsb : this.valueSetBindings) {
-      clonedMessage.addValueSetBinding(vsb);
+    
+    clonedMessage.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
+    for (ValueSetOrSingleCodeBinding vsb : this.valueSetBindings){
+    	clonedMessage.addValueSetBinding(vsb);
     }
 
     clonedMessage.setComments(new ArrayList<Comment>());
@@ -476,13 +477,7 @@ public class Message extends DataModelWithConstraints
   }
 
 
-  public List<ValueSetBinding> getValueSetBindings() {
-    return valueSetBindings;
-  }
-
-  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
-    this.valueSetBindings = valueSetBindings;
-  }
+  
 
   public List<Comment> getComments() {
     return comments;
@@ -492,6 +487,13 @@ public class Message extends DataModelWithConstraints
     this.comments = comments;
   }
 
+public List<ValueSetOrSingleCodeBinding> getValueSetBindings() {
+	return valueSetBindings;
+}
+
+public void setValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings) {
+	this.valueSetBindings = valueSetBindings;
+}
 
 
 }

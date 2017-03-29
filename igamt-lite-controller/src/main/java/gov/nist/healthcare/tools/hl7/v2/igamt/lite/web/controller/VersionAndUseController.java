@@ -1,7 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,49 +24,57 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundExc
 @RestController
 @RequestMapping("/versionAndUse")
 public class VersionAndUseController {
-	 Logger log = LoggerFactory.getLogger(VersionAndUseController.class);
+  Logger log = LoggerFactory.getLogger(VersionAndUseController.class);
 
-	  @Autowired
-	  private VersionAndUseService versionAndUseService;
+  @Autowired
+  private VersionAndUseService versionAndUseService;
 
-	  @Autowired
-	  UserService userService;
+  @Autowired
+  UserService userService;
 
-	  @Autowired
-	  AccountRepository accountRepository;
-	  
-	  @RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
-	  public List<VersionAndUse> findByIds(@RequestBody List<String> ids) {
-	    log.info("Fetching VersionAndUseByIds..." + ids);
-	    List<VersionAndUse> result = versionAndUseService.findAllByIds(ids);
-	    return result;
-	  }
-	  @RequestMapping(value = "/findAll", method = RequestMethod.POST, produces = "application/json")
-	  public List<VersionAndUse> findByIds() {
-		 
-	    List<VersionAndUse> result = versionAndUseService.findAll();
-	    return result;
-	  }
+  @Autowired
+  AccountRepository accountRepository;
 
-	  @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-	  public VersionAndUse getVersionAndUseById(@PathVariable("id") String id) throws DataNotFoundException {
-	    log.info("Fetching VersionAndUseById..." + id);
-	    VersionAndUse result=versionAndUseService.findById(id);
-	    return result;
-	  }
-	  
-	  
-	  @RequestMapping(value = "/save", method = RequestMethod.POST)
-	  public VersionAndUse save(@RequestBody VersionAndUse versionAndUse) throws VersionAndUseSaveException,
-	      ForbiddenOperationException {
-		  
-		 	User u = userService.getCurrentUser();
-       	 	Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-       	 	versionAndUse.setAccountId(account.getId());
-		  	versionAndUseService.save(versionAndUse);
-		  
-			return versionAndUse;
+  @RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
+  public List<VersionAndUse> findByIds(@RequestBody List<String> ids) {
+    log.info("Fetching VersionAndUseByIds..." + ids);
+    List<VersionAndUse> result = versionAndUseService.findAllByIds(ids);
+    return result;
+  }
 
-	  }
-	
+  @RequestMapping(value = "/findAll", method = RequestMethod.POST, produces = "application/json")
+  public List<VersionAndUse> findByIds() {
+
+    List<VersionAndUse> toReturn = new ArrayList<VersionAndUse>();
+
+    List<VersionAndUse> result = versionAndUseService.findAll();
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+
+
+    return result;
+  }
+
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+  public VersionAndUse getVersionAndUseById(@PathVariable("id") String id)
+      throws DataNotFoundException {
+    log.info("Fetching VersionAndUseById..." + id);
+    VersionAndUse result = versionAndUseService.findById(id);
+    return result;
+  }
+
+
+  @RequestMapping(value = "/save", method = RequestMethod.POST)
+  public VersionAndUse save(@RequestBody VersionAndUse versionAndUse)
+      throws VersionAndUseSaveException, ForbiddenOperationException {
+
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    versionAndUse.setAccountId(account.getId());
+    versionAndUseService.save(versionAndUse);
+
+    return versionAndUse;
+
+  }
+
 }

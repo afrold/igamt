@@ -1413,6 +1413,39 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
     };
 
+    $rootScope.updateDynamicMappingInfo = function (){
+        $rootScope.isDynamicMappingSegment = false;
+        $rootScope.dynamicMappingTable = null;
+
+        var mappingStructure = _.find($rootScope.config.variesMapItems, function(item) {
+            return item.hl7Version == $rootScope.segment.hl7Version && item.segmentName == $rootScope.segment.name;
+        });
+
+        if(mappingStructure){
+            $rootScope.isDynamicMappingSegment = true;
+            console.log("=========This is DM segment!!=========");
+
+            if($rootScope.segment.dynamicMappingDefinition && $rootScope.segment.dynamicMappingDefinition.mappingStructure){
+                console.log("=========Found mapping structure!!=========");
+                mappingStructure = $rootScope.segment.dynamicMappingDefinition.mappingStructure;
+            }else{
+                console.log("=========Not Found mapping structure and Default setting will be used!!=========");
+            }
+
+            var valueSetBinding = _.find($rootScope.segment.valueSetBindings, function(vsb) {
+                return vsb.location == mappingStructure.referenceLocation;
+            });
+
+            if(valueSetBinding) {
+                TableService.getOne(valueSetBinding.tableId).then(function(tbl) {
+                    $rootScope.dynamicMappingTable = tbl;
+                }, function() {
+
+                });
+            }
+        }
+    };
+
     $rootScope.checkedDatatype = null;
 
     $rootScope.rebuildTreeFromDatatype = function(data) {
@@ -3363,9 +3396,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     }
     $rootScope.hasSameVersion = function(element) {
-
-        return element.hl7Version;
-
+        if(element)  return element.hl7Version;
+        return null;
     };
 
     $rootScope.getScopeLabel = function(leaf) {
@@ -4105,4 +4137,60 @@ angular.module('igl').controller('ConfirmSingleElementDuplicatedCtrl', function(
     $scope.no = function() {
         $modalInstance.dismiss('cancel');
     };
+});
+
+angular.module('igl').controller('labelController', function($scope) {
+   $scope.getLabel=function(element) {
+
+       if(element.type==='table'){
+           if (!element.ext || element.ext == "") {
+               return element.bindingIdentifier;
+           } else {
+               return element.bindingIdentifier + "_" + element.ext;
+           }
+       }
+       if (!element.ext || element.ext == "") {
+           return element.name;
+       } else {
+           return element.name + "_" + element.ext;
+       }
+   };
+    $scope.hasHl7Version=function(element){
+        if(element.hl7Version){
+            return element.hl7Version;
+        }
+    };
+
+    $scope.getDescriptionLabel=function (element) {
+        if(element.type==='table') {
+            return element.name;
+        }else{
+            return element.description;
+        }
+
+    }
+
+    $scope.getScopeLabel = function(leaf) {
+        if (leaf) {
+            if (leaf.scope === 'HL7STANDARD') {
+                return 'HL7';
+            } else if (leaf.scope === 'USER') {
+                return 'USR';
+            }else if(leaf.scope ==='INTERMASTER'){
+                return 'DRV';
+            }
+            else if (leaf.scope === 'MASTER') {
+                return 'MAS';
+            } else if (leaf.scope === 'PRELOADED') {
+                return 'PRL';
+            } else if (leaf.scope === 'PHINVADS') {
+                return 'PVS';
+            } else {
+                return "";
+            }
+
+        }
+    };
+
+
 });

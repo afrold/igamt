@@ -144,6 +144,17 @@ angular.module('igl').factory('TableLibrarySvc', function($http, $httpBackend, $
         return delay.promise;
     };
 
+    svc.addChildrenByIds = function (libId,ids) {
+        var delay = $q.defer();
+        $http.post('api/table-library/'+ libId+ '/addChildrenByIds', ids).then(function (response) {
+            var res = angular.fromJson(response.data);
+            delay.resolve(res);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
 
     return svc;
 });

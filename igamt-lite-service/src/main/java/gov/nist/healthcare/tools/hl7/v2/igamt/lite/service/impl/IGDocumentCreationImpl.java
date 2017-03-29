@@ -34,6 +34,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -50,7 +51,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
@@ -62,6 +64,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentLibraryRepository
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageEventFactory;
@@ -89,6 +92,9 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;
+	
+	@Autowired
+	private DatatypeService datatypeService;
 
 	@Autowired
 	private TableLibraryRepository tableLibraryRepository;
@@ -262,6 +268,14 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 				m1.setName(name);
 				m1.setPosition(++maxPos);
 				m1.setDateUpdated(new Date());
+				
+				for(ValueSetOrSingleCodeBinding vsb:m1.getValueSetBindings()){
+					Table t = tableRepository.findOne(vsb.getTableId());
+					if (t != null) {
+						addTable(t, pSource, pTarget);
+					}
+				}
+				
 				messageRepository.save(m1);
 				log.info("a pos=" + m1.getPosition());
 				messages.addMessage(m1);
@@ -300,19 +314,49 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// seg.getLibIds().remove(sgtsSource.getId());
 		// }
 		seg.getLibIds().add(sgtsTarget.getId());
+		for(ValueSetOrSingleCodeBinding vsb:seg.getValueSetBindings()){
+			Table t = tableRepository.findOne(vsb.getTableId());
+			if (t != null) {
+				addTable(t, pSource, pTarget);
+			}
+		}
+		/*
+		if(seg.getDynamicMappingDefinition() != null && seg.getDynamicMappingDefinition().getMappingStructure() != null && seg.getDynamicMappingDefinition().getMappingStructure().getReferenceValueSetId() != null){
+			Table t = tableRepository.findOne(seg.getDynamicMappingDefinition().getMappingStructure().getReferenceValueSetId());
+			if (t != null) {
+				addTable(t, pSource, pTarget);
+				
+				for(Code c : t.getCodes()){
+					String dtName = c.getValue();
+					String hl7Version = null;
+					hl7Version = t.getHl7Version();
+					if(hl7Version == null) hl7Version = seg.getHl7Version();
+					if(hl7Version == null) hl7Version = pSource.getMetaData().getHl7Version();
+					if(hl7Version == null) hl7Version = "2.8.2";
+					
+					
+					Datatype dt = datatypeService.findByNameAndVesionAndScope(dtName, hl7Version, "HL7STANDARD");
+					if(dt != null) addDatatype(dt, pSource, pTarget);
+				}
+				
+			}	
+		}
+		*/
+		if(seg.getDynamicMappingDefinition() != null){
+			List<DynamicMappingItem> items = seg.getDynamicMappingDefinition().getDynamicMappingItems();
+			for(DynamicMappingItem item : items){
+				Datatype dt = datatypeRepository.findOne(item.getDatatypeId());
+				if (dt != null) {
+					addDatatype(dt, pSource, pTarget);
+				}
+			}			
+		}
+		
 		segmentRepository.save(seg);
 		for (Field f : seg.getFields()) {
 			Datatype dt = datatypeRepository.findOne(f.getDatatype().getId());
 			if (dt != null) {
 				addDatatype(dt, pSource, pTarget);
-			}
-			if (f.getTables() != null && !f.getTables().isEmpty()) {
-				for (TableLink link : f.getTables()) {
-					Table vsd = tableRepository.findOne(link.getId());
-					if (vsd != null) {
-						addTable(vsd, pSource, pTarget);
-					}
-				}
 			}
 		}
 	}
@@ -336,6 +380,12 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// }
 
 		dt.getLibIds().add(dtsTarget.getId());
+		for(ValueSetOrSingleCodeBinding vsb:dt.getValueSetBindings()){
+			Table t = tableRepository.findOne(vsb.getTableId());
+			if (t != null) {
+				addTable(t, pSource, pTarget);
+			}
+		}
 		datatypeRepository.save(dt);
 		DatatypeLink link = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());
 		if (!dtsTarget.getChildren().contains(link)) {
@@ -343,14 +393,6 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 			for (Component cpt : dt.getComponents()) {
 				Datatype dt1 = datatypeRepository.findOne(cpt.getDatatype().getId());
 				addDatatype(dt1, pSource, pTarget);
-				if (cpt.getTables() != null && !cpt.getTables().isEmpty()) {
-					for (TableLink tblLink : cpt.getTables()) {
-						Table vsd = tableRepository.findOne(tblLink.getId());
-						if (vsd != null) {
-							addTable(vsd, pSource, pTarget);
-						}
-					}
-				}
 			}
 		}
 	}

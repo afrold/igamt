@@ -125,9 +125,9 @@
 
                                 <div class="el-def" style="margin-top: 5px">
                                     <accordion>
-                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFifthOpen">
+                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
+                                                <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
                                                 <div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">
                                                     <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1" name="text1" ng-change="setDirty()"></textarea>
@@ -138,9 +138,9 @@
                                             </div>
                                         </div>
 
-                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFirstOpen">
+                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isSecondOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Segment Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
+                                                <span style="color:white;">Segment Definition </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>
                                             </accordion-heading>
                                             <div class="" style="margin:5px 5px 5px 5px">
                                                 <div class="row" ng-show="showErrorCount(segment.id)  && showSegErrorNotification" style="margin-right: 15px;margin-left: 5px;">
@@ -199,9 +199,9 @@
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:center">Data Type
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Value Set
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Value Set/Single Code
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">Single Element
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">Constant Value
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('predicate')" style="text-align:center">Predicate
                                                                 </th>
@@ -218,9 +218,9 @@
 
                                         </div>
 
-                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isSixOpen">
+                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isThirdOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>                                                </accordion-heading>
+                                                <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
                                                 <div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">
                                                     <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2" name="text2" ng-change="setDirty()"></textarea>
@@ -233,9 +233,9 @@
                                             </div>
                                         </div>
 
-                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isSecondOpen">
+                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFourthOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>                                                </accordion-heading>
+                                                <span style="color:white;">Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFourthOpen, 'fa-chevron-right': !accordStatus.isFourthOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
                                                 <div class="col-md-12 igl-page-header">
                                                     <span class="pull-right">
@@ -270,9 +270,9 @@
 
                                             </div>
                                         </div>
-                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isThirdOpen">
+                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFifthOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Conditional Predicates</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>
+                                                <span style="color:white;">Conditional Predicates</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>
                                             </accordion-heading>
                                             <div class="panel-body">
                                                 <div class="col-md-12">
@@ -306,11 +306,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFourthOpen">
+                                        <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isSixthOpen">
                                             <accordion-heading>
-                                                <span style="color:white;"> Co-Constraints</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFourthOpen, 'fa-chevron-right': !accordStatus.isFourthOpen}"></i>
+                                                <span style="color:white;"> Co-Constraints</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSixthOpen, 'fa-chevron-right': !accordStatus.isSixthOpen}"></i>
                                             </accordion-heading>
                                             <div class="panel-body">
+                                                <span ng-click="manageCoConstraint()">TEST</span>
+
+
+
+
+
                                                 <div class="col-md-12 igl-page-header">
 
                                                     <span class="pull-right">
@@ -349,8 +355,7 @@
                                                             <tbody>
                                                                 <tr ng-repeat="cc in segment.coConstraints.constraints">
                                                                     <td class="col-md-1" ng-repeat="col in segment.coConstraints.columnList">
-                                                                        <input ng-show="col.constraintType === 'v'" class="form-control" ng-model="cc.values[col.columnPosition].value" ng-change="recordChange()" type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"
-                                                                        />
+                                                                        <input ng-show="col.constraintType === 'v'" class="form-control" ng-model="cc.values[col.columnPosition].value" ng-change="recordChange()" type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"/>
                                                                         <select ng-show="col.constraintType === 'vs'" ng-model="cc.values[col.columnPosition].value" class="form-control" ng-change="recordChange()" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" ng-options="link.id as tablesMap[link.id].bindingIdentifier+'-'+ tablesMap[link.id].description for link in igdocument.profile.tableLibrary.children | orderBy:'bindingIdentifier'">
                                                                             <option value="">N/A</option>
                                                                         </select>
@@ -374,12 +379,130 @@
                                             </div>
                                         </div>
 
+
+                                        <div ng-show="isDynamicMappingSegment">
+                                            <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isSeventhOpen" style="margin-top: 5px">
+                                                <accordion-heading>
+                                                    <span style="color:white;">Dynamic Mapping</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSeventhOpen, 'fa-chevron-right': !accordStatus.isSeventhOpen}"></i>
+                                                </accordion-heading>
+                                                <div class="panel-body">
+                                                    <div class="col-md-12">
+                                                        <h3 class="modal-title">Dynamic Mapping List</h3>
+                                                        <span class="header3">
+                                                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                                            Dynamic Datatype Field: {{segment.dynamicMappingDefinition.mappingStructure.segmentName}}-{{segment.dynamicMappingDefinition.mappingStructure.targetLocation}}
+                                                        </span>
+                                                        <br/>
+                                                        <span class="header3">
+                                                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                                            Reference: {{segment.dynamicMappingDefinition.mappingStructure.segmentName}}-{{segment.dynamicMappingDefinition.mappingStructure.referenceLocation}}
+                                                        </span>
+                                                        <br/>
+                                                        <span ng-show="segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation" class="header3">
+                                                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                                            Second Reference: {{segment.dynamicMappingDefinition.mappingStructure.segmentName}}-{{segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation}}
+                                                        </span>
+                                                        <span ng-show="!segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation" class="header3">
+                                                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                                            No second reference.
+                                                        </span>
+                                                        <span ng-show="!viewSettings.tableReadonly && segment.scope == 'USER' && segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation" ng-click="segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation = null; setDirty();"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                                                        <span ng-show="!viewSettings.tableReadonly && segment.scope == 'USER'" ng-click="editDMSecondReferenceDlg()"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                                        <br/>
+                                                        <table st-safe-src="segment.dynamicMappingDefinition.dynamicMappingItems" st-table="displayItems" class="table table-striped table-condensed table-bordered">
+                                                            <thead>
+                                                            <tr class="tbl-header">
+                                                                <th st-sort="firstReferenceValue" class="col-md-3">Reference Value</th>
+                                                                <th ng-show="segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation" st-sort="secondReferenceValue" class="col-md-3">Second Reference Value</th>
+                                                                <th class="col-md-5">Datatype</th>
+                                                                <th class="col-md-1" style="text-align:center">
+                                                                    <span ng-show="!viewSettings.tableReadonly && segment.scope == 'USER'" ng-click="addMappingItem()"><i class="fa fa-plus fa-fw edit-icon-white"></i></span>
+                                                                </th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr ng-repeat="item in displayItems">
+                                                                <td class="col-md-3">
+                                                                    <select ng-model='item.firstReferenceValue'
+                                                                            class="form-control"
+                                                                            ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'"
+                                                                            ng-change="setDirty();">
+                                                                        <option ng-repeat="c in dynamicMappingTable.codes" value="{{c.value}}">
+                                                                            {{c.value}}({{c.label}})
+                                                                        </option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="col-md-3" ng-show="segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation">
+                                                                    <input type="text" class="form-control" ng-model="item.secondReferenceValue" ng-change="setDirty()" ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'" />
+                                                                </td>
+                                                                <td class="col-md-5">
+                                                                    <select ng-model="item.datatypeId"
+                                                                            class="form-control"
+                                                                            ng-change="setDirty()"
+                                                                            ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'"
+                                                                            ng-options="link.id as getDatatypeLabel(datatypesMap[link.id]) for link in igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}" />
+                                                                </td>
+                                                                <td class="col-md-1" style="text-align:center">
+                                                                    <span ng-show="!viewSettings.tableReadonly && segment.scope == 'USER'" ng-click="deleteMappingItem(item)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                            <tr style="float:center !important;" ng-if="segment.dynamicMappingDefinition.dynamicMappingItems.length > 10">
+                                                                <td colspan="6" class="text-center" style="float:center !important;">
+                                                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <h3 class="modal-title">Default DynamicMapping ValueSet</h3>
+                                                        <span class="header3">
+                                                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                                            If you want to modify this list, update value set of  {{segment.dynamicMappingDefinition.mappingStructure.segmentName}}-{{segment.dynamicMappingDefinition.mappingStructure.referenceLocation}}.
+                                                        </span>
+                                                        <span ng-show="!dynamicMappingTable" class="header3">
+                                                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                                            No default value set, update value set of  {{segment.dynamicMappingDefinition.mappingStructure.segmentName}}-{{segment.dynamicMappingDefinition.mappingStructure.referenceLocation}}.
+                                                        </span>
+                                                        <table st-safe-src="dynamicMappingTable.codes" st-table="displayCodes" class="table table-striped table-condensed table-bordered">
+                                                            <thead>
+                                                                <tr class="tbl-header">
+                                                                    <th st-sort="value" class="col-md-3">Value</th>
+                                                                    <th st-sort="label" class="col-md-8">Description</th>
+                                                                    <th class="col-md-1" style="text-align:center">Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="c in displayCodes">
+                                                                    <td class="col-md-3">
+                                                                        <span>{{c.value}}</span>
+                                                                    </td>
+                                                                    <td class="col-md-8">
+                                                                        <span>{{c.label}}</span>
+                                                                    </td>
+                                                                    <td class="col-md-1" style="text-align:center">
+                                                                        <span ng-show="getDefaultStatus(c) == 'full'">
+                                                                            <i class="fa fa-circle" aria-hidden="true"></i>
+                                                                        </span>
+                                                                        <span ng-show="getDefaultStatus(c) == 'partial'">
+                                                                            <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                                                                        </span>
+                                                                        <span ng-show="getDefaultStatus(c) == 'empty'">
+                                                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tr style="float:center !important;" ng-if="dynamicMappingTable.codes.length > 10">
+                                                                <td colspan="6" class="text-center" style="float:center !important;">
+                                                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </accordion>
-
                                 </div>
-
-
-
                             </tab>
                             <tab ng-click="callSegDelta()">
                                 <tab-heading>
@@ -766,17 +889,17 @@
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                 <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                     <span class="badge label-white" ng-show="editableDT!==node.id">
-                        <span title="{{datatypesMap[node.datatype.id].hl7Version}}" ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
-                        <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
-                        <span title="Change Datatype" ng-click="editDT(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                         <display-label of="datatypesMap[node.datatype.id]" desc="false"  ng-click="redirectDT(node.datatype)"></display-label>
+                            <span title="Change Datatype" ng-click="editDT(node)">
+                            <i class="fa fa-pencil fa-fw edit-icon"></i></span>
                     </span>
 
                     <div ng-if="editableDT===node.id">
-                        <select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
-                            <option ng-repeat="datatype in results" value="{{datatype}}" ng-selected="node.datatype.ext===datatype.ext">
-                                {{getDatatypeLabel(datatypesMap[datatype.id])}} {{datatypesMap[datatype.id].hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}
-                            </option>
-                        </select>
+                        <md-select placeholder="Select Data type" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+                            <md-option ng-value="datatype" ng-repeat="datatype in results">
+                                <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
+                            </md-option>
+                        </md-select>
                     </div>
 
                     <div align="center">
@@ -797,17 +920,18 @@
                         <span ng-class="{'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}">
                             <i class="fa fa-circle fa-fw"/>
                         </span>
-                        <span title="For {{getSegmentLabel(segment)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span ng-show="binding.type == 'valueset'" title="For {{getSegmentLabel(segment)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span ng-show="binding.type == 'singlecode'" title="For {{getSegmentLabel(segment)}}" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
                         <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'segment'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                     </span>
                 </div>
                 <a ng-click="editModalBindingForSeg(node)" class="point">
-                    <span><i class="fa fa-plus fa-fw"></i></span>
+                    <span><i class="fa fa-pencil fa-fw"></i></span>
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node)">
+        <td ng-class="{'emptyCol':hasChildren(node) || hasSingleCode(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="!hasChildren(node) && !hasSingleCode(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
@@ -899,7 +1023,10 @@
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0"> {{::node.confLength}} </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}">
-            <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
+
+
+            <span ng-click="redirectDt(datatypesMap[node.datatype.id])">
+                    <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </span>
         </td>
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
@@ -909,13 +1036,14 @@
                         <span ng-class="{'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}">
                             <i class="fa fa-circle fa-fw"/>
                         </span>
-                        <span title="For {{getSegmentLabel(segment)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span ng-show="binding.type == 'valueset'" title="For {{getSegmentLabel(segment)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span ng-show="binding.type == 'singlecode'" title="For {{getSegmentLabel(segment)}}" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
                     </span>
                 </div>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node)">
+        <td ng-class="{'emptyCol':hasChildren(node) || hasSingleCode(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="!hasChildren(node) && !hasSingleCode(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
@@ -986,28 +1114,31 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:center">
-            <span title="Go to datatype" ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}}</span>
-            <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
+            <span title="Go to datatype" ng-click="redirectDT(node.datatype)">
+            <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
+            </span>
         </td>
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
                     <span class="badge label-white">
                         <span ng-class="{'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
-                        <span title="For {{getSegmentLabel(segment)}}" ng-show="binding.bindingFrom == 'segment'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'segment'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                        <span title="For {{getSegmentLabel(segment)}}" ng-show="binding.bindingFrom == 'segment' && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field' && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component' && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getSegmentLabel(segment)}}" ng-show="binding.bindingFrom == 'segment' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
                     </span>
                 </div>
 
                 <a ng-click="editModalBindingForSeg(node)" class="point">
-                    <span><i class="fa fa-plus fa-fw"></i></span>
+                    <span><i class="fa fa-pencil fa-fw"></i></span>
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node)">
+        <td ng-class="{'emptyCol':hasChildren(node) || hasSingleCode(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="!hasChildren(node) && !hasSingleCode(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
@@ -1084,7 +1215,8 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')">
-            <span ng-click="redirectDT(node.datatype)">{{getDatatypeLabel(datatypesMap[node.datatype.id])}} <span class="version-badge-label" ng-if="datatypesMap[node.datatype.id].publicationVersion">v{{datatypesMap[node.datatype.id].publicationVersion}}</span>
+            <span ng-click="redirectDT(node.datatype)">
+            <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </span>
         </td>
         <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
@@ -1092,15 +1224,18 @@
                 <div ng-repeat="binding in findingBindings(node)">
                     <span class="badge label-white">
                         <span ng-class="{'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
-                        <span title="For {{getSegmentLabel(segment)}}" ng-show="binding.bindingFrom == 'segment'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getSegmentLabel(segment)}}" ng-show="binding.bindingFrom == 'segment' && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field' && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component' && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                        <span title="For {{getSegmentLabel(segment)}}" ng-show="binding.bindingFrom == 'segment' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component' && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
                     </span>
                 </div>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node)">
+        <td ng-class="{'emptyCol':hasChildren(node) || hasSingleCode(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="!hasChildren(node) && !hasSingleCode(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
@@ -1421,27 +1556,6 @@
         </button>
     </div>
 </script>
-<script type="text/ng-template" id="editVSModal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Select Value Sets for {{::field.type}} : {{::field.name}}</h3>
-    </div>
-    <div class="modal-body">
-        <tags-input ng-model="vs" key-property="id" display-property="bindingIdentifier" placeholder="Select Value Sets" add-from-autocomplete-only="true" replace-spaces-with-dashes="false" on-tag-added="tagAdded($tag)" on-tag-removed="tagRemoved($tag)">
-            <auto-complete source="loadVS($query)" min-length="0" load-on-focus="true" max-results-to-show="10"></auto-complete>
-        </tags-input>
-    </div>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised bt-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-info btn-md" ng-click="addVS()" ng-disabled="!vsChanged"><span><i
-                    class="fa fa-check">
-                &nbsp; </i>Select</span>
-        </button>
-    </div>
-</script>
 <script type="text/ng-template" id="DeleteSegmentPredicate.html">
     <div class="modal-header">
         <h3 class="modal-title">Delete Confirmation</h3>
@@ -1501,104 +1615,267 @@
         <div class="row">
             <form role="form">
                 <div class="col-md-12">
-                    <div class="form-inline">
-                        <span ng-show="selectedValueSetBindings.length > 0" class="header4 pull-left">Selected Value Sets</span></span>
-                        <span ng-hide="selectedValueSetBindings.length > 0" class="header4 pull-left">No ValueSet for {{::segment.name}}.{{::currentNode.path}}</span></span>
+                    <div ng-cloak>
+                        <md-content>
+                            <div ng-show="selectedValueSetBindings.length > 0">
+                                <div ng-show="selectedValueSetBindings[0].type == 'singlecode'">
+                                    <h1 class="md-display-1">Single Code selected</h1>
+                                </div>
+                                <div ng-show="selectedValueSetBindings[0].type == 'valueset'">
+                                    <h1 class="md-display-1">{{selectedValueSetBindings.length}} Value Set(s) selected</h1>
+                                </div>
+                            </div>
+                            <div ng-show="selectedValueSetBindings.length == 0">
+                                <h1 class="md-display-1">No Value Set or Single Code selected</h1>
+                            </div>
+                            <div ng-if="selectedValueSetBindings.length > 0 &&  selectedValueSetBindings[0].type == 'valueset'">
+                                <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered" ng-show="selectedValueSetBindings.length > 0">
+                                    <thead>
+                                    <tr class="tbl-header">
+                                        <th class="col-md-1">Scope/Version</th>
+                                        <th class="col-md-2">Mapping Identifier</th>
+                                        <th class="col-md-4">Description</th>
+                                        <th class="col-md-2">Binding Strength</th>
+                                        <th class="col-md-2">Binding Location</th>
+                                        <th class="col-md-1"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="b in displayedSelectedValueSetBindings">
+                                        <td class="col-md-1">
+                                            <span class="badge" ng-class="{'label-HL7' : getScopeLabel(tablesMap[b.tableId])==='HL7', 'label-USE': getScopeLabel(tablesMap[b.tableId])==='USR','label-MASTER':getScopeLabel(tablesMap[b.tableId])==='MAS','label-PRL':getScopeLabel(tablesMap[b.tableId])==='PRL','label-PVS':getScopeLabel(tablesMap[b.tableId])==='PVS'}">{{getScopeLabel(tablesMap[b.tableId])}} {{hasSameVersion(tablesMap[b.tableId])}}</span>
+                                        </td>
+                                        <td class="col-md-2">
+                                            {{tablesMap[b.tableId].bindingIdentifier}}
+                                        </td>
+                                        <td class="col-md-4">
+                                            {{tablesMap[b.tableId].description}}
+                                        </td>
+                                        <td class="col-md-2">
+                                            <select ng-model='b.bindingStrength' class="form-control" ng-change="changed = true;">
+                                                <option value="R">Required</option>
+                                                <option value="S">Suggested</option>
+                                                <option value="U">Unspecified</option>
+                                            </select>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' class="form-control" ng-change="changed = true;">
+                                                <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">
+                                                    {{bl}}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td class="col-md-1" align="center">
+                                            <a ng-click="deleteBinding(b)" class="point">
+                                                <span title="Delete ValueSet Binding"><i class="icon-size-15 fa-times fa"></i></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div ng-if="selectedValueSetBindings.length > 0 && selectedValueSetBindings[0].type == 'singlecode'">
+                                <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered" ng-show="selectedValueSetBindings.length > 0">
+                                    <thead>
+                                    <tr class="tbl-header">
+                                        <th class="col-md-1">Scope/Version</th>
+                                        <th class="col-md-2">Code</th>
+                                        <th class="col-md-3">Description</th>
+                                        <th class="col-md-2">Code System</th>
+                                        <th class="col-md-3">Value Set</th>
+                                        <th class="col-md-1"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="b in displayedSelectedValueSetBindings">
+                                        <td class="col-md-1">
+                                            <span class="badge" ng-class="{'label-HL7' : getScopeLabel(tablesMap[b.tableId])==='HL7', 'label-USE': getScopeLabel(tablesMap[b.tableId])==='USR','label-MASTER':getScopeLabel(tablesMap[b.tableId])==='MAS','label-PRL':getScopeLabel(tablesMap[b.tableId])==='PRL','label-PVS':getScopeLabel(tablesMap[b.tableId])==='PVS'}">{{getScopeLabel(tablesMap[b.tableId])}} {{hasSameVersion(tablesMap[b.tableId])}}</span>
+                                        </td>
+                                        <td class="col-md-2">
+                                            {{b.code.value}}
+                                        </td>
+                                        <td class="col-md-3">
+                                            {{b.code.label}}
+                                        </td>
+                                        <td class="col-md-2">
+                                            {{b.code.codeSystem}}
+                                        </td>
+                                        <td class="col-md-3">
+                                            {{tablesMap[b.tableId].bindingIdentifier}}
+                                        </td>
+                                        <td class="col-md-1" align="center">
+                                            <a ng-click="deleteBinding(b)" class="point">
+                                                <span title="Delete ValueSet Binding"><i class="icon-size-15 fa-times fa"></i></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h1 ng-show="isSingleValueSetAllowed" class="md-display-1">Select Single Value Set or Single Code</h1>
+                            <h1 ng-show="!isSingleValueSetAllowed" class="md-display-1">Select Single or Multiple Value Sets</h1>
+
+                            <md-tabs md-dynamic-height md-border-bottom>
+                                <md-tab label="Value Set">
+                                    <md-content class="md-padding">
+                                        <table st-safe-src="tables" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
+                                            <thead>
+                                            <tr class="tbl-header">
+                                                <th st-sort="scope" class="col-md-1">Scope/Version</th>
+                                                <th st-sort="bindingIdentifier" class="col-md-3">Binding Identifier</th>
+                                                <th class="col-md-7">Description</th>
+                                                <th class="col-md-1">Action</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="5">
+                                                    <input st-search="bindingIdentifier" placeholder="search for BindingIdentifier" class="input-sm form-control" type="search"/>
+                                                </th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr ng-repeat="v in displayCollection">
+                                                <td class="col-md-1">
+                                                    <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
+                                                </td>
+                                                <td class="col-md-3">
+                                                    {{v.bindingIdentifier}}
+                                                </td>
+                                                <td class="col-md-7">
+                                                    {{v.description}}
+                                                </td>
+                                                <td class="col-md-1" align="center">
+                                                    <a ng-show="!isSelected(v)" ng-click="selectValueSet(v)" class="point">
+                                                        <i class="icon-size-15 fa-circle-thin fa"></i>
+                                                    </a>
+                                                    <a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">
+                                                        <i class="icon-size-15 fa-check-circle fa"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                            <tr style="float:center !important;" ng-if="tables.length > 10">
+                                                <td colspan="5" class="text-center" style="float:center !important;">
+                                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="10" style="float:center !important;"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </md-content>
+                                </md-tab>
+                                <md-tab label="Single Code" ng-disabled="!isSingleValueSetAllowed" md-on-select="singleCodeInit();">
+                                    <md-content class="md-padding">
+                                        <div ng-show="!valueSetSelectedForSingleCode">
+                                            <table st-safe-src="tables" st-table="displayTables" class="table table-striped table-condensed table-bordered">
+                                                <thead>
+                                                <tr class="tbl-header">
+                                                    <th st-sort="scope" class="col-md-1">Scope/Version</th>
+                                                    <th st-sort="bindingIdentifier" class="col-md-3">Binding Identifier</th>
+                                                    <th class="col-md-7">Description</th>
+                                                    <th class="col-md-1">Action</th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="5">
+                                                        <input st-search="bindingIdentifier" placeholder="search for BindingIdentifier" class="input-sm form-control" type="search"/>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <tr ng-repeat="v in displayTables">
+                                                    <td class="col-md-1">
+                                                        <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
+                                                    </td>
+                                                    <td class="col-md-3">
+                                                        {{v.bindingIdentifier}}
+                                                    </td>
+                                                    <td class="col-md-7">
+                                                        {{v.description}}
+                                                    </td>
+                                                    <td class="col-md-1" align="center">
+                                                        <a ng-click="selectValueSetForSingleCode(v);" class="point">
+                                                            <i class="icon-size-15 fa-circle-thin fa"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                                <tr style="float:center !important;" ng-if="tables.length > 10">
+                                                    <td colspan="5" class="text-center" style="float:center !important;">
+                                                        <div st-pagination="" st-items-by-page="10" st-displayed-pages="10" style="float:center !important;"></div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div ng-show="valueSetSelectedForSingleCode">
+                                            <table class="table table-striped table-condensed table-bordered">
+                                                <thead>
+                                                <tr class="tbl-header">
+                                                    <th class="col-md-1">Scope/Version</th>
+                                                    <th class="col-md-3">Binding Identifier</th>
+                                                    <th class="col-md-7">Description</th>
+                                                    <th class="col-md-1">Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tr>
+                                                    <td class="col-md-1">
+                                                        <span class="badge" ng-class="{'label-HL7' : getScopeLabel(valueSetSelectedForSingleCode)==='HL7', 'label-USE': getScopeLabel(valueSetSelectedForSingleCode)==='USR','label-MASTER':getScopeLabel(valueSetSelectedForSingleCode)==='MAS','label-PRL':getScopeLabel(valueSetSelectedForSingleCode)==='PRL','label-PVS':getScopeLabel(valueSetSelectedForSingleCode)==='PVS'}">{{getScopeLabel(valueSetSelectedForSingleCode)}} {{hasSameVersion(valueSetSelectedForSingleCode)}}</span>
+                                                    </td>
+                                                    <td class="col-md-3">
+                                                        {{valueSetSelectedForSingleCode.bindingIdentifier}}
+                                                    </td>
+                                                    <td class="col-md-7">
+                                                        {{valueSetSelectedForSingleCode.description}}
+                                                    </td>
+                                                    <td class="col-md-1" align="center">
+                                                        <a ng-click="valueSetSelectedForSingleCode = null;" class="point">
+                                                            <i class="icon-size-15 fa-check-circle fa"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table st-safe-src="valueSetSelectedForSingleCode.codes" st-table="displayCodes" class="table table-striped table-condensed table-bordered">
+                                                <thead>
+                                                <tr class="tbl-header">
+                                                    <th st-sort="value" class="col-md-3">Code</th>
+                                                    <th st-sort="label" class="col-md-5">Description</th>
+                                                    <th st-sort="label" class="col-md-3">CodeSystem</th>
+                                                    <th class="col-md-1" style="text-align:center">Status</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="c in displayCodes">
+                                                    <td class="col-md-3">
+                                                        <span>{{c.value}}</span>
+                                                    </td>
+                                                    <td class="col-md-5">
+                                                        <span>{{c.label}}</span>
+                                                    </td>
+                                                    <td class="col-md-3">
+                                                        <span>{{c.codeSystem}}</span>
+                                                    </td>
+                                                    <td class="col-md-1" style="text-align:center">
+                                                        <a ng-show="!isCodeSelected(c)" ng-click="selectCode(c)" class="point">
+                                                            <i class="icon-size-15 fa-circle-thin fa"></i>
+                                                        </a>
+                                                        <a ng-show="isCodeSelected(c)" ng-click="unselectCode(c)" class="point">
+                                                            <i class="icon-size-15 fa-check-circle fa"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                                <tr style="float:center !important;" ng-if="valueSetSelectedForSingleCode.codes.length > 10">
+                                                    <td colspan="6" class="text-center" style="float:center !important;">
+                                                        <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </md-content>
+                                </md-tab>
+                            </md-tabs>
+                        </md-content>
                     </div>
-                    <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered" ng-show="selectedValueSetBindings.length > 0">
-                        <thead>
-                        <tr class="tbl-header">
-                            <th class="col-md-1">Type</th>
-                            <th class="col-md-2">Mapping Identifier</th>
-                            <th class="col-md-4">Description</th>
-                            <th class="col-md-2">Binding Strength</th>
-                            <th class="col-md-2">Binding Location</th>
-                            <th class="col-md-1"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="b in displayedSelectedValueSetBindings">
-                            <td class="col-md-1">
-                                <span class="badge" ng-class="{'label-HL7' : getScopeLabel(tablesMap[b.tableId])==='HL7', 'label-USE': getScopeLabel(tablesMap[b.tableId])==='USR','label-MASTER':getScopeLabel(tablesMap[b.tableId])==='MAS','label-PRL':getScopeLabel(tablesMap[b.tableId])==='PRL','label-PVS':getScopeLabel(tablesMap[b.tableId])==='PVS'}">{{getScopeLabel(tablesMap[b.tableId])}} {{hasSameVersion(tablesMap[b.tableId])}}</span>
-                            </td>
-                            <td class="col-md-2">
-                                {{tablesMap[b.tableId].bindingIdentifier}}
-                            </td>
-                            <td class="col-md-4">
-                                {{tablesMap[b.tableId].description}}
-                            </td>
-                            <td class="col-md-2">
-                                <select ng-model='b.bindingStrength' class="form-control" ng-change="changed = true;">
-                                    <option value="R">Required</option>
-                                    <option value="S">Suggested</option>
-                                    <option value="U">Unspecified</option>
-                                </select>
-                            </td>
-                            <td class="col-md-2">
-                                <select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' class="form-control" ng-change="changed = true;">
-                                    <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">
-                                        {{bl}}
-                                    </option>
-                                </select>
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <a ng-click="deleteBinding(b)" class="point">
-                                    <span title="Delete ValueSet Binding"><i class="fa fa-times fa-fw"></i></span>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
-
-                <div class="col-md-12">
-                    <div class="form-inline">
-                        <span class="header4 pull-left">List of ValueSets in Library</span></span>
-                    </div>
-                    <table st-safe-src="tables" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
-                        <thead>
-                        <tr class="tbl-header">
-                            <th st-sort="scope" class="col-md-1">Type</th>
-                            <th st-sort="bindingIdentifier" class="col-md-5">Binding Identifier</th>
-                            <th class="col-md-5">Description</th>
-                            <th class="col-md-1">Action</th>
-                        </tr>
-                        <tr>
-                            <th colspan="5">
-                                <input st-search="bindingIdentifier" placeholder="search for BindingIdentifier" class="input-sm form-control" type="search"/>
-                            </th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <tr ng-repeat="v in displayCollection">
-                            <td class="col-md-1">
-                                <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
-                            </td>
-                            <td class="col-md-5">
-                                {{v.bindingIdentifier}}
-                            </td>
-                            <td class="col-md-5">
-                                {{v.description}}
-                            </td>
-                            <td class="col-md-1" align="center">
-                                <a ng-show="!isSelected(v)" ng-click="selectValueSet(v)" class="point">
-                                    <i class="fa fa-circle-thin fa-fw"></i>
-                                </a>
-                                <a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">
-                                    <i class="fa fa-check-circle fa-fw"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                        <tr style="float:center !important;" ng-if="tables.length > 10">
-                            <td colspan="5" class="text-center" style="float:center !important;">
-                                <div st-pagination="" st-items-by-page="10" st-displayed-pages="10" style="float:center !important;"></div>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
             </form>
         </div>
     </div>

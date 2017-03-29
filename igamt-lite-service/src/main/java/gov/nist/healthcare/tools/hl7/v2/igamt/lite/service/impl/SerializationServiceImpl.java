@@ -60,6 +60,8 @@ import java.util.*;
 
     private Messages igDocumentMessages;
 
+    private List<TableLink> tableLibrary;
+
 
     @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig) {
         this.exportConfig = exportConfig;
@@ -102,6 +104,7 @@ import java.util.*;
         this.bindedDatatypes = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
         this.bindedSegments = new ArrayList<>();
+        this.tableLibrary = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         for (Message message : igDocument.getProfile().getMessages().getChildren()){
             for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
@@ -351,33 +354,62 @@ import java.util.*;
             }
             Segment segment = segmentService.findById(
                 ((SegmentRef) segmentRefOrGroup).getRef().getId());
+            for(ValueSetBinding valueSetBinding : segment.getValueSetBindings()){
+                this.removeFromUnbindedTables(valueSetBinding.getTableId());
+                if(valueSetBinding.getUsage()!=null && ExportUtil.diplayUsage(
+                    valueSetBinding.getUsage(), this.exportConfig.getValueSetsExport())) {
+                    TableLink tableLink = this.findTableLink(valueSetBinding.getTableId());
+                    if (tableLink != null) {
+                        this.bindedTables.add(tableLink);
+                    }
+                }
+            }
             for (Field field : segment.getFields()) {
                 if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getDatatypesExport())) {
                     bindedDatatypes.add(field.getDatatype());
                     Datatype datatype = datatypeService.findById(field.getDatatype().getId());
+                    for(ValueSetBinding valueSetBinding : datatype.getValueSetBindings()){
+                        this.removeFromUnbindedTables(valueSetBinding.getTableId());
+                        if(valueSetBinding.getUsage()!=null && ExportUtil.diplayUsage(valueSetBinding.getUsage(),this.exportConfig.getValueSetsExport())) {
+                            TableLink tableLink = this.findTableLink(valueSetBinding.getTableId());
+                            if(tableLink!=null) {
+                                this.bindedTables.add(tableLink);
+                            }
+                        }
+                    }
                     for(Component component : datatype.getComponents()){
                         if(!bindedDatatypes.contains(component.getDatatype())&&ExportUtil.diplayUsage(component.getUsage(),
                             this.exportConfig.getDatatypesExport())){
                             bindedDatatypes.add(component.getDatatype());
                         }
-                        for (TableLink tableLink : component.getTables()) {
-                            this.unbindedTables.remove(tableLink);
-                            if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(component.getUsage(),this.exportConfig.getValueSetsExport())) {
-                                bindedTables.add(tableLink);
-                            }
-                        }
-                    }
-                }
-                for (TableLink tableLink : field.getTables()) {
-                    this.unbindedTables.remove(tableLink);
-                    if(!bindedTables.contains(tableLink) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getValueSetsExport())) {
-                        bindedTables.add(tableLink);
                     }
                 }
             }
         } else if(segmentRefOrGroup instanceof Group){
             for(SegmentRefOrGroup children : ((Group) segmentRefOrGroup).getChildren()){
                 identifyBindedItems(children);
+            }
+        }
+    }
+
+    private TableLink findTableLink(String tableId) {
+        if(tableId!=null) {
+            for (TableLink tableLink : this.tableLibrary) {
+                if (tableLink.getId() != null && tableLink.getId().equals(tableId)) {
+                    return tableLink;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void removeFromUnbindedTables(String tableId) {
+        if(tableId!=null) {
+            for (TableLink tableLink : this.unbindedTables) {
+                if (tableLink.getId()!=null && tableLink.getId().equals(tableId)) {
+                    this.unbindedTables.remove(tableLink);
+                    break;
+                }
             }
         }
     }

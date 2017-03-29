@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 
 // @Entity
 // @Table(name = "MAPPING")
+@Deprecated
 public class Mapping implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;

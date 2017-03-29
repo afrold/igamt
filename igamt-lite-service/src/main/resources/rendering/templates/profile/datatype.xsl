@@ -3,6 +3,8 @@
     <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
     <xsl:import href="/rendering/templates/profile/definitionText.xsl"/>
     <xsl:import href="/rendering/templates/profile/DateTimeDatatype.xsl"/>
+    <xsl:import href="/rendering/templates/profile/valueSetBindingList.xsl"/>
+    <xsl:import href="/rendering/templates/profile/commentList.xsl"/>
     <xsl:template match="Datatype">
         <!--xsl:if test="not(@PurposeAndUse='')">
             <xsl:element name="p">
@@ -150,6 +152,9 @@
                     <xsl:with-param name="type">
                         <xsl:text>cs</xsl:text>
                     </xsl:with-param>
+                    <xsl:with-param name="headerLevel">
+                        <xsl:text>h4</xsl:text>
+                    </xsl:with-param>
                 </xsl:call-template>
                 <xsl:call-template name="Constraint">
                     <xsl:with-param name="title">
@@ -161,8 +166,12 @@
                     <xsl:with-param name="type">
                         <xsl:text>pre</xsl:text>
                     </xsl:with-param>
+                    <xsl:with-param name="headerLevel">
+                        <xsl:text>h4</xsl:text>
+                    </xsl:with-param>
                 </xsl:call-template>
             </xsl:if>
+            <xsl:apply-templates select="./ValueSetBindingList"/>
             <xsl:if test="count(./Component/Text[@Type='Text']) &gt; 0">
                 <xsl:element name="h4">
                     <xsl:text>Components Definition Texts</xsl:text>

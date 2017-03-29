@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-
+@Deprecated
 public class DynamicMapping implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;

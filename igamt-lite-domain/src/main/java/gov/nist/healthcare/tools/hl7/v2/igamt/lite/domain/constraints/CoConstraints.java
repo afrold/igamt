@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class CoConstraints {
 
 	public CoConstraints() {
