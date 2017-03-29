@@ -83,6 +83,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
@@ -487,7 +488,7 @@ public class IGDocumentController extends CommonController {
 			HashMap<String, String> segmentIdChangeMap, Profile profile) {
 		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
 			Segment s = segmentService.findById(sl.getId());
-			for (ValueSetBinding vsb : s.getValueSetBindings()) {
+			for (ValueSetOrSingleCodeBinding vsb : s.getValueSetBindings()) {
 				vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
 			}
 			
@@ -519,7 +520,7 @@ public class IGDocumentController extends CommonController {
 
 		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
 			Datatype d = datatypeService.findById(dl.getId());
-			for (ValueSetBinding vsb : d.getValueSetBindings()) {
+			for (ValueSetOrSingleCodeBinding vsb : d.getValueSetBindings()) {
 				vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
 			}
 			for (Component c : d.getComponents()) {
@@ -537,7 +538,7 @@ public class IGDocumentController extends CommonController {
 		}
 
 		for (Message m : profile.getMessages().getChildren()) {
-			for (ValueSetBinding vsb : m.getValueSetBindings()) {
+			for (ValueSetOrSingleCodeBinding vsb : m.getValueSetBindings()) {
 				vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
 			}
 			for (SegmentRefOrGroup sog : m.getChildren()) {

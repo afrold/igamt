@@ -40,7 +40,7 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
   private String description; // Message/@Description
   private List<String> appliedPcs;
   
-  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
+  private List<ValueSetOrSingleCodeBinding> valueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
   
   private List<Comment> comments = new ArrayList<Comment>();
   
@@ -141,7 +141,7 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     this.children.add(e);
   }
   
-  public void addValueSetBinding(ValueSetBinding vsb) {
+  public void addValueSetBinding(ValueSetOrSingleCodeBinding vsb) {
 	valueSetBindings.add(vsb);
   }
   
@@ -311,8 +311,8 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     	clonedMessage.addConformanceStatement(cs.clone());
     }
     
-    clonedMessage.setValueSetBindings(new ArrayList<ValueSetBinding>());
-    for (ValueSetBinding vsb : this.valueSetBindings){
+    clonedMessage.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
+    for (ValueSetOrSingleCodeBinding vsb : this.valueSetBindings){
     	clonedMessage.addValueSetBinding(vsb);
     }
     
@@ -389,8 +389,8 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     	clonedMessage.addConformanceStatement(cs.clone());
     }
     
-    clonedMessage.setValueSetBindings(new ArrayList<ValueSetBinding>());
-    for (ValueSetBinding vsb : this.valueSetBindings){
+    clonedMessage.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
+    for (ValueSetOrSingleCodeBinding vsb : this.valueSetBindings){
     	clonedMessage.addValueSetBinding(vsb);
     }
     
@@ -445,11 +445,11 @@ public void setDefPostText(String defPostText) {
 	this.defPostText = defPostText;
 }
 
-public List<ValueSetBinding> getValueSetBindings() {
+public List<ValueSetOrSingleCodeBinding> getValueSetBindings() {
 	return valueSetBindings;
 }
 
-public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+public void setValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings) {
 	this.valueSetBindings = valueSetBindings;
 }
 

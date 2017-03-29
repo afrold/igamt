@@ -40,7 +40,7 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 
 	private CoConstraintsDefinition coConstraintsDefinition;
 
-	private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
+	private List<ValueSetOrSingleCodeBinding> valueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
 
 	private List<SingleElementValue> singleElementValues = new ArrayList<SingleElementValue>();
 
@@ -94,7 +94,7 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 		fields.add(field);
 	}
 
-	public void addValueSetBinding(ValueSetBinding vsb) {
+	public void addValueSetBinding(ValueSetOrSingleCodeBinding vsb) {
 		valueSetBindings.add(vsb);
 	}
 
@@ -194,8 +194,8 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 			clonedSegment.addField(f.clone(dtRecords, tableRecords));
 		}
 
-		clonedSegment.setValueSetBindings(new ArrayList<ValueSetBinding>());
-		for (ValueSetBinding vsb : this.valueSetBindings) {
+		clonedSegment.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
+		for (ValueSetOrSingleCodeBinding vsb : this.valueSetBindings) {
 			clonedSegment.addValueSetBinding(vsb);
 		}
 
@@ -281,11 +281,11 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 		this.coConstraints = coConstraints;
 	}
 
-	public List<ValueSetBinding> getValueSetBindings() {
+	public List<ValueSetOrSingleCodeBinding> getValueSetBindings() {
 		return valueSetBindings;
 	}
 
-	public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+	public void setValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings) {
 		this.valueSetBindings = valueSetBindings;
 	}
 
