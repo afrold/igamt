@@ -38,7 +38,8 @@ public class Datatype extends DataModelWithConstraints
   private String purposeAndUse = "";
 
 
-  private List<ValueSetOrSingleCodeBinding> valueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
+  private List<ValueSetOrSingleCodeBinding> valueSetBindings =
+      new ArrayList<ValueSetOrSingleCodeBinding>();
 
   private List<Comment> comments = new ArrayList<Comment>();
 
@@ -130,11 +131,8 @@ public class Datatype extends DataModelWithConstraints
     components.add(c);
   }
 
-<<<<<<< HEAD
-  public void addValueSetBinding(ValueSetBinding vsb) {
-=======
+
   public void addValueSetBinding(ValueSetOrSingleCodeBinding vsb) {
->>>>>>> origin/develop
     valueSetBindings.add(vsb);
   }
 
@@ -207,20 +205,12 @@ public class Datatype extends DataModelWithConstraints
       clonedDT.addComponent(c.clone());
     }
 
-<<<<<<< HEAD
-    clonedDT.setValueSetBindings(new ArrayList<ValueSetBinding>());
-    for (ValueSetBinding vsb : this.valueSetBindings) {
-      clonedDT.addValueSetBinding(vsb);
-    }
 
-    
-=======
     clonedDT.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
     for (ValueSetOrSingleCodeBinding vsb : this.valueSetBindings) {
       clonedDT.addValueSetBinding(vsb);
     }
 
->>>>>>> origin/develop
     clonedDT.setComments(new ArrayList<Comment>());
     for (Comment c : this.comments) {
       clonedDT.addComment(c);
@@ -361,19 +351,12 @@ public class Datatype extends DataModelWithConstraints
     this.shareParticipantIds = shareParticipantIds;
   }
 
-<<<<<<< HEAD
-  public List<ValueSetBinding> getValueSetBindings() {
-    return valueSetBindings;
-  }
 
-  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
-=======
   public List<ValueSetOrSingleCodeBinding> getValueSetBindings() {
     return valueSetBindings;
   }
 
   public void setValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings) {
->>>>>>> origin/develop
     this.valueSetBindings = valueSetBindings;
   }
 
