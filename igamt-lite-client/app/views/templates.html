@@ -504,7 +504,7 @@
             </tr>
 
         </script>
-<script type="text/ng-template " id="ConfirmIGDocumentDeleteCtrl.html ">
+<script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html ">
             <div class="modal-header ">
                 <h3 class="modal-title ">Delete Confirmation
         </h3>
@@ -527,7 +527,7 @@
     </div>
     </div>
     </script>
-<script type="text/ng-template " id="ConfirmIGDocumentCloseCtrl.html ">
+<script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html ">
         <div class="modal-header ">
             <h3 class="modal-title ">Close Confirmation
         </h3>
@@ -550,7 +550,7 @@
             </div>
         </div>
     </script>
-<script type="text/ng-template " id="ConfirmIGDocumentOpenCtrl.html ">
+<script type="text/ng-template" id="ConfirmIGDocumentOpenCtrl.html ">
         <div class="modal-header ">
             <h3 class="modal-title ">Open Confirmation
         </h3>
@@ -573,7 +573,7 @@
             </div>
         </div>
     </script>
-<script type="text/ng-template " id="RichTextCtrl.html ">
+<script type="text/ng-template" id="RichTextCtrl.html ">
         <div class="modal-header modal-wide ">
             <h3 class="modal-title ">{{::editorTarget.obj.position}} . {{::editorTarget.obj.name}} :
             {{::editorTarget.title}}</h3>
@@ -596,7 +596,7 @@
         </button>
         </div>
     </script>
-<script type="text/ng-template " id="InputTextCtrl.html ">
+<script type="text/ng-template" id="InputTextCtrl.html ">
         <div class="modal-header ">
             <h3 ng-show="editorTarget.obj.type==='segmentRef' ">
             {{editorTarget.obj.position}}.{{segmentsMap[editorTarget.obj.ref].name}}:{{segmentsMap[editorTarget.obj.ref].description}}</h3>
@@ -625,8 +625,7 @@
         </button>
         </div>
     </script>
-
-<script type="text/ng-template " id="EditComment.html">
+<script type="text/ng-template" id="EditComment.html">
     <div class="modal-header ">
         <h3>{{title}}</h3>
 
@@ -654,8 +653,7 @@
         </button>
     </div>
 </script>
-
-<script type="text/ng-template " id="EditDMSecondReference.html">
+<script type="text/ng-template" id="EditDMSecondReference.html">
     <div class="modal-header ">
         <h3>Select Second Reference</h3>
     </div>
@@ -702,10 +700,9 @@
         </button>
     </div>
 </script>
-
-<script type="text/ng-template " id="EditSingleElement.html">
+<script type="text/ng-template" id="EditSingleElement.html">
     <div class="modal-header ">
-        <h3>Single Element Value of {{currentNode.path}}</h3>
+        <h3>Constant Value of {{currentNode.path}}</h3>
 
     </div>
     <div class="modal-body ">
@@ -727,9 +724,7 @@
         </button>
     </div>
 </script>
-
-
-<script type="text/ng-template " id="tree_node ">
+<script type="text/ng-template" id="tree_node ">
 
         <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined) ">
             <td class="col-md-1 " style="width:14% ">
@@ -938,7 +933,7 @@
             </td>
         </tr>
     </script>
-<script type="text/ng-template " id="ConfirmIGDocumentUnshareCtrl.html ">
+<script type="text/ng-template" id="ConfirmIGDocumentUnshareCtrl.html ">
         <div class="modal-header ">
             <h3 class="modal-title ">Remove Participant Confirmation
         </h3>
@@ -968,8 +963,7 @@
         </div>
         </div>
     </script>
-
-<script type="text/ng-template " id="GlobalPredicateCtrl.html ">
+<script type="text/ng-template" id="GlobalPredicateCtrl.html ">
         <div class="modal-header ">
             <div>
                 <h3 class="header4 ">Predicate for {{::selectedNode.locationPath}}({{::selectedNode.path}})</h3>
@@ -1813,7 +1807,7 @@
         </td>
     </tr>
 </script>
-<script type="text/ng-template " id="message_tree_Predicate_item.html ">
+<script type="text/ng-template" id="message_tree_Predicate_item.html ">
     <tr style="width:100% ">
         <td ng-if="data.folderClass ">
             <div ng-if="data.type==='message' || data.type==='group' || data.type==='segmentRef' ">
@@ -1958,8 +1952,7 @@
         </td>
     </tr>
 </script>
-
-<script type="text/ng-template " id="CoConstraintCtrl.html ">
+<script type="text/ng-template" id="CoConstraintCtrl.html ">
     <div class="modal-header ">
         <h3 class="header4 ">Define CoConstraint Structure for {{::segment.name}}</h3>
     </div>
@@ -2048,8 +2041,7 @@
         <button class="btn btn-raised btn-success btn-sm" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
     </div>
 </script>
-
-<script type="text/ng-template " id="ConformanceStatementSegmentCtrl.html ">
+<script type="text/ng-template" id="ConformanceStatementSegmentCtrl.html ">
     <div class="modal-header ">
         <h3 class="header4 ">Conformance statement for {{::segment.name}}</h3>
     </div>
@@ -2787,7 +2779,6 @@
         </td>
     </tr>
 </script>
-
 <script type="text/ng-template" id="segment_tree_item.html">
         <tr style="width:100%">
             <td ng-if="data.folderClass">
@@ -2918,7 +2909,6 @@
             </td>
         </tr>
     </script>
-
 <script type="text/ng-template" id="ConformanceStatementDatatypeCtrl.html">
         <div class="modal-header">
             <h3 class="header4">Conformance statement for {{::datatype.name}}</h3>
@@ -3616,7 +3606,6 @@
         </div>
         </div>
     </script>
-
 <script type="text/ng-template" id="createMasterDt.html">
 
         <div class="modal-content">
@@ -3734,7 +3723,6 @@
             </form>
             </div>
     </script>
-
 <script type="text/ng-template" id="AddHL7Datatype.html">
 
         <div class="modal-content">
@@ -3850,7 +3838,6 @@
             </form>
             </div>
     </script>
-
 <script type="text/ng-template" id="AddSharedDatatype.html">
         <div class="modal-content">
             <div class="modal-header modal-wide">
@@ -3954,7 +3941,6 @@
             </form>
             </div>
     </script>
-
 <script type="text/ng-template" id="AddUserDatatype.html">
 
         <div class="modal-content">
@@ -4069,7 +4055,6 @@
             </form>
             </div>
     </script>
-
 <script type="text/ng-template" id="AddMasterDatatypeIntoUser.html">
 
         <div class="modal-content">
@@ -4191,7 +4176,6 @@
             </form>
             </div>
     </script>
-
 <script type="text/ng-template" id="AbortPublishCtl.html">
         <div class="modal-header">
             <h3 class="modal-title">
@@ -4274,8 +4258,6 @@
     </div>
     </div>
 </script>
-
-
 <script type="text/ng-template" id="ConfirmDatatypePublishCtl.html">
     <div class="modal-header">
         <h3 class="modal-title">Publish Confirmation
@@ -4318,7 +4300,6 @@
     </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="ConfirmTablePublish.html">
     <div class="modal-header">
         <h3 class="modal-title">Publish Confirmation
@@ -4342,7 +4323,6 @@
     </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="ShareTableModal.html">
 	<div>
 		<div class="modal-header">
@@ -4401,7 +4381,6 @@
 		</div>
 	</div>
 </script>
-
 <script type="text/ng-template" id="ShareDatatypeModal.html">
   <div>
     <div class="modal-header">
@@ -4461,7 +4440,6 @@
     </div>
   </div>
 </script>
-
 <script type="text/ng-template" id="ShareDatatypeErrorModal.html">
 	<div>
 		<div class="modal-header">
@@ -4484,7 +4462,6 @@
     </div>
   </div>
 </script>
-
 <script type="text/ng-template" id="ShareTableErrorModal.html">
 	<div>
 		<div class="modal-header">
@@ -4507,7 +4484,6 @@
     </div>
   </div>
 </script>
-
 <script type="text/ng-template" id="autocomplete-template">
     <div class="autocomplete-template">
         <div class="share_left-panel">
@@ -4542,7 +4518,6 @@
     </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="confirmUnshare.html">
     <div class="modal-header">
         <h3 class="modal-title">Confirmation
@@ -4566,7 +4541,6 @@
     </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="abortDeleteDatatype.html">
     <div class="modal-header">
         <h3 class="modal-title">Data Type Cross References Found
@@ -4606,9 +4580,6 @@
         </div>
     </div>
 </script>
-
-
-
 <script type="text/ng-template" id="datatype_tree_item.html">
     <tr style="width:100%">
         <td ng-if="data.folderClass">
@@ -4723,7 +4694,6 @@
         </td>
     </tr>
 </script>
-
 <script type="text/ng-template" id="CustomExportModal.html">
     <div class="modal-header">
         <h3 class="modal-title">Custom Export {{layout}}
@@ -4827,10 +4797,10 @@
 </script>
 <script type="text/ng-template" id="ConfirmSingleElementDuplicatedCtrl.html">
     <div class="modal-header">
-        <h3 class="modal-title">Warning for duplicated Single Element Value</h3>
+        <h3 class="modal-title">Warning for duplicated Constant Value</h3>
     </div>
     <div class="modal-body">
-        <p>Single element value is already presence at child node. Do you want to override it and want to define a new single element value at current node?</p>
+        <p>Constant value is already presence at child node. Do you want to override it and want to define a new single element value at current node?</p>
     </div>
     </div>
     <div class="modal-footer">

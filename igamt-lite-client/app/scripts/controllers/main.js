@@ -3396,9 +3396,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     }
     $rootScope.hasSameVersion = function(element) {
-
-        return element.hl7Version;
-
+        if(element)  return element.hl7Version;
+        return null;
     };
 
     $rootScope.getScopeLabel = function(leaf) {

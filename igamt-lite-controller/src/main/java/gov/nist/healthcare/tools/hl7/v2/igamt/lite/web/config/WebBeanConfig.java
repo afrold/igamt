@@ -79,6 +79,7 @@ public class WebBeanConfig {
 		
 		config.setValueSetAllowedDTs(toSet(new String[] {"ID", "IS", "CE", "CF", "CWE", "CNE", "CSU", "HD", "AUI", "CK", "CN", "CNN", "CX", "EI", "ERL", "ELD", "PLN", "PPN", "XCN"}));
 		config.setCodedElementDTs(toSet(new String[] {"CE", "CF", "CWE", "CNE", "CSU"}));
+		config.setSingleValueSetDTs(toSet(new String[] {"ID", "IS", "ST", "NM"})); //ST and NM are partial
 		Set<DTComponent> valueSetAllowedComponents = new HashSet<DTComponent>();
 		valueSetAllowedComponents.add(new DTComponent("AD", 3));
 		valueSetAllowedComponents.add(new DTComponent("AD", 4));

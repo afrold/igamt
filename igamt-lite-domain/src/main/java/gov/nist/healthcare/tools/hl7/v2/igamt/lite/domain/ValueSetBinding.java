@@ -10,6 +10,8 @@ public class ValueSetBinding {
 	protected String bindingLocation;
 	protected ValueSetBindingStrength bindingStrength;
 	protected Usage usage;
+	protected String type;
+	protected Code code;
 
 	public ValueSetBinding() {
 		super();
@@ -46,7 +48,7 @@ public class ValueSetBinding {
 	public void setBindingStrength(ValueSetBindingStrength bindingStrength) {
 		this.bindingStrength = bindingStrength;
 	}
-	
+
 	public Usage getUsage() {
 		return usage;
 	}
@@ -56,17 +58,35 @@ public class ValueSetBinding {
 	}
 
 	public void setBindingStrength(String bindingStrength) {
-		if(bindingStrength == null){
+		if (bindingStrength == null) {
 			this.bindingStrength = ValueSetBindingStrength.R;
-		}else if(bindingStrength.equals("R")){
+		} else if (bindingStrength.equals("R")) {
 			this.bindingStrength = ValueSetBindingStrength.R;
-		}else if(bindingStrength.equals("S")){
+		} else if (bindingStrength.equals("S")) {
 			this.bindingStrength = ValueSetBindingStrength.S;
-		}else if(bindingStrength.equals("U")){
+		} else if (bindingStrength.equals("U")) {
 			this.bindingStrength = ValueSetBindingStrength.U;
-		}else {
-			this.bindingStrength = ValueSetBindingStrength.R;			
+		} else {
+			this.bindingStrength = ValueSetBindingStrength.R;
 		}
 	}
 
+	public String getType() {
+		if (type != null && type.equals("singlecode"))
+			return type;
+
+		return "valueset";
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Code getCode() {
+		return code;
+	}
+
+	public void setCode(Code code) {
+		this.code = code;
+	}
 }
