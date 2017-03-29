@@ -74,9 +74,9 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         }
         Boolean showConfLength = serializationUtil.isShowConfLength(hl7Version);
         List<Table> tables = new ArrayList<>();
-        for(ValueSetBinding valueSetBinding : message.getValueSetBindings()){
-            if(valueSetBinding.getTableId()!=null && !valueSetBinding.getTableId().isEmpty()){
-                Table table = tableService.findById(valueSetBinding.getTableId());
+        for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : message.getValueSetBindings()){
+            if(valueSetOrSingleCodeBinding.getTableId()!=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
+                Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
                 if(table!=null){
                     tables.add(table);
                 }
