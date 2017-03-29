@@ -1,35 +1,24 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.io.Serializable;
+
 /**
  * @author Jungyub Woo
  *
  */
-public class ValueSetBinding {
-	protected String location;
-	protected String tableId;
-	protected String bindingLocation;
-	protected ValueSetBindingStrength bindingStrength;
-	protected Usage usage;
+public class ValueSetBinding extends ValueSetOrSingleCodeBinding  implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7475781965031235387L;
+	private String bindingLocation;
+	private ValueSetBindingStrength bindingStrength;
 
 	public ValueSetBinding() {
 		super();
+		this.type = Constant.VALUESET;
 	}
 
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public String getTableId() {
-		return tableId;
-	}
-
-	public void setTableId(String tableId) {
-		this.tableId = tableId;
-	}
 
 	public String getBindingLocation() {
 		return bindingLocation;
@@ -46,27 +35,19 @@ public class ValueSetBinding {
 	public void setBindingStrength(ValueSetBindingStrength bindingStrength) {
 		this.bindingStrength = bindingStrength;
 	}
-	
-	public Usage getUsage() {
-		return usage;
-	}
-
-	public void setUsage(Usage usage) {
-		this.usage = usage;
-	}
 
 	public void setBindingStrength(String bindingStrength) {
-		if(bindingStrength == null){
+		if (bindingStrength == null) {
 			this.bindingStrength = ValueSetBindingStrength.R;
-		}else if(bindingStrength.equals("R")){
+		} else if (bindingStrength.equals("R")) {
 			this.bindingStrength = ValueSetBindingStrength.R;
-		}else if(bindingStrength.equals("S")){
+		} else if (bindingStrength.equals("S")) {
 			this.bindingStrength = ValueSetBindingStrength.S;
-		}else if(bindingStrength.equals("U")){
+		} else if (bindingStrength.equals("U")) {
 			this.bindingStrength = ValueSetBindingStrength.U;
-		}else {
-			this.bindingStrength = ValueSetBindingStrength.R;			
+		} else {
+			this.bindingStrength = ValueSetBindingStrength.R;
 		}
-	}
-
+	}	
+	
 }

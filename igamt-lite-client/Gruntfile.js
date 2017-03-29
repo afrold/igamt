@@ -491,8 +491,9 @@ module.exports = function(grunt) {
 	                              'cssmin', 
 	                            //  'uglify', 
 	                              'filerev',
-	                              'usemin', 
-	                              'htmlmin' ]);
+	                              'usemin',
+	                             'htmlmin'
+								]);
 
 
 	grunt.registerTask('buildquick', [ 'clean:dist', 
@@ -505,10 +506,11 @@ module.exports = function(grunt) {
 	                              'ngAnnotate', 
 	                              'copy:dist', 
 	                              'cdnify', 
-	                              'cssmin', 
-	                              'filerev',
-	                              'usemin', 
-	                              'htmlmin' ]);
+	                              //'cssmin',
+	                              //'filerev',
+	                              //'usemin',
+	                              //'htmlmin'
+								   ]);
 
 	grunt.registerTask('default', [ 'newer:jshint', 
 	                                'test', 

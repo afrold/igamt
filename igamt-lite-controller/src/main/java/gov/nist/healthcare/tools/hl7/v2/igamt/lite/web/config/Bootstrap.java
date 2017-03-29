@@ -73,6 +73,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VariesMapItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -240,14 +241,12 @@ public class Bootstrap implements InitializingBean {
 		// fixDatatypeRecursion();
 		// fixDuplicateValueSets();
 //		 createDefaultExportFonts();
-//		 updateInitAndCreateBindingAndCommentsVSForDatatype();
-//		 updateInitAndCreateBindingAndCommentsVSForSegment();
-//		 updateInitAndCreateCommentsForMessage();
+		 updateInitAndCreateBindingAndCommentsVSForDatatype();
+		 updateInitAndCreateBindingAndCommentsVSForSegment();
+		 updateInitAndCreateCommentsForMessage();
 //		 fixUserDatatypesScope();
-//		 fixValueSetNameAndDescription();
-//
-//		updateDMofSegment();
-//		updateProfileForMissingDTs();
+		updateDMofSegment();
+		updateProfileForMissingDTs();
 	}
 
 	private void updateProfileForMissingDTs() throws Exception {
@@ -347,7 +346,7 @@ public class Bootstrap implements InitializingBean {
 
 	private void addDT(Datatype dt, DatatypeLibrary datatypeLibrary, TableLibrary tableLibrary) {
 		datatypeLibrary.addDatatype(dt);
-		for (ValueSetBinding vsb : dt.getValueSetBindings()) {
+		for (ValueSetOrSingleCodeBinding vsb : dt.getValueSetBindings()) {
 			Table t = tableService.findById(vsb.getTableId());
 			if (t != null) {
 				tableLibrary.addTable(t);
@@ -419,8 +418,8 @@ public class Bootstrap implements InitializingBean {
 		}
 	}
 
-	private String findValueSetID(List<ValueSetBinding> valueSetBindings, String referenceLocation) {
-		for (ValueSetBinding vsb : valueSetBindings) {
+	private String findValueSetID(List<ValueSetOrSingleCodeBinding> valueSetBindings, String referenceLocation) {
+		for (ValueSetOrSingleCodeBinding vsb : valueSetBindings) {
 			if (vsb.getLocation().equals(referenceLocation))
 				return vsb.getTableId();
 		}
@@ -679,7 +678,7 @@ public class Bootstrap implements InitializingBean {
 	private void updateInitAndCreateBindingAndCommentsVSForSegment() {
 		List<Segment> allSegs = segmentService.findAll();
 		for (Segment s : allSegs) {
-			s.setValueSetBindings(new ArrayList<ValueSetBinding>());
+			s.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
 			s.setComments(new ArrayList<Comment>());
 			for (Field f : s.getFields()) {
 				if (f.getTables() != null) {
@@ -716,7 +715,7 @@ public class Bootstrap implements InitializingBean {
 	private void updateInitAndCreateBindingAndCommentsVSForDatatype() {
 		List<Datatype> allDts = datatypeService.findAll();
 		for (Datatype d : allDts) {
-			d.setValueSetBindings(new ArrayList<ValueSetBinding>());
+			d.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
 			d.setComments(new ArrayList<Comment>());
 			for (Component c : d.getComponents()) {
 				if (c.getTables() != null) {

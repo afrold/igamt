@@ -35,6 +35,7 @@ public class IGDocumentConfiguration {
 	private Set<String> domainVersions = new HashSet<String>();
 	private Set<String> schemaVersions = new HashSet<String>();
 	private Set<String> valueSetAllowedDTs = new HashSet<String>();
+	private Set<String> singleValueSetDTs = new HashSet<String>();
 	private Set<DTComponent> valueSetAllowedComponents = new HashSet<DTComponent>();
 	private Set<String> codedElementDTs = new HashSet<String>();
 	private HashMap<String, Set<String>> bindingLocationListByHL7Version = new HashMap<String, Set<String>>();
@@ -190,6 +191,14 @@ public class IGDocumentConfiguration {
 
 	public void setVariesMapItems(Set<VariesMapItem> variesMapItems) {
 		this.variesMapItems = variesMapItems;
+	}
+
+	public Set<String> getSingleValueSetDTs() {
+		return singleValueSetDTs;
+	}
+
+	public void setSingleValueSetDTs(Set<String> singleValueSetDTs) {
+		this.singleValueSetDTs = singleValueSetDTs;
 	}
 
 }
