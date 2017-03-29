@@ -31,7 +31,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SingleElementValue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentComparator;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PathGroupService;
 
 @Service
@@ -66,15 +66,15 @@ public class PathGroupServiceImpl implements PathGroupService {
     }
     for (ProfileComponent p : pcs) {
       for (SubProfileComponent sub : p.getChildren()) {
-        List<ValueSetBinding> toRemove = new ArrayList<>();
+        List<ValueSetOrSingleCodeBinding> toRemove = new ArrayList<>();
         List<Comment> commentToRemove = new ArrayList<>();
 
         if (!sub.getPath().startsWith(coreMessage.getStructID())) {
 
         } else {
           if (sub.getValueSetBindings() != null) {
-            for (ValueSetBinding v : sub.getValueSetBindings()) {
-              for (ValueSetBinding vsb : coreMessage.getValueSetBindings()) {
+            for (ValueSetOrSingleCodeBinding v : sub.getValueSetBindings()) {
+              for (ValueSetOrSingleCodeBinding vsb : coreMessage.getValueSetBindings()) {
                 if (v.getLocation().equals(vsb.getLocation())) {
                   toRemove.add(vsb);
                 }
@@ -151,16 +151,17 @@ public class PathGroupServiceImpl implements PathGroupService {
       } else if (child instanceof SegmentRef) {
         SegmentRef segRef = (SegmentRef) child;
         Segment seg = segmentsMap.get(segRef.getRef().getId());
-        List<ValueSetBinding> toRemove = new ArrayList<>();
+        List<ValueSetOrSingleCodeBinding> toRemove = new ArrayList<>();
         if (subPc.getValueSetBindings() != null) {
-          for (ValueSetBinding v : subPc.getValueSetBindings()) {
-            for (ValueSetBinding vsb : seg.getValueSetBindings()) {
+          for (ValueSetOrSingleCodeBinding v : subPc.getValueSetBindings()) {
+            for (ValueSetOrSingleCodeBinding vsb : seg.getValueSetBindings()) {
               if (v.getLocation().equals(vsb.getLocation())) {
                 toRemove.add(vsb);
               }
             }
           }
           seg.getValueSetBindings().removeAll(toRemove);
+
           seg.getValueSetBindings().addAll(subPc.getValueSetBindings());
 
 

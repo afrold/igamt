@@ -23,8 +23,10 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   private Integer priority;
   private String type;
   private String name;
-  private List<ValueSetBinding> oldValueSetBindings = new ArrayList<ValueSetBinding>();
-  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
+  private List<ValueSetOrSingleCodeBinding> oldValueSetBindings =
+      new ArrayList<ValueSetOrSingleCodeBinding>();
+  private List<ValueSetOrSingleCodeBinding> valueSetBindings =
+      new ArrayList<ValueSetOrSingleCodeBinding>();
   private SingleElementValue oldSingleElementValues = new SingleElementValue();
   private SingleElementValue singleElementValues = new SingleElementValue();
   private List<Comment> oldComments = new ArrayList<Comment>();
@@ -94,19 +96,19 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
 
 
-  public List<ValueSetBinding> getOldValueSetBindings() {
+  public List<ValueSetOrSingleCodeBinding> getOldValueSetBindings() {
     return oldValueSetBindings;
   }
 
-  public void setOldValueSetBindings(List<ValueSetBinding> oldValueSetBindings) {
+  public void setOldValueSetBindings(List<ValueSetOrSingleCodeBinding> oldValueSetBindings) {
     this.oldValueSetBindings = oldValueSetBindings;
   }
 
-  public List<ValueSetBinding> getValueSetBindings() {
+  public List<ValueSetOrSingleCodeBinding> getValueSetBindings() {
     return valueSetBindings;
   }
 
-  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+  public void setValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings) {
     this.valueSetBindings = valueSetBindings;
   }
 
