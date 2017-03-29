@@ -5,6 +5,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
++import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -40,9 +41,13 @@ import java.util.*;
 
     @Autowired SerializeDatatypeService serializeDatatypeService;
 
+    @Autowired SerializeCompositeProfileService serializeCompositeProfileService;
+
     @Autowired SerializeTableService serializeTableService;
 
     @Autowired SegmentService segmentService;
+
+    @Autowired CompositeProfileService compositeProfileService;
 
     @Autowired TableService tableService;
 
@@ -55,6 +60,8 @@ import java.util.*;
     private List<DatatypeLink> bindedDatatypes;
 
     private List<TableLink> bindedTables;
+
+    private List<CompositeProfile> compositeProfiles;
 
     private List<TableLink> unbindedTables;
 
@@ -106,6 +113,17 @@ import java.util.*;
         this.bindedSegments = new ArrayList<>();
         this.tableLibrary = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
+        this.compositeProfiles = new ArrayList<>();
+        if(igDocument.getProfile().getCompositeProfiles() != null && !igDocument.getProfile().getCompositeProfiles().getChildren().isEmpty()){
+            for (CompositeProfileStructure compositeProfileStructure : igDocument.getProfile()
+                .getCompositeProfiles().getChildren()) {
+                CompositeProfile compositeProfile = compositeProfileService.buildCompositeProfile(compositeProfileStructure);
+                compositeProfiles.add(compositeProfile);
+                for(SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()){
+                    identifyBindedItems(segmentRefOrGroup,compositeProfile);
+                }
+            }
+        }
         for (Message message : igDocument.getProfile().getMessages().getChildren()){
             for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
                 identifyBindedItems(segmentRefOrGroup);
@@ -150,6 +168,12 @@ import java.util.*;
         //Message Serialization
         SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version());
         profileSection.addSection(messageSection);
+
+        //Composite profiles serialization
+        SerializableSection compositeProfilesSection = this.serializeCompositeProfiles(profile, serializationLayout,igDocument.getMetaData().getHl7Version());
+        if(compositeProfilesSection!=null) {
+            profileSection.addSection(compositeProfilesSection);
+        }
 
         //Segments serialization
         UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
@@ -199,6 +223,19 @@ import java.util.*;
                     }
                 }
                 message.setChildren(finalSegmentRefOrGroupList);
+            }
+            if(this.compositeProfiles != null && !this.compositeProfiles.isEmpty()) {
+                for (CompositeProfile compositeProfile : this.compositeProfiles) {
+                    List<SegmentRefOrGroup> finalSegmentRefOrGroupList = new ArrayList<>();
+                    for (SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()) {
+                        SegmentRefOrGroup finalSegmentRefOrGroup =
+                            filterSegmentRefOrGroup(segmentRefOrGroup, segmentORGroupsUsageConfig);
+                        if (finalSegmentRefOrGroup != null) {
+                            finalSegmentRefOrGroupList.add(finalSegmentRefOrGroup);
+                        }
+                    }
+                    compositeProfile.setChildren(finalSegmentRefOrGroupList);
+                }
             }
             return igDocument;
         }
@@ -307,13 +344,22 @@ import java.util.*;
         UsageConfig datatypeComponentsUsageConfig = this.exportConfig.getComponentExport();
         for (DatatypeLink datatypeLink : datatypeLinkList) {
             if(null!=bindedDatatypes && bindedDatatypes.contains(datatypeLink)) {
-                SerializableDatatype serializableDatatype = serializeDatatypeService
-                    .serializeDatatype(datatypeLink,
+                CompositeProfile compositeProfile = getDatatypeCompositeProfile(datatypeLink);
+                SerializableDatatype serializableDatatype = null;
+                if(compositeProfile!=null){
+                    serializableDatatype = serializeDatatypeService.serializeDatatype(datatypeLink,
+                        prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
+                        datatypeLinkList.indexOf(datatypeLink), datatypeComponentsUsageConfig,compositeProfile.getDatatypesMap());
+                } else {
+                    serializableDatatype = serializeDatatypeService.serializeDatatype(datatypeLink,
                         prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
                         datatypeLinkList.indexOf(datatypeLink), datatypeComponentsUsageConfig);
+                }
                 //This "if" is only useful if we want to display only user datatypes
                 //if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
-                datatypeSection.addSection(serializableDatatype);
+                if(serializableDatatype!=null) {
+                    datatypeSection.addSection(serializableDatatype);
+                }
                 //}
             }
         }
@@ -347,47 +393,71 @@ import java.util.*;
         return messageSection;
     }
 
+    private SerializableSection serializeCompositeProfiles(Profile profile, SerializationLayout serializationLayout, String hl7Version) {
+        if(profile.getCompositeProfiles()!=null && !profile.getCompositeProfiles().getChildren().isEmpty()) {
+            String id = profile.getCompositeProfiles().getId();
+            String position = String.valueOf(profile.getCompositeProfiles().getSectionPosition());
+            String prefix = "";
+            String headerLevel = String.valueOf(2);
+            String title = "";
+            if (profile.getCompositeProfiles().getSectionTitle() != null) {
+                title = profile.getCompositeProfiles().getSectionTitle();
+            } else {
+                title = "Composite Profiles";
+            }
+            SerializableSection compositeProfileSection = new SerializableSection(id, prefix, position, headerLevel, title);
+            if (profile.getCompositeProfiles().getSectionContents() != null && !profile
+                .getCompositeProfiles().getSectionContents().isEmpty()) {
+                compositeProfileSection.addSectionContent(
+                    "<div class=\"fr-view\">" + profile.getCompositeProfiles().getSectionContents() +
+                    "</div>");
+            }
+            for (CompositeProfile compositeProfile : this.compositeProfiles) {
+                SerializableCompositeProfile serializableCompositeProfile =
+                    serializeCompositeProfileService
+                        .serializeCompositeProfile(compositeProfile, prefix, serializationLayout,
+                            hl7Version, this.exportConfig);
+                if (serializableCompositeProfile != null) {
+                    compositeProfileSection.addSection(serializableCompositeProfile);
+                }
+            }
+            return compositeProfileSection;
+        }
+        return null;
+    }
+
     private void identifyBindedItems(SegmentRefOrGroup segmentRefOrGroup) {
+        identifyBindedItems(segmentRefOrGroup,null);
+    }
+
+    private void identifyBindedItems(SegmentRefOrGroup segmentRefOrGroup, CompositeProfile compositeProfile) {
         if(segmentRefOrGroup instanceof SegmentRef){
             if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),exportConfig.getSegmentsExport())){
                 this.bindedSegments.add(((SegmentRef) segmentRefOrGroup).getRef());
             }
-            Segment segment = segmentService.findById(
-                ((SegmentRef) segmentRefOrGroup).getRef().getId());
-            for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()){
-                this.removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
-                if(valueSetOrSingleCodeBinding.getUsage()!=null && ExportUtil.diplayUsage(
-                    valueSetOrSingleCodeBinding.getUsage(), this.exportConfig.getValueSetsExport())) {
-                    TableLink tableLink = this.findTableLink(valueSetOrSingleCodeBinding.getTableId());
-                    if (tableLink != null) {
-                        this.bindedTables.add(tableLink);
-                    }
-                }
+            Segment segment = null;
+            if(compositeProfile!=null){
+                segment = compositeProfile.getSegmentsMap().get(((SegmentRef) segmentRefOrGroup).getRef().getId());
+            }else {
+                segment = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
             }
-            for (Field field : segment.getFields()) {
-                if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getDatatypesExport())) {
-                    bindedDatatypes.add(field.getDatatype());
-                    Datatype datatype = datatypeService.findById(field.getDatatype().getId());
-                    for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : datatype.getValueSetBindings()){
-                        this.removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
-                        if(valueSetOrSingleCodeBinding.getUsage()!=null && ExportUtil.diplayUsage(valueSetOrSingleCodeBinding.getUsage(),this.exportConfig.getValueSetsExport())) {
-                            TableLink tableLink = this.findTableLink(valueSetOrSingleCodeBinding.getTableId());
-                            if(tableLink!=null) {
-                                this.bindedTables.add(tableLink);
-                            }
-                        }
+            if(segment!=null) {
+                for (Field field : segment.getFields()) {
+                    if (!bindedDatatypes.contains(field.getDatatype()) && ExportUtil
+                        .diplayUsage(field.getUsage(), this.exportConfig.getDatatypesExport())) {
+                        bindedDatatypes.add(field.getDatatype());
                     }
-                    for(Component component : datatype.getComponents()){
-                        if(!bindedDatatypes.contains(component.getDatatype())&&ExportUtil.diplayUsage(component.getUsage(),
-                            this.exportConfig.getDatatypesExport())){
-                            bindedDatatypes.add(component.getDatatype());
+                    for (TableLink tableLink : field.getTables()) {
+                        if (!bindedTables.contains(tableLink) && ExportUtil
+                            .diplayUsage(field.getUsage(), this.exportConfig.getValueSetsExport())) {
+                            bindedTables.add(tableLink);
                         }
                     }
                 }
             }
         } else if(segmentRefOrGroup instanceof Group){
             for(SegmentRefOrGroup children : ((Group) segmentRefOrGroup).getChildren()){
-                identifyBindedItems(children);
+                identifyBindedItems(children, compositeProfile);
             }
         }
     }
@@ -439,14 +509,49 @@ import java.util.*;
         for (SegmentLink segmentLink : segmentLinkList) {
             if(this.bindedSegments.contains(segmentLink)) {
                 if (segmentLink.getId() != null) {
-                    segmentsSection.addSection(serializeSegmentService.serializeSegment(segmentLink,
-                        prefix + "." + String.valueOf(segmentLinkList.indexOf(segmentLink) + 1),
-                        segmentLinkList.indexOf(segmentLink), 3, fieldsUsageConfig));
-
+                    CompositeProfile compositeProfile = getSegmentCompositeProfile(segmentLink);
+                    if(compositeProfile!=null) {
+                        segmentsSection.addSection(serializeSegmentService
+                            .serializeSegment(segmentLink, prefix + "." + String
+                                    .valueOf(segmentLinkList.indexOf(segmentLink) + 1),
+                                segmentLinkList.indexOf(segmentLink), 3, fieldsUsageConfig,compositeProfile.getSegmentsMap()));
+                    } else {
+                        segmentsSection.addSection(serializeSegmentService
+                            .serializeSegment(segmentLink, prefix + "." + String
+                                    .valueOf(segmentLinkList.indexOf(segmentLink) + 1),
+                                segmentLinkList.indexOf(segmentLink), 3, fieldsUsageConfig));
+                    }
                 }
             }
         }
         return segmentsSection;
+    }
+
+    private CompositeProfile getSegmentCompositeProfile(SegmentLink segmentLink) {
+        for(CompositeProfile compositeProfile : this.compositeProfiles){
+            if(compositeProfile.getSegmentsMap().containsKey(segmentLink.getId())){
+                return compositeProfile;
+            }
+        }
+        return null;
+    }
+
+    private CompositeProfile getDatatypeCompositeProfile(DatatypeLink datatypeLink) {
+        for(CompositeProfile compositeProfile : this.compositeProfiles){
+            if(compositeProfile.getDatatypesMap().containsKey(datatypeLink.getId())){
+                return compositeProfile;
+            }
+        }
+        return null;
+    }
+
+    private CompositeProfile getTableCompositeProfile(TableLink tableLink) {
+        for(CompositeProfile compositeProfile : this.compositeProfiles){
+            if(compositeProfile.getTablesMap().containsKey(tableLink.getId())) {
+                return compositeProfile;
+            }
+        }
+        return null;
     }
 
     private SerializableSection serializeConstraints(Profile profile,

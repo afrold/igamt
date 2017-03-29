@@ -1,11 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
-
-import java.util.Map;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableCompositeProfile;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -18,14 +15,9 @@ import java.util.Map;
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified.
  * <p>
- * Created by Maxence Lefort on 12/12/16.
+ * Created by Maxence Lefort on 3/29/17.
  */
-public interface SerializeDatatypeService {
-
-    public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
-        Integer position, UsageConfig datatypeUsageConfig);
-
-    public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
-        Integer position, UsageConfig datatypeUsageConfig, Map<String,Datatype> componentProfileDatatypes);
-
+public interface SerializeCompositeProfileService {
+    SerializableCompositeProfile serializeCompositeProfile(CompositeProfile compositeProfile, String prefix,
+        SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig);
 }
