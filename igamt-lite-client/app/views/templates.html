@@ -3969,20 +3969,10 @@
 
                                                         </td>
                                                         <td class="col-md-3">
-                                                            <!--<ul ng-if="igdocument">-->
-                                                                <!--<li ng-repeat="vr in datatype.hl7versions">-->
-                                                                    <!--{{vr}}-->
-                                                                <!--</li>-->
-                                                            <!--</ul>-->
-
-                                                                <!--<span ng-repeat="vr in datatype.hl7versions">-->
-                                                                    <!--<md-radio-button ng-model="datatype.hl7Version" ng-value="vr" ng-disabled="checkExt(datatype,vr)">{{vr}}</md-radio-button>-->
-                                                                    <!--<br/>-->
-                                                                <!--</span>-->
 
                                                             <md-radio-group ng-model="datatype.hl7Version">
 
-                                                                <md-radio-button ng-repeat="vr in datatype.hl7versions" ng-value="vr" class="md-primary" ng-disabled="checkImported(datatype,vr)">{{vr}} {{checkImported(datatype,vr)}}</md-radio-button>
+                                                                <md-radio-button ng-repeat="vr in datatype.hl7versions" ng-value="vr" class="md-primary" ng-disabled="checkImported(datatype,vr)">{{vr}}</md-radio-button>
 
                                                             </md-radio-group>
 
@@ -3990,7 +3980,7 @@
 
                                                         </td>
                                                         <td class="col-md-2">
-                                                            <button class="btn btn-raised btn-primary btn-xs" type="button" ng-click="addDtFlv(datatype)" ng-disable="datatype.hl7Version=='*'"><i class="fa fa-plus fa-fw"></i>
+                                                            <button class="btn btn-raised btn-primary btn-xs" type="button" ng-click="addDtFlv(datatype)" ng-disable="checkImported(datatype,datatype.hl7Version)"><i class="fa fa-plus fa-fw"></i>
                                                             </button>
                                                         </td>
                                                     </tr>

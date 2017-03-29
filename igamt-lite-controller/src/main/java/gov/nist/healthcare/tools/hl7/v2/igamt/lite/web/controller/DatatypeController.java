@@ -380,8 +380,7 @@ public class DatatypeController extends CommonController {
       Component temp = datatype.getComponents().get(i);
       if (temp.getDatatype() != null) {
         Datatype dtTemp = datatypeService.findById(temp.getDatatype().getId());
-        if (!dtTemp.getScope().toString().equals(SCOPE.MASTER.toString())
-            || !dtTemp.getScope().toString().equals(SCOPE.USER.toString())) {
+        if (dtTemp.getScope().toString().equals("INTERMASTER")) {
           System.out.println(dtTemp.getId());
           datatype.getComponents().get(i).getDatatype()
               .setId((result.getComponents().get(i).getDatatype().getId()));
@@ -396,9 +395,6 @@ public class DatatypeController extends CommonController {
           }
           datatypeService.save(d);
           datatype.getComponents().get(i).getDatatype().setId(newId);
-
-
-
         }
       }
     }
