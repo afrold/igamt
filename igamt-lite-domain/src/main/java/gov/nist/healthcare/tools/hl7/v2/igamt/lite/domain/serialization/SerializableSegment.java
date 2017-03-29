@@ -4,7 +4,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.*;
 import nu.xom.Attribute;
 import nu.xom.Element;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +29,17 @@ public class SerializableSegment extends SerializableSection {
     private String defPreText,defPostText,name,label,description,comment;
     private List<SerializableConstraint> constraints;
     private Map<Field,Datatype> fieldDatatypeMap;
-    private Map<Field,List<Table>> fieldTableMap;
+    private Map<Field,List<ValueSetBinding>> fieldValueSetBindingsMap;
+    private List<Table> tables;
     private Map<CCValue,Table> coConstraintValueTableMap;
     private Boolean showConfLength;
 
 
     public SerializableSegment(String id, String prefix, String position, String headerLevel, String title,
-        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText, List<SerializableConstraint> constraints, Map<Field,Datatype> fieldDatatypeMap,Map<Field,List<Table>> fieldTableMap, Map<CCValue,Table> coConstraintValueTableMap, Boolean showConfLength) {
+        Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText,
+        List<SerializableConstraint> constraints, Map<Field, Datatype> fieldDatatypeMap,
+        Map<Field, List<ValueSetBinding>> fieldValueSetBindingsMap, List<Table> tables,
+        Map<CCValue, Table> coConstraintValueTableMap, Boolean showConfLength) {
         super(id, prefix, position, headerLevel, title);
         this.segment = segment;
         this.name = name;
@@ -44,7 +50,8 @@ public class SerializableSegment extends SerializableSection {
         this.defPostText = defPostText;
         this.constraints = constraints;
         this.fieldDatatypeMap = fieldDatatypeMap;
-        this.fieldTableMap = fieldTableMap;
+        this.fieldValueSetBindingsMap = fieldValueSetBindingsMap;
+        this.tables = tables;
         this.coConstraintValueTableMap = coConstraintValueTableMap;
         this.showConfLength = showConfLength;
     }
@@ -77,6 +84,18 @@ public class SerializableSegment extends SerializableSection {
                 }
             }
 
+            if(segment.getValueSetBindings()!=null && !segment.getValueSetBindings().isEmpty()) {
+                Element valueSetBindingListElement = super.createValueSetBindingListElement(segment.getValueSetBindings(), this.tables, segment.getLabel());
+                if(valueSetBindingListElement!=null){
+                    segmentElement.appendChild(valueSetBindingListElement);
+                }
+            }
+            if(segment.getComments()!=null && !segment.getComments().isEmpty()){
+                Element commentListElement = super.createCommentListElement(segment.getComments(),segment.getLabel());
+                if(commentListElement!=null){
+                    segmentElement.appendChild(commentListElement);
+                }
+            }
             for (int i = 0; i < segment.getFields().size(); i++) {
                 Field field = segment.getFields().get(i);
                 Element fieldElement = new Element("Field");
@@ -103,37 +122,31 @@ public class SerializableSegment extends SerializableSection {
                                     .addAttribute(new Attribute("MaxLength", field.getMaxLength()));
                         }
                 }
+                if(this.fieldValueSetBindingsMap.containsKey(field)){
+                    List<ValueSetBinding> valueSetBindings = this.fieldValueSetBindingsMap.get(field);
+                    if(valueSetBindings!=null && !valueSetBindings.isEmpty()){
+                        List<String> bindingIdentifierList = new ArrayList<>();
+                        for(ValueSetBinding valueSetBinding : valueSetBindings){
+                            if(valueSetBinding!=null && valueSetBinding.getTableId()!=null&&!valueSetBinding.getTableId().isEmpty()) {
+                                Table table = super.findTable(tables, valueSetBinding.getTableId());
+                                bindingIdentifierList.add(table.getBindingIdentifier());
+                            }
+                        }
+                        String bindingIdentifier = StringUtils.join(bindingIdentifierList, ",");
+                        if(bindingIdentifier!=null && !bindingIdentifier.isEmpty()) {
+                            fieldElement.addAttribute(
+                                new Attribute("BindingIdentifier", bindingIdentifier));
+                        }
+                    }
+                }
                 fieldElement.addAttribute(new Attribute("complex",String.valueOf(isComplex)));
                 fieldElement.addAttribute(new Attribute("Min", String.valueOf(field.getMin())));
                 fieldElement.addAttribute(new Attribute("Max", field.getMax()));
-                if (field.getTables() != null && !field.getTables().isEmpty()) {
-                    List<Table> fieldTables = fieldTableMap.get(field);
-                    String temp = "";
-                    boolean isFirst = true;
-                    if (fieldTables != null && fieldTables.size() > 0) {
-                        for (Table table : fieldTables) {
-                        	if(table != null){
-                        		String bindingIdentifier = table.getBindingIdentifier();
-                                if(!isFirst){
-                                    temp += ",";
-                                } else {
-                                    isFirst = false;
-                                }
-                                if((bindingIdentifier != null && !bindingIdentifier.equals(""))){
-                                    temp += bindingIdentifier;
-                                } else {
-                                    temp += " ! DEBUG: COULD NOT FIND binding identifier " + table
-                                        .getBindingIdentifier();
-                                }	
-                        	}
-                        }
-                    }
-                    fieldElement.addAttribute(new Attribute("Binding", temp));
-                }
                 if (field.getItemNo() != null && !field.getItemNo().equals(""))
                     fieldElement.addAttribute(new Attribute("ItemNo", field.getItemNo()));
-                if (field.getComment() != null && !field.getComment().isEmpty())
-                    fieldElement.addAttribute(new Attribute("Comment", field.getComment()));
+                String comments = super.findComments(field.getPosition(),segment.getComments());
+                if (comments != null && !comments.isEmpty())
+                    fieldElement.addAttribute(new Attribute("Comment", comments));
                 fieldElement.addAttribute(
                     new Attribute("Position", String.valueOf(field.getPosition())));
 

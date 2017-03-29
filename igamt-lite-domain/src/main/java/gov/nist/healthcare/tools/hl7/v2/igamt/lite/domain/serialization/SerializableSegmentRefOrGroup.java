@@ -30,6 +30,7 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
     private SegmentRef segmentRef;
     private List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups;
     private List<SerializableConstraint> groupConstraintList;
+    private String comments;
 
     //SegmentRef constructor
     public SerializableSegmentRefOrGroup(SegmentRef segmentRef,Segment segment) {
@@ -68,7 +69,9 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         elementGroupBegin.addAttribute(new Attribute("Min", group.getMin() + ""));
         elementGroupBegin.addAttribute(new Attribute("Max", group.getMax()));
         elementGroupBegin.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4 * depth) + "["));
-        elementGroupBegin.addAttribute(new Attribute("Comment", group.getComment()));
+        if(this.getComments()!=null) {
+            elementGroupBegin.addAttribute(new Attribute("Comment", this.getComments()));
+        }
         elementGroupBegin.addAttribute(new Attribute("Position", group.getPosition().toString()));
         elementGroup.appendChild(elementGroupBegin);
 
@@ -112,8 +115,8 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         elementSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage().toString()));
         elementSegment.addAttribute(new Attribute("Min", segmentRef.getMin() + ""));
         elementSegment.addAttribute(new Attribute("Max", segmentRef.getMax() + ""));
-        if (segmentRef.getComment() != null)
-            elementSegment.addAttribute(new Attribute("Comment", segmentRef.getComment()));
+        if (this.getComments() != null)
+            elementSegment.addAttribute(new Attribute("Comment", this.getComments()));
         elementSegment.addAttribute(new Attribute("Position", segmentRef.getPosition().toString()));
         return elementSegment;
     }
@@ -124,5 +127,21 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
 
     public SegmentRef getSegmentRef() {
         return segmentRef;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public SegmentRefOrGroup getSegmentRefOrGroup() {
+        return segmentRefOrGroup;
+    }
+
+    public List<SerializableSegmentRefOrGroup> getSerializableSegmentRefOrGroups() {
+        return serializableSegmentRefOrGroups;
     }
 }

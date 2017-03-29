@@ -125,7 +125,9 @@ if (self === top) {
         filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ff7400', endColorstr='#ff7400', GradientType=0);
         /* IE6-9 */
     }
-    
+    .label-inter{
+      background-color:#144d8e;
+    }
     span {
         cursor: pointer;
         font-weight: normal;
@@ -141,8 +143,8 @@ if (self === top) {
         font-weight: 700;
     }
     
-    .angular-ui-tree-nodes .angular-ui-tree-nodes {
-        padding-left: 0px;
+    ui-tree-node {
+        padding-left: 20px !important;
     }
     
     .form-group {
@@ -317,7 +319,7 @@ if (self === top) {
                                     <tbody style="max-height: 337px; overflow:scroll; display: block;">
                                         <tr ng-repeat="dt in matrix | orderBy: 'name'|filter:search">
                                             <td style="min-width:60px !important; width:60px !important;"><strong>{{dt.name}}</strong></td>
-                                            <td ng-disabled="true" style="color:{{getColor(dt.links[va])}}; width:60px!important;" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1]), 'grey':!dt.links[va]&& dt.links[va]!==0}"
+                                            <td ng-disabled="true" style="color:{{getColor(dt.links[va])}}; width:60px!important; cursor:pointer !important" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1]), 'grey':!dt.links[va]&& dt.links[va]!==0}"
                                                 ng-repeat='va in adjusted' ng-click="selectCell(dt,vrs[$index+1])"><strong>{{dt.links[va]}}</strong></td>
                                         </tr>
                                     </tbody>
@@ -451,7 +453,7 @@ if (self === top) {
                                 'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}<span class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span></span>
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
                         </div>
-                               <div style="margin-top: -6px;margin-left: 12px;" ng-if="data.scope==='MASTER'">   
+                               <div style="margin-top: -5px;margin-left: 0px;" ng-if="data.scope==='MASTER'">   
                             <span class="version-badge-under" ng-repeat="version in data.hl7versions" style="margin-left:2px;">{{version}}</span>
                             </div>
                     </li>
@@ -478,26 +480,25 @@ if (self === top) {
                     </li>
                 </ol>
 
-
-                    <ol ui-tree-nodes="" ng-model="interMediates" ng-if="datatypeLibrary.scope=='MASTER'">
-                    <div ui-tree-handle data-nodrag>
-                        <i data-nodrag class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> InterMediates <span class="badge">{{interMediate.length}}</span>
+                    <div ui-tree-handle data-nodrag ng-if="datatypeLibrary.scope=='MASTER'">
+                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Data Types <span class="badge">{{interMediate.length}}</span>
                     </div>
-                    <li ng-repeat="data in interMediates |orderBy:['-scope','label']" ui-tree-node>
+                    <ol ui-tree-nodes="" ng-model="interMediates" ng-if="datatypeLibrary.scope=='MASTER'">
+  
+                    <li  ng-repeat="data in interMediates |orderBy:['-scope','label']" ui-tree-node ng-if="!tableCollapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForInter">
-                          <span class="badge" style="background-color:#144d8e;"> INT</span>
+                          <span class="badge" style="background-color:#144d8e;"> DRV</span>
                         
                         
                         
                             <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}
                             </span>
-                            <div style="margin-top: -6px;margin-left: 12px;">   
+                            <div style="margin-top: -5px;margin-left: 0px;">   
                             <span class="version-badge-under" ng-repeat="version in data.hl7versions" style="margin-left:2px;">{{version}}</span>
                             </div>
                         </div>
                     </li>
-                </ol>
-
+                    </ol>
             </li>
         </ol>
     </div>

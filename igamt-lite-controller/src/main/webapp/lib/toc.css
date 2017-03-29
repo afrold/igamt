@@ -124,6 +124,9 @@
     font-weight: 400;
 }
 
+label-inter{
+	background-color:#144d8e;
+}
 span {
 	cursor: pointer;
 	font-weight: normal;

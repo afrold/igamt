@@ -1,15 +1,14 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
 import nu.xom.Element;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,17 +30,21 @@ public class SerializableDatatype extends SerializableSection {
     private Datatype datatype;
     private List<SerializableConstraint> constraints;
     private Map<Component,Datatype> componentDatatypeMap;
-    private Map<Component,List<Table>> componentTableMap;
+    private Map<Component,List<ValueSetBinding>> componentValueSetBindingsMap;
     private String defPreText, defPostText, usageNote;
     private Map<Component,String> componentTextMap;
     private Boolean showConfLength;
+    private List<Table> tables;
 
     public List<SerializableConstraint> getConstraints() {
         return constraints;
     }
 
-    public SerializableDatatype(String id, String prefix, String position, String headerLevel, String title,
-        Datatype datatype, String defPreText, String defPostText, String usageNote, List<SerializableConstraint> constraints,Map<Component,Datatype> componentDatatypeMap,Map<Component,List<Table>> componentTableMap, Map<Component,String> componentTextMap, Boolean showConfLength) {
+    public SerializableDatatype(String id, String prefix, String position, String headerLevel,
+        String title, Datatype datatype, String defPreText, String defPostText, String usageNote,
+        List<SerializableConstraint> constraints, Map<Component, Datatype> componentDatatypeMap,
+        Map<Component, List<ValueSetBinding>> componentValueSetBindingsMap, List<Table> tables,
+        Map<Component, String> componentTextMap, Boolean showConfLength) {
         super(id, prefix, position, headerLevel, title);
         this.datatype = datatype;
         this.defPreText = defPreText;
@@ -49,7 +52,8 @@ public class SerializableDatatype extends SerializableSection {
         this.usageNote = usageNote;
         this.constraints = constraints;
         this.componentDatatypeMap = componentDatatypeMap;
-        this.componentTableMap = componentTableMap;
+        this.componentValueSetBindingsMap = componentValueSetBindingsMap;
+        this.tables = tables;
         this.componentTextMap = componentTextMap;
         this.showConfLength = showConfLength;
     }
@@ -70,6 +74,19 @@ public class SerializableDatatype extends SerializableSection {
             datatypeElement.addAttribute(new Attribute("id", datatype.getId()));
             for(SerializableConstraint constraint : constraints){
                 datatypeElement.appendChild(constraint.serializeElement());
+            }
+            if(datatype.getValueSetBindings()!=null && !datatype.getValueSetBindings().isEmpty()) {
+                Element valueSetBindingListElement = super.createValueSetBindingListElement(datatype.getValueSetBindings(), this.tables, datatype.getLabel());
+                if(valueSetBindingListElement!=null){
+                    datatypeElement.appendChild(valueSetBindingListElement);
+                }
+            }
+            if(datatype.getComments()!=null && !datatype.getComments().isEmpty()){
+                Element commentListElement = super.createCommentListElement(datatype.getComments(),
+                    datatype.getLabel());
+                if(commentListElement!=null){
+                    datatypeElement.appendChild(commentListElement);
+                }
             }
             if (datatype.getComponents() != null) {
                 for (int i = 0; i < datatype.getComponents().size(); i++) {
@@ -110,28 +127,32 @@ public class SerializableDatatype extends SerializableSection {
                             }
                         }
                     }
-                    if (component.getComment() != null && !component.getComment().equals(""))
-                        componentElement.addAttribute(new Attribute("Comment", component.getComment()));
+                    if(this.componentValueSetBindingsMap.containsKey(component)){
+                        List<ValueSetBinding> valueSetBindings = this.componentValueSetBindingsMap.get(component);
+                        if(valueSetBindings!=null && !valueSetBindings.isEmpty()){
+                            List<String> bindingIdentifierList = new ArrayList<>();
+                            for(ValueSetBinding valueSetBinding : valueSetBindings){
+                                if(valueSetBinding!=null && valueSetBinding.getTableId()!=null&&!valueSetBinding.getTableId().isEmpty()) {
+                                    Table table = super.findTable(tables, valueSetBinding.getTableId());
+                                    bindingIdentifierList.add(table.getBindingIdentifier());
+                                }
+                            }
+                            String bindingIdentifier = StringUtils.join(bindingIdentifierList,",");
+                            if(bindingIdentifier!=null && !bindingIdentifier.isEmpty()) {
+                                componentElement.addAttribute(
+                                    new Attribute("BindingIdentifier", bindingIdentifier));
+                            }
+                        }
+                    }
+                    String comments = super.findComments(component.getPosition(),datatype.getComments());
+                    if (comments != null && !comments.isEmpty())
+                        componentElement.addAttribute(new Attribute("Comment", comments));
                     componentElement
                         .addAttribute(new Attribute("Position", component.getPosition().toString()));
                     String componentText = componentTextMap.get(component);
                     if (componentText != null && !componentText.isEmpty()) {
                         componentElement.appendChild(
                             this.createTextElement("Text", componentText));
-                    }
-                    if (component.getTables() != null && (component.getTables().size() > 0)) {
-                        String bindingIdentifiers = "";
-                        if(componentTableMap!=null && componentTableMap.size()>0 && componentTableMap.containsKey(component)) {
-                            for (Table table : componentTableMap.get(component)) {
-                                if (table != null) {
-                                    String bindingIdentifier = table.getBindingIdentifier();
-                                    bindingIdentifiers = !bindingIdentifiers.equals("") ?
-                                        bindingIdentifiers + "," + bindingIdentifier :
-                                        bindingIdentifier;
-                                }
-                            }
-                        }
-                        componentElement.addAttribute(new Attribute("Binding", bindingIdentifiers));
                     }
                     componentElement.addAttribute(new Attribute("complex",String.valueOf(isComplex)));
                     datatypeElement.appendChild(componentElement);

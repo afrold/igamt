@@ -4097,3 +4097,59 @@ angular.module('igl').controller('ConfirmSingleElementDuplicatedCtrl', function(
         $modalInstance.dismiss('cancel');
     };
 });
+
+angular.module('igl').controller('labelController', function($scope) {
+   $scope.getLabel=function(element) {
+
+       if(element.type==='table'){
+           if (!element.ext || element.ext == "") {
+               return element.bindingIdentifier;
+           } else {
+               return element.bindingIdentifier + "_" + element.ext;
+           }
+       }
+       if (!element.ext || element.ext == "") {
+           return element.name;
+       } else {
+           return element.name + "_" + element.ext;
+       }
+   };
+    $scope.hasHl7Version=function(element){
+        if(element.hl7Version){
+            return element.hl7Version;
+        }
+    };
+
+    $scope.getDescriptionLabel=function (element) {
+        if(element.type==='table') {
+            return element.name;
+        }else{
+            return element.description;
+        }
+
+    }
+
+    $scope.getScopeLabel = function(leaf) {
+        if (leaf) {
+            if (leaf.scope === 'HL7STANDARD') {
+                return 'HL7';
+            } else if (leaf.scope === 'USER') {
+                return 'USR';
+            }else if(leaf.scope ==='INTERMASTER'){
+                return 'DRV';
+            }
+            else if (leaf.scope === 'MASTER') {
+                return 'MAS';
+            } else if (leaf.scope === 'PRELOADED') {
+                return 'PRL';
+            } else if (leaf.scope === 'PHINVADS') {
+                return 'PVS';
+            } else {
+                return "";
+            }
+
+        }
+    };
+
+
+});
