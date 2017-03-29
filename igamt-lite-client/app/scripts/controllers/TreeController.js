@@ -2426,7 +2426,7 @@ angular.module('igl').controller('addMAsterInLibrary',
             DatatypeLibrarySvc.getDatatypesByLibrary(masLib.id).then(function(datatypes) {
                 console.log(datatypes);
                     $scope.scope=$rootScope.datatypeLibrary.scope;
-                    $scope.masterDatatypes = _.where(datatypes, { scope: $scope.scope, status: "PUBLISHED" });
+                    $scope.masterDatatypes = _.where(datatypes, {status: "PUBLISHED" });
 
                 // if($rootScope.igdocument){
                 //     var temp=[];
