@@ -21,6 +21,7 @@ public class Constant {
   private Constant() {}
 
   public final static String ProfileComponent = "profilecomponent";
+  public final static String COMPOSITEPROFILESTRUCTURE = "compositeprofilestructure";
   public final static String ProfileComponentLibrary = "profilecomponentlibrary";
   public final static String SEGMENTS = "segments";
   public final static String SEGMENTLIBRARY = "segmentlibrary";

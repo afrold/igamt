@@ -199,6 +199,23 @@
                                 <i class="fa fa-table fa-fw" aria-hidden="true "></i> Composite Profile Definition
                             </tab-heading>
                             <div style="margin-top: 20px ">
+                                <div class="pull-left">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span> From Composite Profile
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span> From Segment
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span> From Field's Data Type
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span> From Component's Data Type
+                                        </li>
+                                    </ul>
+                                </div>
+
 
                                 <div class="col-md-12 " ng-show="compositeProfile.children.length>0">
                                     <table id="compositeProfileTable" tt-table tt-params="compositeProfileParams" class="table table-bordered table-fix-header table-condensed profile-table">
@@ -208,10 +225,12 @@
                                                 <th class="col-md-1 col-fixed-80" rowspan="2">Usage</th>
                                                 <th class="col-md-1 col-fixed-100" colspan="2">Cardinality</th>
                                                 <th class="col-md-1 col-fixed-100" colspan="2">Length</th>
-                                                <th class="col-md-1 col-fixed-30" rowspan="2"> ConfLength </th>
+                                                <th class="col-md-1 col-fixed-30" rowspan="2" ng-show="showConfLength()"> ConfLength </th>
                                                 <th class="col-md-2 col-fixed-35" rowspan="2">Data Type
                                                 </th>
                                                 <th class="col-md-1 col-fixed-33" rowspan="2">Value Set
+                                                </th>
+                                                <th class="col-md-1 col-fixed-33" rowspan="2">Single Element
                                                 </th>
                                                 <th class="col-md-1" ng-style="predWidthx" rowspan="2">Predicate
                                                 </th>
@@ -309,9 +328,9 @@
         </td>
 
 
-        <td class="col-md-1 col-fixed-30 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
+        <td ng-show="showConfLength()" class="col-md-1 col-fixed-30 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
         </td>
-        <td ng-class="{'col-md-1 col-fixed-30 input-change ':node.attributes.confLength!==node.attributes.oldConfLength,'col-md-1 col-fixed-30':node.attributes.confLength===node.attributes.oldConfLength}" ng-if="node.type==='field' || node.type==='component'">
+        <td ng-show="showConfLength()" ng-class="{'col-md-1 col-fixed-30 input-change ':node.attributes.confLength!==node.attributes.oldConfLength,'col-md-1 col-fixed-30':node.attributes.confLength===node.attributes.oldConfLength}" ng-if="node.type==='field' || node.type==='component'">
             {{node.confLength}}
         </td>
 
@@ -329,27 +348,40 @@
 
         <td class="col-md-1 col-fixed-33 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
         </td>
-        <!--<td class="col-md-1 col-fixed-33" ng-if="node.type==='field' || node.type==='component'">
 
-            <a class="point" ng-repeat="table in node.tables">
-                <span>{{table.bindingIdentifier}}</span>
-            </a>
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-if="node.type==='field' || node.type==='component'" style="text-align:center">
 
-        </td>-->
-        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}"  style="text-align:center">
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
-                    <span class="badge" ng-class="{'label-MAIN' : binding.bindingFrom == 'compositeProfile', 'label-CHILD' : binding.bindingFrom == 'segment', 'label-SUBCHILD' : binding.bindingFrom == 'field', 'label-SUBSUBCHILD' : binding.bindingFrom == 'component'}">
-                        <span title="For this compositeProfile" ng-show="binding.bindingFrom == 'compositeProfile'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                    <span class="badge label-white">
+                        <span ng-class="{'label-message-icon' : binding.bindingFrom == 'compositeProfile', 'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                    <span title="For this Composite Profile" ng-show="binding.bindingFrom == 'compositeProfile'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                     <span title="For {{getSegmentLabel(compositeProfile.segmentsMap[node.segment])}}" ng-show="binding.bindingFrom == 'segment'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                    <span title="For {{getDatatypeLabel(compositeProfile.datatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                    <span title="For {{getDatatypeLabel(compositeProfile.datatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                    <!--<span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'compositeProfile'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw"></i></span>-->
+                    <span title="For {{getDatatypeLabel(compositeProfiledatatypesMap[node.fieldDT])}}" ng-show="binding.bindingFrom == 'field'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                    <span title="For {{getDatatypeLabel(compositeProfiledatatypesMap[node.componentDT])}}" ng-show="binding.bindingFrom == 'component'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                    <!--<span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'message'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>-->
                     </span>
                 </div>
-                <!--<a ng-click="editModalBindingForMsg(node)" class="point">
+
+            </div>
+        </td>
+        <td ng-class="{'emptyCol':node.type!=='field' && node.type!=='component'}" style="text-align:center">
+            <div ng-show="node.type==='field' || node.type==='component'">
+                <div ng-repeat="sev in findingSingleElement(node)">
+                   
+                    <span ng-show="sev" class="badge label-white">
+                        <span ng-class="{'label-message-icon' : sev.from == 'message', 'label-field-icon' : sev.from == 'segment', 'label-component-icon' : sev.from == 'field', 'label-sub-component-icon' : sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                        <span>{{sev.value}}</span>
+                        <!--<span title="Edit SingleElement" ng-show="sev.from == 'message'" ng-click="openDialogForEditSev(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                        <span title="Add SingleElement" ng-show="sev.from != 'message'" ng-click="confirmDatatypeSingleElementDuplicated(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                        <span title="Delete SingleElement" ng-show="sev.from == 'message'" ng-click="deleteSev(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>-->
+                    </span>
+                    <!--<a ng-show="!sev" class="point" ng-click="openDialogForEditSev(node)">
                     <span><i class="fa fa-plus fa-fw"></i></span>
                 </a>-->
+                </div>
+
+                
             </div>
         </td>
 
@@ -372,11 +404,20 @@
         </td>
 
 
-        <td class="col-md-1" ng-style="commentWidth">
-            <a ng-click="seeText(node)" class="point" tooltip-html="node.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-                <i class="fa fa-eye"></i>
-            </a>
-
+        <td style="text-align:center">
+            <div ng-repeat="comment in findingComments(node)">
+                    <span class="badge label-white">
+                        <span ng-class="{'label-message-icon' : comment.from == 'compositeProfile', 'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-click="editCommentDlg(node, comment, true, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <!--<span title="For {{getSegmentLabel(segmentsMap[node.segment])}}" ng-show="comment.from == 'segment'" ng-click="editCommentDlg(node, comment, true, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.fieldDT])}}" ng-show="comment.from == 'field'" ng-click="editCommentDlg(node, comment, true, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="For {{getDatatypeLabel(datatypesMap[node.componentDT])}}" ng-show="comment.from == 'component'" ng-click="editCommentDlg(node, comment, true, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                        <span title="Delete This Comments" ng-show="comment.from == 'message'" ng-click="deleteComment(comment)"><i class="fa fa-times fa-fw edit-icon"></i></span>-->
+                    </span>
+            </div>
+            <!--<a ng-click="editCommentDlg(node, null, false, 'message')" class="point">
+                <span><i class="fa fa-plus fa-fw"></i></span>
+            </a>-->
         </td>
 
 

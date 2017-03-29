@@ -23,16 +23,32 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             var index = node.path.indexOf(".");
             var path = node.path.substr(index + 1);
             if (!node.valueSetBindings || node.valueSetBindings.length <= 0) {
-                result = _.filter(node.oldValueSetBindings, function(binding) { return binding.location == path; });
-                for (var i = 0; i < result.length; i++) {
-                    result[i].bindingFrom = 'segment';
+                if (node.from === "message") {
+                    result = _.filter(node.oldValueSetBindings, function(binding) { return binding.location == path; });
+                    for (var i = 0; i < result.length; i++) {
+                        result[i].bindingFrom = 'message';
+                    }
+                } else if (node.from === "segment") {
+                    result = _.filter(node.oldValueSetBindings, function(binding) { return binding.location == path; });
+                    for (var i = 0; i < result.length; i++) {
+                        result[i].bindingFrom = 'segment';
+                    }
                 }
 
+
             } else {
-                result = _.filter(node.valueSetBindings, function(binding) { return binding.location == path; });
-                for (var i = 0; i < result.length; i++) {
-                    result[i].bindingFrom = 'segment';
+                if (node.from === "message") {
+                    result = _.filter(node.valueSetBindings, function(binding) { return binding.location == path; });
+                    for (var i = 0; i < result.length; i++) {
+                        result[i].bindingFrom = 'message';
+                    }
+                } else if (node.from === "segment") {
+                    result = _.filter(node.valueSetBindings, function(binding) { return binding.location == path; });
+                    for (var i = 0; i < result.length; i++) {
+                        result[i].bindingFrom = 'segment';
+                    }
                 }
+
             }
 
             if (result && result.length > 0) {
@@ -47,7 +63,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
     $scope.isAvailableForValueSet = function(node) {
 
-        if (node && node.attributes.oldDatatype) {
+        if (node && (node.type === "field" || node.type === "component")) {
             var currentDT = $rootScope.datatypesMap[node.attributes.oldDatatype.id];
 
             if (currentDT && _.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT) {
@@ -58,6 +74,121 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
 
         return false;
+    };
+
+    $scope.findingSingleElement = function(node) {
+        var result = null;
+
+        if (node && (node.type === "field" || node.type === "component")) {
+            var index = node.path.indexOf(".");
+            var path = node.path.substr(index + 1);
+            if (!node.singleElementValues || node.singleElementValues.length <= 0) {
+                if (node.from === "message") {
+                    result = _.filter(node.oldSingleElementValues, function(binding) { return binding.location == path; });
+                    if (result)
+                        result.from = 'message';
+                }
+            } else if (node.from === "segment") {
+                result = _.find(node.oldSingleElementValues, function(binding) { return binding.location == path; });
+                if (result)
+                    result.from = 'segment';
+
+            }
+
+
+        } else {
+            if (node.from === "message") {
+                result = _.find(node.singleElementValues, function(binding) { return binding.location == path; });
+                if (result)
+                    result.from = 'message';
+
+            } else if (node.from === "segment") {
+                result = _.find(node.singleElementValues, function(binding) { return binding.location == path; });
+                if (result)
+                    result.from = 'segment';
+
+
+            }
+
+        }
+
+        if (result) {
+            return result;
+        }
+
+        return result;
+    };
+    $scope.findingComments = function(node) {
+        var result = [];
+
+        if (node) {
+            var index = node.path.indexOf(".");
+            var path = node.path.substr(index + 1);
+            if (!node.comments || node.comments.length <= 0) {
+                if (node.from === "message") {
+                    result = _.filter(node.oldComments, function(binding) { return binding.location == path; });
+                    for (var i = 0; i < result.length; i++) {
+                        result[i].from = 'message';
+                    }
+                } else if (node.from === "segment") {
+                    result = _.filter(node.oldComments, function(binding) { return binding.location == path; });
+                    for (var i = 0; i < result.length; i++) {
+                        result[i].from = 'segment';
+                    }
+                }
+
+
+            } else {
+                if (node.from === "message") {
+                    result = _.filter(node.comments, function(binding) { return binding.location == path; });
+                    for (var i = 0; i < result.length; i++) {
+                        result[i].from = 'message';
+                    }
+                } else if (node.from === "segment") {
+                    result = _.filter(node.comments, function(binding) { return binding.location == path; });
+                    for (var i = 0; i < result.length; i++) {
+                        result[i].from = 'segment';
+                    }
+                }
+
+            }
+
+            if (result && result.length > 0) {
+                return result;
+            }
+
+
+        }
+
+        return result;
+    };
+    $scope.editCommentDlg = function(node, comment, disabled, type) {
+        var modalInstance = $modal.open({
+            templateUrl: 'EditComment.html',
+            controller: 'EditCommentCtrlInPc',
+            backdrop: true,
+            keyboard: true,
+            windowClass: 'input-text-modal-window',
+            backdropClick: false,
+            resolve: {
+                currentNode: function() {
+                    return node;
+                },
+                currentComment: function() {
+                    return comment;
+                },
+                disabled: function() {
+                    return disabled;
+                },
+                type: function() {
+                    return type;
+                }
+            }
+        });
+
+        modalInstance.result.then(function() {
+            $scope.setDirty();
+        });
     };
     $scope.editModalBindingForMsg = function(node) {
         var modalInstance = $modal.open({
@@ -76,6 +207,58 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             console.log(node);
             $scope.setDirty();
         });
+    };
+    $scope.addSev = function(node) {
+        var sev = {};
+        var index = node.path.indexOf(".");
+        sev.location = node.path.substr(index + 1);
+        sev.value = '';
+        sev.name = node.name;
+        console.log(sev);
+        node.singleElementValues = sev;
+        $scope.setDirty();
+    };
+
+    $scope.openDialogForEditSev = function(node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'EditSingleElement.html',
+            controller: 'EditSingleElementCtrlInPc',
+            backdrop: true,
+            keyboard: true,
+            windowClass: 'input-text-modal-window',
+            backdropClick: false,
+            resolve: {
+                currentNode: function() {
+                    return node;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(value) {
+            console.log(value);
+            $scope.addSev(node);
+            // node.singleElementValues = angular.copy(node.oldSingleElementValues);
+            node.singleElementValues.value = value;
+            $scope.initSev(node);
+            $scope.setDirty();
+        });
+    };
+    $scope.hasChildren = function(node) {
+        if (node && node != null) {
+            if (node.type === 'field' || node.type === 'component') {
+                if (node.attributes.datatype) {
+                    return $rootScope.datatypesMap[node.attributes.datatype.id] && $rootScope.datatypesMap[node.attributes.datatype.id].components && $rootScope.datatypesMap[node.attributes.datatype.id].components.length > 0;
+
+                } else {
+                return $rootScope.datatypesMap[node.attributes.oldDatatype.id] && $rootScope.datatypesMap[node.attributes.oldDatatype.id].components && $rootScope.datatypesMap[node.attributes.oldDatatype.id].components.length > 0;
+
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+
     };
     $scope.updatePosition = function() {
         console.log($rootScope.profileComponent);
@@ -171,11 +354,27 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         });
         // });
     };
+    $scope.initSev = function(node) {
+        if (node.singleElementValues && node.singleElementValues.value !== null && node.singleElementValues.location !== null) {
+            node.sev = node.singleElementValues;
+        } else {
+            node.sev = node.oldSingleElementValues;
+        }
+    };
+    $scope.cancelSev = function(node) {
+        node.singleElementValues = null;
+        $scope.initSev(node);
+    };
     $scope.cancelBinding = function(node) {
         node.valueSetBindings = null;
         $scope.setDirty();
 
-    }
+    };
+    $scope.cancelComments = function(node) {
+        node.comments = null;
+        $scope.setDirty();
+
+    };
     $scope.initUsage = function(node) {
         if (node.attributes.usage) {
             node.usage = node.attributes.usage;
@@ -328,10 +527,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         $scope.setDirty();
     };
 
-    $scope.cancelComment = function(field) {
-        field.attributes.comment = field.attributes.oldComment;
-        $scope.setDirty();
-    };
+
     $scope.cancelRef = function(field) {
         field.attributes.ref = field.attributes.oldRef;
         $scope.setDirty();
@@ -344,10 +540,10 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         if (field.datatype && field.datatype !== "Others") {
             $scope.DTselected = true;
             $scope.editableDT = '';
-            
+
             if (JSON.parse(field.datatype).id === field.attributes.oldDatatype.id) {
                 field.attributes.datatype = null;
-                field.datatype= field.attributes.oldDatatype;
+                field.datatype = field.attributes.oldDatatype;
             } else {
                 field.attributes.datatype = JSON.parse(field.datatype);
                 field.attributes.datatype = {};
@@ -355,10 +551,10 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 field.attributes.datatype.id = JSON.parse(field.datatype).id;
                 field.attributes.datatype.label = JSON.parse(field.datatype).label;
                 field.attributes.datatype.name = JSON.parse(field.datatype).name;
-                field.datatype=field.attributes.datatype;
-                
+                field.datatype = field.attributes.datatype;
+
             }
-            
+
 
             $scope.setDirty();
             if ($scope.profileComponentParams)
@@ -458,7 +654,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             console.log("===");
             console.log(attr);
             console.log(field);
-            field.datatype=attr.datatype;
+            field.datatype = attr.datatype;
             $scope.setDirty();
             $scope.editableDT = '';
             if ($scope.profileComponentParams) {
@@ -673,6 +869,37 @@ angular.module('igl').controller('addComponentsCtrl',
             }
             return result;
         };
+        $scope.findingComments = function(node) {
+            var result = [];
+
+            if (node) {
+                var index = node.path.indexOf(".");
+                var path = node.path.substr(index + 1);
+                result = _.filter(node.parentComments, function(binding) { return binding.location == path; });
+                for (var i = 0; i < result.length; i++) {
+                    result[i].from = 'segment';
+                }
+
+                if (result && result.length > 0) {
+                    return result;
+                }
+            }
+            return result;
+        };
+        $scope.findingSingleElement = function(node) {
+            var result = null;
+
+            if (node && (node.type === "field" || node.type === "component")) {
+                var index = node.path.indexOf(".");
+                var path = node.path.substr(index + 1);
+                result = _.find(node.parentSingleElementValues, function(binding) { return binding.location == path; });
+                if (result) {
+                    result.from = 'segment';
+                    return result;
+                }
+            }
+            return result;
+        };
 
 
         $scope.MsgProfileComponentParams = new ngTreetableParams({
@@ -686,27 +913,47 @@ angular.module('igl').controller('addComponentsCtrl',
 
                                     parent.children[i].parent = parent.parent + '.' + parent.position;
                                     parent.children[i].parentValueSetBindings = parent.parentValueSetBindings;
+                                    parent.children[i].parentComments = parent.parentComments;
+                                    parent.children[i].parentSingleElementValues = parent.parentSingleElementValues;
+
                                     if (parent.children[i].type === 'segmentRef') {
 
                                         parent.children[i].children = segmentsMap[parent.children[i].ref.id].fields;
+                                        parent.children[i].from = "message";
+
 
                                     }
                                 } else if (parent.type === 'message') {
                                     parent.children[i].parent = parent.structID;
                                     parent.children[i].parentValueSetBindings = parent.valueSetBindings;
+                                    parent.children[i].parentComments = parent.comments;
+                                    parent.children[i].parentSingleElementValues = parent.singleElementValues;
+
                                     if (parent.children[i].type === 'segmentRef') {
                                         parent.children[i].children = segmentsMap[parent.children[i].ref.id].fields;
+                                        parent.children[i].from = "message";
+
                                     }
                                 } else if (parent.type === 'segmentRef') {
                                     parent.children[i].parent = parent.parent + '.' + parent.position;
                                     parent.children[i].children = datatypesMap[parent.children[i].datatype.id].components;
                                     parent.children[i].parentValueSetBindings = parent.parentValueSetBindings;
+                                    parent.children[i].parentComments = parent.parentComments;
+                                    parent.children[i].parentSingleElementValues = parent.parentSingleElementValues;
+
+                                    parent.children[i].from = "message";
+
 
                                 } else if (parent.type === 'field' || parent.type === 'component') {
 
                                     parent.children[i].parent = parent.parent + '.' + parent.position;
                                     parent.children[i].children = datatypesMap[parent.children[i].datatype.id].components;
                                     parent.children[i].parentValueSetBindings = parent.parentValueSetBindings;
+                                    parent.children[i].parentComments = parent.parentComments;
+                                    parent.children[i].parentSingleElementValues = parent.parentSingleElementValues;
+
+                                    parent.children[i].from = "message";
+
 
                                 }
 
@@ -741,6 +988,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     type: pc.type,
                     path: pc.parent + '.' + pc.position,
                     itemId: pc.id,
+                    from: "message",
                     attributes: {
                         oldRef: {
                             id: $rootScope.segmentsMap[pc.ref.id].id,
@@ -775,6 +1023,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     type: pc.type,
                     path: pc.parent + '.' + pc.position,
                     itemId: pc.id,
+                    from: "message",
                     attributes: {
                         oldUsage: pc.usage,
                         usage: null,
@@ -798,6 +1047,10 @@ angular.module('igl').controller('addComponentsCtrl',
                         pathExp: parent.label + '.' + pc.position,
                         itemId: pc.id,
                         parentValueSetBindings: pc.parentValueSetBindings,
+                        parentComments: pc.parentComments,
+                        parentSingleElementValues: pc.parentSingleElementValues,
+
+                        from: "segment",
                         // oldValueSetBindings: $scope.findingBindings(pc),
                         attributes: {
                             oldDatatype: pc.datatype,
@@ -828,8 +1081,10 @@ angular.module('igl').controller('addComponentsCtrl',
                         type: pc.type,
                         path: parent.parent + '.' + parent.position + '.' + pc.position,
                         itemId: pc.id,
+                        from: "message",
                         parentValueSetBindings: pc.parentValueSetBindings,
-
+                        parentComments: pc.parentComments,
+                        parentSingleElementValues: pc.parentSingleElementValues,
                         attributes: {
                             oldDatatype: pc.datatype,
                             oldTables: pc.tables,
@@ -861,7 +1116,10 @@ angular.module('igl').controller('addComponentsCtrl',
                     type: pc.type,
                     path: parent.parent + '.' + parent.position + '.' + pc.position,
                     parentValueSetBindings: pc.parentValueSetBindings,
+                    parentSingleElementValues: pc.parentSingleElementValues,
+                    parentComments: pc.parentComments,
                     itemId: pc.id,
+                    from: parent.from,
                     attributes: {
                         oldDatatype: pc.datatype,
                         oldTables: pc.tables,
@@ -895,6 +1153,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     type: pc.type,
                     path: $rootScope.segmentsMap[pc.id].label,
                     pathExp: $rootScope.segmentsMap[pc.id].label,
+                    from: "segment",
                     itemId: pc.id,
                     attributes: {
                         ref: {
@@ -934,6 +1193,8 @@ angular.module('igl').controller('addComponentsCtrl',
             console.log("newPc");
             console.log(newPc);
             newPc.oldValueSetBindings = $scope.findingBindings(newPc);
+            newPc.oldSingleElementValues = $scope.findingSingleElement(newPc);
+            newPc.oldComments = $scope.findingComments(newPc);
             $scope.selectedPC.push(newPc);
         };
 
@@ -946,10 +1207,19 @@ angular.module('igl').controller('addComponentsCtrl',
                                 if (parent.type === "segment") {
                                     parent.fields[i].parent = parent.label;
                                     parent.fields[i].parentValueSetBindings = parent.valueSetBindings;
+                                    parent.fields[i].parentSingleElementValues = parent.singleElementValues;
+                                    parent.fields[i].parentComments = parent.comments;
+
+                                    parent.fields[i].from = "segment";
                                 }
                                 if (parent.type === "field" || parent.type === "component") {
                                     parent.fields[i].parent = parent.parent + '.' + parent.position;
                                     parent.fields[i].parentValueSetBindings = parent.parentValueSetBindings;
+                                    parent.fields[i].parentSingleElementValues = parent.parentSingleElementValues;
+                                    parent.fields[i].parentComments = parent.parentComments;
+
+                                    parent.fields[i].from = "segment";
+
                                 }
                                 if (parent.fields[i].datatype) {
                                     parent.fields[i].fields = datatypesMap[parent.fields[i].datatype.id].components;
@@ -1026,6 +1296,64 @@ angular.module('igl').controller('addComponentsCtrl',
             $modalInstance.dismiss('cancel');
         };
     });
+angular.module('igl').controller('EditSingleElementCtrlInPc', function($scope, $rootScope, $modalInstance, userInfoService, currentNode) {
+    $scope.currentNode = currentNode;
+
+    $scope.sevVale = '';
+    if (currentNode.singleElementValues && currentNode.singleElementValues.value !== null && currentNode.singleElementValues.location !== null) {
+        $scope.sevVale = currentNode.singleElementValues.value;
+
+    } else if (currentNode.oldSingleElementValues && currentNode.oldSingleElementValues.value !== null && currentNode.oldSingleElementValues.location !== null) {
+        $scope.sevVale = currentNode.oldSingleElementValues.value;
+
+    }
+
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        $modalInstance.close($scope.sevVale);
+    };
+});
+angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootScope, $modalInstance, userInfoService, currentNode, currentComment, disabled, type) {
+    $scope.currentNode = currentNode;
+    $scope.currentComment = currentComment;
+    var currentPath = null;
+    var index = currentNode.path.indexOf(".");
+    currentPath = currentNode.path.substr(index + 1);
+
+
+    $scope.disabled = disabled;
+    $scope.title = '';
+
+
+    $scope.title = 'Comment of ' + $scope.currentNode.path;
+
+    $scope.descriptionText = '';
+
+    if ($scope.currentComment) $scope.descriptionText = $scope.currentComment.description;
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        if ($scope.currentComment) {
+            $scope.currentComment.description = $scope.descriptionText;
+            $scope.currentComment.lastUpdatedDate = new Date();
+        } else {
+            var newComment = {};
+            newComment.description = $scope.descriptionText;
+            newComment.location = currentPath;
+            newComment.lastUpdatedDate = new Date();
+            currentNode.comments.push(newComment);
+        }
+
+        $modalInstance.close($scope.currentNode);
+    };
+});
 
 
 
@@ -1033,14 +1361,10 @@ angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $mod
     $scope.changed = false;
     console.log(currentNode);
     $scope.currentNode = currentNode;
-    // var pathArray = [];
-    // if (currentNode.path) pathArray = currentNode.path.split('.');
+    $scope.currentNode.locationPath = currentNode.path;
+
     var positionPath = '';
-    // for (var i in pathArray) {
-    //     var position = pathArray[i].split('[')[0];
-    //     positionPath = positionPath + '.' + position;
-    // }
-    // if(positionPath != '') positionPath = positionPath.substr(1);
+
     var index = currentNode.path.indexOf(".");
     positionPath = currentNode.path.substr(index + 1);
     if (!currentNode.valueSetBindings) {

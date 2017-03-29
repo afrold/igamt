@@ -22,6 +22,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "compositeProfileStructure")
 public class CompositeProfileStructure {
 
+  public CompositeProfileStructure() {
+    this.type = Constant.COMPOSITEPROFILESTRUCTURE;
+  }
+
   @Id
   private String id;
   private String name;
@@ -30,6 +34,7 @@ public class CompositeProfileStructure {
   private String coreProfileId;
   private Date dateUpdated;
   private List<ApplyInfo> profileComponentsInfo;
+  private String type;
 
   public String getId() {
     return id;
@@ -92,6 +97,15 @@ public class CompositeProfileStructure {
 
   public void addProfileComponent(ApplyInfo pc) {
     profileComponentsInfo.add(pc);
+  }
+
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 
   public List<String> getProfileComponentIds() {

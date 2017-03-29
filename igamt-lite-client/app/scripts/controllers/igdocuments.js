@@ -1557,7 +1557,7 @@ angular.module('igl')
 
                     $rootScope.originalPcLib = $rootScope.igdocument.profile.profileComponentLibrary;
                     //$rootScope.profileComponentLib = angular.copy($rootScope.igdocument.profile.profileComponentLibrary);
-                    $rootScope.currentData = $rootScope.profileComponentLib;
+                    $rootScope.currentData = $rootScope.profileComponent;
                     //$rootScope.processMessageTree($rootScope.message);
                     $rootScope.tableWidth = null;
                     $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
@@ -1697,6 +1697,7 @@ angular.module('igl')
         console.log($rootScope.compositeProfile);
         console.log($rootScope.messages.children);
         console.log($rootScope.profileComponents);
+        $rootScope.currentData= $rootScope.compositeProfileStructure;
 
         $rootScope.compositeProfile.coreMessageMetaData = {
             name: $rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].name,

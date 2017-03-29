@@ -1,4 +1,4 @@
-angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http, CompositeProfileService) {
+angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http,$modal, CompositeProfileService) {
 
 
 
@@ -98,8 +98,35 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
             $scope.compositeMessageParams.refresh();
         }
     };
+    $scope.editCommentDlg = function(node, comment, disabled, type) {
+        var modalInstance = $modal.open({
+            templateUrl: 'EditComment.html',
+            controller: 'EditCommentCtrlInPc',
+            backdrop: true,
+            keyboard: true,
+            windowClass: 'input-text-modal-window',
+            backdropClick: false,
+            resolve: {
+                currentNode: function() {
+                    return node;
+                },
+                currentComment: function() {
+                    return comment;
+                },
+                disabled: function() {
+                    return disabled;
+                },
+                type: function() {
+                    return type;
+                }
+            }
+        });
 
+        modalInstance.result.then(function() {
 
+        });
+
+    };
 
     $scope.isAvailableForValueSet = function(node) {
 
@@ -128,13 +155,66 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
 
         return false;
     };
+    $scope.findingComments = function(node) {
+        var result = [];
+        if (node && $rootScope.compositeProfile) {
+            result = _.filter($rootScope.compositeProfile.comments, function(comment) {
+                return comment.location == $rootScope.refinePath(node.path);
+            });
+            for (var i = 0; i < result.length; i++) {
+                result[i].from = 'compositeProfile';
+                result[i].index = i + 1;
+            }
+
+            if (node.segment) {
+                var parentSeg = $rootScope.compositeProfile.segmentsMap[node.segment];
+                var subResult = _.filter(parentSeg.comments, function(comment) {
+                    return comment.location == node.segmentPath;
+                });
+                for (var i = 0; i < subResult.length; i++) {
+                    subResult[i].from = 'segment';
+                    subResult[i].index = i + 1;
+                }
+                result = result.concat(subResult);
+            }
+
+            if (node.fieldDT) {
+                var parentDT = $rootScope.compositeProfile.datatypesMap[node.fieldDT];
+                var subPath = node.segmentPath.substr(node.segmentPath.indexOf('.') + 1);
+                var subSubResult = _.filter(parentDT.comments, function(comment) {
+                    return comment.location == subPath;
+                });
+                for (var i = 0; i < subSubResult.length; i++) {
+                    subSubResult[i].from = 'field';
+                    subSubResult[i].index = i + 1;
+                }
+                result = result.concat(subSubResult);
+            }
+
+            if (node.componentDT) {
+                var parentDT = $rootScope.compositeProfile.datatypesMap[node.componentDT];
+                var subPath = node.segmentPath.substr(node.segmentPath.split('.', 2).join('.').length + 1);
+                var subSubSubResult = _.filter(parentDT.comments, function(comment) {
+                    return comment.location == subPath;
+                });
+                for (var i = 0; i < subSubSubResult.length; i++) {
+                    subSubSubResult[i].from = 'component';
+                    subSubSubResult[i].index = i + 1;
+                }
+                result = result.concat(subSubSubResult);
+            }
+        }
+
+        return result;
+    };
+
 
     $scope.findingBindings = function(node) {
         var result = [];
 
         if (node && $rootScope.compositeProfile) {
             result = _.filter($rootScope.compositeProfile.valueSetBindings, function(binding) {
-                
+
                 return binding.location == $rootScope.refinePath(node.path);
             });
             for (var i = 0; i < result.length; i++) {
@@ -185,6 +265,65 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
                 }
             }
         }
+
+        return result;
+    };
+    $scope.findingSingleElement = function(node) {
+        var result = [];
+
+        if (node && $rootScope.compositeProfile) {
+            result = _.filter($rootScope.compositeProfile.singleElementValues, function(binding) {
+                return binding.location == $rootScope.refinePath(node.path);
+            });
+            for (var i = 0; i < result.length; i++) {
+                result[i].from = 'message';
+            }
+            if (result && result.length > 0) {
+
+                return result;
+            }
+
+            if (node.segment) {
+                var parentSeg = $rootScope.compositeProfile.segmentsMap[node.segment];
+                result = _.filter(parentSeg.singleElementValues, function(binding) {
+                    return binding.location == node.segmentPath;
+                });
+                for (var i = 0; i < result.length; i++) {
+                    result[i].from = 'segment';
+                }
+            }
+
+            if (result && result.length > 0) {
+                return result;
+            }
+
+            if (node.fieldDT) {
+                var parentDT = $rootScope.compositeProfile.datatypesMap[node.fieldDT];
+                var subPath = node.segmentPath.substr(node.segmentPath.indexOf('.') + 1);
+                result = _.filter(parentDT.singleElementValues, function(binding) {
+                    return binding.location == subPath;
+                });
+                for (var i = 0; i < result.length; i++) {
+                    result[i].from = 'field';
+                }
+            }
+
+            if (result && result.length > 0) {
+                return result;
+            }
+
+            if (node.componentDT) {
+                var parentDT = $rootScope.compositeProfile.datatypesMap[node.componentDT];
+                var subPath = node.segmentPath.substr(node.segmentPath.split('.', 2).join('.').length + 1);
+                result = _.filter(parentDT.singleElementValues, function(binding) {
+                    return binding.location == subPath;
+                });
+                for (var i = 0; i < result.length; i++) {
+                    result[i].from = 'component';
+                }
+            }
+        }
+
 
         return result;
     };

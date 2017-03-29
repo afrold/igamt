@@ -13,7 +13,7 @@ public class ProfileComponent
   private static final long serialVersionUID = 1L;
 
   public ProfileComponent() {
-
+    this.type = Constant.ProfileComponent;
   }
 
   @Id
@@ -24,6 +24,7 @@ public class ProfileComponent
   private Date dateUpdated;
   private List<String> compositeProfileStructureList;
   private List<SubProfileComponent> children = new ArrayList<SubProfileComponent>();
+  private String type;
 
 
 
@@ -121,6 +122,15 @@ public class ProfileComponent
     this.children.addAll(children);
   }
 
+
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
 
   @Override
   public int compareTo(ProfileComponent o) {

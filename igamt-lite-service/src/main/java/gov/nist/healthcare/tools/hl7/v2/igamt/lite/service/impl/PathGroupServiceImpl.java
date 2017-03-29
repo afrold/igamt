@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PathGroup;
@@ -26,6 +27,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SingleElementValue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentComparator;
@@ -65,6 +67,8 @@ public class PathGroupServiceImpl implements PathGroupService {
     for (ProfileComponent p : pcs) {
       for (SubProfileComponent sub : p.getChildren()) {
         List<ValueSetBinding> toRemove = new ArrayList<>();
+        List<Comment> commentToRemove = new ArrayList<>();
+
         if (!sub.getPath().startsWith(coreMessage.getStructID())) {
 
         } else {
@@ -80,6 +84,36 @@ public class PathGroupServiceImpl implements PathGroupService {
             coreMessage.getValueSetBindings().addAll(sub.getValueSetBindings());
 
 
+          }
+          if (sub.getComments() != null) {
+            for (Comment v : sub.getComments()) {
+              for (Comment vsb : coreMessage.getComments()) {
+                if (v.getLocation().equals(vsb.getLocation())) {
+                  commentToRemove.add(vsb);
+                }
+              }
+            }
+            coreMessage.getComments().removeAll(commentToRemove);
+            coreMessage.getComments().addAll(sub.getComments());
+
+
+          }
+
+
+          if (sub.getSingleElementValues() != null
+              && sub.getSingleElementValues().getName() != null) {
+            boolean sevExist = false;
+            for (SingleElementValue sev : coreMessage.getSingleElementValues()) {
+              if (sev.getLocation().equals(sub.getSingleElementValues().getLocation())) {
+                sevExist = true;
+                sev.setValue(sub.getSingleElementValues().getValue());
+
+              }
+
+            }
+            if (!sevExist) {
+              coreMessage.getSingleElementValues().add(sub.getSingleElementValues());
+            }
           }
 
         }
@@ -130,6 +164,33 @@ public class PathGroupServiceImpl implements PathGroupService {
           seg.getValueSetBindings().addAll(subPc.getValueSetBindings());
 
 
+        }
+        List<Comment> commentToRemove = new ArrayList<>();
+        if (subPc.getComments() != null) {
+          for (Comment v : subPc.getComments()) {
+            for (Comment vsb : seg.getComments()) {
+              if (v.getLocation().equals(vsb.getLocation())) {
+                commentToRemove.add(vsb);
+              }
+            }
+          }
+          seg.getComments().removeAll(commentToRemove);
+          seg.getComments().addAll(subPc.getComments());
+
+
+        }
+        if (subPc.getSingleElementValues() != null
+            && subPc.getSingleElementValues().getLocation() != null) {
+          boolean sevExist = false;
+          for (SingleElementValue sev : seg.getSingleElementValues()) {
+            if (sev.getLocation().equals(subPc.getSingleElementValues().getLocation())) {
+              sevExist = true;
+              sev.setValue(subPc.getSingleElementValues().getValue());
+            }
+          }
+          if (!sevExist) {
+            seg.getSingleElementValues().add(subPc.getSingleElementValues());
+          }
         }
         String p = path + "." + segRef.getPosition();
         if (segRef.getRef().getLabel().equals(segLabel)) {

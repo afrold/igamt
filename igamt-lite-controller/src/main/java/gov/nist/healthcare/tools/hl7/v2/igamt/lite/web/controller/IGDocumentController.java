@@ -40,10 +40,13 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeMessage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeMessages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
@@ -87,6 +90,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeMessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
@@ -170,6 +174,8 @@ public class IGDocumentController extends CommonController {
   private ProfileComponentLibraryService profileComponentLibraryService;
   @Autowired
   private CompositeMessageService compositeMessageService;
+  @Autowired
+  private CompositeProfileStructureService compositeProfileStructureService;
   @Autowired
   private DatatypeLibraryService datatypeLibraryService;
 
@@ -328,7 +334,9 @@ public class IGDocumentController extends CommonController {
       throws IGDocumentNotFoundException, UserAccountNotFoundException, IGDocumentException {
     try {
       log.info("Clone IGDocument with id=" + id);
-
+      HashMap<String, String> messageIdChangeMap = new HashMap<String, String>();
+      HashMap<String, String> profileComponentIdChangeMap = new HashMap<String, String>();
+      HashMap<String, String> compositeProfileIdChangeMap = new HashMap<String, String>();
       HashMap<String, String> segmentIdChangeMap = new HashMap<String, String>();
       HashMap<String, String> datatypeIdChangeMap = new HashMap<String, String>();
       HashMap<String, String> tableIdChangeMap = new HashMap<String, String>();
@@ -340,17 +348,17 @@ public class IGDocumentController extends CommonController {
       IGDocument igDocument = this.findIGDocument(id);
 
       for (Message m : igDocument.getProfile().getMessages().getChildren()) {
+        String oldMsgId = m.getId();
         m.setId(null);
+
         if (m.getScope() == SCOPE.PRELOADED) {
           m.setScope(SCOPE.USER);
           m.setStatus(STATUS.UNPUBLISHED);
         }
         messageService.save(m);
+        messageIdChangeMap.put(oldMsgId, m.getId());
       }
-      for (CompositeMessage cm : igDocument.getProfile().getCompositeMessages().getChildren()) {
-        cm.setId(null);
-        compositeMessageService.save(cm);
-      }
+
 
       DatatypeLibrary datatypeLibrary = igDocument.getProfile().getDatatypeLibrary();
       SegmentLibrary segmentLibrary = igDocument.getProfile().getSegmentLibrary();
@@ -380,12 +388,46 @@ public class IGDocumentController extends CommonController {
           String oldPCId = null;
           ProfileComponent pc = profilecomponents.get(i);
           ProfileComponentLink pcL = profileComponentLibrary.findOne(pc.getId()).clone();
+          oldPCId = pc.getId();
           pc.setId(null);
           profileComponentService.save(pc);
           pcL.setId(pc.getId());
           clonedProfileComponentLibrary.addProfileComponent(pcL);
+          if (oldPCId != null) {
+            profileComponentIdChangeMap.put(oldPCId, pc.getId());
+          }
 
         }
+      }
+      for (CompositeProfileStructure cp : igDocument.getProfile().getCompositeProfiles()
+          .getChildren()) {
+        String oldCpId = cp.getId();
+        cp.setId(null);
+        String msgId = cp.getCoreProfileId();
+        cp.setCoreProfileId(messageIdChangeMap.get(msgId));
+        for (ApplyInfo info : cp.getProfileComponentsInfo()) {
+          String pcId = info.getId();
+          info.setId(profileComponentIdChangeMap.get(pcId));
+        }
+        compositeProfileStructureService.save(cp);
+        compositeProfileIdChangeMap.put(oldCpId, cp.getId());
+      }
+      for (ProfileComponent pc : profilecomponents) {
+        List<String> newIds = new ArrayList<>();
+        for (String cpId : pc.getCompositeProfileStructureList()) {
+          newIds.add(compositeProfileIdChangeMap.get(cpId));
+        }
+        pc.setCompositeProfileStructureList(newIds);
+
+      }
+      profileComponentService.saveAll(profilecomponents);
+      for (Message m : igDocument.getProfile().getMessages().getChildren()) {
+        List<String> newIds = new ArrayList<>();
+        for (String cpId : m.getCompositeProfileStructureList()) {
+          newIds.add(compositeProfileIdChangeMap.get(cpId));
+        }
+        m.setCompositeProfileStructureList(newIds);
+        messageService.save(m);
       }
 
       List<Datatype> datatypes = datatypeLibraryService.findDatatypesById(datatypeLibrary.getId());
@@ -637,7 +679,7 @@ public class IGDocumentController extends CommonController {
         deleteDatatypeLibrary(d.getProfile().getDatatypeLibrary());
         deleteProfileComponentLibrary(d.getProfile().getProfileComponentLibrary());
         deleteConformanceProfiles(d.getProfile().getMessages());
-        deleteCompositeMessages(d.getProfile().getCompositeMessages());
+        deleteCompositeProfileStructure(d.getProfile().getCompositeProfiles());
         igDocumentService.delete(id);
         return new ResponseMessage(ResponseMessage.Type.success, "igDocumentDeletedSuccess", null);
       } else {
@@ -724,6 +766,15 @@ public class IGDocumentController extends CommonController {
       for (CompositeMessage m : messages.getChildren()) {
         if (m != null)
           compositeMessageService.delete(m.getId());
+      }
+    }
+  }
+
+  private void deleteCompositeProfileStructure(CompositeProfiles cps) {
+    if (cps != null && cps.getChildren() != null) {
+      for (CompositeProfileStructure cp : cps.getChildren()) {
+        if (cp != null)
+          compositeProfileStructureService.delete(cp.getId());
       }
     }
   }

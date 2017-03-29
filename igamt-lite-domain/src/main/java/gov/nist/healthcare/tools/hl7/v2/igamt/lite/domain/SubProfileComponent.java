@@ -25,6 +25,12 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   private String name;
   private List<ValueSetBinding> oldValueSetBindings = new ArrayList<ValueSetBinding>();
   private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
+  private SingleElementValue oldSingleElementValues = new SingleElementValue();
+  private SingleElementValue singleElementValues = new SingleElementValue();
+  private List<Comment> oldComments = new ArrayList<Comment>();
+  private List<Comment> comments = new ArrayList<Comment>();
+
+  private String from;
 
 
   public String getId() {
@@ -102,6 +108,49 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
     this.valueSetBindings = valueSetBindings;
+  }
+
+
+
+  public SingleElementValue getOldSingleElementValues() {
+    return oldSingleElementValues;
+  }
+
+  public void setOldSingleElementValues(SingleElementValue oldSingleElementValues) {
+    this.oldSingleElementValues = oldSingleElementValues;
+  }
+
+  public SingleElementValue getSingleElementValues() {
+    return singleElementValues;
+  }
+
+  public void setSingleElementValues(SingleElementValue singleElementValues) {
+    this.singleElementValues = singleElementValues;
+  }
+
+
+  public List<Comment> getOldComments() {
+    return oldComments;
+  }
+
+  public void setOldComments(List<Comment> oldComments) {
+    this.oldComments = oldComments;
+  }
+
+  public List<Comment> getComments() {
+    return comments;
+  }
+
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
+  }
+
+  public String getFrom() {
+    return from;
+  }
+
+  public void setFrom(String from) {
+    this.from = from;
   }
 
   @Override

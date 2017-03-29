@@ -55,6 +55,17 @@
                                 <i class="fa fa-table fa-fw " aria-hidden="true "></i> Profile Component Definition
                             </tab-heading>
                             <div style="margin-top: 20px ">
+                                <div class="pull-left">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span> From Message
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span> From Segment
+                                        </li>
+
+                                    </ul>
+                                </div>
                                 <div class="col-md-12 ">
                                     <div class="pull-left " style="margin-right:20px ">
                                         <button type="button " class="btn btn-raised btn-info btn-xs " style="padding-top:10px " ng-click="addPComponents() "><i class="fa fa-plus "></i> Add Items </button>
@@ -74,6 +85,8 @@
                                                 <th class="col-md-2 col-fixed-350" rowspan="2">Data Type
                                                 </th>
                                                 <th class="col-md-1 col-fixed-330" rowspan="2">Value Set
+                                                </th>
+                                                <th class="col-md-1 col-fixed-330" rowspan="2">Single Element
                                                 </th>
                                                 <th class="col-md-1" ng-style="predWidthx" rowspan="2">Predicate
                                                 </th>
@@ -198,45 +211,43 @@
                                                 </td>
 
 
-                                                <td class="col-md-1 col-fixed-330 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
-                                                </td>
-                                                <!--<td class="col-md-1 col-fixed-330" ng-if="node.type==='field' || node.type==='component'">
-
-                                                    <div ng-if="node.attributes.tables && node.attributes.tables.length!==0 ">
-                                                        <a class="point" ng-repeat="table in node.attributes.tables">
-                                                            <span ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}</span>
-                                                        </a>
-                                                        <a ng-click="editVSModal(node)" class="point">
-                                                            <span><i class="fa fa-pencil fa-fw"></i></span>
-                                                        </a>
-
-                                                    </div>
-                                                    <div ng-if="!node.attributes.tables || node.attributes.tables.length===0 ">
-                                                        <a ng-click="editVSModal(node)" class="point">
-                                                            <span><i class="fa fa-plus fa-fw"></i></span>
-                                                        </a>
-                                                    </div>
-                                                    <a ng-click="cancelTables(node)" ng-show="node.attributes.tables"><i class="fa fa-remove fa-fw"></i></a>
-
+                                                <!--<td class="col-md-1 col-fixed-330 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
                                                 </td>-->
+
                                                 <td ng-class="{'emptyCol':!isAvailableForValueSet(node),'input-change':(node.valueSetBindings && node.valueSetBindings.length>0)}" style="text-align:center">
+
                                                     <div ng-show="isAvailableForValueSet(node)">
                                                         <div ng-repeat="binding in findingBindings(node)">
-                                                            <span class="badge" ng-class="{'label-MAIN' : !binding.bindingFrom, 'label-CHILD' : binding.bindingFrom == 'segment', 'label-SUBCHILD' : binding.bindingFrom == 'component'}">
-                                                                <span title="For {{getValueSetContext(node)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                                                            <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'segment'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw"></i></span>
+                                                            <span class="badge label-white">
+                                                                <span ng-class="{'label-message-icon' : binding.bindingFrom == 'message', 'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                                                            <span title="For {{getValueSetContext(node)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                                                             </span>
                                                         </div>
-                                                        <a  class="point">
+                                                        <a class="point">
                                                             <span ng-click="editModalBindingForMsg(node)"><i class="fa fa-plus fa-fw"></i></span>
                                                             <a ng-click="cancelBinding(node)"><i class="fa fa-remove fa-fw"></i></a>
 
                                                         </a>
                                                     </div>
                                                 </td>
+                                                <td ng-class="{'emptyCol':hasChildren(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+                                                    <div ng-init="initSev(node)" ng-show="!hasChildren(node)">
+                                                        <div>
+
+                                                            <span ng-show="node.sev" class="badge label-white">
+                                                            <span ng-class="{'label-message-icon' : node.from == 'message', 'label-field-icon' : node.from == 'segment'}"><i class="fa fa-circle fa-fw"/></span>
+                                                            <span>{{node.sev.value}}</span>
+                                                            <span title="Edit SingleElement" ng-click="openDialogForEditSev(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                                            <span title="Cancel SingleElement" ng-click="cancelSev(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                                                            </span>
+                                                            <a ng-show="!node.sev " class="point" ng-click="openDialogForEditSev(node)">
+                                                                <span><i class="fa fa-plus fa-fw"></i></span>
+                                                            </a>
+                                                        </div>
 
 
-
+                                                    </div>
+                                                </td>
                                                 <td class="col-md-1">
                                                 </td>
                                                 <td class="col-md-1">
@@ -257,18 +268,21 @@
                                                 </td>
 
 
-                                                <td class="col-md-1" ng-style="commentWidth">
-                                                    <a ng-click="addComment(node)" class="point" tooltip-html="node.attributes.comment" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger tooltip-animation="false" tooltip-placement="left">
-                                                        <i class="fa fa-pencil fa-fw" ng-if="node.attributes.comment && node.attributes.comment !== '' && node.attributes.comment !== null "></i>
-                                                        <i class="fa fa-plus fa-fw" ng-if="!node.attributes.comment || node.attributes.comment === '' || node.attributes.comment === null"></i>
-                                                    </a>
-                                                    <a ng-click="cancelComment(node)" ng-show="node.attributes.comment && node.attributes.comment !== '' && node.attributes.comment !== null">
-                                                        <i class="fa fa-times fa-fw"></i>
+                                                <td style="text-align:center" ng-class="{'input-change':(node.comments && node.comments.length>0)}">
+                                                    <div ng-repeat="comment in findingComments(node)">
+                                                        <span class="badge label-white">
+                                                        <span ng-class="{'label-message-icon' : comment.from == 'message', 'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                                                        <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-click="editCommentDlg(node, comment, false, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                                                        </span>
+                                                    </div>
+                                                    <a  class="point">
+                                                        <span ng-click="editCommentDlg(node, null, false, 'message')"><i class="fa fa-plus fa-fw"></i></span>
+                                                        <a ng-click="cancelComments(node)"><i class="fa fa-remove fa-fw"></i></a>
+
                                                     </a>
                                                 </td>
 
                                                 <td class="col-md-1" ng-style="commentWidth">
-                                                    <!--<i ng-click="removePcEntry(node)" class="fa fa-times" aria-hidden="true"></i>-->
                                                     <button type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-click="removePcEntry(node)">
                                                         <span><i class="fa fa-times fa-fw"></i></span>
                                                     </button>
