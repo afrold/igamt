@@ -354,11 +354,11 @@ import java.util.*;
             }
             Segment segment = segmentService.findById(
                 ((SegmentRef) segmentRefOrGroup).getRef().getId());
-            for(ValueSetBinding valueSetBinding : segment.getValueSetBindings()){
-                this.removeFromUnbindedTables(valueSetBinding.getTableId());
-                if(valueSetBinding.getUsage()!=null && ExportUtil.diplayUsage(
-                    valueSetBinding.getUsage(), this.exportConfig.getValueSetsExport())) {
-                    TableLink tableLink = this.findTableLink(valueSetBinding.getTableId());
+            for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()){
+                this.removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
+                if(valueSetOrSingleCodeBinding.getUsage()!=null && ExportUtil.diplayUsage(
+                    valueSetOrSingleCodeBinding.getUsage(), this.exportConfig.getValueSetsExport())) {
+                    TableLink tableLink = this.findTableLink(valueSetOrSingleCodeBinding.getTableId());
                     if (tableLink != null) {
                         this.bindedTables.add(tableLink);
                     }
@@ -368,10 +368,10 @@ import java.util.*;
                 if(!bindedDatatypes.contains(field.getDatatype()) && ExportUtil.diplayUsage(field.getUsage(),this.exportConfig.getDatatypesExport())) {
                     bindedDatatypes.add(field.getDatatype());
                     Datatype datatype = datatypeService.findById(field.getDatatype().getId());
-                    for(ValueSetBinding valueSetBinding : datatype.getValueSetBindings()){
-                        this.removeFromUnbindedTables(valueSetBinding.getTableId());
-                        if(valueSetBinding.getUsage()!=null && ExportUtil.diplayUsage(valueSetBinding.getUsage(),this.exportConfig.getValueSetsExport())) {
-                            TableLink tableLink = this.findTableLink(valueSetBinding.getTableId());
+                    for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : datatype.getValueSetBindings()){
+                        this.removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
+                        if(valueSetOrSingleCodeBinding.getUsage()!=null && ExportUtil.diplayUsage(valueSetOrSingleCodeBinding.getUsage(),this.exportConfig.getValueSetsExport())) {
+                            TableLink tableLink = this.findTableLink(valueSetOrSingleCodeBinding.getTableId());
                             if(tableLink!=null) {
                                 this.bindedTables.add(tableLink);
                             }
