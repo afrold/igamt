@@ -1,9 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -31,7 +28,7 @@ public class SerializableDateTimeDatatype extends SerializableDatatype {
         String headerLevel, String title, Datatype datatype, String defPreText, String defPostText,
         String usageNote, List<SerializableConstraint> constraints,
         Map<Component, Datatype> componentDatatypeMap,
-        Map<Component, List<ValueSetBinding>> componentValueSetBindingsMap, List<Table> tables, Map<Component, String> componentTextMap, Boolean showConfLength,
+        Map<Component, List<ValueSetOrSingleCodeBinding>> componentValueSetBindingsMap, List<Table> tables, Map<Component, String> componentTextMap, Boolean showConfLength,
         Map<String, String> dateValues) {
         super(id, prefix, position, headerLevel, title, datatype, defPreText, defPostText,
             usageNote, constraints, componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap,showConfLength);
