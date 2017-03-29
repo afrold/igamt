@@ -29,7 +29,7 @@ public class SerializableSegment extends SerializableSection {
     private String defPreText,defPostText,name,label,description,comment;
     private List<SerializableConstraint> constraints;
     private Map<Field,Datatype> fieldDatatypeMap;
-    private Map<Field,List<ValueSetBinding>> fieldValueSetBindingsMap;
+    private Map<Field,List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap;
     private List<Table> tables;
     private Map<CCValue,Table> coConstraintValueTableMap;
     private Boolean showConfLength;
@@ -38,7 +38,7 @@ public class SerializableSegment extends SerializableSection {
     public SerializableSegment(String id, String prefix, String position, String headerLevel, String title,
         Segment segment, String name, String label, String description, String comment, String defPreText, String defPostText,
         List<SerializableConstraint> constraints, Map<Field, Datatype> fieldDatatypeMap,
-        Map<Field, List<ValueSetBinding>> fieldValueSetBindingsMap, List<Table> tables,
+        Map<Field, List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap, List<Table> tables,
         Map<CCValue, Table> coConstraintValueTableMap, Boolean showConfLength) {
         super(id, prefix, position, headerLevel, title);
         this.segment = segment;
@@ -123,12 +123,12 @@ public class SerializableSegment extends SerializableSection {
                         }
                 }
                 if(this.fieldValueSetBindingsMap.containsKey(field)){
-                    List<ValueSetBinding> valueSetBindings = this.fieldValueSetBindingsMap.get(field);
+                    List<ValueSetOrSingleCodeBinding> valueSetBindings = this.fieldValueSetBindingsMap.get(field);
                     if(valueSetBindings!=null && !valueSetBindings.isEmpty()){
                         List<String> bindingIdentifierList = new ArrayList<>();
-                        for(ValueSetBinding valueSetBinding : valueSetBindings){
-                            if(valueSetBinding!=null && valueSetBinding.getTableId()!=null&&!valueSetBinding.getTableId().isEmpty()) {
-                                Table table = super.findTable(tables, valueSetBinding.getTableId());
+                        for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetBindings){
+                            if(valueSetOrSingleCodeBinding!=null && valueSetOrSingleCodeBinding.getTableId()!=null&&!valueSetOrSingleCodeBinding.getTableId().isEmpty()) {
+                                Table table = super.findTable(tables, valueSetOrSingleCodeBinding.getTableId());
                                 bindingIdentifierList.add(table.getBindingIdentifier());
                             }
                         }
