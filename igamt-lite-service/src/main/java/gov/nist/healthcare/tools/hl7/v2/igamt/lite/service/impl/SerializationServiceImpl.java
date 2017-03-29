@@ -5,7 +5,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -674,21 +674,22 @@ import java.util.*;
         currentConformanceStatementPosition = 1;
         currentPredicatePosition = 1;
         for(SerializableSection serializableSegmentSection : segments){
-            if(serializableSegmentSection.getSerializableSectionList().size()>0) {
+            if(serializableSegmentSection != null && serializableSegmentSection.getSerializableSectionList().size()>0) {
                 for (SerializableSection serializableSection : serializableSegmentSection
                     .getSerializableSectionList()) {
-                    if (serializableSection instanceof SerializableSegment) {
+                    if (serializableSection != null && serializableSection instanceof SerializableSegment) {
                         SerializableSegment serializableSegment = (SerializableSegment) serializableSection;
-                        if (serializableSegment.getConstraints().size() > 0) {
+                        if (serializableSegment != null && serializableSegment.getConstraints().size() > 0) {
                             List<SerializableConstraint> segmentConformanceStatements = new ArrayList<>();
                             List<SerializableConstraint> segmentPredicates = new ArrayList<>();
                             for (SerializableConstraint serializableConstraint : serializableSegment
                                 .getConstraints()) {
-                                if (serializableConstraint.getConstraint() instanceof Predicate) {
-                                    segmentPredicates.add(serializableConstraint);
-                                } else if (serializableConstraint
-                                    .getConstraint() instanceof ConformanceStatement) {
-                                    segmentConformanceStatements.add(serializableConstraint);
+                                if(serializableConstraint != null) {
+                                    if (serializableConstraint.getConstraint() instanceof Predicate) {
+                                        segmentPredicates.add(serializableConstraint);
+                                    } else if (serializableConstraint.getConstraint() instanceof ConformanceStatement) {
+                                        segmentConformanceStatements.add(serializableConstraint);
+                                    }
                                 }
                             }
                             if (segmentConformanceStatements.size() > 0) {

@@ -103,10 +103,10 @@ public abstract class SerializeMessageOrCompositeProfile {
         SegmentLink segmentLink = segmentRef.getRef();
         if(segmentLink != null) {
             Segment segment = segmentService.findById(segmentLink.getId());
-            if(usageConfig != null) {
+            if(usageConfig != null && segment != null) {
                 List<Field> filteredFieldList = new ArrayList<>();
                 for (Field field : segment.getFields()) {
-                    if (ExportUtil.diplayUsage(field.getUsage(), usageConfig)) {
+                    if (field != null && ExportUtil.diplayUsage(field.getUsage(), usageConfig)) {
                         filteredFieldList.add(field);
                     }
                 }
