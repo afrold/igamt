@@ -245,8 +245,6 @@ public class Bootstrap implements InitializingBean {
 		 updateInitAndCreateBindingAndCommentsVSForSegment();
 		 updateInitAndCreateCommentsForMessage();
 //		 fixUserDatatypesScope();
-//		 fixValueSetNameAndDescription();
-//
 		updateDMofSegment();
 		updateProfileForMissingDTs();
 	}
