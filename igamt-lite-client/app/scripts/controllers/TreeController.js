@@ -2417,26 +2417,21 @@ angular.module('igl').controller('addMAsterInLibrary',
         $scope.newDts = [];
         $scope.checkedExt = true;
         $scope.DTlinksToAdd=[];
+        $scope.miniUsingVersionMap={};
         $scope.NocheckedExt = true;
         $scope.masterLib = [];
         $scope.masterLib = masterLib;
         $scope.selectedDatatypes = [];
         $scope.selectMasterDtLib = function(masLib) {
             console.log(masLib);
-            DatatypeLibrarySvc.getDatatypesByLibrary(masLib.id).then(function(datatypes) {
+            DatatypeLibrarySvc.getPublishedDatatypesByLibrary(masLib.id,$rootScope.igdocument.profile.metaData.hl7Version).then(function(datatypes) {
                 console.log(datatypes);
                     $scope.scope=$rootScope.datatypeLibrary.scope;
-                    $scope.masterDatatypes = _.where(datatypes, {status: "PUBLISHED" });
+                    $scope.masterDatatypes = datatypes
 
-                // if($rootScope.igdocument){
-                //     var temp=[];
-                //     angular.forEach($scope.masterDatatypes, function(datatype){
-                //         if($scope.containsVersion(datatype.hl7versions, $rootScope.igdocument.profile.hl7Version)){
-                //             temp.push(datatype);
-                //         }
-                //     });
-                //     $scope.masterDatatypes=temp;
-                // }
+                    angular.forEach($scope.masterDatatypes,function (dt) {
+                        dt.hl7Version=$rootScope.igdocument.profile.metaData.hl7Version;
+                    })
                 console.log($scope.masterDatatypes);
             });
         };
@@ -2503,40 +2498,38 @@ angular.module('igl').controller('addMAsterInLibrary',
             }
             return false;
         }
-        $scope.checkExt = function(datatype) {
-            $scope.checkedExt = true;
-            $scope.NocheckedExt = true;
-            if (datatype.ext === "") {
-                $scope.NocheckedExt = false;
-                return $scope.NocheckedExt;
-            }
-            for (var i = 0; i < $rootScope.datatypes.length; i++) {
-                if ($rootScope.datatypes[i].name === datatype.name && $rootScope.datatypes[i].ext === datatype.ext) {
-                    $scope.checkedExt = false;
-                    return $scope.checkedExt;
-                }
-            }
-            console.log($scope.selectedDatatypes.indexOf(datatype));
-            for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
-                if ($scope.selectedDatatypes.indexOf(datatype) !== i) {
-                    if ($scope.selectedDatatypes[i].name === datatype.name && $scope.selectedDatatypes[i].ext === datatype.ext) {
-                        $scope.checkedExt = false;
-                        return $scope.checkedExt;
-                    }
-                }
 
+
+
+        $scope.checkImported = function(datatype,version) {
+
+            var objectMap=datatype.id+"VV"+version;
+
+            if($rootScope.usingVersionMap[objectMap]||$scope.miniUsingVersionMap[objectMap]){
+                console.log($rootScope.usingVersionMap[objectMap])
+                return true;
+            }else{
+                return false;
             }
 
-            return $scope.checkedExt;
         };
+
+
         $scope.addDtFlv = function(datatype) {
 
             $scope.DatatypeToAdd = angular.copy(datatype);
             // $scope.DatatypeToAdd.publicationVersion=0;
-            $scope.DatatypeToAdd.versionID=datatype.id;
+            $scope.DatatypeToAdd.parentVersion=datatype.id;
+            var objectMap=datatype.id+"VV"+datatype.hl7Version;
+
+            $scope.miniUsingVersionMap[objectMap]=true;
+            $rootScope.usingVersionMap[objectMap]=true;
+
             $scope.DatatypeToAdd.valueSetBindings=[];
                 DatatypeService.getMergedMaster($scope.DatatypeToAdd).then(function(standard) {
                     $scope.DatatypeToAdd=standard;
+                    $scope.DatatypeToAdd.parentVersion=datatype.id;
+
 
                     $scope.DatatypeToAdd.participants = [];
                     $scope.DatatypeToAdd.id = new ObjectId().toString();
@@ -2624,71 +2617,6 @@ angular.module('igl').controller('addMAsterInLibrary',
             }
         };
         $scope.ok = function() {
-            // $scope.processList().then(function(){
-            //
-            // });
-            //
-            //     DatatypeLibrarySvc.addChildren(datatypeLibrary.id, newLinks).then(function(link) {
-            //         for (var i = 0; i < newLinks.length; i++) {
-            //             datatypeLibrary.children.splice(0, 0, newLinks[i]);
-            //         }
-            //         for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
-            //             $rootScope.datatypes.splice(0, 0, $scope.selectedDatatypes[i]);
-            //         }
-            //         for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
-            //             $rootScope.datatypesMap[$scope.selectedDatatypes[i].id] = $scope.selectedDatatypes[i];
-            //         }
-            //         var usedDtId1 = _.map($rootScope.usedDtLink, function(num, key) {
-            //             return num.id;
-            //         });
-            //
-            //         DatatypeService.get(usedDtId1).then(function(datatypes) {
-            //             for (var j = 0; j < datatypes.length; j++) {
-            //                 if (!$rootScope.datatypesMap[datatypes[j].id]) {
-            //
-            //                     $rootScope.datatypesMap[datatypes[j].id] = datatypes[j];
-            //                     $rootScope.datatypes.push(datatypes[j]);
-            //                     //$rootScope.getDerived(datatypes[j]);
-            //                 }
-            //             }
-            //
-            //             var usedVsId = _.map($rootScope.usedVsLink, function(num, key) {
-            //                 return num.id;
-            //             });
-            //             console.log("$rootScope.usedVsLink");
-            //
-            //             console.log($rootScope.usedVsLink);
-            //             var newTablesLink = _.difference($rootScope.usedVsLink, tableLibrary.children);
-            //             console.log(newTablesLink);
-            //
-            //             TableLibrarySvc.addChildren(tableLibrary.id, newTablesLink).then(function() {
-            //                 tableLibrary.children = _.union(newTablesLink, tableLibrary.children);
-            //
-            //                 TableService.get(usedVsId).then(function(tables) {
-            //                     for (var j = 0; j < tables.length; j++) {
-            //                         if (!$rootScope.tablesMap[tables[j].id]) {
-            //                             $rootScope.tablesMap[tables[j].id] = tables[j];
-            //                             $rootScope.tables.push(tables[j]);
-            //
-            //                         }
-            //                     }
-            //                     $modalInstance.close(datatypes);
-            //                 });
-            //
-            //             });
-            //         });
-            //         $rootScope.msg().text = "datatypeAdded";
-            //         $rootScope.msg().type = "success";
-            //         $rootScope.msg().show = true;
-            //     });
-            //
-            // }, function(error) {
-            //     $rootScope.saving = false;
-            //     $rootScope.msg().text = error.data.text;
-            //     $rootScope.msg().type = error.data.type;
-            //     $rootScope.msg().show = true;
-            // });
-            //
             $scope.processList();
         };
 
@@ -2723,6 +2651,15 @@ angular.module('igl').controller('addMAsterInLibrary',
                             if(!$rootScope.datatypesMap[datatype.id]){
                                 $rootScope.datatypesMap[datatype.id]=datatype;
                                 $rootScope.datatypes.push(datatype);
+                                if(datatype.parentVersion){
+                                    console.log("DEBUUUG");
+
+                                    var objectMap=datatype.parentVersion+"VV"+datatype.hl7Version;
+                                    $rootScope.usingVersionMap[objectMap]=datatype;
+                                    console.log($rootScope.usingVersionMap[objectMap]);
+
+
+                                }
 
 
                             }

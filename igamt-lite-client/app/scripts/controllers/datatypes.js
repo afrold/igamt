@@ -261,19 +261,34 @@ angular.module('igl')
             $rootScope.clearChanges();
             $scope.cleanState();
 
-            DatatypeService.getOne(id).then(function(result) {
-                $scope.dtChanged = false;
-                $scope.vsTemplate = false;
-                $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), [], [], [], []);
-                $scope.hideEvolution = false;
-                $rootScope.clearChanges();
-                $scope.cleanState();
-                $scope.loadingSelection = false;
-                if ($scope.dynamicDt_Evolution) {
-                    $scope.dynamicDt_Evolution.refresh();
-                }
+            DatatypeService.getOne($rootScope.datatype.parentVersion).then(function(sourceParent) {
+
+
+                DatatypeService.getOne(id).then(function (result) {
+
+
+                    $scope.dtChanged = false;
+                    $scope.vsTemplate = false;
+                    $scope.dataList = CompareService.cmpDatatype(JSON.stringify(sourceParent), JSON.stringify(result), [], [], [], []);
+                    $scope.hideEvolution = false;
+                    $rootScope.clearChanges();
+                    $scope.cleanState();
+                    $scope.loadingSelection = false;
+                    if ($scope.dynamicDt_Evolution) {
+                        $scope.dynamicDt_Evolution.refresh();
+                    }
+                });
+
+
             });
+
+
         };
+
+
+
+
+
 
         $scope.editableComp = '';
         $scope.editComponent = function(component) {

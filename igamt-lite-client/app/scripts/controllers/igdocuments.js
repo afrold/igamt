@@ -591,6 +591,7 @@ angular.module('igl')
     };
 
     $scope.loadDatatypes = function() {
+        $rootScope.usingVersionMap={};
         var delay = $q.defer();
         $rootScope.igdocument.profile.datatypeLibrary.type = "datatypes";
         DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.igdocument.profile.datatypeLibrary.id).then(function(children) {
@@ -599,6 +600,21 @@ angular.module('igl')
             angular.forEach(children, function(child) {
                 this[child.id] = child;
             }, $rootScope.datatypesMap);
+
+            angular.forEach($rootScope.datatypes, function(dt){
+                if(dt.parentVersion){
+
+                    var objectMap=dt.parentVersion+"VV"+dt.hl7Version;
+                    $rootScope.usingVersionMap[objectMap]=dt;
+                    console.log($rootScope.usingVersionMap[objectMap]);
+                    
+
+                }
+            });
+            console.log("TESTING MAP");
+            console.log($rootScope.usingVersionMap);
+
+
             delay.resolve(true);
         }, function(error) {
             $rootScope.msg().text = "DatatypesLoadFailed";

@@ -33,6 +33,7 @@ import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
@@ -84,6 +85,29 @@ public class DatatypeLibraryController extends CommonController {
   public List<Datatype> getDatatypesByLibrary(@PathVariable("dtLibId") String dtLibId) {
     log.info("Fetching datatypeByLibrary..." + dtLibId);
     List<Datatype> result = datatypeLibraryService.findDatatypesById(dtLibId);
+    return result;
+  }
+
+  @RequestMapping(value = "/{dtLibId}/publishedDts", method = RequestMethod.POST,
+      produces = "application/json")
+  public List<Datatype> getPublishedDatatypesByLibraryPublished(
+      @PathVariable("dtLibId") String dtLibId, @RequestBody String version) {
+
+    log.info("Fetching datatypeByLibrary..." + dtLibId);
+
+    List<Datatype> temp = datatypeLibraryService.findDatatypesById(dtLibId);
+    List<Datatype> result = new ArrayList<Datatype>();
+
+    for (Datatype dt : temp) {
+      if (!dt.getHl7versions().isEmpty()) {
+        if (dt.getHl7versions().contains(version) && !dt.getScope().toString().equals("INTERMASTER")
+            && dt.getStatus().equals(STATUS.PUBLISHED)) {
+
+          result.add(dt);
+        }
+      }
+
+    }
     return result;
   }
 

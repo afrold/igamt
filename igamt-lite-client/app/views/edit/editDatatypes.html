@@ -17,8 +17,8 @@
             <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
         </div>
         <div ng-show="!loadingSelection">
-            <!--<div ng-if="datatype.versionID&&versionAndUseMap[datatype.versionID].deprecated" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>-->
-            <div ng-if="datatype.versionID&&versionAndUseMap[datatype.versionID].deprecated" class="alert alert-warning">New version of this datatype is available </div>
+            <!--<div ng-if="datatype.parentVersion&&versionAndUseMap[datatype.parentVersion].deprecated" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>-->
+            <div ng-if="datatype.parentVersion&&versionAndUseMap[datatype.parentVersion].deprecated" class="alert alert-warning">New version of this datatype is available </div>
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="container">
                     <div class="page-header" style="margin-bottom: 20px">
@@ -58,6 +58,8 @@
                 </div>
 
                 <div class="static_info">
+         <pre> parentVersion : {{datatype.parentVersion}} </pre>
+
 
                     <!--<display-label of="datatype" desc="true"></display-label>-->
                     <!--<display-label of="datatype" desc="false"></display-label>-->
@@ -652,7 +654,7 @@
                             </div>
 
                         </tab>
-                        <tab ng-click="setDeltaToF(); getAllVersionsOfDT(datatype.versionID)" ng-if="datatype.versionID&&versionAndUseMap[datatype.versionID]&&datatypeLibrary!=null">
+                        <tab ng-click="setDeltaToF(); getAllVersionsOfDT(datatype.parentVersion)" ng-if="datatype.parentVersion&&versionAndUseMap[datatype.parentVersion]">
                             <tab-heading>
                                 <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
                             </tab-heading>
@@ -675,29 +677,24 @@
                                     <tbody>
                                         <tr ng-repeat="inf in availbleVersionOfDt" ng-if="inf.publicationDate">
                                             <td class="col-md-3">
-                                                <input ng-if="inf.id !==datatype.id" type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id);" />
+                                                <input ng-if="inf.id !==datatype.parentVersion" type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id);" />
 
-                                                <input type="radio" name="inforadio1" value="datatype.id" ng-model="datatype.versionID" disabled ng-if="inf.id ===datatype.versionID" />
+                                                <input type="radio" name="inforadio1" value="datatype.id" ng-model="datatype.parentVersion" disabled ng-if="inf.id ===datatype.parentVersion" />
 
-                                                <span class="badge" ng-class="{'selected2' :checked===inf.id}" style="color:black !important" ng-if="inf.id !==datatype.versionID">v{{inf.publicationVersion}}</span>
+                                                <span class="badge" ng-class="{'selected2' :checked===inf.id}" style="color:black !important" ng-if="inf.id !==datatype.parentVersion">v{{inf.publicationVersion}}</span>
                                                 <span class="badge selected1" style="color:black !important" ng-if="inf.id ===datatype.id">v{{inf.publicationVersion}}</span>
-                                                <span ng-if="datatype.id===inf.id" tooltip="This is the version of the current datatype"><strong>(current)</strong></span>
+                                                <span ng-if="datatype.parentVersion===inf.id" tooltip="This is the version of the current datatype"><strong>(current)</strong></span>
 
                                             </td>
                                             <td class="col-md-4">
                                                 <span>{{inf.publicationDate}}</span>
                                             </td>
                                             <td class="col-md-5">
-                                                <button title="Open" type="button" class="btn btn-raised btn-raised btn-xs btn-default" ng-if="datatypesMap[inf.id]&&inf.id!==datatype.versionID" ng-click="redirectDT(datatypesMap[inf.id])"> <span><i class="fa fa-eye fa-fw"></i></span>View</button>
+                                                <button datatype.parentVersion!==inf.id ng-if="references.length>0" ng-click="upgradeOrDowngrade(inf.id,datatype);" type="button" class="btn btn-raised btn-raised btn-xs btn-success">
+                                                <i class="fa fa-refresh fa-fw"></i>
 
-
-                                                <button title="Add" ng-if="!datatypesMap[inf.id]" ng-click="addOneDatatypeById(inf.id)" type="button" class="btn btn-raised btn-raised btn-xs btn-info"> <span><i class="fa fa-plus fa-fw" tooltip="Import this data type "></i></span>Add</button>
-                                                <button ng-if="datatypesMap[inf.id]&&inf.id!==datatype.id && references.length>0" ng-click="confirmSwitch(datatype,datatypesMap[inf.id]);" type="button" class="btn btn-raised btn-raised btn-xs btn-success"><span>
-                                    <i class="fa fa-refresh fa-fw"></i>
-
-                                        <span ng-if="inf.publicationVersion>datatype.publicationVersion">Upgrade To<span>
-                                        <span ng-if="inf.publicationVersion<datatype.publicationVersion">Downgrade To<span>
-                                    </span> </button>
+                                                 <span ng-if="inf.publicationVersion>datatype.publicationVersion">Upgrade To</span><span ng-if="inf.publicationVersion<datatype.publicationVersion">Downgrade To</span>
+                                                </button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -714,7 +711,7 @@
                                             <th class="col-md-1" colspan="2" style="width:4%">Length</th>
                                             <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
                                             <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
-                                            <th class="col-md-1" rowspan="2" style="width:16%" ng-if="igdocument">Value Set</th>
+                                            <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
                                         </tr>
                                         <tr class="tbl-header">
                                             <th class="col-md-1 col-fixed-10" style="width:2%">min</th>

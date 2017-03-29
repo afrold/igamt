@@ -3960,23 +3960,38 @@
 
                                                 </thead>
                                                 <tbody>
-                                                    <tr ng-repeat="datatype in masterDatatypes | orderBy: 'name' | filter:search:strict">
+                                                    <tr ng-repeat="datatype in masterDatatypes | orderBy: 'name' | filter:search:strict" ng-if="datatype.scope!=='INTERMASTER'">
 
-                                                        <td class="col-md-3">{{datatype.label}} <span class="badge">v{{versionAndUseMap[datatype.id].publicationVersion}}</span></td>
                                                         <td class="col-md-7">
+                                                            <display-label of="datatype"></display-label>
+
+
+
+                                                        </td>
+                                                        <td class="col-md-3">
                                                             <!--<ul ng-if="igdocument">-->
                                                                 <!--<li ng-repeat="vr in datatype.hl7versions">-->
                                                                     <!--{{vr}}-->
                                                                 <!--</li>-->
                                                             <!--</ul>-->
-                                                            <div>
-                                                                <p ng-repeat="vr in datatype.hl7versions">
-                                                                    <input type="radio" ng-model="datatype.hl7Version" ng-value="vr"></input>{{vr}}
-                                                                </p>
-                                                            </div>
+
+                                                                <!--<span ng-repeat="vr in datatype.hl7versions">-->
+                                                                    <!--<md-radio-button ng-model="datatype.hl7Version" ng-value="vr" ng-disabled="checkExt(datatype,vr)">{{vr}}</md-radio-button>-->
+                                                                    <!--<br/>-->
+                                                                <!--</span>-->
+
+                                                            <md-radio-group ng-model="datatype.hl7Version">
+
+                                                                <md-radio-button ng-repeat="vr in datatype.hl7versions" ng-value="vr" class="md-primary" ng-disabled="checkImported(datatype,vr)">{{vr}} {{checkImported(datatype,vr)}}</md-radio-button>
+
+                                                            </md-radio-group>
+
+
 
                                                         </td>
-                                                        <td class="col-md-2"><button class="btn btn-primary" ng-click="addDtFlv(datatype)" ng-disable="!datatype.hl7Version||datatype.hl7Version==null"><i class="fa fa-plus fa-fw"></i></a></button>
+                                                        <td class="col-md-2">
+                                                            <button class="btn btn-raised btn-primary btn-xs" type="button" ng-click="addDtFlv(datatype)" ng-disable="datatype.hl7Version=='*'"><i class="fa fa-plus fa-fw"></i>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -3995,26 +4010,19 @@
                                         <table class="table table-bordered table-stripped container">
                                             <thead>
                                                 <tr class="tbl-header">
-                                                    <th>Name</th>
-                                                    <th>Ext</th>
-                                                    <th>HL7 Version</th>
+                                                    <th>Data Type</th>
                                                     <th>Actions</th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="dt in selectedDatatypes">
-                                                    <td>{{dt.name}}<span class="badge" ng-if="versionAndUseMap[dt.id]">v{{versionAndUseMap[dt.id].publicationVersion}}</span></td>
-                                                    <td><span ng-show="!edit">{{dt.ext}}</span>
-                                                        <a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.status!=='PUBLISHED'" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
-                                                        <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext" />
-                                                        <a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
-                                                        <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
-                                                        <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>
-                                                    </td>
-                                                    <td>{{dt.hl7Version}}</td>
 
-                                                    <td><a class="pointer" ng-click="deleteDt(dt)"><i
+                                                    <td>
+                                                    <display-label of="dt" desc="true"></display-label>
+                                                    </td>
+                                                    <td><a class="pointer" ng-click="deleteDt(dt)">
+                                                        <i
                                                                                     class="fa fa-times fa-fw"></i></a></td>
                                                 </tr>
                                             </tbody>

@@ -56,6 +56,17 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
             });
     };
 
+    svc.getPublishedDatatypesByLibrary = function (dtLibId,version) {
+        console.log(version);
+        return $http.post(
+            'api/datatype-library/' + dtLibId + '/publishedDts',version)
+            .then(function (response) {
+                //					console.log("response" + JSON.stringify(response));
+                return angular.fromJson(response.data);
+            });
+    };
+
+
     svc.append = function (fromchildren, toChildren) {
         angular.foreach(fromchildren, function (child) {
             toChildren.push(child);
