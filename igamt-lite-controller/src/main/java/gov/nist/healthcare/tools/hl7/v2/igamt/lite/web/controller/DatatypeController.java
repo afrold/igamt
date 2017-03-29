@@ -392,6 +392,7 @@ public class DatatypeController extends CommonController {
           String newId = new ObjectId().toString();
           d.setHl7Version(datatype.getHl7Version());
           d.setId(newId);
+          d.setVersionID(dtTemp.getId());
           if (!d.getComponents().isEmpty()) {
             mergeComponent(d);
           }

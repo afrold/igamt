@@ -45,15 +45,6 @@ public class Datatype extends DataModelWithConstraints
 
   private String name = "";
   private List<String> hl7versions = new ArrayList<String>();
-  private String versionID = "";
-
-  public String getVersionID() {
-    return versionID;
-  }
-
-  public void setVersionID(String versionID) {
-    this.versionID = versionID;
-  }
 
   private Set<ShareParticipantPermission> shareParticipantIds =
       new HashSet<ShareParticipantPermission>();
