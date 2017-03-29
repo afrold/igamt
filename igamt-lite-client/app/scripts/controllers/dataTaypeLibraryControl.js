@@ -577,11 +577,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             });
         };
 
-        $scope.addMasterDt = function() {
+        $scope.addDatatypeTemplate = function() {
             var scopes = ['HL7STANDARD'];
                         var addDatatypeInstance = $modal.open({
-                            templateUrl: 'createMasterDt.html',
-                            controller: 'AddMasterDtCtrl',
+                            templateUrl: 'createDatatype.html',
+                            controller: 'AddDatatypeTemplate',
                             size: 'lg',
                             windowClass: 'addDatatype',
                             resolve: {
@@ -603,6 +603,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                         }).result.then(function(results) {
                         	console.log(results);
                         	$scope.submit(results);
+
+
                             });
         };
 
@@ -720,31 +722,38 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             });
 
             angular.forEach($scope.addedDatatypes, function(datatype) {
-
+                if(!$rootScope.datatypesMap[datatype.id]){
                 var newLink = {};
                 newLink = angular.fromJson({
                     id: datatype.id,
                     name: datatype.name,
                     ext: datatype.ext
                 });
+
+
                 $scope.linksForData.push(newLink);
+                }
             });
             $rootScope.datatypeLibrary.children = _.union($rootScope.datatypeLibrary.children, $scope.linksForData);
-            $rootScope.tableLibrary.children = _.union($scope.tableLibrary.children, $rootScope.linksForTables);
+            //$rootScope.tableLibrary.children = _.union($scope.tableLibrary.children, $rootScope.linksForTables);
             $rootScope.tablesMap = {};
             $rootScope.datatypesMap = {};
             $scope.addedDatatypes=[];
+
+
             DatatypeLibrarySvc.addChildren($rootScope.datatypeLibrary.id, $scope.linksForData).then(function(results) {
-                TableLibrarySvc.addChildren($rootScope.tableLibrary.id, $rootScope.linksForTables).then(function(tables) {
+                // TableLibrarySvc.addChildren($rootScope.tableLibrary.id, $rootScope.linksForTables).then(function(tables) {
                     $scope.loadDatatypes().then(function() {
+                        //
+                        // $scope.loadTables().then(function() {
+                        //
+                        // }, function() {});
 
-                        $scope.loadTables().then(function() {
 
-                        }, function() {});
                     }, function() {});
                 });
-            });
-
+            // });
+        //
         };
 
 
@@ -2939,7 +2948,7 @@ angular.module('igl').controller('AddDatatypeCtrl',
 	        };
 	    });
 
-angular.module('igl').controller('AddMasterDtCtrl',
+angular.module('igl').controller('AddDatatypeTemplate',
 	    function($scope, $rootScope, $modalInstance,datatypes, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http,datatypeLibrary,tableLibrary,AllUnchanged) {
 
 	$scope.AllUnchanged=AllUnchanged;
@@ -2953,6 +2962,7 @@ angular.module('igl').controller('AddMasterDtCtrl',
     DatatypeService.findByScope("INTERMASTER").then(function(response){
         console.log("ALL intermediate");
         $scope.hl7Datatypes=response;
+
     });
     
 
@@ -2998,13 +3008,15 @@ angular.module('igl').controller('AddMasterDtCtrl',
     $scope.containsCurrentVersion=function(data){
         return data.versions.indexOf($scope.version1) !== -1;
     }
-    $scope.AddDatatypeForMaster = function(datatype) {
+    $scope.AddDatatype = function(datatype) {
             var dataToAdd = angular.copy(datatype);
-            dataToAdd.scope="MASTER";
+            dataToAdd.scope=$rootScope.datatypeLibrary.scope;
+            dataToAdd.hl7version=null;
             dataToAdd.id = new ObjectId().toString();
             dataToAdd.status = 'UNPUBLISHED';
             dataToAdd.scope = $rootScope.datatypeLibrary.scope;
             $scope.addedDatatypes.push(dataToAdd);
+
 
     };
 

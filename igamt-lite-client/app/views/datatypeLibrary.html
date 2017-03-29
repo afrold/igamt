@@ -442,61 +442,33 @@ if (self === top) {
                 </div>
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
-                        <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptions" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated">
-                          <span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}<span ng-if="versionAndUseMap[data.id].deprecated" class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span></span>
-                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}<i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
-
-                        </div>
-						<div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForPublished" ng-if="(data.status==='PUBLISHED'&&!versionAndUseMap[data.id].deprecated)&&data.scope!=='HL7STANDARD'">
-						<span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{displayVersion(data)}}<span class="version-badge">v{{versionAndUseMap[data.id].publicationVersion}}</span></span>
-                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
-                        </div>
-                               <div style="margin-top: -5px;margin-left: 0px;" ng-if="data.scope==='MASTER'">   
-                            <span class="version-badge-under" ng-repeat="version in data.hl7versions" style="margin-left:2px;">{{version}}</span>
-                            </div>
-                    </li>
-                </ol>
-                <ol ui-tree-nodes="" ng-model="tables"  data-type="tables" ng-if="datatypeLibrary.scope!=='MASTER'">
-                    <div ui-tree-handle data-nodrag ng-click="editMetadata()" context-menu="addValueSetsInTableLibrary">
-                        <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Value Sets <span class="badge">{{tables.length}}</span>
-                    </div>
-                    <li ng-repeat="table in tables |  orderBy :'name'" ui-tree-node data-type="table" ng-if="!tableCollapsed">
-                     <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)"  context-menu="ValueSetOptions" ng-if="!canCreateNewVersion(table)">
-                           <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
-                                     <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >{{getScopeLabel(table)}}{{displayVersion(table)}}</span>{{table.bindingIdentifier}}-{{table.description}}
+                        <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptions" style="margin-left:30px;" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated">
+                            <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
+                                                       <display-label of="data" desc="true"></display-label>
                             </span>
                         </div>
-
-
-                        <div ui-tree-handle data-nodrag ng-click="editTableINLIB(table); Activate(table.id)" context-menu="TableOptionsForPublished" ng-if="canCreateNewVersion(table)">
-                           <span style="font-weight:normal;" ng-class="{selected : table.id===activeModel}">
-                                     <span class="label label-icon" ng-class="{'label-HL7' : getScopeLabel(table)==='HL7',
-                                   'label-USE': getScopeLabel(table)==='USR','label-MASTER':getScopeLabel(table)==='MAS'}" >{{getScopeLabel(table)}}{{displayVersion(table)}} <span class="version-badge">v{{versionAndUseMap[table.id].publicationVersion}}</span></span> {{table.bindingIdentifier}}-{{table.description}}
+                        <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptionsForPublished" style="margin-left:30px;" ng-if="(data.status==='PUBLISHED'&&!versionAndUseMap[data.id].deprecated)&&data.scope!=='HL7STANDARD'">
+                            <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
+                                        <display-label of="data" desc="true"></display-label>
                             </span>
                         </div>
                     </li>
                 </ol>
 
-                    <div ui-tree-handle data-nodrag ng-if="datatypeLibrary.scope=='MASTER'">
+                    <div ui-tree-handle data-nodrag>
                         <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Data Types <span class="badge">{{interMediate.length}}</span>
                     </div>
-                    <ol ui-tree-nodes="" ng-model="interMediates" ng-if="datatypeLibrary.scope=='MASTER'">
+                    <ol ui-tree-nodes="" ng-model="interMediates">
   
                     <li  ng-repeat="data in interMediates |orderBy:['-scope','label']" ui-tree-node ng-if="!tableCollapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForInter">
-                          <span class="badge" style="background-color:#144d8e;"> DRV</span>
-                        
-                        
-                        
-                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}}
+                                       <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
+                                                       <display-label of="data" desc="true"></display-label>
                             </span>
-                            <div style="margin-top: -5px;margin-left: 0px;">   
-                            <span class="version-badge-under" ng-repeat="version in data.hl7versions" style="margin-left:2px;">{{version}}</span>
-                            </div>
+
                         </div>
+                    </li>
+
                     </li>
                     </ol>
             </li>

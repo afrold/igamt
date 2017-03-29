@@ -22,6 +22,16 @@ public class DataModelWithConstraints extends DataModel {
 
   protected String version;
 
+  public String getVersionID() {
+    return versionID;
+  }
+
+  public void setVersionID(String versionID) {
+    this.versionID = versionID;
+  }
+
+  protected String versionID;
+
   protected STATUS status = STATUS.UNPUBLISHED;
 
   protected Set<String> participants = new HashSet<String>();

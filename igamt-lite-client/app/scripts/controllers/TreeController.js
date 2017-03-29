@@ -613,7 +613,7 @@ angular
 
                 $scope.DataTypeOptionsForInter = [
 
-                    ['Create a Master From',
+                    ['Create a Flavor From',
                         function($itemScope) {
 
 
@@ -1097,20 +1097,19 @@ angular
                 ];
 
                 $scope.MasterDataTypeLibraryOptions = [
-                    [' Add Datatypes',
+                    [' Create Master Data Types',
                         function($itemScope) {
-                            console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                    $scope.addMasterDt();
+                                    $scope.addDatatypeTemplate();
 
 
 
                                 });
 
                             } else {
-                                $scope.addMasterDt();
+                                $scope.addDatatypeTemplate();
 
                             }
                         }
@@ -1118,29 +1117,25 @@ angular
                 ];
 
                 $scope.UserDataTypeLibraryOptions = [
-                    ['Add HL7 Datatypes',
+                    [' Create User Data Types',
                         function($itemScope) {
-                            console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
-
-                                    $scope.addDatatypeForUser("2.1");
+                                    $scope.addDatatypeTemplate();
 
 
 
                                 });
 
                             } else {
-
-                                $scope.addDatatypeForUser("2.1");
+                                $scope.addDatatypeTemplate();
 
                             }
                         }
                     ],
                     ['Add USER Datatypes',
                         function($itemScope) {
-                            console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -1160,7 +1155,6 @@ angular
                     ],
                     ['Add Master Datatypes',
                         function($itemScope) {
-                            console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -1180,7 +1174,6 @@ angular
                     ],
                     ['Add Shared Datatypes',
                         function($itemScope) {
-                            console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
                                 $rootScope.openConfirmLeaveDlg().result.then(function() {
@@ -1198,14 +1191,6 @@ angular
                             }
                         }
                     ]
-
-
-
-
-
-
-
-
                 ];
 
 
@@ -2011,31 +1996,25 @@ angular
                     });
                 };
                 $rootScope.addDatatypesFromUserLib = function() {
-                    var scopes = ['HL7STANDARD'];
 
-
-                    DatatypeLibrarySvc.getDataTypeLibraryByScope('USER').then(function(userDtLib) {
+                    DatatypeLibrarySvc.getDataTypeLibraryByScope('USER').then(function(masterLib) {
                         var dtlibs = [];
-                        angular.forEach(userDtLib, function(dtLib) {
+                        angular.forEach(masterLib, function(dtLib) {
                             if (dtLib.id !== $rootScope.datatypeLibrary.id) {
                                 dtlibs.push(dtLib);
                             }
                         });
-                        console.log(dtlibs);
-                        console.log("userDtLib");
-                        console.log(userDtLib);
 
-                        console.log("addDatatype scopes=" + scopes.length);
                         var addDatatypeInstance = $modal.open({
-                            templateUrl: 'AddUserDatatype.html',
-                            controller: 'AddDatatypeCtrlFromUserLib',
+                            templateUrl: 'AddMasterDatatypeIntoUser.html',
+                            controller: 'addMAsterInLibrary',
                             size: 'lg',
                             windowClass: 'addDatatype',
                             resolve: {
                                 hl7Version: function() {
                                     return $scope.hl7Version;
                                 },
-                                userDtLib: function() {
+                                masterLib: function() {
                                     return dtlibs;
                                 },
                                 datatypeLibrary: function() {
@@ -2446,8 +2425,9 @@ angular.module('igl').controller('addMAsterInLibrary',
             console.log(masLib);
             DatatypeLibrarySvc.getDatatypesByLibrary(masLib.id).then(function(datatypes) {
                 console.log(datatypes);
+                    $scope.scope=$rootScope.datatypeLibrary.scope;
+                    $scope.masterDatatypes = _.where(datatypes, {status: "PUBLISHED" });
 
-                $scope.masterDatatypes = _.where(datatypes, { scope: "MASTER", status: "PUBLISHED" });
                 // if($rootScope.igdocument){
                 //     var temp=[];
                 //     angular.forEach($scope.masterDatatypes, function(datatype){
@@ -2552,13 +2532,10 @@ angular.module('igl').controller('addMAsterInLibrary',
         $scope.addDtFlv = function(datatype) {
 
             $scope.DatatypeToAdd = angular.copy(datatype);
-            $scope.DatatypeToAdd.publicationVersion=0;
-            //$scope.DatatypeToAdd.valueSetBindings=[];
+            // $scope.DatatypeToAdd.publicationVersion=0;
+            $scope.DatatypeToAdd.versionID=datatype.id;
+            $scope.DatatypeToAdd.valueSetBindings=[];
                 DatatypeService.getMergedMaster($scope.DatatypeToAdd).then(function(standard) {
-                    console.log("Resut of merge")
-
-
-
                     $scope.DatatypeToAdd=standard;
 
                     $scope.DatatypeToAdd.participants = [];
@@ -2746,14 +2723,22 @@ angular.module('igl').controller('addMAsterInLibrary',
                             if(!$rootScope.datatypesMap[datatype.id]){
                                 $rootScope.datatypesMap[datatype.id]=datatype;
                                 $rootScope.datatypes.push(datatype);
+
+
                             }
                         })
                         TableLibrarySvc.addChildrenByIds(tableLibrary.id, $scope.TablesIds).then(function(result) {
+                            console.log(result);
                             angular.forEach(result, function(table){
+
                                if(!$rootScope.tablesMap[table.id]){
                                    $rootScope.tables.push(table);
                                    $rootScope.tablesMap[table.id]=table;
+
                                }
+
+
+
                             });
                         $modalInstance.close(datatypes);
 

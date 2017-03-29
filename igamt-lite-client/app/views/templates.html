@@ -3453,13 +3453,13 @@
         </div>
     </script>
 
-<script type="text/ng-template" id="createMasterDt.html">
+<script type="text/ng-template" id="createDatatype.html">
 
         <div class="modal-content">
-            <div class="modal-header modal-wide" >
+            <div class="modal-wide modal-header">
 
                 <div class="form-inline">
-                    <span class="header4" style="color:white;">Add Master Datatype</span>
+                    <span class="header4" style="color:white;">Add {{datatypeLibrary.scope}} Datatype</span>
 
                     <span class="pull-right">
                     <button class="btn btn-raised btn-default btn-xs" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
@@ -3508,7 +3508,7 @@
                                                             </ul>
                                                         </td>
                                                         <td class="widthInside">
-                                                            <i ng-click="AddDatatypeForMaster(data)" class="fa fa-plus fa-fw" style="color:blue;cursor:pointer !important"></i>
+                                                            <i ng-click="AddDatatype(data)" class="fa fa-plus fa-fw" style="color:blue;cursor:pointer !important"></i>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -4679,30 +4679,32 @@
 
 
 <script type="text/ng-template" id="label.html">
-    <span ng-if="element.scope!=='INTERMASTER'">
-    <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
-                                   'label-USE':  getScopeLabel(element)==='USR','label-MASTER':getScopeLabel(element)==='MAS','label-PRL':getScopeLabel(element)==='PRL','label-DRV':getScopeLabel(element)==='DRV'}">
+    <span ng-if="element.hl7Version!=='*'">
 
-
-        {{getScopeLabel(element)}} {{hasHl7Version(element)}}
+            <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
+         'label-USE':  getScopeLabel(element)==='USR','label-MASTER':getScopeLabel(element)==='MAS','label-PRL':getScopeLabel(element)==='PRL','label-DRV':getScopeLabel(element)==='DRV'}">
+                {{getScopeLabel(element)}} {{hasHl7Version(element)}}
 
         <span ng-if="element.publicationVersion&&element.status==='PUBLISHED'" class="version-badge">v{{element.publicationVersion}}</span>
-
-    </span>
-     {{getLabel(element)}}
-
+            </span>
+        <span>{{getLabel(element)}}</span>
         <span ng-if="description">-{{getDescriptionLabel(element)}}</span>
-
     </span>
 
 
-    <span ng-if="element.scope=='INTERMASTER'">
-              <span  class="badge" style="background-color: #0b58a2; color:white;"> {{getScopeLabel(element)}} </span>
-            {{getLabel(element)}}<span ng-if="description">-{{getDescriptionLabel(element)}}</span>
-             <br/>
-    <span class="version-badge-under" ng-repeat="version in element.hl7versions" style="margin-left:2px;">{{version}}</span>
-    </span>
+    <span ng-if="element.hl7Version=='*'">
 
+            <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
+         'label-USE':  getScopeLabel(element)==='USR','label-MASTER':getScopeLabel(element)==='MAS','label-PRL':getScopeLabel(element)==='PRL','label-DRV':getScopeLabel(element)==='DRV'}">
+                {{getScopeLabel(element)}}
+
+        <span ng-if="element.publicationVersion&&element.status==='PUBLISHED'" class="version-badge">v{{element.publicationVersion}}</span>
+            </span>
+        <span>{{getLabel(element)}}</span>
+        <span ng-if="description">-{{getDescriptionLabel(element)}}</span>
+         <br/>
+        <span class="version-badge-under" ng-repeat="version in element.hl7versions" style="margin-left:2px;">{{version}}</span>
+    </span>
 
 
 

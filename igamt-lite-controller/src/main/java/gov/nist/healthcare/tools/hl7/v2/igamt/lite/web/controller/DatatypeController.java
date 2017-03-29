@@ -355,6 +355,7 @@ public class DatatypeController extends CommonController {
   public Datatype getMergedMaster(@RequestBody Datatype datatype) throws Exception {
 
     Datatype d = mergeComponent(datatype);
+    d.setVersionID(datatype.getId());
     return d;
   }
 
@@ -380,7 +381,8 @@ public class DatatypeController extends CommonController {
       Component temp = datatype.getComponents().get(i);
       if (temp.getDatatype() != null) {
         Datatype dtTemp = datatypeService.findById(temp.getDatatype().getId());
-        if (!dtTemp.getScope().toString().equals(SCOPE.MASTER.toString())) {
+        if (!dtTemp.getScope().toString().equals(SCOPE.MASTER.toString())
+            || !dtTemp.getScope().toString().equals(SCOPE.USER.toString())) {
           System.out.println(dtTemp.getId());
           datatype.getComponents().get(i).getDatatype()
               .setId((result.getComponents().get(i).getDatatype().getId()));
@@ -390,6 +392,7 @@ public class DatatypeController extends CommonController {
           String newId = new ObjectId().toString();
           d.setHl7Version(datatype.getHl7Version());
           d.setId(newId);
+          d.setVersionID(dtTemp.getId());
           if (!d.getComponents().isEmpty()) {
             mergeComponent(d);
           }
