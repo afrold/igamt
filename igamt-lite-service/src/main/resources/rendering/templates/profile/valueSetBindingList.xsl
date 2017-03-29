@@ -10,27 +10,37 @@
             </xsl:attribute>
             <xsl:element name="col">
                 <xsl:attribute name="width">
-                    <xsl:text>20%</xsl:text>
+                    <xsl:text>16%</xsl:text>
                 </xsl:attribute>
             </xsl:element>
             <xsl:element name="col">
                 <xsl:attribute name="width">
-                    <xsl:text>20%</xsl:text>
+                    <xsl:text>16%</xsl:text>
                 </xsl:attribute>
             </xsl:element>
             <xsl:element name="col">
                 <xsl:attribute name="width">
-                    <xsl:text>20%</xsl:text>
+                    <xsl:text>16%</xsl:text>
                 </xsl:attribute>
             </xsl:element>
             <xsl:element name="col">
                 <xsl:attribute name="width">
-                    <xsl:text>20%</xsl:text>
+                    <xsl:text>16%</xsl:text>
                 </xsl:attribute>
             </xsl:element>
             <xsl:element name="col">
                 <xsl:attribute name="width">
-                    <xsl:text>20%</xsl:text>
+                    <xsl:text>16%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>16%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>16%</xsl:text>
                 </xsl:attribute>
             </xsl:element>
             <xsl:element name="thead">
@@ -53,6 +63,12 @@
                     <xsl:element name="th">
                         <xsl:text>Binding Location</xsl:text>
                     </xsl:element>
+                    <xsl:element name="th">
+                        <xsl:text>Code Value</xsl:text>
+                    </xsl:element>
+                    <xsl:element name="th">
+                        <xsl:text>Code System</xsl:text>
+                    </xsl:element>
                 </xsl:element>
             </xsl:element>
             <xsl:element name="tbody">
@@ -70,19 +86,43 @@
                         <xsl:element name="td">
                             <xsl:value-of select="@Name"/>
                         </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:value-of select="@BindingStrength"/>
-                        </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:choose>
-                                <xsl:when test="normalize-space(@BindingLocation) = ''">
+                        <xsl:choose>
+                            <xsl:when test="@Type='VS'">
+                                <xsl:element name="td">
+                                    <xsl:value-of select="@BindingStrength"/>
+                                </xsl:element>
+                                <xsl:element name="td">
+                                    <xsl:choose>
+                                        <xsl:when test="normalize-space(@BindingLocation) = ''">
+                                            <xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:value-of select="@BindingLocation"/>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:element>
+                                <xsl:element name="td">
                                     <xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:value-of select="@BindingLocation"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:element>
+                                </xsl:element>
+                                <xsl:element name="td">
+                                    <xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
+                                </xsl:element>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:element name="td">
+                                    <xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
+                                </xsl:element>
+                                <xsl:element name="td">
+                                    <xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
+                                </xsl:element>
+                                <xsl:element name="td">
+                                    <xsl:value-of select="@CodeValue"/>
+                                </xsl:element>
+                                <xsl:element name="td">
+                                    <xsl:value-of select="@CodeSystem"/>
+                                </xsl:element>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </xsl:element>
                 </xsl:for-each>
             </xsl:element>

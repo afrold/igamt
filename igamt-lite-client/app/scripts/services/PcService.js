@@ -2,14 +2,13 @@
  * Created by haffo on 3/9/16.
  */
 'use strict';
-angular.module('igl').factory('PcService', ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'userInfoService', function($rootScope, ViewSettings, ElementUtils, $http, $q, userInfoService) {
+angular.module('igl').factory('PcService', ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', 'userInfoService','orderByFilter', function($rootScope, ViewSettings, ElementUtils, $http, $q, userInfoService,orderByFilter) {
     var PcService = {
 
         create: function(pc) {
             var delay = $q.defer();
             // table.accountId = userInfoService.getAccountID();
             $http.post('api/profile-components/create', pc).then(function(response) {
-                console.log(response);
                 var saved = angular.fromJson(response.data);
                 delay.resolve(saved);
                 return saved;
@@ -21,9 +20,10 @@ angular.module('igl').factory('PcService', ['$rootScope', 'ViewSettings', 'Eleme
         getPc: function(pcId) {
             var delay = $q.defer();
             $http.get('api/profile-components/' + pcId).then(function(response) {
-                console.log("-----------------------");
-                console.log(response);
+
                 var pc = angular.fromJson(response.data);
+                
+                pc.children= orderByFilter(pc.children, 'position');
                 console.log(pc);
                 delay.resolve(pc);
             }, function(error) {

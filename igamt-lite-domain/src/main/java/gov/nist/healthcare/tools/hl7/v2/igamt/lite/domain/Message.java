@@ -12,8 +12,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Document(collection = "message")
-public class Message extends DataModelWithConstraints implements java.io.Serializable, Cloneable,
-    Comparable<Message> {
+public class Message extends DataModelWithConstraints
+    implements java.io.Serializable, Cloneable, Comparable<Message> {
 
   private static final long serialVersionUID = 1L;
 
@@ -38,34 +38,56 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
   private String structID; // Message/@StructID
 
   private String description; // Message/@Description
-  private List<String> appliedPcs;
+  private List<String> compositeProfileStructureList;
   
-  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
+  private List<ValueSetOrSingleCodeBinding> valueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
   
   private List<Comment> comments = new ArrayList<Comment>();
-  
+
   private List<SingleElementValue> singleElementValues = new ArrayList<SingleElementValue>();
 
-  public List<String> getAppliedPcs() {
-	return appliedPcs;
+
+
+  public List<String> getCompositeProfileStructureList() {
+    return compositeProfileStructureList;
   }
 
-  public void setAppliedPcs(List<String> appliedPcs) {
-	this.appliedPcs = appliedPcs;
+  public void setCompositeProfileStructureList(List<String> compositeProfileStructureList) {
+    this.compositeProfileStructureList = compositeProfileStructureList;
   }
 
-private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
+  public void addCompositeProfileStructure(String id) {
+    if (this.compositeProfileStructureList == null) {
+      this.compositeProfileStructureList = new ArrayList<>();
+    }
+    this.compositeProfileStructureList.add(id);
+  }
+
+  public void removeCompositeProfileStructure(String id) {
+    String toRemove = "";
+    for (String s : this.compositeProfileStructureList) {
+      if (s.equals(id)) {
+        toRemove = s;
+
+      }
+    }
+    this.compositeProfileStructureList.remove(toRemove);
+  }
+
+
+
+  private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
   protected Integer position = 0;
 
   protected String comment = "";
 
   protected String usageNote = "";
-  
-  protected String defPreText= "";
-  
+
+  protected String defPreText = "";
+
   protected String defPostText = "";
-  
+
 
   public String getId() {
     return id;
@@ -127,30 +149,31 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
   public void setPosition(Integer position) {
     this.position = position;
   }
-  
+
   public List<SingleElementValue> getSingleElementValues() {
-	return singleElementValues;
+    return singleElementValues;
   }
 
   public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
-	this.singleElementValues = singleElementValues;
+    this.singleElementValues = singleElementValues;
   }
 
   public void addSegmentRefOrGroup(SegmentRefOrGroup e) {
     e.setPosition(children.size() + 1);
     this.children.add(e);
   }
+
   
-  public void addValueSetBinding(ValueSetBinding vsb) {
-	valueSetBindings.add(vsb);
+  public void addValueSetBinding(ValueSetOrSingleCodeBinding vsb) {
+	 valueSetBindings.add(vsb);
   }
-  
+
   public void addComment(Comment comment) {
-	comments.add(comment);
+    comments.add(comment);
   }
-  
+
   public void addSingleElementValue(SingleElementValue sev) {
-	singleElementValues.add(sev);
+    singleElementValues.add(sev);
   }
 
   public void setChildren(List<SegmentRefOrGroup> children) {
@@ -184,26 +207,32 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     this.usageNote = usageNote;
   }
 
+  @Override
   public void addPredicate(Predicate p) {
     predicates.add(p);
   }
 
+  @Override
   public void addConformanceStatement(ConformanceStatement cs) {
     conformanceStatements.add(cs);
   }
 
+  @Override
   public List<Predicate> getPredicates() {
     return predicates;
   }
 
+  @Override
   public List<ConformanceStatement> getConformanceStatements() {
     return conformanceStatements;
   }
 
+  @Override
   public void setPredicates(List<Predicate> predicates) {
     this.predicates = predicates;
   }
 
+  @Override
   public void setConformanceStatements(List<ConformanceStatement> conformanceStatements) {
     this.conformanceStatements = conformanceStatements;
   }
@@ -245,6 +274,7 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     return null;
   }
 
+  @Override
   public Predicate findOnePredicate(String predicateId) {
     for (Predicate predicate : this.getPredicates()) {
       if (predicate.getId().equals(predicateId)) {
@@ -254,6 +284,7 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     return null;
   }
 
+  @Override
   public ConformanceStatement findOneConformanceStatement(String confId) {
     for (ConformanceStatement conf : this.getConformanceStatements()) {
       if (conf.getId().equals(confId)) {
@@ -263,11 +294,13 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     return null;
   }
 
+  @Override
   public boolean deletePredicate(String predicateId) {
     Predicate p = findOnePredicate(predicateId);
     return p != null && this.getPredicates().remove(p);
   }
 
+  @Override
   public boolean deleteConformanceStatement(String cId) {
     ConformanceStatement c = findOneConformanceStatement(cId);
     return c != null && this.getConformanceStatements().remove(c);
@@ -283,6 +316,7 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
         + predicates + ", conformanceStatements=" + conformanceStatements + "]";
   }
 
+  @Override
   public Message clone() throws CloneNotSupportedException {
     Message clonedMessage = new Message();
 
@@ -300,32 +334,33 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
         clonedMessage.addSegmentRefOrGroup(clone);
       }
     }
-    
+
     clonedMessage.setPredicates(new ArrayList<Predicate>());
     for (Predicate cp : this.predicates) {
-    	clonedMessage.addPredicate(cp.clone());
+      clonedMessage.addPredicate(cp.clone());
     }
-    
+
     clonedMessage.setConformanceStatements(new ArrayList<ConformanceStatement>());
     for (ConformanceStatement cs : this.conformanceStatements) {
-    	clonedMessage.addConformanceStatement(cs.clone());
+      clonedMessage.addConformanceStatement(cs.clone());
     }
+
     
-    clonedMessage.setValueSetBindings(new ArrayList<ValueSetBinding>());
-    for (ValueSetBinding vsb : this.valueSetBindings){
+    clonedMessage.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
+    for (ValueSetOrSingleCodeBinding vsb : this.valueSetBindings){
     	clonedMessage.addValueSetBinding(vsb);
     }
-    
+
     clonedMessage.setComments(new ArrayList<Comment>());
-    for (Comment c : this.comments){
-    	clonedMessage.addComment(c);
+    for (Comment c : this.comments) {
+      clonedMessage.addComment(c);
     }
-    
+
     clonedMessage.setSingleElementValues(new ArrayList<SingleElementValue>());
-    for (SingleElementValue sev : this.singleElementValues){
-    	clonedMessage.addSingleElementValue(sev);
+    for (SingleElementValue sev : this.singleElementValues) {
+      clonedMessage.addSingleElementValue(sev);
     }
-    
+
     clonedMessage.setId(ObjectId.get().toString());
     clonedMessage.setComment(comment);
     clonedMessage.setDescription(description);
@@ -348,9 +383,8 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     return clonedMessage;
   }
 
-  public Message clone(HashMap<String, Datatype> dtRecords,
-      HashMap<String, Segment> segmentRecords, HashMap<String, Table> tableRecords)
-      throws CloneNotSupportedException {
+  public Message clone(HashMap<String, Datatype> dtRecords, HashMap<String, Segment> segmentRecords,
+      HashMap<String, Table> tableRecords) throws CloneNotSupportedException {
     Message clonedMessage = new Message();
 
     clonedMessage.setChildren(new ArrayList<SegmentRefOrGroup>());
@@ -381,27 +415,28 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     clonedMessage.setType(type);
     clonedMessage.setPredicates(new ArrayList<Predicate>());
     for (Predicate cp : this.predicates) {
-    	clonedMessage.addPredicate(cp.clone());
+      clonedMessage.addPredicate(cp.clone());
     }
-    
+
     clonedMessage.setConformanceStatements(new ArrayList<ConformanceStatement>());
     for (ConformanceStatement cs : this.conformanceStatements) {
-    	clonedMessage.addConformanceStatement(cs.clone());
+      clonedMessage.addConformanceStatement(cs.clone());
     }
+
     
-    clonedMessage.setValueSetBindings(new ArrayList<ValueSetBinding>());
-    for (ValueSetBinding vsb : this.valueSetBindings){
+    clonedMessage.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
+    for (ValueSetOrSingleCodeBinding vsb : this.valueSetBindings){
     	clonedMessage.addValueSetBinding(vsb);
     }
-    
+
     clonedMessage.setComments(new ArrayList<Comment>());
-    for (Comment c : this.comments){
-    	clonedMessage.addComment(c);
+    for (Comment c : this.comments) {
+      clonedMessage.addComment(c);
     }
-    
+
     clonedMessage.setSingleElementValues(new ArrayList<SingleElementValue>());
-    for (SingleElementValue sev : this.singleElementValues){
-    	clonedMessage.addSingleElementValue(sev);
+    for (SingleElementValue sev : this.singleElementValues) {
+      clonedMessage.addSingleElementValue(sev);
     }
 
     return clonedMessage;
@@ -417,8 +452,8 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
   @Override
   public int compareTo(Message o) {
-	 
-    return this.position-o.getPosition();
+
+    return this.position - o.getPosition();
   }
 
   public String getMessageID() {
@@ -429,38 +464,36 @@ private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
     this.messageID = messageID;
   }
 
-public String getDefPreText() {
-	return defPreText;
-}
+  public String getDefPreText() {
+    return defPreText;
+  }
 
-public void setDefPreText(String defPreText) {
-	this.defPreText = defPreText;
-}
+  public void setDefPreText(String defPreText) {
+    this.defPreText = defPreText;
+  }
 
-public String getDefPostText() {
-	return defPostText;
-}
+  public String getDefPostText() {
+    return defPostText;
+  }
 
-public void setDefPostText(String defPostText) {
-	this.defPostText = defPostText;
-}
 
-public List<ValueSetBinding> getValueSetBindings() {
+  
+
+  public List<Comment> getComments() {
+    return comments;
+  }
+
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
+  }
+
+public List<ValueSetOrSingleCodeBinding> getValueSetBindings() {
 	return valueSetBindings;
 }
 
-public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
+public void setValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings) {
 	this.valueSetBindings = valueSetBindings;
 }
 
-public List<Comment> getComments() {
-	return comments;
-}
 
-public void setComments(List<Comment> comments) {
-	this.comments = comments;
-}
-  
-  
-  
 }

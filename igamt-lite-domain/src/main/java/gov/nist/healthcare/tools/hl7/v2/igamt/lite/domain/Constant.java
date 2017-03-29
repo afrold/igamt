@@ -21,6 +21,7 @@ public class Constant {
   private Constant() {}
 
   public final static String ProfileComponent = "profilecomponent";
+  public final static String COMPOSITEPROFILESTRUCTURE = "compositeprofilestructure";
   public final static String ProfileComponentLibrary = "profilecomponentlibrary";
   public final static String SEGMENTS = "segments";
   public final static String SEGMENTLIBRARY = "segmentlibrary";
@@ -32,6 +33,7 @@ public class Constant {
   public final static String GROUP = "group";
   public final static String MESSAGE = "message";
   public final static String COMPOSITEMESSAGE = "compositemessage";
+  public final static String COMPOSITEPROFILE = "compositeprofile";
   public final static String DATATYPES = "datatypes";
   public final static String DATATYPELIBRARY = "datatypelibrary";
   public final static String DATATYPE = "datatype";
@@ -50,6 +52,11 @@ public class Constant {
   public final static String DECISION = "decision";
   public final static String FAQ = "FAQ";
   public final static String USERGuide = "userguide";
+  
+  public final static String SINGLECODE = "singlecode";
+  public final static String VALUESET = "valueset";
+  
+  
 
 
 
@@ -75,5 +82,7 @@ public class Constant {
     IG, LIBRARY;
   }
 
-
+  public enum BindingType {
+	  singlecode, valueset
+	}
 }

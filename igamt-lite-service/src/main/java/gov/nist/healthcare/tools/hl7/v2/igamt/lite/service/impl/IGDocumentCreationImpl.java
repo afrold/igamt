@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -53,6 +52,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
@@ -269,7 +269,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 				m1.setPosition(++maxPos);
 				m1.setDateUpdated(new Date());
 				
-				for(ValueSetBinding vsb:m1.getValueSetBindings()){
+				for(ValueSetOrSingleCodeBinding vsb:m1.getValueSetBindings()){
 					Table t = tableRepository.findOne(vsb.getTableId());
 					if (t != null) {
 						addTable(t, pSource, pTarget);
@@ -314,7 +314,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// seg.getLibIds().remove(sgtsSource.getId());
 		// }
 		seg.getLibIds().add(sgtsTarget.getId());
-		for(ValueSetBinding vsb:seg.getValueSetBindings()){
+		for(ValueSetOrSingleCodeBinding vsb:seg.getValueSetBindings()){
 			Table t = tableRepository.findOne(vsb.getTableId());
 			if (t != null) {
 				addTable(t, pSource, pTarget);
@@ -380,7 +380,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// }
 
 		dt.getLibIds().add(dtsTarget.getId());
-		for(ValueSetBinding vsb:dt.getValueSetBindings()){
+		for(ValueSetOrSingleCodeBinding vsb:dt.getValueSetBindings()){
 			Table t = tableRepository.findOne(vsb.getTableId());
 			if (t != null) {
 				addTable(t, pSource, pTarget);

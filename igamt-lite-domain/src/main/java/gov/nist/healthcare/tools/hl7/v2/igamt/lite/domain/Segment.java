@@ -10,12 +10,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Document(collection = "segment")
 public class Segment extends DataModelWithConstraints
     implements java.io.Serializable, Cloneable, Comparable<Segment> {
+
 
   private static final long serialVersionUID = 1L;
 
@@ -35,13 +37,16 @@ public class Segment extends DataModelWithConstraints
 
   @Deprecated
   private DynamicMapping dynamicMapping = new DynamicMapping();
-  
+
   private DynamicMappingDefinition dynamicMappingDefinition;
-  
-  private List<ValueSetBinding> valueSetBindings = new ArrayList<ValueSetBinding>();
-  
+
+  private CoConstraintsDefinition coConstraintsDefinition;
+
+  private List<ValueSetOrSingleCodeBinding> valueSetBindings =
+      new ArrayList<ValueSetOrSingleCodeBinding>();
+
   private List<SingleElementValue> singleElementValues = new ArrayList<SingleElementValue>();
-  
+
   private List<Comment> comments = new ArrayList<Comment>();
 
   private String name;
@@ -55,7 +60,6 @@ public class Segment extends DataModelWithConstraints
   private String text2 = "";
 
   private CoConstraints coConstraints = new CoConstraints();
-
 
   public String getId() {
     return id;
@@ -92,17 +96,17 @@ public class Segment extends DataModelWithConstraints
   public void addField(Field field) {
     fields.add(field);
   }
-  
-  public void addValueSetBinding(ValueSetBinding vsb) {
-	valueSetBindings.add(vsb);
+
+  public void addValueSetBinding(ValueSetOrSingleCodeBinding vsb) {
+    valueSetBindings.add(vsb);
   }
-  
+
   public void addComment(Comment comment) {
-	comments.add(comment);
+    comments.add(comment);
   }
-  
+
   public void addSingleElementValue(SingleElementValue sev) {
-	singleElementValues.add(sev);
+    singleElementValues.add(sev);
   }
 
   public Field findOneField(String id) {
@@ -185,41 +189,41 @@ public class Segment extends DataModelWithConstraints
       throws CloneNotSupportedException {
     Segment clonedSegment = new Segment();
     clonedSegment.setComment(comment);
-    
+
     clonedSegment.setDescription(description);
 
     clonedSegment.setFields(new ArrayList<Field>());
     for (Field f : this.fields) {
       clonedSegment.addField(f.clone(dtRecords, tableRecords));
     }
-    
-    clonedSegment.setValueSetBindings(new ArrayList<ValueSetBinding>());
-    for (ValueSetBinding vsb : this.valueSetBindings){
-    	clonedSegment.addValueSetBinding(vsb);
+
+    clonedSegment.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
+    for (ValueSetOrSingleCodeBinding vsb : this.valueSetBindings) {
+      clonedSegment.addValueSetBinding(vsb);
     }
-    
+
     clonedSegment.setComments(new ArrayList<Comment>());
-    for (Comment c : this.comments){
-    	clonedSegment.addComment(c);
+    for (Comment c : this.comments) {
+      clonedSegment.addComment(c);
     }
-    
+
     clonedSegment.setSingleElementValues(new ArrayList<SingleElementValue>());
-    for (SingleElementValue sev : this.singleElementValues){
-    	clonedSegment.addSingleElementValue(sev);
+    for (SingleElementValue sev : this.singleElementValues) {
+      clonedSegment.addSingleElementValue(sev);
     }
-    
+
     clonedSegment.setPredicates(new ArrayList<Predicate>());
     for (Predicate cp : this.predicates) {
       clonedSegment.addPredicate(cp.clone());
     }
-    
+
     clonedSegment.setConformanceStatements(new ArrayList<ConformanceStatement>());
     for (ConformanceStatement cs : this.conformanceStatements) {
       clonedSegment.addConformanceStatement(cs.clone());
     }
-    
+
     clonedSegment.setLabel(label);
-    clonedSegment.setName(name); 
+    clonedSegment.setName(name);
     clonedSegment.setText1(text1);
     clonedSegment.setText2(text2);
 
@@ -281,37 +285,44 @@ public class Segment extends DataModelWithConstraints
     this.coConstraints = coConstraints;
   }
 
-
-  public List<ValueSetBinding> getValueSetBindings() {
-	return valueSetBindings;
+  public List<ValueSetOrSingleCodeBinding> getValueSetBindings() {
+    return valueSetBindings;
   }
 
-  public void setValueSetBindings(List<ValueSetBinding> valueSetBindings) {
-	this.valueSetBindings = valueSetBindings;
+  public void setValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings) {
+    this.valueSetBindings = valueSetBindings;
   }
 
-public List<Comment> getComments() {
-	return comments;
-}
+  public List<Comment> getComments() {
+    return comments;
+  }
 
-public void setComments(List<Comment> comments) {
-	this.comments = comments;
-}
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
+  }
 
-public List<SingleElementValue> getSingleElementValues() {
-	return singleElementValues;
-}
+  public List<SingleElementValue> getSingleElementValues() {
+    return singleElementValues;
+  }
 
-public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
-	this.singleElementValues = singleElementValues;
-}
+  public void setSingleElementValues(List<SingleElementValue> singleElementValues) {
+    this.singleElementValues = singleElementValues;
+  }
 
-public DynamicMappingDefinition getDynamicMappingDefinition() {
-	return dynamicMappingDefinition;
-}
+  public DynamicMappingDefinition getDynamicMappingDefinition() {
+    return dynamicMappingDefinition;
+  }
 
-public void setDynamicMappingDefinition(DynamicMappingDefinition dynamicMappingDefinition) {
-	this.dynamicMappingDefinition = dynamicMappingDefinition;
-}
+  public void setDynamicMappingDefinition(DynamicMappingDefinition dynamicMappingDefinition) {
+    this.dynamicMappingDefinition = dynamicMappingDefinition;
+  }
+
+  public CoConstraintsDefinition getCoConstraintsDefinition() {
+    return coConstraintsDefinition;
+  }
+
+  public void setCoConstraintsDefinition(CoConstraintsDefinition coConstraintsDefinition) {
+    this.coConstraintsDefinition = coConstraintsDefinition;
+  }
 
 }

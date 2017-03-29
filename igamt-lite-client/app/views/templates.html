@@ -504,7 +504,7 @@
             </tr>
 
         </script>
-<script type="text/ng-template " id="ConfirmIGDocumentDeleteCtrl.html ">
+<script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html ">
             <div class="modal-header ">
                 <h3 class="modal-title ">Delete Confirmation
         </h3>
@@ -527,7 +527,7 @@
     </div>
     </div>
     </script>
-<script type="text/ng-template " id="ConfirmIGDocumentCloseCtrl.html ">
+<script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html ">
         <div class="modal-header ">
             <h3 class="modal-title ">Close Confirmation
         </h3>
@@ -550,7 +550,7 @@
             </div>
         </div>
     </script>
-<script type="text/ng-template " id="ConfirmIGDocumentOpenCtrl.html ">
+<script type="text/ng-template" id="ConfirmIGDocumentOpenCtrl.html ">
         <div class="modal-header ">
             <h3 class="modal-title ">Open Confirmation
         </h3>
@@ -573,7 +573,7 @@
             </div>
         </div>
     </script>
-<script type="text/ng-template " id="RichTextCtrl.html ">
+<script type="text/ng-template" id="RichTextCtrl.html ">
         <div class="modal-header modal-wide ">
             <h3 class="modal-title ">{{::editorTarget.obj.position}} . {{::editorTarget.obj.name}} :
             {{::editorTarget.title}}</h3>
@@ -596,7 +596,7 @@
         </button>
         </div>
     </script>
-<script type="text/ng-template " id="InputTextCtrl.html ">
+<script type="text/ng-template" id="InputTextCtrl.html ">
         <div class="modal-header ">
             <h3 ng-show="editorTarget.obj.type==='segmentRef' ">
             {{editorTarget.obj.position}}.{{segmentsMap[editorTarget.obj.ref].name}}:{{segmentsMap[editorTarget.obj.ref].description}}</h3>
@@ -625,8 +625,7 @@
         </button>
         </div>
     </script>
-
-<script type="text/ng-template " id="EditComment.html">
+<script type="text/ng-template" id="EditComment.html">
     <div class="modal-header ">
         <h3>{{title}}</h3>
 
@@ -654,8 +653,7 @@
         </button>
     </div>
 </script>
-
-<script type="text/ng-template " id="EditDMSecondReference.html">
+<script type="text/ng-template" id="EditDMSecondReference.html">
     <div class="modal-header ">
         <h3>Select Second Reference</h3>
     </div>
@@ -702,10 +700,9 @@
         </button>
     </div>
 </script>
-
-<script type="text/ng-template " id="EditSingleElement.html">
+<script type="text/ng-template" id="EditSingleElement.html">
     <div class="modal-header ">
-        <h3>Single Element Value of {{currentNode.path}}</h3>
+        <h3>Constant Value of {{currentNode.path}}</h3>
 
     </div>
     <div class="modal-body ">
@@ -727,9 +724,7 @@
         </button>
     </div>
 </script>
-
-
-<script type="text/ng-template " id="tree_node ">
+<script type="text/ng-template" id="tree_node ">
 
         <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined) ">
             <td class="col-md-1 " style="width:14% ">
@@ -938,7 +933,7 @@
             </td>
         </tr>
     </script>
-<script type="text/ng-template " id="ConfirmIGDocumentUnshareCtrl.html ">
+<script type="text/ng-template" id="ConfirmIGDocumentUnshareCtrl.html ">
         <div class="modal-header ">
             <h3 class="modal-title ">Remove Participant Confirmation
         </h3>
@@ -968,8 +963,7 @@
         </div>
         </div>
     </script>
-
-<script type="text/ng-template " id="GlobalPredicateCtrl.html ">
+<script type="text/ng-template" id="GlobalPredicateCtrl.html ">
         <div class="modal-header ">
             <div>
                 <h3 class="header4 ">Predicate for {{::selectedNode.locationPath}}({{::selectedNode.path}})</h3>
@@ -1813,7 +1807,7 @@
         </td>
     </tr>
 </script>
-<script type="text/ng-template " id="message_tree_Predicate_item.html ">
+<script type="text/ng-template" id="message_tree_Predicate_item.html ">
     <tr style="width:100% ">
         <td ng-if="data.folderClass ">
             <div ng-if="data.type==='message' || data.type==='group' || data.type==='segmentRef' ">
@@ -1958,8 +1952,96 @@
         </td>
     </tr>
 </script>
+<script type="text/ng-template" id="CoConstraintCtrl.html ">
+    <div class="modal-header ">
+        <h3 class="header4 ">Define CoConstraint Structure for {{::segment.name}}</h3>
+    </div>
+    <div class="modal-body ">
+        <form role="form ">
+            <div class="col-md-12">
+                <div class="panel panel-default ">
+                    <div class="panel-heading ">Segment Tree</div>
+                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                        <table class="table table-striped ">
+                            <tbody ng-repeat="data in treeDataForContext " ng-include=" 'segment_tree_CoCon_item.html' ">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default ">
+                    <div class="panel-heading">IF</div>
+                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;" data-drop="true" ng-model="dataContainer" jqyoui-droppable="{onDrop:'dropCallbackForIF'}">
+                        <div ng-repeat="constraint in selectedCoConstraintsDefinition.ifConstraintList">
+                            <span class="badge label-white">
+                                <span ng-show="constraint.targetType=='field'" class="label label-field label-icon">F</span>
+                                <span ng-show="constraint.targetType=='component'" class="label label-component label-icon">C</span>
+                                <span ng-show="constraint.type=='value'">Value of {{segment.name}}-{{constraint.targetPath}}</span>
+                                <span ng-show="constraint.type=='valueset'">ValueSet of {{segment.name}}-{{constraint.targetPath}}</span>
+                                <span ng-show="constraint.isEditable" ng-click="changeConstraintType(constraint)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                <span ng-show="constraint.isEditable" ng-click="deleteConstraintDefinitionForIF(constraint)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default ">
+                    <div class="panel-heading ">Then (General)</div>
+                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;" data-drop="true" ng-model="dataContainer" jqyoui-droppable="{onDrop:'dropCallbackForTHEN'}">
+                        <div ng-repeat="constraint in selectedCoConstraintsDefinition.thenConstraintList">
+                            <span class="badge label-white">
+                                <span ng-show="constraint.targetType=='field'" class="label label-field label-icon">F</span>
+                                <span ng-show="constraint.targetType=='component'" class="label label-component label-icon">C</span>
+                                <span ng-show="constraint.type=='value'">Value of {{segment.name}}-{{constraint.targetPath}}</span>
+                                <span ng-show="constraint.type=='valueset'">ValueSet of {{segment.name}}-{{constraint.targetPath}}</span>
+                                <span ng-show="constraint.isEditable" ng-click="changeConstraintType(constraint)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                <span ng-show="constraint.isEditable" ng-click="deleteConstraintDefinitionForTHEN(constraint)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default ">
+                    <div class="panel-heading ">Then (Dynamic Datatype)</div>
+                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                        <div ng-show="selectedCoConstraintsDefinition.dynamicDatatypeConstraint">
+                            <span class="badge label-white">
+                                <span ng-show="selectedCoConstraintsDefinition.dynamicDatatypeConstraint.targetType=='field'" class="label label-field label-icon">F</span>
+                                <span ng-show="selectedCoConstraintsDefinition.dynamicDatatypeConstraint.targetType=='component'" class="label label-component label-icon">C</span>
+                                <span>Dynamic Datatype of {{segment.name}}-{{selectedCoConstraintsDefinition.dynamicDatatypeConstraint.targetPath}}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default ">
+                    <div class="panel-heading ">Description</div>
+                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                        <div ng-repeat="textItem in selectedCoConstraintsDefinition.listCoConstraintDesc">
+                                <span class="label label-field-icon label-icon">TEXT
+                                    <span ng-click="deleteTextItem(textItem)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                                </span>
+                                <input style="width:80%" class="form-control" ng-model="textItem.title"/>
 
-<script type="text/ng-template " id="ConformanceStatementSegmentCtrl.html ">
+                        </div>
+                        <a ng-click="addTextItem()" class="point">
+                            <span><i class="fa fa-plus fa-fw edit-icon"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" style="padding-top:5px">
+        <button class="btn btn-raised btn-warning btn-sm" ng-click="cancle()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+        <button class="btn btn-raised btn-success btn-sm" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
+    </div>
+</script>
+<script type="text/ng-template" id="ConformanceStatementSegmentCtrl.html ">
     <div class="modal-header ">
         <h3 class="header4 ">Conformance statement for {{::segment.name}}</h3>
     </div>
@@ -2267,12 +2349,12 @@
             </div>
         </div>
         </form>
-        </div>
-        <div class="modal-footer" style="padding-top:5px">
-            <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
-            <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
-        </div>
-    </script>
+    </div>
+    <div class="modal-footer" style="padding-top:5px">
+        <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+        <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed" ng-click="saveclose()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Save</span></button>
+    </div>
+</script>
 <script type="text/ng-template" id="PredicateSegmentCtrl.html">
         <div class="modal-header">
             <h3 class="header4">Predicate for {{::segment.name}}.{{::selectedNode.position}}</h3>
@@ -2624,6 +2706,79 @@
             <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ng-click="saveclose()"><span><i class="fa fa-check fa-fw"> &nbsp; </i>Save</span></button>
         </div>
     </script>
+<script type="text/ng-template" id="segment_tree_CoCon_item.html">
+    <tr style="width:100%">
+        <td ng-if="data.folderClass">
+            <div ng-if="data.type === 'segment'">
+                <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
+            </div>
+            <div ng-if="data.type === 'field' || data.type === 'component'">
+                <div ng-if="data.child.components &&  data.child.components.length > 0">
+                    <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
+                </div>
+                <div ng-if="!data.child.components ||  data.child.components.length == 0">
+                    <i class="fa fa-check" />
+                </div>
+            </div>
+        </td>
+        <td ng-if="!data.folderClass">
+            <div ng-if="data.type === 'segment'">
+                <i class="fa fa-plus" ng-click="toggleChildren(data)"></i>
+            </div>
+            <div ng-if="data.type === 'field' || data.type === 'component'">
+                <div ng-if="data.child.components &&  data.child.components.length > 0">
+                    <i class="fa fa-plus" ng-click="toggleChildren(data)"></i>
+                </div>
+                <div ng-if="!data.child.components ||  data.child.components.length == 0">
+                    <i class="fa fa-check" />
+                </div>
+            </div>
+        </td>
+        <td>
+            <div ng-if="data.type === 'segment'">
+                <div>
+                    <span class="label label-segment label-icon">S</span>
+                    <span>&nbsp;{{::data.name}}</span>
+                </div>
+                <div id="expanded-data" ng-if="data.childrenVisible">
+                    <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.fields" ng-include="'segment_tree_CoCon_item.html'"></div>
+                    </table>
+                </div>
+            </div>
+            <div ng-if="data.type === 'field'">
+                <div ng-if="!data.child.components || data.child.components.length == 0" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                    <span class="label label-field label-icon">F</span>
+                    <span>&nbsp;{{::data.position}}. &nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}] {{::data.name}}</span>
+                </div>
+                <div ng-if="data.child.components.length > 0">
+                    <span class="label label-field label-icon">F</span>
+                    <span>&nbsp;{{::data.position}}. &nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}] {{::data.name}}</span>
+                </div>
+                <div id="expanded-data" ng-if="data.childrenVisible">
+                    <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.child.components" ng-include="'segment_tree_CoCon_item.html'"></div>
+                    </table>
+                </div>
+            </div>
+            <div ng-if="data.type === 'component'">
+                <div ng-if="!data.child.components || data.child.components.length == 0" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true}">
+                    <span class="label label-component label-icon">C</span>
+                    <span>&nbsp;{{::data.position}}. &nbsp;[{{::data.usage}}] {{::data.name}}</span>
+                </div>
+                <div ng-if="data.child.components.length > 0">
+                    <span class="label label-component label-icon">C</span>
+                    <span>&nbsp;{{::data.position}}. &nbsp;[{{::data.usage}}] {{::data.name}}</span>
+                </div>
+                <div id="expanded-data" ng-if="data.childrenVisible">
+                    <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.child.components" ng-include="'segment_tree_CoCon_item.html'"></div>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+</script>
 <script type="text/ng-template" id="segment_tree_item.html">
         <tr style="width:100%">
             <td ng-if="data.folderClass">
@@ -2754,7 +2909,6 @@
             </td>
         </tr>
     </script>
-
 <script type="text/ng-template" id="ConformanceStatementDatatypeCtrl.html">
         <div class="modal-header">
             <h3 class="header4">Conformance statement for {{::datatype.name}}</h3>
@@ -3452,9 +3606,7 @@
         </div>
         </div>
     </script>
-
 <script type="text/ng-template" id="createDatatype.html">
-
         <div class="modal-content">
             <div class="modal-wide modal-header">
 
@@ -3570,7 +3722,6 @@
             </form>
             </div>
     </script>
-
 <script type="text/ng-template" id="AddHL7Datatype.html">
 
         <div class="modal-content">
@@ -3686,7 +3837,6 @@
             </form>
             </div>
     </script>
-
 <script type="text/ng-template" id="AddSharedDatatype.html">
         <div class="modal-content">
             <div class="modal-header modal-wide">
@@ -3790,7 +3940,6 @@
             </form>
             </div>
     </script>
-
 <script type="text/ng-template" id="AddUserDatatype.html">
 
         <div class="modal-content">
@@ -3905,7 +4054,6 @@
             </form>
             </div>
     </script>
-
 <script type="text/ng-template" id="AddMasterDatatypeIntoUser.html">
 
         <div class="modal-content">
@@ -4025,7 +4173,6 @@
             </form>
             </div>
     </script>
-
 <script type="text/ng-template" id="AbortPublishCtl.html">
         <div class="modal-header">
             <h3 class="modal-title">
@@ -4108,8 +4255,6 @@
     </div>
     </div>
 </script>
-
-
 <script type="text/ng-template" id="ConfirmDatatypePublishCtl.html">
     <div class="modal-header">
         <h3 class="modal-title">Publish Confirmation
@@ -4152,7 +4297,6 @@
     </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="ConfirmTablePublish.html">
     <div class="modal-header">
         <h3 class="modal-title">Publish Confirmation
@@ -4176,7 +4320,6 @@
     </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="ShareTableModal.html">
 	<div>
 		<div class="modal-header">
@@ -4235,7 +4378,6 @@
 		</div>
 	</div>
 </script>
-
 <script type="text/ng-template" id="ShareDatatypeModal.html">
   <div>
     <div class="modal-header">
@@ -4295,7 +4437,6 @@
     </div>
   </div>
 </script>
-
 <script type="text/ng-template" id="ShareDatatypeErrorModal.html">
 	<div>
 		<div class="modal-header">
@@ -4318,7 +4459,6 @@
     </div>
   </div>
 </script>
-
 <script type="text/ng-template" id="ShareTableErrorModal.html">
 	<div>
 		<div class="modal-header">
@@ -4341,7 +4481,6 @@
     </div>
   </div>
 </script>
-
 <script type="text/ng-template" id="autocomplete-template">
     <div class="autocomplete-template">
         <div class="share_left-panel">
@@ -4376,7 +4515,6 @@
     </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="confirmUnshare.html">
     <div class="modal-header">
         <h3 class="modal-title">Confirmation
@@ -4400,7 +4538,6 @@
     </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="abortDeleteDatatype.html">
     <div class="modal-header">
         <h3 class="modal-title">Data Type Cross References Found
@@ -4440,9 +4577,6 @@
         </div>
     </div>
 </script>
-
-
-
 <script type="text/ng-template" id="datatype_tree_item.html">
     <tr style="width:100%">
         <td ng-if="data.folderClass">
@@ -4557,7 +4691,6 @@
         </td>
     </tr>
 </script>
-
 <script type="text/ng-template" id="CustomExportModal.html">
     <div class="modal-header">
         <h3 class="modal-title">Custom Export {{layout}}
@@ -4661,10 +4794,10 @@
 </script>
 <script type="text/ng-template" id="ConfirmSingleElementDuplicatedCtrl.html">
     <div class="modal-header">
-        <h3 class="modal-title">Warning for duplicated Single Element Value</h3>
+        <h3 class="modal-title">Warning for duplicated Constant Value</h3>
     </div>
     <div class="modal-body">
-        <p>Single element value is already presence at child node. Do you want to override it and want to define a new single element value at current node?</p>
+        <p>Constant value is already presence at child node. Do you want to override it and want to define a new single element value at current node?</p>
     </div>
     </div>
     <div class="modal-footer">
@@ -4703,7 +4836,4 @@
          <br/>
         <span class="version-badge-under" ng-repeat="version in element.hl7versions" style="margin-left:2px;">{{version}}</span>
     </span>
-
-
-
 </script>
