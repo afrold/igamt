@@ -51,11 +51,13 @@
 
                 </div>
                     <div class="" ng-controller="cmpSegmentCtrl as cmp">
-                        <tabset active="tabStatus.active">
-                            <tab ng-click="setDeltaToF()">
-                                <tab-heading>
-                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Segment MetaData
-                                </tab-heading>
+                        <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+                            <md-tab md-on-select="setDeltaToF()">
+                                <md-tab-label>
+                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
+                                </md-tab-label>
+                                <md-tab-body>
+
                                 <div style="margin-top: 20px">
                                     <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.name.$invalid}">
                                         <label class="col-md-2 control-label">Name*</label>
@@ -117,11 +119,14 @@
                                     </div>
 
                                 </div>
-                            </tab>
-                            <tab ng-click="setDeltaToF()">
-                                <tab-heading>
-                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i> Segment Definition
-                                </tab-heading>
+                                </md-tab-body>
+                            </md-tab>
+                            <md-tab md-on-select="setDeltaToF()">
+                                <md-tab-label>
+                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i>Definition
+                                </md-tab-label>
+                                <md-tab-body>
+
 
                                 <div class="el-def" style="margin-top: 5px">
                                     <accordion>
@@ -503,11 +508,14 @@
                                         </div>
                                     </accordion>
                                 </div>
-                            </tab>
-                            <tab ng-click="callSegDelta()">
-                                <tab-heading>
-                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i> Segment Delta
-                                </tab-heading>
+                                </md-tab-body>
+                            </md-tab>
+                            <md-tab md-on-select="callSegDelta()">
+                                <md-tab-label>
+                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i>Delta
+                                </md-tab-label>
+                                <md-tab-body>
+
                                 <div class="panel-body" style="margin:5px;">
                                     <accordion>
                                         <div accordion-group class="panel-primary panel-level1" is-open="status.isFirstOpen">
@@ -623,12 +631,13 @@
 
                                 </div>
 
-                            </tab>
-
-                            <tab ng-click="setDeltaToF()">
-                                <tab-heading>
-                                    <i class="fa fa-link" aria-hidden="true"></i> Segment Cross-References <span class="badge">{{references.length}}</span>
-                                </tab-heading>
+                                </md-tab-body>
+                            </md-tab>
+                            <md-tab md-on-select="setDeltaToF()">
+                                <md-tab-label>
+                                    <i class="fa fa-link" aria-hidden="true"></i>Cross-References <span class="badge">{{references.length}}</span>
+                                </md-tab-label>
+                                <md-tab-body>
                                 <div class="el-def" style="margin-top:20px">
                                     <span class="pull-right" style="margin-bottom:10px">
                                         <button type="button" ng-click="AddBindingForSegment(segment)" class="btn btn-raised btn-info btn-md"><i class="fa fa-plus"></i> Add Binding</button>
@@ -686,8 +695,9 @@
                                     </div>
 
                                 </div>
-                            </tab>
-                        </tabset>
+                                </md-tab-body>
+                            </md-tab>
+                        </md-tabs>
                     </div>
                 </div>
             </div>

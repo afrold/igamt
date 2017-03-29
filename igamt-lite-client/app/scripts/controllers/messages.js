@@ -2787,6 +2787,7 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $mo
         var position = pathArray[i].split('[')[0];
         positionPath = positionPath + '.' + position;
     }
+    console.log(positionPath);
     if(positionPath != '') positionPath = positionPath.substr(1);
     $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return binding.location == positionPath; }));
     $scope.listOfBindingLocations = null;

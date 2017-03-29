@@ -120,7 +120,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     };
     $rootScope.hasDatatypeError = function(id) {
         if ($rootScope.validationResult) {
-            
+
             if (($rootScope.validationMap[id] && $rootScope.validationMap[id].errorCount > 0) || ($rootScope.validationMap[id] && !$rootScope.validationMap[id].errorCount === undefined) || ($rootScope.validationResult.targetId === id && $rootScope.validationResult.errorCount > 0) || ($rootScope.childValidationMap[id] && $rootScope.childValidationMap[id].errorCount !== undefined && $rootScope.childValidationMap[id].errorCount > 0)) {
                 return true;
             } else {
@@ -1218,13 +1218,13 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     f.segment = parent.obj.ref.id;
                     f.locationPath = parent.locationPath + "." + element.position + "[1]";
 
-                    if($rootScope.message){
-                        f.sev = _.find($rootScope.message.singleElementValues, function(sev){ return sev.location  ==  $rootScope.refinePath(f.path); });
-                        if(f.sev) {
+                    if ($rootScope.message) {
+                        f.sev = _.find($rootScope.message.singleElementValues, function(sev) { return sev.location == $rootScope.refinePath(f.path); });
+                        if (f.sev) {
                             f.sev.from = 'message';
-                        }else {
-                            f.sev = _.find($rootScope.segmentsMap[f.segment].singleElementValues, function(sev){ return sev.location  ==  f.segmentPath; });
-                            if(f.sev) f.sev.from = 'segment';
+                        } else {
+                            f.sev = _.find($rootScope.segmentsMap[f.segment].singleElementValues, function(sev) { return sev.location == f.segmentPath; });
+                            if (f.sev) f.sev.from = 'segment';
                         }
                     }
 
@@ -1253,45 +1253,45 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     c.path = parent.path + "." + element.position + "[1]";
                     c.segmentPath = parent.segmentPath + "." + element.position;
                     c.segment = parent.segment;
-                    if(c.segmentPath.split(".").length - 1 == 1){
+                    if (c.segmentPath.split(".").length - 1 == 1) {
                         c.fieldDT = parent.obj.datatype.id;
-                        if($rootScope.message){
-                            c.sev = _.find($rootScope.message.singleElementValues, function(sev){ return sev.location  ==  $rootScope.refinePath(c.path); });
-                            if(c.sev) {
+                        if ($rootScope.message) {
+                            c.sev = _.find($rootScope.message.singleElementValues, function(sev) { return sev.location == $rootScope.refinePath(c.path); });
+                            if (c.sev) {
                                 c.sev.from = 'message';
-                            }else{
-                                c.sev = _.find($rootScope.segmentsMap[c.segment].singleElementValues, function(sev){ return sev.location  ==  c.segmentPath; });
-                                if(c.sev) {
+                            } else {
+                                c.sev = _.find($rootScope.segmentsMap[c.segment].singleElementValues, function(sev) { return sev.location == c.segmentPath; });
+                                if (c.sev) {
                                     c.sev.from = 'segment';
-                                }else {
+                                } else {
                                     var fieldPath = c.segmentPath.substr(c.segmentPath.indexOf('.') + 1);
-                                    c.sev = _.find($rootScope.datatypesMap[c.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
-                                    if(c.sev) {
+                                    c.sev = _.find($rootScope.datatypesMap[c.fieldDT].singleElementValues, function(sev) { return sev.location == fieldPath; });
+                                    if (c.sev) {
                                         c.sev.from = 'field';
                                     }
                                 }
                             }
                         }
-                    }else if(c.segmentPath.split(".").length - 1 == 2){
+                    } else if (c.segmentPath.split(".").length - 1 == 2) {
                         c.fieldDT = parent.fieldDT;
                         c.componentDT = parent.obj.datatype.id;
-                        if($rootScope.message){
-                            c.sev = _.find($rootScope.message.singleElementValues, function(sev){ return sev.location  ==  $rootScope.refinePath(c.path); });
-                            if(c.sev) {
+                        if ($rootScope.message) {
+                            c.sev = _.find($rootScope.message.singleElementValues, function(sev) { return sev.location == $rootScope.refinePath(c.path); });
+                            if (c.sev) {
                                 c.sev.from = 'message';
-                            }else{
-                                c.sev = _.find($rootScope.segmentsMap[c.segment].singleElementValues, function(sev){ return sev.location  ==  c.segmentPath; });
-                                if(c.sev) {
+                            } else {
+                                c.sev = _.find($rootScope.segmentsMap[c.segment].singleElementValues, function(sev) { return sev.location == c.segmentPath; });
+                                if (c.sev) {
                                     c.sev.from = 'segment';
-                                }else {
+                                } else {
                                     var fieldPath = c.segmentPath.substr(c.segmentPath.indexOf('.') + 1);
-                                    c.sev = _.find($rootScope.datatypesMap[c.fieldDT].singleElementValues, function(sev){ return sev.location  ==  fieldPath; });
-                                    if(c.sev) {
+                                    c.sev = _.find($rootScope.datatypesMap[c.fieldDT].singleElementValues, function(sev) { return sev.location == fieldPath; });
+                                    if (c.sev) {
                                         c.sev.from = 'field';
-                                    }else {
+                                    } else {
                                         var componentPath = c.segmentPath.substr(c.segmentPath.split('.', 2).join('.').length + 1);
-                                        c.sev = _.find($rootScope.datatypesMap[c.componentDT].singleElementValues, function(sev){ return sev.location  ==  componentPath; });
-                                        if(c.sev) {
+                                        c.sev = _.find($rootScope.datatypesMap[c.componentDT].singleElementValues, function(sev) { return sev.location == componentPath; });
+                                        if (c.sev) {
                                             c.sev.from = 'component';
                                         }
                                     }
@@ -1656,11 +1656,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
     };
 
-    $rootScope.findValueSetBindings = function(){
+    $rootScope.findValueSetBindings = function() {
         $rootScope.references = [];
         angular.forEach($rootScope.messages.children, function(message) {
-            angular.forEach(message.valueSetBindings, function(vsb){
-                if(vsb.tableId == $rootScope.table.id){
+            angular.forEach(message.valueSetBindings, function(vsb) {
+                if (vsb.tableId == $rootScope.table.id) {
                     var found = angular.copy(vsb);
                     found.type = 'message';
                     found.id = message.id;
@@ -1671,8 +1671,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         });
 
         angular.forEach($rootScope.segments, function(segment) {
-            angular.forEach(segment.valueSetBindings, function(vsb){
-                if(vsb.tableId == $rootScope.table.id){
+            angular.forEach(segment.valueSetBindings, function(vsb) {
+                if (vsb.tableId == $rootScope.table.id) {
                     var found = angular.copy(vsb);
                     found.type = 'segment';
                     found.id = segment.id;
@@ -1683,8 +1683,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         });
 
         angular.forEach($rootScope.datatypes, function(dt) {
-            angular.forEach(dt.valueSetBindings, function(vsb){
-                if(vsb.tableId == $rootScope.table.id){
+            angular.forEach(dt.valueSetBindings, function(vsb) {
+                if (vsb.tableId == $rootScope.table.id) {
                     var found = angular.copy(vsb);
                     found.type = 'datatype';
                     found.id = dt.id;
@@ -1790,17 +1790,17 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return $rootScope.igVersion > "2.5.1";
     };
 
-    $rootScope.refinePath = function (instancePath){
+    $rootScope.refinePath = function(instancePath) {
         var pathArray = [];
 
-        if(instancePath) pathArray = instancePath.split('.');
+        if (instancePath) pathArray = instancePath.split('.');
         var positionPath = '';
         for (var i in pathArray) {
             var position = pathArray[i].split('[')[0];
             positionPath = positionPath + '.' + position;
         }
 
-        if(positionPath != '') positionPath = positionPath.substr(1);
+        if (positionPath != '') positionPath = positionPath.substr(1);
 
         return positionPath;
     };
@@ -3306,7 +3306,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return null;
     };
 
-    $rootScope.getConstraintAsTruncatedString= function(constraint, num) {
+    $rootScope.getConstraintAsTruncatedString = function(constraint, num) {
         if (constraint) return constraint.description.substring(0, num) + "...";
         return null;
     };
@@ -3479,7 +3479,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     }
                     $rootScope.clearChanges();
                     VersionAndUseService.findById(published.id).then(function(inf) {
-                        $rootScope.versionAndUseMap[inf.id]=inf;
+                        $rootScope.versionAndUseMap[inf.id] = inf;
                         if ($rootScope.versionAndUseMap[inf.sourceId]) {
                             $rootScope.versionAndUseMap[inf.sourceId].deprecated = true;
 
@@ -3686,7 +3686,7 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
 
 
 
-angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalInstance, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc, DocumentationService) {
+angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalInstance, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc, DocumentationService, PcService,CompositeProfileService) {
     $scope.continue = function() {
         $rootScope.clearChanges();
         $modalInstance.close();
@@ -3866,6 +3866,47 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
                 $rootScope.msg().show = true;
             });
 
+        } else if (data.type && data.type === "profilecomponent") {
+            PcService.save($rootScope.igdocument.profile.profileComponentLibrary.id, $rootScope.profileComponent).then(function(result) {
+                for (var i = 0; i < $rootScope.igdocument.profile.profileComponentLibrary.children.length; i++) {
+                    if ($rootScope.igdocument.profile.profileComponentLibrary.children[i].id === $rootScope.profileComponent.id) {
+                        $rootScope.igdocument.profile.profileComponentLibrary.children[i].name = $rootScope.profileComponent.name;
+                        $rootScope.igdocument.profile.profileComponentLibrary.children[i].comment = $rootScope.profileComponent.comment;
+                        $rootScope.igdocument.profile.profileComponentLibrary.children[i].description = $rootScope.profileComponent.description;
+                    }
+
+                }
+                for (var i = 0; i < $rootScope.profileComponents.length; i++) {
+                    if ($rootScope.profileComponents[i].id === $rootScope.profileComponent.id) {
+                        $rootScope.profileComponents[i] = $rootScope.profileComponent;
+                    }
+                }
+                $rootScope.profileComponentsMap[$rootScope.profileComponent.id] = $rootScope.profileComponent;
+
+                $scope.changes = false;
+                $scope.continue();
+
+            });
+        } else if (data.type && data.type === "compositeprofilestructure") {
+            CompositeProfileService.save($rootScope.compositeProfileStructure).then(function(result) {
+
+                    $rootScope.compositeProfileStructure = result;
+                    $rootScope.$emit("event:updateIgDate");
+                    for (var i = 0; i < $rootScope.igdocument.profile.compositeProfiles.children.length; i++) {
+                        if ($rootScope.igdocument.profile.compositeProfiles.children[i].id === result.id) {
+                            $rootScope.igdocument.profile.compositeProfiles.children[i] = result;
+                        }
+                    }
+                    $rootScope.compositeProfilesStructureMap[result.id] = result;
+                    
+                    $scope.continue();
+
+                },
+                function(error) {
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
         } else if (data.type && data.type === "segment") {
             if (data.scope === 'USER' || (data.status && data.status === 'UNPUBLISHED')) {
                 var segment = $rootScope.segment;
@@ -4033,7 +4074,7 @@ angular.module('igl').controller('EditSingleElementCtrl', function($scope, $root
 
     $scope.sevVale = '';
 
-    if($scope.currentNode.sev) $scope.sevVale = $scope.currentNode.sev.value;
+    if ($scope.currentNode.sev) $scope.sevVale = $scope.currentNode.sev.value;
 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
@@ -4049,34 +4090,34 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
     $scope.currentNode = currentNode;
     $scope.currentComment = currentComment;
     var currentPath = null;
-    if(type == 'message') {
+    if (type == 'message') {
         currentPath = $rootScope.refinePath($scope.currentNode.path);
-    }else {
+    } else {
         currentPath = $scope.currentNode.path;
     }
 
     $scope.disabled = disabled;
-    var targetObj = type === 'datatype' ?  $rootScope.datatype: type === 'segment' ? $rootScope.segment : $rootScope.message;
+    var targetObj = type === 'datatype' ? $rootScope.datatype : type === 'segment' ? $rootScope.segment : $rootScope.message;
     $scope.title = '';
 
-    if(type == 'message') {
+    if (type == 'message') {
         $scope.title = 'Comment of ' + targetObj.name + '.' + $rootScope.refinePath($scope.currentNode.locationPath);
-    }else {
+    } else {
         $scope.title = 'Comment of ' + targetObj.name + '.' + $scope.currentNode.path;
     }
     $scope.descriptionText = '';
 
-    if($scope.currentComment) $scope.descriptionText = $scope.currentComment.description;
+    if ($scope.currentComment) $scope.descriptionText = $scope.currentComment.description;
 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
 
     $scope.close = function() {
-        if($scope.currentComment){
+        if ($scope.currentComment) {
             $scope.currentComment.description = $scope.descriptionText;
             $scope.currentComment.lastUpdatedDate = new Date();
-        }else {
+        } else {
             var newComment = {};
             newComment.description = $scope.descriptionText;
             newComment.location = currentPath;

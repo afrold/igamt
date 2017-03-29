@@ -20,22 +20,25 @@
         <!--</div>-->
         <br/>
 
-        <tabset>
-            <tab active="accordi.igList" select="selectIgTab(0)">
-                <tab-heading>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab md-active="accordi.igList" md-on-select="selectIgTab(0)">
+                <md-tab-label>
                     <i class="fa fa-file-text-o fa-fw"></i> IG Documents List
-                </tab-heading>
-                <div ng-include="'views/edit/listIG.html'"></div>
-            </tab>
-            <tab active="accordi.igDetails" select="selectIgTab(1)" ng-if="igdocument&&igdocument!==null">
-                <tab-heading>
+                </md-tab-label>
+                <md-tab-body>
+                    <div ng-include="'views/edit/listIG.html'"></div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab md-active="accordi.igDetails" md-on-select="selectIgTab(1)" ng-if="igdocument&&igdocument!==null" ng-disabled="!igdocument || igdocument===null">
+                <md-tab-label>
                     <span ng-if="!viewSettings.tableReadonly"> <i class="fa fa-pencil fa-fw"></i>IG Document</span>
-                    <span ng-if="viewSettings.tableReadonly"> <i class="fa fa-search fa-fw"></i>IG Document</span>
-                </tab-heading>
-                <div ng-include="'views/edit/editIG.html'"></div>
-            </tab>
-        </tabset>
+                    <span ng-if="viewSettings.tableReadonly"> <i class="fa fa-search fa-fw"></i>IG Document</span>                </md-tab-label>
+                <md-tab-body>
+                    <div ng-include="'views/edit/editIG.html'"></div>
+                </md-tab-body>
+            </md-tab>
 
+        </md-tabs>
         <!--<accordion close-others="false">-->
         <!--<accordion-group is-open="accordi.igList" panel-class="panel-primary">-->
         <!--<accordion-heading>-->

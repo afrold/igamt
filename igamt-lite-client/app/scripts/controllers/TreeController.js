@@ -12,8 +12,10 @@ angular
             '$modal',
             'CompositeMessageService',
             'PcService',
+            'CompositeProfileService',
+            'orderByFilter',
 
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService) {
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService, CompositeProfileService,orderByFilter) {
 
                 $scope.collapsedata = false;
                 $scope.collapsePcs = true;
@@ -158,9 +160,9 @@ angular
                     // }
 
                     if ($rootScope.validationResult) {
-                       
 
-                        if (($rootScope.validationMap[data.id] && $rootScope.validationMap[data.id].errorCount > 0) || ($rootScope.validationMap[data.id] && !$rootScope.validationMap[data.id].errorCount === undefined) || ($rootScope.validationResult.targetId === data.id && $rootScope.validationResult.errorCount>0) || ($rootScope.childValidationMap[data.id] && $rootScope.childValidationMap[data.id].errorCount !== undefined && $rootScope.childValidationMap[data.id].errorCount > 0)) {
+
+                        if (($rootScope.validationMap[data.id] && $rootScope.validationMap[data.id].errorCount > 0) || ($rootScope.validationMap[data.id] && !$rootScope.validationMap[data.id].errorCount === undefined) || ($rootScope.validationResult.targetId === data.id && $rootScope.validationResult.errorCount > 0) || ($rootScope.childValidationMap[data.id] && $rootScope.childValidationMap[data.id].errorCount !== undefined && $rootScope.childValidationMap[data.id].errorCount > 0)) {
                             return true;
                         } else {
                             return false;
@@ -682,7 +684,7 @@ angular
                     ]
                 ];
 
-                
+
 
 
                 $scope.TableOptionsForPublished = [
@@ -858,7 +860,13 @@ angular
                     null, [
                         'Delete',
                         function($itemScope) {
-                            CloneDeleteSvc.deleteMessage($itemScope.msg);
+                            if ($itemScope.msg.compositeProfileStructureList === null || ($itemScope.msg.compositeProfileStructureList && $itemScope.msg.compositeProfileStructureList.length === 0)) {
+
+                                CloneDeleteSvc.deleteMessage($itemScope.msg);
+                            } else {
+                                $rootScope.cantDeleteMsg($itemScope.msg);
+
+                            }
                         }
                     ]
                 ];
@@ -903,10 +911,10 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                $scope.createCompositeMessage();
+                                $scope.createCompositeProfile();
                             });
                         } else {
-                            $scope.createCompositeMessage();
+                            $scope.createCompositeProfile();
                         }
 
                     }]
@@ -918,7 +926,7 @@ angular
 
                         PcService.getPc($itemScope.pc.id).then(function(profileComponent) {
                             console.log(profileComponent);
-                            if (profileComponent.appliedTo === null || (profileComponent.appliedTo && profileComponent.appliedTo.length === 0)) {
+                            if (profileComponent.compositeProfileStructureList === null || (profileComponent.compositeProfileStructureList && profileComponent.compositeProfileStructureList.length === 0)) {
                                 if ($rootScope.hasChanges()) {
                                     $rootScope.openConfirmLeaveDlg().result.then(function() {
                                         $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
@@ -940,15 +948,31 @@ angular
                     }]
                 ];
                 $scope.compositeMessagesOption = [
-
-                    ['Delete', function($itemScope) {
+                    ['Add Profile Components', function($itemScope) {
                         console.log($itemScope.cm);
                         if ($rootScope.hasChanges()) {
                             $rootScope.openConfirmLeaveDlg().result.then(function() {
-                                $rootScope.deleteCompositeMessage($itemScope.cm);
+                                $rootScope.addMorePcsToCompositeProfile($itemScope.cm);
                             });
                         } else {
-                            $rootScope.deleteCompositeMessage($itemScope.cm);
+                            $rootScope.addMorePcsToCompositeProfile($itemScope.cm);
+                        }
+
+
+
+
+
+
+                    }],
+                    ['Delete', function($itemScope) {
+                        console.log($itemScope.cm);
+
+                        if ($rootScope.hasChanges()) {
+                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.deleteCompositeProfile($itemScope.cm);
+                            });
+                        } else {
+                            $rootScope.deleteCompositeProfile($itemScope.cm);
                         }
 
 
@@ -957,6 +981,7 @@ angular
 
 
                     }]
+
                 ];
 
 
@@ -1571,11 +1596,9 @@ angular
                 };
 
                 function processEditPC(pc) {
-                    console.log("================================");
-                    console.log(pc);
+                 
                     PcService.getPc(pc.id).then(function(profileC) {
-                        console.log("HEEEERE");
-                        console.log(profileC);
+                       
                         $scope.Activate(pc.id);
                         $rootScope.profileComponent = profileC;
                         $scope.$emit('event:openPc');
@@ -1586,12 +1609,13 @@ angular
                 function processEditCM(cm) {
                     console.log("================================");
                     console.log(cm);
-                    CompositeMessageService.getCm(cm.id).then(function(compositeM) {
-                        console.log("HEEEERE");
-                        console.log(compositeM);
-                        $scope.Activate(cm.id);
-                        $rootScope.compositeMessage = compositeM;
-                        $scope.$emit('event:openCm');
+
+                    $rootScope.compositeProfileStructure = cm;
+                    $scope.Activate(cm.id);
+                    CompositeProfileService.build(cm).then(function(compositeProfile) {
+                        console.log(compositeProfile);
+                        $rootScope.compositeProfile = compositeProfile;
+                        $scope.$emit('event:openCP', cm);
                     });
 
                 };
@@ -2253,7 +2277,7 @@ angular.module('igl').controller('AddDatatypeCtrlFromUserLib',
             console.log($scope.newDatatype.ext);
             $scope.newDatatype.scope = datatypeLibrary.scope;
             $scope.newDatatype.status = "UNPUBLISHED";
-            $scope.newDatatype.publicationVersion=0;
+            $scope.newDatatype.publicationVersion = 0;
             $scope.newDatatype.participants = [];
             $scope.newDatatype.id = new ObjectId().toString();
             $scope.newDatatype.libIds = [];
@@ -2460,9 +2484,9 @@ angular.module('igl').controller('addMAsterInLibrary',
                 console.log($scope.masterDatatypes);
             });
         };
-        $scope.containsVersion=function(versions, v){
-            angular.forEach(versions, function(version){
-                if(v===version){
+        $scope.containsVersion = function(versions, v) {
+            angular.forEach(versions, function(version) {
+                if (v === version) {
                     return true;
                 }
             });
@@ -2550,6 +2574,7 @@ angular.module('igl').controller('addMAsterInLibrary',
             return $scope.checkedExt;
         };
         $scope.addDtFlv = function(datatype) {
+
 
             $scope.DatatypeToAdd = angular.copy(datatype);
             $scope.DatatypeToAdd.publicationVersion=0;
@@ -2936,7 +2961,7 @@ angular.module('igl').controller('AddSharedDatatype',
         };
         $scope.addDtFlv = function(datatype) {
             $scope.newDatatype = angular.copy(datatype);
-            $scope.newDatatype.publicationVersion=0;
+            $scope.newDatatype.publicationVersion = 0;
 
 
             $scope.newDatatype.ext = Math.floor(Math.random() * 1000);

@@ -91,12 +91,12 @@ import java.util.Map;
             List<SerializableConstraint> constraints =
                 serializeConstraintService.serializeConstraints(segment, segment.getName() + "-");
             Map<Field, Datatype> fieldDatatypeMap = new HashMap<>();
-            Map<Field, List<ValueSetBinding>> fieldValueSetBindingsMap = new HashMap<>();
+            Map<Field, List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap = new HashMap<>();
             Map<CCValue, Table> coConstraintValueTableMap = new HashMap<>();
             List<Table> tables = new ArrayList<>();
-            for(ValueSetBinding valueSetBinding : segment.getValueSetBindings()){
-                if(valueSetBinding.getTableId()!=null && !valueSetBinding.getTableId().isEmpty()){
-                    Table table = tableService.findById(valueSetBinding.getTableId());
+            for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()){
+                if(valueSetOrSingleCodeBinding.getTableId()!=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
+                    Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
                     if(table!=null){
                         tables.add(table);
                     }
@@ -109,13 +109,13 @@ import java.util.Map;
                         Datatype datatype = datatypeService.findById(field.getDatatype().getId());
                         fieldDatatypeMap.put(field, datatype);
                     }
-                    List<ValueSetBinding> fieldValueSetBindings = new ArrayList<>();
-                    for(ValueSetBinding valueSetBinding : segment.getValueSetBindings()){
-                        if(valueSetBinding.getLocation().equals(String.valueOf(field.getPosition()))){
-                            fieldValueSetBindings.add(valueSetBinding);
+                    List<ValueSetOrSingleCodeBinding> fieldValueSetBindings = new ArrayList<>();
+                    for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()){
+                        if(valueSetOrSingleCodeBinding.getLocation().equals(String.valueOf(field.getPosition()))){
+                            fieldValueSetBindings.add(valueSetOrSingleCodeBinding);
                         }
                     }
-                    fieldValueSetBindingsMap.put(field,fieldValueSetBindings);
+                    fieldValueSetBindingsMap.put(field, fieldValueSetBindings);
                 } else {
                     fieldsToBeRemoved.add(field);
                 }

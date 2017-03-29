@@ -14,7 +14,11 @@ public interface ProfileComponentService {
 
   ProfileComponent save(ProfileComponent pc);
 
+  List<ProfileComponent> saveAll(List<ProfileComponent> pc);
+
   void delete(String id);
+
+  List<ProfileComponent> findByIds(List<String> pcIds);
 
   void delete(List<ProfileComponent> profileComponents);
 

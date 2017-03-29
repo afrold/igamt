@@ -44,11 +44,12 @@
 
                 </div>
                     <div class="" ng-controller="cmpMessageCtrl as cmpMsg">
-                        <tabset active="tabStatus.active">
-                            <tab ng-click="setDeltaToF()">
-                                <tab-heading>
-                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Conformance Profile MetaData
-                                </tab-heading>
+                        <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+                            <md-tab md-on-select="setDeltaToF()">
+                                <md-tab-label>
+                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
+                                </md-tab-label>
+                                <md-tab-body>
                                 <div style="margin-top: 20px">
                                     <div class="form-group control-group" ng-class="{'has-error' : editForm.name.$invalid}">
                                         <label class="col-md-2 control-label">Name*</label>
@@ -122,11 +123,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            </tab>
-                            <tab heading="Conformance Profile Definition" ng-click="setDeltaToF()">
-                                <tab-heading>
-                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i> Conformance Profile Definition
-                                </tab-heading>
+                                </md-tab-body>
+                            </md-tab>
+
+                            <md-tab md-on-select="setDeltaToF()">
+                                <md-tab-label>
+                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i>Definition
+                                </md-tab-label>
+                                <md-tab-body>
+
                                 <div class="el-def" style="margin-top: 5px">
                                     <accordion>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFifthOpen">
@@ -303,11 +308,14 @@
                                 </div>
                                 </accordion>
                     </div>
-                    </tab>
-                    <tab ng-click="callMsgDelta()">
-                        <tab-heading>
-                            <i class="fa fa-table fa-fw" aria-hidden="true"></i> Conformance Profile Delta
-                        </tab-heading>
+                                </md-tab-body>
+                            </md-tab>
+                            <md-tab md-on-select="callMsgDelta()">
+                                <md-tab-label>
+                                    <i class="fa fa-table fa-fw" aria-hidden="true"></i>Delta
+                                </md-tab-label>
+                                <md-tab-body>
+
                         <div class="panel-body" style="margin:5px;">
                             <accordion>
                                 <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
@@ -409,8 +417,9 @@
                                 </div>
                             </accordion>
                         </div>
-                    </tab>
-                    </tabset>
+                                </md-tab-body>
+                            </md-tab>
+                        </md-tabs>
                 </div>
             </div>
         </div>

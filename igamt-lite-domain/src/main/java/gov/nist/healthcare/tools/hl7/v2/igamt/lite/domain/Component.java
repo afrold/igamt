@@ -108,4 +108,5 @@ public class Component extends DataElement implements Cloneable {
     } else
       return true;
   }
+
 }
