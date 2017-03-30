@@ -1,11 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
-
-import java.util.Map;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -24,8 +21,5 @@ public interface SerializeDatatypeService {
 
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
         Integer position, UsageConfig datatypeUsageConfig);
-
-    public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
-        Integer position, UsageConfig datatypeUsageConfig, Map<String,Datatype> componentProfileDatatypes);
 
 }
