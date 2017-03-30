@@ -1,4 +1,4 @@
-angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http, $modal, CompositeProfileService,TableService) {
+angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http, $modal, CompositeProfileService,TableService,DatatypeService) {
 
     $scope.redirectVS = function(binding) {
         
@@ -21,6 +21,7 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
             });
         });
     };
+    
 
     $scope.save = function() {
         console.log($rootScope.compositeProfileStructure);
