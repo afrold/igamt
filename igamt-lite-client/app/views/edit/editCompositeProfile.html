@@ -38,7 +38,7 @@
                             <md-tab-body>
                                 <div style="margin-top: 20px">
                                     <div class="row margin-0 full-width hidden-xs">
-                                        <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'" style="margin-left:67px;">
+                                        <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'" >
                                             <div class="yy-timeline-box-inner">
                                                 <div class="yy-timeline-image-container">
                                                     <img src="images/square.jpg" alt="" style="margin-top:-55px;" />
@@ -71,7 +71,7 @@
                                         </div>
                                     </div>
                                     <div dnd-list="compositeProfile.appliedProfileComponents">
-                                        <div class="column margin-0  hidden-xs" ng-repeat="pcInfo in compositeProfile.appliedProfileComponents" dnd-draggable="pcInfo" dnd-moved="compositeProfile.appliedProfileComponents.splice($index, 1);changePosition()">
+                                        <div class="row margin-0 full-width hidden-xs" ng-repeat="pcInfo in compositeProfile.appliedProfileComponents" dnd-draggable="pcInfo" dnd-moved="compositeProfile.appliedProfileComponents.splice($index, 1);changePosition()">
 
                                             <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
                                                 <div class="yy-timeline-box-inner">
@@ -83,7 +83,6 @@
                                                     <div class="yy-timeline-content" style="background-color :rgb(255, 236, 157);width:30%;">
                                                         <div class="row" align="center">
                                                             <strong>{{pcInfo.pc.name}} </strong> <span ng-if="pcInfo.pc.description"> : {{pcInfo.pc.description}}</span>
-                                                            <!--<h5>Profile Component {{pcInfo.position}}</h5>-->
                                                         </div>
                                                         <div class="row">
                                                             Date Updated : {{pcInfo.pc.dateUpdated | date:dateFormat}}
@@ -392,8 +391,8 @@
 
             </div>
         </td>
-        <td ng-class="{'emptyCol':node.type!=='field' && node.type!=='component'}" style="text-align:center">
-            <div ng-show="node.type==='field' || node.type==='component'">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" style="text-align:center">
+            <div ng-show="isAvailableConstantValue(node)">
                 <div ng-repeat="sev in findingSingleElement(node)">
 
                     <span ng-show="sev" class="badge label-white">

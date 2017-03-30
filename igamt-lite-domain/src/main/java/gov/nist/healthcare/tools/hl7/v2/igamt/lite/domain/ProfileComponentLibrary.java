@@ -62,6 +62,9 @@ public class ProfileComponentLibrary extends TextbasedSectionModel
     this.children.remove(pc);
   }
 
+  public void deleteAll(Set<ProfileComponentLink> pc) {
+    this.children.removeAll(pc);
+  }
 
   public ProfileComponentLink findOne(String pcId) {
     if (this.children != null) {

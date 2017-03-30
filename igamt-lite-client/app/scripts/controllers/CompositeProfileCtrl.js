@@ -1,7 +1,7 @@
-angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http, $modal, CompositeProfileService,TableService,DatatypeService) {
+angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http, $modal, CompositeProfileService, TableService, DatatypeService) {
 
     $scope.redirectVS = function(binding) {
-        
+
         TableService.getOne(binding.tableId).then(function(valueSet) {
             var modalInstance = $modal.open({
                 templateUrl: 'redirectCtrl.html',
@@ -21,7 +21,7 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
             });
         });
     };
-    
+
 
     $scope.save = function() {
         console.log($rootScope.compositeProfileStructure);
@@ -148,6 +148,22 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         });
 
     };
+    $scope.isAvailableConstantValue = function(node) {
+        if (node.type === "field" || node.type === "component") {
+            if ($scope.hasChildren(node)) return false;
+            var bindings = $scope.findingBindings(node);
+            if (bindings && bindings.length > 0) return false;
+            if ($rootScope.compositeProfile.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.compositeProfile.datatypesMap[node.datatype.id].name == "IS") return false;
+            return true;
+        } else {
+            return false;
+        }
+
+    };
+    $scope.hasChildren = function(node) {
+        return node && node != null && ((node.fields && node.fields.length > 0) || (node.datatype && $rootScope.compositeProfile.datatypesMap[node.datatype.id] && $rootScope.compositeProfile.datatypesMap[node.datatype.id].components && $rootScope.compositeProfile.datatypesMap[node.datatype.id].components.length > 0));
+    };
+
 
     $scope.isAvailableForValueSet = function(node) {
 
