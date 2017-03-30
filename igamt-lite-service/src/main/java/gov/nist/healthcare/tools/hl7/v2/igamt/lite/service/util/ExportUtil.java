@@ -173,7 +173,7 @@ import java.util.UUID;
         //TODO Replace messageColumn by compositeProfileColumn
         return new ExportParameters(inlineConstraints, includeTOC, targetFormat, documentTitle,
             null, exportConfig.getMessageColumn().getColumns(),
-            exportConfig.getMessageColumn().getColumns(),
+            exportConfig.getCompositeProfileColumn().getColumns(),
             exportConfig.getSegmentColumn().getColumns(),
             exportConfig.getDatatypeColumn().getColumns(),
             exportConfig.getValueSetColumn().getColumns(), exportFontConfig);
