@@ -873,7 +873,7 @@
                     <span class="badge label-white">
                         <span ng-class="{'label-component-icon' : binding.isMain, 'label-sub-component-icon' : !binding.isMain}"><i class="fa fa-circle fa-fw"/></span>
                         <span ng-show="binding.type == 'valueset'" title="For {{getDatatypeLabel(datatype)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span ng-show="binding.type == 'singlecode'" title="For {{getDatatypeLabel(datatype)}}" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
+                        <span ng-show="binding.type == 'singlecode'" title="For {{getDatatypeLabel(datatype)}}" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
                         <span title="Delete ValueSet Binding" ng-show="binding.isMain" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                     </span>
                 </div>
@@ -985,7 +985,7 @@
                     <span class="badge label-white">
                         <span ng-class="{'label-component-icon' : binding.isMain, 'label-sub-component-icon' : !binding.isMain}"><i class="fa fa-circle fa-fw"/></span>
                         <span ng-show="binding.type == 'valueset'" title="For {{getDatatypeLabel(datatype)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span ng-show="binding.type == 'singlecode'" title="For {{getDatatypeLabel(datatype)}}" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
+                        <span ng-show="binding.type == 'singlecode'" title="For {{getDatatypeLabel(datatype)}}" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
                     </span>
                 </div>
             </div>
@@ -1064,8 +1064,8 @@
                         <span ng-class="{'label-component-icon' : binding.isMain, 'label-sub-component-icon' : !binding.isMain}"><i class="fa fa-circle fa-fw"/></span>
                         <span title="For {{getDatatypeLabel(datatype)}}" ng-show="binding.isMain && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                         <span title="For {{getDatatypeLabel(parentsMap[node.id])}}" ng-show="!binding.isMain && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="For {{getDatatypeLabel(datatype)}}" ng-show="binding.isMain && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
-                        <span title="For {{getDatatypeLabel(parentsMap[node.id])}}" ng-show="!binding.isMain && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
+                        <span title="For {{getDatatypeLabel(datatype)}}" ng-show="binding.isMain && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
+                        <span title="For {{getDatatypeLabel(parentsMap[node.id])}}" ng-show="!binding.isMain && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
                         <span title="Delete ValueSet Binding" ng-show="binding.isMain" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                     </span>
                 </div>
@@ -1154,8 +1154,8 @@
                         <span ng-class="{'label-component-icon' : binding.isMain, 'label-sub-component-icon' : !binding.isMain}"><i class="fa fa-circle fa-fw"/></span>
                         <span title="For {{getDatatypeLabel(datatype)}}" ng-show="binding.isMain && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                         <span title="For {{getDatatypeLabel(parentsMap[node.id])}}" ng-show="!binding.isMain && binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                        <span title="For {{getDatatypeLabel(datatype)}}" ng-show="binding.isMain && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
-                        <span title="For {{getDatatypeLabel(parentsMap[node.id])}}" ng-show="!binding.isMain && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
+                        <span title="For {{getDatatypeLabel(datatype)}}" ng-show="binding.isMain && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
+                        <span title="For {{getDatatypeLabel(parentsMap[node.id])}}" ng-show="!binding.isMain && binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
                     </span>
                 </div>
             </div>

@@ -222,7 +222,7 @@
                                                               
                                                             <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                                                             </span>
-                                                            <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
+                                                            <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
                                                             </span>
                                                         </div>
                                                         <a class="point">
