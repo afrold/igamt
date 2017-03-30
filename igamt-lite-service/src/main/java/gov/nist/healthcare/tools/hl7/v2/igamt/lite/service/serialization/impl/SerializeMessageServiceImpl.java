@@ -33,31 +33,19 @@ import java.util.*;
  * Created by Maxence Lefort on 12/13/16.
  */
 @Service
-public class SerializeMessageServiceImpl implements SerializeMessageService{
+public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProfile implements SerializeMessageService {
 
-    @Autowired
-    SegmentService segmentService;
-    @Autowired
-    SerializeConstraintService serializeConstraintService;
     @Autowired
     SerializationUtil serializationUtil;
 
     @Autowired TableService tableService;
 
-
-    @Autowired
-    SerializeSegmentService serializeSegmentService;
-
-    private List<String> messageSegmentsNameList;
-
-    private int segmentPosition = 1;
-
     @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         String type = "ConformanceStatement";
-        SerializableConstraints serializableConformanceStatements = serializeConstraints(message.getConformanceStatements(),message,type);
+        SerializableConstraints serializableConformanceStatements = serializeConstraints(message.getConformanceStatements(),message.getName(),message.getPosition(),type);
         type = "ConditionPredicate";
-        SerializableConstraints serializablePredicates = serializeConstraints(message.getPredicates(),message,type);
+        SerializableConstraints serializablePredicates = serializeConstraints(message.getPredicates(),message.getName(),message.getPosition(),type);
         int segmentSectionPosition = 1;
         String usageNote, defPreText, defPostText;
         usageNote = defPreText = defPostText = "";
@@ -88,7 +76,7 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         this.segmentPosition = 1;
         UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
         UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
-        UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsExport();
+        UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsMessageExport();
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
             SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
@@ -103,89 +91,4 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         return serializableMessage;
     }
 
-    private void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig) {
-        if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), segmentUsageConfig)) {
-            if (segmentRefOrGroup instanceof SegmentRef) {
-                SegmentLink segmentLink = ((SegmentRef) segmentRefOrGroup).getRef();
-                if (!messageSegmentsNameList.contains(segmentLink.getId())) {
-                    segmentsSection.addSection(serializeSegmentService
-                        .serializeSegment(segmentLink, prefix + String.valueOf(segmentPosition),
-                            segmentPosition, 5, fieldsUsageConfig));
-                    messageSegmentsNameList.add(segmentLink.getId());
-                    segmentPosition++;
-                }
-            } else if (segmentRefOrGroup instanceof Group) {
-            /*String id = UUID.randomUUID().toString();
-            String headerLevel = String.valueOf(4);
-            String title = ((Group) segmentRefOrGroup).getName();
-            SerializableSection serializableSection = new SerializableSection(id,prefix,String.valueOf(position),headerLevel,title);*/
-                for (SegmentRefOrGroup groupSegmentRefOrGroup : ((Group) segmentRefOrGroup)
-                    .getChildren()) {
-                    serializeSegment(groupSegmentRefOrGroup, prefix, segmentsSection,
-                        segmentUsageConfig, fieldsUsageConfig);
-                }
-            }
-        }
-    }
-
-    private SerializableConstraints serializeConstraints(List<? extends Constraint> constraints,Message message,String type){
-        List<SerializableConstraint> serializableConstraintList = new ArrayList<>();
-        for(Constraint constraint : constraints){
-            SerializableConstraint serializableConstraint = new SerializableConstraint(constraint, message.getName());
-            serializableConstraintList.add(serializableConstraint);
-        }
-        String id = UUID.randomUUID().toString();
-        String position = String.valueOf(message.getPosition());
-        String title = message.getName();
-        SerializableConstraints serializableConstraints = new SerializableConstraints(serializableConstraintList,id,position,title,type);
-        return serializableConstraints;
-    }
-
-    private SerializableSegmentRefOrGroup serializeSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig){
-        if(segmentRefOrGroup instanceof SegmentRef){
-            SegmentRef segmentRef = (SegmentRef) segmentRefOrGroup;
-            if(ExportUtil.diplayUsage(segmentRef.getUsage(), segmentUsageConfig)) {
-                return serializeSegmentRef(segmentRef, fieldUsageConfig);
-            }
-        } else if (segmentRefOrGroup instanceof Group){
-            return serializeGroup((Group) segmentRefOrGroup,segmentUsageConfig,fieldUsageConfig);
-        }
-        return null;
-    }
-
-    private SerializableSegmentRefOrGroup serializeSegmentRef(SegmentRef segmentRef, UsageConfig usageConfig){
-        SerializableSegmentRefOrGroup serializableSegmentRefOrGroup;
-        SegmentLink segmentLink = segmentRef.getRef();
-        if(segmentLink != null) {
-            Segment segment = segmentService.findById(segmentLink.getId());
-            if(usageConfig != null) {
-                List<Field> filteredFieldList = new ArrayList<>();
-                for (Field field : segment.getFields()) {
-                    if (ExportUtil.diplayUsage(field.getUsage(), usageConfig)) {
-                        filteredFieldList.add(field);
-                    }
-                }
-                segment.setFields(filteredFieldList);
-            }
-            serializableSegmentRefOrGroup =
-                new SerializableSegmentRefOrGroup(segmentRef, segment);
-            return serializableSegmentRefOrGroup;
-        }
-        return null;
-    }
-
-    private SerializableSegmentRefOrGroup serializeGroup(Group group, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig){
-        SerializableSegmentRefOrGroup serializableGroup;
-        List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
-        for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(
-                segmentRefOrGroup, segmentUsageConfig, fieldUsageConfig);
-            if(serializableSegmentRefOrGroup!=null) {
-                serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
-            }
-        }
-        List<SerializableConstraint> groupConstraints = serializeConstraintService.serializeConstraints(group,group.getName());
-        serializableGroup = new SerializableSegmentRefOrGroup(group,serializableSegmentRefOrGroups,groupConstraints);
-        return serializableGroup;
-    }
 }

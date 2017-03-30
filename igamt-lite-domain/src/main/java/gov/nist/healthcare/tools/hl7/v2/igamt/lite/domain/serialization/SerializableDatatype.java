@@ -134,7 +134,9 @@ public class SerializableDatatype extends SerializableSection {
                             for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetBindings){
                                 if(valueSetOrSingleCodeBinding!=null && valueSetOrSingleCodeBinding.getTableId()!=null&&!valueSetOrSingleCodeBinding.getTableId().isEmpty()) {
                                     Table table = super.findTable(tables, valueSetOrSingleCodeBinding.getTableId());
-                                    bindingIdentifierList.add(table.getBindingIdentifier());
+                                    if(table != null) {
+                                        bindingIdentifierList.add(table.getBindingIdentifier());
+                                    }
                                 }
                             }
                             String bindingIdentifier = StringUtils.join(bindingIdentifierList,",");

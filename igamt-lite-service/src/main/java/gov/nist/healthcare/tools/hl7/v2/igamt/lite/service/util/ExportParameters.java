@@ -29,6 +29,8 @@ public class ExportParameters {
     private String documentTitle = "Implementation Guide";
     private String imageLogo;
     private List<NameAndPositionAndPresence> messageColumns;
+    private List<NameAndPositionAndPresence> compositeProfileColumns;
+    private List<NameAndPositionAndPresence> profileComponentColumns;
     private List<NameAndPositionAndPresence> segmentsColumns;
     private List<NameAndPositionAndPresence> dataTypeColumns;
     private List<NameAndPositionAndPresence> valueSetColumns;
@@ -41,11 +43,13 @@ public class ExportParameters {
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle,String imageLogo) {
-        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,null);
+        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,null,null,null);
     }
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle, String imageLogo, List<NameAndPositionAndPresence> messageColumns,
+        List<NameAndPositionAndPresence> compositeProfileColumns,
+        List<NameAndPositionAndPresence> profileComponentColumns,
         List<NameAndPositionAndPresence> segmentsColumns,
         List<NameAndPositionAndPresence> dataTypeColumns,
         List<NameAndPositionAndPresence> valueSetColumns,
@@ -56,6 +60,8 @@ public class ExportParameters {
         this.documentTitle = documentTitle;
         this.imageLogo = imageLogo;
         this.messageColumns = messageColumns;
+        this.compositeProfileColumns = compositeProfileColumns;
+        this.profileComponentColumns = profileComponentColumns;
         this.segmentsColumns = segmentsColumns;
         this.dataTypeColumns = dataTypeColumns;
         this.valueSetColumns = valueSetColumns;
@@ -110,6 +116,18 @@ public class ExportParameters {
             String messageColumn = "messageColumn";
             for(NameAndPositionAndPresence currentColumn : messageColumns){
                 params.put(messageColumn+currentColumn.getName().replace(" ",""),String.valueOf(currentColumn.isPresent()));
+            }
+        }
+        if(compositeProfileColumns!=null && !compositeProfileColumns.isEmpty()){
+            String compositeProfileColumn = "compositeProfileColumn";
+            for(NameAndPositionAndPresence currentColumn : compositeProfileColumns){
+                params.put(compositeProfileColumn+currentColumn.getName().replace(" ",""),String.valueOf(currentColumn.isPresent()));
+            }
+        }
+        if(profileComponentColumns!=null && !profileComponentColumns.isEmpty()){
+            String profileComponentColumn = "profileComponentColumn";
+            for(NameAndPositionAndPresence currentColumn : profileComponentColumns){
+                params.put(profileComponentColumn+currentColumn.getName().replace(" ",""),String.valueOf(currentColumn.isPresent()));
             }
         }
         if(dataTypeColumns!=null && !dataTypeColumns.isEmpty()){

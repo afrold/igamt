@@ -52,8 +52,19 @@ import java.util.Map;
     @Autowired SerializeTableService serializeTableService;
 
     @Override
-    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig) {
+    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig) {
         Segment segment = segmentService.findById(segmentLink.getId());
+        return this.serializeSegment(segment,segmentLink,prefix,position,headerLevel,segmentUsageConfig);
+    }
+
+    @Override public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
+        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig,
+        Map<String, Segment> compositeProfileSegments) {
+        Segment segment = compositeProfileSegments.get(segmentLink.getId());
+        return this.serializeSegment(segment,segmentLink,prefix,position,headerLevel,segmentUsageConfig);
+    }
+
+    private SerializableSection serializeSegment(Segment segment, SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig) {
         if (segment != null) {
             //Create section node
             String id = segment.getId();
