@@ -79,75 +79,72 @@
                             </md-tab-label>
                             <md-tab-body>
 
-                            <div style="margin-top: 20px">
-                                <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.name.$invalid}">
-                                    <label class="col-md-2 control-label">Name*</label>
+                            <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column" >
+                                <md-content layout-padding>
+                                        <md-input-container class="md-block"  flex-gt-sm ng-class="{'has-error has-feedback' : editForm.name.$invalid}">
+                                            <label style="text-align: left">Name</label>
+                                            <input type="text" disabled name="name"  ng-model="datatype.name" required>
+                                        </md-input-container>
 
-                                    <div class="controls col-md-10">
-                                        <input type="text" disabled name="name" class="form-control" ng-model="datatype.name" required>
-                                    </div>
-                                </div>
-                                <div class="form-group control-group"  ng-hide="datatype.status==='PUBLISHED'">
-                                    <label class="col-md-2 control-label">Extension</label>
 
-                                    <div class="controls col-md-10">
-                                        <input type="text" ng-change="recordChanged()"  ng-class="{'has-error has-feedback' : editForm.ext.$invalid}" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'||versionAndUseMap[datatype.id]" name="ext" id="ext" class="form-control" ng-model="datatype.ext" required aria-describedby="helpBlock2">
-                                        <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', datatypeLibrary.children)">Extension already used</span>
-                                    </div>
-                                </div>
-                                <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.hl7Version.$invalid}" ng-if="datatype.scope==='MASTER'">
-                                    <label class="col-md-2 control-label">Compatibility Versions </label>
-                                    <div class="controls col-md-10">
-                                        <input type="text" disabled name="hl7versions" id="hl7Versions" class="form-control" ng-model="datatype.hl7versions" required aria-describedby="helpBlock2">
-                                    </div>
-                                </div>
+                                        <md-input-container class="md-block"  flex-gt-sm ng-hide="datatype.status==='PUBLISHED'">
+                                            <label>Extension</label>
+                                            <input type="text" ng-change="recordChanged()"  ng-class="{'has-error has-feedback' : editForm.ext.$invalid}" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'||versionAndUseMap[datatype.id]" name="ext" id="ext" ng-model="datatype.ext" required aria-describedby="helpBlock2">
+                                            <span id="helpBlock2" class="help-block" style="color:red" ng-show="isDuplicatedTwoContexts(datatype, 'name', 'ext', datatypeLibrary.children)">Extension already used</span>
+                                        </md-input-container>
 
-                                <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.description.$invalid}">
-                                    <label class="col-md-2 control-label">Description</label>
+                                          <md-input-container class="md-block" flex-gt-sm  ng-class="{'has-error has-feedback' : editForm.hl7Version.$invalid}" ng-if="datatype.scope==='MASTER'">
 
-                                    <div class="controls col-md-10">
-                                        <input type="text" disabled ng-change="setDirty()" name="description" class="form-control" ng-model="datatype.description" required>
-                                    </div>
-                                </div>
-                                <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.description.$invalid}" ng-if="versionAndUseMap[datatype.id].publicationDate">
-                                    <label class="col-md-2 control-label">Publication Date </label>
+                                        <label>Compatibility Versions</label>
+                                            <input type="text" disabled name="hl7versions" id="hl7Versions" ng-model="datatype.hl7versions" required aria-describedby="helpBlock2">
+                                         </md-input-container>
 
-                                    <div class="controls col-md-10">
-                                        <input type="text" disabled ng-change="setDirty()" name="description" class="form-control" ng-model="versionAndUseMap[datatype.id].publicationDate" required>
-                                    </div>
+
+                                         <md-input-container class="md-block"  ng-class="{'has-error has-feedback' : editForm.description.$invalid}">
+                                            <label>Description</label>
+                                            <input type="text" disabled ng-change="setDirty()" name="description" ng-model="datatype.description" required>
+                                        </md-input-container>
+
+                                     <div layout-gt-xs="row" ng-class="{'has-error has-feedback' : editForm.description.$invalid}" ng-if="versionAndUseMap[datatype.id].publicationDate">
+                                        <md-input-container class="md-block">
+                                            <label>Publication Date</label>
+                                            <input type="text" disabled ng-change="setDirty()" name="description" ng-model="versionAndUseMap[datatype.id].publicationDate" required>
+                                        </md-input-container>
+
                                 </div>
 
-    
-                                <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.purposeUse.$invalid}">
-                                    <label class="col-md-2 control-label">Purpose and Use</label>
 
-                                    <div class="controls col-md-10">
+                                    <div layout-gt-xs="row"  ng-class="{'igl-has-error has-feedback' : editForm.purposeUse.$invalid}">
+                                        <md-input-container class="md-block">
+                                            <label>Purpose and Use</label>
+                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-change="setDirty()" name="purposeUse" id="purposeUse" ng-model="datatype.purposeAndUse"
+                                            />
+                                        </md-input-container>
 
-                                        <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-change="setDirty()" name="purposeUse" id="purposeUse" class="form-control" ng-model="datatype.purposeAndUse"
-                                        />
-                                    </div>
                                 </div>
-                                <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.comment.$invalid}">
-                                    <label class="col-md-2 control-label">Comment</label>
+                                    <div layout-gt-xs="row"   ng-class="{'has-error has-feedback' : editForm.comment.$invalid}">
 
-                                    <div class="controls col-md-10">
-                                        <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)" name="comment" id="comment" class="form-control" ng-model="datatype.comment"
-                                        />
-                                    </div>
+                                        <md-input-container class="md-block">
+                                            <label>Comment</label>
+                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'" ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)" name="comment" id="comment" ng-model="datatype.comment"
+                                            />
+                                        </md-input-container>
+
                                 </div>
-                                <div class="form-group control-group" ng-class="{'has-error has-feedback' : editForm.text.$invalid}">
-                                    <label class="col-md-2 control-label">Usage Note </label>
+                                    <div layout-gt-xs="row" ng-class="{'has-error has-feedback' : editForm.text.$invalid}">
 
-                                    <div class="controls col-md-10">
-                                        <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
-                                            <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>
-                                        </div>
-                                        <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
-                                            <div class="fr-view">
-                                                <div froala-view="datatype.usageNote"></div>
+                                        <md-input-container class="md-block">
+                                            <label>Usage Note </label>
+                                            <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
+                                                <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>
                                             </div>
-                                        </div>
-                                    </div>
+                                            <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
+                                                <div class="fr-view">
+                                                    <div froala-view="datatype.usageNote"></div>
+                                                </div>
+                                            </div>
+                                        </md-input-container>
+
                                 </div>
 
                                 <div class="form-group control-group" ng-show="datatype.scope === 'HL7STANDARD' && datatype.hl7Section != null && datatype.hl7Section != ''">

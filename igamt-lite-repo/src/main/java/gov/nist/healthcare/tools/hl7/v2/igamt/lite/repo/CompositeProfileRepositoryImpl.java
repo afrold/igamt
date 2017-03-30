@@ -26,7 +26,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStruct
 public class CompositeProfileRepositoryImpl implements CompositeProfileOperations {
 
 
-  private Logger log = LoggerFactory.getLogger(CompositeMessageRepositoryImpl.class);
+  private Logger log = LoggerFactory.getLogger(CompositeProfileRepositoryImpl.class);
 
   @Autowired
   private MongoOperations mongo;
