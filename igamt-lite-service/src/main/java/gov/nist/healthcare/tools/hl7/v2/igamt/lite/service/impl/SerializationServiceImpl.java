@@ -167,30 +167,36 @@ import java.util.*;
             }
             serializableSections.getRootSections().appendChild(textElement);
         }
-
+        int currentPosition = 1;
         //Profile Component serialization
         if(exportConfig.isIncludePC()){
-            SerializableSection profileComponentSection = this.serializeProfileComponent(profile.getProfileComponentLibrary(),profile.getSectionPosition());
+            SerializableSection profileComponentSection = this.serializeProfileComponent(profile.getProfileComponentLibrary(),currentPosition);
             if(profileComponentSection!=null) {
                 profileSection.addSection(profileComponentSection);
+                currentPosition ++;
             }
         }
 
         //Message Serialization
-        SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version());
-        profileSection.addSection(messageSection);
+        SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version(),currentPosition);
+        if(messageSection!=null) {
+            profileSection.addSection(messageSection);
+            currentPosition ++;
+        }
 
         //Composite profiles serialization
-        SerializableSection compositeProfilesSection = this.serializeCompositeProfiles(profile, serializationLayout,igDocument.getMetaData().getHl7Version());
+        SerializableSection compositeProfilesSection = this.serializeCompositeProfiles(profile, serializationLayout,igDocument.getMetaData().getHl7Version(),currentPosition);
         if(compositeProfilesSection!=null) {
             profileSection.addSection(compositeProfilesSection);
+            currentPosition ++;
         }
 
         //Segments serialization
         UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
-        SerializableSection segmentsSection = this.serializeSegments(profile,fieldsUsageConfig);
-        if(!serializationLayout.equals(SerializationLayout.PROFILE)) {
+        SerializableSection segmentsSection = this.serializeSegments(profile,fieldsUsageConfig, currentPosition);
+        if(!serializationLayout.equals(SerializationLayout.PROFILE) && segmentsSection != null) {
             profileSection.addSection(segmentsSection);
+            currentPosition ++;
         }
 
         //Datatypes serialization
@@ -198,18 +204,26 @@ import java.util.*;
         if(serializationLayout.equals(SerializationLayout.PROFILE)) {
             serializeMaster = false;
         }
-        SerializableSection datatypeSection = this.serializeDatatypes(profile.getDatatypeLibrary(),profile.getSectionPosition(),serializeMaster);
-        profileSection.addSection(datatypeSection);
+        SerializableSection datatypeSection = this.serializeDatatypes(profile.getDatatypeLibrary(),currentPosition,serializeMaster);
+        if(datatypeSection != null) {
+            profileSection.addSection(datatypeSection);
+            currentPosition ++;
+        }
 
         //Value sets serialization
-        SerializableSection valueSetsSection = this.serializeValueSets(profile.getTableLibrary(),profile.getSectionPosition());
-        profileSection.addSection(valueSetsSection);
+        SerializableSection valueSetsSection = this.serializeValueSets(profile.getTableLibrary(),currentPosition);
+        if(valueSetsSection != null) {
+            profileSection.addSection(valueSetsSection);
+            currentPosition ++;
+        }
 
         SerializableSection constraintInformationSection =
             this.serializeConstraints(profile, messageSection.getSerializableSectionList(), segmentsSection.getSerializableSectionList(),
-                datatypeSection.getSerializableSectionList());
-        profileSection.addSection(constraintInformationSection);
-
+                datatypeSection.getSerializableSectionList(),currentPosition);
+        if(constraintInformationSection!=null) {
+            profileSection.addSection(constraintInformationSection);
+            currentPosition++;
+        }
 
 
         serializableSections.addSection(profileSection);
@@ -420,9 +434,9 @@ import java.util.*;
 
 
 
-    private SerializableSection serializeMessages(Profile profile, SerializationLayout serializationLayout, String hl7Version) {
+    private SerializableSection serializeMessages(Profile profile, SerializationLayout serializationLayout, String hl7Version, int position) {
         String id = profile.getMessages().getId();
-        String position = String.valueOf(profile.getMessages().getSectionPosition());
+        String sectionPosition = String.valueOf(position);
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
             .valueOf(profile.getMessages().getSectionPosition() + 1);
         String headerLevel = String.valueOf(2);
@@ -431,7 +445,7 @@ import java.util.*;
             title = profile.getMessages().getSectionTitle();
         }
         SerializableSection messageSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
         if (profile.getMessages().getSectionContents() != null && !profile.getMessages()
             .getSectionContents().isEmpty()) {
             messageSection.addSectionContent(
@@ -445,10 +459,10 @@ import java.util.*;
         return messageSection;
     }
 
-    private SerializableSection serializeCompositeProfiles(Profile profile, SerializationLayout serializationLayout, String hl7Version) {
+    private SerializableSection serializeCompositeProfiles(Profile profile, SerializationLayout serializationLayout, String hl7Version, int position) {
         if(profile.getCompositeProfiles()!=null && !profile.getCompositeProfiles().getChildren().isEmpty()) {
             String id = profile.getCompositeProfiles().getId();
-            String position = String.valueOf(profile.getCompositeProfiles().getSectionPosition());
+            String sectionPosition = String.valueOf(position);
             String prefix = "";
             String headerLevel = String.valueOf(2);
             String title = "";
@@ -457,7 +471,7 @@ import java.util.*;
             } else {
                 title = "Composite Profiles";
             }
-            SerializableSection compositeProfileSection = new SerializableSection(id, prefix, position, headerLevel, title);
+            SerializableSection compositeProfileSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
             if (profile.getCompositeProfiles().getSectionContents() != null && !profile
                 .getCompositeProfiles().getSectionContents().isEmpty()) {
                 compositeProfileSection.addSectionContent(
@@ -536,9 +550,9 @@ import java.util.*;
         }
     }
 
-    private SerializableSection serializeSegments(Profile profile, UsageConfig fieldsUsageConfig) {
+    private SerializableSection serializeSegments(Profile profile, UsageConfig fieldsUsageConfig, int position) {
         String id = profile.getSegmentLibrary().getId();
-        String position = String.valueOf(profile.getSegmentLibrary().getSectionPosition());
+        String sectionPosition = String.valueOf(position);
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
             .valueOf(profile.getSegmentLibrary().getSectionPosition() + 1);
         String headerLevel = String.valueOf(2);
@@ -547,7 +561,7 @@ import java.util.*;
             title = profile.getSegmentLibrary().getSectionTitle();
         }
         SerializableSection segmentsSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
         if (profile.getSegmentLibrary().getSectionContents() != null && !profile.getSegmentLibrary()
             .getSectionContents().isEmpty()) {
             segmentsSection.addSectionContent(
@@ -608,81 +622,80 @@ import java.util.*;
 
     private SerializableSection serializeConstraints(Profile profile,
         List<SerializableSection> messages, List<SerializableSection> segments,
-        List<SerializableSection> datatypes) {
+        List<SerializableSection> datatypes, int position) {
 
         String id = UUID.randomUUID().toString();
-        String position = String.valueOf(5);
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String.valueOf(5);
         String headerLevel = String.valueOf(2);
         String title = "Conformance information";
         SerializableSection conformanceInformationSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, String.valueOf(position), headerLevel, title);
 
         id = UUID.randomUUID().toString();
-        position = String.valueOf(1);
+        String sectionPosition = String.valueOf(1);
         prefix = conformanceInformationSection.getPrefix() + "."
             + String.valueOf(1);
         headerLevel = String.valueOf(3);
         title = "Conformance statements";
         SerializableSection conformanceStatementsSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
 
         id = UUID.randomUUID().toString();
-        position = String.valueOf(2);
+        sectionPosition = String.valueOf(2);
         prefix = conformanceInformationSection.getPrefix() + "."
             + String.valueOf(2);
         headerLevel = String.valueOf(3);
         title = "Conditional predicates";
         SerializableSection conditionalPredicatesSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
 
         id = UUID.randomUUID().toString();
-        position = String.valueOf(1);
+        sectionPosition = String.valueOf(1);
         prefix = conformanceStatementsSection.getPrefix() + "." + String.valueOf(1);
         headerLevel = String.valueOf(4);
         title = "Conformance profile level";
         SerializableSection profileLevelConformanceStatementsSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
 
         id = UUID.randomUUID().toString();
-        position = String.valueOf(1);
+        sectionPosition = String.valueOf(1);
         prefix = conditionalPredicatesSection.getPrefix() + "." + String.valueOf(1);
         headerLevel = String.valueOf(4);
         title = "Conformance profile level";
         SerializableSection profileLevelPredicatesSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
 
         id = UUID.randomUUID().toString();
-        position = String.valueOf(2);
+        sectionPosition = String.valueOf(2);
         prefix = conformanceStatementsSection.getPrefix() + "." + String.valueOf(2);
         headerLevel = String.valueOf(4);
         title = "Segment level";
         SerializableSection segmentLevelConformanceStatementSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
 
         id = UUID.randomUUID().toString();
-        position = String.valueOf(2);
+        sectionPosition = String.valueOf(2);
         prefix = conditionalPredicatesSection.getPrefix() + "." + String.valueOf(2);
         headerLevel = String.valueOf(4);
         title = "Segment level";
         SerializableSection segmentLevelPredicatesSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
 
         id = UUID.randomUUID().toString();
-        position = String.valueOf(2);
+        sectionPosition = String.valueOf(2);
         prefix = conformanceStatementsSection.getPrefix() + "." + String.valueOf(3);
         headerLevel = String.valueOf(4);
         title = "Datatype level";
         SerializableSection datatypeLevelConformanceStatementSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
 
         id = UUID.randomUUID().toString();
-        position = String.valueOf(2);
+        sectionPosition = String.valueOf(2);
         prefix = conditionalPredicatesSection.getPrefix() + "." + String.valueOf(3);
         headerLevel = String.valueOf(4);
         title = "Datatype level";
         SerializableSection datatypeLevelPredicatesSection =
-            new SerializableSection(id, prefix, position, headerLevel, title);
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
         Integer currentConformanceStatementPosition = 1;
         Integer currentPredicatePosition = 1;
         for (SerializableSection serializableMessageSection : messages) {
@@ -690,7 +703,7 @@ import java.util.*;
                 SerializableMessage serializableMessage =
                     (SerializableMessage) serializableMessageSection;
                 id = UUID.randomUUID().toString();
-                position = String.valueOf(
+                sectionPosition = String.valueOf(
                     ((SerializableMessage) serializableMessageSection).getMessage().getPosition());
                 prefix = profileLevelConformanceStatementsSection.getPrefix() + "." + String.valueOf(currentConformanceStatementPosition);
                 headerLevel = String.valueOf(5);
@@ -698,7 +711,7 @@ import java.util.*;
                 SerializableConstraints serializableConformanceStatement = serializableMessage.getSerializableConformanceStatements();
                 if(serializableConformanceStatement.getConstraints().size()>0) {
                     SerializableSection
-                        conformanceStatementsProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, position, headerLevel, title);
+                        conformanceStatementsProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
                     serializableConformanceStatement.setTitle("");
                     conformanceStatementsProfileLevelConformanceStatementsSection
                         .addSection(serializableConformanceStatement);
@@ -707,13 +720,13 @@ import java.util.*;
                     currentConformanceStatementPosition+=1;
                 }
                 id = UUID.randomUUID().toString();
-                position = String.valueOf(currentPredicatePosition);
+                sectionPosition = String.valueOf(currentPredicatePosition);
                 prefix = profileLevelPredicatesSection.getPrefix() + "." + String.valueOf(currentPredicatePosition);
                 headerLevel = String.valueOf(5);
                 title = serializableMessage.getMessage().getName();
                 SerializableConstraints serializablePredicate = serializableMessage.getSerializablePredicates();
                 if(serializablePredicate.getConstraints().size()>0) {
-                    SerializableSection predicatesProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, position, headerLevel, title);
+                    SerializableSection predicatesProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
                     serializablePredicate.setTitle("");
                     predicatesProfileLevelConformanceStatementsSection
                         .addSection(serializablePredicate);
@@ -746,13 +759,13 @@ import java.util.*;
                             }
                             if (segmentConformanceStatements.size() > 0) {
                                 id = UUID.randomUUID().toString();
-                                position = String.valueOf(currentConformanceStatementPosition);
+                                sectionPosition = String.valueOf(currentConformanceStatementPosition);
                                 prefix = segmentLevelConformanceStatementSection.getPrefix() + "." + currentConformanceStatementPosition;
                                 headerLevel = String.valueOf(5);
                                 title = serializableSegment.getSegment().getLabel() + " - " + serializableSegment.getSegment().getDescription();
                                 SerializableSection
                                     conformanceStatementsSegmentLevelConformanceStatementsSection =
-                                    new SerializableSection(id, prefix, position, headerLevel, title);
+                                    new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
                                 SerializableConstraints serializableConformanceStatementConstraints =
                                     new SerializableConstraints(segmentConformanceStatements, id, "", "",
                                         "ConformanceStatement");
@@ -764,13 +777,13 @@ import java.util.*;
                             }
                             if (segmentPredicates.size() > 0) {
                                 id = UUID.randomUUID().toString();
-                                position = String.valueOf(currentPredicatePosition);
+                                sectionPosition = String.valueOf(currentPredicatePosition);
                                 prefix = segmentLevelPredicatesSection.getPrefix() + "." + currentPredicatePosition;
                                 headerLevel = String.valueOf(5);
                                 title = serializableSegment.getSegment().getLabel() + " - " + serializableSegment.getSegment().getDescription();
                                 SerializableSection
                                     predicatesSegmentLevelConformanceStatementsSection =
-                                    new SerializableSection(id, prefix, position, headerLevel, title);
+                                    new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
                                 SerializableConstraints serializablePredicateConstraints =
                                     new SerializableConstraints(segmentPredicates, id, "", "",
                                         "ConditionPredicate");
@@ -803,12 +816,12 @@ import java.util.*;
                     }
                     if(datatypeConformanceStatements.size()>0) {
                         id = UUID.randomUUID().toString();
-                        position = String.valueOf(currentConformanceStatementPosition);
+                        sectionPosition = String.valueOf(currentConformanceStatementPosition);
                         prefix = datatypeLevelConformanceStatementSection.getPrefix()+"."+String.valueOf(currentConformanceStatementPosition);
                         headerLevel = String.valueOf(5);
                         title = serializableDatatype.getDatatype().getName() + " - "+serializableDatatype.getDatatype().getDescription();
                         SerializableSection
-                            conformanceStatementsDatatypeLevelConformanceStatementsSection = new SerializableSection(id, prefix, position, headerLevel, title);
+                            conformanceStatementsDatatypeLevelConformanceStatementsSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
                         SerializableConstraints serializableConformanceStatementConstraints =
                             new SerializableConstraints(datatypeConformanceStatements, id, "", "",
                                 "ConformanceStatement");
@@ -819,12 +832,12 @@ import java.util.*;
                     }
                     if(datatypePredicates.size()>0) {
                         id = UUID.randomUUID().toString();
-                        position = String.valueOf(currentPredicatePosition);
+                        sectionPosition = String.valueOf(currentPredicatePosition);
                         prefix = datatypeLevelPredicatesSection.getPrefix() + "." + String.valueOf(currentPredicatePosition);
                         headerLevel = String.valueOf(5);
                         title = serializableDatatype.getDatatype().getName() + " - "+serializableDatatype.getDatatype().getDescription();
                         SerializableSection
-                            predicatesDatatypeLevelConformanceStatementsSection = new SerializableSection(id, prefix, position, headerLevel, title);
+                            predicatesDatatypeLevelConformanceStatementsSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
                         SerializableConstraints serializablePredicateConstraints =
                             new SerializableConstraints(datatypePredicates, id, "", "",
                                 "ConditionPredicate");
