@@ -263,15 +263,15 @@
                                                                 <span class="badge label-white">
                                                                 <span ng-class="{'label-message-icon' : binding.bindingFrom == 'message', 'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
 
-                                                                <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                                                                </span>
-                                                                <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}({{binding.code.codeSystem}})</span>
-                                                                </span>
-                                                            </div>
-                                                            <a class="point">
-                                                                <span ng-click="editModalBindingForMsg(node)"><i class="fa fa-plus fa-fw"></i></span>
-                                                                <a ng-click="cancelBinding(node)"><i class="fa fa-remove fa-fw"></i></a>
-
+                                                              
+                                                            <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                                                            </span>
+                                                            <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
+                                                            </span>
+                                                        </div>
+                                                        <a class="point">
+                                                            <span ng-click="editModalBindingForMsg(node)"><i class="fa fa-plus fa-fw"></i></span>
+                                                            <a ng-click="cancelBinding(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                             </a>
                                                         </div>
                                                     </td>
