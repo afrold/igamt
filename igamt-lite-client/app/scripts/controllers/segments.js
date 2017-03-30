@@ -579,10 +579,12 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         return false;
     };
 
-    $scope.hasSingleCode = function(node) {
+    $scope.isAvailableConstantValue = function(node) {
+        if($scope.hasChildren(node)) return false;
         var bindings = $scope.findingBindings(node);
-        if(bindings && bindings.length > 0 && bindings[0].type == 'singlecode') return true;
-        return false;
+        if(bindings && bindings.length > 0) return false;
+        if($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
+        return true;
     };
 
 
