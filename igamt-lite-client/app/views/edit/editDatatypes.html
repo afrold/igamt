@@ -879,8 +879,8 @@
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node) || hasSingleCode(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node) && !hasSingleCode(node)">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="isAvailableConstantValue(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-component-icon' : node.sev.isMain, 'label-sub-component-icon' : !node.sev.isMain}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
@@ -987,8 +987,8 @@
                 </div>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node) || hasSingleCode(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node) && !hasSingleCode(node)">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="isAvailableConstantValue(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-component-icon' : node.sev.isMain, 'label-sub-component-icon' : !node.sev.isMain}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
@@ -1072,8 +1072,8 @@
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node) || hasSingleCode(node, parentsMap[node.id])}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node) && !hasSingleCode(node, parentsMap[node.id])">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node, parentsMap[node.id])}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="isAvailableConstantValue(node, parentsMap[node.id])">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-component-icon' : node.sev.isMain, 'label-sub-component-icon' : !node.sev.isMain}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>
@@ -1157,8 +1157,8 @@
                 </div>
             </div>
         </td>
-        <td ng-class="{'emptyCol':hasChildren(node) || hasSingleCode(node, parentsMap[node.id])}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-            <div ng-show="!hasChildren(node) && !hasSingleCode(node, parentsMap[node.id])">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node, parentsMap[node.id])}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            <div ng-show="isAvailableConstantValue(node, parentsMap[node.id])">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-component-icon' : node.sev.isMain, 'label-sub-component-icon' : !node.sev.isMain}"><i class="fa fa-circle fa-fw"/></span>
                     <span>{{node.sev.value}}</span>

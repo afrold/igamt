@@ -723,10 +723,12 @@ angular.module('igl')
             return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype.id) != undefined && $rootScope.getDatatype(node.datatype.id).components != null && $rootScope.getDatatype(node.datatype.id).components.length > 0;
         };
 
-        $scope.hasSingleCode = function(node, parent) {
+        $scope.isAvailableConstantValue = function(node, parent) {
             var bindings = $scope.findingBindings(node.path, parent);
-            if(bindings && bindings.length > 0 && bindings[0].type == 'singlecode') return true;
-            return false;
+            if($scope.hasChildren(node)) return false;
+            if(bindings && bindings.length > 0) return false;
+            if($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
+            return true;
         };
 
         $scope.validateLabel = function(label, name) {
