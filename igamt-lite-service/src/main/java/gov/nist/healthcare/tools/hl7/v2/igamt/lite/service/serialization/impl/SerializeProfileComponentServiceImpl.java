@@ -2,12 +2,18 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeProfileComponentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -26,6 +32,7 @@ import org.springframework.stereotype.Service;
 public class SerializeProfileComponentServiceImpl implements SerializeProfileComponentService {
 
     @Autowired ProfileComponentService profileComponentService;
+    @Autowired SerializationUtil serializationUtil;
 
     @Override public SerializableSection serializeProfileComponent(
         ProfileComponentLink profileComponentLink, Integer position) {
@@ -35,9 +42,18 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
                 String id = profileComponent.getId();
                 String segmentPosition = String.valueOf(position);
                 String sectionHeaderLevel = String.valueOf(3);
-                String title = profileComponentLink.getName() + " - " + profileComponent.getDescription();
+                String title = profileComponentLink.getName();
                 SerializableSection serializableSection = new SerializableSection(id,profileComponent.getName(),segmentPosition,sectionHeaderLevel,title);
-                SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponentLink.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent);
+                Map<SubProfileComponentAttributes,String> definitionTexts = new HashMap<>();
+                for(SubProfileComponent subProfileComponent : profileComponent.getChildren()){
+                    if(subProfileComponent.getAttributes()!=null && subProfileComponent.getAttributes().getText()!=null && !subProfileComponent.getAttributes().getText().isEmpty()){
+                        String definitionText = serializationUtil.cleanRichtext(subProfileComponent.getAttributes().getText());
+                        if(definitionText != null && !definitionText.isEmpty()){
+                            definitionTexts.put(subProfileComponent.getAttributes(),definitionText);
+                        }
+                    }
+                }
+                SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponentLink.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent,definitionTexts);
                 if(serializableProfileComponent != null) {
                     serializableSection.addSection(serializableProfileComponent);
                     return serializableSection;

@@ -6,6 +6,7 @@ import nu.xom.Element;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -23,19 +24,27 @@ import java.util.ArrayList;
 public class SerializableProfileComponent extends SerializableSection {
 
     private ProfileComponent profileComponent;
+    Map<SubProfileComponentAttributes,String> definitionTexts;
 
     public SerializableProfileComponent(String id, String prefix, String position,
-        String headerLevel, String title, ProfileComponent profileComponent) {
+        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts) {
         super(id, prefix, position, headerLevel, title);
         this.profileComponent = profileComponent;
+        this.definitionTexts = definitionTexts;
     }
 
     @Override public Element serializeElement() {
         Element profileComponentElement = new Element("ProfileComponent");
         profileComponentElement.addAttribute(new Attribute("ID", this.profileComponent.getId() + ""));
         profileComponentElement.addAttribute(new Attribute("Name", this.profileComponent.getName() + ""));
-        if (this.profileComponent.getDescription() != null && !this.profileComponent.getDescription().equals(""))
-            profileComponentElement.addAttribute(new Attribute("Description", this.profileComponent.getDescription()));
+        if (this.profileComponent.getDescription() != null && !this.profileComponent.getDescription().equals(
+            "")) {
+            profileComponentElement
+                .addAttribute(new Attribute("Description", this.profileComponent.getDescription()));
+        } else {
+            profileComponentElement
+                .addAttribute(new Attribute("Description", new String()));
+        }
         if (this.profileComponent.getComment() != null && !this.profileComponent.getComment().isEmpty()) {
             profileComponentElement.addAttribute(new Attribute("Comment", this.profileComponent.getComment()));
         }
@@ -83,7 +92,7 @@ public class SerializableProfileComponent extends SerializableSection {
                         subProfileComponentElement.addAttribute(new Attribute("ConfLength",subProfileComponentAttributes.getConfLength()));
                     }
                     if(subProfileComponentAttributes.getDatatype()!=null){
-                        subProfileComponentElement.addAttribute(new Attribute("Datatype",subProfileComponentAttributes.getDatatype().getExt()));
+                        subProfileComponentElement.addAttribute(new Attribute("Datatype",subProfileComponentAttributes.getDatatype().getLabel()));
                     }
                     if(subProfileComponentAttributes.getTables()!=null && !subProfileComponentAttributes.getTables().isEmpty()){
                         ArrayList<String> valueSets = new ArrayList<>();
@@ -96,8 +105,8 @@ public class SerializableProfileComponent extends SerializableSection {
                     if(subProfileComponentAttributes.getComment()!=null){
                         subProfileComponentElement.addAttribute(new Attribute("Comment",subProfileComponentAttributes.getComment()));
                     }
-                    if(subProfileComponentAttributes.getText()!=null){
-                        subProfileComponentElement.addAttribute(new Attribute("DefinitionText",subProfileComponentAttributes.getText()));
+                    if(definitionTexts!=null && definitionTexts.containsKey(subProfileComponentAttributes)){
+                        subProfileComponentElement.addAttribute(new Attribute("DefinitionText",definitionTexts.get(subProfileComponentAttributes)));
                     }
                     profileComponentElement.appendChild(subProfileComponentElement);
                 }

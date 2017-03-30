@@ -175,7 +175,7 @@
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.definitionText = 'true'">
                                 <xsl:element name="td">
-                                    <xsl:value-of select="@DefinitionText"/>
+                                    <xsl:value-of disable-output-escaping="yes" select="@DefinitionText"/>
                                 </xsl:element>
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.comment = 'true'">
