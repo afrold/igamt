@@ -37,6 +37,19 @@
     <xsl:variable name="columnDisplay.message.flavor" select="$messageColumnFlavor"/>
     <xsl:param name="messageColumnComment" select="'true'"/>
     <xsl:variable name="columnDisplay.message.comment" select="$messageColumnComment"/>
+    <!-- Composite Profiles -->
+    <xsl:param name="compositeProfileColumnName" select="'true'"/>
+    <xsl:variable name="columnDisplay.compositeProfile.name" select="$compositeProfileColumnName"/>
+    <xsl:param name="compositeProfileColumnUsage" select="'true'"/>
+    <xsl:variable name="columnDisplay.compositeProfile.usage" select="$compositeProfileColumnUsage"/>
+    <xsl:param name="compositeProfileColumnCardinality" select="'true'"/>
+    <xsl:variable name="columnDisplay.compositeProfile.cardinality" select="$compositeProfileColumnCardinality"/>
+    <xsl:param name="compositeProfileColumnSegment" select="'true'"/>
+    <xsl:variable name="columnDisplay.compositeProfile.segment" select="$compositeProfileColumnSegment"/>
+    <xsl:param name="compositeProfileColumnFlavor" select="'true'"/>
+    <xsl:variable name="columnDisplay.compositeProfile.flavor" select="$compositeProfileColumnFlavor"/>
+    <xsl:param name="compositeProfileColumnComment" select="'true'"/>
+    <xsl:variable name="columnDisplay.compositeProfile.comment" select="$compositeProfileColumnComment"/>
     <!-- Segments -->
     <xsl:param name="segmentColumnName" select="'true'"/>
     <xsl:variable name="columnDisplay.segment.name" select="$segmentColumnName"/>
