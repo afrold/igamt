@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeProfileComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 
     @Autowired ProfileComponentService profileComponentService;
 
-    @Override public SerializableProfileComponent serializeProfileComponent(
+    @Override public SerializableSection serializeProfileComponent(
         ProfileComponentLink profileComponentLink, Integer position) {
         if(profileComponentLink!=null){
             ProfileComponent profileComponent = profileComponentService.findById(profileComponentLink.getId());
@@ -35,7 +36,12 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
                 String segmentPosition = String.valueOf(position);
                 String sectionHeaderLevel = String.valueOf(3);
                 String title = profileComponentLink.getName() + " - " + profileComponent.getDescription();
-                return new SerializableProfileComponent(id, profileComponentLink.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent);
+                SerializableSection serializableSection = new SerializableSection(id,profileComponent.getName(),segmentPosition,sectionHeaderLevel,title);
+                SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponentLink.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent);
+                if(serializableProfileComponent != null) {
+                    serializableSection.addSection(serializableProfileComponent);
+                    return serializableSection;
+                }
             }
         }
         return null;

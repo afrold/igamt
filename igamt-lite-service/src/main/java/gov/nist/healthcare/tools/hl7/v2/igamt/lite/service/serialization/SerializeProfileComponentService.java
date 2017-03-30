@@ -1,7 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -18,5 +18,5 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
  */
 public interface SerializeProfileComponentService {
 
-    public SerializableProfileComponent serializeProfileComponent(ProfileComponentLink profileComponentLink, Integer position);
+    public SerializableSection serializeProfileComponent(ProfileComponentLink profileComponentLink, Integer position);
 }

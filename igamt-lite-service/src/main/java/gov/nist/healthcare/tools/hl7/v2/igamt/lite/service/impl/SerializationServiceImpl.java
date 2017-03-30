@@ -233,6 +233,8 @@ import java.util.*;
             String title = "";
             if (profileComponentLibrary.getSectionTitle() != null) {
                 title = profileComponentLibrary.getSectionTitle();
+            } else {
+                title = "Profile Components";
             }
             SerializableSection profileComponentSection =
                 new SerializableSection(id, prefix, position, headerLevel, title);
@@ -242,9 +244,9 @@ import java.util.*;
             }
             int currentPosition = 1;
             for(ProfileComponentLink profileComponentLink : profileComponentLibrary.getChildren()){
-                SerializableProfileComponent serializableProfileComponent = serializeProfileComponentService.serializeProfileComponent(profileComponentLink,currentPosition);
-                if(serializableProfileComponent!=null){
-                    profileComponentSection.addSection(serializableProfileComponent);
+                SerializableSection serializableProfileComponentSection = serializeProfileComponentService.serializeProfileComponent(profileComponentLink,currentPosition);
+                if(serializableProfileComponentSection!=null){
+                    profileComponentSection.addSection(serializableProfileComponentSection);
                     currentPosition++;
                 }
             }

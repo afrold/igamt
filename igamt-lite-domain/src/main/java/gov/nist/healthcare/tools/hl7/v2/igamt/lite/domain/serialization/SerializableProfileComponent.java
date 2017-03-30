@@ -49,6 +49,9 @@ public class SerializableProfileComponent extends SerializableSection {
                         .isEmpty()) {
                         subProfileComponentElement
                             .addAttribute(new Attribute("Name", subProfileComponent.getName()));
+                    } else if(subProfileComponentAttributes.getRef()!=null && subProfileComponentAttributes.getRef().getLabel() != null){
+                        subProfileComponentElement
+                            .addAttribute(new Attribute("Name", subProfileComponentAttributes.getRef().getLabel()));
                     }
                     if (subProfileComponent.getFrom() != null && !subProfileComponent.getFrom()
                         .isEmpty()) {
@@ -59,6 +62,9 @@ public class SerializableProfileComponent extends SerializableSection {
                         .isEmpty()) {
                         subProfileComponentElement
                             .addAttribute(new Attribute("Path", subProfileComponent.getPath()));
+                    }
+                    if(subProfileComponentAttributes.getUsage()!=null){
+                        subProfileComponentElement.addAttribute(new Attribute("Usage",subProfileComponentAttributes.getUsage().value()));
                     }
                     if(subProfileComponentAttributes.getMin()!=null){
                         subProfileComponentElement.addAttribute(new Attribute("Min",String.valueOf(subProfileComponentAttributes.getMin())));
@@ -90,8 +96,8 @@ public class SerializableProfileComponent extends SerializableSection {
                     if(subProfileComponentAttributes.getComment()!=null){
                         subProfileComponentElement.addAttribute(new Attribute("Comment",subProfileComponentAttributes.getComment()));
                     }
-                    if(subProfileComponentAttributes.getRef()!=null){
-                        subProfileComponentElement.addAttribute(new Attribute("Segment",subProfileComponentAttributes.getRef().getExt()));
+                    if(subProfileComponentAttributes.getText()!=null){
+                        subProfileComponentElement.addAttribute(new Attribute("DefinitionText",subProfileComponentAttributes.getText()));
                     }
                     profileComponentElement.appendChild(subProfileComponentElement);
                 }
