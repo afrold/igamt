@@ -85,8 +85,6 @@
                                             <label style="text-align: left">Name</label>
                                             <input type="text" disabled name="name"  ng-model="datatype.name" required>
                                         </md-input-container>
-
-
                                         <md-input-container class="md-block"  flex-gt-sm ng-hide="datatype.status==='PUBLISHED'">
                                             <label>Extension</label>
                                             <input type="text" ng-change="recordChanged()"  ng-class="{'has-error has-feedback' : editForm.ext.$invalid}" ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'||versionAndUseMap[datatype.id]" name="ext" id="ext" ng-model="datatype.ext" required aria-describedby="helpBlock2">
