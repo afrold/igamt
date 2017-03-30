@@ -71,7 +71,7 @@
                                         </div>
                                     </div>
                                     <div dnd-list="compositeProfile.appliedProfileComponents">
-                                        <div class="column margin-0  hidden-xs" ng-repeat="pcInfo in compositeProfile.appliedProfileComponents" dnd-draggable="pcInfo" dnd-moved="compositeProfile.appliedProfileComponents.splice($index, 1);changePosition()">
+                                        <div class="row margin-0 full-width hidden-xs" ng-repeat="pcInfo in compositeProfile.appliedProfileComponents" dnd-draggable="pcInfo" dnd-moved="compositeProfile.appliedProfileComponents.splice($index, 1);changePosition()">
 
                                             <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
                                                 <div class="yy-timeline-box-inner">
