@@ -2,6 +2,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:import href="/rendering/templates/profile/message.xsl"/>
+    <xsl:import href="/rendering/templates/profile/profileComponent.xsl"/>
     <xsl:import href="/rendering/templates/profile/compositeProfile.xsl"/>
     <xsl:import href="/rendering/templates/profile/datatype.xsl"/>
     <xsl:import href="/rendering/templates/profile/segment.xsl"/>
@@ -11,6 +12,11 @@
     <xsl:template name="displayProfileContent">
         <xsl:param name="inlineConstraint"/>
         <xsl:choose>
+            <xsl:when test="count(ProfileComponent) &gt; 0">
+                <xsl:apply-templates select="ProfileComponent">
+                    <xsl:sort select="@position" data-type="number"></xsl:sort>
+                </xsl:apply-templates>
+            </xsl:when>
             <xsl:when test="count(CompositeProfile) &gt; 0">
                 <xsl:apply-templates select="CompositeProfile">
                     <xsl:sort select="@position" data-type="number"></xsl:sort>

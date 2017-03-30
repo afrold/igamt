@@ -43,6 +43,8 @@ import java.util.*;
 
     @Autowired SerializeCompositeProfileService serializeCompositeProfileService;
 
+    @Autowired SerializeProfileComponentService serializeProfileComponentService;
+
     @Autowired SerializeTableService serializeTableService;
 
     @Autowired SegmentService segmentService;
@@ -165,6 +167,15 @@ import java.util.*;
             }
             serializableSections.getRootSections().appendChild(textElement);
         }
+
+        //Profile Component serialization
+        if(exportConfig.isIncludePC()){
+            SerializableSection profileComponentSection = this.serializeProfileComponent(profile.getProfileComponentLibrary(),profile.getSectionPosition());
+            if(profileComponentSection!=null) {
+                profileSection.addSection(profileComponentSection);
+            }
+        }
+
         //Message Serialization
         SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version());
         profileSection.addSection(messageSection);
@@ -204,6 +215,44 @@ import java.util.*;
         serializableSections.addSection(profileSection);
         serializableStructure.addSerializableElement(serializableSections);
         return serializableStructure.serializeStructure();
+    }
+
+    private SerializableSection serializeProfileComponent(ProfileComponentLibrary profileComponentLibrary, Integer sectionPosition) {
+        if(profileComponentLibrary.getChildren()!=null && !profileComponentLibrary.getChildren().isEmpty()){
+            String id = profileComponentLibrary.getId();
+            String position,prefix;
+            if(profileComponentLibrary.getSectionPosition()!=null) {
+                position = String.valueOf(profileComponentLibrary.getSectionPosition());
+                prefix = String.valueOf(sectionPosition + 1) + "." + String
+                    .valueOf(profileComponentLibrary.getSectionPosition() + 1);
+            } else {
+                position = String.valueOf(sectionPosition);
+                prefix = String.valueOf(sectionPosition);
+            }
+            String headerLevel = String.valueOf(2);
+            String title = "";
+            if (profileComponentLibrary.getSectionTitle() != null) {
+                title = profileComponentLibrary.getSectionTitle();
+            }
+            SerializableSection profileComponentSection =
+                new SerializableSection(id, prefix, position, headerLevel, title);
+            if (profileComponentLibrary.getSectionContents() != null && !profileComponentLibrary.getSectionContents().isEmpty()) {
+                profileComponentSection.addSectionContent(
+                    "<div class=\"fr-view\">" + profileComponentLibrary.getSectionContents() + "</div>");
+            }
+            int currentPosition = 1;
+            for(ProfileComponentLink profileComponentLink : profileComponentLibrary.getChildren()){
+                SerializableProfileComponent serializableProfileComponent = serializeProfileComponentService.serializeProfileComponent(profileComponentLink,currentPosition);
+                if(serializableProfileComponent!=null){
+                    profileComponentSection.addSection(serializableProfileComponent);
+                    currentPosition++;
+                }
+            }
+            if(profileComponentSection != null){
+                return profileComponentSection;
+            }
+        }
+        return null;
     }
 
     private IGDocument filterIgDocumentMessages(IGDocument igDocument, ExportConfig exportConfig) {

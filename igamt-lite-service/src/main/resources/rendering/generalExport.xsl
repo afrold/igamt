@@ -50,6 +50,25 @@
     <xsl:variable name="columnDisplay.compositeProfile.flavor" select="$compositeProfileColumnFlavor"/>
     <xsl:param name="compositeProfileColumnComment" select="'true'"/>
     <xsl:variable name="columnDisplay.compositeProfile.comment" select="$compositeProfileColumnComment"/>
+    <!-- Profile Components -->
+    <xsl:param name="profileComponentColumnName" select="'true'"/>
+    <xsl:variable name="columnDisplay.profileComponent.name" select="$profileComponentColumnName"/>
+    <xsl:param name="profileComponentColumnUsage" select="'true'"/>
+    <xsl:variable name="columnDisplay.profileComponent.usage" select="$profileComponentColumnUsage"/>
+    <xsl:param name="profileComponentColumnCardinality" select="'true'"/>
+    <xsl:variable name="columnDisplay.profileComponent.cardinality" select="$profileComponentColumnCardinality"/>
+    <xsl:param name="profileComponentColumnLength" select="'true'"/>
+    <xsl:variable name="columnDisplay.profileComponent.length" select="$profileComponentColumnLength"/>
+    <xsl:param name="profileComponentColumnConformanceLength" select="'true'"/>
+    <xsl:variable name="columnDisplay.profileComponent.conformanceLength" select="$profileComponentColumnConformanceLength"/>
+    <xsl:param name="profileComponentColumnDataType" select="'true'"/>
+    <xsl:variable name="columnDisplay.profileComponent.dataType" select="$profileComponentColumnDataType"/>
+    <xsl:param name="profileComponentColumnValueSet" select="'true'"/>
+    <xsl:variable name="columnDisplay.profileComponent.valueSet" select="$profileComponentColumnValueSet"/>
+    <xsl:param name="profileComponentColumnDefinitionText" select="'true'"/>
+    <xsl:variable name="columnDisplay.profileComponent.definitionText" select="$profileComponentColumnDefinitionText"/>
+    <xsl:param name="profileComponentColumnComment" select="'true'"/>
+    <xsl:variable name="columnDisplay.profileComponent.comment" select="$profileComponentColumnComment"/>
     <!-- Segments -->
     <xsl:param name="segmentColumnName" select="'true'"/>
     <xsl:variable name="columnDisplay.segment.name" select="$segmentColumnName"/>
