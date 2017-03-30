@@ -173,7 +173,7 @@ public class FlavorServiceImpl implements FlavorService {
         }
       }
       if (!pathGroups.isEmpty()) {
-        Datatype originalDt = queryService.getDatatypesMap().get(component.getDatatype().getId());;
+        Datatype originalDt = queryService.getDatatypesMap().get(component.getDatatype().getId());
         try {
           Datatype datatypeFlavor = originalDt.clone();
           datatypeFlavor.setExt("PC" + "_" + component.getPosition());
