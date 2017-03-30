@@ -931,13 +931,13 @@ input.ng-pristine+.input-help {
 
 /* Overriding Twitter Bootstrap cuz I don't agree we need to alarm the user while they're typing */
 
-input:focus {
-    color: black !important;
-    border-color: rgba(82, 168, 236, 0.8) !important;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6) !important;
-    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6) !important;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6) !important;
-}
+//input:focus {
+//    color: black !important;
+//    border-color: rgba(82, 168, 236, 0.8) !important;
+//    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6) !important;
+//    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6) !important;
+//    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6) !important;
+//}
 
 
 /*When in focus and the field is valid, we don't want to see the help*/
@@ -2085,13 +2085,13 @@ div.col-margin {
     margin-right: 15px;
 }
 
-input.form-control {
-    padding: 0px;
-    border-bottom-width: 1px;
-    border-left-width: 1px;
-    border-right-width: 1px;
-    border-top-width: 1px;
-}
+//input.form-control {
+//    padding: 0px;
+//    border-bottom-width: 1px;
+//    border-left-width: 1px;
+//    border-right-width: 1px;
+//    border-top-width: 1px;
+//}
 
 input.form-control-invalid {
     background-color: #FA787E !important;
@@ -3004,3 +3004,9 @@ body.modal-open {
   }
 }
 
+label.input-left {
+    text-align: left;
+    font-weight:bold;
+    color:black;
+    font-size: 14px;
+}
