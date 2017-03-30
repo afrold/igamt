@@ -130,63 +130,69 @@
                         <accordion-heading>
                             <span style="color:white;"> IG Document Metadata</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
                         </accordion-heading>
-                        <div class="row">
-                            <!--<div class="row">
-                            <label for="example-version-input" class="col-xs-2 col-form-label">HL7 Version*</label>
-                            <div class="col-xs-10">
-                                <input class="form-control" type="text" ng-model="hl7Version" disabled>
+                        <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                            <md-content layout-padding>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Title</label>
+                                    <input type="text"
+                                           name="title"
+                                           ng-model="hl7VersionsDlgForm.metaData.title" required>
+                                    <div ng-messages="hl7VersionsDlgForm.title.$error">
+                                        <div ng-message="required">Title is required.</div>
+                                    </div>
+                                </md-input-container>
 
-                            </div>
-                        </div>-->
-                            <div class=" row" style="padding-top:5px">
-                                <label for="example-text-input" class="col-xs-2 col-form-label">Title*</label>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Sub-Title</label>
+                                    <input type="text"
+                                           name="subTitle"
+                                           ng-model="hl7VersionsDlgForm.metaData.subTitle" required>
+                                    <div ng-messages="hl7VersionsDlgForm.subTitle.$error">
+                                        <div ng-message="required">Sub-Title is required.</div>
+                                    </div>
+                                </md-input-container>
 
-                                <div class="col-xs-10">
-                                    <input class="form-control form-control-xs" type="text" ng-model="hl7VersionsDlgForm.metaData.title" required>
-                                </div>
-                            </div>
-                            <div class=" row">
-                                <label for="example-search-input" class="col-xs-2 col-form-label">Sub-Title</label>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Organization</label>
+                                    <input type="text"
+                                           name="orgName"
+                                           ng-model="hl7VersionsDlgForm.metaData.orgName">
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.subTitle">
-                                </div>
-                            </div>
-                            <div class=" row">
-                                <label for="example-email-input" class="col-xs-2 col-form-label">Organization</label>
+                                </md-input-container>
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.orgName">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="example-url-input" class="col-xs-2 col-form-label">Extension</label>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Extension</label>
+                                    <input type="text"
+                                           name="ext"
+                                           ng-model="hl7VersionsDlgForm.metaData.ext">
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.ext">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="example-tel-input" class="col-xs-2 col-form-label">Specification</label>
+                                </md-input-container>
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.specificationName">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="example-password-input" class="col-xs-2 col-form-label">Status</label>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Specification</label>
+                                    <input type="text"
+                                           name="specificationName"
+                                           ng-model="hl7VersionsDlgForm.metaData.specificationName">
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.status">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="example-number-input" class="col-xs-2 col-form-label">Topics</label>
+                                </md-input-container>
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.topics">
-                                </div>
-                            </div>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Status</label>
+                                    <input type="text"
+                                           name="specificationName"
+                                           ng-model="hl7VersionsDlgForm.metaData.status">
+
+                                </md-input-container>
+
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Topics</label>
+                                    <input type="text"
+                                           name="specificationName"
+                                           ng-model="hl7VersionsDlgForm.metaData.topics">
+
+                                </md-input-container>
+
+                            </md-content>
 
                         </div>
                     </div>
@@ -262,8 +268,9 @@
                 class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
         </button>
     <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-        <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-    </div>
+        <div layout="row" layout-sm="column" layout-align="space-around">
+            <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+        </div>    </div>
 </div>
 </div>
 </script>
@@ -286,8 +293,9 @@
                 class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
         </button>
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
     </div>
 </script>
@@ -309,8 +317,9 @@
                 class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
         </button>
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
     </div>
 </script>
@@ -343,8 +352,9 @@
         </button>
 
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
     </div>
 </script>
@@ -366,8 +376,9 @@
         </button>
 
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
     </div>
 </script>
@@ -390,8 +401,9 @@
                 class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
         </button>
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
     </div>
 </script>
@@ -414,8 +426,9 @@
                 class="fa fa-check-circle fa-fw ">&nbsp; </i>Apply Changes</span>
         </button>
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
 </script>
 <script type="text/ng-template " id="ConfirmIGDocumentOpenCtrl.html ">
@@ -437,8 +450,9 @@
                 class="fa fa-check-circle fa-fw ">&nbsp; </i>Apply Changes</span>
         </button>
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
 </script>
 <script type="text/ng-template " id="RichTextCtrl.html ">
@@ -555,8 +569,9 @@
                 <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
                         class="fa fa-times fa-fw ">&nbsp; </i>Close</span></button>
                 <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                    <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-                </div>
+                    <div layout="row" layout-sm="column" layout-align="space-around">
+                        <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+                    </div>                </div>
             </div>
         </div>
     </div>
