@@ -579,10 +579,12 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         return false;
     };
 
-    $scope.hasSingleCode = function(node) {
+    $scope.isAvailableConstantValue = function(node) {
+        if($scope.hasChildren(node)) return false;
         var bindings = $scope.findingBindings(node);
-        if(bindings && bindings.length > 0 && bindings[0].type == 'singlecode') return true;
-        return false;
+        if(bindings && bindings.length > 0) return false;
+        if($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
+        return true;
     };
 
 
@@ -2933,11 +2935,23 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mo
     $scope.listOfBindingLocations = null;
     $scope.isSingleValueSetAllowed = false;
     $scope.valueSetSelectedForSingleCode = null;
+    $scope.mCode = null;
+    $scope.mCodeSystem = null;
 
     $scope.singleCodeInit = function (){
         $scope.valueSetSelectedForSingleCode = null;
+        $scope.mCode = null;
+        $scope.mCodeSystem = null;
     };
 
+    $scope.addManualCode = function () {
+        $scope.selectedValueSetBindings = [];
+        var code = {};
+        code.value = $scope.mCode;
+        code.codeSystem = $scope.mCodeSystem;
+        $scope.selectedValueSetBindings.push({ tableId: null, location: currentNode.path, usage: $scope.currentNode.usage, type: "singlecode", code : code});
+        $scope.changed = true;
+    };
 
     if(_.find($rootScope.config.singleValueSetDTs, function(singleValueSetDTs){
             return singleValueSetDTs == $rootScope.datatypesMap[$scope.currentNode.datatype.id].name;

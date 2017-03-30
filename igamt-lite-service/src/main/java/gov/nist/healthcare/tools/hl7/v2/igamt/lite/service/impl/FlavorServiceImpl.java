@@ -93,6 +93,9 @@ public class FlavorServiceImpl implements FlavorService {
           if (attr.getMax() != null) {
             field.setMax(attr.getMax());
           }
+          if (attr.getText() != null) {
+            field.setText(attr.getText());;
+          }
           if (attr.getMin() != null) {
             field.setMin(attr.getMin());
           }
@@ -151,6 +154,9 @@ public class FlavorServiceImpl implements FlavorService {
           if (attr.getConfLength() != null) {
             component.setConfLength(attr.getConfLength());
           }
+          if (attr.getText() != null) {
+            component.setText(attr.getText());;
+          }
           if (attr.getMaxLength() != null) {
             component.setMaxLength(attr.getMaxLength());
           }
@@ -167,7 +173,7 @@ public class FlavorServiceImpl implements FlavorService {
         }
       }
       if (!pathGroups.isEmpty()) {
-        Datatype originalDt = queryService.getDatatypesMap().get(component.getDatatype().getId());;
+        Datatype originalDt = queryService.getDatatypesMap().get(component.getDatatype().getId());
         try {
           Datatype datatypeFlavor = originalDt.clone();
           datatypeFlavor.setExt("PC" + "_" + component.getPosition());

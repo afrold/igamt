@@ -723,10 +723,12 @@ angular.module('igl')
             return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype.id) != undefined && $rootScope.getDatatype(node.datatype.id).components != null && $rootScope.getDatatype(node.datatype.id).components.length > 0;
         };
 
-        $scope.hasSingleCode = function(node, parent) {
+        $scope.isAvailableConstantValue = function(node, parent) {
             var bindings = $scope.findingBindings(node.path, parent);
-            if(bindings && bindings.length > 0 && bindings[0].type == 'singlecode') return true;
-            return false;
+            if($scope.hasChildren(node)) return false;
+            if(bindings && bindings.length > 0) return false;
+            if($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
+            return true;
         };
 
         $scope.validateLabel = function(label, name) {
@@ -1655,11 +1657,23 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
     $scope.listOfBindingLocations = null;
     $scope.isSingleValueSetAllowed = false;
     $scope.valueSetSelectedForSingleCode = null;
+    $scope.mCode = null;
+    $scope.mCodeSystem = null;
 
     $scope.singleCodeInit = function (){
         $scope.valueSetSelectedForSingleCode = null;
+        $scope.mCode = null;
+        $scope.mCodeSystem = null;
     };
 
+    $scope.addManualCode = function () {
+        $scope.selectedValueSetBindings = [];
+        var code = {};
+        code.value = $scope.mCode;
+        code.codeSystem = $scope.mCodeSystem;
+        $scope.selectedValueSetBindings.push({ tableId: null, location: currentNode.path, usage: $scope.currentNode.usage, type: "singlecode", code : code});
+        $scope.changed = true;
+    };
 
     if(_.find($rootScope.config.singleValueSetDTs, function(singleValueSetDTs){
             return singleValueSetDTs == $rootScope.datatypesMap[$scope.currentNode.datatype.id].name;

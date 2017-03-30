@@ -618,10 +618,12 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
     };
 
-    $scope.hasSingleCode = function(node) {
+    $scope.isAvailableConstantValue = function(node) {
+        if($scope.hasChildren(node)) return false;
         var bindings = $scope.findingBindings(node);
-        if(bindings && bindings.length > 0 && bindings[0].type == 'singlecode') return true;
-        return false;
+        if(bindings && bindings.length > 0) return false;
+        if($rootScope.datatypesMap[node.obj.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.obj.datatype.id].name == "IS") return false;
+        return true;
     };
 
     $scope.isSub = function(component) {
@@ -2766,32 +2768,45 @@ angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, 
 
 angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
-    $scope.currentNode = currentNode.obj;
+    $scope.currentNode = currentNode;
     $scope.isSingleValueSetAllowed = false;
     $scope.valueSetSelectedForSingleCode = null;
+    $scope.mCode = null;
+    $scope.mCodeSystem = null;
 
     $scope.singleCodeInit = function (){
         $scope.valueSetSelectedForSingleCode = null;
+        $scope.mCode = null;
+        $scope.mCodeSystem = null;
+    };
+
+    $scope.addManualCode = function () {
+        $scope.selectedValueSetBindings = [];
+        var code = {};
+        code.value = $scope.mCode;
+        code.codeSystem = $scope.mCodeSystem;
+        $scope.selectedValueSetBindings.push({ tableId: null, location: positionPath, usage: $scope.currentNode.obj.usage, type: "singlecode", code : code});
+        $scope.changed = true;
     };
 
     if(_.find($rootScope.config.singleValueSetDTs, function(singleValueSetDTs){
-            return singleValueSetDTs == $rootScope.datatypesMap[$scope.currentNode.datatype.id].name;
+            return singleValueSetDTs == $rootScope.datatypesMap[$scope.currentNode.obj.datatype.id].name;
         })) $scope.isSingleValueSetAllowed = true;
 
     var pathArray = [];
-    if(currentNode.path) pathArray = currentNode.path.split('.');
+    if($scope.currentNode.path) pathArray = $scope.currentNode.path.split('.');
     var positionPath = '';
     for (var i in pathArray) {
         var position = pathArray[i].split('[')[0];
         positionPath = positionPath + '.' + position;
     }
-    console.log(positionPath);
+
     if(positionPath != '') positionPath = positionPath.substr(1);
     $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return binding.location == positionPath; }));
     $scope.listOfBindingLocations = null;
 
     if(_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT){
-            return valueSetAllowedDT == $rootScope.datatypesMap[$scope.currentNode.datatype.id].name;
+            return valueSetAllowedDT == $rootScope.datatypesMap[$scope.currentNode.obj.datatype.id].name;
         })) {
         for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
             if (!$scope.selectedValueSetBindings[i].bindingLocation || $scope.selectedValueSetBindings[i].bindingLocation == '') {
@@ -2799,7 +2814,7 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $mo
             }
         }
 
-        var hl7Version = $rootScope.datatypesMap[$scope.currentNode.datatype.id].hl7Version;
+        var hl7Version = $rootScope.datatypesMap[$scope.currentNode.obj.datatype.id].hl7Version;
         if(!hl7Version) hl7Version = "2.5.1";
 
         $scope.listOfBindingLocations = $rootScope.config.bindingLocationListByHL7Version[hl7Version];
@@ -2824,9 +2839,9 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $mo
         if($scope.isSingleValueSetAllowed) $scope.selectedValueSetBindings = [];
         if($scope.selectedValueSetBindings.length > 0 && $scope.selectedValueSetBindings[0].type == 'singlecode') $scope.selectedValueSetBindings = [];
         if($scope.listOfBindingLocations){
-            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, bindingLocation: "1", usage: currentNode.obj.usage, type: "valueset" });
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, bindingLocation: "1", usage: $scope.currentNode.obj.usage, type: "valueset" });
         }else {
-            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, usage: currentNode.obj.usage, type: "valueset" });
+            $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, usage: $scope.currentNode.obj.usage, type: "valueset" });
         }
         $scope.changed = true;
     };
@@ -2860,7 +2875,7 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $mo
 
     $scope.selectCode = function (c){
         $scope.selectedValueSetBindings = [];
-        $scope.selectedValueSetBindings.push({ tableId: $scope.valueSetSelectedForSingleCode.id, location: positionPath, usage: currentNode.obj.usage, type: "singlecode", code : c});
+        $scope.selectedValueSetBindings.push({ tableId: $scope.valueSetSelectedForSingleCode.id, location: positionPath, usage: $scope.currentNode.obj.usage, type: "singlecode", code : c});
         $scope.changed = true;
     };
 
