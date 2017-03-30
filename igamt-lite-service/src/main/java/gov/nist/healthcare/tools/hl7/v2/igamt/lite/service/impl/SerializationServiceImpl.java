@@ -213,11 +213,12 @@ import java.util.*;
             Profile profile = igDocument.getProfile();
             //Filter messages' segments and groups
             Messages messages = profile.getMessages();
-            UsageConfig segmentORGroupsUsageConfig = exportConfig.getSegmentORGroupsExport();
+            UsageConfig segmentORGroupsMessageUsageConfig = exportConfig.getSegmentORGroupsMessageExport();
+            UsageConfig segmentORGroupsCompositeProfileUsageConfig = exportConfig.getSegmentORGroupsCompositeProfileExport();
             for(Message message : messages.getChildren()){
                 List<SegmentRefOrGroup> finalSegmentRefOrGroupList = new ArrayList<>();
                 for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
-                    SegmentRefOrGroup finalSegmentRefOrGroup = filterSegmentRefOrGroup(segmentRefOrGroup,segmentORGroupsUsageConfig);
+                    SegmentRefOrGroup finalSegmentRefOrGroup = filterSegmentRefOrGroup(segmentRefOrGroup,segmentORGroupsMessageUsageConfig);
                     if(finalSegmentRefOrGroup != null){
                         finalSegmentRefOrGroupList.add(finalSegmentRefOrGroup);
                     }
@@ -229,7 +230,7 @@ import java.util.*;
                     List<SegmentRefOrGroup> finalSegmentRefOrGroupList = new ArrayList<>();
                     for (SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()) {
                         SegmentRefOrGroup finalSegmentRefOrGroup =
-                            filterSegmentRefOrGroup(segmentRefOrGroup, segmentORGroupsUsageConfig);
+                            filterSegmentRefOrGroup(segmentRefOrGroup, segmentORGroupsCompositeProfileUsageConfig);
                         if (finalSegmentRefOrGroup != null) {
                             finalSegmentRefOrGroupList.add(finalSegmentRefOrGroup);
                         }

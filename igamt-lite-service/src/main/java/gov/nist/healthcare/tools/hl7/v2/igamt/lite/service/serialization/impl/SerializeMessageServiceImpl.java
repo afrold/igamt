@@ -76,7 +76,7 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
         this.segmentPosition = 1;
         UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
         UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
-        UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsExport();
+        UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsMessageExport();
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
             SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);

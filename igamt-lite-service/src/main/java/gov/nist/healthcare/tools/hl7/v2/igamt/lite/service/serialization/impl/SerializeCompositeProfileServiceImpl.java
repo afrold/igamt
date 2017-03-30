@@ -73,7 +73,7 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
         this.segmentPosition = 1;
         UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
         UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
-        UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsExport();
+        UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsCompositeProfileExport();
         for(SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()){
             SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
