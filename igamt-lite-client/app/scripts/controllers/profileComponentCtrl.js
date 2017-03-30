@@ -563,16 +563,18 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             $scope.DTselected = true;
             $scope.editableDT = '';
 
-            if (JSON.parse(field.datatype).id === field.attributes.oldDatatype.id) {
+            if (field.datatype.id === field.attributes.oldDatatype.id) {
                 field.attributes.datatype = null;
                 field.datatype = field.attributes.oldDatatype;
             } else {
-                field.attributes.datatype = JSON.parse(field.datatype);
+                console.log("else");
+                console.log(field);
+                field.attributes.datatype =field.datatype;
                 field.attributes.datatype = {};
-                field.attributes.datatype.ext = JSON.parse(field.datatype).ext;
-                field.attributes.datatype.id = JSON.parse(field.datatype).id;
-                field.attributes.datatype.label = JSON.parse(field.datatype).label;
-                field.attributes.datatype.name = JSON.parse(field.datatype).name;
+                field.attributes.datatype.ext = field.datatype.ext;
+                field.attributes.datatype.id = field.datatype.id;
+                field.attributes.datatype.label = field.datatype.label;
+                field.attributes.datatype.name = field.datatype.name;
                 field.datatype = field.attributes.datatype;
 
             }
