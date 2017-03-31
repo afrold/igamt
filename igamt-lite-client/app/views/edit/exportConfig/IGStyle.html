@@ -35,14 +35,14 @@
                             <div class="container">
                                 <label style="color:black"> Segments/Groups to Export:</label>
                             <br/>
-                                <md-checkbox class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsMessageExport.r" ng-change="setChanged()" disabled> <label style="color:black">R  </label></md-checkbox>
+                                <md-checkbox class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R  </label></md-checkbox>
 
-                                <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsMessageExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE  </label></md-checkbox>
+                                <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE  </label></md-checkbox>
                                 </label>
-                                <md-checkbox class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsMessageExport.c" ng-change="setChanged()" disabled> <label style="color:black">C  </label></md-checkbox>
-                                <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsMessageExport.o" ng-change="setChanged()"> <label style="color:black">O  </label></md-checkbox>
+                                <md-checkbox class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C  </label></md-checkbox>
+                                <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsExport.o" ng-change="setChanged()"> <label style="color:black">O  </label></md-checkbox>
                                 </label>
-                                <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsMessageExport.x" ng-change="setChanged()"> <label style="color:black">X  </label></md-checkbox>
+                                <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsExport.x" ng-change="setChanged()"> <label style="color:black">X  </label></md-checkbox>
                                 </label>
                             </div>
                         </div>
@@ -262,34 +262,41 @@
 
 
 </div>
-<div layout="row" layout-align="center start" style="width:100%">
+<div layout="row" layout-align="center start" style="width:100%" ng-if="IGStyleExportConfig.includePC">
     <div flex="50" class="conf-box" >
         <div class="page-header">
-            <span class="header5">Composite Profile Table Options</span>
+            <span class="header5">Composite Profile</span>
         </div>
         <div layout="row" layout-align="center start" style="width:100%">
+
             <div class="panel panel-default" flex="50">
                 <div class="panel-heading beige"><strong>USAGES</strong></div>
                 <div class="panel-body container">
                     <div class="container">
                         <label style="color:black"> Segments/Groups to Export:</label>
                         <br/>
-                        <md-checkbox class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsCompositeProfileExport.r" ng-change="setChanged()" disabled> <label style="color:black">R  </label></md-checkbox>
-                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsCompositeProfileExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE  </label></md-checkbox>
+                        <md-checkbox class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsExportPC.r" ng-change="setChanged()" disabled> <label style="color:black">R  </label></md-checkbox>
+
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsExportPC.re" ng-change="setChanged()" disabled> <label style="color:black">RE  </label></md-checkbox>
                         </label>
-                        <md-checkbox class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsCompositeProfileExport.c" ng-change="setChanged()" disabled> <label style="color:black">C  </label></md-checkbox>
-                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsCompositeProfileExport.o" ng-change="setChanged()"> <label style="color:black">O  </label></md-checkbox>
+                        <md-checkbox class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsExportPC.c" ng-change="setChanged()" disabled> <label style="color:black">C  </label></md-checkbox>
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsExportPC.o" ng-change="setChanged()"> <label style="color:black">O  </label></md-checkbox>
                         </label>
-                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsCompositeProfileExport.x" ng-change="setChanged()"> <label style="color:black">X  </label></md-checkbox>
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentORGroupsExportPC.x" ng-change="setChanged()"> <label style="color:black">X  </label></md-checkbox>
                         </label>
                     </div>
                 </div>
+
             </div>
+
             <div class="panel panel-default" flex="50" style="margin-left:10px;">
                 <div class="panel-heading beige"> <strong> Columns </strong></div>
                 <div class="panel-body container">
                     <div style="width:100%" >
-                        <div  style="padding-left:15px; " ng-repeat="c in IGStyleExportConfig.compositeProfileColumn.columns">
+
+
+                        <div  style="padding-left:15px; " ng-repeat="c in IGStyleExportConfig.messageColumnPC.columns">
+
                             <md-checkbox  class="md-primary" ng-model="c.present" ng-disabled="c.disabled" ng-change="setChanged()"> <label style="color:black">{{c.name}}
                             </label><br/>
                             </md-checkbox>
@@ -297,46 +304,79 @@
                     </div>
                 </div>
             </div>
+
         </div>
+
     </div>
 
     <div flex="50" class="conf-box">
         <div class="page-header">
-            <span class="header5">Profile Component Table Options</span>
+            <span class="header5">Pofile Component</span>
         </div>
         <div layout="row" layout-align="center start" style="width:100%">
             <div class="panel panel-default" flex="50">
                 <div class="panel-heading beige"> <strong> USAGES </strong></div>
                 <div class="panel-body container">
                     <div class="container">
-                        <label style="color:black"> Items to Export:</label>
+                        <label style="color:black"> Segments to Export:</label>
                         <br/>
-                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.profileComponentItemsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentsExportPC.r" ng-change="setChanged()" disabled> <label style="color:black">R
                         </label></md-checkbox>
-                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.profileComponentItemsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentsExportPC.re" ng-change="setChanged()" disabled> <label style="color:black">RE
                         </label></md-checkbox>
-                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.profileComponentItemsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentsExportPC.c" ng-change="setChanged()" disabled> <label style="color:black">C
                         </label></md-checkbox>
-                        <md-checkbox  class="md-primary"ng-model="IGStyleExportConfig.profileComponentItemsExport.o" ng-change="setChanged()"> <label style="color:black">O
+                        <md-checkbox  class="md-primary"ng-model="IGStyleExportConfig.segmentsExportPC.o" ng-change="setChanged()"> <label style="color:black">O
                         </label></md-checkbox>
-                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.profileComponentItemsExport.x" ng-change="setChanged()"> <label style="color:black">X
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.segmentsExportPC.x" ng-change="setChanged()"> <label style="color:black">X
                         </label></md-checkbox>
+
                     </div>
+                    <hr style="border-top: 2px solid #271e1e;"/>
+                    <div class="container">
+                        <label style="color:black">Fields to Export:</label>
+                        </br>
+
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.fieldsExportPC.r" ng-change="setChanged()" disabled> <label style="color:black">R
+                        </label></md-checkbox>
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.fieldsExportPC.re" ng-change="setChanged()" disabled> <label style="color:black">RE
+                        </label></md-checkbox>
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.fieldsExportPC.c" ng-change="setChanged()" disabled> <label style="color:black">C
+                        </label></md-checkbox>
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.fieldsExportPC.o" ng-change="setChanged()"> <label style="color:black">O
+                        </label></md-checkbox>
+                        <md-checkbox  class="md-primary" ng-model="IGStyleExportConfig.fieldsExportPC.x" ng-change="setChanged()"> <label style="color:black">X
+                        </label></md-checkbox>
+
+                    </div>
+
+
                 </div>
+
             </div>
+
+
+
             <div class="panel panel-default" flex="50" style="margin-left:10px;">
                 <div class="panel-heading beige"> <strong> Columns </strong></div>
                 <div class="panel-body container">
                     <div style="width:100%" >
-                        <div  style="padding-left:15px; " ng-repeat="c in IGStyleExportConfig.profileComponentColumn.columns">
+
+
+                        <div  style="padding-left:15px; " ng-repeat="c in IGStyleExportConfig.segmentColumnPC.columns">
+
                             <md-checkbox  class="md-primary" ng-model="c.present"  ng-disabled="c.disabled" ng-change="setChanged()"> <label style="color:black">{{c.name}}
                             </label><br/></md-checkbox>
+
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
+
     </div>
 </div>
+
 </div>
 

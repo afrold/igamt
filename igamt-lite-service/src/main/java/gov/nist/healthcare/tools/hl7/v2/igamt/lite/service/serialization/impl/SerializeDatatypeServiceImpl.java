@@ -48,26 +48,8 @@ import java.util.Map;
     @Override
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
         Integer position, UsageConfig datatypeUsageConfig) {
-        if(datatypeLink!=null && datatypeLink.getId()!=null) {
+        if (datatypeLink != null && datatypeLink.getId() != null) {
             Datatype datatype = datatypeService.findById(datatypeLink.getId());
-            return serializeDatatype(datatype,datatypeLink,prefix,position,datatypeUsageConfig);
-        }
-        return null;
-    }
-
-    @Override
-    public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
-        Integer position, UsageConfig datatypeUsageConfig,
-        Map<String, Datatype> componentProfileDatatypes) {
-        if(datatypeLink!=null && datatypeLink.getId()!=null) {
-            Datatype datatype = componentProfileDatatypes.get(datatypeLink.getId());
-            return serializeDatatype(datatype,datatypeLink,prefix,position,datatypeUsageConfig);
-        }
-        return null;
-    }
-
-    private SerializableDatatype serializeDatatype(Datatype datatype, DatatypeLink datatypeLink, String prefix, Integer position, UsageConfig datatypeUsageConfig){
-        if (datatypeLink != null && datatypeLink.getId() != null && datatype !=null) {
             String id = datatypeLink.getId();
             String title = "ID not found: " + datatypeLink.getId();
             String headerLevel = String.valueOf(3);

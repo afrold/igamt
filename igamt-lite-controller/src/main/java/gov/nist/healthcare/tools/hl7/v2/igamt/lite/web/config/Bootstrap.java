@@ -253,7 +253,7 @@ public class Bootstrap implements InitializingBean {
     // fixUserDatatypesScope();
     // updateDMofSegment();
     // updateProfileForMissingDTs();
-    DeleteProfileComponents();
+    // DeleteProfileComponents();
 
 
 
@@ -870,19 +870,16 @@ public class Bootstrap implements InitializingBean {
     displayAll.setO(true);
     displayAll.setR(true);
 
-    defaultConfiguration.setSegmentORGroupsMessageExport(displayAll);
-    defaultConfiguration.setSegmentORGroupsCompositeProfileExport(displayAll);
+    defaultConfiguration.setSegmentORGroupsExport(displayAll);
 
     defaultConfiguration.setComponentExport(displayAll);
 
     defaultConfiguration.setFieldsExport(displayAll);
-    defaultConfiguration.setProfileComponentItemsExport(displayAll);
 
     defaultConfiguration.setCodesExport(codeUsageExport);
 
     defaultConfiguration.setDatatypesExport(displaySelectives);
     defaultConfiguration.setSegmentsExport(displaySelectives);
-
     defaultConfiguration.setValueSetsExport(displaySelectives);
 
     // Default column
@@ -891,10 +888,8 @@ public class Bootstrap implements InitializingBean {
 
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Segment", 1, true, true));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Flavor", 2, true, true));
-    messageColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Element Name", 3, true, true));
-    messageColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Cardinality", 4, true, false));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Element Name", 3, true, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 4, true, false));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true, false));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true, false));
 
@@ -905,13 +900,9 @@ public class Bootstrap implements InitializingBean {
         .add(new NameAndPositionAndPresence("Conformance Length", 2, false, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, false));
-    segmentColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Cardinality", 5, true, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 6, false, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 7, true, false));
-    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 8, true, false));
-
-
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, false, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, false));
 
     ArrayList<NameAndPositionAndPresence> dataTypeColumnsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
@@ -925,13 +916,9 @@ public class Bootstrap implements InitializingBean {
     dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, false));
     dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, false));
 
-
-
     defaultConfiguration.setDatatypeColumn(new ColumnsConfig(dataTypeColumnsDefaultList));
     defaultConfiguration.setSegmentColumn(new ColumnsConfig(segmentColumnsDefaultList));
-    defaultConfiguration.setProfileComponentColumn(new ColumnsConfig(segmentColumnsDefaultList));
     defaultConfiguration.setMessageColumn(new ColumnsConfig(messageColumnsDefaultList));
-    defaultConfiguration.setCompositeProfileColumn(new ColumnsConfig(messageColumnsDefaultList));
 
     ArrayList<NameAndPositionAndPresence> valueSetsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
@@ -939,9 +926,10 @@ public class Bootstrap implements InitializingBean {
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true, true));
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true, true));
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, false, false));
-    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, true, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, false, true));
 
     defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
+
     exportConfig.save(defaultConfiguration);
 
   }

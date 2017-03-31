@@ -4,7 +4,7 @@
     <xsl:import href="/rendering/templates/profileContent.xsl"/>
     <xsl:template name="displayWordContent">
         <xsl:param name="inlineConstraint"/>
-        <xsl:param name="includeTOC"/>
+        <xsl:param name="includeTOC"/>`
         <xsl:call-template name="displayProfileContent">
             <xsl:with-param name="inlineConstraint" select="$inlineConstraint"/>
         </xsl:call-template>
