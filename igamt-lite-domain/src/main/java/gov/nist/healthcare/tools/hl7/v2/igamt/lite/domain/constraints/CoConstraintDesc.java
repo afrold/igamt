@@ -1,7 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
+import org.springframework.data.annotation.Id;
+
 public class CoConstraintDesc {
 
+	@Id
 	private String id;
 	private String title;
 
