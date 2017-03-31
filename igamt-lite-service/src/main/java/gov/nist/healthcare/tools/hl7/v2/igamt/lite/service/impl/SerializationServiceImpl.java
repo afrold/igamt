@@ -358,21 +358,24 @@ import java.util.*;
         List<TableLink> tableLinkList = new ArrayList<>(tableLibrary.getChildren());
         Collections.sort(tableLinkList);
         CodeUsageConfig valueSetCodesUsageConfig = this.exportConfig.getCodesExport();
-        for (TableLink tableLink : tableLinkList) {
-            if(bindedTables.contains(tableLink)) {
+        if(bindedTables!= null && !bindedTables.isEmpty()) {
+            for (TableLink tableLink : bindedTables) {
                 SerializableTable serializableTable = serializeTableService
                     .serializeTable(tableLink,
                         prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                        tableLinkList.indexOf(tableLink),valueSetCodesUsageConfig);
+                        tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig);
                 valueSetsSection.addSection(serializableTable);
-            } else if(this.unbindedTables!=null && this.unbindedTables.contains(tableLink)){
-                if(exportConfig.isUnboundCustom()||exportConfig.isUnboundHL7()){
+            }
+        }
+        if(unbindedTables != null && !unbindedTables.isEmpty()){
+            for(TableLink tableLink : this.unbindedTables){
+                if (exportConfig.isUnboundCustom() || exportConfig.isUnboundHL7()) {
                     Table table = tableService.findById(tableLink.getId());
-                    if(table != null && ExportUtil.displayUnbindedTable(exportConfig,table)){
+                    if (table != null && ExportUtil.displayUnbindedTable(exportConfig, table)) {
                         SerializableTable serializableTable = serializeTableService
                             .serializeTable(tableLink,
                                 prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                                tableLinkList.indexOf(tableLink),valueSetCodesUsageConfig);
+                                tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig);
                         valueSetsSection.addSection(serializableTable);
                     }
                 }
@@ -406,14 +409,15 @@ import java.util.*;
             new ArrayList<>(datatypeLibrary.getChildren());
         Collections.sort(datatypeLinkList);
         UsageConfig datatypeComponentsUsageConfig = this.exportConfig.getComponentExport();
-        for (DatatypeLink datatypeLink : datatypeLinkList) {
-            if(null!=bindedDatatypes && bindedDatatypes.contains(datatypeLink)) {
+        if(bindedDatatypes != null && !bindedDatatypes.isEmpty()) {
+            for (DatatypeLink datatypeLink : bindedDatatypes) {
                 CompositeProfile compositeProfile = getDatatypeCompositeProfile(datatypeLink);
                 SerializableDatatype serializableDatatype = null;
-                if(compositeProfile!=null){
+                if (compositeProfile != null) {
                     serializableDatatype = serializeDatatypeService.serializeDatatype(datatypeLink,
                         prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
-                        datatypeLinkList.indexOf(datatypeLink), datatypeComponentsUsageConfig,compositeProfile.getDatatypesMap());
+                        datatypeLinkList.indexOf(datatypeLink), datatypeComponentsUsageConfig,
+                        compositeProfile.getDatatypesMap());
                 } else {
                     serializableDatatype = serializeDatatypeService.serializeDatatype(datatypeLink,
                         prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
@@ -421,7 +425,7 @@ import java.util.*;
                 }
                 //This "if" is only useful if we want to display only user datatypes
                 //if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
-                if(serializableDatatype!=null) {
+                if (serializableDatatype != null) {
                     datatypeSection.addSection(serializableDatatype);
                 }
                 //}
@@ -497,7 +501,9 @@ import java.util.*;
     private void identifyBindedItems(SegmentRefOrGroup segmentRefOrGroup, CompositeProfile compositeProfile) {
         if(segmentRefOrGroup instanceof SegmentRef){
             if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),exportConfig.getSegmentsExport())){
-                this.bindedSegments.add(((SegmentRef) segmentRefOrGroup).getRef());
+                if(!this.bindedSegments.contains(((SegmentRef) segmentRefOrGroup).getRef())) {
+                    this.bindedSegments.add(((SegmentRef) segmentRefOrGroup).getRef());
+                }
             }
             Segment segment = null;
             if(compositeProfile!=null){
@@ -566,25 +572,20 @@ import java.util.*;
                 "<div class=\"fr-view\">" + profile.getSegmentLibrary().getSectionContents()
                     + "</div>");
         }
-
-        List<SegmentLink> segmentLinkList =
-            new ArrayList<>(profile.getSegmentLibrary().getChildren());
-        Collections.sort(segmentLinkList);
-        for (SegmentLink segmentLink : segmentLinkList) {
-            if(this.bindedSegments.contains(segmentLink)) {
-                if (segmentLink.getId() != null) {
-                    CompositeProfile compositeProfile = getSegmentCompositeProfile(segmentLink);
-                    if(compositeProfile!=null) {
-                        segmentsSection.addSection(serializeSegmentService
-                            .serializeSegment(segmentLink, prefix + "." + String
-                                    .valueOf(segmentLinkList.indexOf(segmentLink) + 1),
-                                segmentLinkList.indexOf(segmentLink), 3, fieldsUsageConfig,compositeProfile.getSegmentsMap()));
-                    } else {
-                        segmentsSection.addSection(serializeSegmentService
-                            .serializeSegment(segmentLink, prefix + "." + String
-                                    .valueOf(segmentLinkList.indexOf(segmentLink) + 1),
-                                segmentLinkList.indexOf(segmentLink), 3, fieldsUsageConfig));
-                    }
+        for (SegmentLink segmentLink : this.bindedSegments) {
+            if (segmentLink.getId() != null) {
+                CompositeProfile compositeProfile = getSegmentCompositeProfile(segmentLink);
+                if(compositeProfile!=null) {
+                    segmentsSection.addSection(serializeSegmentService
+                        .serializeSegment(segmentLink, prefix + "." + String
+                                .valueOf(this.bindedSegments.indexOf(segmentLink) + 1),
+                            bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig,
+                            compositeProfile.getSegmentsMap()));
+                } else {
+                    segmentsSection.addSection(serializeSegmentService
+                        .serializeSegment(segmentLink,
+                            prefix + "." + String.valueOf(bindedSegments.indexOf(segmentLink) + 1),
+                            bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig));
                 }
             }
         }
