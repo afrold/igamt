@@ -1,11 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
+
+import java.util.Map;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -23,4 +22,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 public interface SerializeSegmentService {
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig);
+    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
+        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Map<String, Segment> compositeProfileSegments);
 }
