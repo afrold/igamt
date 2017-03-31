@@ -143,44 +143,104 @@
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.cardinality = 'true'">
                                 <xsl:element name="td">
-                                    <xsl:if test="(normalize-space(@Min)!='') or (normalize-space(@Max)!='')">
-                                        <xsl:value-of select="concat('[',@Min,'..',@Max,']')"/>
-                                    </xsl:if>
+                                    <xsl:choose>
+                                        <xsl:when
+                                                test="(normalize-space(@Min)!='') or (normalize-space(@Max)!='')">
+                                            <xsl:value-of select="concat('[',@Min,'..',@Max,']')"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="class">
+                                                <xsl:text>greyCell</xsl:text>
+                                            </xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:element>
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.length = 'true'">
                                 <xsl:element name="td">
-                                    <xsl:if test="(normalize-space(@MinLength)!='') or (normalize-space(@MaxLength)!='')">
-                                        <xsl:value-of
-                                                select="concat('[',@MinLength,'..',@MaxLength,']')"/>
-                                    </xsl:if>
+                                    <xsl:choose>
+                                        <xsl:when
+                                                test="(normalize-space(@MinLength)!='') or (normalize-space(@MaxLength)!='')">
+                                            <xsl:value-of
+                                                    select="concat('[',@MinLength,'..',@MaxLength,']')"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="class">
+                                                <xsl:text>greyCell</xsl:text>
+                                            </xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:element>
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.conformanceLength = 'true'">
                                 <xsl:element name="td">
-                                    <xsl:if test="(normalize-space(@ConfLength)!='') and (normalize-space(@ConfLength)!='0')">
-                                        <xsl:value-of select="@ConfLength"/>
-                                    </xsl:if>
+                                    <xsl:choose>
+                                        <xsl:when
+                                                test="(normalize-space(@ConfLength)!='') and (normalize-space(@ConfLength)!='0')">
+                                            <xsl:value-of select="@ConfLength"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="class">
+                                                <xsl:text>greyCell</xsl:text>
+                                            </xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:element>
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.dataType = 'true'">
                                 <xsl:element name="td">
-                                    <xsl:value-of select="@Datatype"/>
+                                    <xsl:choose>
+                                        <xsl:when test="@Datatype!=''">
+                                            <xsl:value-of select="@Datatype"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="class">
+                                                <xsl:text>greyCell</xsl:text>
+                                            </xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:element>
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.valueSet = 'true'">
                                 <xsl:element name="td">
-                                    <xsl:value-of select="@ValueSet"/>
+                                    <xsl:choose>
+                                        <xsl:when test="@ValueSet!=''">
+                                            <xsl:value-of select="@ValueSet"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="class">
+                                                <xsl:text>greyCell</xsl:text>
+                                            </xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:element>
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.definitionText = 'true'">
                                 <xsl:element name="td">
-                                    <xsl:value-of disable-output-escaping="yes" select="@DefinitionText"/>
+                                    <xsl:choose>
+                                        <xsl:when test="@DefinitionText!=''">
+                                            <xsl:value-of disable-output-escaping="yes" select="@DefinitionText"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="class">
+                                                <xsl:text>greyCell</xsl:text>
+                                            </xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:element>
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.comment = 'true'">
                                 <xsl:element name="td">
-                                    <xsl:value-of select="@Comment"/>
+                                    <xsl:choose>
+                                        <xsl:when test="@Comment!=''">
+                                            <xsl:value-of select="@Comment"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="class">
+                                                <xsl:text>greyCell</xsl:text>
+                                            </xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:element>
                             </xsl:if>
                         </xsl:element>
