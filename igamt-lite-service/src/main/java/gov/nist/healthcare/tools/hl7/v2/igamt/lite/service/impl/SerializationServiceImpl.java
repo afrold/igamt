@@ -336,13 +336,12 @@ import java.util.*;
         String id = tableLibrary.getId();
         String position,prefix;
         if(tableLibrary.getSectionPosition()!=null) {
-            position = String.valueOf(tableLibrary.getSectionPosition());
             prefix = String.valueOf(sectionPosition + 1) + "." + String
                 .valueOf(tableLibrary.getSectionPosition() + 1);
         } else {
-            position = String.valueOf(sectionPosition);
             prefix = String.valueOf(sectionPosition);
         }
+        position = String.valueOf(sectionPosition);
         String headerLevel = String.valueOf(2);
         String title = "";
         if (tableLibrary.getSectionTitle() != null) {
@@ -386,13 +385,12 @@ import java.util.*;
         String id = datatypeLibrary.getId();
         String position,prefix;
         if(datatypeLibrary.getSectionPosition()!=null) {
-            position = String.valueOf(datatypeLibrary.getSectionPosition());
-            prefix = String.valueOf(sectionPosition + 1) + "." + String
+            prefix = String.valueOf(sectionPosition) + "." + String
                 .valueOf(datatypeLibrary.getSectionPosition() + 1);
         } else {
-            position = String.valueOf(sectionPosition);
             prefix = String.valueOf(sectionPosition);
         }
+        position = String.valueOf(sectionPosition);
         String headerLevel = String.valueOf(2);
         String title = "";
         if (datatypeLibrary.getSectionTitle() != null) {

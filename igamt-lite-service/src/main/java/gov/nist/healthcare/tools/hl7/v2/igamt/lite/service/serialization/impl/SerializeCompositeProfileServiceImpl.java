@@ -61,7 +61,7 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
         List<Table> tables = new ArrayList<>();
         for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : compositeProfile.getValueSetBindings()){
             if(valueSetOrSingleCodeBinding.getTableId()!=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
-                Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+                Table table = findTableInProfile(valueSetOrSingleCodeBinding,compositeProfile);
                 if(table!=null){
                     tables.add(table);
                 }
@@ -75,7 +75,7 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
         UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
         UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsCompositeProfileExport();
         for(SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()){
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig);
+            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig, compositeProfile.getSegmentsMap());
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             if(serializationLayout.equals(SerializationLayout.PROFILE)){
                 serializeSegment(segmentRefOrGroup,
@@ -86,5 +86,15 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
             serializableCompositeProfile.addSection(compositeProfileSegments);
         }
         return serializableCompositeProfile;
+    }
+
+    private Table findTableInProfile(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding,
+        CompositeProfile compositeProfile) {
+        for(String currentId : compositeProfile.getTablesMap().keySet()){
+            if(currentId.equals(valueSetOrSingleCodeBinding.getId())){
+                return compositeProfile.getTablesMap().get(currentId);
+            }
+        }
+        return null;
     }
 }
