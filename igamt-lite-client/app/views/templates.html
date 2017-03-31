@@ -3606,13 +3606,12 @@
         </div>
         </div>
     </script>
-<script type="text/ng-template" id="createMasterDt.html">
-
+<script type="text/ng-template" id="createDatatype.html">
         <div class="modal-content">
-            <div class="modal-header modal-wide" >
+            <div class="modal-wide modal-header">
 
                 <div class="form-inline">
-                    <span class="header4" style="color:white;">Add Master Datatype</span>
+                    <span class="header4" style="color:white;">Add {{datatypeLibrary.scope}} Datatype</span>
 
                     <span class="pull-right">
                     <button class="btn btn-raised btn-default btn-xs" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
@@ -3661,7 +3660,7 @@
                                                             </ul>
                                                         </td>
                                                         <td class="widthInside">
-                                                            <i ng-click="AddDatatypeForMaster(data)" class="fa fa-plus fa-fw" style="color:blue;cursor:pointer !important"></i>
+                                                            <i ng-click="AddDatatype(data)" class="fa fa-plus fa-fw" style="color:blue;cursor:pointer !important"></i>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -4109,23 +4108,28 @@
 
                                                 </thead>
                                                 <tbody>
-                                                    <tr ng-repeat="datatype in masterDatatypes | orderBy: 'name' | filter:search:strict">
+                                                    <tr ng-repeat="datatype in masterDatatypes | orderBy: 'name' | filter:search:strict" ng-if="datatype.scope!=='INTERMASTER'">
 
-                                                        <td class="col-md-3">{{datatype.label}} <span class="badge">v{{versionAndUseMap[datatype.id].publicationVersion}}</span></td>
                                                         <td class="col-md-7">
-                                                            <!--<ul ng-if="igdocument">-->
-                                                                <!--<li ng-repeat="vr in datatype.hl7versions">-->
-                                                                    <!--{{vr}}-->
-                                                                <!--</li>-->
-                                                            <!--</ul>-->
-                                                            <div>
-                                                                <p ng-repeat="vr in datatype.hl7versions">
-                                                                    <input type="radio" ng-model="datatype.hl7Version" ng-value="vr"></input>{{vr}}
-                                                                </p>
-                                                            </div>
+                                                            <display-label of="datatype"></display-label>
+
+
 
                                                         </td>
-                                                        <td class="col-md-2"><button class="btn btn-primary" ng-click="addDtFlv(datatype)" ng-disable="!datatype.hl7Version||datatype.hl7Version==null"><i class="fa fa-plus fa-fw"></i></a></button>
+                                                        <td class="col-md-3">
+
+                                                            <md-radio-group ng-model="datatype.hl7Version">
+
+                                                                <md-radio-button ng-repeat="vr in datatype.hl7versions" ng-value="vr" class="md-primary" ng-disabled="checkImported(datatype,vr)">{{vr}}</md-radio-button>
+
+                                                            </md-radio-group>
+
+
+
+                                                        </td>
+                                                        <td class="col-md-2">
+                                                            <button class="btn btn-raised btn-primary btn-xs" type="button" ng-click="addDtFlv(datatype)" ng-disabled="checkImported(datatype,datatype.hl7Version)"><i class="fa fa-plus fa-fw"></i>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -4144,26 +4148,19 @@
                                         <table class="table table-bordered table-stripped container">
                                             <thead>
                                                 <tr class="tbl-header">
-                                                    <th>Name</th>
-                                                    <th>Ext</th>
-                                                    <th>HL7 Version</th>
+                                                    <th>Data Type</th>
                                                     <th>Actions</th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="dt in selectedDatatypes">
-                                                    <td>{{dt.name}}<span class="badge" ng-if="versionAndUseMap[dt.id]">v{{versionAndUseMap[dt.id].publicationVersion}}</span></td>
-                                                    <td><span ng-show="!edit">{{dt.ext}}</span>
-                                                        <a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.status!=='PUBLISHED'" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
-                                                        <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext" />
-                                                        <a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
-                                                        <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
-                                                        <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>
-                                                    </td>
-                                                    <td>{{dt.hl7Version}}</td>
 
-                                                    <td><a class="pointer" ng-click="deleteDt(dt)"><i
+                                                    <td>
+                                                    <display-label of="dt" desc="true"></display-label>
+                                                    </td>
+                                                    <td><a class="pointer" ng-click="deleteDt(dt)">
+                                                        <i
                                                                                     class="fa fa-times fa-fw"></i></a></td>
                                                 </tr>
                                             </tbody>
@@ -4264,7 +4261,7 @@
         </h3>
     </div>
     <div class="modal-body">
-        <p>Are You Sure You Want To Publish This Data Type ? A published Data Type Is Assigned A Version And Cannot Be Edited.</p>
+        <p>Are You Sure You Want To Publish <display-label of="datatype" desc="false"></display-label> ? A published Data Type Is Assigned A Version And Cannot Be Edited.</p>
         <p>This Operation is Irreversible.</p>
     </div>
     </div>
@@ -4287,7 +4284,7 @@
         </h3>
     </div>
     <div class="modal-body">
-	<span> You cannot create a new version of {{datatypeTo.name}}_{{datatypeTo.ext}} until you pubish the pervious version </span>
+	<span> You cannot create a new version of <display-label of="datatypeTo" desc="false"></display-label> until you pubish the pervious version </span>
     </div>
     </div>
     <div class="modal-footer">
@@ -4524,7 +4521,7 @@
         </h3>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want to remove this {{datatypeTo.name}}_{{datatypeTo.ext}}<span class="version-badge-label">v{{datatypeTo.publicationVersion}}</span></p>
+        <p>Are you sure you want to remove  <display-label of="datatypesMap[datatypeTo.id]" desc="false"></display-label></p>
 
     </div>
     </div>
@@ -4813,31 +4810,30 @@
 
 
 <script type="text/ng-template" id="label.html">
-    <span ng-if="element.scope!=='INTERMASTER'">
-    <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
-                                   'label-USE':  getScopeLabel(element)==='USR','label-MASTER':getScopeLabel(element)==='MAS','label-PRL':getScopeLabel(element)==='PRL','label-DRV':getScopeLabel(element)==='DRV'}">
+    <span ng-if="element.hl7Version!=='*'">
 
-
-        {{getScopeLabel(element)}} {{hasHl7Version(element)}}
+            <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
+         'label-USE':  getScopeLabel(element)==='USR','label-MASTER':getScopeLabel(element)==='MAS','label-PRL':getScopeLabel(element)==='PRL','label-DRV':getScopeLabel(element)==='DRV'}">
+                {{getScopeLabel(element)}} {{hasHl7Version(element)}}
 
         <span ng-if="element.publicationVersion&&element.status==='PUBLISHED'" class="version-badge">v{{element.publicationVersion}}</span>
-
-    </span>
-     {{getLabel(element)}}
-
+            </span>
+        <span>{{getLabel(element)}}</span>
         <span ng-if="description">-{{getDescriptionLabel(element)}}</span>
-
     </span>
 
 
-    <span ng-if="element.scope=='INTERMASTER'">
-              <span  class="badge" style="background-color: #0b58a2; color:white;"> {{getScopeLabel(element)}} </span>
-            {{getLabel(element)}}<span ng-if="description">-{{getDescriptionLabel(element)}}</span>
-             <br/>
-    <span class="version-badge-under" ng-repeat="version in element.hl7versions" style="margin-left:2px;">{{version}}</span>
+    <span ng-if="element.hl7Version=='*'">
+
+            <span  class="badge" ng-class="{'label-HL7' : getScopeLabel(element)==='HL7',
+         'label-USE':  getScopeLabel(element)==='USR','label-MASTER':getScopeLabel(element)==='MAS','label-PRL':getScopeLabel(element)==='PRL','label-DRV':getScopeLabel(element)==='DRV'}">
+                {{getScopeLabel(element)}}
+
+        <span ng-if="element.publicationVersion&&element.status==='PUBLISHED'" class="version-badge">v{{element.publicationVersion}}</span>
+            </span>
+        <span>{{getLabel(element)}}</span>
+        <span ng-if="description">-{{getDescriptionLabel(element)}}</span>
+         <br/>
+        <span class="version-badge-under" ng-repeat="version in element.hl7versions" style="margin-left:2px;">{{version}}</span>
     </span>
-
-
-
-
 </script>

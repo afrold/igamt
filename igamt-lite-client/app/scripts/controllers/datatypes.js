@@ -199,6 +199,8 @@ angular.module('igl')
         };
 
         $scope.getAllVersionsOfDT = function(id) {
+
+            console.log("CALLUNg");
             $scope.checked = {};
             var ancestors = [];
             if (!$rootScope.versionAndUseMap[id]) {
@@ -261,19 +263,34 @@ angular.module('igl')
             $rootScope.clearChanges();
             $scope.cleanState();
 
-            DatatypeService.getOne(id).then(function(result) {
-                $scope.dtChanged = false;
-                $scope.vsTemplate = false;
-                $scope.dataList = CompareService.cmpDatatype(JSON.stringify($rootScope.datatype), JSON.stringify(result), [], [], [], []);
-                $scope.hideEvolution = false;
-                $rootScope.clearChanges();
-                $scope.cleanState();
-                $scope.loadingSelection = false;
-                if ($scope.dynamicDt_Evolution) {
-                    $scope.dynamicDt_Evolution.refresh();
-                }
+            DatatypeService.getOne($rootScope.datatype.parentVersion).then(function(sourceParent) {
+
+
+                DatatypeService.getOne(id).then(function (result) {
+
+
+                    $scope.dtChanged = false;
+                    $scope.vsTemplate = false;
+                    $scope.dataList = CompareService.cmpDatatype(JSON.stringify(sourceParent), JSON.stringify(result), [], [], [], []);
+                    $scope.hideEvolution = false;
+                    $rootScope.clearChanges();
+                    $scope.cleanState();
+                    $scope.loadingSelection = false;
+                    if ($scope.dynamicDt_Evolution) {
+                        $scope.dynamicDt_Evolution.refresh();
+                    }
+                });
+
+
             });
+
+
         };
+
+
+
+
+
 
         $scope.editableComp = '';
         $scope.editComponent = function(component) {
@@ -409,13 +426,18 @@ angular.module('igl')
 
 
         $scope.editDT = function(field) {
+            $scope.editDTMap={};
             $scope.editableDT = field.id;
 
             $scope.results = [];
             angular.forEach($rootScope.datatypeLibrary.children, function(dtLink) {
                 if (dtLink.name && dtLink.name === field.datatype.name) {
+                    if(!$scope.editDTMap[dtLink.id]){
+                        $scope.editDTMap[dtLink.id]=dtLink;
 
-                    $scope.results.push(dtLink);
+                        $scope.results.push(dtLink);
+                    }
+
                 }
             });
         };
@@ -2512,7 +2534,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
     //$scope.initt();
 
     $rootScope.$on('event:initDatatype', function(event) {
-        $scope.getAllVersionsOfDT($rootScope.datatype.id);
+        $scope.getAllVersionsOfDT($rootScope.datatype.parentVersion);
         if ($scope.isDeltaCalled) {
             $scope.initt();
         }

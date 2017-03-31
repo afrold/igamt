@@ -148,11 +148,11 @@
                                                         <span ng-show="editableRef!==node.id && node.attributes.ref">
                                                         <span>{{node.attributes.ref.name}}</span><span ng-if="node.attributes.ref.ext && node.attributes.ref.ext!==null">_{{node.attributes.ref.ext}}</span>
                                                         </span>
-                                                        <a ng-show="editableRef!==node.id" ng-click="editRef(node)" class="point">
+                                                        <!--<a ng-show="editableRef!==node.id" ng-click="editRef(node)" class="point">
                                                             <span><i class="fa fa-pencil fa-fw"></i></span>
-                                                        </a>
+                                                        </a>-->
                                                         <select ng-change="selectFlavor(node,segFlavor)" ng-show="editableRef===node.id" class="form-control input-sm" name="flavor" ng-model="segFlavor" ng-options="segFlavor as segFlavor.label for segFlavor in segFlavors" />
-                                                        <a ng-click="cancelRef(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                        <!--<a ng-show="node.attributes.ref.id!==node.attributes.oldRef.id" ng-click="cancelRef(node)"><i class="fa fa-remove fa-fw"></i></a>-->
                                                     </td>
                                                     <td class="col-md-2 col-fixed-40" ng-if="node.type!=='segment' &&  node.type!=='segmentRef'">
                                                         <span ng-bind="node.name"></span>
@@ -163,7 +163,7 @@
                                                         <select ng-init="initUsage(node)" name="usage" ng-change="setDirty();updateUsage(node);" class="form-control input-sm" ng-model="node.usage">
                                                         <option ng-repeat="usage in config.usages">{{usage}}</option>
                                                     </select>
-                                                        <a ng-click="cancelUsage(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                        <a ng-show="node.attributes.usage" ng-click="cancelUsage(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                     </td>
 
 
@@ -171,7 +171,7 @@
                                                     </td>
                                                     <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.min,'col-md-1 col-fixed-100':!node.attributes.min}" ng-if="node.type!=='component'">
                                                         <input ng-init="initMinCard(node)" ng-change="setDirty();updateMinCard(node);" class="form-control" name="min" ng-pattern="/^\d+$/" ng-model="node.min" ng-minlength="1">
-                                                        <a ng-click="cancelMinCard(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                        <a ng-show="node.attributes.min" ng-click="cancelMinCard(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                     </td>
 
 
@@ -179,7 +179,7 @@
                                                     </td>
                                                     <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.max,'col-md-1 col-fixed-100':!node.attributes.max}" ng-if="node.type!=='component'">
                                                         <input ng-init="initMaxCard(node)" ng-change="setDirty();updateMaxCard(node);" class="form-control" name="max" ng-pattern="/^\d+$|^\*?$/" ng-model="node.max">
-                                                        <a ng-click="cancelMaxCard(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                        <a ng-show="node.attributes.max" ng-click="cancelMaxCard(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                     </td>
 
 
@@ -188,7 +188,7 @@
                                                     </td>
                                                     <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.minLength,'col-md-1 col-fixed-100':!node.attributes.minLength}" ng-if="node.type==='field' || node.type==='component'">
                                                         <input ng-init="initMinL(node)" ng-change="setDirty();updateMinL(node);" class="form-control" name="minL" ng-model="node.minLength">
-                                                        <a ng-click="cancelMinL(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                        <a ng-show="node.attributes.minLength" ng-click="cancelMinL(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                     </td>
 
 
@@ -196,7 +196,7 @@
                                                     </td>
                                                     <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.maxLength,'col-md-1 col-fixed-100':!node.attributes.maxLength}" ng-if="node.type==='field' || node.type==='component'">
                                                         <input ng-init="initMaxL(node)" ng-change="setDirty();updateMaxL(node);" class="form-control" name="maxL" ng-model="node.maxLength">
-                                                        <a ng-click="cancelMaxL(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                        <a ng-show="node.attributes.maxLength" ng-click="cancelMaxL(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                     </td>
 
 
@@ -204,7 +204,7 @@
                                                     </td>
                                                     <td ng-show="showConfLength()" ng-class="{'col-md-1 col-fixed-30 input-change ':node.attributes.confLength,'col-md-1 col-fixed-30':!node.attributes.confLength}" ng-if="node.type==='field' || node.type==='component'">
                                                         <input ng-init="initConfL(node)" ng-change="setDirty();updateConfL(node);" class="form-control" name="confL" ng-model="node.confLength">
-                                                        <a ng-click="cancelConfL(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                        <a ng-show="node.attributes.confLength" ng-click="cancelConfL(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                     </td>
 
 
@@ -242,7 +242,7 @@
                                                                 </div>
 
                                                                 <div align="center">
-                                                                    <a ng-show="node.datatype||editableDT===node.id" ng-click="editDatatype=false;cancelDatatype(node)" class="point">
+                                                                    <a ng-show="node.attributes.datatype" ng-show="node.datatype||editableDT===node.id" ng-click="editDatatype=false;cancelDatatype(node)" class="point">
                                                                         <span><i class="glyphicon glyphicon-remove"></i></span>
                                                                     </a>
                                                                     <!--<a ng-show="datatypesMap[node.datatype.id].name.toUpperCase() === 'varies'.toUpperCase()" ng-click="showEditDynamicMappingDlg(node)" class="point">
@@ -263,27 +263,27 @@
                                                                 <span class="badge label-white">
                                                                 <span ng-class="{'label-message-icon' : binding.bindingFrom == 'message', 'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
 
-                                                              
-                                                            <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
-                                                            </span>
-                                                            <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
-                                                            </span>
-                                                        </div>
-                                                        <a class="point">
-                                                            <span ng-click="editModalBindingForMsg(node)"><i class="fa fa-plus fa-fw"></i></span>
-                                                            <a ng-click="cancelBinding(node)"><i class="fa fa-remove fa-fw"></i></a>
+
+                                                                <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'valueset'" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
+                                                                </span>
+                                                                <span title="For {{getValueSetContext(node)}}" ng-show=" binding.type == 'singlecode'" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
+                                                                </span>
+                                                            </div>
+                                                            <a class="point">
+                                                                <span ng-click="editModalBindingForMsg(node)"><i class="fa fa-plus fa-fw"></i></span>
+                                                                <a ng-show="node.valueSetBindings && node.valueSetBindings.length>0" ng-click="cancelBinding(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                             </a>
                                                         </div>
                                                     </td>
-                                                    <td ng-class="{'emptyCol':hasChildren(node),'input-change':(node.singleElementValues && node.singleElementValues.location)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
-                                                        <div ng-init="initSev(node)" ng-show="!hasChildren(node)">
+                                                    <td ng-class="{'emptyCol':!isAvailableConstantValue(node),'input-change':(node.singleElementValues && node.singleElementValues.location)}" style="text-align:center">
+                                                        <div ng-init="initSev(node)" ng-show="isAvailableConstantValue(node)">
                                                             <div>
 
                                                                 <span ng-show="node.sev" class="badge label-white">
-                                                                    <span ng-class="{'label-message-icon' : node.from == 'message', 'label-field-icon' : node.from == 'segment'}"><i class="fa fa-circle fa-fw"/></span>
+                                                                    <span ng-show="node.sev.value!=='' && node.sev.value!==null" ng-class="{'label-message-icon' : node.from == 'message', 'label-field-icon' : node.from == 'segment'}"><i class="fa fa-circle fa-fw"/></span>
                                                                 <span>{{node.sev.value}}</span>
                                                                 <span ng-show="node.sev.value!=='' && node.sev.value!==null" title="Edit SingleElement" ng-click="openDialogForEditSev(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
-                                                                <span title="Cancel SingleElement" ng-click="cancelSev(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                                                                <span ng-show="node.singleElementValues && node.singleElementValues.location" title="Cancel SingleElement" ng-click="cancelSev(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                                                                 </span>
                                                                 <a ng-show="!node.sev || !node.sev.value" class="point" ng-click="openDialogForEditSev(node)">
                                                                     <span><i class="fa fa-plus fa-fw"></i></span>
@@ -322,7 +322,7 @@
                                                         </div>
                                                         <a class="point">
                                                             <span ng-click="editCommentDlg(node, null, false, 'message')"><i class="fa fa-plus fa-fw"></i></span>
-                                                            <a ng-click="cancelComments(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                            <a ng-show="node.comments && node.comments.length>0" ng-click="cancelComments(node)"><i class="fa fa-remove fa-fw"></i></a>
 
                                                         </a>
                                                     </td>
@@ -747,53 +747,57 @@
     </div>
     <div class="modal-body">
         <div class="container" style="margin-bottom: 20px;margin-top: 10px">
-            <div class="row" style="padding-top:10px">
-                <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
-                    <md-tab>
-                        <md-tab-label>Message</md-tab-label>
-                        <md-tab-body >
-                            <div class="col-md-6 panel panel-default">
-                                <div class="panel-heading">Choose a Core Profile</div>
-                                <div class="panel-body">
+            <div class="row" style="padding-top:10px" layout-sm="column">
+                <div flex>
+                    <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+                        <md-tab>
+                            <md-tab-label>Message</md-tab-label>
+                            <md-tab-body>
+                                <div class=" panel panel-default">
+                                    <div class="panel-heading">Choose Items</div>
+                                    <div class="panel-body">
 
-                                    <table id="MsgProfileComponentTable" tt-table tt-params="MsgProfileComponentParams" class="table table-striped table-borderless table-condensed hl7-versions-valueset table-fixed">
-                                        <thead>
-                                            <!--<tr class="tbl-header">
+                                        <table id="MsgProfileComponentTable" tt-table tt-params="MsgProfileComponentParams" class="table table-striped table-borderless table-condensed hl7-versions-valueset table-fixed">
+                                            <thead>
+                                                <!--<tr class="tbl-header">
                                                 <th>Choose Profile Component</th>
 
                                             </tr>-->
 
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </md-tab-body>
+
+                        </md-tab>
+                        <md-tab>
+                            <md-tab-label>Segment</md-tab-label>
+                            <md-tab-body>
+                                <div class=" panel panel-default">
+                                    <div class="panel-heading">Choose Items</div>
+                                    <div class="panel-body">
+
+                                        <table id="SegProfileComponentTable" tt-table tt-params="SegProfileComponentParams" class="table table-striped table-borderless table-condensed hl7-versions-valueset table-fixed">
+                                        <thead>
+                                            <tr class="tbl-header">
+                                                <th>Choose Profile Component</th>
+
+                                            </tr>
+
                                         </thead>
                                         <tbody></tbody>
                                     </table>
+                                    </div>
+
                                 </div>
+                               
+                            </md-tab-body>
 
-                            </div>
-                        </md-tab-body>
-
-                    </md-tab>
-                    <md-tab>
-                        <md-tab-label>Segment</md-tab-label>
-                        <md-tab-body>
-                            <div class="col-md-6">
-                                <h5>Source</h5>
-                                <table id="SegProfileComponentTable" tt-table tt-params="SegProfileComponentParams" class="table table-striped table-borderless table-condensed hl7-versions-valueset table-fixed">
-                                    <thead>
-                                        <tr class="tbl-header">
-                                            <th>Choose Profile Component</th>
-
-                                        </tr>
-
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-
-
-                            </div>
-                        </md-tab-body>
-
-                    </md-tab>
-                    <!--<tab>
+                        </md-tab>
+                        <!--<tab>
                         <tab-heading>Datatype</tab-heading>
                         <div class="col-md-6">
                             <h5>Source</h5>
@@ -810,12 +814,61 @@
                         </div>
 
                     </tab>-->
-                </md-tabs>
+                    </md-tabs>
+                </div>
+                <div flex>
 
 
 
+                    <div class=" panel panel-default" flex ng-show="selectedPC.length> 0">
+                        <div class="panel-heading">Selected Items</div>
+                        <div class="panel-body" style="overflow-y: auto;height: 235px;">
 
-                <div class="col-md-6 " ng-show="selectedPC.length> 0">
+                            <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                                <thead>
+                                    <tr class="tbl-header">
+                                        <th class="col-md-3">Path</th>
+                                        <th class="col-md-2">Name</th>
+
+
+
+                                        <th class="col-md-1" />
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="pc in selectedPC">
+                                        <td class="col-md-3">
+                                            <span ng-if="pc.type=='datatype'" class="label label-default label-icon">D</span>
+
+                                            <span ng-if="pc.type=='group'" class="label label-success label-icon">G</span>
+                                            <span ng-if="pc.type=='segmentRef'||pc.type=='segment'" class="label label-segment label-icon">S</span>
+                                            <span class="label label-field label-icon" ng-if="pc.type==='field'">F</span>
+                                            <span class="label label-component label-icon" ng-if="pc.type==='component'">C</span> {{pc.path}}
+                                        </td>
+                                        <td class="col-md-2"><span>
+                                        
+                                        <span ng-if="pc.type==='segmentRef'">{{pc.attributes.oldRef.name}}</span>
+                                            <span ng-if="pc.type!=='segmentRef'">{{pc.name}}</span>
+
+                                            </span>
+                                            <!--<a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==' '&& dt.scope!=='MASTER '" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
+                                                <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext" />-->
+                                            <!--<a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
+                                                <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
+                                                <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>-->
+                                        </td>
+
+
+                                        <td class="col-md-1"> <a class="pointer" ng-click="removeSelectedComp(pc)"><i class="fa fa-times fa-fw"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <!--<div flex ng-show="selectedPC.length> 0">
                     <div class="igl-table">
                         <h5>Selected Profile Components</h5>
                         <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
@@ -845,11 +898,7 @@
                                         <span ng-if="pc.type!=='segmentRef'">{{pc.name}}</span>
 
                                         </span>
-                                        <!--<a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==' '&& dt.scope!=='MASTER '" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
-                                                <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext" />-->
-                                        <!--<a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
-                                                <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
-                                                <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>-->
+                                     
                                     </td>
 
 
@@ -859,7 +908,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div>-->
 
 
 
