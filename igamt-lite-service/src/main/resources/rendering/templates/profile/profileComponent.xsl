@@ -71,6 +71,11 @@
                     <xsl:text>10%</xsl:text>
                 </xsl:attribute>
             </xsl:element>
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>10%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>
             <xsl:element name="thead">
                 <xsl:attribute name="class">
                     <xsl:text>contentThead</xsl:text>
@@ -114,6 +119,9 @@
                             <xsl:text>Value Set/Single Code</xsl:text>
                         </xsl:element>
                     </xsl:if>
+                    <xsl:element name="th">
+                        <xsl:text>Constant Value</xsl:text>
+                    </xsl:element>
                     <xsl:if test="$columnDisplay.profileComponent.definitionText = 'true'">
                         <xsl:element name="th">
                             <xsl:text>Definition Text</xsl:text>
@@ -138,7 +146,16 @@
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.usage = 'true'">
                                 <xsl:element name="td">
-                                    <xsl:value-of select="@Usage"/>
+                                    <xsl:choose>
+                                        <xsl:when test="@Usage!=''">
+                                            <xsl:value-of select="@Usage"/>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="class">
+                                                <xsl:text>greyCell</xsl:text>
+                                            </xsl:attribute>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:element>
                             </xsl:if>
                             <xsl:if test="$columnDisplay.profileComponent.cardinality = 'true'">
@@ -215,6 +232,18 @@
                                     </xsl:choose>
                                 </xsl:element>
                             </xsl:if>
+                            <xsl:element name="td">
+                                <xsl:choose>
+                                    <xsl:when test="@SingleElement!=''">
+                                        <xsl:value-of select="@SingleElement"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="class">
+                                            <xsl:text>greyCell</xsl:text>
+                                        </xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:element>
                             <xsl:if test="$columnDisplay.profileComponent.definitionText = 'true'">
                                 <xsl:element name="td">
                                     <xsl:choose>
