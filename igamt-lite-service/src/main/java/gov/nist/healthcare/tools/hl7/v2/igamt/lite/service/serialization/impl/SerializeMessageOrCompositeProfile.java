@@ -106,7 +106,7 @@ public abstract class SerializeMessageOrCompositeProfile {
             if(compositeProfileSegments!=null){
                 segment = findSegmentInCompositeProfileSegments(segmentLink,compositeProfileSegments);
             } else {
-                segmentService.findById(segmentLink.getId());
+                segment = segmentService.findById(segmentLink.getId());
             }
             if(usageConfig != null && segment != null) {
                 List<Field> filteredFieldList = new ArrayList<>();
