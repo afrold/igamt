@@ -14,7 +14,9 @@
 <script type="text/ng-template" id="EditDatatypes.html">
     <div ng-controller="DatatypeListCtrl" ng-init="init()" class="container">
         <div ng-show="loadingSelection" style="text-align: center;">
-            <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>
         </div>
         <div ng-show="!loadingSelection">
             <!--<div ng-if="versionAndUseMap[datatype.id].deprecated" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>-->
@@ -343,7 +345,7 @@
                                                                     style="text-align:center">Concept Domain
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-100"
-                                                                    ng-show="viewSettings.isVisibleColumn('singleElm')"
+                                                                    ng-show="viewSettings.isVisibleColumn('singleElm')&&igdocument"
                                                                     style="text-align:center">Constant Value
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-100"
@@ -868,13 +870,13 @@
 
                                 </md-tab-body>
                             </md-tab>
-                            <md-tab md-on-select="setDeltaToF();getAllVersionsOfDT(datatype.id)"
-                                    ng-if="versionAndUseMap[datatype.id]&&datatypeLibrary!=null">
+                            <md-tab md-on-select="setDeltaToF(); getAllVersionsOfDT(datatype.parentVersion)" ng-if="datatype.parentVersion&&versionAndUseMap[datatype.parentVersion]&&(versionAndUseMap[datatype.parentVersion].ancestors.length||versionAndUseMap[datatype.parentVersion].derived.length>0)">
                                 <md-tab-label>
                                     <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
                                 </md-tab-label>
                                 <md-tab-body>
                                     <div class="panel-body">
+
 
 
                                         <table class="table table-bordered table-stripped">
@@ -890,58 +892,31 @@
                                             <tbody>
                                             <tr ng-repeat="inf in availbleVersionOfDt" ng-if="inf.publicationDate">
                                                 <td class="col-md-3">
-                                                    <input ng-if="inf.id !==datatype.id" type="radio" name="inforadio"
-                                                           value="availbleVersionOfDt" ng-model="inf.checked"
-                                                           ng-click="compareWithCurrent(inf.id);"/>
+                                                    <input ng-if="inf.id !==datatype.parentVersion" type="radio" name="inforadio" value="availbleVersionOfDt" ng-model="inf.checked" ng-click="compareWithCurrent(inf.id);" />
 
-                                                    <input type="radio" name="inforadio1" value="datatype.id"
-                                                           ng-model="datatype.id" disabled
-                                                           ng-if="inf.id ===datatype.id"/>
+                                                    <input type="radio" name="inforadio1" value="datatype.id" ng-model="datatype.parentVersion" disabled ng-if="inf.id ===datatype.parentVersion" />
 
-                                                    <span class="badge" ng-class="{'selected2' :checked===inf.id}"
-                                                          style="color:black !important" ng-if="inf.id !==datatype.id">v{{inf.publicationVersion}}</span>
-                                                    <span class="badge selected1" style="color:black !important"
-                                                          ng-if="inf.id ===datatype.id">v{{inf.publicationVersion}}</span>
-                                                    <span ng-if="datatype.id===inf.id"
-                                                          tooltip="This is the version of the current datatype"><strong>(current)</strong></span>
+                                                    <span class="badge" ng-class="{'selected2' :checked===inf.id}" style="color:black !important" ng-if="inf.id !==datatype.parentVersion">v{{inf.publicationVersion}}</span>
+                                                    <span class="badge selected1" style="color:black !important" ng-if="inf.id ===datatype.id">v{{inf.publicationVersion}}</span>
+                                                    <span ng-if="datatype.parentVersion===inf.id" tooltip="This is the version of the current datatype"><strong>(current)</strong></span>
 
                                                 </td>
                                                 <td class="col-md-4">
                                                     <span>{{inf.publicationDate}}</span>
                                                 </td>
                                                 <td class="col-md-5">
-                                                    <button title="Open" type="button"
-                                                            class="btn btn-raised btn-raised btn-xs btn-default"
-                                                            ng-if="datatypesMap[inf.id]&&inf.id!==datatype.id"
-                                                            ng-click="redirectDT(datatypesMap[inf.id])"><span><i
-                                                            class="fa fa-eye fa-fw"></i></span>View
+                                                    <button ng-if="references.length>0&&datatype.parentVersion!==inf.id" ng-click="upgradeOrDowngrade(inf.id,datatype);" type="button" class="btn btn-raised btn-raised btn-xs btn-success">
+                                                        <i class="fa fa-refresh fa-fw"></i>
+
+                                                        <span ng-if="inf.publicationVersion>datatype.publicationVersion">Upgrade To</span><span ng-if="inf.publicationVersion<datatype.publicationVersion">Downgrade To</span>
                                                     </button>
-
-
-                                                    <button title="Add" ng-if="!datatypesMap[inf.id]"
-                                                            ng-click="addOneDatatypeById(inf.id)" type="button"
-                                                            class="btn btn-raised btn-raised btn-xs btn-info"><span><i
-                                                            class="fa fa-plus fa-fw"
-                                                            tooltip="Import this data type "></i></span>Add
-                                                    </button>
-                                                    <button ng-if="datatypesMap[inf.id]&&inf.id!==datatype.id && references.length>0"
-                                                            ng-click="confirmSwitch(datatype,datatypesMap[inf.id]);"
-                                                            type="button"
-                                                            class="btn btn-raised btn-raised btn-xs btn-success"><span>
-                                    <i class="fa fa-refresh fa-fw"></i>
-
-                                        <span ng-if="inf.publicationVersion>datatype.publicationVersion">Upgrade To<span>
-                                        <span ng-if="inf.publicationVersion<datatype.publicationVersion">Downgrade To<span>
-                                    </span></button>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
 
 
-                                        <table tt-table tt-params="dynamicDt_Evolution"
-                                               class=" table-marginless table-bordered table-condensed"
-                                               ng-if="!hideEvolution">
+                                        <table tt-table tt-params="dynamicDt_Evolution" class=" table-marginless table-bordered table-condensed" ng-if="!hideEvolution">
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1" rowspan="2" style="width:14%;">Position</th>
@@ -949,12 +924,9 @@
                                                 <th class="col-md-1" rowspan="2" style="width:2%">Usage</th>
                                                 <th class="col-md-1" colspan="2" style="width:4%">Cardinality</th>
                                                 <th class="col-md-1" colspan="2" style="width:4%">Length</th>
-                                                <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length
-                                                </th>
+                                                <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
                                                 <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
-                                                <th class="col-md-1" rowspan="2" style="width:16%" ng-if="igdocument">
-                                                    Value Set
-                                                </th>
+                                                <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
                                             </tr>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1 col-fixed-10" style="width:2%">min</th>
@@ -1141,7 +1113,7 @@
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')"
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')&&igdocument"
             style="text-align:center">
             <div ng-show="isAvailableConstantValue(node)">
                 <span ng-show="node.sev" class="badge label-white">
@@ -1274,7 +1246,7 @@
                 </div>
             </div>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')"
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')&&igdocument"
             style="text-align:center">
             <div ng-show="isAvailableConstantValue(node)">
                 <span ng-show="node.sev" class="badge label-white">
@@ -1383,7 +1355,7 @@
             </div>
         </td>
         <td ng-class="{'emptyCol':!isAvailableConstantValue(node, parentsMap[node.id])}"
-            ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            ng-show="viewSettings.isVisibleColumn('singleElm')&&igdocument" style="text-align:center">
             <div ng-show="isAvailableConstantValue(node, parentsMap[node.id])">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-component-icon' : node.sev.isMain, 'label-sub-component-icon' : !node.sev.isMain}"><i
@@ -1493,7 +1465,7 @@
             </div>
         </td>
         <td ng-class="{'emptyCol':!isAvailableConstantValue(node, parentsMap[node.id])}"
-            ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+            ng-show="viewSettings.isVisibleColumn('singleElm')&&igdocument" style="text-align:center">
             <div ng-show="isAvailableConstantValue(node, parentsMap[node.id])">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-component-icon' : node.sev.isMain, 'label-sub-component-icon' : !node.sev.isMain}"><i

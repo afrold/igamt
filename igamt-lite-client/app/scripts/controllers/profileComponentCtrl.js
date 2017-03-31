@@ -1380,9 +1380,13 @@ angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootSc
             $scope.currentComment.lastUpdatedDate = new Date();
         } else {
             var newComment = {};
+            
             newComment.description = $scope.descriptionText;
             newComment.location = currentPath;
             newComment.lastUpdatedDate = new Date();
+            if(!currentNode.comments){
+                currentNode.comments=[];
+            }
             currentNode.comments.push(newComment);
         }
 

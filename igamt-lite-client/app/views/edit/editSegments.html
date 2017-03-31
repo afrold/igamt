@@ -14,7 +14,9 @@
 <script type="text/ng-template" id="EditSegments.html">
     <div ng-controller="SegmentListCtrl" ng-init="init()" class="container">
         <div ng-show="loadingSelection" style="text-align: center;">
-            <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="segment !== null" id="executionPanel">
@@ -190,23 +192,23 @@
                                                                     <button type="button" ng-show="(segment.scope === 'USER') && !viewSettings.tableReadonly && (segment.fields.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(segment)">O to X
                                                                     </button>
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" style="text-align:center">Cardinality
+                                                                <th class="col-md-1 col-fixed-100" style="text-align:left">Cardinality
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" style="text-align:center">Length
+                                                                <th class="col-md-1 col-fixed-100" style="text-align:left">Length
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-80" ng-show="showConfLength()" style="text-align:center">Conformance Length
+                                                                <th class="col-md-1 col-fixed-80" ng-show="showConfLength()" style="text-align:left">Conformance Length
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:center">Data Type
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:left">Data Type
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Value Set/Single Code
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:left">Value Set/Single Code
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">Constant Value
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:left">Constant Value
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('predicate')" style="text-align:center">Predicate
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('predicate')" style="text-align:left">Predicate
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">Definition Text
+                                                                <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:left">Definition Text
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">Comment
+                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:left">Comment
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -439,7 +441,7 @@
                                                                 <th st-sort="firstReferenceValue" class="col-md-3">Reference Value</th>
                                                                 <!--<th ng-show="segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation" st-sort="secondReferenceValue" class="col-md-3">Second Reference Value</th>-->
                                                                 <th class="col-md-5">Datatype</th>
-                                                                <th class="col-md-1" style="text-align:center">
+                                                                <th class="col-md-1" style="text-align:left">
                                                                     <span ng-show="!viewSettings.tableReadonly && segment.scope == 'USER'" ng-click="addMappingItem()"><i class="fa fa-plus fa-fw edit-icon-white"></i></span>
                                                                 </th>
                                                             </tr>
@@ -466,7 +468,7 @@
                                                                             ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'"
                                                                             ng-options="link.id as getDatatypeLabel(datatypesMap[link.id]) for link in igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}" />
                                                                 </td>
-                                                                <td class="col-md-1" style="text-align:center">
+                                                                <td class="col-md-1" style="text-align:left">
                                                                     <span ng-show="!viewSettings.tableReadonly && segment.scope == 'USER'" ng-click="deleteMappingItem(item)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                                                                 </td>
                                                             </tr>
@@ -491,7 +493,7 @@
                                                                 <tr class="tbl-header">
                                                                     <th st-sort="value" class="col-md-3">Value</th>
                                                                     <th st-sort="label" class="col-md-8">Description</th>
-                                                                    <th class="col-md-1" style="text-align:center">Status</th>
+                                                                    <th class="col-md-1" style="text-align:left">Status</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -502,7 +504,7 @@
                                                                     <td class="col-md-8">
                                                                         <span>{{c.label}}</span>
                                                                     </td>
-                                                                    <td class="col-md-1" style="text-align:center">
+                                                                    <td class="col-md-1" style="text-align:left">
                                                                         <span ng-show="getDefaultStatus(c) == 'full'">
                                                                             <i class="fa fa-circle" aria-hidden="true"></i>
                                                                         </span>
@@ -840,7 +842,7 @@
                                             </span>
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}">
             <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
                 <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                     <span class="badge label-white" ng-show="editableDT!==node.id">
@@ -868,7 +870,7 @@
                 </div>
             </ng-form>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
                     <span class="badge label-white">
@@ -885,7 +887,7 @@
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')">
             <div ng-show="isAvailableConstantValue(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
@@ -923,7 +925,7 @@
                 </div>
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:left">
             <div>
                 <a ng-click="openRichTextDlg(node, 'text', 'Definition Text', false)" class="point">
                     <i class="fa fa-pencil fa-fw" ng-show="node.text !=='' && node.text !==null && node.text !==undefined "></i>
@@ -934,7 +936,7 @@
                 </a>
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:left">
             <div ng-repeat="comment in findingComments(node)">
                 <span class="badge label-white">
                     <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
@@ -984,7 +986,7 @@
                     <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </span>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:left">
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
                     <span class="badge label-white">
@@ -997,7 +999,7 @@
                 </div>
             </div>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:left">
             <div ng-show="isAvailableConstantValue(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
@@ -1025,7 +1027,7 @@
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:left">
             <div ng-repeat="comment in findingComments(node)">
                 <span class="badge label-white">
                     <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
@@ -1068,12 +1070,12 @@
             <div ng-bind="node.confLength" ng-show="datatypesMap[node.datatype.id].components.length == 0">
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:left">
             <span title="Go to datatype" ng-click="redirectDT(node.datatype)">
             <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </span>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:left">
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
                     <span class="badge label-white">
@@ -1093,7 +1095,7 @@
                 </a>
             </div>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:left">
             <div ng-show="isAvailableConstantValue(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
@@ -1122,7 +1124,7 @@
                 </a>
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:left">
             <div ng-repeat="comment in findingComments(node)">
                 <span class="badge label-white">
                     <span ng-class="{'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
@@ -1175,7 +1177,7 @@
             <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </span>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableForValueSet(node)}" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:left">
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
                     <span class="badge label-white">
@@ -1190,7 +1192,7 @@
                 </div>
             </div>
         </td>
-        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">
+        <td ng-class="{'emptyCol':!isAvailableConstantValue(node)}" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:left">
             <div ng-show="isAvailableConstantValue(node)">
                 <span ng-show="node.sev" class="badge label-white">
                     <span ng-class="{'label-field-icon' : node.sev.from == 'segment', 'label-component-icon' : node.sev.from == 'field', 'label-sub-component-icon' : node.sev.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
@@ -1211,7 +1213,7 @@
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:left">
             <div ng-repeat="comment in findingComments(node)">
                 <span class="badge label-white">
                     <span ng-class="{'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
@@ -1813,7 +1815,7 @@
                                                     <th st-sort="value" class="col-md-3">Code</th>
                                                     <th st-sort="label" class="col-md-5">Description</th>
                                                     <th st-sort="label" class="col-md-3">CodeSystem</th>
-                                                    <th class="col-md-1" style="text-align:center">Status</th>
+                                                    <th class="col-md-1" style="text-align:left">Status</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -1827,7 +1829,7 @@
                                                     <td class="col-md-3">
                                                         <span>{{c.codeSystem}}</span>
                                                     </td>
-                                                    <td class="col-md-1" style="text-align:center">
+                                                    <td class="col-md-1" style="text-align:left">
                                                         <a ng-show="!isCodeSelected(c)" ng-click="selectCode(c)" class="point">
                                                             <i class="icon-size-15 fa-circle-thin fa"></i>
                                                         </a>

@@ -9,7 +9,9 @@
 </script>
 <div ng-controller="ConstraintsListCtrl" ng-init="init()" class="container">
 	<div ng-show="loading" style="text-align: center">
-		<img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..." />
+		<div layout="row" layout-sm="column" layout-align="space-around">
+			<md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+		</div>
 	</div>
 	
 	<div ng-show="!loading">

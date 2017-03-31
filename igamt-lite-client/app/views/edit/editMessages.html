@@ -14,7 +14,9 @@
 <script type="text/ng-template" id="EditMessages.html">
     <div ng-controller="MessageListCtrl" ng-init="init()">
         <div ng-show="loadingSelection" style="text-align: center;">
-            <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="message !== null" id="executionPanel">
@@ -1254,8 +1256,8 @@
         </p>
     </div>
     <div class="modal-body">
-        <p ng-show="destination.type!=='table'">Are you sure you want to leave this page and go to {{::destination.type}} : {{::destination.name}} </p>
-        <p ng-show="destination.type==='table'">Are you sure you want to leave this page and go to the Value Set : {{::destination.bindingIdentifier}}</p>
+        <p ng-show="destination.type!=='table'">Are you sure you want to leave this page and go to <display-label of="destination" desc="false"></display-label> </p>
+        <p ng-show="destination.type==='table'">Are you sure you want to leave this page and go to the Value Set : <display-label of="destination" desc="false"></display-label></p>
 
     </div>
 

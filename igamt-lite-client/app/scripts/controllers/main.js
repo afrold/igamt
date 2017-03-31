@@ -1134,6 +1134,218 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
     };
 
+    $rootScope.upgradeOrDowngrade=function(id,datatype){
+        $rootScope.selectedDatatypes=[];
+        $rootScope.TablesIds=[];
+        $rootScope.DTlinksToAdd=[];
+
+        DatatypeService.getOne(id).then(function(sourceParent) {
+
+            console.log(id);
+            $scope.DatatypeToAdd = angular.copy(sourceParent);
+            $scope.DatatypeToAdd.hl7Version=datatype.hl7Version;
+
+
+            // $scope.DatatypeToAdd.publicationVersion=0;
+
+            $scope.DatatypeToAdd.valueSetBindings=[];
+            DatatypeService.getMergedMaster($scope.DatatypeToAdd).then(function(standard) {
+                $scope.DatatypeToAdd=standard;
+                $scope.DatatypeToAdd.parentVersion=sourceParent.id;
+
+
+                $scope.DatatypeToAdd.participants = [];
+                $scope.DatatypeToAdd.hl7versions=[]
+                $scope.DatatypeToAdd.hl7versions.push($scope.DatatypeToAdd.hl7Version);
+                $scope.DatatypeToAdd.id = new ObjectId().toString();
+                $scope.DatatypeToAdd.libIds = [];
+                $rootScope.selectedDatatypes.push($scope.DatatypeToAdd);
+                $scope.DatatypeToAdd.participants = [];
+                $scope.DatatypeToAdd.libIds = [];
+                if ( $scope.DatatypeToAdd.components != undefined && $scope.DatatypeToAdd.components != null && $scope.DatatypeToAdd.components.length != 0) {
+                    for (var i = 0; i < $scope.DatatypeToAdd.components.length; i++) {
+                        $scope.DatatypeToAdd.components[i].id = new ObjectId().toString();
+                    }
+                }
+
+                var predicates = $scope.DatatypeToAdd['predicates'];
+                if (predicates != undefined && predicates != null && predicates.length != 0) {
+                    angular.forEach(predicates, function(predicate) {
+                        predicate.id = new ObjectId().toString();
+                    });
+                }
+
+                var conformanceStatements = $scope.DatatypeToAdd['conformanceStatements'];
+                if (conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0) {
+                    angular.forEach(conformanceStatements, function(conformanceStatement) {
+                        conformanceStatement.id = new ObjectId().toString();
+                    });
+                }
+                if($scope.DatatypeToAdd.valueSetBindings&&$scope.DatatypeToAdd.valueSetBindings.length!==0) {
+                    angular.forEach($scope.DatatypeToAdd.valueSetBindings, function (binding) {
+                        if (binding.tableId && !$rootScope.tablesMap[binding.tableId]) {
+                            var temp = [];
+                            temp.push(binding.tableId);
+                            $rootScope.TablesIds = _.union($rootScope.TablesIds, temp);
+                        }
+
+                    })
+                }
+
+                angular.forEach($rootScope.selectedDatatypes, function(dt){
+                    $rootScope.processAddedDT(dt);
+                });
+
+                DatatypeService.saves($rootScope.selectedDatatypes).then(function(result) {
+
+
+
+
+                    for (var i = 0; i < result.length; i++) {
+                        if(!$rootScope.datatypesMap[result[i].id]){
+                            $rootScope.datatypesMap[result[i].id]=result[i];
+                            $rootScope.datatypes.push(result[i]);
+                        }
+                    }
+
+                    DatatypeLibrarySvc.addChildren($rootScope.datatypeLibrary.id, $rootScope.DTlinksToAdd).then(function(link) {
+                        $rootScope.datatypeLibrary.children.push(link);
+                        var usedDtId1 = _.map($rootScope.DTlinksToAdd, function(num, key) {
+                            return num.id;
+                        });
+
+                        DatatypeService.get(usedDtId1).then(function(datatypes) {
+                            angular.forEach(datatypes, function(datatype){
+                                if(!$rootScope.datatypesMap[datatype.id]){
+                                    $rootScope.datatypesMap[datatype.id]=datatype;
+                                    $rootScope.datatypes.push(datatype);
+                                    if(datatype.parentVersion){
+                                        $rootScope.datatypesMap[datatype.parentVersion]=datatype;
+                                    }
+                                }
+                            })
+                            TableLibrarySvc.addChildrenByIds($rootScope.tableLibrary.id, $rootScope.TablesIds).then(function(result) {
+                                console.log(result);
+                                angular.forEach(result, function(table){
+
+                                    if(!$rootScope.tablesMap[table.id]){
+                                        $rootScope.tables.push(table);
+                                        $rootScope.tablesMap[table.id]=table;
+                                        console.log($rootScope.datatypesMap[$scope.DatatypeToAdd.id]);
+
+
+                                    }
+
+
+
+                                });
+                                $rootScope.confirmSwitch($rootScope.datatype,$rootScope.datatypesMap[$scope.DatatypeToAdd.id]);
+
+
+                            });
+                        });
+                    });
+                });
+            });
+
+        });
+
+
+
+    };
+
+
+
+
+    $rootScope.processAddedDT=function(datatype){
+        if(!$rootScope.datatypesMap[datatype.id]){
+            $rootScope.DTlinksToAdd.push({
+                id: datatype.id,
+                name: datatype.name,
+                ext:datatype.ext
+            });
+        }
+        if(datatype.components&&datatype.components.length!=0){
+            angular.forEach(datatype.components, function(component){
+                if(component.datatype){
+
+                    $rootScope.processAddedDT(component.datatype);
+                }
+
+            });
+        }
+        console.log("DEBUG");
+        console.log(datatype);
+        if(datatype.valueSetBindings&&datatype.valueSetBindings.length>0){
+            angular.forEach(datatype.valueSetBindings,function(binding){
+                if(binding.tableId&&!$rootScope.tablesMap[binding.tableId]){
+                    var temp=[];
+                    temp.push(binding.tableId);
+                    $rootScope.TablesIds=_.union($rootScope.TablesIds,temp);
+                }
+
+            })
+        }
+    };
+
+
+    $rootScope.processList=function(){
+
+
+        angular.forEach($rootScope.selectedDatatypes, function(dt){
+            $rootScope.processAddedDT(dt);
+        });
+
+        DatatypeService.saves($rootScope.selectedDatatypes).then(function(result) {
+
+
+
+
+            for (var i = 0; i < result.length; i++) {
+                if(!$rootScope.datatypesMap[result[i].id]){
+                    $rootScope.datatypesMap[result[i].id]=result[i];
+                    $rootScope.datatypes.push(result[i]);
+                }
+            }
+
+            DatatypeLibrarySvc.addChildren($rootScope.datatypeLibrary.id, $rootScope.DTlinksToAdd).then(function(link) {
+                $rootScope.datatypeLibrary.children.push(link);
+                var usedDtId1 = _.map($rootScope.DTlinksToAdd, function(num, key) {
+                    return num.id;
+                });
+
+                DatatypeService.get(usedDtId1).then(function(datatypes) {
+                    angular.forEach(datatypes, function(datatype){
+                        if(!$rootScope.datatypesMap[datatype.id]){
+                            $rootScope.datatypesMap[datatype.id]=datatype;
+                            $rootScope.datatypes.push(datatype);
+                            if(datatype.parentVersion){
+                                $rootScope.datatypesMap[datatype.parentVersion]=datatype;
+                            }
+                        }
+                    })
+                    TableLibrarySvc.addChildrenByIds($rootScope.tableLibrary.id, $rootScope.TablesIds).then(function(result) {
+                        console.log(result);
+                        angular.forEach(result, function(table){
+
+                            if(!$rootScope.tablesMap[table.id]){
+                                $rootScope.tables.push(table);
+                                $rootScope.tablesMap[table.id]=table;
+
+                            }
+
+
+
+                        });
+
+                    });
+                });
+            });
+        });
+    };
+
+
+
 
     $rootScope.filteredSegmentsList = [];
     $rootScope.filteredTablesList = [];

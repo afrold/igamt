@@ -86,7 +86,8 @@ angular.module('igl').factory(
             }else{
             	newDatatype.ext = newDatatype.ext+(Math.floor(Math.random() * 100) + 1);
             }
-            newDatatype.scope = $rootScope.datatypeLibrary.scope;
+            newDatatype.scope = $rootScope.datatypeLibrary.scope
+            newDatatype.parentVersion=null;
             newDatatype.status='UNPUBLISHED';
             if(datatype.publicationVersion){
                 newDatatype.publicationVersion=0;
@@ -171,6 +172,7 @@ angular.module('igl').factory(
             var newDatatype = angular.copy(datatype, {});
             newDatatype.scope = $rootScope.datatypeLibrary.scope;
             newDatatype.status='UNPUBLISHED';
+            newDatatype.parentVersion=null;
             newDatatype.shareParticipantIds = [];
             newDatatype.id=new ObjectId().toString()
             var datatypeInfo= {};
@@ -787,11 +789,24 @@ angular.module('igl').factory(
 
         svc.deleteDatatypeLink = function (datatype) {
             DatatypeLibrarySvc.deleteChild($rootScope.datatypeLibrary.id, datatype.id).then(function (res) {
+                if(datatype.scope==='INTERMASTER'){
+                    var index = $rootScope.datatypes.indexOf(datatype);
+                    console.log(index);
+                    if(index>=0){
+                        console.log("deleting");
+                        $rootScope.interMediates.splice(index, 1);
+                    }
+                }
                 var index = $rootScope.datatypes.indexOf(datatype);
                 console.log(index);
                 if(index>=0){
                     console.log("deleting");
                 $rootScope.datatypes.splice(index, 1);
+                }
+                if(datatype.parentVersion){
+                    var objectMap=datatype.parentVersion+"VV"+datatype.hl7Version;
+                    $rootScope.usingVersionMap[objectMap]=null;
+
                 }
                 
                 console.log($rootScope.datatypes);
