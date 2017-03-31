@@ -4059,7 +4059,7 @@
         <div class="modal-content">
             <div class="modal-header modal-wide">
                 <div class="form-inline">
-                    <span class="header4" style="color:white;">Add Datatypes From Master Library</span>
+                    <span class="header4" style="color:white;">Add Datatypes From {{scopeTag}} Library </span>
 
                     <span class="pull-right">
                     <button class="btn btn-raised btn-default btn-xs" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
@@ -4078,10 +4078,10 @@
 
                             <div class="row container">
 
-                                <select style="background-color: rgb(21, 101, 192);
-    color: white;" ng-model="masLib" class="form-control col-md-6" ng-change="selectMasterDtLib(masLib)" ng-options="masLib.metaData.name for masLib in masterLib track by masLib.id">
-                        <option value="" disabled selected>Choose a Master Library</option>
-                </select>
+                                <select style="background-color: rgb(21, 101, 192);color: white;" ng-model="masLib" class="form-control col-md-6" ng-change="selectMasterDtLib(masLib)" ng-options="masLib.metaData.name for masLib in masterLib track by masLib.id">
+                                    <option value="" disabled selected>Choose a {{scopeTag}} Library</option>
+
+                                 </select>
                             </div>
 
                             <hr style="border-top: 2px solid #271e1e" />

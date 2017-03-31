@@ -1232,12 +1232,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                                         $rootScope.tables.push(table);
                                         $rootScope.tablesMap[table.id]=table;
                                         console.log($rootScope.datatypesMap[$scope.DatatypeToAdd.id]);
-
-
                                     }
-
-
-
                                 });
                                 $rootScope.confirmSwitch($rootScope.datatype,$rootScope.datatypesMap[$scope.DatatypeToAdd.id]);
 
@@ -3749,6 +3744,23 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         });
     };
+    $scope.getDatatypeForUpgrade= function(id){
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     $rootScope.getGroupNodeName = function(node) {
         return node.position + "." + node.name;
