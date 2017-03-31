@@ -277,6 +277,9 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     $scope.backDT = function() {
         $scope.editableDT = '';
+        if ($scope.segmentsParams) {
+            $scope.segmentsParams.refresh();
+        }
     };
 
 

@@ -247,19 +247,21 @@ public class Bootstrap implements InitializingBean {
     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
     // createDefaultExportFonts();
+
+    // run for release 2.0 just once.
     // updateInitAndCreateBindingAndCommentsVSForDatatype();
     // updateInitAndCreateBindingAndCommentsVSForSegment();
     // updateInitAndCreateCommentsForMessage();
     // fixUserDatatypesScope();
     // updateDMofSegment();
     // updateProfileForMissingDTs();
-    DeleteProfileComponents();
+    // deleteProfileComponents();
 
 
 
   }
 
-  private void DeleteProfileComponents() throws IGDocumentException {
+  private void deleteProfileComponents() throws IGDocumentException {
     List<IGDocument> igDocuments = documentService.findAll();
     List<ProfileComponentLibrary> pcLibs = profileComponentLibraryService.findAll();
     profileComponentLibraryService.delete(pcLibs);
