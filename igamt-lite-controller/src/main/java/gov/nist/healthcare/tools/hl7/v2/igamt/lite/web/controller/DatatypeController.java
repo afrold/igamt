@@ -380,24 +380,21 @@ public class DatatypeController extends CommonController {
       Component temp = datatype.getComponents().get(i);
       if (temp.getDatatype() != null) {
         Datatype dtTemp = datatypeService.findById(temp.getDatatype().getId());
-        if (!dtTemp.getScope().toString().equals(SCOPE.MASTER.toString())) {
+        if (dtTemp.getScope().toString().equals("INTERMASTER")) {
           System.out.println(dtTemp.getId());
           datatype.getComponents().get(i).getDatatype()
               .setId((result.getComponents().get(i).getDatatype().getId()));
-
         } else {
           Datatype d = dtTemp.clone();
           String newId = new ObjectId().toString();
           d.setHl7Version(datatype.getHl7Version());
           d.setId(newId);
+          d.setParentVersion(dtTemp.getId());
           if (!d.getComponents().isEmpty()) {
             mergeComponent(d);
           }
           datatypeService.save(d);
           datatype.getComponents().get(i).getDatatype().setId(newId);
-
-
-
         }
       }
     }

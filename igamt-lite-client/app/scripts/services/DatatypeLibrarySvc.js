@@ -56,6 +56,17 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
             });
     };
 
+    svc.getPublishedDatatypesByLibrary = function (dtLibId,version) {
+        console.log(version);
+        return $http.post(
+            'api/datatype-library/' + dtLibId + '/publishedDts',version)
+            .then(function (response) {
+                //					console.log("response" + JSON.stringify(response));
+                return angular.fromJson(response.data);
+            });
+    };
+
+
     svc.append = function (fromchildren, toChildren) {
         angular.foreach(fromchildren, function (child) {
             toChildren.push(child);
@@ -206,6 +217,17 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
     svc.addChildren = function (libId, datatypeLinks) {
         var delay = $q.defer();
         $http.post('api/datatype-library/'+ libId+ '/addChildren', datatypeLinks).then(function (response) {
+            var res = angular.fromJson(response.data);
+            delay.resolve(res);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
+    svc.addChildrenFromDatatypes = function (libId, datatypes) {
+        var delay = $q.defer();
+        $http.post('api/datatype-library/'+ libId+ '/addChildrenFromDatatypes', datatypes).then(function (response) {
             var res = angular.fromJson(response.data);
             delay.resolve(res);
         }, function (error) {

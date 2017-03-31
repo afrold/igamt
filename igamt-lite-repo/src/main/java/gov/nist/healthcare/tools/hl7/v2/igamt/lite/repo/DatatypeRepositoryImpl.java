@@ -174,6 +174,26 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeOperations#
+   * findByScopeAndVersionAndParentVersion(gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.
+   * Constant.SCOPE, java.lang.String, java.lang.String)
+   */
+  @Override
+  public List<Datatype> findByScopeAndVersionAndParentVersion(SCOPE scope, String hl7Version,
+      String id) {
+    // TODO Auto-generated method stub
+
+
+    Criteria where = Criteria.where("hl7Version").is(hl7Version).andOperator(Criteria
+        .where("parentVersion").is(id).andOperator(Criteria.where("scope").is(scope.toString())));
+    Query qry = Query.query(where);
+    List<Datatype> datatypes = mongo.find(qry, Datatype.class);
+    return datatypes;
+  }
+
   // Query set4Brevis(Query qry) {
   // qry.fields().include("_id");
   // qry.fields().include("name");

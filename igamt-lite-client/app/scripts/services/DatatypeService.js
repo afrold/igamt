@@ -198,7 +198,9 @@ angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettin
                     for (var i = 0; i < datatypes.length; i++) {
                         datatypes[i].dateUpdated = saveResponse[i].dateUpdated;
                         datatypes[i].version = saveResponse[i].version;
+
                     }
+                    console.log(saveResponse);
 
                     delay.resolve(saveResponse);
                 }, function(error) {

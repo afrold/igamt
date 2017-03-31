@@ -63,4 +63,6 @@ public interface DatatypeOperations {
 
   public void updateStatus(String id, STATUS status);
 
+  List<Datatype> findByScopeAndVersionAndParentVersion(SCOPE scope, String hl7Version, String id);
+
 }
