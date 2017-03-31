@@ -130,63 +130,69 @@
                         <accordion-heading>
                             <span style="color:white;"> IG Document Metadata</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
                         </accordion-heading>
-                        <div class="row">
-                            <!--<div class="row">
-                            <label for="example-version-input" class="col-xs-2 col-form-label">HL7 Version*</label>
-                            <div class="col-xs-10">
-                                <input class="form-control" type="text" ng-model="hl7Version" disabled>
+                        <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                            <md-content layout-padding>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Title</label>
+                                    <input type="text"
+                                           name="title"
+                                           ng-model="hl7VersionsDlgForm.metaData.title" required>
+                                    <div ng-messages="hl7VersionsDlgForm.title.$error">
+                                        <div ng-message="required">Title is required.</div>
+                                    </div>
+                                </md-input-container>
 
-                            </div>
-                        </div>-->
-                            <div class=" row" style="padding-top:5px">
-                                <label for="example-text-input" class="col-xs-2 col-form-label">Title*</label>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Sub-Title</label>
+                                    <input type="text"
+                                           name="subTitle"
+                                           ng-model="hl7VersionsDlgForm.metaData.subTitle" required>
+                                    <div ng-messages="hl7VersionsDlgForm.subTitle.$error">
+                                        <div ng-message="required">Sub-Title is required.</div>
+                                    </div>
+                                </md-input-container>
 
-                                <div class="col-xs-10">
-                                    <input class="form-control form-control-xs" type="text" ng-model="hl7VersionsDlgForm.metaData.title" required>
-                                </div>
-                            </div>
-                            <div class=" row">
-                                <label for="example-search-input" class="col-xs-2 col-form-label">Sub-Title</label>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Organization</label>
+                                    <input type="text"
+                                           name="orgName"
+                                           ng-model="hl7VersionsDlgForm.metaData.orgName">
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.subTitle">
-                                </div>
-                            </div>
-                            <div class=" row">
-                                <label for="example-email-input" class="col-xs-2 col-form-label">Organization</label>
+                                </md-input-container>
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.orgName">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="example-url-input" class="col-xs-2 col-form-label">Extension</label>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Extension</label>
+                                    <input type="text"
+                                           name="ext"
+                                           ng-model="hl7VersionsDlgForm.metaData.ext">
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.ext">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="example-tel-input" class="col-xs-2 col-form-label">Specification</label>
+                                </md-input-container>
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.specificationName">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="example-password-input" class="col-xs-2 col-form-label">Status</label>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Specification</label>
+                                    <input type="text"
+                                           name="specificationName"
+                                           ng-model="hl7VersionsDlgForm.metaData.specificationName">
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.status">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="example-number-input" class="col-xs-2 col-form-label">Topics</label>
+                                </md-input-container>
 
-                                <div class="col-xs-10">
-                                    <input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.topics">
-                                </div>
-                            </div>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Status</label>
+                                    <input type="text"
+                                           name="specificationName"
+                                           ng-model="hl7VersionsDlgForm.metaData.status">
+
+                                </md-input-container>
+
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Topics</label>
+                                    <input type="text"
+                                           name="specificationName"
+                                           ng-model="hl7VersionsDlgForm.metaData.topics">
+
+                                </md-input-container>
+
+                            </md-content>
 
                         </div>
                     </div>
@@ -262,8 +268,9 @@
                 class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
         </button>
     <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-        <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-    </div>
+        <div layout="row" layout-sm="column" layout-align="space-around">
+            <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+        </div>    </div>
 </div>
 </div>
 </script>
@@ -286,8 +293,9 @@
                 class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
         </button>
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
     </div>
 </script>
@@ -309,8 +317,9 @@
                 class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
         </button>
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
     </div>
 </script>
@@ -343,8 +352,9 @@
         </button>
 
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
     </div>
 </script>
@@ -366,8 +376,9 @@
         </button>
 
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
     </div>
 </script>
@@ -390,8 +401,9 @@
                 class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
         </button>
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
     </div>
 </script>
@@ -414,8 +426,9 @@
                 class="fa fa-check-circle fa-fw ">&nbsp; </i>Apply Changes</span>
         </button>
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
 </script>
 <script type="text/ng-template " id="ConfirmIGDocumentOpenCtrl.html ">
@@ -437,8 +450,9 @@
                 class="fa fa-check-circle fa-fw ">&nbsp; </i>Apply Changes</span>
         </button>
         <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-        </div>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>        </div>
     </div>
 </script>
 <script type="text/ng-template " id="RichTextCtrl.html ">
@@ -555,8 +569,9 @@
                 <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
                         class="fa fa-times fa-fw ">&nbsp; </i>Close</span></button>
                 <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                    <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
-                </div>
+                    <div layout="row" layout-sm="column" layout-align="space-around">
+                        <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+                    </div>                </div>
             </div>
         </div>
     </div>
@@ -1190,131 +1205,129 @@
     </div>
     <form role="form">
         <div class="modal-body" style="height:500px;overflow-y:scroll">
-
-            <div class="col-md-4">
-                <div>
-                    <h5>Choose Profile Components <span title="If two profile components are in conflict, priority is for the profile component with higher position">(?)</span></h5>
-
-                    <table class="table table-condensed hl7-versions-valueset table-fixed">
-                        <tbody>
-                            <tr ng-repeat="pc in pcs" class="col-md-12">
-                                <td class="col-md-10">
-                                    <div>
-                                        <h5>{{pc.name}}</h5>
-                                        <p style="max-width:250px">{{pc.description}}</p>
-                                        <p style="max-width:250px"> {{pc.comment}}</p>
-                                    </div>
-                                </td>
-                                <td class="col-md-2">
-                                    <button ng-show="!checkExist(pc)" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="selectPC(pc)">
+            <div layout="row" layout-align="center center">
+                <div flex="30">
+                    <div>
+                        <div class=" panel panel-default" style="margin-top:10px;">
+                            <div class="panel-heading">Choose Profile Components <span title="If two profile components are in conflict, priority is for the profile component with higher position">(?)</span></div>
+                            <div class="panel-body" style="overflow-y: auto;height: 250px;">
+                                <table class="table table-condensed hl7-versions-valueset table-fixed">
+                                    <tbody>
+                                        <tr ng-repeat="pc in pcs" class="col-md-12">
+                                            <td class="col-md-10">
+                                                <div>
+                                                    <h5>{{pc.name}}</h5>
+                                                    <p style="max-width:250px">{{pc.description}}</p>
+                                                    <p style="max-width:250px"> {{pc.comment}}</p>
+                                                </div>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <button ng-show="!checkExist(pc)" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="selectPC(pc)">
 									        <span><i class="fa fa-plus fa-fw"></i></span>
 								        </button>
 
-                                </td>
-                            </tr>
+                                            </td>
+                                        </tr>
 
-                            </tr>
-                        </tbody>
-                    </table>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-8">
-                <div>
-                    <h5 style="margin-bottom: 20px;">Composite Profile</h5>
-                    <div class="row margin-0 full-width hidden-xs">
-                        <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
-                            <div class="yy-timeline-box-inner">
-                                <div class="yy-timeline-image-container">
-                                    <img src="images/square.jpg" alt="" style="margin-top:-55px;" />
-                                </div>
-                                <div class="yy-timeline-content" style="margin-top:-40px;background-color:rgb(1, 87, 155);width:30%;">
-                                    <div align="center">
-                                        <h5>Core Profile </h5>
+                <div flex="70">
+                    <div>
+                        <div class=" panel panel-default" style="margin-top:5px;">
+                            <div class="panel-heading">Composite Profile</div>
+                            <div class="panel-body" style="overflow-y: auto;height: 250px;">
+                                <div class="row margin-0 full-width hidden-xs">
+                                    <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
+                                        <div class="yy-timeline-box-inner">
+                                            <div class="yy-timeline-image-container">
+                                                <img src="images/square.jpg" alt="" style="margin-top:-55px;" />
+                                            </div>
+                                            <div class="yy-timeline-content" style="margin-top:-40px;background-color:#d3d7da;width:30%;">
+                                                <div align="center">
+                                                    <h5>Core Profile </h5>
+                                                </div>
+                                                <div>
+
+                                                    <table>
+                                                        <tr>
+                                                            <td>Name : </td>
+                                                            <td>{{coreMessageMetaData.name}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Description : </td>
+                                                            <td>{{coreMessageMetaData.description}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Identifier : </td>
+                                                            <td>{{coreMessageMetaData.identifier}}</td>
+                                                        </tr>
+
+                                                    </table>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <table>
-                                            <tr>
-                                                <td>Name : </td>
-                                                <td>{{coreMessageMetaData.name}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Description : </td>
-                                                <td>{{coreMessageMetaData.description}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Identifier : </td>
-                                                <td>{{coreMessageMetaData.identifier}}</td>
-                                            </tr>
-
-                                        </table>
+                                </div>
+                                <div class="row margin-0 full-width hidden-xs" ng-repeat="existingPc in existingPcList">
+                                    <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
+                                        <div class="yy-timeline-box-inner">
+                                            <span class="yy-timeline-date"> {{$index+1}} </span>
+                                            <div class="yy-timeline-image-container">
+                                                <img src="images/circle.gif" alt="" />
+                                            </div>
+                                            <div class="yy-timeline-content" style="background-color :#43b17e;width:30%;">
+                                                <div class="row" align="center">
+                                                    <strong>{{existingPc.name}} </strong> <span ng-if="existingPc.description"> : {{existingPc.description}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
-
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row margin-0 full-width hidden-xs" ng-repeat="existingPc in existingPcList">
-                        <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
-                            <div class="yy-timeline-box-inner">
-                                <span class="yy-timeline-date"> {{$index+1}} </span>
-                                <div class="yy-timeline-image-container">
-                                    <img src="images/circle.gif" alt="" />
-                                </div>
-                                <div class="yy-timeline-content" style="background-color :rgb(255, 236, 157);width:30%;">
-                                    <div class="row" align="center">
-                                        <strong>{{existingPc.name}} </strong> <span ng-if="existingPc.description"> : {{existingPc.description}}</span>
-                                    </div>
+                                <div class="row margin-0 full-width hidden-xs" ng-repeat="pc in pcList">
+                                    <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
+                                        <div class="yy-timeline-box-inner">
+                                            <span class="yy-timeline-date"> {{pc.position}} </span>
+                                            <div class="yy-timeline-image-container">
+                                                <img src="images/circle.gif" alt="" />
+                                            </div>
+                                            <div class="yy-timeline-content" style="background-color :#43b17e;width:30%;">
+
+                                                <div class="row" align="center">
+                                                    <strong>{{pc.name}} </strong> <span ng-if="pc.description"> : {{pc.description}}</span>
+                                                </div>
 
 
 
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row margin-0 full-width hidden-xs" ng-repeat="pc in pcList">
-                        <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
-                            <div class="yy-timeline-box-inner">
-                                <span class="yy-timeline-date"> {{pc.position}} </span>
-                                <div class="yy-timeline-image-container">
-                                    <img src="images/circle.gif" alt="" />
-                                </div>
-                                <div class="yy-timeline-content" style="background-color :rgb(255, 236, 157);width:30%;">
-
-                                    <div class="row" align="center">
-                                        <strong>{{pc.name}} </strong> <span ng-if="pc.description"> : {{pc.description}}</span>
-                                    </div>
-
-
-
-                                    <div class="row" align="right">
-                                        <button class="btn btn-raised btn-danger btn-xs" ng-click="removePc(pc)"><span><i class="fa fa-times fa-fw">
+                                                <div class="row" align="right">
+                                                    <button class="btn btn-raised btn-danger btn-xs" ng-click="removePc(pc)"><span><i class="fa fa-times fa-fw">
                                                         &nbsp; </i>remove</span>
                                                     </button>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
+
+
+
+
                     </div>
-
-                    <!--<div style="border:10px;" data-drop="true" data-jqyoui-options ng-model="composite" jqyoui-droppable style='height:50px;'>
-                        <div data-drag="false" data-jqyoui-options ng-model="composite" jqyoui-draggable>{{composite.name}}</div>
-                    </div>-->
-
                 </div>
-
-
             </div>
-
-
         </div>
-
-
         <div class="modal-footer">
 
 
@@ -1457,7 +1470,7 @@
 
                                     <div class=" panel panel-default" style="margin-top:10px;">
                                         <div class="panel-heading">Choose Profile Components <span title="If two profile components are in conflict, priority is for the profile component with higher position">(?)</span></div>
-                                        <div class="panel-body" style="overflow-y: auto;height: 250px;">
+                                        <div class="panel-body" style="overflow-y: auto;height: 100px;">
                                             <table class="table table-condensed hl7-versions-valueset table-fixed">
                                                 <tbody>
                                                     <tr ng-repeat="pc in pcs" class="col-md-12">
@@ -1488,71 +1501,71 @@
                             </div>
                             <div flex="70">
 
-                                    <div class=" panel panel-default" style="margin-top:5px;">
-                                        <div class="panel-heading">Composite Profile</div>
-                                        <div class="panel-body" style="overflow-y: auto;height: 250px;">
-                                            <div class="row margin-0 full-width hidden-xs" ng-show="baseP">
-                                                <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
-                                                    <div class="yy-timeline-box-inner">
-                                                        <div class="yy-timeline-image-container">
-                                                            <img src="images/square.jpg" alt="" style="margin-top:-55px;" />
+                                <div class=" panel panel-default" style="margin-top:5px;">
+                                    <div class="panel-heading">Composite Profile</div>
+                                    <div class="panel-body" style="overflow-y: auto;height: 345px;">
+                                        <div class="row margin-0 full-width hidden-xs" ng-show="baseP">
+                                            <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
+                                                <div class="yy-timeline-box-inner">
+                                                    <div class="yy-timeline-image-container">
+                                                        <img src="images/square.jpg" alt="" style="margin-top:-55px;" />
+                                                    </div>
+                                                    <div class="yy-timeline-content" style="margin-top:-40px;background-color:#d3d7da;width:30%;">
+                                                        <div align="center">
+                                                            <h5>Core Profile </h5>
                                                         </div>
-                                                        <div class="yy-timeline-content" style="margin-top:-40px;background-color:#d3d7da;width:30%;">
-                                                            <div align="center">
-                                                                <h5>Core Profile </h5>
-                                                            </div>
-                                                            <div>
-                                                                <table>
-                                                                    <tr>
-                                                                        <td>Name : </td>
-                                                                        <td>{{baseP.name}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Description : </td>
-                                                                        <td>{{baseP.description}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Identifier : </td>
-                                                                        <td>{{baseP.identifier}}</td>
-                                                                    </tr>
+                                                        <div>
+                                                            <table>
+                                                                <tr>
+                                                                    <td>Name : </td>
+                                                                    <td>{{baseP.name}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Description : </td>
+                                                                    <td>{{baseP.description}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Identifier : </td>
+                                                                    <td>{{baseP.identifier}}</td>
+                                                                </tr>
 
-                                                                </table>
-                                                            </div>
-
-
+                                                            </table>
                                                         </div>
+
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row margin-0 full-width hidden-xs" ng-repeat="pc in pcList">
-                                                <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
-                                                    <div class="yy-timeline-box-inner">
-                                                        <span class="yy-timeline-date"> {{pc.position}} </span>
-                                                        <div class="yy-timeline-image-container">
-                                                            <img src="images/circle.gif" alt="" />
+                                        </div>
+                                        <div class="row margin-0 full-width hidden-xs" ng-repeat="pc in pcList">
+                                            <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
+                                                <div class="yy-timeline-box-inner">
+                                                    <span class="yy-timeline-date"> {{pc.position}} </span>
+                                                    <div class="yy-timeline-image-container">
+                                                        <img src="images/circle.gif" alt="" />
+                                                    </div>
+                                                    <div class="yy-timeline-content" style="background-color :#43b17e;width:30%;">
+                                                        <div class="row" align="center">
+                                                            <strong>{{pc.name}} </strong> <span ng-if="pcInfo.pc.description"> : {{pc.description}}</span>
                                                         </div>
-                                                        <div class="yy-timeline-content" style="background-color :#43b17e;;width:30%;">
-                                                            <div class="row" align="center">
-                                                                <strong>{{pc.name}} </strong> <span ng-if="pcInfo.pc.description"> : {{pc.description}}</span>
-                                                            </div>
 
 
 
-                                                            <div class="row" align="center">
-                                                                <button class="btn btn-raised btn-danger btn-xs" ng-click="removePc(pc)"><span><i class="fa fa-times fa-fw">
+                                                        <div class="row" align="center">
+                                                            <button style="margin-bottom:5px;" class="btn btn-raised btn-danger btn-xs" ng-click="removePc(pc)"><span><i class="fa fa-times fa-fw">
                                                         &nbsp; </i></span>
                                                     </button>
-                                                            </div>
-
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
 
-                      
+
 
 
                             </div>
