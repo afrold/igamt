@@ -2610,18 +2610,19 @@ input[type="file"] {
     border-radius: 10px;
 }
 .version-badge-under{
- display: inline-block;
- min-width: 2px;
- font-size: 9px;
- line-height: 1;
- vertical-align: baseline;
- white-space: nowrap;
- text-align: center;
- background-color: #29b6f6;
- border-radius: 12px;
- color: white;
- padding: 2px!important;
- font-weight: bold;
+
+        display: inline-block;
+        min-width: 2px;
+        font-size: 9px;
+        line-height: 1;
+        vertical-align: baseline;
+        white-space: nowrap;
+        text-align: center;
+        background-color: #dad14f;
+        border-radius: 12px;
+        color: rgba(0,0,0,0.87);
+        padding: 2px!important;
+        font-weight: 700;
 
 
 }

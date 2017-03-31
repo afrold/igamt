@@ -17,10 +17,21 @@ public class DataModelWithConstraints extends DataModel {
 
   protected SCOPE scope;
 
+  protected String parentVersion;
+
+  public String getParentVersion() {
+    return parentVersion;
+  }
+
+  public void setParentVersion(String parentVersion) {
+    this.parentVersion = parentVersion;
+  }
+
   @Deprecated
   protected String date;
 
   protected String version;
+
 
   protected STATUS status = STATUS.UNPUBLISHED;
 
