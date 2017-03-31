@@ -2020,9 +2020,10 @@ angular
                     });
                 };
                 $rootScope.addDatatypesFromUserLib = function() {
-
+                    $rootScope.scopeTag="User";
                     DatatypeLibrarySvc.getDataTypeLibraryByScope('USER').then(function(masterLib) {
                         var dtlibs = [];
+
                         angular.forEach(masterLib, function(dtLib) {
                             if (dtLib.id !== $rootScope.datatypeLibrary.id) {
                                 dtlibs.push(dtLib);
@@ -2094,7 +2095,7 @@ angular
                 }
 
                 $rootScope.addDatatypeFromMasterLib = function() {
-
+                    $rootScope.scopeTag="Master";
                     DatatypeLibrarySvc.getDataTypeLibraryByScope('MASTER').then(function(masterLib) {
                         var dtlibs = [];
                         angular.forEach(masterLib, function(dtLib) {
@@ -2650,19 +2651,22 @@ angular.module('igl').controller('addMAsterInLibrary',
                 angular.forEach(result, function(dt){
                     console.log(dt);
                     $scope.processAddedDT(dt);
-                    $rootScope.datatypes.push(dt);
+
                     console.log(dt.scope);
 
 
-                    if(dt.scope==="'INTERMASTER'"){
-
-                        $rootScope.interMediates.push(dt);
-                    }else{
+                    // if(dt.scope==="'INTERMASTER'"){
+                    //
+                    //     $rootScope.interMediates.push(dt);
+                    // }else{
+                    //     $rootScope.datatypes.push(dt);
+                    // }
+                    if(!$rootScope.datatypesMap[dt.id]){
+                        $rootScope.datatypesMap[dt.id]=dt;
                         $rootScope.datatypes.push(dt);
                     }
 
-
-                    $rootScope.datatypesMap[dt.id]=dt;
+                   // $rootScope.datatypesMap[dt.id]=dt;
                     var objectMap=dt.parentVersion+"VV"+dt.hl7Version;
                     $rootScope.usingVersionMap[objectMap]=dt;
                     $rootScope.datatypeLibrary.children.push({name:dt.name,ext:dt.ext,id:dt.id});
