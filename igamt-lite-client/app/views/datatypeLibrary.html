@@ -154,15 +154,17 @@ if (self === top) {
 </style>
 
 <div class="container" ng-controller="DatatypeLibraryCtl">
-    <div class="" ng-if="isAuthenticated()">
+    <div class="container" ng-if="isAuthenticated()">
         <div ng-if="!isPending()">
-            <tabset ng-init="getDataTypeLibraryByScope('USER');">
-                <tab ng-attr-active="tabs[0].active">
-                    <tab-heading>
+
+                <md-tabs md-dynamic-height md-border-bottom ng-init="getDataTypeLibraryByScope('USER');">
+                <md-tab md-active="tabs[0].active" md-on-select="make_active(0)">
+                    <md-tab-label>
                         <i class="fa fa-file-text-o fa-fw"></i> Data Type Library List
-                    </tab-heading>
+                    </md-tab-label>
+                    <md-tab-body>
                     <div>
-                        <div class="row">
+                        <div class="row container">
                                 <form id="selectDtTypeForm" class="form-horizontal">
                                     <div class="form-group">
                                         <div style="margin-left: 15px" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
@@ -187,7 +189,7 @@ if (self === top) {
                                 </form>
                             </div>
                         <div>
-                            <div class="row" ng-init="getDataTypeLibraryByScope('USER');">
+                            <div class="row container" ng-init="getDataTypeLibraryByScope('USER');">
                                     <form>
                                         <div class="form-group">
                                             <table st-table="datatypeDisplay" st-safe-src="datatypeLibsStruct" class="table table-striped table-bordered table-fix-header table-condensed igl-list-table">
@@ -234,13 +236,16 @@ if (self === top) {
                                 </div>
                             </div>
                         </div>
-                </tab>
-                <tab ng-attr-active="tabs[1].active" ng-if="datatypeLibrary" >
-                    <tab-heading>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab md-active="tabs[1].active" ng-if="datatypeLibrary" md-on-select="make_active(1)">
+                    <md-tab-label>
                         <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Data Type Library</span>
                         <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Data Type Library</span>
-                    </tab-heading>
-                    <div ng-controller="EditAreaCtrl" ng-init="init()">
+                    </md-tab-label>
+                    <md-tab-body>
+
+                    <div  class="container" ng-controller="EditAreaCtrl" ng-init="init()">
                         <div class="row">
                             <div class="col-md-12">
                                 <span class="pull-right">
@@ -295,9 +300,17 @@ if (self === top) {
                         </div>
                     </div>
         </div>
-        </tab>
-        <tab heading="Data Types Evolution" ng-attr-active="tabs[2].active" ng-click="initMatrix()">
-            <div style="margin-top:10px">
+                    </md-tab-body>
+
+                </md-tab>
+        <md-tab  md-active="tabs[2].active" md-on-select="initMatrix();make_active(2)">
+            <md-tab-label>
+                Data Types Evolution
+            </md-tab-label>
+            <md-tab-body>
+
+
+            <div class="row container " style="margin-top:10px">
                 <div class="col-md-6">
 <!--
                     <div class="panel panel-primary">
@@ -366,8 +379,10 @@ if (self === top) {
                     </div>
                 </div>
             </div>
-        </tab>
-        </tabset>
+            </md-tab-body>
+
+        </md-tab>
+                </md-tabs>
     </div>
     <div style="font-size: 18px;text-align: center" ng-show="isPending()">
         <div msg key='account.pendingSection'></div>
@@ -1026,9 +1041,9 @@ if (self === top) {
                     <div class="" ng-controller="cmpTableCtrl">
                         <tabset>
                             <tab ng-click="setDeltaToF()">
-                                <tab-heading>
+                                <md-tab-label>
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Value Set MetaData
-                                </tab-heading>
+                                </md-tab-label>
                                 <div style="margin-top: 20px">
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIdentifier.$invalid}">
                                         <label class="col-md-2 control-label">Mapping Identifier*</label>
@@ -1137,9 +1152,9 @@ if (self === top) {
                                 </div>
                             </tab>
                             <tab ng-click="setDeltaToF()">
-                                <tab-heading>
+                                <md-tab-label>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Definition
-                                </tab-heading>
+                                </md-tab-label>
 
                                 <div class="el-def" style="margin-top: 20px">
 
@@ -1298,9 +1313,9 @@ if (self === top) {
                             </tab>
 
                               <tab ng-click="setDeltaToF()">
-                                <tab-heading>
+                                <md-tab-label>
                                     <i class="fa fa-link" aria-hidden="true"></i> Value Set Cross-References <span class="badge">{{references.length}}</span>
-                                </tab-heading>
+                                </md-tab-label>
                                 <div class="el-def" style="margin-top:20px">
                                     <span class="pull-right">
                                         <button ng-click="AddBindingForValueSet(table)" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> Add Binding</button>
@@ -1418,9 +1433,9 @@ if (self === top) {
                     <div class="" ng-controller="cmpTableCtrl">
                         <tabset>
                             <tab ng-click="setDeltaToF()">
-                                <tab-heading>
+                                <md-tab-label>
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Value Set MetaData
-                                </tab-heading>
+                                </md-tab-label>
                                 <div style="margin-top: 20px">
                                     <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : editForm.tableIdentifier.$invalid}">
                                         <label class="col-md-2 control-label">Mapping Identifier*</label>
@@ -1529,9 +1544,9 @@ if (self === top) {
                                 </div>
                             </tab>
                             <tab ng-click="setDeltaToF()">
-                                <tab-heading>
+                                <md-tab-label>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i> Value Set Definition
-                                </tab-heading>
+                                </md-tab-label>
 
                                 <div class="el-def" style="margin-top: 20px">
 
@@ -1689,9 +1704,9 @@ if (self === top) {
                             </tab>
 
                              <tab ng-click="setDeltaToF()">
-                                <tab-heading>
+                                <md-tab-label>
                                     <i class="fa fa-link" aria-hidden="true"></i> Value Set Cross-References <span class="badge">{{references.length}}</span>
-                                </tab-heading>
+                                </md-tab-label>
                                 <div class="el-def" style="margin-top:20px">
                                     <span class="pull-right">
                                         <button ng-click="AddBindingForValueSet(table)" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> Add Binding</button>

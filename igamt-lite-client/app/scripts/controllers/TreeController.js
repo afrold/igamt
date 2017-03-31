@@ -2530,7 +2530,7 @@ angular.module('igl').controller('addMAsterInLibrary',
             var objectMap=datatype.id+"VV"+version;
 
             if($rootScope.usingVersionMap[objectMap]||$scope.miniUsingVersionMap[objectMap]){
-                console.log($rootScope.usingVersionMap[objectMap])
+                // console.log($rootScope.usingVersionMap[objectMap])
                 return true;
             }else{
                 return false;
@@ -2642,7 +2642,48 @@ angular.module('igl').controller('addMAsterInLibrary',
             }
         };
         $scope.ok = function() {
-            $scope.processList();
+
+
+            DatatypeLibrarySvc.addChildrenFromDatatypes($rootScope.datatypeLibrary.id, $scope.selectedDatatypes).then(function(result){
+
+
+                angular.forEach(result, function(dt){
+                    console.log(dt);
+                    $scope.processAddedDT(dt);
+                    $rootScope.datatypes.push(dt);
+
+
+                    $rootScope.datatypesMap[dt.id]=dt;
+                    var objectMap=dt.parentVersion+"VV"+dt.hl7Version;
+                    $rootScope.usingVersionMap[objectMap]=dt;
+                    $rootScope.datatypeLibrary.children.push({name:dt.name,ext:dt.ext,id:dt.id});
+
+                });
+
+                TableLibrarySvc.addChildrenByIds(tableLibrary.id, $scope.TablesIds).then(function(result) {
+                    console.log(result);
+                    angular.forEach(result, function(table){
+
+                        if(!$rootScope.tablesMap[table.id]){
+                            $rootScope.tables.push(table);
+                            $rootScope.tablesMap[table.id]=table;
+                            $rootScope.tableLibrary.children.push({id:table.id, bindingIdentifier:table.bindingIdentifier});
+
+                        }
+
+
+
+                    });
+                    $modalInstance.close("");
+
+
+                });
+
+            });
+
+
+
+           // $scope.processList();
         };
 
 
@@ -2651,6 +2692,9 @@ angular.module('igl').controller('addMAsterInLibrary',
 
             angular.forEach($scope.selectedDatatypes, function(dt){
                 $scope.processAddedDT(dt);
+
+
+
             });
 
             DatatypeService.saves($scope.selectedDatatypes).then(function(result) {

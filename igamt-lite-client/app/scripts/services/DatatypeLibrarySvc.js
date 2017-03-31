@@ -225,6 +225,17 @@ angular.module('igl').factory('DatatypeLibrarySvc', function ($q, $http, $httpBa
         return delay.promise;
     };
 
+    svc.addChildrenFromDatatypes = function (libId, datatypes) {
+        var delay = $q.defer();
+        $http.post('api/datatype-library/'+ libId+ '/addChildrenFromDatatypes', datatypes).then(function (response) {
+            var res = angular.fromJson(response.data);
+            delay.resolve(res);
+        }, function (error) {
+            delay.reject(error);
+        });
+        return delay.promise;
+    };
+
 
 
     return svc;

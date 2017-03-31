@@ -657,7 +657,7 @@
                             </div>
                          </md-tab-body>
                         </md-tab>
-                        <md-tab md-on-select="setDeltaToF();getAllVersionsOfDT(datatype.id)" ng-if="datatype.parentVersion&&versionAndUseMap[datatype.parentVersion]">
+                        <md-tab md-on-select="setDeltaToF(); getAllVersionsOfDT(datatype.parentVersion)" ng-if="datatype.parentVersion&&versionAndUseMap[datatype.parentVersion]">
                             <md-tab-label>
                                 <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
                             </md-tab-label>

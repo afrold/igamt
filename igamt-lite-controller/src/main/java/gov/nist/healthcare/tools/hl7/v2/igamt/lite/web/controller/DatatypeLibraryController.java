@@ -12,6 +12,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +33,7 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -60,6 +62,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotF
 public class DatatypeLibraryController extends CommonController {
 
   Logger log = LoggerFactory.getLogger(DatatypeLibraryController.class);
+  HashMap<String, Datatype> checked = new HashMap<String, Datatype>();
 
   @Autowired
   private DatatypeLibraryService datatypeLibraryService;
@@ -300,13 +303,144 @@ public class DatatypeLibraryController extends CommonController {
   }
 
   @RequestMapping(value = "/{libId}/addChildren", method = RequestMethod.POST)
-  public boolean addChild(@PathVariable String libId, @RequestBody Set<DatatypeLink> datatypeLinks)
-      throws DatatypeSaveException {
+  public Set<DatatypeLink> addChild(@PathVariable String libId,
+      @RequestBody Set<DatatypeLink> datatypeLinks) throws DatatypeSaveException {
     log.debug("Adding a link to the library");
     DatatypeLibrary lib = datatypeLibraryService.findById(libId);
     lib.addDatatypes(datatypeLinks);
     datatypeLibraryService.save(lib);
-    return true;
+    return datatypeLinks;
   }
+
+  @RequestMapping(value = "/{libId}/addChildrenFromDatatypes", method = RequestMethod.POST)
+  public Set<Datatype> addDatatypeFromLibrary(@PathVariable String libId,
+      @RequestBody Set<Datatype> datatypes) throws Exception {
+    log.debug("Adding a link to the library");
+    checked = new HashMap<String, Datatype>();
+
+
+    List<Datatype> datatypeInLib = new ArrayList<Datatype>();
+
+    DatatypeLibrary lib = datatypeLibraryService.findById(libId);
+    for (DatatypeLink link : lib.getChildren()) {
+      Datatype temp = datatypeService.findById(link.getId());
+
+      if (temp != null) {
+        if (temp.getParentVersion() != null) {
+          String v = (temp.getParentVersion() + temp.getHl7Version()).replace(".", "V");
+          checked.put(v, temp);
+          datatypeInLib.add(temp);
+
+        }
+      }
+    }
+    Set<String> sts = checked.keySet();
+    System.out.println(sts);
+
+    Set<Datatype> datatypesToAdd = new HashSet<Datatype>();
+
+
+    for (Datatype dt : datatypes) {
+      processDatatypes(dt, datatypesToAdd);
+    }
+    datatypesToAdd.addAll(datatypesToAdd);
+    HashMap<DatatypeLink, Datatype> result = new HashMap<DatatypeLink, Datatype>();
+    Set<Datatype> finallyAdded = new HashSet<Datatype>();
+    Set<DatatypeLink> finallAddesLinks = new HashSet<DatatypeLink>();
+    for (Datatype dt : datatypesToAdd) {
+      if (!datatypeInLib.contains(dt)) {
+        finallyAdded.add(dt);
+        DatatypeLink link = new DatatypeLink(dt.getId(), dt.getName(), dt.getExt());
+        finallAddesLinks.add(link);
+        Set<DatatypeLink> links = lib.getChildren();
+        links.add(link);
+        lib.setChildren(links);
+        result.put(link, dt);
+
+      }
+    }
+    datatypeLibraryService.save(lib);
+
+
+
+    return finallyAdded;
+  }
+
+  /**
+   * @param dt
+   * @throws Exception
+   */
+  private void processDatatypes(Datatype dt, Set<Datatype> temp) throws Exception {
+
+    if (dt.getParentVersion() != null) {
+      String v = (dt.getParentVersion() + dt.getHl7Version()).replace(".", "V");
+      if (!checked.containsKey(v)) {
+        temp.add(dt);
+        if (!dt.getComponents().isEmpty()) {
+          processComponents(dt, temp);
+        }
+        String v2 = (dt.getParentVersion() + dt.getHl7Version()).replace(".", "V");
+        checked.put(v2, dt);
+
+      } else {
+        return;
+
+      }
+
+    } else {
+      temp.add(dt);
+      if (!dt.getComponents().isEmpty()) {
+        processComponents(dt, temp);
+      }
+    }
+
+    datatypeService.save(dt);
+
+  }
+
+  private void processComponents(Datatype dt, Set<Datatype> temp) throws Exception {
+    for (Component c : dt.getComponents()) {
+      if (c.getDatatype() != null) {
+        if (c.getDatatype().getId() != null) {
+          Datatype dtInside = datatypeService.findById(c.getDatatype().getId());
+
+          if (dtInside != null) {
+            if (dtInside.getParentVersion() != null) {
+              String v = (dtInside.getParentVersion() + dtInside.getHl7Version()).replace(".", "V");
+              if (checked.containsKey(v)) {
+
+                DatatypeLink link = new DatatypeLink();
+                link.setId(checked.get(v).getId());
+                link.setName(checked.get(v).getName());
+                link.setExt(checked.get(v).getExt());
+                c.setDatatype(link);
+
+              } else {
+                // checked.put(v, dtInside);
+                processDatatypes(dtInside, temp);
+              }
+            } else {
+              processDatatypes(dtInside, temp);
+            }
+
+
+
+          } else {
+
+            throw new Exception("datatpe not found");
+
+
+          }
+
+
+
+        }
+      }
+
+    }
+
+  }
+
+
 
 }

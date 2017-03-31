@@ -199,6 +199,8 @@ angular.module('igl')
         };
 
         $scope.getAllVersionsOfDT = function(id) {
+
+            console.log("CALLUNg");
             $scope.checked = {};
             var ancestors = [];
             if (!$rootScope.versionAndUseMap[id]) {
@@ -2520,7 +2522,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
     //$scope.initt();
 
     $rootScope.$on('event:initDatatype', function(event) {
-        $scope.getAllVersionsOfDT($rootScope.datatype.id);
+        $scope.getAllVersionsOfDT($rootScope.datatype.parentVersion);
         if ($scope.isDeltaCalled) {
             $scope.initt();
         }

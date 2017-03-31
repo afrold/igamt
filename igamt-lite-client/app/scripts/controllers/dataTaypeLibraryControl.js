@@ -433,28 +433,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         };
 
-
-//        $scope.startCallback = function(event, ui, title) {
-//            $scope.draged = title;
-//        };
-//        $scope.dropCallback = function(event, ui) {
-//            var index = $scope.addedDatatypes.indexOf($scope.draged);
-//            if (index > -1) {
-//                $scope.addedDatatypes.splice(index, 1);
-//            }
-//            $scope.addedItem = angular.copy($scope.draged);
-//            var randext = $scope.datatypeLibMetaDataCopy.ext + Math.floor(Math.random() * 100);
-//            $scope.addedItem.id = new ObjectId().toString();
-//            $scope.addedItem.ext = randext;
-//            $scope.addedItem.scope = 'MASTER';
-//            $scope.addedItem.status = 'UNPUBLISHED';
-//            $scope.addedItem.libIds = [];
-//            $scope.addedItem.libIds.push($rootScope.datatypeLibrary.id);
-//            $scope.addedDatatypes.push($scope.addedItem);
-//        };
-//
-
-
        $rootScope.getDerived = function(element) {
             try {
                 if (element && element.type && element.type === "datatype") {
@@ -601,11 +579,21 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                                 }
                             }
                         }).result.then(function(results) {
-                        	console.log(results);
-                        	$scope.submit(results);
+                            DatatypeLibrarySvc.addChildrenFromDatatypes($rootScope.datatypeLibrary.id, results).then(function(result){
 
 
+                                angular.forEach(result, function(dt){
+                                    console.log(dt);
+                                    //$scope.processAddedDT(dt);
+                                    $rootScope.datatypes.push(dt);
+
+
+                                    $rootScope.datatypesMap[dt.id]=dt;
+                                    $rootScope.datatypeLibrary.children.push({name:dt.name,ext:dt.ext,id:dt.id});
+
+                                });
                             });
+                        });
         };
 
 
