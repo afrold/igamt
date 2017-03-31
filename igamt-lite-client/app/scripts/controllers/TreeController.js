@@ -1098,27 +1098,27 @@ angular
 
                             }
                         }
-                    ],
-                    ['Add Shared Datatypes',
-                        function($itemScope) {
-                            console.log("adding datatype");
-                            if ($rootScope.hasChanges()) {
-
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
-
-                                    $rootScope.addSharedDatatypes();
-
-
-
-                                });
-
-                            } else {
-
-                                $rootScope.addSharedDatatypes();
-
-                            }
-                        }
                     ]
+                    // ['Add Shared Datatypes',
+                    //     function($itemScope) {
+                    //         console.log("adding datatype");
+                    //         if ($rootScope.hasChanges()) {
+                    //
+                    //             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                    //
+                    //                 $rootScope.addSharedDatatypes();
+                    //
+                    //
+                    //
+                    //             });
+                    //
+                    //         } else {
+                    //
+                    //             $rootScope.addSharedDatatypes();
+                    //
+                    //         }
+                    //     }
+                    // ]
                 ];
 
                 $scope.MasterDataTypeLibraryOptions = [
@@ -1158,64 +1158,64 @@ angular
 
                             }
                         }
-                    ],
-                    ['Add USER Datatypes',
-                        function($itemScope) {
-                            if ($rootScope.hasChanges()) {
-
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
-
-                                    $rootScope.addDatatypesFromUserLib("2.1");
-
-
-
-                                });
-
-                            } else {
-
-                                $rootScope.addDatatypesFromUserLib("2.1");
-
-                            }
-                        }
-                    ],
-                    ['Add Master Datatypes',
-                        function($itemScope) {
-                            if ($rootScope.hasChanges()) {
-
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
-
-                                    $rootScope.addDatatypeFromMasterLib("2.1");
-
-
-
-                                });
-
-                            } else {
-
-                                $rootScope.addDatatypeFromMasterLib("2.1");
-
-                            }
-                        }
-                    ],
-                    ['Add Shared Datatypes',
-                        function($itemScope) {
-                            if ($rootScope.hasChanges()) {
-
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
-
-                                    $rootScope.addSharedDatatypes();
-
-
-
-                                });
-
-                            } else {
-
-                                $rootScope.addSharedDatatypes();
-
-                            }
-                        }
                     ]
+                    // ['Add USER Datatypes',
+                    //     function($itemScope) {
+                    //         if ($rootScope.hasChanges()) {
+                    //
+                    //             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                    //
+                    //                 $rootScope.addDatatypesFromUserLib("2.1");
+                    //
+                    //
+                    //
+                    //             });
+                    //
+                    //         } else {
+                    //
+                    //             $rootScope.addDatatypesFromUserLib("2.1");
+                    //
+                    //         }
+                    //     }
+                    // ],
+                    // ['Add Master Datatypes',
+                    //     function($itemScope) {
+                    //         if ($rootScope.hasChanges()) {
+                    //
+                    //             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                    //
+                    //                 $rootScope.addDatatypeFromMasterLib("2.1");
+                    //
+                    //
+                    //
+                    //             });
+                    //
+                    //         } else {
+                    //
+                    //             $rootScope.addDatatypeFromMasterLib("2.1");
+                    //
+                    //         }
+                    //     }
+                    // ],
+                    // ['Add Shared Datatypes',
+                    //     function($itemScope) {
+                    //         if ($rootScope.hasChanges()) {
+                    //
+                    //             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                    //
+                    //                 $rootScope.addSharedDatatypes();
+                    //
+                    //
+                    //
+                    //             });
+                    //
+                    //         } else {
+                    //
+                    //             $rootScope.addSharedDatatypes();
+                    //
+                    //         }
+                    //     }
+                    // ]
                 ];
 
 
@@ -2651,12 +2651,23 @@ angular.module('igl').controller('addMAsterInLibrary',
                     console.log(dt);
                     $scope.processAddedDT(dt);
                     $rootScope.datatypes.push(dt);
+                    console.log(dt.scope);
+
+
+                    if(dt.scope==="'INTERMASTER'"){
+
+                        $rootScope.interMediates.push(dt);
+                    }else{
+                        $rootScope.datatypes.push(dt);
+                    }
 
 
                     $rootScope.datatypesMap[dt.id]=dt;
                     var objectMap=dt.parentVersion+"VV"+dt.hl7Version;
                     $rootScope.usingVersionMap[objectMap]=dt;
                     $rootScope.datatypeLibrary.children.push({name:dt.name,ext:dt.ext,id:dt.id});
+
+
 
                 });
 

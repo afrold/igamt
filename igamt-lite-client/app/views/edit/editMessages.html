@@ -1246,8 +1246,8 @@
         </p>
     </div>
     <div class="modal-body">
-        <p ng-show="destination.type!=='table'">Are you sure you want to leave this page and go to {{::destination.type}} : {{::destination.name}} </p>
-        <p ng-show="destination.type==='table'">Are you sure you want to leave this page and go to the Value Set : {{::destination.bindingIdentifier}}</p>
+        <p ng-show="destination.type!=='table'">Are you sure you want to leave this page and go to <display-label of="destination" desc="false"></display-label> </p>
+        <p ng-show="destination.type==='table'">Are you sure you want to leave this page and go to the Value Set : <display-label of="destination" desc="false"></display-label></p>
 
     </div>
 

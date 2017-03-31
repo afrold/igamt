@@ -585,7 +585,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                                 angular.forEach(result, function(dt){
                                     console.log(dt);
                                     //$scope.processAddedDT(dt);
-                                    $rootScope.datatypes.push(dt);
+                                    if(dt.scope=="INTERMASTER"){
+                                        $rootScope.interMediates.push(dt);
+                                    }else{
+                                        $rootScope.datatypes.push(dt);
+                                    }
 
 
                                     $rootScope.datatypesMap[dt.id]=dt;

@@ -144,7 +144,7 @@ if (self === top) {
     }
     
     ui-tree-node {
-        padding-left: 20px !important;
+        padding-left: 15px !important;
     }
     
     .form-group {
@@ -155,7 +155,7 @@ if (self === top) {
 
 <div class="container" ng-controller="DatatypeLibraryCtl">
     <div class="container" ng-if="isAuthenticated()">
-        <div ng-if="!isPending()">
+        <div ng-if="!isPending()" style="margin-top:15px;">
 
                 <md-tabs md-dynamic-height md-border-bottom ng-init="getDataTypeLibraryByScope('USER');">
                 <md-tab md-active="tabs[0].active" md-on-select="make_active(0)">
@@ -474,7 +474,7 @@ if (self === top) {
                         <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Data Types <span class="badge">{{interMediate.length}}</span>
                     </div>
                     <ol ui-tree-nodes="" ng-model="interMediates">
-  
+
                     <li  ng-repeat="data in interMediates |orderBy:['-scope','label']" ui-tree-node ng-if="!tableCollapsed">
                         <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForInter">
                                        <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
