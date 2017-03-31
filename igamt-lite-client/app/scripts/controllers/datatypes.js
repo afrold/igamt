@@ -1679,11 +1679,23 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
     $scope.listOfBindingLocations = null;
     $scope.isSingleValueSetAllowed = false;
     $scope.valueSetSelectedForSingleCode = null;
+    $scope.mCode = null;
+    $scope.mCodeSystem = null;
 
     $scope.singleCodeInit = function (){
         $scope.valueSetSelectedForSingleCode = null;
+        $scope.mCode = null;
+        $scope.mCodeSystem = null;
     };
 
+    $scope.addManualCode = function () {
+        $scope.selectedValueSetBindings = [];
+        var code = {};
+        code.value = $scope.mCode;
+        code.codeSystem = $scope.mCodeSystem;
+        $scope.selectedValueSetBindings.push({ tableId: null, location: currentNode.path, usage: $scope.currentNode.usage, type: "singlecode", code : code});
+        $scope.changed = true;
+    };
 
     if(_.find($rootScope.config.singleValueSetDTs, function(singleValueSetDTs){
             return singleValueSetDTs == $rootScope.datatypesMap[$scope.currentNode.datatype.id].name;

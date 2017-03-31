@@ -1667,7 +1667,7 @@ angular.module('igl')
 
             }
             var dt = angular.copy(datatypesMap[datatype.components[i].datatype.id]);
-            buildCpDatatype(datatype.components[i].path, datatype.components[i].segmentPath, datatype.components[i].segment, "component",fieldDatatype, dt, datatypesMap);
+            buildCpDatatype(datatype.components[i].path, datatype.components[i].segmentPath, datatype.components[i].segment, "component", fieldDatatype, dt, datatypesMap);
             datatype.components[i].datatype = dt;
         }
     };
@@ -1716,7 +1716,7 @@ angular.module('igl')
         console.log($rootScope.compositeProfile);
         console.log($rootScope.messages.children);
         console.log($rootScope.profileComponents);
-        $rootScope.currentData= $rootScope.compositeProfileStructure;
+        $rootScope.currentData = $rootScope.compositeProfileStructure;
 
         $rootScope.compositeProfile.coreMessageMetaData = {
             name: $rootScope.messagesMap[$rootScope.compositeProfile.coreProfileId].name,
@@ -3784,13 +3784,13 @@ angular.module('igl').controller('createProfileComponentCtrl',
 
 angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
     function($scope, $rootScope, $modalInstance, $http, $filter, compositeProfileStructure, PcService, IgDocumentService, CompositeProfileService) {
-
+        console.log(compositeProfileStructure);
         $scope.compositeProfileStructure = compositeProfileStructure;
         $rootScope.coreMessageMetaData = {
-            name: $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].name,
-            identifier: $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].identifier,
-            description: $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].description,
-            comment: $rootScope.messagesMap[$rootScope.compositeProfileStructure.coreProfileId].comment
+            name: $rootScope.messagesMap[$scope.compositeProfileStructure.coreProfileId].name,
+            identifier: $rootScope.messagesMap[$scope.compositeProfileStructure.coreProfileId].identifier,
+            description: $rootScope.messagesMap[$scope.compositeProfileStructure.coreProfileId].description,
+            comment: $rootScope.messagesMap[$scope.compositeProfileStructure.coreProfileId].comment
         };
         var usedPcs = [];
         for (var i = 0; i < $rootScope.profileComponents.length; i++) {
@@ -3885,12 +3885,19 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
                         if ($rootScope.profileComponents[i].compositeProfileStructureList === null) {
                             $rootScope.profileComponents[i].compositeProfileStructureList = [];
                         }
-                        for (var j = 0; j < $rootScope.profileComponents[i].compositeProfileStructureList.length; j++) {
-                            if ($rootScope.profileComponents[i].compositeProfileStructureList[j].id === cpStructure.id) {
-                                $rootScope.profileComponents[i].compositeProfileStructureList[j] = cpStructure;
-                                $rootScope.profileComponentsMap[$rootScope.profileComponents[i].id] = $rootScope.igdocument.profile.messages.children[i];
-                            }
+                        if (!_.find($rootScope.profileComponents[i].compositeProfileStructureList, function(cp) {
+                                return cp === cpStructure.id;
+                            })) {
+                            $rootScope.profileComponents[i].compositeProfileStructureList.push(cpStructure.id);
                         }
+                        $rootScope.profileComponentsMap[$rootScope.profileComponents[i].id] = $rootScope.profileComponents[i];
+                        // for (var j = 0; j < $rootScope.profileComponents[i].compositeProfileStructureList.length; j++) {
+
+                        //     if ($rootScope.profileComponents[i].compositeProfileStructureList[j].id === cpStructure.id) {
+                        //         //$rootScope.profileComponents[i].compositeProfileStructureList[j] = cpStructure;
+
+                        //     }
+                        // }
                     }
 
                     console.log($rootScope.igdocument);
@@ -3913,10 +3920,20 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
 angular.module('igl').controller('createCompositeProfileCtrl',
     function($scope, $rootScope, $modalInstance, $http, $filter, PcService, IgDocumentService, CompositeProfileService) {
         $scope.compositeMetaData = true;
+        $scope.tabStatus = {
+            active: 0
+        };
+        $scope.next=function(){
+            $scope.tabStatus.active++;
+        };
+        $scope.back=function(){
+            $scope.tabStatus.active--;            
+        };
         $scope.pcList = [];
         $scope.baseProfiles = $rootScope.messages.children;
         $scope.pcs = $rootScope.profileComponents;
         $scope.position = 1;
+
 
         $scope.changePage = function() {
             $scope.compositeMetaData = !$scope.compositeMetaData;

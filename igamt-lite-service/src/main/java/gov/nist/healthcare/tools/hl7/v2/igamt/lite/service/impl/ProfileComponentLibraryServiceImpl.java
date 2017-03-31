@@ -54,4 +54,10 @@ public class ProfileComponentLibraryServiceImpl implements ProfileComponentLibra
   }
 
 
+  @Override
+  public void delete(List<ProfileComponentLibrary> pcLibs) {
+    profileComponentLibraryRepository.delete(pcLibs);;
+  }
+
+
 }

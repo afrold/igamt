@@ -1,4 +1,4 @@
-angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $modal, orderByFilter, $rootScope, $q, $interval, PcLibraryService, PcService, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService,TableService) {
+angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $modal, orderByFilter, $rootScope, $q, $interval, PcLibraryService, PcService, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService) {
     $scope.changes = false;
 
     $scope.editProfileComponent = false;
@@ -11,8 +11,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         isFirstDisabled: false
     };
     $scope.redirectVS = function(binding) {
-        console.log("bindiiing");
-        console.log(binding);
+
         TableService.getOne(binding.tableId).then(function(valueSet) {
             var modalInstance = $modal.open({
                 templateUrl: 'redirectCtrl.html',
@@ -96,6 +95,18 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
 
         return false;
+    };
+    $scope.isAvailableConstantValue = function(node) {
+        if (node.type === "field" || node.type === "component") {
+            if ($scope.hasChildren(node)) return false;
+            var bindings = $scope.findingBindings(node);
+            if (bindings && bindings.length > 0) return false;
+            if ($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
+            return true;
+        } else {
+            return false;
+        }
+
     };
 
     $scope.findingSingleElement = function(node) {
@@ -563,16 +574,18 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             $scope.DTselected = true;
             $scope.editableDT = '';
 
-            if (JSON.parse(field.datatype).id === field.attributes.oldDatatype.id) {
+            if (field.datatype.id === field.attributes.oldDatatype.id) {
                 field.attributes.datatype = null;
                 field.datatype = field.attributes.oldDatatype;
             } else {
-                field.attributes.datatype = JSON.parse(field.datatype);
+                console.log("else");
+                console.log(field);
+                field.attributes.datatype = field.datatype;
                 field.attributes.datatype = {};
-                field.attributes.datatype.ext = JSON.parse(field.datatype).ext;
-                field.attributes.datatype.id = JSON.parse(field.datatype).id;
-                field.attributes.datatype.label = JSON.parse(field.datatype).label;
-                field.attributes.datatype.name = JSON.parse(field.datatype).name;
+                field.attributes.datatype.ext = field.datatype.ext;
+                field.attributes.datatype.id = field.datatype.id;
+                field.attributes.datatype.label = field.datatype.label;
+                field.attributes.datatype.name = field.datatype.name;
                 field.datatype = field.attributes.datatype;
 
             }
@@ -1379,16 +1392,28 @@ angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootSc
 
 
 
-angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI,TableService) {
+angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     console.log(currentNode);
     $scope.currentNode = currentNode;
     $scope.currentNode.locationPath = currentNode.path;
     $scope.isSingleValueSetAllowed = false;
     $scope.valueSetSelectedForSingleCode = null;
+    $scope.mCode = null;
+    $scope.mCodeSystem = null;
 
     $scope.singleCodeInit = function() {
         $scope.valueSetSelectedForSingleCode = null;
+        $scope.mCode = null;
+        $scope.mCodeSystem = null;
+    };
+    $scope.addManualCode = function() {
+        $scope.selectedValueSetBindings = [];
+        var code = {};
+        code.value = $scope.mCode;
+        code.codeSystem = $scope.mCodeSystem;
+        $scope.selectedValueSetBindings.push({ tableId: null, location: positionPath, usage: $scope.currentNode.usage, type: "singlecode", code: code });
+        $scope.changed = true;
     };
 
     if (_.find($rootScope.config.singleValueSetDTs, function(singleValueSetDTs) {
@@ -1430,10 +1455,10 @@ angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $mod
         }
         var hl7Version = null
         if ($scope.currentNode.attributes.datatype) {
-        hl7Version = $rootScope.datatypesMap[$scope.currentNode.attributes.datatype.id].hl7Version;
+            hl7Version = $rootScope.datatypesMap[$scope.currentNode.attributes.datatype.id].hl7Version;
 
         } else {
-        hl7Version = $rootScope.datatypesMap[$scope.currentNode.attributes.oldDatatype.id].hl7Version;
+            hl7Version = $rootScope.datatypesMap[$scope.currentNode.attributes.oldDatatype.id].hl7Version;
 
         }
         if (!hl7Version) hl7Version = "2.5.1";
@@ -1457,11 +1482,11 @@ angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $mod
     };
 
     $scope.selectValueSet = function(v) {
-        if($scope.isSingleValueSetAllowed) $scope.selectedValueSetBindings = [];
-        if($scope.selectedValueSetBindings.length > 0 && $scope.selectedValueSetBindings[0].type == 'singlecode') $scope.selectedValueSetBindings = [];
-        if($scope.listOfBindingLocations){
+        if ($scope.isSingleValueSetAllowed) $scope.selectedValueSetBindings = [];
+        if ($scope.selectedValueSetBindings.length > 0 && $scope.selectedValueSetBindings[0].type == 'singlecode') $scope.selectedValueSetBindings = [];
+        if ($scope.listOfBindingLocations) {
             $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, bindingLocation: "1", usage: currentNode.usage, type: "valueset" });
-        }else {
+        } else {
             $scope.selectedValueSetBindings.push({ tableId: v.id, bindingStrength: "R", location: positionPath, usage: currentNode.usage, type: "valueset" });
         }
         $scope.changed = true;
@@ -1477,27 +1502,26 @@ angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $mod
         }
         $scope.changed = true;
     };
-    $scope.selectValueSetForSingleCode = function (v){
+    $scope.selectValueSetForSingleCode = function(v) {
         console.log(v);
         TableService.getOne(v.id).then(function(tbl) {
             $scope.valueSetSelectedForSingleCode = tbl;
-        }, function() {
-        });
+        }, function() {});
     };
-    $scope.isCodeSelected = function (c){
+    $scope.isCodeSelected = function(c) {
         for (var i = 0; i < $scope.selectedValueSetBindings.length; i++) {
-            if($scope.selectedValueSetBindings[i].code){
-                if($scope.selectedValueSetBindings[i].code.id == c.id) return true;
+            if ($scope.selectedValueSetBindings[i].code) {
+                if ($scope.selectedValueSetBindings[i].code.id == c.id) return true;
             }
         }
         return false;
     };
-    $scope.selectCode = function (c){
+    $scope.selectCode = function(c) {
         $scope.selectedValueSetBindings = [];
-        $scope.selectedValueSetBindings.push({ tableId: $scope.valueSetSelectedForSingleCode.id, location: positionPath, usage: currentNode.usage, type: "singlecode", code : c});
+        $scope.selectedValueSetBindings.push({ tableId: $scope.valueSetSelectedForSingleCode.id, location: positionPath, usage: currentNode.usage, type: "singlecode", code: c });
         $scope.changed = true;
     };
-     $scope.unselectCode = function(c){
+    $scope.unselectCode = function(c) {
         $scope.selectedValueSetBindings = [];
         $scope.changed = true;
     };

@@ -60,6 +60,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
@@ -91,6 +93,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
@@ -144,6 +147,8 @@ public class Bootstrap implements InitializingBean {
   DataCorrectionSectionPosition dataCorrectionSectionPosition;
   @Autowired
   private ProfileComponentLibraryService profileComponentLibraryService;
+  @Autowired
+  private ProfileComponentService profileComponentService;
 
   @Autowired
   private TableLibraryRepository tableLibraryRepository;
@@ -248,6 +253,30 @@ public class Bootstrap implements InitializingBean {
     // fixUserDatatypesScope();
     // updateDMofSegment();
     // updateProfileForMissingDTs();
+    DeleteProfileComponents();
+
+
+
+  }
+
+  private void DeleteProfileComponents() throws IGDocumentException {
+    List<IGDocument> igDocuments = documentService.findAll();
+    List<ProfileComponentLibrary> pcLibs = profileComponentLibraryService.findAll();
+    profileComponentLibraryService.delete(pcLibs);
+    for (IGDocument igd : igDocuments) {
+      if (igd.getProfile().getProfileComponentLibrary() != null
+          && igd.getProfile().getProfileComponentLibrary().getId() != null) {
+        // igd.getProfile().setProfileComponentLibrary(null);
+        igd.getProfile().getProfileComponentLibrary()
+            .deleteAll(igd.getProfile().getProfileComponentLibrary().getChildren());
+        profileComponentLibraryService.save(igd.getProfile().getProfileComponentLibrary());
+        // profileComponentLibraryService.save(igd.getProfile().getProfileComponentLibrary());
+      }
+    }
+
+    List<ProfileComponent> pcs = profileComponentService.findAll();
+    profileComponentService.delete(pcs);
+    documentService.save(igDocuments);
   }
 
   private void updateProfileForMissingDTs() throws Exception {
@@ -287,11 +316,11 @@ public class Bootstrap implements InitializingBean {
              * String vsId = dmd.getMappingStructure().getReferenceValueSetId(); if (vsId != null) {
              * Table t = tableService.findById(vsId);
              * 
-             * if (tableLibrary.findOneTableById(vsId) == null) {
-             * System.out.println("----H. Found missing Table by DMD--------"); TableLink tl = new
-             * TableLink(); tl.setId(t.getId()); tl.setBindingIdentifier(t.getBindingIdentifier());
-             * tableLibrary.addTable(tl);
-             * System.out.println("----I. Added missing Table by DMD--------"); isChanged = true; }
+             * if (tableLibrary.findOneTableById(vsId) == null) { System.out.println(
+             * "----H. Found missing Table by DMD--------"); TableLink tl = new TableLink();
+             * tl.setId(t.getId()); tl.setBindingIdentifier(t.getBindingIdentifier());
+             * tableLibrary.addTable(tl); System.out.println(
+             * "----I. Added missing Table by DMD--------"); isChanged = true; }
              * 
              * 
              * for (Code c : t.getCodes()) { String dtName = c.getValue(); String hl7Version = null;
@@ -300,15 +329,14 @@ public class Bootstrap implements InitializingBean {
              * doc.getMetaData().getHl7Version(); if (hl7Version == null) hl7Version = "2.8.2";
              * 
              * Datatype dt = datatypeService.findByNameAndVesionAndScope(dtName, hl7Version,
-             * "HL7STANDARD"); if (dt == null) {
-             * System.out.println("-----------------ERROR--------DT NULL-------");
-             * System.out.println("dtName:" + dtName); System.out.println("hl7Version:" +
-             * hl7Version); System.out.println("TableID:" + t.getId()); } else { if
-             * (datatypeLibrary.findOne(dt.getId()) == null) {
-             * System.out.println("----A-1. Found missing DT by Default--------"); addDT(dt,
-             * datatypeLibrary, tableLibrary);
-             * System.out.println("----B-1. Added missing DT by Default--------"); isChanged = true;
-             * } } } }
+             * "HL7STANDARD"); if (dt == null) { System.out.println(
+             * "-----------------ERROR--------DT NULL-------"); System.out.println("dtName:" +
+             * dtName); System.out.println("hl7Version:" + hl7Version);
+             * System.out.println("TableID:" + t.getId()); } else { if
+             * (datatypeLibrary.findOne(dt.getId()) == null) { System.out.println(
+             * "----A-1. Found missing DT by Default--------"); addDT(dt, datatypeLibrary,
+             * tableLibrary); System.out.println("----B-1. Added missing DT by Default--------");
+             * isChanged = true; } } } }
              */
           }
         }
