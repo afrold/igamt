@@ -33,7 +33,6 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
   private DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
 
   private Messages messages = new Messages();
-  private CompositeMessages compositeMessages = new CompositeMessages();
   private CompositeProfiles compositeProfiles = new CompositeProfiles();
 
 
@@ -114,15 +113,6 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
   public void setMessages(Messages messages) {
     this.messages = messages;
   }
-
-  public CompositeMessages getCompositeMessages() {
-    return compositeMessages;
-  }
-
-  public void setCompositeMessages(CompositeMessages compositeMessages) {
-    this.compositeMessages = compositeMessages;
-  }
-
 
   public CompositeProfiles getCompositeProfiles() {
     return compositeProfiles;
@@ -213,7 +203,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
     clonedProfile.setChanges(changes);
     clonedProfile.setComment(comment);
     clonedProfile.setDatatypeLibrary(datatypeLibrary.clone(dtRecords, tabRecords));
-//     clonedProfile.setSegmentLibrary(segmentLibrary.clone(segRecords, dtRecords, tabRecords));
+    // clonedProfile.setSegmentLibrary(segmentLibrary.clone(segRecords, dtRecords, tabRecords));
     clonedProfile.setTableLibrary(tableLibrary.clone(tabRecords));
     clonedProfile.setMessages(messages.clone(dtRecords, segRecords, tabRecords));
     clonedProfile.setMetaData(metaData.clone());

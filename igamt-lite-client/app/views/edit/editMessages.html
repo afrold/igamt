@@ -14,7 +14,9 @@
 <script type="text/ng-template" id="EditMessages.html">
     <div ng-controller="MessageListCtrl" ng-init="init()">
         <div ng-show="loadingSelection" style="text-align: center;">
-            <i class="fa fa-spinner fa-pulse fa-align-center fa-4x"></i>
+            <div layout="row" layout-sm="column" layout-align="space-around">
+                <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            </div>
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="message !== null" id="executionPanel">
@@ -50,79 +52,87 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
                                 </md-tab-label>
                                 <md-tab-body>
-                                <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.name.$invalid}">
-                                        <label class="col-md-2 control-label">Name*</label>
-                                        <div class="controls col-md-10">
-                                            <input class="form-control" type="text" disabled name="name" ng-change="setDirty()" ng-model="message.name" ng-disabled="viewSettings.tableReadonly">
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.identifier.$invalid}">
-                                        <label class="col-md-2 control-label">Identifier*</label>
-                                        <div class="controls col-md-10">
-                                            <input type="text" ng-change="setDirty()" name="identifier" class="form-control" ng-model="message.identifier" ng-disabled="viewSettings.tableReadonly" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.description.$invalid}">
-                                        <label class="col-md-2 control-label">Description</label>
-                                        <div class="controls col-md-10">
-                                            <input class="form-control" type="text" name="description" ng-change="setDirty()" ng-model="message.description" ng-disabled="viewSettings.tableReadonly">
-                                        </div>
-                                    </div>
+                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                                        <md-content layout-padding>
+                                            <md-input-container class="md-block" flex-gt-sm>
+                                                <label class="input-left">Name</label>
+                                                <input type="text"  name="name" ng-change="setDirty()" ng-model="message.name" ng-disabled="viewSettings.tableReadonly">
+                                                <div ng-messages="editForm.name.$error">
+                                                    <div ng-message="required">Name is required.</div>
+                                                </div>
+                                            </md-input-container>
 
-                                    <!--<div class="form-group control-group"-->
-                                    <!--ng-class="{'has-error' : editForm.messageOId.$invalid}">-->
-                                    <!--<label class="col-md-2 control-label">Message OID</label>-->
-                                    <!--<div class="controls col-md-10"><input type="text" disabled name="messageOId"-->
-                                    <!--class="form-control"-->
-                                    <!--ng-model="message.messageID" required></div>-->
-                                    <!--</div>-->
-                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.messageType.$invalid}">
-                                        <label class="col-md-2 control-label">Message Type*</label>
-                                        <div class="controls col-md-10">
-                                            <input type="text" disabled name="messageType" class="form-control" ng-model="message.messageType" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.messageEvent.$invalid}">
-                                        <label class="col-md-2 control-label">Message Event*</label>
-                                        <div class="controls col-md-10">
-                                            <input type="text" disabled name="messageEvent" class="form-control" ng-model="message.event" required ng-disabled="false">
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.messageStructID.$invalid}">
-                                        <label class="col-md-2 control-label">Message Structure ID*</label>
-                                        <div class="controls col-md-10">
-                                            <input type="text" disabled name="messageStructID" class="form-control" ng-model="message.structID" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'has-error' : editForm.comment.$invalid}">
-                                        <label class="col-md-2 control-label">Comment</label>
-                                        <div class="controls col-md-10">
-                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly" ng-change="recordDatatypeChange('message','edit',message.id,'message', message.comment)" name="comment" id="comment" class="form-control" ng-model="message.comment" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'has-error has-feedback' : datatypeForm.text.$invalid}">
-                                        <label class="col-md-2 control-label">Usage Note</label>
-                                        <div class="controls col-md-10">
-                                            <div ng-show="!viewSettings.tableReadonly">
-                                                <textarea froala="froalaEditorOptions" ng-model="message.usageNote" name="usageNote" id="text" ng-change="setDirty()"></textarea>
-                                            </div>
-                                            <div ng-show="viewSettings.tableReadonly">
-                                                <div class="fr-view">
+                                            <md-input-container class="md-block" flex-gt-sm>
+                                                <label class="input-left">Identifier</label>
+                                                <input  type="text"  name="identifier" ng-change="setDirty()" ng-model="message.identifier" ng-disabled="viewSettings.tableReadonly" required>
+                                                <div ng-messages="editForm.identifier.$error">
+                                                    <div ng-message="required">Identifier is required.</div>
+                                                </div>
+                                            </md-input-container>
+
+                                            <md-input-container class="md-block" flex-gt-sm>
+                                                <label class="input-left">Description</label>
+                                                <input  type="text"  name="description" ng-change="setDirty()" ng-model="message.description" ng-disabled="viewSettings.tableReadonly" required>
+
+                                            </md-input-container>
+
+
+                                            <md-input-container class="md-block" flex-gt-sm>
+                                                <label class="input-left">Message Type</label>
+                                                <input  type="text"  name="messageType" ng-change="setDirty()" ng-model="message.messageType" disabled required>
+                                                <div ng-messages="editForm.messageType.$error">
+                                                    <div ng-message="required">Message Type is required.</div>
+                                                </div>
+                                            </md-input-container>
+
+
+
+                                            <md-input-container class="md-block" flex-gt-sm>
+                                                <label class="input-left">Message Event</label>
+                                                <input  type="text"  name="messageType" ng-change="setDirty()" ng-model="message.event"  required>
+                                                <div ng-messages="editForm.event.$error">
+                                                    <div ng-message="required">Message Event is required.</div>
+                                                </div>
+                                            </md-input-container>
+
+
+                                            <md-input-container class="md-block" flex-gt-sm>
+                                                <label class="input-left">Message Structure ID</label>
+                                                <input  type="text"  name="structID" ng-change="setDirty()" ng-model="message.structID"  required>
+                                                <div ng-messages="editForm.structID.$error">
+                                                    <div ng-message="required">Message Event is required.</div>
+                                                </div>
+                                            </md-input-container>
+
+                                            <md-input-container class="md-block" flex-gt-sm >
+                                                <label class="input-left">Comment</label>
+                                                <textarea rows="3"  ng-disabled="viewSettings.tableReadonly" ng-change="recordDatatypeChange('message','edit',message.id,'message', message.comment)" name="comment" id="comment"  ng-model="message.comment" />
+                                            </md-input-container>
+
+                                            <md-input-container class="md-block" flex-gt-sm >
+                                                <label class="input-left">Usage Note </label>
+                                                <div  ng-show="!viewSettings.tableReadonly">
+                                                         <textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus
+                                                                   ng-model="message.usageNote" name="usageNote"
+                                                                   id="usageNote" ng-change="setDirty()"></textarea>
+                                                </div>
+                                                <div class="fr-view" ng-show="viewSettings.tableReadonly">
                                                     <div froala-view="message.usageNote"></div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            </md-input-container>
 
-                                    <div class="form-group control-group" ng-show="message.scope === 'HL7STANDARD' && message.hl7Section != null && message.hl7Section != ''">
-                                        <label class="col-md-2 control-label">HL7 Section</label>
+                                            <md-input-container class="md-block" flex-gt-sm
+                                                                ng-show="message.hl7Section != null && message.hl7Section != ''">
+                                                <label class="input-left" >HL7 Section</label>
+                                                <input type="text" disabled
+                                                       name="hl7Section"
+                                                       id="hl7Section"
+                                                       ng-model="message.hl7Section"
+                                                >
+                                            </md-input-container>
 
-                                        <div class="controls col-md-10">
-                                            <span type="text" name="hl7Section" class="form-control">{{message.hl7Section}}</span>
-                                        </div>
+                                        </md-content>
                                     </div>
-                                </div>
                                 </md-tab-body>
                             </md-tab>
 
