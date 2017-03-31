@@ -468,23 +468,24 @@ if (self === top) {
                             </span>
                         </div>
                     </li>
-                </ol>
-
-                    <div ui-tree-handle data-nodrag>
+                    <div ui-tree-handle data-nodrag style="margin-left:-20px !important;">
                         <i data-nodrag ng-click="collapseTables()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !tableCollapsed, 'fa-caret-right': tableCollapsed}"></i> Derived Data Types <span class="badge">{{interMediate.length}}</span>
                     </div>
                     <ol ui-tree-nodes="" ng-model="interMediates">
 
-                    <li  ng-repeat="data in interMediates |orderBy:['-scope','label']" ui-tree-node ng-if="!tableCollapsed">
-                        <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForInter">
+                        <li  ng-repeat="data in interMediates |orderBy:['-scope','label']" ui-tree-node ng-if="!tableCollapsed">
+                            <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForInter">
                                        <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
                                                        <display-label of="data" desc="true"></display-label>
                             </span>
 
-                        </div>
-                    </li>
+                            </div>
+                        </li>
 
-                    </li>
+                    </ol>
+
+</ol>
+
                     </ol>
             </li>
         </ol>
