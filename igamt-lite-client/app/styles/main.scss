@@ -451,13 +451,13 @@ select.form-control-node:checked {
     cursor: pointer;
 }
 //
-//input.form-control {
-//    background-color: white;
-//    background-image: none !important;
-//    //  color: black;
-//    cursor: pointer;
-//    border: 1px solid #cccccc;
-//}
+input.form-control {
+    background-color: white;
+    background-image: none !important;
+    //  color: black;
+    cursor: pointer;
+    border: 1px solid #cccccc;
+}
 
 input.form-control-warning {
     background-color: #B33A3A;
@@ -2971,7 +2971,7 @@ body.modal-open {
 .yy-timeline-box .yy-timeline-box-inner .yy-timeline-content {
   position: relative;
   border-radius: 0.5rem;
-  padding: 2rem;
+  //padding: 2rem;
   background-color: #b5d5c3;
 }
 

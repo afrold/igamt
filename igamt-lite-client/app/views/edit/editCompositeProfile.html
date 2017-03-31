@@ -33,17 +33,17 @@
                     <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
                         <md-tab>
                             <md-tab-label>
-                                <i class="fa fa-code-fork fa-fw" aria-hidden="true"></i> Composite Profile Structure
+                                <i class="fa fa-code-fork fa-fw" aria-hidden="true"></i>Structure
                             </md-tab-label>
                             <md-tab-body>
                                 <div style="margin-top: 20px">
                                     <div class="row margin-0 full-width hidden-xs">
-                                        <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'" >
+                                        <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
                                             <div class="yy-timeline-box-inner">
                                                 <div class="yy-timeline-image-container">
                                                     <img src="images/square.jpg" alt="" style="margin-top:-55px;" />
                                                 </div>
-                                                <div class="yy-timeline-content" style="margin-top:-40px;background-color:rgb(1, 87, 155);width:30%;">
+                                                <div class="yy-timeline-content" style="margin-top:-40px;background-color:#d3d7da;width:30%;">
                                                     <div align="center">
                                                         <h5>Core Profile </h5>
                                                     </div>
@@ -80,16 +80,21 @@
                                                     <div class="yy-timeline-image-container">
                                                         <img src="images/circle.gif" alt="" />
                                                     </div>
-                                                    <div class="yy-timeline-content" style="background-color :rgb(255, 236, 157);width:30%;">
-                                                        <div class="row" align="center">
+                                                    <div class="yy-timeline-content" style="background-color :#43b17e;width:30%;">
+                                                        <div class="row" align="left" style="margin-left: 0px;margin-right: 0px;">
                                                             <strong>{{pcInfo.pc.name}} </strong> <span ng-if="pcInfo.pc.description"> : {{pcInfo.pc.description}}</span>
                                                         </div>
-                                                        <div class="row">
+                                                        <div class="row" align="left" style="margin-left: 0px;margin-right: 0px;">
                                                             Date Updated : {{pcInfo.pc.dateUpdated | date:dateFormat}}
+                                                            <br>Date Applied : {{pcInfo.pcDate | date:dateFormat}}
+                                                            <br>
+                                                            <div align="center">
+                                                                <button style="margin-bottom:5px;" class="btn btn-raised btn-danger btn-xs" ng-click="removePc(pcInfo.pc.id)"><span><i class="fa fa-times fa-fw">
+                                                        &nbsp; </i></span>
+                                                    </button>
+                                                            </div>
                                                         </div>
-                                                        <div class="row">
-                                                            Date Applied : {{pcInfo.pcDate | date:dateFormat}}
-                                                        </div>
+
                                                         <!--<div>
                                                             <table>
                                                                 <tr>
@@ -114,11 +119,9 @@
                                                                 </tr>
                                                             </table>
                                                         </div>-->
-                                                        <div class="row" align="right">
-                                                            <button class="btn btn-raised btn-danger btn-xs" ng-click="removePc(pcInfo.pc.id)"><span><i class="fa fa-times fa-fw">
-                                                        &nbsp; </i>remove</span>
-                                                    </button>
-                                                        </div>
+
+
+
 
                                                     </div>
 
@@ -135,7 +138,7 @@
                         </md-tab>
                         <md-tab>
                             <md-tab-label>
-                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Composite Profile MetaData
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> MetaData
                             </md-tab-label>
                             <md-tab-body>
                                 <div style="margin-top: 20px">
@@ -215,7 +218,7 @@
                         </md-tab>
                         <md-tab>
                             <md-tab-label>
-                                <i class="fa fa-table fa-fw" aria-hidden="true "></i> Composite Profile Definition
+                                <i class="fa fa-table fa-fw" aria-hidden="true "></i>Definition
                             </md-tab-label>
                             <md-tab-body>
                                 <div style="margin-top: 20px ">
@@ -362,7 +365,7 @@
         </td>
         <td class="col-md-2 col-fixed-35 " ng-if="node.type==='field' || node.type==='component'">
             <a class="point">
-                <display-label of="compositeProfile.datatypesMap[node.datatype.id]" desc="false" ></display-label>
+                <display-label of="compositeProfile.datatypesMap[node.datatype.id]" desc="false"></display-label>
 
             </a>
 
