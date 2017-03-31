@@ -90,7 +90,7 @@ public class SerializeMessageServiceImpl implements SerializeMessageService{
         UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
         UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsExport();
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig);
+            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig, null);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             if(serializationLayout.equals(SerializationLayout.PROFILE)){
                 serializeSegment(segmentRefOrGroup,
