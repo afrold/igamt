@@ -2665,7 +2665,6 @@ angular.module('igl').controller('addMAsterInLibrary',
                         $rootScope.datatypesMap[dt.id]=dt;
                         $rootScope.datatypes.push(dt);
                     }
-
                    // $rootScope.datatypesMap[dt.id]=dt;
                     var objectMap=dt.parentVersion+"VV"+dt.hl7Version;
                     $rootScope.usingVersionMap[objectMap]=dt;
