@@ -1134,7 +1134,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
     };
 
-    $rootScope.upgradeOrDowngrade=function(id,datatype){
+    $rootScope.upgradeOrDowngrade=function(id,datatype, list){
         $rootScope.selectedDatatypes=[];
         $rootScope.TablesIds=[];
         $rootScope.DTlinksToAdd=[];
@@ -1208,7 +1208,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         }
                     }
 
-                    DatatypeLibrarySvc.addChildren($rootScope.datatypeLibrary.id, $rootScope.DTlinksToAdd).then(function(link) {
+                    DatatypeLibrarySvc.addChildrenFromDatatypes($rootScope.datatypeLibrary.id, $rootScope.selectedDatatypes).then(function(link) {
                         $rootScope.datatypeLibrary.children.push(link);
                         var usedDtId1 = _.map($rootScope.DTlinksToAdd, function(num, key) {
                             return num.id;
@@ -1234,7 +1234,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                                         console.log($rootScope.datatypesMap[$scope.DatatypeToAdd.id]);
                                     }
                                 });
-                                $rootScope.confirmSwitch($rootScope.datatype,$rootScope.datatypesMap[$scope.DatatypeToAdd.id]);
+                                $rootScope.replaceElement($rootScope.datatype,$rootScope.datatypesMap[$scope.DatatypeToAdd.id], list);
 
 
                             });
@@ -1248,6 +1248,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
     };
+
+
 
 
 
@@ -2229,7 +2231,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         });
     };
 
-    $rootScope.replaceElement = function(source, dest) {
+    $rootScope.replaceElement = function(source, dest, listOfRefs) {
         $rootScope.SegmentsToUpdate = [];
         $rootScope.datatypeToUpdate = [];
         var newLink = angular.fromJson({
@@ -2237,8 +2239,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             name: dest.name,
             ext: dest.ext
         });
-        var refs = angular.copy($rootScope.references);
-        angular.forEach($rootScope.references, function(ref) {
+        var refs = angular.copy(listOfRefs);
+        angular.forEach(listOfRefs, function(ref) {
             if (ref.target.status !== "PUBLISHED") {
                 if (ref.type == 'field') {
                     console.log(ref.target);

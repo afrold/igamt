@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService, VersionAndUseService, CompareService, ValidationService) {
+    .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService, VersionAndUseService, CompareService, ValidationService,$mdDialog) {
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
             isFirstOpen: true,
@@ -928,6 +928,64 @@ angular.module('igl')
         $scope.isSelectedAllChildren = function() {
             return $rootScope.datatype && $rootScope.datatype != null && $rootScope.datatype.components && $scope.selectedChildren.length === $rootScope.datatype.components.length;
         };
+
+
+        $scope.changeDatatype = function(id) {
+            $mdDialog.show({
+
+                templateUrl:'referenceTochange.html',
+                locals: {
+                    item: $rootScope.datatype,
+                    references:$rootScope.references,
+                    tmpReferences:$rootScope.tmpReferences
+                },
+                controller: DialogController
+            });
+            function DialogController($scope,$rootScope, $mdDialog, item, references, tmpReferences) {
+                $scope.references=references;
+                $scope.tmpReferences=tmpReferences;
+                $scope.item = item;
+
+
+                $scope.selected=$scope.tmpReferences;
+                $scope.toggle = function (item, list) {
+                    var idx = list.indexOf(item);
+                    if (idx > -1) {
+                        list.splice(idx, 1);
+                    }
+                    else {
+                        list.push(item);
+                    }
+                };
+                $scope.exists = function (item, list) {
+                    return list.indexOf(item) > -1;
+                };
+                $scope.isChecked = function() {
+                    return $scope.selected.length === $scope.tmpReferences.length;
+                };
+                $scope.toggleAll = function() {
+                    if ($scope.selected.length === $scope.tmpReferences.length) {
+                        $scope.selected = [];
+                    } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+                        $scope.selected = $scope.tmpReferences.slice(0);
+                    }
+                };
+
+
+
+                $scope.closeDialog = function() {
+                    console.log($scope.references);
+                    console.log($scope.item);
+                    console.log($rootScope.datatypesMap)
+                    $rootScope.upgradeOrDowngrade(id,$rootScope.datatype,$scope.selected);
+                    $mdDialog.hide();
+                }
+            }
+        }
+
+
+
+
 
 
         /**

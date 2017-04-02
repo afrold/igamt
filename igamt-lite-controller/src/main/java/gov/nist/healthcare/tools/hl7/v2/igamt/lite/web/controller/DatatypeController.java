@@ -356,6 +356,7 @@ public class DatatypeController extends CommonController {
 
     // Datatype d = mergeComponent(datatype);
 
+
     Datatype d = getMergedDatatype(datatype, datatype.getScope());
 
     return d;
@@ -419,7 +420,9 @@ public class DatatypeController extends CommonController {
         }
       }
       String newId = new ObjectId().toString();
+      d.setParentVersion(d.getId());
       d.setId(newId);
+
       datatypeService.save(d);
 
       result = datatypeService.save(d);
