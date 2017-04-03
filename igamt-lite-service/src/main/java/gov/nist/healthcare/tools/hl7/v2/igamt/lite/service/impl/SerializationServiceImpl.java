@@ -580,7 +580,7 @@ import java.util.*;
                         .serializeSegment(segmentLink, prefix + "." + String
                                 .valueOf(this.bindedSegments.indexOf(segmentLink) + 1),
                             bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig,
-                            compositeProfile.getSegmentsMap()));
+                            compositeProfile.getSegmentsMap(),compositeProfile.getDatatypesMap(),compositeProfile.getTablesMap()));
                 } else {
                     segmentsSection.addSection(serializeSegmentService
                         .serializeSegment(segmentLink,

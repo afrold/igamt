@@ -54,17 +54,17 @@ import java.util.Map;
     @Override
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig) {
         Segment segment = segmentService.findById(segmentLink.getId());
-        return this.serializeSegment(segment,segmentLink,prefix,position,headerLevel,segmentUsageConfig);
+        return this.serializeSegment(segment,segmentLink,prefix,position,headerLevel,segmentUsageConfig,null,null);
     }
 
     @Override public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig,
-        Map<String, Segment> compositeProfileSegments) {
+        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables) {
         Segment segment = compositeProfileSegments.get(segmentLink.getId());
-        return this.serializeSegment(segment,segmentLink,prefix,position,headerLevel,segmentUsageConfig);
+        return this.serializeSegment(segment,segmentLink,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables);
     }
 
-    private SerializableSection serializeSegment(Segment segment, SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig) {
+    private SerializableSection serializeSegment(Segment segment, SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables) {
         if (segment != null) {
             //Create section node
             String id = segment.getId();
@@ -107,7 +107,13 @@ import java.util.Map;
             List<Table> tables = new ArrayList<>();
             for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()){
                 if(valueSetOrSingleCodeBinding.getTableId()!=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
-                    Table table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+                    Table table = null;
+                    if(compositeProfileTables!=null && !compositeProfileTables.isEmpty()){
+                        table = compositeProfileTables.get(valueSetOrSingleCodeBinding.getTableId());
+                    }
+                    if(table == null) {
+                        table = tableService.findById(valueSetOrSingleCodeBinding.getTableId());
+                    }
                     if(table!=null){
                         tables.add(table);
                     }
@@ -117,8 +123,16 @@ import java.util.Map;
             for (Field field : segment.getFields()) {
                 if(ExportUtil.diplayUsage(field.getUsage(),fieldUsageConfig)) {
                     if (field.getDatatype() != null) {
-                        Datatype datatype = datatypeService.findById(field.getDatatype().getId());
-                        fieldDatatypeMap.put(field, datatype);
+                        Datatype datatype = null;
+                        if(compositeProfileDatatypes!=null && !compositeProfileDatatypes.isEmpty()){
+                            datatype = findDatatypeInCompositeProfileDatatypes(field.getDatatype().getId(),compositeProfileDatatypes);
+                        }
+                        if(datatype == null) {
+                            datatype = datatypeService.findById(field.getDatatype().getId());
+                        }
+                        if(datatype!=null) {
+                            fieldDatatypeMap.put(field, datatype);
+                        }
                     }
                     List<ValueSetOrSingleCodeBinding> fieldValueSetBindings = new ArrayList<>();
                     for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()){
@@ -145,7 +159,13 @@ import java.util.Map;
                         if (coConstraint.getValues() != null && !coConstraint.getValues()
                             .isEmpty()) {
                             for (CCValue ccValue : coConstraint.getValues()) {
-                                Table table = tableService.findById(ccValue.getValue());
+                                Table table = null;
+                                if(compositeProfileTables!=null && !compositeProfileTables.isEmpty()){
+                                    table = compositeProfileTables.get(ccValue.getValue());
+                                }
+                                if(table == null) {
+                                    table = tableService.findById(ccValue.getValue());
+                                }
                                 if (table != null) {
                                     coConstraintValueTableMap.put(ccValue, table);
                                 }
@@ -160,6 +180,11 @@ import java.util.Map;
             return serializableSegmentSection;
         }
         return null;
+    }
+
+    private Datatype findDatatypeInCompositeProfileDatatypes(String id,
+        Map<String, Datatype> compositeProfileDatatypes) {
+        return compositeProfileDatatypes.get(id);
     }
 
 }
