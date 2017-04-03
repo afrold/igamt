@@ -354,9 +354,86 @@ public class DatatypeController extends CommonController {
   @RequestMapping(value = "/getMergedMaster", method = RequestMethod.POST)
   public Datatype getMergedMaster(@RequestBody Datatype datatype) throws Exception {
 
-    Datatype d = mergeComponent(datatype);
+    // Datatype d = mergeComponent(datatype);
+
+
+    Datatype d = getMergedDatatype(datatype, datatype.getScope());
+
     return d;
   }
+
+  //
+  // public Datatype getMergedDT(Datatype datatype) throws Exception {
+  //
+  //
+  //
+  //
+  //
+  // return d;
+  // }
+  //
+  public Datatype getMergedDatatype(Datatype d, SCOPE scope) throws CloneNotSupportedException {
+    List<Datatype> res =
+        datatypeService.findByScopeAndVersionAndParentVersion(scope, d.getHl7Version(), d.getId());
+
+    if (!res.isEmpty()) {
+
+      return res.get(0);
+    } else {
+
+
+      Datatype toReturn = new Datatype();
+      Datatype result = new Datatype();
+
+
+      List<Datatype> all = datatypeService.findByNameAndVersionAndScope(d.getName(),
+          d.getHl7Version(), SCOPE.HL7STANDARD.toString());
+      if (!all.isEmpty()) {
+        result = all.get(0);
+      }
+
+      if (result.getValueSetBindings() != null) {
+        d.setValueSetBindings(result.getValueSetBindings());
+      }
+      for (int i = 0; i < d.getComponents().size(); i++) {
+        Component temp = d.getComponents().get(i);
+        if (temp.getDatatype() != null) {
+          Datatype dtTemp = datatypeService.findById(temp.getDatatype().getId());
+          if (dtTemp.getScope().toString().equals("INTERMASTER")) {
+            System.out.println(dtTemp.getId());
+            d.getComponents().get(i).getDatatype()
+                .setId((result.getComponents().get(i).getDatatype().getId()));
+          } else {
+            Datatype dt = dtTemp.clone();
+            dt.setId(dtTemp.getId());
+            dt.setHl7Version(d.getHl7Version());
+            // dt.setId(newId);
+
+
+            Datatype toChange = getMergedDatatype(dt, d.getScope());
+            d.getComponents().get(i).getDatatype().setId(toChange.getId());
+
+
+
+          }
+        }
+      }
+      String newId = new ObjectId().toString();
+      d.setParentVersion(d.getId());
+      d.setId(newId);
+
+
+      result = datatypeService.save(d);
+      // String newId = new ObjectId().toString();
+
+      return result;
+    }
+
+
+
+  }
+
+
 
   /**
    * @param datatype
@@ -400,6 +477,8 @@ public class DatatypeController extends CommonController {
     }
     return datatype;
   }
+
+
 
   @RequestMapping(value = "/updateTableBinding", method = RequestMethod.POST)
   public void updateTableBinding(

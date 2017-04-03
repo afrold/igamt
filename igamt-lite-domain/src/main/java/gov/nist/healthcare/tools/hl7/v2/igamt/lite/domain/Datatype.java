@@ -236,6 +236,7 @@ public class Datatype extends DataModelWithConstraints
     clonedDT.setStatus(this.getStatus());
     clonedDT.setPublicationVersion(this.getPublicationVersion());
     clonedDT.setHl7Version(this.hl7Version);
+    clonedDT.setParentVersion(null);
     this.setHl7versions(this.hl7versions);
     this.setDateUpdated(new Date());
     return clonedDT;

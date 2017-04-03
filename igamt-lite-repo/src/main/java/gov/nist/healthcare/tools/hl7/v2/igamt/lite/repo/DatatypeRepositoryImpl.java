@@ -11,6 +11,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -187,11 +188,19 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
     // TODO Auto-generated method stub
 
 
-    Criteria where = Criteria.where("hl7Version").is(hl7Version).andOperator(Criteria
-        .where("parentVersion").is(id).andOperator(Criteria.where("scope").is(scope.toString())));
+    Criteria where = Criteria.where("hl7Version").is(hl7Version)
+        .andOperator(Criteria.where("scope").is(scope.toString()));
+
     Query qry = Query.query(where);
     List<Datatype> datatypes = mongo.find(qry, Datatype.class);
-    return datatypes;
+    List<Datatype> result = new ArrayList<Datatype>();
+    for (Datatype d : datatypes) {
+      if (d.getParentVersion() != null && d.getParentVersion().equals(id)) {
+        result.add(d);
+      }
+    }
+
+    return result;
   }
 
   // Query set4Brevis(Query qry) {

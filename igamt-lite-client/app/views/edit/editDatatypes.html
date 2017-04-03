@@ -20,14 +20,13 @@
         </div>
         <div ng-show="!loadingSelection">
             <!--<div ng-if="versionAndUseMap[datatype.id].deprecated" uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>-->
-            <div ng-if="versionAndUseMap[datatype.id].deprecated" class="alert alert-warning">New version of this
-                datatype is available
-            </div>
+            <!--<div ng-if="versionAndUseMap[datatype.id].deprecated" class="alert alert-warning">New version of this-->
+                <!--datatype is available-->
+            <!--</div>-->
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="container">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}<span class="version-badge-label"
-                                                                                             ng-if="datatype.publicationVersion">v{{datatype.publicationVersion}}</span></span>
+                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}} 
                         <span class="pull-right" ng-if="!typeOfSharing">
 
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
@@ -55,28 +54,28 @@
                             ng-hide="viewSettings.tableReadonly||datatype.status==='PUBLISHED'"
                             ng-click="saveDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
-                            </button>
+                    </button>
                     <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                             ng-disabled="!editForm.$dirty||editForm.$invalid"
                             ng-show="datatype.status==='PUBLISHED'&& editForm.$dirty"
                             ng-click="saveBindingForDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
-               				      </button>
+                    </button>
                     <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                             ng-show="datatype.status==='PUBLISHED'"
                             ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
                                   <span><i class="fa fa-times fa-fw"></i> Reset</span>
-              				        </button>
+                    </button>
                     <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                             ng-hide="viewSettings.tableReadonly || datatype.status==='PUBLISHED'"
                             ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
                                   <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                              </button>
+                    </button>
                     <button title="commit" type="button" class="btn btn-raised btn-sm btn-info"
-                            ng-click="publishDatatype(datatype)" ng-if="datatype.status !== 'PUBLISHED'">
+                            ng-click="publishDatatype(datatype)" ng-if="datatype.status !== 'PUBLISHED'&&!igdocument">
                               <i class="fa fa-check" aria-hidden="true"></i>
                               <span> Publish </span>
-                            </button>
+                    </button>
                     </span>
                     </div>
 
@@ -90,7 +89,7 @@
                          <i class="fa fa-user" aria-hidden="true"></i> 
                          ,{{datatype.owner}}
                     </span>
-                        <span>,HL7 Version: {{datatype.hl7Version}}</span>
+                        <span ng-if="datatype.hl7Version!=='*'">,HL7 Version: {{datatype.hl7Version}}</span>
                         <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
 
                     </div>
@@ -870,7 +869,7 @@
 
                                 </md-tab-body>
                             </md-tab>
-                            <md-tab md-on-select="setDeltaToF(); getAllVersionsOfDT(datatype.parentVersion)" ng-if="datatype.parentVersion&&versionAndUseMap[datatype.parentVersion]&&(versionAndUseMap[datatype.parentVersion].ancestors.length||versionAndUseMap[datatype.parentVersion].derived.length>0)">
+                            <md-tab md-on-select="setDeltaToF(); getAllVersionsOfDT(datatype.parentVersion)" ng-if="datatype.parentVersion&&versionAndUseMap[datatype.parentVersion]">
                                 <md-tab-label>
                                     <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
                                 </md-tab-label>
@@ -905,7 +904,7 @@
                                                     <span>{{inf.publicationDate}}</span>
                                                 </td>
                                                 <td class="col-md-5">
-                                                    <button ng-if="references.length>0&&datatype.parentVersion!==inf.id" ng-click="upgradeOrDowngrade(inf.id,datatype);" type="button" class="btn btn-raised btn-raised btn-xs btn-success">
+                                                    <button ng-if="references.length>0&&datatype.parentVersion!==inf.id" ng-click="changeDatatype(inf.id);" type="button" class="btn btn-raised btn-raised btn-xs btn-success">
                                                         <i class="fa fa-refresh fa-fw"></i>
 
                                                         <span ng-if="inf.publicationVersion>datatype.publicationVersion">Upgrade To</span><span ng-if="inf.publicationVersion<datatype.publicationVersion">Downgrade To</span>
@@ -1755,7 +1754,7 @@
         </h3>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want to delete Datatype {{dtToDelete.name}} - {{dtToDelete.label}} ? </p>
+        <p>Are you sure you want to delete Datatype <display-label of="dtToDelete"></display-label> </p>
     </div>
     </div>
     <div class="modal-footer">
