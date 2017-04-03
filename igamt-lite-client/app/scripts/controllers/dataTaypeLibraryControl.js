@@ -3003,7 +3003,7 @@ angular.module('igl').controller('AddDatatypeTemplate',
     $scope.AddDatatype = function(datatype) {
             var dataToAdd = angular.copy(datatype);
             dataToAdd.scope=$rootScope.datatypeLibrary.scope;
-            dataToAdd.hl7version=null;
+            // dataToAdd.hl7version=null;
             dataToAdd.id = new ObjectId().toString();
             dataToAdd.status = 'UNPUBLISHED';
             dataToAdd.scope = $rootScope.datatypeLibrary.scope;

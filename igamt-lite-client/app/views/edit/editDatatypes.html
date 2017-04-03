@@ -26,7 +26,7 @@
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="container">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}
+                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}} 
                         <span class="pull-right" ng-if="!typeOfSharing">
 
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
@@ -869,7 +869,7 @@
 
                                 </md-tab-body>
                             </md-tab>
-                            <md-tab md-on-select="setDeltaToF(); getAllVersionsOfDT(datatype.parentVersion)" ng-if="datatype.parentVersion&&versionAndUseMap[datatype.parentVersion]&&(versionAndUseMap[datatype.parentVersion].ancestors.length||versionAndUseMap[datatype.parentVersion].derived.length>0)">
+                            <md-tab md-on-select="setDeltaToF(); getAllVersionsOfDT(datatype.parentVersion)" ng-if="datatype.parentVersion&&versionAndUseMap[datatype.parentVersion]">
                                 <md-tab-label>
                                     <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
                                 </md-tab-label>
@@ -904,7 +904,7 @@
                                                     <span>{{inf.publicationDate}}</span>
                                                 </td>
                                                 <td class="col-md-5">
-                                                    <button ng-if="references.length>0&&datatype.parentVersion!==inf.id" ng-click="upgradeOrDowngrade(inf.id,datatype);" type="button" class="btn btn-raised btn-raised btn-xs btn-success">
+                                                    <button ng-if="references.length>0&&datatype.parentVersion!==inf.id" ng-click="changeDatatype(inf.id);" type="button" class="btn btn-raised btn-raised btn-xs btn-success">
                                                         <i class="fa fa-refresh fa-fw"></i>
 
                                                         <span ng-if="inf.publicationVersion>datatype.publicationVersion">Upgrade To</span><span ng-if="inf.publicationVersion<datatype.publicationVersion">Downgrade To</span>

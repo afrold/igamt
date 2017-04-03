@@ -329,9 +329,10 @@ public class DatatypeLibraryController extends CommonController {
         if (temp.getParentVersion() != null) {
           String v = (temp.getParentVersion() + temp.getHl7Version()).replace(".", "V");
           checked.put(v, temp);
-          datatypeInLib.add(temp);
 
         }
+        datatypeInLib.add(temp);
+
       }
     }
     Set<String> sts = checked.keySet();
