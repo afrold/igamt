@@ -5121,13 +5121,17 @@
                 <div class="md-toolbar-tools">
                     <h2> changing {{item.name}} datatype confirmation </h2>
                     <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
             </md-toolbar>
 
             <md-dialog-content>
                 <div class="md-dialog-content">
 
-                    <span flex>  this datatype is used in the those references. Please select the reference you want to change </span>
+                    <span flex>  <h3>Please select the references you want to change</h3> </span>
+                    <br/>
 
                     <table st-table="tmpReferences" st-safe-src="references"
                            class="table table-striped table-bordered table-condensed">

@@ -405,13 +405,12 @@ public class DatatypeController extends CommonController {
                 .setId((result.getComponents().get(i).getDatatype().getId()));
           } else {
             Datatype dt = dtTemp.clone();
-
+            dt.setId(dtTemp.getId());
             dt.setHl7Version(d.getHl7Version());
             // dt.setId(newId);
-            // dt.setParentVersion(dtTemp.getId());
 
 
-            Datatype toChange = getMergedDatatype(dt, dt.getScope());
+            Datatype toChange = getMergedDatatype(dt, d.getScope());
             d.getComponents().get(i).getDatatype().setId(toChange.getId());
 
 
@@ -423,7 +422,6 @@ public class DatatypeController extends CommonController {
       d.setParentVersion(d.getId());
       d.setId(newId);
 
-      datatypeService.save(d);
 
       result = datatypeService.save(d);
       // String newId = new ObjectId().toString();

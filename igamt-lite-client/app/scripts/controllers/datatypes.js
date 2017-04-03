@@ -976,8 +976,11 @@ angular.module('igl')
                 $scope.closeDialog = function() {
                     console.log($scope.references);
                     console.log($scope.item);
-                    console.log($rootScope.datatypesMap)
+                    console.log($rootScope.datatypesMap);
                     $rootScope.upgradeOrDowngrade(id,$rootScope.datatype,$scope.selected);
+                    $mdDialog.hide();
+                }
+                $scope.cancel=function(){
                     $mdDialog.hide();
                 }
             }

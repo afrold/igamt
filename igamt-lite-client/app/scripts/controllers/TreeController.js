@@ -2664,10 +2664,15 @@ angular.module('igl').controller('addMAsterInLibrary',
                     if(!$rootScope.datatypesMap[dt.id]){
                         $rootScope.datatypesMap[dt.id]=dt;
                         $rootScope.datatypes.push(dt);
+                        $rootScope.processElement(dt);
+
+                    }
+                    if(dt.parentVersion){
+                        var objectMap=dt.parentVersion+"VV"+dt.hl7Version;
+                        $rootScope.usingVersionMap[objectMap]=dt;
                     }
                    // $rootScope.datatypesMap[dt.id]=dt;
-                    var objectMap=dt.parentVersion+"VV"+dt.hl7Version;
-                    $rootScope.usingVersionMap[objectMap]=dt;
+
                     $rootScope.datatypeLibrary.children.push({name:dt.name,ext:dt.ext,id:dt.id});
 
 

@@ -1198,32 +1198,26 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
                 DatatypeService.saves($rootScope.selectedDatatypes).then(function(result) {
 
+                    DatatypeLibrarySvc.addChildrenFromDatatypes($rootScope.datatypeLibrary.id, $rootScope.selectedDatatypes).then(function(result) {
+                        angular.forEach(result, function(dtToAdd){
+                            $rootScope.datatypeLibrary.children.push({name:dtToAdd, ext:dtToAdd.ext,id:dtToAdd.id});
+                            if(dtToAdd.parentVersion){
+                                var objectMap=dtToAdd.parentVersion+"VV"+dtToAdd.hl7Version;
+                                $rootScope.usingVersionMap[objectMap]=dtToAdd;
 
+                            }
 
+                            $rootScope.datatypesMap[dtToAdd.id]=dtToAdd;
+                            $rootScope.datatypes.push(dtToAdd);
+                         
+                            $rootScope.processElement(dtToAdd);
+                        });
 
-                    for (var i = 0; i < result.length; i++) {
-                        if(!$rootScope.datatypesMap[result[i].id]){
-                            $rootScope.datatypesMap[result[i].id]=result[i];
-                            $rootScope.datatypes.push(result[i]);
-                        }
-                    }
-
-                    DatatypeLibrarySvc.addChildrenFromDatatypes($rootScope.datatypeLibrary.id, $rootScope.selectedDatatypes).then(function(link) {
-                        $rootScope.datatypeLibrary.children.push(link);
                         var usedDtId1 = _.map($rootScope.DTlinksToAdd, function(num, key) {
                             return num.id;
                         });
 
-                        DatatypeService.get(usedDtId1).then(function(datatypes) {
-                            angular.forEach(datatypes, function(datatype){
-                                if(!$rootScope.datatypesMap[datatype.id]){
-                                    $rootScope.datatypesMap[datatype.id]=datatype;
-                                    $rootScope.datatypes.push(datatype);
-                                    if(datatype.parentVersion){
-                                        $rootScope.datatypesMap[datatype.parentVersion]=datatype;
-                                    }
-                                }
-                            })
+
                             TableLibrarySvc.addChildrenByIds($rootScope.tableLibrary.id, $rootScope.TablesIds).then(function(result) {
                                 console.log(result);
                                 angular.forEach(result, function(table){
@@ -1231,14 +1225,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                                     if(!$rootScope.tablesMap[table.id]){
                                         $rootScope.tables.push(table);
                                         $rootScope.tablesMap[table.id]=table;
-                                        console.log($rootScope.datatypesMap[$scope.DatatypeToAdd.id]);
                                     }
                                 });
-                                $rootScope.replaceElement($rootScope.datatype,$rootScope.datatypesMap[$scope.DatatypeToAdd.id], list);
+                                var objectMap=id+"VV"+datatype.hl7Version;
+
+                                $rootScope.replaceElement($rootScope.datatype,$rootScope.usingVersionMap[objectMap], list);
 
 
                             });
-                        });
                     });
                 });
             });
