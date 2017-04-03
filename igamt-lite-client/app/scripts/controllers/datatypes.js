@@ -445,8 +445,9 @@ angular.module('igl')
 
 
         $scope.backDT = function() {
-            
             $scope.editableDT = '';
+            if ($scope.datatypesParams)
+                $scope.datatypesParams.refresh();
         };
 
 

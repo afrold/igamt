@@ -1232,12 +1232,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                                         $rootScope.tables.push(table);
                                         $rootScope.tablesMap[table.id]=table;
                                         console.log($rootScope.datatypesMap[$scope.DatatypeToAdd.id]);
-
-
                                     }
-
-
-
                                 });
                                 $rootScope.confirmSwitch($rootScope.datatype,$rootScope.datatypesMap[$scope.DatatypeToAdd.id]);
 
@@ -3523,6 +3518,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return null;
     };
 
+    $rootScope.getTextAsTruncatedString = function (value, num){
+        if(value.length > num) return value.substring(0, num) + "...";
+        return value;
+    };
+
     $rootScope.getTextValue = function(value) {
         return value;
     };
@@ -3749,6 +3749,23 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         });
     };
+    $scope.getDatatypeForUpgrade= function(id){
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     $rootScope.getGroupNodeName = function(node) {
         return node.position + "." + node.name;
@@ -4297,6 +4314,84 @@ angular.module('igl').controller('EditSingleElementCtrl', function($scope, $root
     };
 });
 
+angular.module('igl').controller('EditIFDataCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentIndex) {
+    $scope.data = angular.copy($rootScope.segment.coConstraintsDefinition.columnDataIf[currentIndex].values);
+    $scope.deleteValue = function(index){
+        if (index >= 0) {
+            $scope.data.splice(index, 1);
+        }
+    };
+    $scope.addValue = function() {
+        $scope.data.push("");
+    };
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        $modalInstance.close($scope.data);
+    };
+});
+
+angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentId, currentIndex) {
+    $scope.data = angular.copy($rootScope.segment.coConstraintsDefinition.mapDataThen[currentId][currentIndex]);
+    $scope.deleteValue = function(index){
+        if (index >= 0) {
+            $scope.data.values.splice(index, 1);
+        }
+    };
+    $scope.addValue = function() {
+        $scope.data.values.push("");
+    };
+
+
+    $scope.isSelected = function (v){
+        for (var i = 0; i < $scope.data.valueSets.length; i++) {
+            if($scope.data.valueSets[i].tableId == v.id) return true;
+        }
+        return false;
+    };
+
+    $scope.selectValueSet = function (v){
+        $scope.data.valueSets.push({ tableId: v.id, bindingStrength: "R"});
+    };
+
+    $scope.deleteValueSet = function (index) {
+        if (index >= 0) {
+            $scope.data.valueSets.splice(index, 1);
+        }
+    };
+
+    $scope.unselectValueSet = function (v){
+        var toBeDelBinding =_.find($scope.data.valueSets, function(binding){
+            return binding.tableId == v.id;
+        });
+        var index = $scope.data.valueSets.indexOf(toBeDelBinding);
+        if (index >= 0) {
+            $scope.data.valueSets.splice(index, 1);
+        }
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        $modalInstance.close($scope.data);
+    };
+});
+
+
+angular.module('igl').controller('EditDecriptionCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentId, currentIndex) {
+    $scope.data = angular.copy($rootScope.segment.coConstraintsDefinition.mapDataDesc[currentId][currentIndex].text);
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        $modalInstance.close($scope.data);
+    };
+});
 
 angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode, currentComment, disabled, type) {
     $scope.currentNode = currentNode;
