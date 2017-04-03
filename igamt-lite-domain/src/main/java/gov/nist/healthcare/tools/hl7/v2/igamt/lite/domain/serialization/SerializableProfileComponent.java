@@ -87,22 +87,18 @@ public class SerializableProfileComponent extends SerializableSection {
                             if(valueSetOrSingleCodeBinding instanceof ValueSetBinding){
                                 valueSets.add(((ValueSetBinding) valueSetOrSingleCodeBinding).getBindingLocation());
                             } else if(valueSetOrSingleCodeBinding instanceof SingleCodeBinding){
-                                
+                                valueSets.add(
+                                    ((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode().getCodeSystem());
                             }
                         }
-                    }
-
-
-                    if(subProfileComponentAttributes.getTables()!=null && !subProfileComponentAttributes.getTables().isEmpty()){
-                        ArrayList<String> valueSets = new ArrayList<>();
-                        for(TableLink tableLink : subProfileComponentAttributes.getTables()){
-                            valueSets.add(tableLink.getBindingIdentifier());
+                        if(!valueSets.isEmpty()){
+                            subProfileComponentElement.addAttribute(new Attribute("ValueSet", StringUtils.join(valueSets, ", ")));
                         }
-                        subProfileComponentElement.addAttribute(new Attribute("ValueSet",
-                            StringUtils.join(valueSets,",")));
                     }
-
-
+                    if(subProfileComponent.getSingleElementValues()!=null){
+                        subProfileComponentElement.addAttribute(new Attribute("SingleElement",
+                            subProfileComponent.getSingleElementValues().getValue()));
+                    }
 
                     if(subProfileComponentAttributes.getUsage()!=null){
                         subProfileComponentElement.addAttribute(new Attribute("Usage",subProfileComponentAttributes.getUsage().value()));
@@ -127,8 +123,8 @@ public class SerializableProfileComponent extends SerializableSection {
                         subProfileComponentElement.addAttribute(new Attribute("Datatype",subProfileComponentAttributes.getDatatype().getLabel()));
                     }
                     if(definitionTexts!=null && definitionTexts.containsKey(subProfileComponentAttributes)){
-                        subProfileComponentElement.addAttribute(new Attribute("DefinitionText",
-                            definitionTexts.get(subProfileComponentAttributes)));
+                        subProfileComponentElement
+                            .addAttribute(new Attribute("DefinitionText", definitionTexts.get(subProfileComponentAttributes)));
                     }
                     profileComponentElement.appendChild(subProfileComponentElement);
                 }
