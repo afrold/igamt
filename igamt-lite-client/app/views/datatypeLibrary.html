@@ -31,7 +31,7 @@ if (self === top) {
         /* IE6-9 */
         color: white;
         /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#356aa0+0,356aa0+100;Blue+Flat */
-        background: #356aa0;
+        background: #356aa0 !important;
         /* Old browsers */
         background: -moz-linear-gradient(top, #356aa0 0%, #356aa0 100%);
         /* FF3.6-15 */
@@ -457,15 +457,15 @@ if (self === top) {
                 </div>
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes |orderBy:['-scope','label']" ui-tree-node ng-if="!collapsed">
-                        <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptions" style="margin-left:30px;" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated">
-                            <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
+                        <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptions" style="margin-left:30px;" ng-if="data.status!=='PUBLISHED'||data.scope=='HL7STANDARD'||versionAndUseMap[data.id].deprecated||versionAndUseMap[data.id].deprecated" ng-class="{selected : data.id===activeModel}">
+                            <div data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
                                                        <display-label of="data" desc="true"></display-label>
-                            </span>
+                            </div>
                         </div>
-                        <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptionsForPublished" style="margin-left:30px;" ng-if="(data.status==='PUBLISHED'&&!versionAndUseMap[data.id].deprecated)&&data.scope!=='HL7STANDARD'">
-                            <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
+                        <div ui-tree-handle data-nodrag confirm-click context-menu="DataTypeOptionsForPublished" style="margin-left:30px;" ng-if="(data.status==='PUBLISHED'&&!versionAndUseMap[data.id].deprecated)&&data.scope!=='HL7STANDARD'" ng-class="{selected : data.id===activeModel}">
+                            <div data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
                                         <display-label of="data" desc="true"></display-label>
-                            </span>
+                            </div>
                         </div>
                     </li>
                     <div ui-tree-handle data-nodrag style="margin-left:-20px !important;">
@@ -474,10 +474,11 @@ if (self === top) {
                     <ol ui-tree-nodes="" ng-model="interMediates">
 
                         <li  ng-repeat="data in interMediates |orderBy:['-scope','label']" ui-tree-node ng-if="!tableCollapsed">
-                            <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForInter">
-                                       <span data-nodrag style="font-weight: normal;" ng-class="{selected : data.id===activeModel}" confirm-click ng-click="editDatatype(data)">
-                                                       <display-label of="data" desc="true"></display-label>
-                            </span>
+                            <div ui-tree-handle data-nodrag style="font-weight:normal;cursor:pointer;" context-menu="DataTypeOptionsForInter" ng-class="{selected : data.id===activeModel}">
+                                               <div data-nodrag style="font-weight: normal;"  confirm-click ng-click="editDatatype(data)">
+                                                               <display-label of="data" desc="true"></display-label>
+                                               </div>
+                                    </div>
 
                             </div>
                         </li>
