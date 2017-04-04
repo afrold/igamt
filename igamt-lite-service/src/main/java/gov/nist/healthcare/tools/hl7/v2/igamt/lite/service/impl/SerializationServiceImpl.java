@@ -593,27 +593,33 @@ import java.util.*;
     }
 
     private CompositeProfile getSegmentCompositeProfile(SegmentLink segmentLink) {
-        for(CompositeProfile compositeProfile : this.compositeProfiles){
-            if(compositeProfile.getSegmentsMap().containsKey(segmentLink.getId())){
-                return compositeProfile;
+        if(this.compositeProfiles!=null && !this.compositeProfiles.isEmpty()) {
+            for (CompositeProfile compositeProfile : this.compositeProfiles) {
+                if (compositeProfile.getSegmentsMap().containsKey(segmentLink.getId())) {
+                    return compositeProfile;
+                }
             }
         }
         return null;
     }
 
     private CompositeProfile getDatatypeCompositeProfile(DatatypeLink datatypeLink) {
-        for(CompositeProfile compositeProfile : this.compositeProfiles){
-            if(compositeProfile.getDatatypesMap().containsKey(datatypeLink.getId())){
-                return compositeProfile;
+        if(this.compositeProfiles!=null && !this.compositeProfiles.isEmpty()) {
+            for (CompositeProfile compositeProfile : this.compositeProfiles) {
+                if (compositeProfile.getDatatypesMap().containsKey(datatypeLink.getId())) {
+                    return compositeProfile;
+                }
             }
         }
         return null;
     }
 
     private CompositeProfile getTableCompositeProfile(TableLink tableLink) {
-        for(CompositeProfile compositeProfile : this.compositeProfiles){
-            if(compositeProfile.getTablesMap().containsKey(tableLink.getId())) {
-                return compositeProfile;
+        if(this.compositeProfiles!=null && !this.compositeProfiles.isEmpty()) {
+            for (CompositeProfile compositeProfile : this.compositeProfiles) {
+                if (compositeProfile.getTablesMap().containsKey(tableLink.getId())) {
+                    return compositeProfile;
+                }
             }
         }
         return null;
