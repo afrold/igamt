@@ -5109,8 +5109,9 @@
             </span>
         <span>{{getLabel(element)}}</span>
         <span ng-if="description">-{{getDescriptionLabel(element)}}</span>
-         <br/>
+        <div>
         <span class="version-badge-under" ng-repeat="version in element.hl7versions" style="margin-left:2px;">{{version}}</span>
+        </div>
     </span>
 </script>
 

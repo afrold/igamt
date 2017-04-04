@@ -14,8 +14,8 @@ angular
             'PcService',
             'CompositeProfileService',
             'orderByFilter',
-
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService, CompositeProfileService,orderByFilter) {
+            '$mdDialog',
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService, CompositeProfileService,orderByFilter,$mdDialog) {
 
                 $scope.collapsedata = false;
                 $scope.collapsePcs = true;
@@ -2019,7 +2019,7 @@ angular
 
                     });
                 };
-                $rootScope.addDatatypesFromUserLib = function() {
+                $rootScope.addDatatypesFromUserLib = function($event) {
                     $rootScope.scopeTag="User";
                     DatatypeLibrarySvc.getDataTypeLibraryByScope('USER').then(function(masterLib) {
                         var dtlibs = [];
@@ -2029,39 +2029,36 @@ angular
                                 dtlibs.push(dtLib);
                             }
                         });
+                        $mdDialog.show({
 
-                        var addDatatypeInstance = $modal.open({
-                            templateUrl: 'AddMasterDatatypeIntoUser.html',
-                            controller: 'addMAsterInLibrary',
-                            size: 'lg',
-                            windowClass: 'addDatatype',
-                            resolve: {
-                                hl7Version: function() {
-                                    return $scope.hl7Version;
-                                },
-                                masterLib: function() {
-                                    return dtlibs;
-                                },
-                                datatypeLibrary: function() {
-                                    return $rootScope.datatypeLibrary;
-                                },
-                                tableLibrary: function() {
-                                    return $rootScope.tableLibrary;
-                                },
-                                versionAndUseMap: function() {
-                                    return $rootScope.versionAndUseMap;
-                                }
-                            }
-                        }).result.then(function(results) {
-                            var ids = [];
-                            angular.forEach(results, function(result) {
-                                ids.push(result.id);
-                            });
+                            templateUrl:'AddDatatypeIntoUser.html',
+                            locals: {
+                                hl7Version:  $scope.hl7Version
+                                ,
+                                masterLib: dtlibs
+                                ,
+                                datatypeLibrary:$rootScope.datatypeLibrary,
+                                tableLibrary:$rootScope.tableLibrary,
+
+                                versionAndUseMap:$rootScope.versionAndUseMap
+
+
+                            },
+                            parent: angular.element(document).find('body'),
+                            clickOutsideToClose:true,
+                            controller: 'addMAsterInLibrary'
                         });
 
-                    });
+
+
+
+
+
+
 
                 }
+                    );}
+
 
                 $rootScope.addSharedDatatypes = function() {
                     var scopes = ['HL7STANDARD'];
@@ -2105,7 +2102,7 @@ angular
                         });
 
                         var addDatatypeInstance = $modal.open({
-                            templateUrl: 'AddMasterDatatypeIntoUser.html',
+                            templateUrl: 'AddDatatypeIntoUser.html',
                             controller: 'addMAsterInLibrary',
                             size: 'lg',
                             windowClass: 'addDatatype',
@@ -2436,7 +2433,7 @@ angular.module('igl').controller('AddDatatypeCtrlFromUserLib',
 
 
 angular.module('igl').controller('addMAsterInLibrary',
-    function($scope, $rootScope, $modalInstance, hl7Version, masterLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http, datatypeLibrary, tableLibrary, versionAndUseMap) {
+    function($scope, $rootScope, hl7Version, masterLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http, datatypeLibrary, tableLibrary, versionAndUseMap,$mdDialog) {
         $scope.versionAndUseMap = versionAndUseMap;
         $scope.TablesIds=[];
         $scope.newDts = [];
@@ -2693,7 +2690,7 @@ angular.module('igl').controller('addMAsterInLibrary',
 
 
                     });
-                    $modalInstance.close("");
+                    $mdDialog.hide();
 
 
                 });
@@ -2765,7 +2762,7 @@ angular.module('igl').controller('addMAsterInLibrary',
 
 
                             });
-                        $modalInstance.close(datatypes);
+                            $mdDialog.hide();
 
                         });
                 });
@@ -2820,7 +2817,7 @@ angular.module('igl').controller('addMAsterInLibrary',
 
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $mdDialog.hide();
         };
     });
 
