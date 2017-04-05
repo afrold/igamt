@@ -254,6 +254,7 @@ public class Bootstrap implements InitializingBean {
     // updateDMofSegment();
     // updateProfileForMissingDTs();
     // DeleteProfileComponents();
+    // fixValueSetNameAndDescription();
 
 
 
