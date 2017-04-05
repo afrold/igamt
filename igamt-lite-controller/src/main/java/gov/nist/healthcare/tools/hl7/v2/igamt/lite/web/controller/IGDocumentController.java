@@ -414,11 +414,14 @@ public class IGDocumentController extends CommonController {
       profileComponentService.saveAll(profilecomponents);
       for (Message m : igDocument.getProfile().getMessages().getChildren()) {
         List<String> newIds = new ArrayList<>();
-        for (String cpId : m.getCompositeProfileStructureList()) {
-          newIds.add(compositeProfileIdChangeMap.get(cpId));
+        if (m.getCompositeProfileStructureList() != null) {
+          for (String cpId : m.getCompositeProfileStructureList()) {
+            newIds.add(compositeProfileIdChangeMap.get(cpId));
+          }
+          m.setCompositeProfileStructureList(newIds);
+          messageService.save(m);
         }
-        m.setCompositeProfileStructureList(newIds);
-        messageService.save(m);
+
       }
 
       List<Datatype> datatypes = datatypeLibraryService.findDatatypesById(datatypeLibrary.getId());
@@ -532,10 +535,12 @@ public class IGDocumentController extends CommonController {
       for (ValueSetOrSingleCodeBinding vsb : s.getValueSetBindings()) {
         vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
       }
-
-      for (DynamicMappingItem dmi : s.getDynamicMappingDefinition().getDynamicMappingItems()) {
-        dmi.setDatatypeId(datatypeIdChangeMap.get(dmi.getDatatypeId()));
+      if (s.getDynamicMappingDefinition() != null) {
+        for (DynamicMappingItem dmi : s.getDynamicMappingDefinition().getDynamicMappingItems()) {
+          dmi.setDatatypeId(datatypeIdChangeMap.get(dmi.getDatatypeId()));
+        }
       }
+
 
       for (Field f : s.getFields()) {
         if (f.getDatatype() != null && f.getDatatype().getId() != null
