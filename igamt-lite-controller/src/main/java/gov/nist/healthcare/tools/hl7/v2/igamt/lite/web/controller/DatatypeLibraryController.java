@@ -322,17 +322,19 @@ public class DatatypeLibraryController extends CommonController {
     List<Datatype> datatypeInLib = new ArrayList<Datatype>();
 
     DatatypeLibrary lib = datatypeLibraryService.findById(libId);
-    for (DatatypeLink link : lib.getChildren()) {
-      Datatype temp = datatypeService.findById(link.getId());
+    if (!lib.getChildren().isEmpty()) {
+      for (DatatypeLink link : lib.getChildren()) {
+        Datatype temp = datatypeService.findById(link.getId());
 
-      if (temp != null) {
-        if (temp.getParentVersion() != null) {
-          String v = (temp.getParentVersion() + temp.getHl7Version()).replace(".", "V");
-          checked.put(v, temp);
+        if (temp != null) {
+          if (temp.getParentVersion() != null) {
+            String v = (temp.getParentVersion() + temp.getHl7Version()).replace(".", "V");
+            checked.put(v, temp);
+
+          }
+          datatypeInLib.add(temp);
 
         }
-        datatypeInLib.add(temp);
-
       }
     }
     Set<String> sts = checked.keySet();

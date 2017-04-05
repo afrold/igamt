@@ -4124,6 +4124,7 @@
 
 
                         </div>
+                    </div>
             </form>
             </div>
     </script>
@@ -5237,7 +5238,7 @@
         <span ng-if="element.publicationVersion&&element.status==='PUBLISHED'" class="version-badge">v{{element.publicationVersion}}</span>
             </span>
         <span>{{getLabel(element)}}</span>
-        <span ng-if="description">-{{getDescriptionLabel(element)}}</span>
+        <span ng-if="description&&getDescriptionLabel(element)=''">-{{getDescriptionLabel(element)}}</span>
         <div>
         <span class="version-badge-under" ng-repeat="version in element.hl7versions" style="margin-left:2px;">{{version}}</span>
         </div>
