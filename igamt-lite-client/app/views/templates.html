@@ -701,6 +701,135 @@
     </div>
 </script>
 
+<script type="text/ng-template" id="CoConstraintTHENDefinition.html">
+    <div class="modal-header">
+        <h3>Define THEN Definition for CoConstraintTable</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" novalidate>
+            <div class="row">
+                <div class="col-md-3">
+                    {{segment.name}}
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control"
+                            ng-model='selectedFieldPosition'
+                            ng-change="updateField();">
+                        <option ng-repeat="field in segment.fields" value="{{field.position}}">
+                            {{field.position}}. {{field.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control"
+                            ng-show="components"
+                            ng-model='selectedComponentPosition'
+                            ng-change="updateComponent();">
+                        <option ng-repeat="component in components" value="{{component.position}}">
+                            {{component.position}}. {{component.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control"
+                            ng-show="subComponents"
+                            ng-model='selectedSubComponentPosition'
+                            ng-change="updateSubComponent();">
+                        <option ng-repeat="component in subComponents" value="{{component.position}}">
+                            {{component.position}}. {{component.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    Type:
+                </div>
+
+                <div class="col-md-9">
+                    <md-radio-group ng-model="coConstraintType">
+                        <md-radio-button value="value" class="md-primary">Value</md-radio-button>
+                        <md-radio-button value="valueset">Value Set</md-radio-button>
+                    </md-radio-group>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
+            &nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+            &nbsp; </i>Save</span>
+        </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="CoConstraintIFDefinition.html">
+    <div class="modal-header">
+        <h3>Define IF Definition for CoConstraintTable</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" novalidate>
+            <div class="row">
+                <div class="col-md-3">
+                    {{segment.name}}
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control"
+                            ng-model='selectedFieldPosition'
+                            ng-change="updateField();">
+                        <option ng-repeat="field in segment.fields" value="{{field.position}}">
+                            {{field.position}}. {{field.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control"
+                            ng-show="components"
+                            ng-model='selectedComponentPosition'
+                            ng-change="updateComponent();">
+                        <option ng-repeat="component in components" value="{{component.position}}">
+                            {{component.position}}. {{component.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control"
+                            ng-show="subComponents"
+                            ng-model='selectedSubComponentPosition'
+                            ng-change="updateSubComponent();">
+                        <option ng-repeat="component in subComponents" value="{{component.position}}">
+                            {{component.position}}. {{component.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    Type:
+                </div>
+
+                <div class="col-md-9">
+                    <md-radio-group ng-model="coConstraintType">
+                        <md-radio-button value="value" class="md-primary">Value</md-radio-button>
+                        <md-radio-button value="valueset" ng-disabled="true">Value Set</md-radio-button>
+                    </md-radio-group>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
+            &nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+            &nbsp; </i>Save</span>
+        </button>
+    </div>
+</script>
+
+
 <script type="text/ng-template" id="EditIFData.html">
     <div class="modal-header ">
         <h3>Edit</h3>

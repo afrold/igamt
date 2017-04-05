@@ -8,7 +8,7 @@ public class OBX5NodeData {
 	private String location;
 	private String type;
 	private List<String> values = new ArrayList<String>();
-	private List<ValueSetInfo> valueSets = new ArrayList<ValueSetInfo>();
+	private List<ValueSetData> valueSets = new ArrayList<ValueSetData>();
 
 	public OBX5NodeData() {
 		super();
@@ -38,11 +38,11 @@ public class OBX5NodeData {
 		this.values = values;
 	}
 
-	public List<ValueSetInfo> getValueSets() {
+	public List<ValueSetData> getValueSets() {
 		return valueSets;
 	}
 
-	public void setValueSets(List<ValueSetInfo> valueSets) {
+	public void setValueSets(List<ValueSetData> valueSets) {
 		this.valueSets = valueSets;
 	}
 

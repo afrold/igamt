@@ -56,8 +56,12 @@
                 </div>
 
                     <div class="" ng-controller="cmpTableCtrl">
-                       <tabset
-
+                        <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+                            <md-tab>
+                                <md-tab-label>
+                                    <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
+                                </md-tab-label>
+                                <md-tab-body>
                                 <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                                     <md-content layout-padding>
                                         <md-input-container class="md-block" flex-gt-sm>
