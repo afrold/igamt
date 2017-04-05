@@ -439,9 +439,9 @@
 
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Scope</label>
-                                            <!--<input type="text" ng-change="setDirty()" name="metaData.scope"-->
-                                                   <!--ng-model="metaData.scope" required>-->
-                                            <md-select ng-model="metaData.scope">
+                                            <input ng-if="!admin" type="text" ng-change="setDirty()" name="metaData.scope"
+                                                   ng-model="metaData.scope"  disabled required>
+                                            <md-select ng-if="admin" ng-model="metaData.scope">
                                                 <md-option ng-repeat="scope in ['USER', 'MASTER']" ng-value="scope">{{scope}}</md-option>
                                             </md-select>
 
@@ -450,7 +450,7 @@
                                         <md-input-container class="md-block" flex-gt-sm >
                                             <label class="input-left">Description </label>
                                             <div>
-                                                         <textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus
+                                                         <textarea froala="froalaEditorOptions" md-select-on-focus
                                                                    ng-model="metaData.description" name="description"
                                                                    id="description"></textarea>
                                             </div>

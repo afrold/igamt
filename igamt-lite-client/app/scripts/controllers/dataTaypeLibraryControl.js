@@ -1957,10 +1957,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 },
                 controller: CreateDatatypeLibrary
             });
-            function CreateDatatypeLibrary($scope, $http, $rootScope, $q, $mdDialog, $timeout, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc,metaData,datatypeTemplates,DatatypeLibraryDocumentSvc) {
+            function CreateDatatypeLibrary($scope, $http, $rootScope, $q, $mdDialog, $timeout, TableLibrarySvc, DatatypeService, DatatypeLibrarySvc,metaData,datatypeTemplates,DatatypeLibraryDocumentSvc,admin) {
                 $scope.metaData=metaData;
                 $scope.datatypeTemplates=datatypeTemplates;
                 $scope.addedDatatypes=[];
+                $scope.admin=admin;
 
                 $scope.cancel=function(){
                     $mdDialog.hide();
