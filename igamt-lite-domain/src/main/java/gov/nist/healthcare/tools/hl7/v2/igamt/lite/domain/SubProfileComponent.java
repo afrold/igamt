@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.annotation.Id;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
@@ -20,6 +22,7 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   private String path;
   private Integer position;
+  private ProfileComponentItemSource source;
   private Integer priority;
   private String type;
   private String name;
@@ -31,6 +34,8 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   private SingleElementValue singleElementValues = new SingleElementValue();
   private List<Comment> oldComments = new ArrayList<Comment>();
   private List<Comment> comments = new ArrayList<Comment>();
+  private List<Predicate> oldPredicates = new ArrayList<Predicate>();
+  private List<Predicate> predicates = new ArrayList<Predicate>();
 
   private String from;
 
@@ -84,6 +89,15 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   public void setPosition(Integer position) {
     this.position = position;
+  }
+
+
+  public ProfileComponentItemSource getSource() {
+    return source;
+  }
+
+  public void setSource(ProfileComponentItemSource source) {
+    this.source = source;
   }
 
   public Integer getPriority() {
@@ -145,6 +159,23 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   public void setComments(List<Comment> comments) {
     this.comments = comments;
+  }
+
+
+  public List<Predicate> getOldPredicates() {
+    return oldPredicates;
+  }
+
+  public void setOldPredicates(List<Predicate> oldPredicates) {
+    this.oldPredicates = oldPredicates;
+  }
+
+  public List<Predicate> getPredicates() {
+    return predicates;
+  }
+
+  public void setPredicates(List<Predicate> predicates) {
+    this.predicates = predicates;
   }
 
   public String getFrom() {
