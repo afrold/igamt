@@ -263,6 +263,7 @@
         </div>
     </md-dialog>
 </script>
+
 <script type="text/ng-template" id="AddSegmentMd.html">
 
     <md-dialog aria-label="Adding HL7 Segments types">
@@ -383,10 +384,214 @@
 
                 <md-dialog-actions layout="row">
 
+
                     <md-button class="md-primary md-raised"   ng-click="ok()" ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0">
                         Add
                     </md-button>
                 </md-dialog-actions>
+            </md-dialog-content>
+        </form>
+        </div>
+    </md-dialog>
+</script>
+<script type="text/ng-template" id="createDatatypeLibrary.html">
+
+    <md-dialog aria-label="Create Data Type Library ">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Create Data Type Library </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+
+                    <md-tabs md-dynamic-height md-border-bottom">
+                    <md-tab md-active="tabs[0].active" md-on-select="make_active(0)">
+                        <md-tab-label>
+                            <i class="fa fa-file-text-o fa-fw"></i> Data Type Library Meta Data
+                        </md-tab-label>
+                        <md-tab-body>
+                            <md-content layout-gt-sm="row" layout-padding>
+                                <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                                    <md-content>
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Name</label>
+                                            <input type="text" name="name" ng-model="metaData.name"
+                                                   required>
+                                            <div ng-messages="editForm.name.$error">
+                                                <div ng-message="required">Name is required.</div>
+                                            </div>
+                                        </md-input-container>
+
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Steward</label>
+                                            <input type="text" ng-change="setDirty()" name="metaData.orgName"
+                                                   ng-model="metaData.orgName" required>
+
+                                        </md-input-container>
+
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Scope</label>
+                                            <!--<input type="text" ng-change="setDirty()" name="metaData.scope"-->
+                                                   <!--ng-model="metaData.scope" required>-->
+                                            <md-select ng-model="metaData.scope">
+                                                <md-option ng-repeat="scope in ['USER', 'MASTER']" ng-value="scope">{{scope}}</md-option>
+                                            </md-select>
+
+                                        </md-input-container>
+
+                                        <md-input-container class="md-block" flex-gt-sm >
+                                            <label class="input-left">Description </label>
+                                            <div>
+                                                         <textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus
+                                                                   ng-model="metaData.description" name="description"
+                                                                   id="description"></textarea>
+                                            </div>
+                                        </md-input-container>
+
+                                    </md-content>
+                                </div>
+                            </md-content>
+
+
+
+                        </md-tab-body>
+
+
+                    </md-tab>
+
+                    <md-tab md-active="tabs[1].active" md-on-select="make_active(1)">
+                        <md-tab-label>
+                            <i class="fa fa-file-text-o fa-fw"></i> Add Data Types
+                        </md-tab-label>
+                        <md-tab-body>
+
+                            <div layout="row" layout-align="center start">
+
+                                <div class="panel panel-primary container" flex="50" style="max-width:400px !important; margin-right:5px;">
+                                    <div class="panel-heading">Source</div>
+                                    <div class="panel-body container">
+                                        <div class="container">
+                                            <div style="margin-top: 8px;">
+                                                <i class="icon-search"></i>
+                                                <input type="search" class="form-control" placeholder="Search Datatypes" ng-model="search.name" style="width:360px"/>
+                                            </div>
+                                        </div>
+                                        <div class="container">
+                                            <table class="fixed_headers table-bordered">
+                                                <thead>
+                                                <tr class="tbl-header">
+                                                    <th class="widthInside">Name</th>
+                                                    <th class="widthInside">Versions</th>
+                                                    <th class="widthInside"></th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody style="max-height:300px; overflow:scroll; display:block">
+                                                <tr ng-repeat="data in datatypeTemplates| filter:search|orderBy: 'name'">
+                                                    <td class="widthInside">
+                                                        <span>{{data.name}}</span>
+                                                    </td>
+                                                    <td class="widthInside">
+                                                        <ul>
+                                                            <li ng-repeat="version in data.hl7versions">{{version}}</li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="widthInside">
+                                                        <i ng-click="AddDatatype(data)" class="fa fa-plus fa-fw" style="color:blue;cursor:pointer !important"></i>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-primary" flex="50" style="max-width:540px !important">
+                                    <div class="panel-heading">Selected Data Types</div>
+                                    <div class="panel-body container">
+                                        <div class="container" style="margin-top: 8px;">
+                                            <i class="icon-search"></i>
+                                            <input type="search" class="form-control" placeholder="Search" ng-model="search1.name" style="width:500px"/>
+                                        </div>
+                                        <div class="container">
+                                            <table class="fixed_headers table-bordered">
+                                                <thead>
+                                                <tr class="tbl-header">
+                                                    <th class="widthInside2">Name</th>
+                                                    <th class="widthInside2">Extension</th>
+                                                    <th class="widthInside2">Compatible HL7 Version</th>
+                                                    <th class="widthInside2">Description
+                                                    </th>
+                                                    <th class="widthInside2">Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody style="max-height:300px; overflow:scroll; display:block">
+                                                <tr ng-repeat="data in addedDatatypes| filter:search1">
+                                                    <td class="widthInside2">
+                                                        <span>{{data.name}}</span>
+                                                    </td>
+                                                    <td class="widthInside2">
+                                                        <input type="text" class="form-control" ng-model="data.ext" required></input>
+                                                        <span style="color:red;" ng-if="existingExtension(data,addedDatatypes)">Extesion already exists</span>
+                                                    </td>
+                                                    <td class="widthInside2">
+                                                        <ul>
+                                                            <li ng-repeat="version in data.hl7versions"><span ng-class="{'choosed': version===data.hl7Version}">{{version}}</span></li>
+                                                        </ul>
+                                                    </td>
+                                                    <td class="widthInside2">
+                                                        {{data.description}}
+                                                    </td>
+                                                    <td class="widthInside2">
+                                                        <button class="btn btn-raised btn-xs btn-danger" ng-click="addedDatatypes.splice($index,1);miniDTMap[data.id]=false">X</button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
+
+                        </md-tab-body>
+
+
+                    </md-tab>
+
+                    </md-tabs>
+
+
+
+
+
+
+                <md-dialog-actions layout="row">
+
+                    <md-button class="md-primary"  ng-click="make_active(1)" ng-if="tabs[0].active" >
+                       Next
+                    </md-button>
+
+                    <md-button class="md-primary"  ng-click="make_active(0)" ng-if="tabs[1].active">
+                        Back
+                    </md-button>
+                    <md-button class="md-primary md-raised" ng-click="createLibrary()">
+                        Submit
+                    </md-button>
+                </md-dialog-actions>
+                </div>
             </md-dialog-content>
         </form>
         </div>

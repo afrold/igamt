@@ -461,7 +461,7 @@ public class Bootstrap implements InitializingBean {
   private void fixValueSetNameAndDescription() {
     List<Table> allTables = tableService.findAll();
     for (Table t : allTables) {
-      if (null != t) {
+      if (null != t && !t.getScope().equals(SCOPE.PHINVADS)) {
         if (t.getDescription() != null) {
           t.setName(t.getDescription());
         }
@@ -891,10 +891,8 @@ public class Bootstrap implements InitializingBean {
 
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Segment", 1, true, true));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Flavor", 2, true, true));
-    messageColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Element Name", 3, true, true));
-    messageColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Cardinality", 4, true, false));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Element Name", 3, true, true));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 4, true, false));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true, false));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true, false));
 
@@ -905,8 +903,7 @@ public class Bootstrap implements InitializingBean {
         .add(new NameAndPositionAndPresence("Conformance Length", 2, false, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, false));
-    segmentColumnsDefaultList
-        .add(new NameAndPositionAndPresence("Cardinality", 5, true, false));
+    segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 5, true, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 6, false, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 7, true, false));
     segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 8, true, false));
