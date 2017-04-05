@@ -340,27 +340,21 @@
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="tbl-header">
-                                                                    <div ng-show="segment.coConstraintsTable.ifColumnDefinition">
-                                                                        <th bgcolor="#4caf50" style="text-align:center;">
-                                                                            <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='field'" class="label label-field label-icon">F</span>
-                                                                            <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='component'" class="label label-component label-icon">C</span>
-                                                                            <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
-                                                                            <span style="color:black">{{segment.name}}-{{segment.coConstraintsTable.ifColumnDefinition.path}}</span>
-                                                                            <span ng-show="segment.coConstraintsTable.ifColumnDefinition.constraintType=='value'" class="label label-icon">Value</span>
-                                                                            <span ng-show="segment.coConstraintsTable.ifColumnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
-                                                                            <span style="color:black" ng-click="openDialogForEditCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);"><i class="fa fa-pencil" aria-hidden="true"></i></span>
-                                                                        </th>
-                                                                    </div>
-                                                                    <div ng-show="!segment.coConstraintsTable.ifColumnDefinition">
-                                                                        <th bgcolor="#4caf50" style="text-align:center;">
-                                                                            Need IF Column Definition
-                                                                        </th>
-                                                                    </div>
-                                                                    <div ng-show="!segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length == 0">
-                                                                        <th bgcolor="#1565c0" style="text-align:center;">
-                                                                            Need THEN Column Definition
-                                                                        </th>
-                                                                    </div>
+                                                                    <th bgcolor="#4caf50" style="text-align:center;" ng-show="segment.coConstraintsTable.ifColumnDefinition">
+                                                                        <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='field'" class="label label-field label-icon">F</span>
+                                                                        <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='component'" class="label label-component label-icon">C</span>
+                                                                        <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
+                                                                        <span style="color:black">{{segment.name}}-{{segment.coConstraintsTable.ifColumnDefinition.path}}</span>
+                                                                        <span ng-show="segment.coConstraintsTable.ifColumnDefinition.constraintType=='value'" class="label label-icon">Value</span>
+                                                                        <span ng-show="segment.coConstraintsTable.ifColumnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
+                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                                    </th>
+                                                                    <th ng-show="!segment.coConstraintsTable.ifColumnDefinition" bgcolor="#4caf50" style="text-align:center;">
+                                                                        Need IF Column Definition
+                                                                    </th>
+                                                                    <th bgcolor="#1565c0" ng-show="!segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length == 0" style="text-align:center;">
+                                                                        Need THEN Column Definition
+                                                                    </th>
                                                                     <th bgcolor="#1565c0" style="text-align:center;" ng-repeat="columnDefinition in segment.coConstraintsTable.thenColumnDefinitionList">
                                                                         <span ng-show="columnDefinition.type=='field'" class="label label-field label-icon">F</span>
                                                                         <span ng-show="columnDefinition.type=='component'" class="label label-component label-icon">C</span>
@@ -395,6 +389,7 @@
                                                             </tr>
                                                             -->
                                                             </thead>
+                                                            {{segment.coConstraintsTable}}
                                                             <!--
                                                             <tbody>
                                                             <tr ng-repeat="columnData in segment.coConstraintsDefinition.columnDataIf" ng-init="rowIndex = $index">

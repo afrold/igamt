@@ -103,17 +103,16 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
         modalInstance.result.then(function(thenColumnDefinition) {
             if(thenColumnDefinition){
-                console.log(thenColumnDefinition);
-                if(!$rootScope.segment.thenColumnDefinitionList) {
-                    $rootScope.segment.thenColumnDefinitionList = [];
+                if(!$rootScope.segment.coConstraintsTable.thenColumnDefinitionList) {
+                    $rootScope.segment.coConstraintsTable.thenColumnDefinitionList = [];
                 }
 
                 if(!thenColumnDefinition.id){
                     thenColumnDefinition.id = new ObjectId().toString();
-                    $rootScope.segment.thenColumnDefinitionList.push(thenColumnDefinition);
+                    $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.push(thenColumnDefinition);
                 }else{
-                    for(var i in $rootScope.segment.thenColumnDefinitionList){
-                        if($rootScope.segment.thenColumnDefinitionList[i].id == thenColumnDefinition.id) $rootScope.segment.thenColumnDefinitionList[i] = thenColumnDefinition;
+                    for(var i in $rootScope.segment.coConstraintsTable.thenColumnDefinitionList){
+                        if($rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id == thenColumnDefinition.id) $rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i] = thenColumnDefinition;
                     }
                 }
             }
