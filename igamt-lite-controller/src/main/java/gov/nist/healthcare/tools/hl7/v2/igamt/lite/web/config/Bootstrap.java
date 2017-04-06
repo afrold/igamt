@@ -852,6 +852,12 @@ public class Bootstrap implements InitializingBean {
     defaultConfiguration.setDefaultType(true);
     defaultConfiguration.setAccountId(null);
     defaultConfiguration.setType(type);
+    defaultConfiguration.setIncludeMessageTable(true);
+    defaultConfiguration.setIncludeSegmentTable(true);
+    defaultConfiguration.setIncludeDatatypeTable(true);
+    defaultConfiguration.setIncludeValueSetsTable(true);
+    defaultConfiguration.setIncludeCompositeProfileTable(true);
+    defaultConfiguration.setIncludeProfileComponentTable(true);
     // Default Usages
     UsageConfig displayAll = new UsageConfig();
     UsageConfig displaySelectives = new UsageConfig();
