@@ -6,6 +6,7 @@ import java.util.List;
 public class CoConstraintTHENColumnData {
 	private ValueData valueData;
 	private List<ValueSetData> valueSets = new ArrayList<ValueSetData>();
+	private String datatypeId;
 
 	public CoConstraintTHENColumnData() {
 		super();
@@ -25,6 +26,14 @@ public class CoConstraintTHENColumnData {
 
 	public void setValueSets(List<ValueSetData> valueSets) {
 		this.valueSets = valueSets;
+	}
+
+	public String getDatatypeId() {
+		return datatypeId;
+	}
+
+	public void setDatatypeId(String datatypeId) {
+		this.datatypeId = datatypeId;
 	}
 
 }

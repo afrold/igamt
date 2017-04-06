@@ -701,9 +701,32 @@
     </div>
 </script>
 
+<script type="text/ng-template" id="CoConstraintUSERDefinition.html">
+    <div class="modal-header">
+        <h3>Define USER column for CoConstraintTable</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" novalidate>
+            <div layout-gt-xs="row">
+                <md-input-container class="md-block" style="width: 100%">
+                    <input ng-model="title" placeholder="Title">
+                </md-input-container>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
+            &nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+            &nbsp; </i>Save</span>
+        </button>
+    </div>
+</script>
+
 <script type="text/ng-template" id="CoConstraintTHENDefinition.html">
     <div class="modal-header">
-        <h3>Define THEN Definition for CoConstraintTable</h3>
+        <h3>Define THEN Column for CoConstraintTable</h3>
     </div>
     <div class="modal-body">
         <form class="form-horizontal" novalidate>
@@ -741,7 +764,7 @@
                     </select>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" ng-show="!isDMReference">
                 <div class="col-md-3">
                     Type:
                 </div>
@@ -753,6 +776,12 @@
                     </md-radio-group>
                 </div>
             </div>
+
+
+            <span class="header3" ng-show="isDMReference">
+                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                This is Dynamic Mapping Reference Field. Data cell requires DT base name and Flavor.
+            </span>
         </form>
     </div>
     <div class="modal-footer ">
@@ -767,7 +796,7 @@
 
 <script type="text/ng-template" id="CoConstraintIFDefinition.html">
     <div class="modal-header">
-        <h3>Define IF Definition for CoConstraintTable</h3>
+        <h3>Define IF Column for CoConstraintTable</h3>
     </div>
     <div class="modal-body">
         <form class="form-horizontal" novalidate>
@@ -878,151 +907,92 @@
 </script>
 
 <script type="text/ng-template" id="EditThenData.html">
-    <div class="modal-header ">
+    <div class="modal-header">
         <h3>Edit</h3>
     </div>
-    <div class="modal-body ">
-        <form class="form-horizontal " novalidate>
+    <div class="modal-body">
+        <form class="form-horizontal" novalidate>
             <div class="row ">
                 <div class="col-md-12">
-                    <span ng-show="data.type != 'dmr' && data.type != 'dmd'" class="pull-right">
-                        <select class="form-control" ng-model="data.type">
-                            <option value="value">Values</option>
-                            <option value="valueset">Value Sets</option>
-                        </select>
-                    </span>
-                    <div ng-show="data.type == 'value'">
-                        <table class="table table-striped table-condensed table-bordered">
-                            <thead>
-                            <tr class="tbl-header">
-                                <th class="col-md-1" style="text-align:center">#</th>
-                                <th class="col-md-10" style="text-align:center">Value</th>
-                                <th class="col-md-1" style="text-align:center">
-                                    <span ng-click="addValue();"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="v in data.values track by $index">
-                                <td class="col-md-1" style="text-align:center">
-                                    <span>{{$index + 1}}</span>
-                                </td>
-                                <td class="col-md-10">
-                                    <input class="form-control" type="text" ng-model="data.values[$index]"/>
-                                </td>
-                                <td class="col-md-1" style="text-align:center">
-                                    <span ng-click="deleteValue($index)"><i class="fa fa-times" aria-hidden="true"></i></span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div ng-show="data.type == 'valueset'">
-                        <table class="table table-striped table-condensed table-bordered">
-                            <thead>
-                            <tr class="tbl-header">
-                                <th class="col-md-1" style="text-align:center">#</th>
-                                <th class="col-md-4" style="text-align:center">Binding Identifier</th>
-                                <th class="col-md-4" style="text-align:center">Description</th>
-                                <th class="col-md-2" style="text-align:center">Binding Strength</th>
-                                <th class="col-md-1" style="text-align:center">
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="vs in data.valueSets">
-                                <td class="col-md-1" style="text-align:center">
-                                    <span>{{$index + 1}}</span>
-                                </td>
-                                <td class="col-md-4">
-                                    {{tablesMap[vs.tableId].bindingIdentifier}}
-                                </td>
-                                <td class="col-md-4">
-                                    {{tablesMap[vs.tableId].description}}
-                                </td>
-                                <td class="col-md-2">
-                                    <select ng-model='vs.bindingStrength' class="form-control">
-                                        <option value="R">Required</option>
-                                        <option value="S">Suggested</option>
-                                        <option value="U">Unspecified</option>
-                                    </select>
-                                </td>
-                                <td class="col-md-1" style="text-align:center">
-                                    <span ng-click="deleteValueSet($index);"><i class="fa fa-times" aria-hidden="true"></i></span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <table class="table table-striped table-condensed table-bordered">
+                        <thead>
+                        <tr class="tbl-header">
+                            <th class="col-md-1" style="text-align:center">#</th>
+                            <th class="col-md-4" style="text-align:center">Binding Identifier</th>
+                            <th class="col-md-4" style="text-align:center">Description</th>
+                            <th class="col-md-2" style="text-align:center">Binding Strength</th>
+                            <th class="col-md-1" style="text-align:center">
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="vs in data.valueSets">
+                            <td class="col-md-1" style="text-align:center">
+                                <span>{{$index + 1}}</span>
+                            </td>
+                            <td class="col-md-4">
+                                {{tablesMap[vs.tableId].bindingIdentifier}}
+                            </td>
+                            <td class="col-md-4">
+                                {{tablesMap[vs.tableId].description}}
+                            </td>
+                            <td class="col-md-2">
+                                <select ng-model='vs.bindingStrength' class="form-control">
+                                    <option value="R">Required</option>
+                                    <option value="S">Suggested</option>
+                                    <option value="U">Unspecified</option>
+                                </select>
+                            </td>
+                            <td class="col-md-1" style="text-align:center">
+                                <span ng-click="deleteValueSet($index);"><i class="fa fa-times" aria-hidden="true"></i></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
 
-                        <table st-safe-src="tables" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
-                            <thead>
-                            <tr class="tbl-header">
-                                <th st-sort="scope" class="col-md-1">Scope/Version</th>
-                                <th st-sort="bindingIdentifier" class="col-md-3">Binding Identifier</th>
-                                <th class="col-md-7">Description</th>
-                                <th class="col-md-1">Action</th>
-                            </tr>
-                            <tr>
-                                <th colspan="5">
-                                    <input st-search="bindingIdentifier" placeholder="search for BindingIdentifier" class="input-sm form-control" type="search"/>
-                                </th>
-                            </tr>
-                            </thead>
+                    <table st-safe-src="tables" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
+                        <thead>
+                        <tr class="tbl-header">
+                            <th st-sort="scope" class="col-md-1">Scope/Version</th>
+                            <th st-sort="bindingIdentifier" class="col-md-3">Binding Identifier</th>
+                            <th class="col-md-7">Description</th>
+                            <th class="col-md-1">Action</th>
+                        </tr>
+                        <tr>
+                            <th colspan="5">
+                                <input st-search="bindingIdentifier" placeholder="search for BindingIdentifier" class="input-sm form-control" type="search"/>
+                            </th>
+                        </tr>
+                        </thead>
 
-                            <tbody>
-                            <tr ng-repeat="v in displayCollection">
-                                <td class="col-md-1">
-                                    <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
-                                </td>
-                                <td class="col-md-3">
-                                    {{v.bindingIdentifier}}
-                                </td>
-                                <td class="col-md-7">
-                                    {{v.description}}
-                                </td>
-                                <td class="col-md-1" align="center">
-                                    <a ng-show="!isSelected(v)" ng-click="selectValueSet(v)" class="point">
-                                        <i class="icon-size-15 fa-circle-thin fa"></i>
-                                    </a>
-                                    <a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">
-                                        <i class="icon-size-15 fa-check-circle fa"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            </tbody>
-                            <tr style="float:center !important;" ng-if="tables.length > 10">
-                                <td colspan="5" class="text-center" style="float:center !important;">
-                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="10" style="float:center !important;"></div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div ng-show="data.type == 'dmr'">
-                        <div class="col-md-3">
-                            Value of OBX-2 (Dynamic Mapping Reference) :
-                        </div>
-                        <div class="col-md-3">
-                            <select ng-model='data.datatypeBaseName' class="form-control">
-                                <option ng-repeat="c in dynamicMappingTable.codes" value="{{c.value}}">
-                                    {{c.value}}({{c.label}})
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            OBX-5 Datatype Flavor :
-                        </div>
-                        <div class="col-md-3">
-                            <select ng-show="data.datatypeBaseName"
-                                    ng-model="data.datatypeId"
-                                    class="form-control"
-                                    ng-options="link.id as getDatatypeLabel(datatypesMap[link.id]) for link in igdocument.profile.datatypeLibrary.children | filter: {name: data.datatypeBaseName}" />
-                        </div>
-                    </div>
-
-                    <div ng-show="data.type == 'dmd'">
-                    </div>
+                        <tbody>
+                        <tr ng-repeat="v in displayCollection">
+                            <td class="col-md-1">
+                                <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
+                            </td>
+                            <td class="col-md-3">
+                                {{v.bindingIdentifier}}
+                            </td>
+                            <td class="col-md-7">
+                                {{v.description}}
+                            </td>
+                            <td class="col-md-1" align="center">
+                                <a ng-show="!isSelected(v)" ng-click="selectValueSet(v)" class="point">
+                                    <i class="icon-size-15 fa-circle-thin fa"></i>
+                                </a>
+                                <a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">
+                                    <i class="icon-size-15 fa-check-circle fa"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tr style="float:center !important;" ng-if="tables.length > 10">
+                            <td colspan="5" class="text-center" style="float:center !important;">
+                                <div st-pagination="" st-items-by-page="10" st-displayed-pages="10" style="float:center !important;"></div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </form>

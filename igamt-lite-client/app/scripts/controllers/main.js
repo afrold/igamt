@@ -4330,15 +4330,7 @@ angular.module('igl').controller('EditIFDataCtrl', function($scope, $rootScope, 
 });
 
 angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentId, currentIndex) {
-    $scope.data = angular.copy($rootScope.segment.coConstraintsDefinition.mapDataThen[currentId][currentIndex]);
-    $scope.deleteValue = function(index){
-        if (index >= 0) {
-            $scope.data.values.splice(index, 1);
-        }
-    };
-    $scope.addValue = function() {
-        $scope.data.values.push("");
-    };
+    $scope.data = angular.copy($rootScope.segment.coConstraintsTable.thenMapData[currentId][currentIndex]);
 
 
     $scope.isSelected = function (v){

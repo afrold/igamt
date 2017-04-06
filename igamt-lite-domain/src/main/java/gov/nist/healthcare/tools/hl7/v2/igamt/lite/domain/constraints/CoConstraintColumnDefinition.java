@@ -16,6 +16,8 @@ public class CoConstraintColumnDefinition {
 	private Usage usage;
 	private String dtId;
 	private boolean isPrimitive;
+	private boolean isDMReference;
+	private boolean isDMTarget;
 
 	public CoConstraintColumnDefinition() {
 		super();
@@ -91,6 +93,22 @@ public class CoConstraintColumnDefinition {
 
 	public void setConstraintType(String constraintType) {
 		this.constraintType = constraintType;
+	}
+
+	public boolean isDMReference() {
+		return isDMReference;
+	}
+
+	public void setDMReference(boolean isDMReference) {
+		this.isDMReference = isDMReference;
+	}
+
+	public boolean isDMTarget() {
+		return isDMTarget;
+	}
+
+	public void setDMTarget(boolean isDMTarget) {
+		this.isDMTarget = isDMTarget;
 	}
 
 }
