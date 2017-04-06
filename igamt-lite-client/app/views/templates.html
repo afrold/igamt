@@ -764,21 +764,25 @@
                     </select>
                 </div>
             </div>
-            <div class="row" ng-show="!isDMReference">
+            <div class="row" ng-show="!dMReference">
                 <div class="col-md-3">
                     Type:
                 </div>
 
                 <div class="col-md-9">
                     <md-radio-group ng-model="coConstraintType">
-                        <md-radio-button value="value" class="md-primary">Value</md-radio-button>
+                        <md-radio-button value="value" class="md-primary" ng-disabled="isVariesDT()">Value</md-radio-button>
                         <md-radio-button value="valueset">Value Set</md-radio-button>
                     </md-radio-group>
                 </div>
             </div>
 
+            <span class="header3" ng-show="isVariesDT()">
+                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                This Datatype is varies, so just 'Value Set' is allowed.
+            </span>
 
-            <span class="header3" ng-show="isDMReference">
+            <span class="header3" ng-show="dMReference">
                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
                 This is Dynamic Mapping Reference Field. Data cell requires DT base name and Flavor.
             </span>
@@ -846,6 +850,11 @@
                     </md-radio-group>
                 </div>
             </div>
+
+            <span class="header3">
+                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                The 'Value Set' is not allowed for IF Statement.
+            </span>
         </form>
     </div>
     <div class="modal-footer ">
@@ -908,7 +917,7 @@
 
 <script type="text/ng-template" id="EditThenData.html">
     <div class="modal-header">
-        <h3>Edit</h3>
+        <h3>Edit Value Set bindings for CoConstraint</h3>
     </div>
     <div class="modal-body">
         <form class="form-horizontal" novalidate>
@@ -918,9 +927,10 @@
                         <thead>
                         <tr class="tbl-header">
                             <th class="col-md-1" style="text-align:center">#</th>
-                            <th class="col-md-4" style="text-align:center">Binding Identifier</th>
-                            <th class="col-md-4" style="text-align:center">Description</th>
+                            <th class="col-md-3" style="text-align:center">Binding Identifier</th>
+                            <th class="col-md-3" style="text-align:center">Description</th>
                             <th class="col-md-2" style="text-align:center">Binding Strength</th>
+                            <th class="col-md-2" style="text-align:center">Binding Location</th>
                             <th class="col-md-1" style="text-align:center">
                             </th>
                         </tr>
@@ -930,10 +940,10 @@
                             <td class="col-md-1" style="text-align:center">
                                 <span>{{$index + 1}}</span>
                             </td>
-                            <td class="col-md-4">
+                            <td class="col-md-3">
                                 {{tablesMap[vs.tableId].bindingIdentifier}}
                             </td>
-                            <td class="col-md-4">
+                            <td class="col-md-3">
                                 {{tablesMap[vs.tableId].description}}
                             </td>
                             <td class="col-md-2">
@@ -941,6 +951,13 @@
                                     <option value="R">Required</option>
                                     <option value="S">Suggested</option>
                                     <option value="U">Unspecified</option>
+                                </select>
+                            </td>
+                            <td class="col-md-2">
+                                <select ng-show="listOfBindingLocations" ng-model='vs.bindingLocation' class="form-control">
+                                    <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">
+                                        {{bl}}
+                                    </option>
                                 </select>
                             </td>
                             <td class="col-md-1" style="text-align:center">

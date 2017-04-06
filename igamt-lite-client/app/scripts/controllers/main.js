@@ -4332,15 +4332,40 @@ angular.module('igl').controller('EditIFDataCtrl', function($scope, $rootScope, 
 angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentId, currentIndex) {
     $scope.data = angular.copy($rootScope.segment.coConstraintsTable.thenMapData[currentId][currentIndex]);
 
+    $scope.listOfBindingLocations = null;
+
+    $scope.findOptions = function(dtId) {
+        var result = [];
+        result.push('1');
+
+
+        if(!dtId) return result;
+
+        if(_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT){
+                return valueSetAllowedDT == $rootScope.datatypesMap[dtId].name;
+            })){
+            var hl7Version = $rootScope.datatypesMap[dtId].hl7Version;
+
+            var bls = $rootScope.config.bindingLocationListByHL7Version[hl7Version];
+
+            if(bls && bls.length > 0) return bls;
+        }
+
+        return result;
+    };
 
     $scope.isSelected = function (v){
-        for (var i = 0; i < $scope.data.valueSets.length; i++) {
-            if($scope.data.valueSets[i].tableId == v.id) return true;
+        if($scope.data && $scope.data.valueSets) {
+            for (var i = 0; i < $scope.data.valueSets.length; i++) {
+                if($scope.data.valueSets[i].tableId == v.id) return true;
+            }
         }
         return false;
     };
 
     $scope.selectValueSet = function (v){
+        if(!$scope.data) $scope.data = {};
+        if(!$scope.data.valueSets) $scope.data.valueSets = [];
         $scope.data.valueSets.push({ tableId: v.id, bindingStrength: "R"});
     };
 
@@ -4359,6 +4384,34 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
             $scope.data.valueSets.splice(index, 1);
         }
     };
+
+    $scope.columnDefinition = _.find($rootScope.segment.coConstraintsTable.thenColumnDefinitionList, function(columnDefinition){
+        return columnDefinition.id == currentId;
+    });
+
+    if($scope.columnDefinition){
+        var dtId = $scope.columnDefinition.dtId;
+
+        if($rootScope.datatypesMap[dtId].name.toLowerCase() == 'varies'){
+            var referenceColumnDefinition = _.find($rootScope.segment.coConstraintsTable.thenColumnDefinitionList, function(columnDefinition){
+                return columnDefinition.dMReference;
+            });
+
+            if(referenceColumnDefinition){
+                dtId  = $rootScope.segment.coConstraintsTable.thenMapData[referenceColumnDefinition.id][currentIndex].datatypeId;
+            }
+
+            $scope.listOfBindingLocations =  $scope.findOptions(dtId);
+        }else {
+            if(!$scope.columnDefinition.primitive) {
+                $scope.listOfBindingLocations =  $scope.findOptions(dtId);
+            }else {
+                $scope.listOfBindingLocations = null;
+            }
+        }
+    }else {
+        $scope.listOfBindingLocations = null;
+    }
 
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');

@@ -70,6 +70,111 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
     };
 
+    $scope.cloneCoConstraintRow = function (rowIndex){
+        if($rootScope.segment.coConstraintsTable.ifColumnDefinition){
+            if($rootScope.segment.coConstraintsTable.ifColumnData){
+                $rootScope.segment.coConstraintsTable.ifColumnData.push(angular.copy($rootScope.segment.coConstraintsTable.ifColumnData[rowIndex]));
+            }
+        }
+
+        if($rootScope.segment.coConstraintsTable.thenColumnDefinitionList && $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.length > 0){
+            if($rootScope.segment.coConstraintsTable.thenMapData){
+                for(var i in $rootScope.segment.coConstraintsTable.thenColumnDefinitionList){
+                    if($rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id]){
+                        $rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id].push(angular.copy($rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id][rowIndex]));
+                    }
+                }
+            }
+        }
+
+        if($rootScope.segment.coConstraintsTable.userColumnDefinitionList && $rootScope.segment.coConstraintsTable.userColumnDefinitionList.length > 0){
+            if($rootScope.segment.coConstraintsTable.userMapData){
+                for(var i in $rootScope.segment.coConstraintsTable.userColumnDefinitionList){
+                    if($rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id]){
+                        $rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id].push(angular.copy($rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id][rowIndex]));
+                    }
+                }
+            }
+        }
+
+        $rootScope.segment.coConstraintsTable.rowSize = $rootScope.segment.coConstraintsTable.rowSize + 1;
+
+        $scope.setDirty();
+    };
+
+
+    $scope.delCoConstraintRow = function (rowIndex){
+        if($rootScope.segment.coConstraintsTable.ifColumnDefinition){
+            $rootScope.segment.coConstraintsTable.ifColumnData.splice(rowIndex, 1);
+        }
+
+        if($rootScope.segment.coConstraintsTable.thenColumnDefinitionList && $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.length > 0){
+            if($rootScope.segment.coConstraintsTable.thenMapData){
+                for(var i in $rootScope.segment.coConstraintsTable.thenColumnDefinitionList){
+                    if($rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id]){
+                        $rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id].splice(rowIndex, 1);
+                    }
+                }
+            }
+        }
+
+        if($rootScope.segment.coConstraintsTable.userColumnDefinitionList && $rootScope.segment.coConstraintsTable.userColumnDefinitionList.length > 0){
+            if($rootScope.segment.coConstraintsTable.userMapData){
+                for(var i in $rootScope.segment.coConstraintsTable.userColumnDefinitionList){
+                    if($rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id]){
+                        $rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id].splice(rowIndex, 1);
+                    }
+                }
+            }
+        }
+
+        $rootScope.segment.coConstraintsTable.rowSize = $rootScope.segment.coConstraintsTable.rowSize - 1;
+
+        $scope.setDirty();
+    };
+
+
+    $scope.delCoConstraintIFDefinition = function (ifColumnDefinition){
+        $rootScope.segment.coConstraintsTable.ifColumnDefinition = null;
+        $rootScope.segment.coConstraintsTable.ifColumnData = [];
+
+        $scope.resetCoConstraintsTable();
+        $scope.setDirty();
+    };
+
+    $scope.delCoConstraintTHENDefinition = function (columnDefinition) {
+        var index = $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.indexOf(columnDefinition);
+
+        if (index > -1) {
+            $rootScope.segment.coConstraintsTable.thenMapData[columnDefinition.id] = null;
+            $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.splice(index, 1);
+        };
+
+        $scope.resetCoConstraintsTable();
+        $scope.setDirty();
+    };
+
+    $scope.delCoConstraintUSERDefinition = function (columnDefinition) {
+        var index = $rootScope.segment.coConstraintsTable.userColumnDefinitionList.indexOf(columnDefinition);
+
+        if (index > -1) {
+            $rootScope.segment.coConstraintsTable.userMapData[columnDefinition.id] = null;
+            $rootScope.segment.coConstraintsTable.userColumnDefinitionList.splice(index, 1);
+        };
+
+        $scope.resetCoConstraintsTable();
+        $scope.setDirty();
+    };
+
+    $scope.resetCoConstraintsTable = function (){
+        if(!$rootScope.segment.coConstraintsTable.ifColumnDefinition){
+            if(!$rootScope.segment.coConstraintsTable.thenColumnDefinitionList || $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.length == 0){
+                if(!$rootScope.segment.coConstraintsTable.userColumnDefinitionList || $rootScope.segment.coConstraintsTable.userColumnDefinitionList.length == 0){
+                    $rootScope.segment.coConstraintsTable = {};
+                }
+            }
+        }
+    };
 
     $scope.openDialogForEditCoConstraintIFDefinition = function(coConstraintIFDefinition){
         var modalInstance = $modal.open({
@@ -84,6 +189,18 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
         modalInstance.result.then(function(ifColumnDefinition) {
             if(ifColumnDefinition){
+                if(!$rootScope.segment.coConstraintsTable) {
+                    $rootScope.segment.coConstraintsTable = {};
+                    $rootScope.segment.coConstraintsTable.rowSize = 0;
+                }
+
+                if(!$rootScope.segment.coConstraintsTable.ifColumnDefinition) {
+                    $rootScope.segment.coConstraintsTable.ifColumnData = [];
+                    for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.rowSize; i < len1; i++) {
+                        $rootScope.segment.coConstraintsTable.ifColumnData.push({});
+                    }
+                }
+
                 $rootScope.segment.coConstraintsTable.ifColumnDefinition = ifColumnDefinition;
             }
             $scope.setDirty();
@@ -103,13 +220,24 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
         modalInstance.result.then(function(thenColumnDefinition) {
             if(thenColumnDefinition){
+                if(!$rootScope.segment.coConstraintsTable) {
+                    $rootScope.segment.coConstraintsTable = {};
+                    $rootScope.segment.coConstraintsTable.rowSize = 0;
+                }
+
                 if(!$rootScope.segment.coConstraintsTable.thenColumnDefinitionList) {
                     $rootScope.segment.coConstraintsTable.thenColumnDefinitionList = [];
+                    $rootScope.segment.coConstraintsTable.thenMapData = {};
                 }
 
                 if(!thenColumnDefinition.id){
                     thenColumnDefinition.id = new ObjectId().toString();
                     $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.push(thenColumnDefinition);
+                    $rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id] = [];
+
+                    for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.rowSize; i < len1; i++) {
+                        $rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id].push({});
+                    }
                 }else{
                     for(var i in $rootScope.segment.coConstraintsTable.thenColumnDefinitionList){
                         if($rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id == thenColumnDefinition.id) {
@@ -135,16 +263,30 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
         modalInstance.result.then(function(userColumnDefinition) {
             if(userColumnDefinition){
+                if(!$rootScope.segment.coConstraintsTable) {
+                    $rootScope.segment.coConstraintsTable = {};
+                    $rootScope.segment.coConstraintsTable.rowSize = 0;
+                }
+
                 if(!$rootScope.segment.coConstraintsTable.userColumnDefinitionList) {
                     $rootScope.segment.coConstraintsTable.userColumnDefinitionList = [];
+                    $rootScope.segment.coConstraintsTable.userMapData = {};
                 }
 
                 if(!userColumnDefinition.id){
                     userColumnDefinition.id = new ObjectId().toString();
                     $rootScope.segment.coConstraintsTable.userColumnDefinitionList.push(userColumnDefinition);
+
+                    $rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id] = [];
+
+                    for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.rowSize; i < len1; i++) {
+                        $rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id].push({});
+                    }
                 }else{
                     for(var i in $rootScope.segment.coConstraintsTable.userColumnDefinitionList){
-                        if($rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id == userColumnDefinition.id) $rootScope.segment.coConstraintsTable.userColumnDefinitionList[i] = userColumnDefinition;
+                        if($rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id == userColumnDefinition.id) {
+                            $rootScope.segment.coConstraintsTable.userColumnDefinitionList[i] = userColumnDefinition;
+                        }
                     }
                 }
             }
@@ -559,43 +701,53 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.addCoConstraintRow = function() {
-        var newIFData = {};
-        newIFData.valueData = {};
-        newIFData.bindingLocation = null;
-
+        var isAdded = false;
         if(!$rootScope.segment.coConstraintsTable.ifColumnData) $rootScope.segment.coConstraintsTable.ifColumnData = [];
         if(!$rootScope.segment.coConstraintsTable.thenMapData) $rootScope.segment.coConstraintsTable.thenMapData = {};
         if(!$rootScope.segment.coConstraintsTable.userMapData) $rootScope.segment.coConstraintsTable.userMapData = {};
 
-        $rootScope.segment.coConstraintsTable.ifColumnData.push(newIFData);
+        if($rootScope.segment.coConstraintsTable.ifColumnDefinition){
+            var newIFData = {};
+            newIFData.valueData = {};
+            newIFData.bindingLocation = null;
 
-        for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.length; i < len1; i++) {
-            var thenColumnDefinition = $rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i];
+            $rootScope.segment.coConstraintsTable.ifColumnData.push(newIFData);
+            isAdded = true;
+        }
 
-            var newTHENData = {};
-            newTHENData.valueData = {};
-            newTHENData.valueSets = [];
+        if($rootScope.segment.coConstraintsTable.thenColumnDefinitionList){
+            for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.thenColumnDefinitionList.length; i < len1; i++) {
+                var thenColumnDefinition = $rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i];
 
-            if(!$rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id]) $rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id] = [];
+                var newTHENData = {};
+                newTHENData.valueData = {};
+                newTHENData.valueSets = [];
 
-            $rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id].push(newTHENData);
-        };
+                if(!$rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id]) $rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id] = [];
 
-        for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.userColumnDefinitionList.length; i < len1; i++) {
-            var userColumnDefinition = $rootScope.segment.coConstraintsTable.userColumnDefinitionList[i];
+                $rootScope.segment.coConstraintsTable.thenMapData[thenColumnDefinition.id].push(newTHENData);
+                isAdded = true;
+            };
+        }
 
-            var newUSERData = {};
-            newUSERData.text = "";
+        if($rootScope.segment.coConstraintsTable.userColumnDefinitionList){
+            for (var i = 0, len1 = $rootScope.segment.coConstraintsTable.userColumnDefinitionList.length; i < len1; i++) {
+                var userColumnDefinition = $rootScope.segment.coConstraintsTable.userColumnDefinitionList[i];
 
-            if(!$rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id]) $rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id] = [];
+                var newUSERData = {};
+                newUSERData.text = "";
 
-            $rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id].push(newUSERData);
-        };
+                if(!$rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id]) $rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id] = [];
 
-        $rootScope.segment.coConstraintsTable.rowSize = $rootScope.segment.coConstraintsTable.rowSize + 1;
+                $rootScope.segment.coConstraintsTable.userMapData[userColumnDefinition.id].push(newUSERData);
+                isAdded = true;
+            };
+        }
 
-        console.log($rootScope.segment.coConstraintsTable);
-        $scope.setDirty();
+        if(isAdded) {
+            $rootScope.segment.coConstraintsTable.rowSize = $rootScope.segment.coConstraintsTable.rowSize + 1;
+            $scope.setDirty();
+        }
     };
 
     $scope.deleteColumn = function(column) {
@@ -630,6 +782,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     $scope.deleteCoConstraints = function() {
         $rootScope.segment.coConstraintsTable = {};
+        $rootScope.segment.coConstraintsTable.rowSize = 0;
         $scope.setDirty();
     };
 
@@ -1501,16 +1654,16 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
     $scope.selectedSubComponentPosition = null;
     $scope.components = null;
     $scope.subComponents = null;
-    $scope.isPrimitive = true;
-    $scope.isDMReference = false;
+    $scope.primitive = true;
+    $scope.dMReference = false;
 
     $scope.targetNode = null;
 
 
     if($scope.selectedCoConstraintTHENDefinition){
-        $scope.isPrimitive = $scope.selectedCoConstraintTHENDefinition.isPrimitive;
+        $scope.primitive = $scope.selectedCoConstraintTHENDefinition.primitive;
         $scope.coConstraintType = $scope.selectedCoConstraintTHENDefinition.constraintType;
-        $scope.isDMReference = $scope.selectedCoConstraintTHENDefinition.isDMReference;
+        $scope.isDMReference = $scope.selectedCoConstraintTHENDefinition.dMReference;
         var splitLocation = $scope.selectedCoConstraintTHENDefinition.path.split('.');
         if(splitLocation.length > 0){
             $scope.selectedFieldPosition = splitLocation[0];
@@ -1546,13 +1699,24 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
         }
     };
 
+    $scope.isVariesDT = function (){
+        if($scope.targetNode) {
+            if($rootScope.datatypesMap[$scope.targetNode.datatype.id].name.toLowerCase() == 'varies') {
+                $scope.coConstraintType = 'valueset';
+                return true;
+            }
+        }
+
+        return false;
+    };
+
     $scope.updateField = function(){
         $scope.selectedComponentPosition = null;
         $scope.selectedSubComponentPosition = null;
         $scope.components = null;
         $scope.subComponents = null;
-        $scope.isPrimitive = true;
-        $scope.isDMReference = false;
+        $scope.primitive = true;
+        $scope.dMReference = false;
 
         var field = _.find($rootScope.segment.fields, function(f) {
             return f.position == $scope.selectedFieldPosition;
@@ -1587,13 +1751,13 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
                 }
 
                 if($scope.selectedFieldPosition == mappingStructure.referenceLocation){
-                    $scope.isDMReference = true;
+                    $scope.dMReference = true;
                 }
             }
         }
 
         if(field && $rootScope.datatypesMap[field.datatype.id].components.length > 0){
-            $scope.isPrimitive = false;
+            $scope.primitive = false;
             $scope.components = $rootScope.datatypesMap[field.datatype.id].components;
         }
     };
@@ -1601,8 +1765,8 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
     $scope.updateComponent = function(){
         $scope.selectedSubComponentPosition = null;
         $scope.subComponents = null;
-        $scope.isPrimitive = true;
-        $scope.isDMReference = false;
+        $scope.primitive = true;
+        $scope.dMReference = false;
 
         var component =  _.find($scope.components, function(c) {
             return c.position == $scope.selectedComponentPosition;
@@ -1610,14 +1774,14 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
 
         $scope.targetNode = component;
         if(component && $rootScope.datatypesMap[component.datatype.id].components.length > 0){
-            $scope.isPrimitive = false;
+            $scope.primitive = false;
             $scope.subComponents = $rootScope.datatypesMap[component.datatype.id].components;
         }
     };
 
     $scope.updateSubComponent = function(){
-        $scope.isPrimitive = true;
-        $scope.isDMReference = false;
+        $scope.primitive = true;
+        $scope.dMReference = false;
         var subComponent =  _.find($scope.subComponents, function(sc) {
             return sc.position == $scope.selectedSubComponentPosition;
         });
@@ -1638,10 +1802,10 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
         thenColumnDefinition.name = $scope.targetNode.name;
         thenColumnDefinition.usage = $scope.targetNode.usage;
         thenColumnDefinition.dtId = $scope.targetNode.datatype.id;
-        thenColumnDefinition.isPrimitive = $scope.isPrimitive;
-        thenColumnDefinition.isDMReference = $scope.isDMReference;
+        thenColumnDefinition.primitive = $scope.primitive;
+        thenColumnDefinition.dMReference = $scope.dMReference;
 
-        if(thenColumnDefinition.isDMReference) {
+        if(thenColumnDefinition.dMReference) {
             thenColumnDefinition.constraintType = 'dmr';
         }
 
@@ -1676,13 +1840,13 @@ angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope
     $scope.selectedSubComponentPosition = null;
     $scope.components = null;
     $scope.subComponents = null;
-    $scope.isPrimitive = true;
+    $scope.primitive = true;
 
     $scope.targetNode = null;
 
 
     if($scope.selectedCoConstraintIFDefinition){
-        $scope.isPrimitive = $scope.selectedCoConstraintIFDefinition.isPrimitive;
+        $scope.primitive = $scope.selectedCoConstraintIFDefinition.primitive;
         $scope.coConstraintType = $scope.selectedCoConstraintIFDefinition.constraintType;
         var splitLocation = $scope.selectedCoConstraintIFDefinition.path.split('.');
         if(splitLocation.length > 0){
@@ -1726,7 +1890,7 @@ angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope
         $scope.selectedSubComponentPosition = null;
         $scope.components = null;
         $scope.subComponents = null;
-        $scope.isPrimitive = true;
+        $scope.primitive = true;
 
         var field = _.find($rootScope.segment.fields, function(f) {
             return f.position == $scope.selectedFieldPosition;
@@ -1735,7 +1899,7 @@ angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope
         $scope.targetNode = field;
 
         if(field && $rootScope.datatypesMap[field.datatype.id].components.length > 0){
-            $scope.isPrimitive = false;
+            $scope.primitive = false;
             $scope.components = $rootScope.datatypesMap[field.datatype.id].components;
         }
     };
@@ -1743,7 +1907,7 @@ angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope
     $scope.updateComponent = function(){
         $scope.selectedSubComponentPosition = null;
         $scope.subComponents = null;
-        $scope.isPrimitive = true;
+        $scope.primitive = true;
 
         var component =  _.find($scope.components, function(c) {
             return c.position == $scope.selectedComponentPosition;
@@ -1751,13 +1915,13 @@ angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope
 
         $scope.targetNode = component;
         if(component && $rootScope.datatypesMap[component.datatype.id].components.length > 0){
-            $scope.isPrimitive = false;
+            $scope.primitive = false;
             $scope.subComponents = $rootScope.datatypesMap[component.datatype.id].components;
         }
     };
 
     $scope.updateSubComponent = function(){
-        $scope.isPrimitive = true;
+        $scope.primitive = true;
         var subComponent =  _.find($scope.subComponents, function(sc) {
             return sc.position == $scope.selectedSubComponentPosition;
         });
@@ -1775,7 +1939,7 @@ angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope
         ifColumnDefinition.name = $scope.targetNode.name;
         ifColumnDefinition.usage = $scope.targetNode.usage;
         ifColumnDefinition.dtId = $scope.targetNode.datatype.id;
-        ifColumnDefinition.isPrimitive = $scope.isPrimitive;
+        ifColumnDefinition.primitive = $scope.primitive;
 
         if($scope.selectedFieldPosition){
             ifColumnDefinition.path = "" + $scope.selectedFieldPosition;

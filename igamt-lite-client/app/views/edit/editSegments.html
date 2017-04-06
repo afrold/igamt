@@ -325,23 +325,23 @@
                                                             <thead>
                                                                 <tr ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" class="tbl-header">
                                                                     <th ng-show="!segment.coConstraintsTable.ifColumnDefinition" bgcolor="#4caf50" style="text-align:center;">
-                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintIFDefinition();"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintIFDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add IF Column</span>
                                                                     </th>
-                                                                    <th ng-show="segment.coConstraintsTable.ifColumnDefinition" bgcolor="white" style="text-align:center;">
+                                                                    <th ng-show="segment.coConstraintsTable.ifColumnDefinition" bgcolor="white" style="text-align:center;border:0;">
                                                                     </th>
                                                                     <th ng-show="!segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length == 0" bgcolor="#1565c0" style="text-align:center;">
-                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                                        <span style="color:white" ng-click="openDialogForEditCoConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add THEN Column</span>
                                                                     </th>
                                                                     <th ng-show="segment.coConstraintsTable.thenColumnDefinitionList && segment.coConstraintsTable.thenColumnDefinitionList.length > 0" colspan="{{segment.coConstraintsTable.thenColumnDefinitionList.length}}" bgcolor="#1565c0" style="text-align:center;">
-                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                                        <span style="color:white" ng-click="openDialogForEditCoConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add THEN Column</span>
                                                                     </th>
                                                                     <th ng-show="!segment.coConstraintsTable.userColumnDefinitionList || segment.coConstraintsTable.userColumnDefinitionList.length == 0" bgcolor="#efefef" style="text-align:center;">
-                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintUSERDefinition();"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintUSERDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add USER Column</span>
                                                                     </th>
                                                                     <th ng-show="segment.coConstraintsTable.userColumnDefinitionList && segment.coConstraintsTable.userColumnDefinitionList.length > 0" colspan="{{segment.coConstraintsTable.userColumnDefinitionList.length}}" bgcolor="#efefef" style="text-align:center;">
-                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintUSERDefinition();"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintUSERDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add USER Column<</span>
                                                                     </th>
-                                                                    <th bgcolor="white" style="text-align:center;">
+                                                                    <th bgcolor="white" style="text-align:center;border:0;">
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="tbl-header">
@@ -352,7 +352,8 @@
                                                                         <span style="color:black">{{segment.name}}-{{segment.coConstraintsTable.ifColumnDefinition.path}}</span>
                                                                         <span ng-show="segment.coConstraintsTable.ifColumnDefinition.constraintType=='value'" class="label label-icon">Value</span>
                                                                         <span ng-show="segment.coConstraintsTable.ifColumnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
-                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                                        <span style="color:red" ng-click="delCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-times" aria-hidden="true"></i></span>
                                                                     </th>
                                                                     <th ng-show="!segment.coConstraintsTable.ifColumnDefinition" bgcolor="#4caf50" style="text-align:center;">
                                                                         Need IF Column Definition
@@ -364,25 +365,26 @@
                                                                         <span style="color:black">{{segment.name}}-{{columnDefinition.path}}</span>
                                                                         <span ng-show="columnDefinition.constraintType=='value'" class="label label-icon">Value</span>
                                                                         <span ng-show="columnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
-                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintTHENDefinition(columnDefinition);"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintTHENDefinition(columnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                                        <span style="color:red" ng-click="delCoConstraintTHENDefinition(columnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-times" aria-hidden="true"></i></span>
                                                                     </th>
                                                                     <th bgcolor="#1565c0" ng-show="!segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length == 0" style="text-align:center;">
                                                                         Need THEN Column Definition
                                                                     </th>
                                                                     <th bgcolor="#efefef" style="text-align:center;" ng-repeat="columnDefinition in segment.coConstraintsTable.userColumnDefinitionList">
                                                                         <span style="color:black">{{columnDefinition.title}}</span>
-                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintUSERDefinition(columnDefinition);"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintUSERDefinition(columnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                                        <span style="color:red" ng-click="delCoConstraintUSERDefinition(columnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-times" aria-hidden="true"></i></span>
                                                                     </th>
                                                                     <th bgcolor="#efefef" ng-show="!segment.coConstraintsTable.userColumnDefinitionList || segment.coConstraintsTable.userColumnDefinitionList.length == 0" style="text-align:center;color:black;">
                                                                         Need USER Column Definition
                                                                     </th>
                                                                     <th bgcolor="#add8e6" style="text-align:center;">
-                                                                        <span style="color:black" ng-click="addCoConstraintRow();" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-plus" aria-hidden="true"></i></span>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr ng-repeat="n in [].constructor(segment.coConstraintsTable.rowSize) track by $index" ng-init="rowIndex = $index">
+                                                                <tr ng-show="segment.coConstraintsTable.rowSize > 0" ng-repeat="n in [].constructor(segment.coConstraintsTable.rowSize) track by $index" ng-init="rowIndex = $index">
                                                                     <td style="text-align:center;" ng-show="segment.coConstraintsTable.ifColumnDefinition">
                                                                         <span class="form-inline">
                                                                             <input class="form-control"
@@ -391,7 +393,7 @@
                                                                                    ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'"
                                                                                    ng-model="segment.coConstraintsTable.ifColumnData[rowIndex].valueData.value"/>
                                                                             <select ng-model='segment.coConstraintsTable.ifColumnData[rowIndex].valueData.bindingLocation'
-                                                                                ng-show="!segment.coConstraintsTable.ifColumnDefinition.isPrimitive"
+                                                                                ng-show="!segment.coConstraintsTable.ifColumnDefinition.primitive"
                                                                                 class="form-control"
                                                                                 style="width:27%"
                                                                                 ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'"
@@ -415,7 +417,7 @@
                                                                                    ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'"
                                                                                    ng-model="segment.coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.value"/>
                                                                                 <select ng-model='segment.coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.bindingLocation'
-                                                                                    ng-show="!columnDefinition.isPrimitive"
+                                                                                    ng-show="!columnDefinition.primitive"
                                                                                     class="form-control"
                                                                                     style="width:27%"
                                                                                     ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'"
@@ -469,64 +471,21 @@
                                                                     <td ng-show="!segment.coConstraintsTable.userColumnDefinitionList || segment.coConstraintsTable.userColumnDefinitionList.length == 0">
                                                                     </td>
 
-                                                                    <td></td>
+                                                                    <td style="text-align:center;">
+                                                                        <span style="color:blue" ng-click="cloneCoConstraintRow(rowIndex);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                                        <span style="color:red" ng-click="delCoConstraintRow(rowIndex);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                                                    </td>
                                                                 </tr>
                                                             </tbody>
-                                                            <!--
-                                                            <tbody>
-                                                            <tr ng-repeat="columnData in segment.coConstraintsDefinition.columnDataIf" ng-init="rowIndex = $index">
-                                                                <td style="text-align:center;">
-                                                                    <div ng-repeat="value in columnData.values track by $index">
-                                                                        <span class="badge label-white">
-                                                                            <span class="label label-message-icon label-icon">V</span>
-                                                                            <span>{{columnData.values[$index]}}</span>
-                                                                        </span>
-                                                                    </div>
-                                                                    <a class="point">
-                                                                        <span ng-click="openDialogForEditIFData(rowIndex)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
-                                                                    </a>
-                                                                </td>
-                                                                <td ng-repeat="constraint in segment.coConstraintsDefinition.thenConstraintList" style="text-align:center;">
-                                                                    <div ng-show="segment.coConstraintsDefinition.mapDataThen[constraint.id][rowIndex].type =='value'">
-                                                                        <div ng-repeat="value in segment.coConstraintsDefinition.mapDataThen[constraint.id][rowIndex].values track by $index">
-                                                                        <span class="badge label-white">
-                                                                            <span class="label label-message-icon label-icon">V</span>
-                                                                            <span>{{segment.coConstraintsDefinition.mapDataThen[constraint.id][rowIndex].values[$index]}}</span>
-                                                                        </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div ng-show="segment.coConstraintsDefinition.mapDataThen[constraint.id][rowIndex].type =='valueset'">
-                                                                        <div ng-repeat="vs in segment.coConstraintsDefinition.mapDataThen[constraint.id][rowIndex].valueSets">
-                                                                        <span class="badge label-white">
-                                                                            <span class="label label-sub-component-icon label-icon">VS</span>
-                                                                            <span>{{tablesMap[vs.tableId].bindingIdentifier}}</span>
-                                                                        </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div ng-show="segment.coConstraintsDefinition.mapDataThen[constraint.id][rowIndex].type =='dmr' && segment.coConstraintsDefinition.mapDataThen[constraint.id][rowIndex].datatypeBaseName">
-                                                                        <span class="badge label-white">
-                                                                            <span class="label label-message-icon label-icon">V</span>
-                                                                            <span>{{segment.coConstraintsDefinition.mapDataThen[constraint.id][rowIndex].datatypeBaseName}}</span>
-                                                                            <span>[as {{getDatatypeLabel(datatypesMap[segment.coConstraintsDefinition.mapDataThen[constraint.id][rowIndex].datatypeId])}}]</span>
-                                                                        </span>
-                                                                    </div>
-                                                                    <a class="point">
-                                                                        <span ng-click="openDialogForEditThenData(constraint.id, rowIndex)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
-                                                                    </a>
-
-                                                                </td>
-                                                                <td ng-repeat="textItem in segment.coConstraintsDefinition.listCoConstraintDesc" style="text-align:center;">
-                                                                    <span class="badge label-white">
-                                                                        <span title="segment.coConstraintsDefinition.mapDataDesc[textItem.id][rowIndex].text">
-                                                                            {{getTextAsTruncatedString(segment.coConstraintsDefinition.mapDataDesc[textItem.id][rowIndex].text, 10)}}
-                                                                        </span>
-                                                                        <span ng-click="openDialogForEditDescData(textItem.id, rowIndex)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
-                                                                    </span>
-                                                                </td>
-                                                                <td></td>
-                                                            </tr>
-                                                            </tbody>
-                                                            -->
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <td style="text-align:center;border:0;" colspan="100" >
+                                                                        <button class="btn btn-raised btn-primary btn-sm" ng-click="addCoConstraintRow();" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
+                                                                            <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add CoConstraint Row</span>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tfoot>
                                                         </table>
                                                     </div>
                                                 </div>
