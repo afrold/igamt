@@ -2815,6 +2815,12 @@ td[dnd-handle] {
 //   background-color: lightgray !important;
 //  list-style: none;
 // }
+
+.md-list-item.dndPlaceholder{
+    display: block;
+    background-color: black !important;
+    height: 120px !important;
+}
 .scrollit{
 	overflow-y:scroll;
 	height: 1px !important;
@@ -3006,9 +3012,36 @@ body.modal-open {
   }
 }
 
+.btn-group-raised .btn:not(.btn-link).active.btn-primary, .btn-group-raised .btn:not(.btn-link):active.btn-primary, .btn-group-raised .btn:not(.btn-link):focus.btn-primary, .btn-group-raised .btn:not(.btn-link):hover.btn-primary, .btn-group-raised .input-group-btn .btn:not(.btn-link).active.btn-primary, .btn-group-raised .input-group-btn .btn:not(.btn-link):active.btn-primary, .btn-group-raised .input-group-btn .btn:not(.btn-link):focus.btn-primary, .btn-group-raised .input-group-btn .btn:not(.btn-link):hover.btn-primary, .btn.btn-raised:not(.btn-link).active.btn-primary, .btn.btn-raised:not(.btn-link):active.btn-primary, .btn.btn-raised:not(.btn-link):focus.btn-primary, .btn.btn-raised:not(.btn-link):hover.btn-primary, .input-group-btn .btn.btn-raised:not(.btn-link).active.btn-primary, .input-group-btn .btn.btn-raised:not(.btn-link):active.btn-primary, .input-group-btn .btn.btn-raised:not(.btn-link):focus.btn-primary, .input-group-btn .btn.btn-raised:not(.btn-link):hover.btn-primary {
+    background-color: #3f51b5;
+}
 label.input-left {
     text-align: left;
     font-weight:bold;
     color:black;
     font-size: 14px;
+}
+md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
+    color: rgb(114, 127, 201) !important;
+    background: rgb(114, 127, 201) !important;
+}
+.panel-primary>.panel-heading {
+    color: #fff;
+    background-color: rgb(63,81,181) !important;
+    border-color: rgb(63,81,181) !important;
+}
+tr.tbl-header {
+    background-color:rgb(63,81,181);
+    background-color: rgb(63,81,181);
+    color: #fff;
+}
+.btn-primary{
+    background-color: rgb(63,81,181);
+}
+md-chips.md-default-theme .md-chips, md-chips .md-chips {
+    box-shadow: 0 0px rgba(0,0,0,0.12);
+}
+md-chips.md-default-theme md-chip, md-chips md-chip {
+    background: #999;;
+    color: rgba(255,255,255,0.87);
 }
