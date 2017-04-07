@@ -750,45 +750,10 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         }
     };
 
-    $scope.deleteColumn = function(column) {
-        var index = $rootScope.segment.coConstraints.columnList.indexOf(column);
-
-        if (index > -1) {
-            var columnPosition = $rootScope.segment.coConstraints.columnList[index].columnPosition;
-            $rootScope.segment.coConstraints.columnList.splice(index, 1);
-
-            for (var i = 0, len1 = $rootScope.segment.coConstraints.columnList.length; i < len1; i++) {
-                if ($rootScope.segment.coConstraints.columnList[i].columnPosition > columnPosition) {
-                    $rootScope.segment.coConstraints.columnList[i].columnPosition = $rootScope.segment.coConstraints.columnList[i].columnPosition - 1;
-                }
-            }
-
-            for (var i = 0, len1 = $rootScope.segment.coConstraints.constraints.length; i < len1; i++) {
-                $rootScope.segment.coConstraints.constraints[i].values.splice(columnPosition, 1);
-            };
-        }
-
-        $scope.setDirty();
-    };
-
-    $scope.deleteCoConstraint = function(cc) {
-        var index = $rootScope.segment.coConstraints.constraints.indexOf(cc);
-
-        if (index > -1) {
-            $rootScope.segment.coConstraints.constraints.splice(index, 1);
-        };
-        $scope.setDirty();
-    };
-
     $scope.deleteCoConstraints = function() {
         $rootScope.segment.coConstraintsTable = {};
         $rootScope.segment.coConstraintsTable.rowSize = 0;
         $scope.setDirty();
-    };
-
-    $scope.getConstraintType = function(data, cc) {
-        var index = cc.values.indexOf(data);
-        return $rootScope.segment.coConstraints.columnList[index].constraintType;
     };
 
     $scope.headerChanged = function() {
@@ -922,20 +887,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             }
         }, function() {
 
-        });
-    };
-
-    $scope.manageCoConstraint = function() {
-        var modalInstance = $modal.open({
-            templateUrl: 'CoConstraintCtrl.html',
-            controller: 'CoConstraintCtrl',
-            windowClass: 'app-modal-window',
-            resolve: {}
-        });
-        modalInstance.result.then(function(selectedCoConstraintsDefinition) {
-            $rootScope.segment.coConstraintsDefinition = selectedCoConstraintsDefinition;
-                $scope.setDirty();
-        }, function() {
         });
     };
 
@@ -1309,31 +1260,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
     };
 
-
-    $scope.openDialogForEditIFData = function(index) {
-        var modalInstance = $modal.open({
-            templateUrl: 'EditIFData.html',
-            controller: 'EditIFDataCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentIndex: function() {
-                    return index;
-                }
-
-            }
-        });
-
-        modalInstance.result.then(function(data) {
-            if(data){
-                $rootScope.segment.coConstraintsDefinition.columnDataIf[index].values = data;
-                $scope.setDirty();
-            }
-        });
-    };
-
     $scope.openDialogForEditValueSetThenMapData = function(id, index) {
         var modalInstance = $modal.open({
             templateUrl: 'EditThenData.html',
@@ -1356,33 +1282,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         modalInstance.result.then(function(value) {
             if(value){
                 $rootScope.segment.coConstraintsTable.thenMapData[id][index] = value;
-                $scope.setDirty();
-            }
-        });
-    };
-
-    $scope.openDialogForEditDescData = function(id, index) {
-        var modalInstance = $modal.open({
-            templateUrl: 'EditDescription.html',
-            controller: 'EditDecriptionCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentId: function() {
-                    return id;
-                },
-                currentIndex: function() {
-                    return index;
-                }
-
-            }
-        });
-
-        modalInstance.result.then(function(value) {
-            if(value){
-                $rootScope.segment.coConstraintsDefinition.mapDataDesc[id][index].text = value;
                 $scope.setDirty();
             }
         });
@@ -2360,187 +2259,6 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
     $scope.existingPredicate = $scope.findExistingPredicate();
 
 });
-
-angular.module('igl').controller('CoConstraintCtrl', function($scope, $modalInstance, $rootScope, $q) {
-    $scope.selectedCoConstraintsDefinition = angular.copy($rootScope.segment.coConstraintsDefinition);
-    $scope.dataContainer = null;
-
-    if(!$scope.selectedCoConstraintsDefinition){
-        $scope.selectedCoConstraintsDefinition = {};
-        $scope.selectedCoConstraintsDefinition.ifConstraint = null;
-        $scope.selectedCoConstraintsDefinition.thenConstraintList = [];
-        $scope.selectedCoConstraintsDefinition.listCoConstraintDesc = [];
-        $scope.selectedCoConstraintsDefinition.mapDataThen = {};
-        $scope.selectedCoConstraintsDefinition.mapDataDesc = {};
-        $scope.selectedCoConstraintsDefinition.rowSize = 0;
-
-    };
-
-    $scope.dropCallbackForTHEN = function(event, ui) {
-        console.log($scope.dataContainer);
-        var simpleConstraint = {};
-        simpleConstraint.targetName = $scope.dataContainer.name;
-        simpleConstraint.targetType = $scope.dataContainer.type;
-        if ($scope.dataContainer.pathInfoSet) {
-            var targetPath = '';
-            var targetConstraintPath = '';
-            for (var i in $scope.dataContainer.pathInfoSet) {
-                if (i > 0) {
-                    var pathInfo = $scope.dataContainer.pathInfoSet[i];
-                    targetPath = targetPath + "." + pathInfo.positionNumber;
-                    targetConstraintPath = targetConstraintPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
-
-                    if (i == $scope.dataContainer.pathInfoSet.length - 1) {
-                        targetConstraintPath = targetConstraintPath + " (" + pathInfo.nodeName + ")";
-                    }
-                }
-            }
-            simpleConstraint.targetPath = targetPath.substr(1);
-            simpleConstraint.targetConstraintPath = $rootScope.segment.name + '-' + targetConstraintPath.substr(1);
-            simpleConstraint.id = simpleConstraint.targetPath;
-
-            $scope.selectedCoConstraintsDefinition.thenConstraintList.push(simpleConstraint);
-            $scope.selectedCoConstraintsDefinition.mapDataThen[simpleConstraint.id] = [];
-
-            for (var i = 0; i < $scope.selectedCoConstraintsDefinition.rowSize; i++) {
-                $scope.selectedCoConstraintsDefinition.mapDataThen[simpleConstraint.id].push({});
-            }
-        }
-    };
-
-    $scope.dropCallbackForIF = function(event, ui) {
-        var simpleConstraint = {};
-        simpleConstraint.targetName = $scope.dataContainer.name;
-        simpleConstraint.targetType = $scope.dataContainer.type;
-
-        if ($scope.dataContainer.pathInfoSet) {
-            var targetPath = '';
-            var targetConstraintPath = '';
-            for (var i in $scope.dataContainer.pathInfoSet) {
-                if (i > 0) {
-                    var pathInfo = $scope.dataContainer.pathInfoSet[i];
-                    targetPath = targetPath + "." + pathInfo.positionNumber;
-                    targetConstraintPath = targetConstraintPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
-
-                    if (i == $scope.dataContainer.pathInfoSet.length - 1) {
-                        targetConstraintPath = targetConstraintPath + " (" + pathInfo.nodeName + ")";
-                    }
-                }
-            }
-            simpleConstraint.targetPath = targetPath.substr(1);
-            simpleConstraint.targetConstraintPath = $rootScope.segment.name + '-' + targetConstraintPath.substr(1);
-            simpleConstraint.id = simpleConstraint.targetPath;
-
-            $scope.selectedCoConstraintsDefinition.ifConstraint = simpleConstraint;
-            $scope.selectedCoConstraintsDefinition.columnDataIf = [];
-
-            for (var i = 0; i < $scope.selectedCoConstraintsDefinition.rowSize; i++) {
-                $scope.selectedCoConstraintsDefinition.columnDataIf.push({});
-            }
-        }
-    };
-
-    $scope.treeDataForContext = [];
-    $scope.treeDataForContext.push(angular.copy($rootScope.segment));
-    $scope.treeDataForContext[0].pathInfoSet = [];
-    $scope.generatePathInfo = function(current, positionNumber, locationName, instanceNumber, isInstanceNumberEditable, nodeName) {
-        var pathInfo = {};
-        pathInfo.positionNumber = positionNumber;
-        pathInfo.locationName = locationName;
-        pathInfo.nodeName = nodeName;
-        pathInfo.instanceNumber = instanceNumber;
-        pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
-        current.pathInfoSet.push(pathInfo);
-
-        if (current.type == 'segment') {
-            var seg = current;
-            for (var i in seg.fields) {
-                var f = seg.fields[i];
-                f.pathInfoSet = angular.copy(current.pathInfoSet);
-
-                var childPositionNumber = f.position;
-                var childLocationName = f.position;
-                var childNodeName = f.name;
-                var childInstanceNumber = "1";
-                var childisInstanceNumberEditable = false;
-                if (f.max != '1') {
-                    childInstanceNumber = '*';
-                    childisInstanceNumberEditable = true;
-                }
-                var child = angular.copy($rootScope.datatypesMap[f.datatype.id]);
-                child.id = new ObjectId().toString();
-                f.child = child;
-                $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
-            }
-        } else if (current.type == 'field' || current.type == 'component') {
-            var dt = current.child;
-            for (var i in dt.components) {
-                var c = dt.components[i];
-                c.pathInfoSet = angular.copy(current.pathInfoSet);
-                var childPositionNumber = c.position;
-                var childLocationName = c.position;
-                var childNodeName = c.name;
-                var childInstanceNumber = "1";
-                var childisInstanceNumberEditable = false;
-                var child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
-                child.id = new ObjectId().toString();
-                c.child = child;
-                $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
-            }
-        }
-    };
-
-    $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
-
-    $scope.toggleChildren = function(data) {
-        data.childrenVisible = !data.childrenVisible;
-        data.folderClass = data.childrenVisible ? "fa-minus" : "fa-plus";
-    };
-
-    $scope.deleteConstraintDefinitionForIF = function (constraint){
-        $scope.selectedCoConstraintsDefinition.ifConstraint = null;
-        $scope.selectedCoConstraintsDefinition.columnDataIf = [];
-    };
-
-    $scope.deleteConstraintDefinitionForTHEN = function (constraint){
-        $scope.selectedCoConstraintsDefinition.mapDataThen[constraint.id] = null;
-        var index = $scope.selectedCoConstraintsDefinition.thenConstraintList.indexOf(constraint);
-        if (index >= 0) {
-            $scope.selectedCoConstraintsDefinition.thenConstraintList.splice(index, 1);
-        }
-    };
-
-    $scope.deleteTextItem = function (textItem) {
-        $scope.selectedCoConstraintsDefinition.mapDataDesc[textItem.id] = null;
-        var index = $scope.selectedCoConstraintsDefinition.listCoConstraintDesc.indexOf(textItem);
-        if (index >= 0) {
-            $scope.selectedCoConstraintsDefinition.listCoConstraintDesc.splice(index, 1);
-        }
-    };
-
-    $scope.addTextItem = function(){
-        var newTestItem = {};
-        newTestItem.id = new ObjectId().toString();
-        newTestItem.title = 'New Title';
-
-        $scope.selectedCoConstraintsDefinition.listCoConstraintDesc.push(newTestItem);
-
-        $scope.selectedCoConstraintsDefinition.mapDataDesc[newTestItem.id] = [];
-
-        for (var i = 0; i < $scope.selectedCoConstraintsDefinition.rowSize; i++) {
-            $scope.selectedCoConstraintsDefinition.mapDataDesc[newTestItem.id].push({});
-        }
-    };
-
-    $scope.cancle = function() {
-        $modalInstance.dismiss('cancel');
-    };
-
-    $scope.saveclose = function() {
-        $modalInstance.close($scope.selectedCoConstraintsDefinition);
-    };
-});
-
 
 angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, $modalInstance, $rootScope, $q) {
     $scope.constraintType = 'Plain';
