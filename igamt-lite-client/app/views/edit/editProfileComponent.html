@@ -36,33 +36,24 @@
                                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> MetaData
                             </md-tab-label>
                             <md-tab-body>
+                                <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
 
-                                <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.name.$invalid}">
-                                        <label class="col-md-2 control-label">Name*</label>
-                                        <div class="controls col-md-10">
-                                            <textarea rows="1" class="form-control" type="text" name="name" ng-change="setDirty()" ng-model="profileComponent.name" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
-                                        <label class="col-md-2 control-label">Description</label>
-                                        <div class="controls col-md-10">
-                                            <textarea rows="1" class="form-control" type="text" name="description" ng-change="setDirty()" ng-model="profileComponent.description" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.comment.$invalid}">
-                                        <label class="col-md-2 control-label">Comment</label>
-                                        <div class="controls col-md-10">
-                                            <textarea rows="3" cols="20" ng-change="setDirty()" name="comment" id="comment" class="form-control" ng-model="profileComponent.comment" />
+                                    <md-content layout-padding>
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Name</label>
+                                            <input type="text" name="name" ng-change="setDirty()" ng-model="profileComponent.name" required>
 
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group">
-                                        <label class="col-md-2 control-label">Date Updated</label>
-                                        <div class="controls col-md-10">
-                                            <input class="form-control" type="text" name="dateUpdated" value="{{profileComponent.dateUpdated | date:'medium'}}" disabled>
-                                        </div>
-                                    </div>
+                                        </md-input-container>
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Description</label>
+                                            <input type="text" name="description" ng-change="setDirty()" ng-model="profileComponent.description">
+                                        </md-input-container>
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Comment</label>
+                                            <textarea rows="3" ng-change="setDirty()" name="comment" id="comment" ng-model="profileComponent.comment" />
+                                        </md-input-container>
+                                      
+                                    </md-content>
                                 </div>
                             </md-tab-body>
                         </md-tab>
@@ -80,7 +71,12 @@
                                             <li class="list-group-item">
                                                 <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span> From Segment
                                             </li>
-
+                                            <li class="list-group-item">
+                                                <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span> From Field's Data Type
+                                            </li>
+                                            <li class="list-group-item">
+                                                <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span> From Component's Data Type
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="col-md-12 ">
@@ -160,10 +156,19 @@
 
                                                     </td>
                                                     <td ng-class="{'col-md-2 col-fixed-80 select-change':node.attributes.usage,'col-md-2 col-fixed-80':!node.attributes.usage}">
-                                                        <select style="width:50px;" ng-init="initUsage(node)" name="usage" ng-change="setDirty();updateUsage(node);" class="form-control input-sm" ng-model="node.usage">
-                                                        <option ng-repeat="usage in config.usages">{{usage}}</option>
-                                                    </select>
-                                                        <a ng-show="node.attributes.usage" ng-click="cancelUsage(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                        <div ng-if="node.usage !== 'C'  || (node.usage === 'C' && !findingPredicates(node))">
+                                                            <select style="width:50px;" ng-init="initUsage(node)" name="usage" ng-change="setDirty();updateUsage(node);" class="form-control input-sm" ng-model="node.usage">
+                                                                <option ng-repeat="usage in config.usages">{{usage}}</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <span ng-if="findingPredicates(node)" class="badge label-white">
+                                                                <span>C({{findingPredicates(node).trueUsage}}/{{findingPredicates(node).falseUsage}})</span>
+                                                       
+                                                        </span>
+
+
+                                                        <a ng-show="node.attributes.usage && !findingPredicates(node)" ng-click="cancelUsage(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                     </td>
 
 
@@ -293,28 +298,44 @@
 
                                                         </div>
                                                     </td>
-                                                    <td ng-class="{'has-error': node.usage === 'C' && !findingPredicates(node), 'emptyCol':node.usage !== 'C'}">
+                                                    <td ng-class="{'has-error': node.usage === 'C' && !findingPredicates(node) , 'emptyCol':node.usage !== 'C','input-change':node.predicates.length>0}">
                                                         <div>
-                                                            
-                                                            <div ng-show="node.usage==='C' && !findingPredicates(node)">
-                                                                <a ng-click="openAddGlobalPredicateDialog(node)" class="point">
+
+                                                            <div ng-show="node.usage==='C' && !findingPredicates(node) && node.from==='message'">
+                                                                <a ng-click="openAddGlobalPredicateDialogMsg(node)" class="point">
                                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                                     <p class="warning">Need predicate</p>
                                                                 </a>
                                                             </div>
-                                                            <!--<div ng-show="countPredicate(node.path) !== 0 && node.obj.usage === 'C'">-->
-                                                            <div ng-show="node.usage==='C' && findingPredicates(node)">
-                                                                
+                                                            <div ng-show="node.usage==='C' && !findingPredicates(node) && node.from==='segment' && node.type==='field'">
+                                                                <a ng-click="openAddGlobalPredicateDialogSeg(node)" class="point">
+                                                                    <span><i class="fa fa-plus fa-fw"></i></span>
+                                                                    <p class="warning">Need predicate</p>
+                                                                </a>
+                                                            </div>
+
+                                                            <div ng-show="node.usage==='C' && findingPredicates(node) ">
+
                                                                 <span title="{{getPredicateAsString(findingPredicates(node))}}" class="badge label-white">
-                                                                <span ng-class="{'label-message-icon' : node.from == 'message', 'label-field-icon' : node.from == 'segment'}"><i class="fa fa-circle fa-fw"/></span>
-                                                                <span ng-click="openAddGlobalPredicateDialog(node)">{{getConstraintAsTruncatedString(findingPredicates(node), 15)}}</span>
-                                                                <span ng-click="openAddGlobalPredicateDialog(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
-                                                                <span ng-click="deletePredicateByPath(node.path, message)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                                                                    <span ng-class="{'label-message-icon' : findingPredicates(node).bindingFrom == 'message', 'label-field-icon' : findingPredicates(node).bindingFrom == 'segment','label-component-icon':findingPredicates(node).bindingFrom==='field','label-sub-component-icon' : findingPredicates(node).bindingFrom == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                                                                <span ng-show="findingPredicates(node).bindingFrom === 'message' && node.from==='message' " ng-click="openAddGlobalPredicateDialogMsg(node)">{{getConstraintAsTruncatedString(findingPredicates(node), 15)}}
+                                                                    <i class="fa fa-pencil fa-fw edit-icon"></i>
+                                                                </span>
+                                                                <span ng-show="(findingPredicates(node).bindingFrom === 'segment' && node.from==='segment' && node.type==='field') " ng-click="openAddGlobalPredicateDialogSeg(node)">{{getConstraintAsTruncatedString(findingPredicates(node), 15)}}
+                                                                    <i class="fa fa-pencil fa-fw edit-icon"></i>
+                                                                </span>
+                                                                <span ng-show="(node.from==='message' && (findingPredicates(node).bindingFrom !=='message')) || (node.from==='segment' && (findingPredicates(node).bindingFrom !=='segment'))">{{getConstraintAsTruncatedString(findingPredicates(node), 15)}}
+                                                                    
+                                                                </span>
+
+                                                                <!--<span ng-show="(findingPredicates(node).bindingFrom == 'message' && node.from==='message')||(findingPredicates(node).bindingFrom == 'segment' && node.from==='segment') " ng-click="openAddGlobalPredicateDialog(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>-->
+                                                                <span ng-show="((findingPredicates(node).bindingFrom == 'message' && node.from==='message')||(findingPredicates(node).bindingFrom == 'segment' && node.from==='segment')) &&  node.predicates.length>0" ng-click="cancelPredicate(node)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                                                                 </span>
                                                                 <div ng-show="countPredicate(node.path) > 1">
                                                                     <p class="warning">Multiple predicates</p>
                                                                 </div>
                                                             </div>
+
 
 
                                                         </div>
@@ -806,7 +827,7 @@
 
                                         <table id="SegProfileComponentTable" tt-table tt-params="SegProfileComponentParams" class="table table-striped table-borderless table-condensed hl7-versions-valueset table-fixed">
                                             <thead>
-                                                
+
 
                                             </thead>
                                             <tbody></tbody>

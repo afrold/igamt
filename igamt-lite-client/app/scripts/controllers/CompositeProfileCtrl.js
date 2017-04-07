@@ -365,4 +365,85 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         return result;
     };
 
+    $scope.findingPredicates = function(node) {
+
+        var result = null;
+        if (node && $rootScope.compositeProfile) {
+            result = _.find($rootScope.compositeProfile.predicates, function(binding) {
+                return binding.constraintTarget == node.path;
+            });
+            if (result) {
+                result.from = 'message';
+                return result;
+            }
+
+            if (node.segment) {
+                var parentSeg = $rootScope.compositeProfile.segmentsMap[node.segment];
+                var index = node.path.indexOf(".");
+                var pa = node.path.split(".");
+                if (node.type === "field") {
+                    var ind = 0;
+                    while (pa.length > 1) {
+                        pa.splice(0, 1);
+                    }
+                }
+
+                //var tempPath = node.path.substr(index + 1);
+                result = _.find(parentSeg.predicates, function(binding) {
+                    return binding.constraintTarget == pa.join(".");
+                });
+                if (result) {
+                    result.from = 'segment';
+                    return result;
+                }
+            }
+
+
+
+            if (node.fieldDT) {
+                var parentDT = $rootScope.compositeProfile.datatypesMap[node.fieldDT];
+                var pa = node.path.split(".");
+                if (node.type === "component") {
+                    var ind = 0;
+                    while (pa.length > 1) {
+                        pa.splice(0, 1);
+                    }
+                }
+
+                //var tempPath = node.path.substr(index + 1);
+                result = _.find(parentDT.predicates, function(binding) {
+                    return binding.constraintTarget == pa.join(".");
+                });
+                if (result) {
+                    result.from = 'field';
+                    return result;
+                }
+            }
+
+            if (node.componentDT) {
+                var parentDT = $rootScope.compositeProfile.datatypesMap[node.componentDT];
+                //var subPath = node.constraintTarget.substr(node.constraintTarget.split('.', 2).join('.').length + 1);
+                var pa = node.path.split(".");
+                if (node.type === "component") {
+                    var ind = 0;
+                    while (pa.length > 1) {
+                        pa.splice(0, 1);
+                    }
+                }
+
+                //var tempPath = node.path.substr(index + 1);
+                result = _.find(parentDT.predicates, function(binding) {
+                    return binding.constraintTarget == pa.join(".");
+                });
+                if (result) {
+                    result.from = 'component';
+                    return result;
+                }
+            }
+        }
+
+
+        return result;
+    }
+
 });

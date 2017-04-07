@@ -4,11 +4,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.editProfileComponent = false;
     $scope.edit = false;
     $scope.profileComponents = [];
-    $scope.accordStatus = {
-        isCustomHeaderOpen: false,
-        isFirstOpen: true,
-        isSecondOpen: false,
-        isFirstDisabled: false
+    $scope.tabStatus = {
+        active: 1
     };
     $scope.redirectVS = function(binding) {
 
@@ -52,6 +49,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             if (predicate) {
                 //$rootScope.message = message;
                 //$scope.findAllGlobalConstraints();
+                node.predicates = [];
                 node.predicates.push(predicate);
                 $scope.setDirty();
             }
@@ -64,17 +62,33 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             controller: 'PredicateSegmentCtrlInPc',
             windowClass: 'app-modal-window',
             resolve: {
-                selectedNode: function() {
+                node: function() {
                     return node;
                 }
             }
         });
-        modalInstance.result.then(function(segment) {
-            if (segment) {
-                $rootScope.segment.predicates = segment.predicates;
+        modalInstance.result.then(function(predicate) {
+            // if (segment) {
+            //     $rootScope.segment.predicates = segment.predicates;
+            //     $scope.setDirty();
+            // }
+            if (predicate) {
+                //$rootScope.message = message;
+                //$scope.findAllGlobalConstraints();
+                console.log("PREDICATE");
+                console.log(predicate);
+                node.predicates = [];
+                node.predicates.push(predicate);
                 $scope.setDirty();
             }
         }, function() {});
+    };
+    $scope.findingPredicatesFromDtContexts = function(node) {
+        var result = null;
+        if (node && node.type === 'component') {
+            console.log("----");
+            console.log(DatatypeService.getDatatypeLevelPredicates(node));
+        }
     };
     $scope.findingPredicates = function(node) {
         var result = null;
@@ -83,34 +97,83 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
             var index = node.path.indexOf(".");
             var path = node.path.substr(index + 1);
+
+
             if (!node.predicates || node.predicates.length <= 0) {
                 if (node.from === "message") {
+
                     result = _.find(node.oldPredicates, function(p) { return $rootScope.refinePath(p.constraintTarget) == path; });
                     if (result) {
                         result.bindingFrom = 'message';
+                        return result;
                     }
                 } else if (node.from === "segment") {
                     result = _.find(node.oldPredicates, function(p) { return $rootScope.refinePath(p.constraintTarget) == path; });
                     if (result) {
                         result.bindingFrom = 'segment';
+                        return result;
                     }
                 }
 
 
             } else {
                 if (node.from === "message") {
+
                     result = _.find(node.predicates, function(p) { return $rootScope.refinePath(p.constraintTarget) == path; });
                     if (result) {
                         result.bindingFrom = 'message';
+                        return result;
                     }
                 } else if (node.from === "segment") {
                     result = _.find(node.predicates, function(p) { return $rootScope.refinePath(p.constraintTarget) == path; });
                     if (result) {
                         result.bindingFrom = 'segment';
+                        return result;
                     }
                 }
 
             }
+            if (node.type === "component") {
+
+                if (node.source.fieldDt) {
+
+                    var pArray = path.split(".");
+                    var tempPath = pArray[pArray.length - 1];
+
+
+                    var temp = _.find($rootScope.datatypesMap[node.source.fieldDt].predicates, function(p) { return $rootScope.refinePath(p.constraintTarget) === tempPath; });
+                    if (temp) {
+                        result = temp;
+                        result.bindingFrom = 'field';
+                        return result;
+                    }
+                }
+                if (node.source.componentDt) {
+                    var pArray = path.split(".");
+                    var tempPath = pArray[pArray.length - 1];
+                    var temp = _.find($rootScope.datatypesMap[node.source.componentDt].predicates, function(p) { return $rootScope.refinePath(p.constraintTarget) == tempPath; });
+                    if (temp) {
+                        result = temp;
+                        result.bindingFrom = 'component';
+                        return result;
+                    }
+                }
+            }
+            if (node.type === "field") {
+                if (node.source.segmentId) {
+                    var pArray = path.split(".");
+                    var tempPath = pArray[pArray.length - 1];
+                    var temp = _.find($rootScope.segmentsMap[node.source.segmentId].predicates, function(p) { return $rootScope.refinePath(p.constraintTarget) === tempPath; });
+                    if (temp) {
+                        result = temp;
+                        result.bindingFrom = 'segment';
+                        return result;
+                    }
+                }
+
+            }
+
+
 
             if (result) {
                 return result;
@@ -498,6 +561,11 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
     $scope.cancelComments = function(node) {
         node.comments = null;
+        $scope.setDirty();
+
+    };
+    $scope.cancelPredicate = function(node) {
+        node.predicates = [];
         $scope.setDirty();
 
     };
@@ -1739,12 +1807,11 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
         //positionPath = positionPath + '.' + position;
     }
 
-    if (positionPath != '') positionPath = positionPath.substr(1);
+    //if (positionPath != '') positionPath = positionPath.substr(1);
     console.log("positionPath");
     console.log(positionPath);
-    console.log(node.sourceId);
 
-    $scope.selectedMessage = angular.copy($rootScope.messagesMap[node.sourceId]);
+    $scope.selectedMessage = angular.copy($rootScope.messagesMap[node.source.messageId]);
 
 
     $scope.selectedMessage.pathInfoSet = [];
@@ -2079,7 +2146,24 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
     $scope.findAllGlobalPredicates = function() {
         $scope.listGlobalPredicates = [];
         $scope.travelMessage($scope.selectedMessage, '');
+
     };
+    $scope.findExistingPredicate = function() {
+
+
+        if ($scope.selectedNode.predicates && $scope.selectedNode.predicates.length > 0) {
+
+            return $scope.selectedNode.predicates[0];
+
+        } else {
+
+            return $scope.selectedNode.oldPredicates[0];
+
+        }
+
+
+    };
+
 
     $scope.travelMessage = function(current, parrentPositionPath) {
         if (current.predicates && current.predicates.length > 0) {
@@ -2116,7 +2200,8 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
 
     $scope.initPredicate();
     $scope.initComplexPredicate();
-    $scope.findAllGlobalPredicates();
+    // $scope.findAllGlobalPredicates();
+    $scope.existingPredicate = $scope.findExistingPredicate();
     $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
 
 });
@@ -2145,10 +2230,13 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
         //positionPath = positionPath + '.' + position;
     }
 
-    if (positionPath != '') positionPath = positionPath.substr(1);
-
+    //if (positionPath != '') positionPath = positionPath.substr(1);
+    console.log(path);
+    console.log(positionPath);
 
     $scope.selectedNode = angular.copy(node);
+    $scope.selectedNode.locationPath = angular.copy($scope.selectedNode.path);
+    $scope.selectedNode.position = path;
     $scope.constraintType = 'Plain';
     $scope.constraints = [];
     $scope.firstConstraint = null;
@@ -2158,7 +2246,7 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
     $scope.changed = false;
     $scope.existingPredicate = null;
     $scope.tempPredicates = [];
-    $scope.selectedSegment = angular.copy($rootScope.segmentsMap[node.sourceId]);
+    $scope.selectedSegment = angular.copy($rootScope.segmentsMap[node.source.segmentId]);
     $scope.predicateData = null;
 
     $scope.treeDataForContext = [];
@@ -2312,7 +2400,7 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
             }
 
             $scope.newConstraint.position_1 = positionPath.substr(1);
-            $scope.newConstraint.location_1 = $rootScope.segment.name + '-' + locationPath.substr(1);
+            $scope.newConstraint.location_1 = $scope.selectedSegment.name + '-' + locationPath.substr(1);
         }
     };
 
@@ -2333,15 +2421,26 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
             }
 
             $scope.newConstraint.position_2 = positionPath.substr(1);
-            $scope.newConstraint.location_2 = $rootScope.segment.name + '-' + locationPath.substr(1);
+            $scope.newConstraint.location_2 = $scope.selectedSegment.name + '-' + locationPath.substr(1);
         }
     };
 
     $scope.findExistingPredicate = function() {
-        for (var i = 0, len1 = $scope.selectedSegment.predicates.length; i < len1; i++) {
-            if ($scope.selectedSegment.predicates[i].constraintTarget.indexOf($scope.selectedNode.position + '[') === 0)
-                return $scope.selectedSegment.predicates[i];
+        console.log("seg");
+        console.log($scope.selectedSegment);
+        console.log($scope.selectedNode);
+        if ($scope.selectedNode.predicates && $scope.selectedNode.predicates.length > 0) {
+            for (var i = 0, len1 = $scope.selectedNode.predicates.length; i < len1; i++) {
+                if ($scope.selectedNode.predicates[i].constraintTarget.indexOf($scope.selectedNode.position + '[') === 0)
+                    return $scope.selectedNode.predicates[i];
+            }
+        } else {
+            for (var i = 0, len1 = $scope.selectedNode.oldPredicates.length; i < len1; i++) {
+                if ($scope.selectedNode.oldPredicates[i].constraintTarget.indexOf($scope.selectedNode.position + '[') === 0)
+                    return $scope.selectedNode.oldPredicates[i];
+            }
         }
+
     };
 
     $scope.deletePredicate = function() {
@@ -2391,9 +2490,9 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
 
     $scope.saveclose = function() {
         $scope.deletePredicateByTarget();
-        $scope.selectedSegment.predicates.push($scope.existingPredicate);
-        $rootScope.recordChanged();
-        $modalInstance.close($scope.selectedSegment);
+        // $scope.selectedSegment.predicates.push($scope.existingPredicate);
+        // $rootScope.recordChanged();
+        $modalInstance.close($scope.existingPredicate);
     };
 
     $scope.initPredicate();

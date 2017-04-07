@@ -120,6 +120,7 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     compositeProfile.setChildren(coreMessage.getChildren());
     compositeProfile.setValueSetBindings(coreMessage.getValueSetBindings());
     compositeProfile.setSingleElementValues(coreMessage.getSingleElementValues());
+    compositeProfile.setPredicates(coreMessage.getPredicates());
     compositeProfile.setComments(coreMessage.getComments());
     browse(compositeProfile, pathGroups);
     compositeProfile.setSegmentsMap(queryService.getSegmentsMap());
