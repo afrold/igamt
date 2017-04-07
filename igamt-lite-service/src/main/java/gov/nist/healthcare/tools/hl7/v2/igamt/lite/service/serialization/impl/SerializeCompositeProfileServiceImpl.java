@@ -90,11 +90,13 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
 
     private Table findTableInProfile(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding,
         CompositeProfile compositeProfile) {
-        for(String currentId : compositeProfile.getTablesMap().keySet()){
-            if(currentId.equals(valueSetOrSingleCodeBinding.getId())){
-                return compositeProfile.getTablesMap().get(currentId);
-            }
-        }
+    	if(compositeProfile!=null && compositeProfile.getTablesMap() != null && !compositeProfile.getTablesMap().isEmpty()){
+	        for(String currentId : compositeProfile.getTablesMap().keySet()){
+	            if(currentId.equals(valueSetOrSingleCodeBinding.getId())){
+	                return compositeProfile.getTablesMap().get(currentId);
+	            }
+	        }
+    	}
         return null;
     }
 }
