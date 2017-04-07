@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
 import gov.cdc.vocab.service.bean.ValueSet;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDateTimeDatatype;
@@ -74,6 +75,12 @@ import java.util.Map;
             if (datatype != null) {
                 id = datatype.getId();
                 title = datatype.getLabel() + " - " + datatype.getDescription();
+            }
+            List<ConformanceStatement> allConformanceStatements = datatype.retrieveAllConformanceStatements();
+            for(ConformanceStatement conformanceStatement : allConformanceStatements){
+            	if(conformanceStatement!= null){
+            		datatype.getConformanceStatements().add(conformanceStatement);
+            	}
             }
             List<SerializableConstraint> constraintsList =
                 serializeConstraintService.serializeConstraints(datatype, datatype.getName());
