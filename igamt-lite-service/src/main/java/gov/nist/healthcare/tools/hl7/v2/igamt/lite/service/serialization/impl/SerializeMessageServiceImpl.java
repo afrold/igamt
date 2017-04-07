@@ -43,13 +43,19 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
     @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         String type = "ConformanceStatement";
-        List<ConformanceStatement> allConformanceStatements = message.retrieveAllConformanceStatements();
-        for(ConformanceStatement conformanceStatement : allConformanceStatements){
+        List<ConformanceStatement> generatedConformanceStatements = message.retrieveAllConformanceStatements();
+        ArrayList<ConformanceStatement> conformanceStatementsList = new ArrayList<>();
+        for(ConformanceStatement conformanceStatement : generatedConformanceStatements){
         	if(conformanceStatement!= null){
-        		message.getConformanceStatements().add(conformanceStatement);
+        		conformanceStatementsList.add(conformanceStatement);
         	}
         }
-        SerializableConstraints serializableConformanceStatements = serializeConstraints(message.getConformanceStatements(),message.getName(),message.getPosition(),type);
+        for(ConformanceStatement conformanceStatement : message.getConformanceStatements()){
+        	if(conformanceStatement!= null){
+        		conformanceStatementsList.add(conformanceStatement);
+        	}
+        }
+        SerializableConstraints serializableConformanceStatements = serializeConstraints(conformanceStatementsList,message.getName(),message.getPosition(),type);
         type = "ConditionPredicate";
         SerializableConstraints serializablePredicates = serializeConstraints(message.getPredicates(),message.getName(),message.getPosition(),type);
         int segmentSectionPosition = 1;

@@ -99,13 +99,19 @@ import java.util.Map;
                     defPostText = serializationUtil.cleanRichtext(segment.getText2());
                 }
             }
-
-            List<ConformanceStatement> allConformanceStatements = segment.retrieveAllConformanceStatements();
-            for(ConformanceStatement conformanceStatement : allConformanceStatements){
+            List<ConformanceStatement> generatedConformanceStatements = segment.retrieveAllConformanceStatements();
+            ArrayList<ConformanceStatement> conformanceStatementsList = new ArrayList<>();
+            for(ConformanceStatement conformanceStatement : generatedConformanceStatements){
             	if(conformanceStatement!= null){
-            		segment.getConformanceStatements().add(conformanceStatement);
+            		conformanceStatementsList.add(conformanceStatement);
             	}
             }
+            for(ConformanceStatement conformanceStatement : segment.getConformanceStatements()){
+            	if(conformanceStatement!= null){
+            		conformanceStatementsList.add(conformanceStatement);
+            	}
+            }
+            segment.setConformanceStatements(conformanceStatementsList);
             List<SerializableConstraint> constraints =
                 serializeConstraintService.serializeConstraints(segment, segment.getName() + "-");
             Map<Field, Datatype> fieldDatatypeMap = new HashMap<>();

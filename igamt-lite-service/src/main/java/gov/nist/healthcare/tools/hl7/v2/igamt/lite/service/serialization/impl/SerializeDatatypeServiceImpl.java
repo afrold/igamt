@@ -76,12 +76,19 @@ import java.util.Map;
                 id = datatype.getId();
                 title = datatype.getLabel() + " - " + datatype.getDescription();
             }
-            List<ConformanceStatement> allConformanceStatements = datatype.retrieveAllConformanceStatements();
-            for(ConformanceStatement conformanceStatement : allConformanceStatements){
+            List<ConformanceStatement> generatedConformanceStatements = datatype.retrieveAllConformanceStatements();
+            ArrayList<ConformanceStatement> conformanceStatementsList = new ArrayList<>();
+            for(ConformanceStatement conformanceStatement : generatedConformanceStatements){
             	if(conformanceStatement!= null){
-            		datatype.getConformanceStatements().add(conformanceStatement);
+            		conformanceStatementsList.add(conformanceStatement);
             	}
             }
+            for(ConformanceStatement conformanceStatement : datatype.getConformanceStatements()){
+            	if(conformanceStatement!= null){
+            		conformanceStatementsList.add(conformanceStatement);
+            	}
+            }
+            datatype.setConformanceStatements(conformanceStatementsList);
             List<SerializableConstraint> constraintsList =
                 serializeConstraintService.serializeConstraints(datatype, datatype.getName());
             String defPreText, defPostText, usageNote;
