@@ -9,8 +9,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "datatype-library")
-public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Serializable,
-    Cloneable {
+public class DatatypeLibrary extends TextbasedSectionModel
+    implements java.io.Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,9 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
   private Constant.SCOPE scope;
 
   public DatatypeLibrary() {
+
     super();
+    this.children = new HashSet<DatatypeLink>();
     type = Constant.DATATYPELIBRARY;
   }
 
@@ -149,6 +151,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
     return clonedDatatypes;
   }
 
+  @Override
   public DatatypeLibrary clone() throws CloneNotSupportedException {
     DatatypeLibrary clone = new DatatypeLibrary();
 

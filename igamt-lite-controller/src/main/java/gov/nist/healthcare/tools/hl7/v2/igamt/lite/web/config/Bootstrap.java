@@ -247,13 +247,14 @@ public class Bootstrap implements InitializingBean {
     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
     // createDefaultExportFonts();
-    // updateInitAndCreateBindingAndCommentsVSForDatatype();
-    // updateInitAndCreateBindingAndCommentsVSForSegment();
-    // updateInitAndCreateCommentsForMessage();
+//     updateInitAndCreateBindingAndCommentsVSForDatatype();
+//     updateInitAndCreateBindingAndCommentsVSForSegment();
+//     updateInitAndCreateCommentsForMessage();
     // fixUserDatatypesScope();
-    // updateDMofSegment();
-    // updateProfileForMissingDTs();
+//     updateDMofSegment();
+//     updateProfileForMissingDTs();
     // DeleteProfileComponents();
+    // fixValueSetNameAndDescription();
 
 
 
@@ -461,7 +462,7 @@ public class Bootstrap implements InitializingBean {
   private void fixValueSetNameAndDescription() {
     List<Table> allTables = tableService.findAll();
     for (Table t : allTables) {
-      if (null != t) {
+      if (null != t && !t.getScope().equals(SCOPE.PHINVADS)) {
         if (t.getDescription() != null) {
           t.setName(t.getDescription());
         }

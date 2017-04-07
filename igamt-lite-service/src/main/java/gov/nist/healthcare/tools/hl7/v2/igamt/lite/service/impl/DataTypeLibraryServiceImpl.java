@@ -45,233 +45,240 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
 @Service
 public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 
-	Logger log = LoggerFactory.getLogger(DataTypeLibraryServiceImpl.class);
+  Logger log = LoggerFactory.getLogger(DataTypeLibraryServiceImpl.class);
 
-	@Autowired
-	private DatatypeLibraryRepository datatypeLibraryRepository;
+  @Autowired
+  private DatatypeLibraryRepository datatypeLibraryRepository;
 
-	@Autowired
-	private DatatypeRepository datatypeRepository;
+  @Autowired
+  private DatatypeRepository datatypeRepository;
 
-	@Autowired
-	private DatatypeService datatypeService;
+  @Autowired
+  private DatatypeService datatypeService;
 
-	private Random rand = new Random();
+  private Random rand = new Random();
 
-	@Override
-	public List<DatatypeLibrary> findAll() {
-		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findAll();
-		log.debug("DatatypeLibraryRepository.findAll datatypeLibrary=" + datatypeLibrary.size());
-		return datatypeLibrary;
-	}
+  @Override
+  public List<DatatypeLibrary> findAll() {
+    List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findAll();
+    log.debug("DatatypeLibraryRepository.findAll datatypeLibrary=" + datatypeLibrary.size());
+    return datatypeLibrary;
+  }
 
-	@Override
-	public List<DatatypeLibrary> findByScope(SCOPE scope, Long accountId) {
-		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByScope(scope, accountId);
-		log.debug("DatatypeLibraryRepository.findByScope datatypeLibrary=" + datatypeLibrary.size());
-		return datatypeLibrary;
-	}
+  @Override
+  public List<DatatypeLibrary> findByScope(SCOPE scope, Long accountId) {
+    List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByScope(scope, accountId);
+    log.debug("DatatypeLibraryRepository.findByScope datatypeLibrary=" + datatypeLibrary.size());
+    return datatypeLibrary;
+  }
 
-	@Override
-	public List<String> findHl7Versions() {
-		return datatypeLibraryRepository.findHl7Versions();
-	}
+  @Override
+  public List<String> findHl7Versions() {
+    return datatypeLibraryRepository.findHl7Versions();
+  }
 
-	@Override
-	public DatatypeLibrary findById(String id) {
-		return datatypeLibraryRepository.findOne(id);
-	}
+  @Override
+  public DatatypeLibrary findById(String id) {
+    return datatypeLibraryRepository.findOne(id);
+  }
 
-	@Override
-	public List<DatatypeLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-		log.info("DataTypeLibraryibServiceImpl.findByScopesAndVersion. start");
-		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findScopesNVersion(scopes, hl7Version);
-		log.info("DataTypeLibraryibServiceImpl.findByScopesAndVersion datatypeLibraries=" + datatypeLibraries.size());
-		return datatypeLibraries;
-	}
+  @Override
+  public List<DatatypeLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+    log.info("DataTypeLibraryibServiceImpl.findByScopesAndVersion. start");
+    List<DatatypeLibrary> datatypeLibraries =
+        datatypeLibraryRepository.findScopesNVersion(scopes, hl7Version);
+    log.info("DataTypeLibraryibServiceImpl.findByScopesAndVersion datatypeLibraries="
+        + datatypeLibraries.size());
+    return datatypeLibraries;
+  }
 
-	@Override
-	public List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version) {
-		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByAccountId(accountId, hl7Version);
-		log.info("datatypeLibrary=" + datatypeLibrary.size());
-		return datatypeLibrary;
-	}
+  @Override
+  public List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version) {
+    List<DatatypeLibrary> datatypeLibrary =
+        datatypeLibraryRepository.findByAccountId(accountId, hl7Version);
+    log.info("datatypeLibrary=" + datatypeLibrary.size());
+    return datatypeLibrary;
+  }
 
-	@Override
-	public DatatypeLibrary save(DatatypeLibrary library) {
-		return save(library, DateUtils.getCurrentDate());
-	}
+  @Override
+  public DatatypeLibrary save(DatatypeLibrary library) {
+    return save(library, DateUtils.getCurrentDate());
+  }
 
-	@Override
-	public DatatypeLibrary save(DatatypeLibrary library, Date dateUpdated) {
-		library.setDateUpdated(dateUpdated);
-		DatatypeLibrary datatypeLibrary = datatypeLibraryRepository.save(library);
-		return datatypeLibrary;
-	}
+  @Override
+  public DatatypeLibrary save(DatatypeLibrary library, Date dateUpdated) {
+    library.setDateUpdated(dateUpdated);
+    DatatypeLibrary datatypeLibrary = datatypeLibraryRepository.save(library);
+    return datatypeLibrary;
+  }
 
-	@Override
-	public DatatypeLibrary saveMetaData(String libId, DatatypeLibraryMetaData datatypeLibraryMetaData) {
-		log.info("DataypeServiceImpl.save=" + datatypeLibraryMetaData.getName());
-		DatatypeLibrary dataTypeLibrary = datatypeLibraryRepository.findOne(libId);
-		dataTypeLibrary.setMetaData(datatypeLibraryMetaData);
-		return datatypeLibraryRepository.save(dataTypeLibrary);
-	}
+  @Override
+  public DatatypeLibrary saveMetaData(String libId,
+      DatatypeLibraryMetaData datatypeLibraryMetaData) {
+    log.info("DataypeServiceImpl.save=" + datatypeLibraryMetaData.getName());
+    DatatypeLibrary dataTypeLibrary = datatypeLibraryRepository.findOne(libId);
+    dataTypeLibrary.setMetaData(datatypeLibraryMetaData);
+    return datatypeLibraryRepository.save(dataTypeLibrary);
+  }
 
-	DatatypeLibraryMetaData defaultMetadata() {
-		DatatypeLibraryMetaData metaData = new DatatypeLibraryMetaData();
-		metaData.setName("Master data type library");
-		metaData.setOrgName("NIST");
-		return metaData;
-	}
+  DatatypeLibraryMetaData defaultMetadata() {
+    DatatypeLibraryMetaData metaData = new DatatypeLibraryMetaData();
+    metaData.setName("Master data type library");
+    metaData.setOrgName("NIST");
+    return metaData;
+  }
 
-	@Override
-	public DatatypeLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId) {
-		DatatypeLibraryMetaData metaData = defaultMetadata();
-		metaData.setName(name);
-		metaData.setHl7Version(hl7Version);
-		metaData.setDatatypeLibId(UUID.randomUUID().toString());
-		metaData.setExt(ext);
-		DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
-		datatypeLibrary.setMetaData(metaData);
-		datatypeLibrary.setScope(scope);
-		datatypeLibrary.setAccountId(accountId);
-		datatypeLibrary.setSectionDescription("Default description");
-		datatypeLibrary.setSectionTitle("Default title");
-		datatypeLibrary.setSectionContents("Default contents");
-		datatypeLibrary = datatypeLibraryRepository.insert(datatypeLibrary);
-		return datatypeLibrary;
-	}
+  @Override
+  public DatatypeLibrary create(String name, String ext, SCOPE scope, String hl7Version,
+      Long accountId) {
+    DatatypeLibraryMetaData metaData = defaultMetadata();
+    metaData.setName(name);
+    metaData.setHl7Version(hl7Version);
+    metaData.setDatatypeLibId(UUID.randomUUID().toString());
+    metaData.setExt(ext);
+    DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
+    datatypeLibrary.setMetaData(metaData);
+    datatypeLibrary.setScope(scope);
+    datatypeLibrary.setAccountId(accountId);
+    datatypeLibrary.setSectionDescription("Default description");
+    datatypeLibrary.setSectionTitle("Default title");
+    datatypeLibrary.setSectionContents("Default contents");
+    return datatypeLibraryRepository.save(datatypeLibrary);
 
-	@Override
-	public void delete(String dtLibId) {
-		List<Datatype> datatypes = findDatatypesById(dtLibId);
-		for (Datatype datatype : datatypes) {
-			Set<String> libIds = datatype.getLibIds();
-			libIds.remove(dtLibId);
-			if (libIds.isEmpty()) {
-				datatypeRepository.delete(datatype);
-			}
-		}
-		datatypeLibraryRepository.delete(dtLibId);
-	}
+  }
 
-	@Override
-	public List<DatatypeLink> bindDatatypes(Set<String> datatypeIds, String datatypeLibraryId,
-			String datatypeLibraryExt, Long accountId) {
+  @Override
+  public void delete(String dtLibId) {
+    List<Datatype> datatypes = findDatatypesById(dtLibId);
+    for (Datatype datatype : datatypes) {
+      Set<String> libIds = datatype.getLibIds();
+      libIds.remove(dtLibId);
+      if (libIds.isEmpty()) {
+        datatypeRepository.delete(datatype);
+      }
+    }
+    datatypeLibraryRepository.delete(dtLibId);
+  }
 
-		DatatypeLibrary dtLib = datatypeLibraryRepository.findById(datatypeLibraryId);
-		dtLib.setExt(deNull(datatypeLibraryExt));
-		List<DatatypeLibrary> dtLibDups = datatypeLibraryRepository.findDups(dtLib);
-		if (dtLibDups != null) {
-			String ext = decorateExt(dtLib.getExt());
-			dtLib.setExt(ext);
-		}
-		dtLib.getMetaData().setExt(dtLib.getExt());
-		dtLib.setAccountId(accountId);
+  @Override
+  public List<DatatypeLink> bindDatatypes(Set<String> datatypeIds, String datatypeLibraryId,
+      String datatypeLibraryExt, Long accountId) {
 
-		List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
-		List<DatatypeLink> datatypeLinks = new ArrayList<DatatypeLink>();
-		for (Datatype dt : datatypes) {
-			dt.setId(null);
-			if (SCOPE.HL7STANDARD == dt.getScope()) {
-				dt.getLibIds().clear();
-			}
-			dt.getLibIds().add(datatypeLibraryId);
-			dt.setExt(decorateExt(dtLib.getExt()));
-			dt.setType(Constant.DATATYPE);
-			dt.setScope(dtLib.getScope());
-			dt.setHl7Version(dtLib.getMetaData().getHl7Version());
-			dt.setAccountId(accountId);
-			// We save at this point in order to have an id for the link.
-			datatypeService.save(dt);
-			DatatypeLink dtLink = dtLib.addDatatype(dt);
-			datatypeLinks.add(dtLink);
-		}
-		datatypeLibraryRepository.save(dtLib);
-		return datatypeLinks;
-	}
+    DatatypeLibrary dtLib = datatypeLibraryRepository.findById(datatypeLibraryId);
+    dtLib.setExt(deNull(datatypeLibraryExt));
+    List<DatatypeLibrary> dtLibDups = datatypeLibraryRepository.findDups(dtLib);
+    if (dtLibDups != null) {
+      String ext = decorateExt(dtLib.getExt());
+      dtLib.setExt(ext);
+    }
+    dtLib.getMetaData().setExt(dtLib.getExt());
+    dtLib.setAccountId(accountId);
 
-	boolean checkDup(Datatype dt, DatatypeLibrary dtLib, String ext) {
-		return dtLib.getChildren().contains(new DatatypeLink(dt.getId(), dt.getName(), ext));
-	}
+    List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
+    List<DatatypeLink> datatypeLinks = new ArrayList<DatatypeLink>();
+    for (Datatype dt : datatypes) {
+      dt.setId(null);
+      if (SCOPE.HL7STANDARD == dt.getScope()) {
+        dt.getLibIds().clear();
+      }
+      dt.getLibIds().add(datatypeLibraryId);
+      dt.setExt(decorateExt(dtLib.getExt()));
+      dt.setType(Constant.DATATYPE);
+      dt.setScope(dtLib.getScope());
+      dt.setHl7Version(dtLib.getMetaData().getHl7Version());
+      dt.setAccountId(accountId);
+      // We save at this point in order to have an id for the link.
+      datatypeService.save(dt);
+      DatatypeLink dtLink = dtLib.addDatatype(dt);
+      datatypeLinks.add(dtLink);
+    }
+    datatypeLibraryRepository.save(dtLib);
+    return datatypeLinks;
+  }
 
-	String decorateExt(String ext) {
-		return ext + "-" + genRand();
-	}
+  boolean checkDup(Datatype dt, DatatypeLibrary dtLib, String ext) {
+    return dtLib.getChildren().contains(new DatatypeLink(dt.getId(), dt.getName(), ext));
+  }
 
-	String deNull(String ext) {
-		return (ext != null && ext.trim().length() > 0) ? ext : genRand();
-	}
+  String decorateExt(String ext) {
+    return ext + "-" + genRand();
+  }
 
-	String genRand() {
-		return Integer.toString(rand.nextInt(100));
-	}
+  String deNull(String ext) {
+    return (ext != null && ext.trim().length() > 0) ? ext : genRand();
+  }
 
-	class DatatypeByLabel implements Comparator<Datatype> {
+  String genRand() {
+    return Integer.toString(rand.nextInt(100));
+  }
 
-		@Override
-		public int compare(Datatype thisDt, Datatype thatDt) {
-			return thatDt.getLabel().compareTo(thisDt.getLabel());
-		}
-	}
+  class DatatypeByLabel implements Comparator<Datatype> {
 
-	@Override
-	public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name, Long accountId) {
-		return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
-	}
+    @Override
+    public int compare(Datatype thisDt, Datatype thatDt) {
+      return thatDt.getLabel().compareTo(thisDt.getLabel());
+    }
+  }
 
-	@Override
-	public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version, String name,
-			Long accountId) {
-		return datatypeLibraryRepository.findByNameAndHl7VersionAndScope(name, hl7Version, scope.toString());
-	}
+  @Override
+  public List<DatatypeLink> findFlavors(SCOPE scope, String hl7Version, String name,
+      Long accountId) {
+    return datatypeLibraryRepository.findFlavors(scope, hl7Version, name, accountId);
+  }
 
-	@Override
-	public List<Datatype> getChildren(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  @Override
+  public List<DatatypeLibrary> findLibrariesByFlavorName(SCOPE scope, String hl7Version,
+      String name, Long accountId) {
+    return datatypeLibraryRepository.findByNameAndHl7VersionAndScope(name, hl7Version,
+        scope.toString());
+  }
 
-	@Override
-	public void delete(DatatypeLibrary library) {
-		if (library != null) {
-			Set<DatatypeLink> links = library.getChildren();
-			if (links != null && links.size() > 0) {
-				Set<String> ids = new HashSet<String>();
-				for (DatatypeLink link : links) {
-					ids.add(link.getId());
-				}
-				List<Datatype> datatypes = datatypeRepository.findUserDatatypesByIds(ids);
-				List<Datatype> tmp = new ArrayList<Datatype>();
+  @Override
+  public List<Datatype> getChildren(String id) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
-				if (datatypes != null) {
-					for (Datatype dt : datatypes) {
-						if (dt.getStatus() == null || !dt.getStatus().equals(STATUS.PUBLISHED)) {
-							tmp.add(dt); 
-						}
-					}
-				}
-				
-				if(tmp.size() > 0){
-					datatypeRepository.delete(tmp);
-				}
-			}
-			if (library.getId() != null)
-				datatypeLibraryRepository.delete(library);
-		}
-	}
+  @Override
+  public void delete(DatatypeLibrary library) {
+    if (library != null) {
+      Set<DatatypeLink> links = library.getChildren();
+      if (links != null && links.size() > 0) {
+        Set<String> ids = new HashSet<String>();
+        for (DatatypeLink link : links) {
+          ids.add(link.getId());
+        }
+        List<Datatype> datatypes = datatypeRepository.findUserDatatypesByIds(ids);
+        List<Datatype> tmp = new ArrayList<Datatype>();
 
-	@Override
-	public List<Datatype> findDatatypesById(String libId) {
-		Set<DatatypeLink> datatypeLinks = datatypeLibraryRepository.findChildrenById(libId);
-		if (datatypeLinks != null && !datatypeLinks.isEmpty()) {
-			Set<String> ids = new HashSet<String>();
-			for (DatatypeLink link : datatypeLinks) {
-				ids.add(link.getId());
-			}
-			return datatypeRepository.findByIds(ids);
-		}
-		return new ArrayList<Datatype>(0);
-	}
+        if (datatypes != null) {
+          for (Datatype dt : datatypes) {
+            if (dt.getStatus() == null || !dt.getStatus().equals(STATUS.PUBLISHED)) {
+              tmp.add(dt);
+            }
+          }
+        }
+
+        if (tmp.size() > 0) {
+          datatypeRepository.delete(tmp);
+        }
+      }
+      if (library.getId() != null)
+        datatypeLibraryRepository.delete(library);
+    }
+  }
+
+  @Override
+  public List<Datatype> findDatatypesById(String libId) {
+    Set<DatatypeLink> datatypeLinks = datatypeLibraryRepository.findChildrenById(libId);
+    if (datatypeLinks != null && !datatypeLinks.isEmpty()) {
+      Set<String> ids = new HashSet<String>();
+      for (DatatypeLink link : datatypeLinks) {
+        ids.add(link.getId());
+      }
+      return datatypeRepository.findByIds(ids);
+    }
+    return new ArrayList<Datatype>(0);
+  }
 
 }

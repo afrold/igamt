@@ -4,7 +4,7 @@
 
 angular.module('igl')
 
-.controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService, orderByFilter) {
+.controller('IGDocumentListCtrl', function(TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService, orderByFilter,$mdDialog) {
 
     $scope.loading = false;
     $scope.tocView = 'views/toc.html';
@@ -983,22 +983,14 @@ angular.module('igl')
 
     $scope.addSegments = function(hl7Version) {
 
-        var addSegmentInstance = $modal.open({
-            templateUrl: 'AddSegmentDlg.html',
-            controller: 'AddSegmentDlgCtl',
-            windowClass: 'conformance-profiles-modal',
-            resolve: {
-                hl7Version: function() {
-                    return $scope.hl7Version;
-                }
+        $mdDialog.show({
+            templateUrl: 'AddSegmentMd.html',
+            controller: 'AddSegmentDlg',
+            parent: angular.element(document).find('body'),
+            locals: {
+                hl7Version: $scope.hl7Version
 
             }
-        }).result.then(function(results) {
-            var ids = [];
-            angular.forEach(results, function(result) {
-                ids.push(result.id);
-            });
-
         });
 
     };
@@ -1026,45 +1018,21 @@ angular.module('igl')
         var scopes = ['HL7STANDARD'];
 
         DatatypeService.getDataTypesByScopesAndVersion(scopes, $scope.hl7Version).then(function(datatypes) {
-            DatatypeLibrarySvc.getDataTypeLibraryByScope('MASTER').then(function(masterLib) {
-                DatatypeLibrarySvc.getDataTypeLibraryByScope('USER').then(function(userDtLib) {
 
-
-                    console.log("userDtLib");
-                    console.log(userDtLib);
-
-                    console.log("addDatatype scopes=" + scopes.length);
-                    var addDatatypeInstance = $modal.open({
-                        templateUrl: 'AddHL7Datatype.html',
+                    $mdDialog.show({
+                        templateUrl: 'AddHL7DatatypeMd.html',
+                        parent: angular.element(document).find('body'),
                         controller: 'AddDatatypeDlgCtl',
-                        size: 'lg',
-                        windowClass: 'addDatatype',
-                        resolve: {
-                            hl7Version: function() {
-                                return $scope.hl7Version;
-                            },
-                            datatypes: function() {
+                        locals:{
 
-                                return datatypes;
-                            },
-                            masterLib: function() {
+                            hl7Version:$scope.hl7Version,
 
-                                return masterLib;
-                            },
-                            userDtLib: function() {
-                                return userDtLib;
+                            datatypes:datatypes
                             }
 
-                        }
-                    }).result.then(function(results) {
-                        var ids = [];
-                        angular.forEach(results, function(result) {
-                            ids.push(result.id);
-                        });
-                    });
+                    })
                 });
-            });
-        });
+
     };
 
     $scope.addMasterDatatype = function() {
@@ -2883,7 +2851,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
 
 
 angular.module('igl').controller('AddDatatypeDlgCtl',
-    function($scope, $rootScope, $modalInstance, hl7Version, datatypes, masterLib, userDtLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http) {
+    function($scope, $rootScope, $mdDialog, hl7Version, datatypes, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http) {
 
         //$scope.hl7Version = hl7Version;
         //$scope.hl7Datatypes = datatypes;
@@ -2892,29 +2860,12 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
         $scope.checkedExt = true;
         $scope.NocheckedExt = true;
         $scope.masterLib = [];
-        $scope.userDtLib = userDtLib;
-        $scope.masterLib = masterLib;
         $scope.selectedDatatypes = [];
         // for (var i = 0; i < $scope.masterDts.length; i++) {
         //     if (!$rootScope.datatypesMap[$scope.masterDts[i].id]) {
         //         $scope.masterDatatypes.push($scope.masterDts[i]);
         //     }
         // }
-        $scope.selectUserDtLib = function(usrLib) {
-            console.log(usrLib);
-            DatatypeLibrarySvc.getDatatypesByLibrary(usrLib.id).then(function(datatypes) {
-                $scope.userDatatypes = datatypes;
-                $scope.userDatatypes = _.where(datatypes, { scope: "USER", status: "PUBLISHED" });
-            });
-        };
-        $scope.selectMasterDtLib = function(masLib) {
-            console.log(masLib);
-            DatatypeLibrarySvc.getDatatypesByLibrary(masLib.id).then(function(datatypes) {
-                $scope.masterDatatypes = _.where(datatypes, { scope: "MASTER", status: "PUBLISHED" });
-                //$scope.masterDatatypes = datatypes;
-                console.log($scope.masterDatatypes);
-            });
-        };
         var listHL7Versions = function() {
             return $http.get('api/igdocuments/findVersions', {
                 timeout: 60000
@@ -3047,19 +2998,6 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
             newDatatype.id = new ObjectId().toString();
             newDatatype.libIds = [];
             newDatatype.libIds.push($rootScope.igdocument.profile.datatypeLibrary.id);
-            if (datatype.scope === 'MASTER') {
-                console.log("merging");
-                //newDatatype.hl7versions=[$rootScope.igdocument.profile.metaData.hl7Version];
-                var temp = [];
-                temp.push($rootScope.igdocument.profile.metaData.hl7Version);
-                newDatatype.hl7versions = temp;
-                newDatatype.hl7Version = $rootScope.igdocument.profile.metaData.hl7Version;
-                DatatypeService.getOneStandard(datatype.name, newDatatype.hl7Version, newDatatype.hl7versions).then(function(standard) {
-                    $rootScope.mergeEmptyProperty(newDatatype, standard);
-                });
-            }
-
-
 
             if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
                 for (var i = 0; i < newDatatype.components.length; i++) {
@@ -3136,7 +3074,6 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
 
 
         $scope.ok = function() {
-            console.log($scope.selectedDatatypes);
             $scope.selectFlv = [];
             var newLinks = [];
             for (var i = 0; i < $scope.selectedDatatypes.length; i++) {
@@ -3212,7 +3149,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
                                     $rootScope.processElement($scope.selectedDatatypes[i]);
                                 }
                                 //$rootScope.processElement($scope.newSegment);
-
+                                $mdDialog.hide();
                             });
                         });
                     });
@@ -3225,7 +3162,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
                     $rootScope.msg().text = "datatypeAdded";
                     $rootScope.msg().type = "success";
                     $rootScope.msg().show = true;
-                    $modalInstance.close(datatypes);
+
                 });
 
             }, function(error) {
@@ -3239,7 +3176,7 @@ angular.module('igl').controller('AddDatatypeDlgCtl',
         };
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
         };
     });
 
@@ -3289,8 +3226,8 @@ angular.module('igl').controller('AddMasterDatatypes',
     });
 
 
-angular.module('igl').controller('AddSegmentDlgCtl',
-    function($scope, $rootScope, $modalInstance, hl7Version, $http, SegmentService, SegmentLibrarySvc, DatatypeService, DatatypeLibrarySvc, TableService, TableLibrarySvc, IgDocumentService) {
+angular.module('igl').controller('AddSegmentDlg',
+    function($scope, $rootScope, $mdDialog, hl7Version, $http, SegmentService, SegmentLibrarySvc, DatatypeService, DatatypeLibrarySvc, TableService, TableLibrarySvc, IgDocumentService) {
 
         $scope.selectedSegments = [];
         $scope.checkedExt = true;
@@ -3547,7 +3484,6 @@ angular.module('igl').controller('AddSegmentDlgCtl',
                         $rootScope.msg().text = "segmentAdded";
                         $rootScope.msg().type = "success";
                         $rootScope.msg().show = true;
-                        $modalInstance.close();
                         var usedDtId = _.map($rootScope.usedDtLink, function(num, key) {
                             return num.id;
                         });
@@ -3598,6 +3534,7 @@ angular.module('igl').controller('AddSegmentDlgCtl',
 
 
                                             $rootScope.processElement($scope.newSegment);
+                                            $mdDialog.hide();
 
                                         });
                                     });
@@ -3619,7 +3556,7 @@ angular.module('igl').controller('AddSegmentDlgCtl',
         };
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $mdDialog.hide();
         };
     });
 

@@ -14,8 +14,8 @@ angular
             'PcService',
             'CompositeProfileService',
             'orderByFilter',
-
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService, CompositeProfileService,orderByFilter) {
+            '$mdDialog',
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService, CompositeProfileService,orderByFilter,$mdDialog) {
 
                 $scope.collapsedata = false;
                 $scope.collapsePcs = true;
@@ -2029,111 +2029,73 @@ angular
                                 dtlibs.push(dtLib);
                             }
                         });
+                        $mdDialog.show({
 
-                        var addDatatypeInstance = $modal.open({
-                            templateUrl: 'AddMasterDatatypeIntoUser.html',
-                            controller: 'addMAsterInLibrary',
-                            size: 'lg',
-                            windowClass: 'addDatatype',
-                            resolve: {
-                                hl7Version: function() {
-                                    return $scope.hl7Version;
-                                },
-                                masterLib: function() {
-                                    return dtlibs;
-                                },
-                                datatypeLibrary: function() {
-                                    return $rootScope.datatypeLibrary;
-                                },
-                                tableLibrary: function() {
-                                    return $rootScope.tableLibrary;
-                                },
-                                versionAndUseMap: function() {
-                                    return $rootScope.versionAndUseMap;
-                                }
-                            }
-                        }).result.then(function(results) {
-                            var ids = [];
-                            angular.forEach(results, function(result) {
-                                ids.push(result.id);
-                            });
+                            templateUrl:'AddDatatypeIntoUser.html',
+                            locals: {
+                                hl7Version:  $scope.hl7Version
+                                ,
+                                masterLib: dtlibs
+                                ,
+                                datatypeLibrary:$rootScope.datatypeLibrary,
+                                tableLibrary:$rootScope.tableLibrary,
+
+                                versionAndUseMap:$rootScope.versionAndUseMap
+
+
+                            },
+                            parent: angular.element(document).find('body'),
+                            clickOutsideToClose:true,
+                            controller: 'addMAsterInLibrary'
                         });
 
-                    });
+
+
+
+
+
+
 
                 }
 
-                $rootScope.addSharedDatatypes = function() {
-                    var scopes = ['HL7STANDARD'];
-
-
-                    var addDatatypeInstance = $modal.open({
-                        templateUrl: 'AddSharedDatatype.html',
-                        controller: 'AddSharedDatatype',
-                        size: 'lg',
-                        windowClass: 'addDatatype',
-                        resolve: {
-                            hl7Version: function() {
-                                return $scope.hl7Version;
-                            },
-
-                            datatypeLibrary: function() {
-                                return $rootScope.datatypeLibrary;
-                            },
-                            tableLibrary: function() {
-                                return $rootScope.tableLibrary;
-                            },
-                            versionAndUseMap: function() {
-                                return $rootScope.versionAndUseMap;
-                            }
-                        }
-                    }).result.then(function(results) {
-
-
-                    });
+                );
 
                 }
+
 
                 $rootScope.addDatatypeFromMasterLib = function() {
-                    $rootScope.scopeTag="Master";
+                    $rootScope.scopeTag="User";
                     DatatypeLibrarySvc.getDataTypeLibraryByScope('MASTER').then(function(masterLib) {
-                        var dtlibs = [];
-                        angular.forEach(masterLib, function(dtLib) {
-                            if (dtLib.id !== $rootScope.datatypeLibrary.id) {
-                                dtlibs.push(dtLib);
-                            }
-                        });
+                            var dtlibs = [];
 
-                        var addDatatypeInstance = $modal.open({
-                            templateUrl: 'AddMasterDatatypeIntoUser.html',
-                            controller: 'addMAsterInLibrary',
-                            size: 'lg',
-                            windowClass: 'addDatatype',
-                            resolve: {
-                                hl7Version: function() {
-                                    return $scope.hl7Version;
-                                },
-                                masterLib: function() {
-                                    return dtlibs;
-                                },
-                                datatypeLibrary: function() {
-                                    return $rootScope.datatypeLibrary;
-                                },
-                                tableLibrary: function() {
-                                    return $rootScope.tableLibrary;
-                                },
-                                versionAndUseMap: function() {
-                                    return $rootScope.versionAndUseMap;
+                            angular.forEach(masterLib, function(dtLib) {
+                                if (dtLib.id !== $rootScope.datatypeLibrary.id) {
+                                    dtlibs.push(dtLib);
                                 }
-                            }
-                        }).result.then(function(results) {
-                            var ids = [];
-                            angular.forEach(results, function(result) {
-                                ids.push(result.id);
                             });
-                        });
+                            $mdDialog.show({
 
-                    });
+                                templateUrl:'AddDatatypeIntoUser.html',
+                                locals: {
+                                    hl7Version:  $scope.hl7Version
+                                    ,
+                                    masterLib: dtlibs
+                                    ,
+                                    datatypeLibrary:$rootScope.datatypeLibrary,
+                                    tableLibrary:$rootScope.tableLibrary,
+
+                                    versionAndUseMap:$rootScope.versionAndUseMap
+
+
+                                },
+                                parent: angular.element(document).find('body'),
+                                clickOutsideToClose:true,
+                                controller: 'addMAsterInLibrary'
+                            });
+
+                        }
+
+                    );
 
                 }
             }
@@ -2436,7 +2398,7 @@ angular.module('igl').controller('AddDatatypeCtrlFromUserLib',
 
 
 angular.module('igl').controller('addMAsterInLibrary',
-    function($scope, $rootScope, $modalInstance, hl7Version, masterLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http, datatypeLibrary, tableLibrary, versionAndUseMap) {
+    function($scope, $rootScope, hl7Version, masterLib, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http, datatypeLibrary, tableLibrary, versionAndUseMap,$mdDialog) {
         $scope.versionAndUseMap = versionAndUseMap;
         $scope.TablesIds=[];
         $scope.newDts = [];
@@ -2661,10 +2623,13 @@ angular.module('igl').controller('addMAsterInLibrary',
                     // }else{
                     //     $rootScope.datatypes.push(dt);
                     // }
+                    console.log("processing")
+                    $rootScope.processElement(dt);
+
                     if(!$rootScope.datatypesMap[dt.id]){
                         $rootScope.datatypesMap[dt.id]=dt;
                         $rootScope.datatypes.push(dt);
-                        $rootScope.processElement(dt);
+
 
                     }
                     if(dt.parentVersion){
@@ -2693,7 +2658,7 @@ angular.module('igl').controller('addMAsterInLibrary',
 
 
                     });
-                    $modalInstance.close("");
+                    $mdDialog.hide();
 
 
                 });
@@ -2765,7 +2730,7 @@ angular.module('igl').controller('addMAsterInLibrary',
 
 
                             });
-                        $modalInstance.close(datatypes);
+                            $mdDialog.hide();
 
                         });
                 });
@@ -2820,7 +2785,7 @@ angular.module('igl').controller('addMAsterInLibrary',
 
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $mdDialog.hide();
         };
     });
 

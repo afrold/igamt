@@ -1776,6 +1776,9 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
 
 });
 
+
+
+
 angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, message, $rootScope, blockUI) {
     console.log(message);
     $scope.message = message;
