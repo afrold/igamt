@@ -23,6 +23,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PathGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
@@ -43,7 +44,25 @@ public class FlavorServiceImpl implements FlavorService {
   @Override
   public DataModel createFlavor(DataModel dm, List<SubProfileComponentAttributes> attributes,
       List<PathGroup> pathGroups) {
-    if (dm instanceof SegmentRef) {
+    if (dm instanceof Group) {
+      Group grp = (Group) dm;
+
+      if (attributes != null && !attributes.isEmpty()) {
+        for (SubProfileComponentAttributes attr : attributes) {
+
+          if (attr.getMax() != null) {
+            grp.setMax(attr.getMax());
+          }
+          if (attr.getMin() != null) {
+            grp.setMin(attr.getMin());
+          }
+          if (attr.getUsage() != null) {
+            grp.setUsage(attr.getUsage());
+          }
+        }
+      }
+      return grp;
+    } else if (dm instanceof SegmentRef) {
       SegmentRef segRef = (SegmentRef) dm;
       if (attributes != null && !attributes.isEmpty()) {
         for (SubProfileComponentAttributes attr : attributes) {

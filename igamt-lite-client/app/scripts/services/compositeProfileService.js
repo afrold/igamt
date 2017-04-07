@@ -28,9 +28,9 @@ angular.module('igl').factory('CompositeProfileService',
                 });
                 return delay.promise;
             },
-            addPcs: function(pcs,cpId) {
+            addPcs: function(pcs, cpId) {
                 var delay = $q.defer();
-                $http.post('api/composite-profile/addPcs/'+cpId, pcs, {
+                $http.post('api/composite-profile/addPcs/' + cpId, pcs, {
                     headers: { 'Content-Type': 'application/json' }
                 }).then(function(response) {
                     var saved = angular.fromJson(response.data);
@@ -41,9 +41,9 @@ angular.module('igl').factory('CompositeProfileService',
                 });
                 return delay.promise;
             },
-            removePc: function(cps,pcId) {
+            removePc: function(cps, pcId) {
                 var delay = $q.defer();
-                $http.post('api/composite-profile/removePc/'+pcId, cps, {
+                $http.post('api/composite-profile/removePc/' + pcId, cps, {
                     headers: { 'Content-Type': 'application/json' }
                 }).then(function(response) {
                     var saved = angular.fromJson(response.data);
@@ -54,9 +54,9 @@ angular.module('igl').factory('CompositeProfileService',
                 });
                 return delay.promise;
             },
-            delete: function(cpID,igId) {
+            delete: function(cpID, igId) {
                 var delay = $q.defer();
-                $http.get('api/composite-profile/delete/' + cpID+'/'+igId).then(function() {
+                $http.get('api/composite-profile/delete/' + cpID + '/' + igId).then(function() {
                     delay.resolve(true);
                 }, function(error) {
                     delay.reject(error);
@@ -66,10 +66,13 @@ angular.module('igl').factory('CompositeProfileService',
 
             build: function(compositeProfileStructure) {
                 var delay = $q.defer();
-                $http.post('api/composite-profile/build' , compositeProfileStructure, {
+                $http.post('api/composite-profile/build', compositeProfileStructure, {
                     headers: { 'Content-Type': 'application/json' }
                 }).then(function(response) {
                     var saved = angular.fromJson(response.data);
+                    console.log("angular.copy(saved)");
+
+                    console.log(angular.copy(saved));
                     delay.resolve(saved);
                     return saved;
                 }, function(error) {
@@ -77,8 +80,8 @@ angular.module('igl').factory('CompositeProfileService',
                 });
                 return delay.promise;
             },
-           
-         
+
+
 
 
 

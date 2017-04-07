@@ -95,31 +95,6 @@
                                                             </div>
                                                         </div>
 
-                                                        <!--<div>
-                                                            <table>
-                                                                <tr>
-                                                                    <td>Name : </td>
-                                                                    <td>{{pcInfo.pc.name}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Description : </td>
-                                                                    <td>{{pcInfo.pc.description}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Comment : </td>
-                                                                    <td>{{pcInfo.pc.comment}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Date Updated : </td>
-                                                                    <td>{{pcInfo.pc.dateUpdated | date:dateFormat}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Date Applied : </td>
-                                                                    <td>{{pcInfo.pcDate | date:dateFormat}}</td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>-->
-
 
 
 
@@ -141,79 +116,81 @@
                                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> MetaData
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px">
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.name.$invalid}">
-                                        <label class="col-md-2 control-label">Name*</label>
-                                        <div class="controls col-md-10">
-                                            <input class="form-control" type="text" disabled name="name" ng-change="setDirty()" ng-model="compositeProfileStructure.name" ng-disabled="viewSettings.tableReadonly">
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.identifier.$invalid}">
-                                        <label class="col-md-2 control-label">Identifier*</label>
-                                        <div class="controls col-md-10">
-                                            <input type="text" ng-change="setDirty()" name="identifier" class="form-control" ng-model="compositeProfile.identifier" ng-disabled="viewSettings.tableReadonly" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
-                                        <label class="col-md-2 control-label">Description</label>
-                                        <div class="controls col-md-10">
-                                            <input class="form-control" type="text" name="description" ng-change="setDirty()" ng-model="compositeProfileStructure.description" ng-disabled="viewSettings.tableReadonly">
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.description.$invalid}">
-                                        <label class="col-md-2 control-label">Hl7 Version</label>
-                                        <div class="controls col-md-10">
-                                            <input class="form-control" type="text" name="hl7Version" ng-model="compositeProfile.hl7Version" disabled>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageType.$invalid}">
-                                        <label class="col-md-2 control-label">Message Type*</label>
-                                        <div class="controls col-md-10">
-                                            <input type="text" disabled name="messageType" class="form-control" ng-model="compositeProfile.messageType" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageEvent.$invalid}">
-                                        <label class="col-md-2 control-label">Message Event*</label>
-                                        <div class="controls col-md-10">
-                                            <input type="text" disabled name="messageEvent" class="form-control" ng-model="compositeProfile.event" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.messageStructID.$invalid}">
-                                        <label class="col-md-2 control-label">Message Structure ID*</label>
-                                        <div class="controls col-md-10">
-                                            <input type="text" disabled name="messageStructID" class="form-control" ng-model="compositeProfile.structID" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error' : editForm.comment.$invalid}">
-                                        <label class="col-md-2 control-label">Comment</label>
-                                        <div class="controls col-md-10">
-                                            <textarea rows="3" cols="20" ng-disabled="viewSettings.tableReadonly" name="comment" id="comment" class="form-control" ng-model="compositeProfileStructure.comment" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group control-group" ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
-                                        <label class="col-md-2 control-label">Definition Text</label>
-                                        <div class="controls col-md-10">
-                                            <div ng-show="!viewSettings.tableReadonly">
-                                                <textarea froala="froalaEditorOptions" ng-model="compositeProfile.usageNote" name="text" id="text" ng-change="setDirty()"></textarea>
+                                <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                                    <md-content layout-padding>
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Name</label>
+                                            <input type="text" name="name" ng-change="setDirty()" ng-model="compositeProfileStructure.name">
+                                            <div ng-messages="editForm.name.$error">
+                                                <div ng-message="required">Name is required.</div>
                                             </div>
-                                            <div ng-show="viewSettings.tableReadonly">
-                                                <div class="fr-view">
-                                                    <div froala-view="compositeProfile.usageNote"></div>
-                                                </div>
+                                        </md-input-container>
+
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Identifier</label>
+                                            <input type="text" name="identifier" ng-model="compositeProfile.identifier" disabled required>
+                                            <div ng-messages="editForm.identifier.$error">
+                                                <div ng-message="required">Identifier is required.</div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </md-input-container>
 
-                                    <div class="form-group control-group">
-                                        <label class="col-md-2 control-label">Date Updated</label>
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Description</label>
+                                            <input type="text" name="description" ng-change="setDirty()" ng-model="compositeProfile.description">
 
-                                        <div class="controls col-md-10">
-                                            <span class="form-control">{{compositeProfile.dateUpdated | date:dateFormat}}</span>
-                                        </div>
-                                    </div>
+                                        </md-input-container>
 
+
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Message Type</label>
+                                            <input type="text" name="messageType" ng-model="compositeProfile.messageType" disabled required>
+                                            <div ng-messages="editForm.messageType.$error">
+                                                <div ng-message="required">Message Type is required.</div>
+                                            </div>
+                                        </md-input-container>
+
+
+
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Message Event</label>
+                                            <input type="text" name="messageType" ng-model="compositeProfile.event" required disabled>
+                                            <div ng-messages="editForm.event.$error">
+                                                <div ng-message="required">Message Event is required.</div>
+                                            </div>
+                                        </md-input-container>
+
+
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Message Structure ID</label>
+                                            <input type="text" name="structID" ng-model="compositeProfile.structID" required disabled>
+                                            <div ng-messages="editForm.structID.$error">
+                                                <div ng-message="required">Message Event is required.</div>
+                                            </div>
+                                        </md-input-container>
+
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Comment</label>
+                                            <textarea rows="3" ng-change="setDirty()" name="comment" id="comment" ng-model="compositeProfileStructure.comment" />
+                                        </md-input-container>
+
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label style="margin-bottom:15px;" class="input-left">Usage Note </label>
+
+                                            <!--<textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus ng-model="compositeProfileStructure.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>-->
+
+                                            <div class="fr-view">
+                                                <div froala-view="compositeProfileStructure.usageNote"></div>
+                                            </div>
+                                        </md-input-container>
+
+                                        <md-input-container class="md-block" flex-gt-sm ng-show="compositeProfile.hl7Section != null && compositeProfile.hl7Section != ''">
+                                            <label class="input-left">HL7 Section</label>
+                                            <input type="text" disabled name="hl7Section" id="hl7Section" ng-model="compositeProfile.hl7Section">
+                                        </md-input-container>
+
+                                    </md-content>
                                 </div>
+
                             </md-tab-body>
                         </md-tab>
                         <md-tab>
@@ -311,6 +288,7 @@
 
 
         <td class="col-md-1 col-fixed-250">
+           
             <span ng-if="node.type=='datatype'" class="label label-default label-icon">D</span>
             <span ng-if="node.type=='group'" class="label label-success label-icon">G</span>
             <span ng-if="node.type=='segmentRef'||node.type=='segment'" class="label label-segment label-icon">S</span>
@@ -322,7 +300,13 @@
         </td>
 
         <td class="col-md-1 col-fixed-80">
-            {{node.usage}}
+            <div ng-if="node.usage !== 'C'  || (node.usage === 'C' && !findingPredicates(node))">
+                {{node.usage}}
+            </div>
+            <div ng-if="findingPredicates(node)" class="badge label-white">
+                C({{findingPredicates(node).trueUsage}}/{{findingPredicates(node).falseUsage}})
+
+            </div>
         </td>
         <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component'">
         </td>
@@ -416,7 +400,16 @@
 
 
 
-        <td class="col-md-1">
+        <td ng-class="{'has-error': node.usage === 'C' && !findingPredicates(node) , 'emptyCol':node.usage !== 'C'}">
+            <div ng-show="node.usage==='C' && findingPredicates(node) ">
+
+                <span title="{{getPredicateAsString(findingPredicates(node))}}" class="badge label-white">
+                <span ng-class="{'label-message-icon' : findingPredicates(node).from == 'message', 'label-field-icon' : findingPredicates(node).from == 'segment','label-component-icon':findingPredicates(node).from==='field','label-sub-component-icon' : findingPredicates(node).from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
+                <span>{{getConstraintAsTruncatedString(findingPredicates(node), 15)}}</span>
+                <div ng-show="countPredicate(node.path) > 1">
+                    <p class="warning">Multiple predicates</p>
+                </div>
+            </div>
         </td>
         <td class="col-md-1">
         </td>
