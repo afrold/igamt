@@ -1776,6 +1776,9 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
 
 });
 
+
+
+
 angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, message, $rootScope, blockUI) {
     console.log(message);
     $scope.message = message;
@@ -2105,6 +2108,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
 });
 
 angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalInstance, selectedMessage, selectedNode, $rootScope, $q) {
+    console.log(selectedNode);
     $scope.selectedMessage = angular.copy(selectedMessage);
     $scope.selectedMessage.pathInfoSet = [];
     $scope.selectedNode = selectedNode;

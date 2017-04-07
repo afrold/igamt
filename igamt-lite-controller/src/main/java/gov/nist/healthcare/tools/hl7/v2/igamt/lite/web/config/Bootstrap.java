@@ -21,11 +21,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -77,8 +79,20 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VariesMapItem;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintColumnDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintIFColumnData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintUSERColumnData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintUserColumnDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsColumn;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsTable;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
@@ -247,17 +261,171 @@ public class Bootstrap implements InitializingBean {
     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
     // createDefaultExportFonts();
-    // updateInitAndCreateBindingAndCommentsVSForDatatype();
-    // updateInitAndCreateBindingAndCommentsVSForSegment();
-    // updateInitAndCreateCommentsForMessage();
+//     updateInitAndCreateBindingAndCommentsVSForDatatype();
+//     updateInitAndCreateBindingAndCommentsVSForSegment();
+//     updateInitAndCreateCommentsForMessage();
     // fixUserDatatypesScope();
-    // updateDMofSegment();
-    // updateProfileForMissingDTs();
+//     updateDMofSegment();
+//     updateProfileForMissingDTs();
     // DeleteProfileComponents();
     // fixValueSetNameAndDescription();
 
 
 
+	  refactorCoConstrint();
+  }
+  
+  private void refactorCoConstrint(){
+	  List<Segment> segments = segmentService.findAll();
+	  for(Segment s: segments){
+		  if(s.getName().equals("OBX")){
+			  if(s.getCoConstraints() != null){
+				  CoConstraints oldCoConstraints = s.getCoConstraints();
+				  if(oldCoConstraints.getColumnList().size() > 0 && oldCoConstraints.getConstraints().size() > 0){
+					  
+					  CoConstraintsTable newCoConstraintsTable = new CoConstraintsTable();
+					  
+					  newCoConstraintsTable.setRowSize(oldCoConstraints.getConstraints().size());
+					  
+					  CoConstraintColumnDefinition newIfColumnDefinition = new CoConstraintColumnDefinition();
+					  CoConstraintsColumn oldIFColumnDefinition = oldCoConstraints.getColumnList().get(0);
+					  Datatype oldChildId = datatypeService.findById(oldIFColumnDefinition.getField().getDatatype().getId());
+					  
+					  newIfColumnDefinition.setConstraintPath(oldIFColumnDefinition.getField().getPosition() + "[1]");
+					  newIfColumnDefinition.setPath(oldIFColumnDefinition.getField().getPosition() + "");
+					  newIfColumnDefinition.setType("field");
+					  newIfColumnDefinition.setName(oldChildId.getName());
+					  newIfColumnDefinition.setdMReference(false);
+					  newIfColumnDefinition.setDtId(oldIFColumnDefinition.getField().getDatatype().getId());
+					  newIfColumnDefinition.setId(ObjectId.get().toString());
+					  
+					  if(oldChildId.getComponents() != null && oldChildId.getComponents().size() > 0){
+						  newIfColumnDefinition.setPrimitive(false);						  
+					  }else {
+						  newIfColumnDefinition.setPrimitive(true);	
+					  }
+					  
+					  if(oldIFColumnDefinition.getConstraintType().equals("vs")){
+						  newIfColumnDefinition.setConstraintType("valueset");
+					  }else{
+						  newIfColumnDefinition.setConstraintType("value");
+					  }
+					  newIfColumnDefinition.setUsage(oldIFColumnDefinition.getField().getUsage());
+
+					  newCoConstraintsTable.setIfColumnDefinition(newIfColumnDefinition);
+					  
+					  List<CoConstraintUserColumnDefinition> newUserColumnDefinitionList = new ArrayList<CoConstraintUserColumnDefinition>();
+					  
+					  CoConstraintUserColumnDefinition newDescriptionColumnDefinition = new CoConstraintUserColumnDefinition();
+					  CoConstraintUserColumnDefinition newCommentsColumnDefinition = new CoConstraintUserColumnDefinition();
+					  
+					  newDescriptionColumnDefinition.setId("Description");
+					  newDescriptionColumnDefinition.setTitle("Description");
+					  newCommentsColumnDefinition.setId("Comments");
+					  newCommentsColumnDefinition.setTitle("Comments");
+					  
+					  newUserColumnDefinitionList.add(newDescriptionColumnDefinition);
+					  newUserColumnDefinitionList.add(newCommentsColumnDefinition);
+					  
+					  newCoConstraintsTable.setUserColumnDefinitionList(newUserColumnDefinitionList);		
+					  
+					  List<CoConstraintIFColumnData> ifColumnData = new ArrayList<CoConstraintIFColumnData>();
+					  Map<String, List<CoConstraintUSERColumnData>> userMapData = new HashMap<String, List<CoConstraintUSERColumnData>>();
+					  List<CoConstraintUSERColumnData> newDescriptionColumnData = new ArrayList<CoConstraintUSERColumnData>();
+					  List<CoConstraintUSERColumnData> newCommentsColumnData = new ArrayList<CoConstraintUSERColumnData>();
+					  
+					  for(CoConstraint cc : oldCoConstraints.getConstraints()){
+						  CoConstraintIFColumnData newCoConstraintIFColumnData = new CoConstraintIFColumnData();
+						  ValueData valueData = new ValueData();
+						  valueData.setValue(cc.getValues().get(0).getValue());
+						  newCoConstraintIFColumnData.setValueData(valueData);
+						  ifColumnData.add(newCoConstraintIFColumnData);
+						  
+						  CoConstraintUSERColumnData newCoConstraintDESCColumnData = new CoConstraintUSERColumnData();
+						  newCoConstraintDESCColumnData.setText(cc.getDescription());
+						  newDescriptionColumnData.add(newCoConstraintDESCColumnData);
+						  
+						  CoConstraintUSERColumnData newCoConstraintCOMMENTSColumnData = new CoConstraintUSERColumnData();
+						  newCoConstraintCOMMENTSColumnData.setText(cc.getComments());
+						  newCommentsColumnData.add(newCoConstraintCOMMENTSColumnData);
+					  }
+					  
+					  userMapData.put("Description", newDescriptionColumnData);
+					  userMapData.put("Comments", newCommentsColumnData);
+					  newCoConstraintsTable.setIfColumnData(ifColumnData);
+					  newCoConstraintsTable.setUserMapData(userMapData);
+					  
+					  List<CoConstraintColumnDefinition> thenColumnDefinitionList = new ArrayList<CoConstraintColumnDefinition>();
+					  Map<String, List<CoConstraintTHENColumnData>> thenMapData = new HashMap<String, List<CoConstraintTHENColumnData>>();
+					  
+					  for(int i=1; i<oldCoConstraints.getColumnList().size(); i++){
+						  CoConstraintColumnDefinition newTHENColumnDefinition = new CoConstraintColumnDefinition();
+						  CoConstraintsColumn oldTHENColumnDefinition = oldCoConstraints.getColumnList().get(i);
+						  
+						  Datatype oldChildIdOfTHEN = datatypeService.findById(oldTHENColumnDefinition.getField().getDatatype().getId());
+						  
+						  newTHENColumnDefinition.setConstraintPath(oldTHENColumnDefinition.getField().getPosition() + "[1]");
+						  newTHENColumnDefinition.setPath(oldTHENColumnDefinition.getField().getPosition() + "");
+						  newTHENColumnDefinition.setType("field");
+						  newTHENColumnDefinition.setName(oldChildIdOfTHEN.getName());
+						  if(oldTHENColumnDefinition.getField().getPosition().equals(2)){
+							  newTHENColumnDefinition.setdMReference(true);
+							  newTHENColumnDefinition.setConstraintType("dmr");
+						  }else {
+							  newTHENColumnDefinition.setdMReference(false);  
+							  if(oldTHENColumnDefinition.getConstraintType().equals("vs")){
+								  newTHENColumnDefinition.setConstraintType("valueset");
+							  }else{
+								  newTHENColumnDefinition.setConstraintType("value");
+							  }
+						  }
+						  
+						  newTHENColumnDefinition.setDtId(oldTHENColumnDefinition.getField().getDatatype().getId());
+						  newTHENColumnDefinition.setId(ObjectId.get().toString());
+						  
+						  if(oldChildIdOfTHEN.getComponents() != null && oldChildIdOfTHEN.getComponents().size() > 0){
+							  newTHENColumnDefinition.setPrimitive(false);						  
+						  }else {
+							  newTHENColumnDefinition.setPrimitive(true);	
+						  }
+						  
+						  newTHENColumnDefinition.setUsage(oldTHENColumnDefinition.getField().getUsage());
+						  
+						  thenColumnDefinitionList.add(newTHENColumnDefinition);
+						  List<CoConstraintTHENColumnData> thenData = new ArrayList<CoConstraintTHENColumnData> ();
+						  
+						  for(CoConstraint cc : oldCoConstraints.getConstraints()){
+							  String value = cc.getValues().get(oldTHENColumnDefinition.getColumnPosition()).getValue();
+							  CoConstraintTHENColumnData newCoConstraintTHENColumnData = new CoConstraintTHENColumnData();
+							  
+							  if(oldTHENColumnDefinition.getConstraintType().equals("vs")){
+								  List<ValueSetData> valueSets = new ArrayList<ValueSetData>();
+								  Table t = tableService.findById(value);
+								  if(t != null){
+									  ValueSetData valueSetData = new ValueSetData();
+									  valueSetData.setTableId(value);
+									  valueSets.add(valueSetData);
+								  }
+								  newCoConstraintTHENColumnData.setValueSets(valueSets);								  
+							  }else {
+								  ValueData valueData = new ValueData();
+								  valueData.setValue(value);
+								  newCoConstraintTHENColumnData.setValue(valueData);
+							  }
+							  thenData.add(newCoConstraintTHENColumnData);
+						  }
+						  thenMapData.put(newTHENColumnDefinition.getId(), thenData);
+					  }
+					  
+					  newCoConstraintsTable.setThenColumnDefinitionList(thenColumnDefinitionList);
+					  newCoConstraintsTable.setThenMapData(thenMapData);					
+					  
+					  s.setCoConstraintsTable(newCoConstraintsTable);
+					  segmentService.save(s);
+				  }
+			  }
+		  }
+	  }
   }
 
   private void DeleteProfileComponents() throws IGDocumentException {
