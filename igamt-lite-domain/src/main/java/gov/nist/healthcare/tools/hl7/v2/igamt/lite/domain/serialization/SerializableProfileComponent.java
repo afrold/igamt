@@ -1,11 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -127,6 +129,17 @@ public class SerializableProfileComponent extends SerializableSection {
                             .addAttribute(new Attribute("DefinitionText", definitionTexts.get(subProfileComponentAttributes)));
                     }
                     profileComponentElement.appendChild(subProfileComponentElement);
+                    if(subProfileComponent.getPredicates()!=null && !subProfileComponent.getPredicates().isEmpty()){
+                    	List<SerializableConstraint> serializableConstraints = new ArrayList<>();
+                    	for(Predicate predicate : subProfileComponent.getPredicates()){
+                    		SerializableConstraint serializableConstraint = new SerializableConstraint(predicate, subProfileComponent.getPath());
+                    		serializableConstraints.add(serializableConstraint);
+                    	}
+                    	if(!serializableConstraints.isEmpty()){
+                    		profileComponentElement.appendChild(new SerializableConstraints(serializableConstraints, this.profileComponent.getId(), "", "Conformance Statements", "").serializeElement());
+                    	}
+                    }
+                    	
                 }
             }
         }
