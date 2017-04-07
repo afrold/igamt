@@ -16,16 +16,10 @@
 
 </div>
 
-
-<div class="container">
-    <md-checkbox class="md-primary" ng-model="tableStyleExportConfig.includePC" ng-change="setChanged()">
-
-        Include Profile Component</md-checkbox>
-</div>
 <div layout="row" layout-align="center start" style="width:100%">
     <div flex="50" class="conf-box" >
         <div class="page-header">
-            <span class="header5">Message Table Options</span>
+            <span class="header5"><md-checkbox class="md-primary" ng-model="tableStyleExportConfig.includeMessageTable" ng-change="setChanged()"/>Message Table Options</span>
         </div>
         <div layout="row" layout-align="center start" style="width:100%">
 
@@ -71,7 +65,7 @@
 
     <div flex="50" class="conf-box">
         <div class="page-header">
-            <span class="header5">Segment Table Options</span>
+            <span class="header5"><md-checkbox class="md-primary" ng-model="tableStyleExportConfig.includeSegmentTable" ng-change="setChanged()"/>Segment Table Options</span>
         </div>
         <div layout="row" layout-align="center start" style="width:100%">
             <div class="panel panel-default" flex="50">
@@ -141,7 +135,7 @@
     <div flex="50" class="conf-box" >
         <div class="page-header">
 
-            <span class="header5">Data Type Table Options</span>
+            <span class="header5"><md-checkbox class="md-primary" ng-model="tableStyleExportConfig.includeDatatypeTable" ng-change="setChanged()"/>Data Type Table Options</span>
         </div>
         <div layout="row" layout-align="center start" style="width:100%">
 
@@ -207,7 +201,7 @@
     <div flex="50" class="conf-box">
         <div class="page-header">
 
-            <span class="header5">Value Sets Table Options</span>
+            <span class="header5"><md-checkbox class="md-primary" ng-model="tableStyleExportConfig.includeValueSetsTable" ng-change="setChanged()"/>Value Sets Table Options</span>
         </div>
         <div layout="row" layout-align="center start" style="width:100%">
             <div class="panel panel-default" flex="50">
@@ -263,7 +257,7 @@
 <div layout="row" layout-align="center start" style="width:100%">
     <div flex="50" class="conf-box" >
         <div class="page-header">
-            <span class="header5">Composite Profile Table Options</span>
+            <span class="header5"><md-checkbox class="md-primary" ng-model="tableStyleExportConfig.includeCompositeProfileTable" ng-change="setChanged()"/>Composite Profile Table Options</span>
         </div>
         <div layout="row" layout-align="center start" style="width:100%">
             <div class="panel panel-default" flex="50">
@@ -300,7 +294,7 @@
 
     <div flex="50" class="conf-box">
         <div class="page-header">
-            <span class="header5">Profile Component Table Options</span>
+            <span class="header5"><md-checkbox class="md-primary" ng-model="tableStyleExportConfig.includeProfileComponentTable" ng-change="setChanged()"/>Profile Component Table Options</span>
         </div>
         <div layout="row" layout-align="center start" style="width:100%">
             <div class="panel panel-default" flex="50">

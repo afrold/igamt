@@ -95,8 +95,8 @@ public class SerializableProfileComponent extends SerializableSection {
                             subProfileComponentElement.addAttribute(new Attribute("ValueSet", StringUtils.join(valueSets, ", ")));
                         }
                     }
-                    if(subProfileComponent.getSingleElementValues()!=null){
-                        subProfileComponentElement.addAttribute(new Attribute("SingleElement",
+                    if(subProfileComponent.getSingleElementValues()!=null && subProfileComponent.getSingleElementValues().getValue() != null){
+                    	subProfileComponentElement.addAttribute(new Attribute("SingleElement",
                             subProfileComponent.getSingleElementValues().getValue()));
                     }
 
