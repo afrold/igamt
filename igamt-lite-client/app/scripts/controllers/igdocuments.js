@@ -31,13 +31,15 @@ angular.module('igl')
     };
     $rootScope.usageF = false;
     $scope.nodeReady = true;
-    $scope.igDocumentTypes = [{
+    $scope.igDocumentTypes = [
+        {
+            name: "Access My implementation guides",
+            type: 'USER'
+        },
+        {
         name: "Browse Existing Preloaded Implementation Guides",
         type: 'PRELOADED'
-    }, {
-        name: "Access My implementation guides",
-        type: 'USER'
-    }, {
+    },{
         name: "Shared Implementation Guides",
         type: 'SHARED'
     }];
@@ -457,6 +459,14 @@ angular.module('igl')
         $scope.tocView = 'views/toc.html';
         blockUI.stop();
 
+    }
+    $scope.displayTree=function(bool){
+        if(bool){
+            $scope.displayRegularTree();
+        }
+        else{
+            $scope.displayFilteredTree();
+        }
     }
 
     $scope.edit = function(igdocument) {
