@@ -44,18 +44,7 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         String type = "ConformanceStatement";
         List<ConformanceStatement> generatedConformanceStatements = message.retrieveAllConformanceStatements();
-        ArrayList<ConformanceStatement> conformanceStatementsList = new ArrayList<>();
-        for(ConformanceStatement conformanceStatement : generatedConformanceStatements){
-        	if(conformanceStatement!= null){
-        		conformanceStatementsList.add(conformanceStatement);
-        	}
-        }
-        for(ConformanceStatement conformanceStatement : message.getConformanceStatements()){
-        	if(conformanceStatement!= null){
-        		conformanceStatementsList.add(conformanceStatement);
-        	}
-        }
-        SerializableConstraints serializableConformanceStatements = serializeConstraints(conformanceStatementsList,message.getName(),message.getPosition(),type);
+        SerializableConstraints serializableConformanceStatements = serializeConstraints(generatedConformanceStatements,message.getName(),message.getPosition(),type);
         type = "ConditionPredicate";
         SerializableConstraints serializablePredicates = serializeConstraints(message.getPredicates(),message.getName(),message.getPosition(),type);
         int segmentSectionPosition = 1;

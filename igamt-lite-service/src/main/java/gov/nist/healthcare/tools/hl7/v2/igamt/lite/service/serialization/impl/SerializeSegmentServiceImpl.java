@@ -100,18 +100,7 @@ import java.util.Map;
                 }
             }
             List<ConformanceStatement> generatedConformanceStatements = segment.retrieveAllConformanceStatements();
-            ArrayList<ConformanceStatement> conformanceStatementsList = new ArrayList<>();
-            for(ConformanceStatement conformanceStatement : generatedConformanceStatements){
-            	if(conformanceStatement!= null){
-            		conformanceStatementsList.add(conformanceStatement);
-            	}
-            }
-            for(ConformanceStatement conformanceStatement : segment.getConformanceStatements()){
-            	if(conformanceStatement!= null){
-            		conformanceStatementsList.add(conformanceStatement);
-            	}
-            }
-            segment.setConformanceStatements(conformanceStatementsList);
+            segment.setConformanceStatements(generatedConformanceStatements);
             List<SerializableConstraint> constraints =
                 serializeConstraintService.serializeConstraints(segment, segment.getName() + "-");
             Map<Field, Datatype> fieldDatatypeMap = new HashMap<>();
