@@ -4310,25 +4310,6 @@ angular.module('igl').controller('EditSingleElementCtrl', function($scope, $root
     };
 });
 
-angular.module('igl').controller('EditIFDataCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentIndex) {
-    $scope.data = angular.copy($rootScope.segment.coConstraintsDefinition.columnDataIf[currentIndex].values);
-    $scope.deleteValue = function(index){
-        if (index >= 0) {
-            $scope.data.splice(index, 1);
-        }
-    };
-    $scope.addValue = function() {
-        $scope.data.push("");
-    };
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-
-    $scope.close = function() {
-        $modalInstance.close($scope.data);
-    };
-});
-
 angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentId, currentIndex) {
     $scope.data = angular.copy($rootScope.segment.coConstraintsTable.thenMapData[currentId][currentIndex]);
 
@@ -4413,18 +4394,6 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
         $scope.listOfBindingLocations = null;
     }
 
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-
-    $scope.close = function() {
-        $modalInstance.close($scope.data);
-    };
-});
-
-
-angular.module('igl').controller('EditDecriptionCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentId, currentIndex) {
-    $scope.data = angular.copy($rootScope.segment.coConstraintsDefinition.mapDataDesc[currentId][currentIndex].text);
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
