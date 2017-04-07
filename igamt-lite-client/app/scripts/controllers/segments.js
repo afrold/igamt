@@ -1433,9 +1433,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         var sev = {};
         sev.location = node.path;
         sev.value = '';
-        sev.profilePath = $rootScope.getSegmentLabel($rootScope.segment) + "." + node.path;
+        sev.profilePath = $rootScope.getSegmentLabel($rootScope.segment) + "-" + node.path;
         sev.name = node.name;
-        console.log(sev);
         $rootScope.segment.singleElementValues.push(sev);
         node.sev = sev;
         node.sev.from = 'segment';
