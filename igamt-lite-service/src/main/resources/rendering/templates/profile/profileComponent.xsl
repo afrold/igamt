@@ -278,7 +278,7 @@
                 </xsl:element>
             </xsl:element>
         </xsl:element>
-    	<xsl:if test="count(Constraint[@Type='pre']) &gt; 0">
+    	<xsl:if test="count(Constraints/Constraint[@Type='pre']) &gt; 0">
                 <xsl:element name="h4">
                     <xsl:text>Conditional Predicates</xsl:text>
                 </xsl:element>
@@ -288,7 +288,7 @@
                     </xsl:attribute>
                     <xsl:call-template name="predicateHeader"/>
                     <xsl:element name="tbody">
-                        <xsl:for-each select="./Constraint[@Type='pre']">
+                        <xsl:for-each select="./Constraints/Constraint[@Type='pre']">
                             <xsl:sort select="@Position" data-type="number"></xsl:sort>
                             <xsl:call-template name="ConstraintContent">
                                 <xsl:with-param name="mode">
