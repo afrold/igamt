@@ -3024,6 +3024,7 @@ label.input-left {
 md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
     color: rgb(114, 127, 201) !important;
     background: rgb(114, 127, 201) !important;
+    height:5px;
 }
 .panel-primary>.panel-heading {
     color: #fff;
@@ -3044,4 +3045,11 @@ md-chips.md-default-theme .md-chips, md-chips .md-chips {
 md-chips.md-default-theme md-chip, md-chips md-chip {
     background: #999;;
     color: rgba(255,255,255,0.87);
+}
+
+.buttonForIgList{
+    max-width: 9px !important;
+    min-width: 32px;
+    /* width: 71px !important; */
+    max-height: 16px;
 }

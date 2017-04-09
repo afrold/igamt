@@ -12,38 +12,6 @@
     }
 </script>
 <div class="row">
-    <!--<div class="col-md-12">-->
-    <!--<form id="selectIgTypeForm" class="form-horizontal">-->
-    <!--<div class="form-group">-->
-    <!--<div style="margin-left: 15px"-->
-    <!--class="btn-group btn-group-sm pull-left" data-toggle="buttons">-->
-    <!--&lt;!&ndash;<label class="btn btn-raised btn-raised  btn-primary btn-sm" ng-click="selectIGDocumentType(tt.type)" ng-class="{'active':igDocumentConfig.selectedType === tt.type}" ng-repeat="tt in igDocumentTypes | uppercase">&ndash;&gt;-->
-    <!--&lt;!&ndash;<input ng-disabled="loading" type="radio" ng-value="tt.type" ng-model="$parent.igDocumentConfig.selectedType"><i class="fa fa-th-list"></i> {{tt.name}}&ndash;&gt;-->
-    <!--&lt;!&ndash;</label>&ndash;&gt;-->
-    <!--<div class="btn-group btn-group-raised" role="group" aria-label="">-->
-    <!--<md-button type="button" ng-click="selectIGDocumentType(tt.type)"-->
-    <!--ng-class="{'active':igDocumentConfig.selectedType === tt.type}"-->
-    <!--ng-repeat="tt in igDocumentTypes | uppercase"-->
-    <!--class="btn btn-raised btn-primary igl-btn-choice">-->
-    <!--<i class="fa fa-th-list"></i> {{::tt.name}}-->
-    <!--</md-button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="pull-right" style="margin-right: 20px">-->
-    <!--<md-button type="button"-->
-    <!--class="btn md-primary btn-raised btn-raised btn-info btn-raised"-->
-    <!--ng-click="hl7Versions('btn')" ng-controller="HL7VersionsDlgCtrl">-->
-    <!--<i class="fa fa-plus"></i> Create New IG Document-->
-    <!--</md-button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</form>-->
-    <!--</div>-->
-
-
-    <!--<div ng-hide="loading">-->'
-
-
     <md-tabs md-dynamic-height md-border-bottom>
         <md-tab md-active="tabs[0].active" ng-repeat="tt in igDocumentTypes" md-on-select="selectIGDocumentType(tt.type)" >
             <md-tab-label>
@@ -60,51 +28,103 @@
                     </md-button>
                     </div>
                     <div ng-show="error === null">
-                        <!--<div class="">-->
-                        <!--<h5><b>{{igContext.igType.name}}</b>, Total#: {{igs.length}}</h5>-->
 
-                        <div>
-                            <div class="">
                                 <div class="" style="min-height: 800px;">
 
-                                    <md-content class="page-container container">
-                                        <md-card class="page-container container">
-                                            <mdlist flex dnd-list="tmpIgs" class="container">
+                                    <md-content class= "container">
+                                            <mdlist flex dnd-list="tmpIgs" class="container" style="padding: 39px; margin-top: 12px;">
                                                 <md-list-item ng-repeat="row in tmpIgs" layout="row" dnd-draggable="row"
                                                               dnd-moved="tmpIgs.splice($index, 1);orderIgs(tmpIgs)"
-                                                              dnd-effect-allowed="move" style="border-bottom: 1px solid;
-    					padding-bottom: 18px;
-    				background-color: #f5f5ee;">
+                                                              dnd-effect-allowed="move" style="border-bottom: 0.5px solid;padding: 18px; border-bottom: 0.1px solid;
+                                                              padding: 18px;
+                                                              border-bottom-color: gray;
+                                                              border-bottom-style: dashed">
 
-                                                    <!--<img ng-src="{{row.metaData.coverPicture}}" class="md-avatar" alt="{{item.who}}" flex/>-->
-                                                    <div flex class="upload_thumbnail">
-                                                        <img ng-src="{{row.metaData.coverPicture}}"
-                                                             style="max-height: 150px;"/>
-                                                    </div>
-                                                    <div flex class="md-list-item-text" layout="column">
+
+
+                                                                    <img ng-src="{{row.metaData.coverPicture}}" style="max-height: 150px;" class="md-avatar"/>
+
+
+                                                    <div flex class="md-list-item-text" layout="column" style="margin-left: 5px;">
 
                                                         <span class="md-headline">{{row.metaData.title}}</span>
-                                                        <span class="md-subhead">
-															<i class="fa fa-calendar" aria-hidden="true"></i>
-															Updated {{row.dateUpdated | date:dateFormat}}
-															 <span ng-if="row.owner" style="font-style: italic;">
-															<i class="fa fa-user" aria-hidden="true"></i>
-															,{{row.owner}}
-												 </span>
-													<span>,HL7 Version: {{row.profile.metaData.hl7Version}}</span>
-												</span>
+                                                            <div class="md-subhead" flex layout="row" layout-align="start start">
+                                                                <div flex="20">
+                                                                          <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                             Updated {{row.dateUpdated | date:dateFormat}}
+                                                                            <span ng-if="row.owner" style="font-style: italic;"></span>
+                                                                             <i class="fa fa-user" aria-hidden="true"></i>
+                                                                           ,{{row.owner}}
+                                                                            <span>,HL7 Version: {{row.profile.metaData.hl7Version}}</span>
+                                                                </div>
 
 
-                                                        <div flex>
+                                                                <div flex="80" layout="row" layout-align="end end" style="margin-top:-14px;">
+                                                                                    <md-button ng-if="igDocumentConfig.selectedType === 'USER'" md-colors="{background:'blue'}"
+                                                                                               title="Edit IG Document" type="button"
+                                                                                               ng-click="edit(row)" class="buttonForIgList">
+                                                                                        <span><i class="fa fa-pencil fa-fw"></i></span>
+                                                                                    </md-button>
+                                                                                    <md-button title="View IG Document" type="button" md-colors="{background:'grey'}"
+                                                                                               ng-click="view(row)" class="buttonForIgList">
+                                                                                        <span><i class="fa fa-eye fa-fw"></i></span>
+                                                                                    </md-button>
+                                                                                    <md-button title="Create Copy of IG Document" type="button" md-colors="{background:'light-blue'}"
+                                                                                               ng-click="clone(row);selectIGDocumentType('USER')" class="buttonForIgList">
+                                                                                        <span style="color:white"><i class="fa fa-plus fa-fw"></i></span>
+                                                                                    </md-button>
+                                                                                    <md-button title="Delete IG Document" type="button"
+                                                                                               ng-if="igDocumentConfig.selectedType === 'USER'" md-colors="{background:'red'}"
+                                                                                               ng-click="confirmDelete(row)" class="buttonForIgList">
+                                                                                        <span><i class="fa fa-trash-o fa-fw"></i></span>
+                                                                                    </md-button>
+                                                                                    <div ng-if="row.comment === 'PENDING_APPROVAL'">
+                                                                                        <md-button title="Approve Share Document" type="button"
+                                                                                                   ng-click="confirmShareDocument(row)" md-colors="{background:'blue'}" class="buttonForIgList">
+                                                                                    <span><i class="fa fa-check fa-fw"
+                                                                                             aria-hidden="true"></i>Accept</span>
+                                                                                        </md-button>
+                                                                                        <md-button title="Reject Share Document" type="button" md-colors="{background:'blue-grey'}"
+                                                                                                   ng-click="rejectShareDocument(row)" class="buttonForIgList">
+                                                                                    <span><i class="fa fa-times fa-fw"
+                                                                                             aria-hidden="true"></i>Reject</span>
+                                                                                        </md-button>
 
-                                                            <md-chips ng-model="row.profile.messages.children"
+
+                                                                                    </div>
+
+                                                                </div>
+												             </div>
+
+
+
+
+                                                        <div flex layout="row">
+                                                            <h5 flex="10">Conformance Profiles</h5>
+                                                            <md-chips flex="90" ng-model="row.profile.messages.children"
                                                                       readonly="chipsReadOnly" md-removable="false"
                                                                       class="md-primary">
                                                                 <md-chip-template>
-														<span>
-														  <strong class="md-primary"> {{$chip.name}}</strong>
+														       <span style="font-size: 9px">
+														           <strong> {{$chip.name}}</strong>
 
-														</span>
+														          </span>
+                                                                </md-chip-template>
+
+                                                            </md-chips>
+
+
+                                                        </div>
+                                                        <div flex layout="row" ng-if="row.shareParticipants&&row.shareParticipants.length">
+                                                            <h5 flex="10">Participants</h5>
+                                                            <md-chips flex="90" ng-model="row.shareParticipants"
+                                                                      readonly="chipsReadOnly" md-removable="false"
+                                                                      class="md-primary">
+                                                                <md-chip-template>
+														       <span style="font-size: 9px">
+														           <strong> {{$chip.fullname}}</strong>
+
+                                                               </span>
                                                                 </md-chip-template>
 
                                                             </md-chips>
@@ -113,49 +133,9 @@
                                                         </div>
 
 
-                                                        <div flex layout="row" layout-align="end end">
-                                                            <md-button ng-if="igDocumentConfig.selectedType === 'USER'"
-                                                                       title="Edit IG Document" type="button"
-                                                                       class="btn btn-raised btn-raised btn-xs btn-primary"
-                                                                       ng-click="edit(row)">
-                                                                <span><i class="fa fa-pencil fa-fw"></i></span>
-                                                            </md-button>
-                                                            <md-button title="View IG Document" type="button"
-                                                                       class="btn btn-raised btn-raised btn-xs btn-default"
-                                                                       ng-click="view(row)">
-                                                                <span><i class="fa fa-eye fa-fw"></i></span>
-                                                            </md-button>
-                                                            <md-button title="Create Copy of IG Document" type="button"
-                                                                       class="btn btn-raised btn-raised btn-xs btn-info"
-                                                                       ng-click="clone(row);selectIGDocumentType('USER')">
-                                                                <span><i class="fa fa-plus fa-fw"></i></span>
-                                                            </md-button>
-                                                            <md-button title="Delete IG Document" type="button"
-                                                                       class="btn btn-raised btn-raised btn-xs btn-danger"
-                                                                       ng-if="igDocumentConfig.selectedType === 'USER'"
-                                                                       ng-click="confirmDelete(row)">
-                                                                <span><i class="fa fa-trash-o fa-fw"></i></span>
-                                                            </md-button>
-                                                            <div ng-if="row.comment === 'PENDING_APPROVAL'">
-                                                                <md-button title="Approve Share Document" type="button"
-                                                                           class="btn btn-raised btn-raised btn-xs btn-success"
-                                                                           ng-click="confirmShareDocument(row)">
-                                                                    <span><i class="fa fa-check fa-fw"
-                                                                             aria-hidden="true"></i>Accept</span>
-                                                                </md-button>
-                                                                <md-button title="Reject Share Document" type="button"
-                                                                           class="btn btn-raised btn-raised btn-xs btn-danger"
-                                                                           ng-click="rejectShareDocument(row)">
-                                                                    <span><i class="fa fa-times fa-fw"
-                                                                             aria-hidden="true"></i>Reject</span>
-                                                                </md-button>
-
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </md-list-item>
 
-                                                <md-divider></md-divider>
 
 
                                                 <md-list-item class="dndPlaceholder"
@@ -168,286 +148,21 @@
                                                 </md-list-item>
                                             </mdlist>
 
-                                        </md-card>
 
                                     </md-content>
-
-
                                 </div>
                             </div>
-                        </div>
-                    </div>
                 </div>
+
+
 
             </md-tab-body>
         </md-tab>
-        <!--<md-tab md-active="tabs[1].active" md-on-select="make_active(1)">-->
-            <!--<md-tab-label>-->
-                <!--<i class="fa fa-file-text-o fa-fw"></i> Preloaded Implementation Guides-->
-
-            <!--</md-tab-label>-->
-            <!--<md-tab-body>-->
-                <!--<div class="col-md-12">-->
-                    <!--<div ng-show="error === null">-->
-                        <!--&lt;!&ndash;<div class="">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<h5><b>{{igContext.igType.name}}</b>, Total#: {{igs.length}}</h5>&ndash;&gt;-->
-
-                        <!--<div>-->
-                            <!--<div class="">-->
-                                <!--<div class="" style="min-height: 800px;">-->
-
-                                    <!--<md-content class="page-container container">-->
-                                        <!--<md-card class="page-container container">-->
-                                            <!--<mdlist flex dnd-list="tmpIgs" class="container">-->
-                                                <!--<md-list-item ng-repeat="row in tmpIgs" layout="row" dnd-draggable="row"-->
-                                                              <!--dnd-moved="tmpIgs.splice($index, 1);orderIgs(tmpIgs)"-->
-                                                              <!--dnd-effect-allowed="move" style="border-bottom: 1px solid;-->
-    					<!--padding-bottom: 18px;-->
-    				<!--background-color: #f5f5ee;">-->
-
-                                                    <!--&lt;!&ndash;<img ng-src="{{row.metaData.coverPicture}}" class="md-avatar" alt="{{item.who}}" flex/>&ndash;&gt;-->
-                                                    <!--<div flex class="upload_thumbnail">-->
-                                                        <!--<img ng-src="{{row.metaData.coverPicture}}"-->
-                                                             <!--style="max-height: 150px;"/>-->
-                                                    <!--</div>-->
-                                                    <!--<div flex class="md-list-item-text" layout="column">-->
-
-                                                        <!--<span class="md-headline">{{row.metaData.title}}</span>-->
-                                                        <!--<span class="md-subhead">-->
-															<!--<i class="fa fa-calendar" aria-hidden="true"></i>-->
-															<!--Updated {{row.dateUpdated | date:dateFormat}}-->
-															 <!--<span ng-if="row.owner" style="font-style: italic;">-->
-															<!--<i class="fa fa-user" aria-hidden="true"></i>-->
-															<!--,{{row.owner}}-->
-												 <!--</span>-->
-													<!--<span>,HL7 Version: {{row.profile.metaData.hl7Version}}</span>-->
-												<!--</span>-->
-
-
-                                                        <!--<div flex>-->
-
-                                                            <!--<md-chips ng-model="row.profile.messages.children"-->
-                                                                      <!--readonly="chipsReadOnly" md-removable="false"-->
-                                                                      <!--class="md-primary">-->
-                                                                <!--<md-chip-template>-->
-														<!--<span>-->
-														  <!--<strong class="md-primary"> {{$chip.name}}</strong>-->
-
-														<!--</span>-->
-                                                                <!--</md-chip-template>-->
-
-                                                            <!--</md-chips>-->
-
-
-                                                        <!--</div>-->
-
-
-                                                        <!--<div flex layout="row" layout-align="end end">-->
-                                                            <!--<md-button ng-if="igDocumentConfig.selectedType === 'USER'"-->
-                                                                       <!--title="Edit IG Document" type="button"-->
-                                                                       <!--class="btn btn-raised btn-raised btn-xs btn-primary"-->
-                                                                       <!--ng-click="edit(row)">-->
-                                                                <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
-                                                            <!--</md-button>-->
-                                                            <!--<md-button title="View IG Document" type="button"-->
-                                                                       <!--class="btn btn-raised btn-raised btn-xs btn-default"-->
-                                                                       <!--ng-click="view(row)">-->
-                                                                <!--<span><i class="fa fa-eye fa-fw"></i></span>-->
-                                                            <!--</md-button>-->
-                                                            <!--<md-button title="Create Copy of IG Document" type="button"-->
-                                                                       <!--class="btn btn-raised btn-raised btn-xs btn-info"-->
-                                                                       <!--ng-click="clone(row);selectIGDocumentType('USER')">-->
-                                                                <!--<span><i class="fa fa-plus fa-fw"></i></span>-->
-                                                            <!--</md-button>-->
-                                                            <!--<md-button title="Delete IG Document" type="button"-->
-                                                                       <!--class="btn btn-raised btn-raised btn-xs btn-danger"-->
-                                                                       <!--ng-if="igDocumentConfig.selectedType === 'USER'"-->
-                                                                       <!--ng-click="confirmDelete(row)">-->
-                                                                <!--<span><i class="fa fa-trash-o fa-fw"></i></span>-->
-                                                            <!--</md-button>-->
-                                                            <!--<div ng-if="row.comment === 'PENDING_APPROVAL'">-->
-                                                                <!--<md-button title="Approve Share Document" type="button"-->
-                                                                           <!--class="btn btn-raised btn-raised btn-xs btn-success"-->
-                                                                           <!--ng-click="confirmShareDocument(row)">-->
-                                                                    <!--<span><i class="fa fa-check fa-fw"-->
-                                                                             <!--aria-hidden="true"></i>Accept</span>-->
-                                                                <!--</md-button>-->
-                                                                <!--<md-button title="Reject Share Document" type="button"-->
-                                                                           <!--class="btn btn-raised btn-raised btn-xs btn-danger"-->
-                                                                           <!--ng-click="rejectShareDocument(row)">-->
-                                                                    <!--<span><i class="fa fa-times fa-fw"-->
-                                                                             <!--aria-hidden="true"></i>Reject</span>-->
-                                                                <!--</md-button>-->
-
-                                                            <!--</div>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                <!--</md-list-item>-->
-
-                                                <!--<md-divider></md-divider>-->
-
-
-                                                <!--<md-list-item class="dndPlaceholder"-->
-                                                              <!--style="min-height: 60px; width: 100%;background-color: #0b3e6f ;color:white">-->
-
-
-                                                    <!--<strong> Drop Here </strong>-->
-                                                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
-                                                    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
-                                                <!--</md-list-item>-->
-                                            <!--</mdlist>-->
-
-                                        <!--</md-card>-->
-
-                                    <!--</md-content>-->
-
-
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-            <!--</md-tab-body>-->
-        <!--</md-tab>-->
-        <!--<md-tab md-active="tabs[2].active" md-on-select="make_active(2)">-->
-            <!--<md-tab-label>-->
-                <!--<i class="fa fa-file-text-o fa-fw"></i> Shared Implementation Guides-->
-
-            <!--</md-tab-label>-->
-            <!--<md-tab-body>-->
-                <!--<div class="col-md-12">-->
-                    <!--<div ng-show="error === null">-->
-                        <!--&lt;!&ndash;<div class="">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<h5><b>{{igContext.igType.name}}</b>, Total#: {{igs.length}}</h5>&ndash;&gt;-->
-
-                        <!--<div>-->
-                            <!--<div class="">-->
-                                <!--<div class="" style="min-height: 800px;">-->
-
-                                    <!--<md-content class="page-container container">-->
-                                        <!--<md-card class="page-container container">-->
-                                            <!--<mdlist flex dnd-list="tmpIgs" class="container">-->
-                                                <!--<md-list-item ng-repeat="row in tmpIgs" layout="row" dnd-draggable="row"-->
-                                                              <!--dnd-moved="tmpIgs.splice($index, 1);orderIgs(tmpIgs)"-->
-                                                              <!--dnd-effect-allowed="move" style="border-bottom: 1px solid;-->
-    					<!--padding-bottom: 18px;-->
-    				<!--background-color: #f5f5ee;">-->
-
-                                                    <!--&lt;!&ndash;<img ng-src="{{row.metaData.coverPicture}}" class="md-avatar" alt="{{item.who}}" flex/>&ndash;&gt;-->
-                                                    <!--<div flex class="upload_thumbnail">-->
-                                                        <!--<img ng-src="{{row.metaData.coverPicture}}"-->
-                                                             <!--style="max-height: 150px;"/>-->
-                                                    <!--</div>-->
-                                                    <!--<div flex class="md-list-item-text" layout="column">-->
-
-                                                        <!--<span class="md-headline">{{row.metaData.title}}</span>-->
-                                                        <!--<span class="md-subhead">-->
-															<!--<i class="fa fa-calendar" aria-hidden="true"></i>-->
-															<!--Updated {{row.dateUpdated | date:dateFormat}}-->
-															 <!--<span ng-if="row.owner" style="font-style: italic;">-->
-															<!--<i class="fa fa-user" aria-hidden="true"></i>-->
-															<!--,{{row.owner}}-->
-												 <!--</span>-->
-													<!--<span>,HL7 Version: {{row.profile.metaData.hl7Version}}</span>-->
-												<!--</span>-->
-
-
-                                                        <!--<div flex>-->
-
-                                                            <!--<md-chips ng-model="row.profile.messages.children"-->
-                                                                      <!--readonly="chipsReadOnly" md-removable="false"-->
-                                                                      <!--class="md-primary">-->
-                                                                <!--<md-chip-template>-->
-														<!--<span>-->
-														  <!--<strong class="md-primary"> {{$chip.name}}</strong>-->
-
-														<!--</span>-->
-                                                                <!--</md-chip-template>-->
-
-                                                            <!--</md-chips>-->
-
-
-                                                        <!--</div>-->
-
-
-                                                        <!--<div flex layout="row" layout-align="end end">-->
-                                                            <!--<md-button ng-if="igDocumentConfig.selectedType === 'USER'"-->
-                                                                       <!--title="Edit IG Document" type="button"-->
-                                                                       <!--class="btn btn-raised btn-raised btn-xs btn-primary"-->
-                                                                       <!--ng-click="edit(row)">-->
-                                                                <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
-                                                            <!--</md-button>-->
-                                                            <!--<md-button title="View IG Document" type="button"-->
-                                                                       <!--class="btn btn-raised btn-raised btn-xs btn-default"-->
-                                                                       <!--ng-click="view(row)">-->
-                                                                <!--<span><i class="fa fa-eye fa-fw"></i></span>-->
-                                                            <!--</md-button>-->
-                                                            <!--<md-button title="Create Copy of IG Document" type="button"-->
-                                                                       <!--class="btn btn-raised btn-raised btn-xs btn-info"-->
-                                                                       <!--ng-click="clone(row);selectIGDocumentType('USER')">-->
-                                                                <!--<span><i class="fa fa-plus fa-fw"></i></span>-->
-                                                            <!--</md-button>-->
-                                                            <!--<md-button title="Delete IG Document" type="button"-->
-                                                                       <!--class="btn btn-raised btn-raised btn-xs btn-danger"-->
-                                                                       <!--ng-if="igDocumentConfig.selectedType === 'USER'"-->
-                                                                       <!--ng-click="confirmDelete(row)">-->
-                                                                <!--<span><i class="fa fa-trash-o fa-fw"></i></span>-->
-                                                            <!--</md-button>-->
-                                                            <!--<div ng-if="row.comment === 'PENDING_APPROVAL'">-->
-                                                                <!--<md-button title="Approve Share Document" type="button"-->
-                                                                           <!--class="btn btn-raised btn-raised btn-xs btn-success"-->
-                                                                           <!--ng-click="confirmShareDocument(row)">-->
-                                                                    <!--<span><i class="fa fa-check fa-fw"-->
-                                                                             <!--aria-hidden="true"></i>Accept</span>-->
-                                                                <!--</md-button>-->
-                                                                <!--<md-button title="Reject Share Document" type="button"-->
-                                                                           <!--class="btn btn-raised btn-raised btn-xs btn-danger"-->
-                                                                           <!--ng-click="rejectShareDocument(row)">-->
-                                                                    <!--<span><i class="fa fa-times fa-fw"-->
-                                                                             <!--aria-hidden="true"></i>Reject</span>-->
-                                                                <!--</md-button>-->
-
-                                                            <!--</div>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                <!--</md-list-item>-->
-
-                                                <!--<md-divider></md-divider>-->
-
-
-                                                <!--<md-list-item class="dndPlaceholder"-->
-                                                              <!--style="min-height: 60px; width: 100%;background-color: #0b3e6f ;color:white">-->
-
-
-                                                    <!--<strong> Drop Here </strong>-->
-                                                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
-                                                    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
-                                                <!--</md-list-item>-->
-                                            <!--</mdlist>-->
-
-                                        <!--</md-card>-->
-
-                                    <!--</md-content>-->
-
-
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-            <!--</md-tab-body>-->
-        <!--</md-tab>-->
-        <md-tabs>
+        </md-tabs>
 
 
 </div>
 
-<!--</div>-->
-<!--<div ng-show="loading" style="text-align:center">-->
-<!--<i class="fa fa-spinner fa-pulse fa-2x"></i>-->
-<!--</div>-->
 <script type="text/ng-template" id="shareRowTemplate.html">
     <div class="triangle"></div>
     <div style="z-index: 99999" class="cp-tooltip">
