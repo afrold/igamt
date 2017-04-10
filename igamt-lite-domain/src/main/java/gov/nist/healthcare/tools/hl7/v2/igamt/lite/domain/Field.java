@@ -90,7 +90,7 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
 
   }
 
-  public Field clone(HashMap<String, Datatype> dtRecords, HashMap<String, Table> tableRecords)
+  public Field clone()
       throws CloneNotSupportedException {
     Field clonedField = new Field();
 

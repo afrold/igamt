@@ -434,4 +434,12 @@ public class Datatype extends DataModelWithConstraints
 		return results;
 	}
 
+	public Component findComponentByPosition(int position) {
+		for (Component child : this.components) {
+			if (child.getPosition().equals(position))
+				return child;
+		}
+		return null;
+	}
+
 }

@@ -767,21 +767,6 @@ public class IGDocumentController extends CommonController {
     }
   }
 
-  @RequestMapping(value = "/{id}/export/xml", method = RequestMethod.POST, produces = "text/xml",
-      consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void export(@PathVariable("id") String id, HttpServletRequest request,
-      HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
-    log.info("Exporting as xml file IGDcoument with id=" + id);
-    IGDocument d = this.findIGDocument(id);
-    InputStream content = null;
-    content = exportService.exportIGDocumentAsXml(d);
-    response.setContentType("text/xml");
-    response.setHeader("Content-disposition",
-        "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
-    FileCopyUtils.copy(content, response.getOutputStream());
-  }
-
   @RequestMapping(value = "/{id}/export/html/{type}", method = RequestMethod.POST,
       produces = "text/html", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
   public void exportHtml(@PathVariable("id") String id, @PathVariable("type") String type,
@@ -854,21 +839,6 @@ public class IGDocumentController extends CommonController {
         break;
     }
     return type;
-  }
-
-  @RequestMapping(value = "/{id}/export/zip", method = RequestMethod.POST,
-      produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-  public void exportZip(@PathVariable("id") String id, HttpServletRequest request,
-      HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
-    log.info("Exporting as xml file profile with id=" + id);
-    IGDocument d = findIGDocument(id);
-    InputStream content = null;
-    content = igDocumentExport.exportAsZip(d);
-    response.setContentType("application/zip");
-    response.setHeader("Content-disposition",
-        "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
-    FileCopyUtils.copy(content, response.getOutputStream());
   }
 
   @RequestMapping(value = "/{id}/export/Validation/{mIds}", method = RequestMethod.POST,
@@ -1710,8 +1680,7 @@ public class IGDocumentController extends CommonController {
       log.info(
           "Exporting messages to GVT from IG Document with id=" + id + ", messages=" + messageIds);
       IGDocument d = findIGDocument(id);
-      InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d,
-          messageIds.toArray(new String[messageIds.size()]));
+      InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds.toArray(new String[messageIds.size()]));
       ResponseEntity<?> rsp =
           new GVTClient().send(content, GVT_URL + GVT_EXPORT_ENDPOINT, authorization);
       Map<String, Object> res = (Map<String, Object>) rsp.getBody();

@@ -48,6 +48,18 @@ public class ValueSetBinding extends ValueSetOrSingleCodeBinding  implements Ser
 		} else {
 			this.bindingStrength = ValueSetBindingStrength.R;
 		}
-	}	
+	}
+	
+	public ValueSetBinding clone(){
+		ValueSetBinding cloned = new ValueSetBinding();
+		cloned.setBindingLocation(bindingLocation);
+		cloned.setBindingStrength(bindingStrength);
+		cloned.setId(bindingLocation);
+		cloned.setLocation(bindingLocation);
+		cloned.setTableId(bindingLocation);
+		cloned.setType(bindingLocation);
+		cloned.setUsage(usage);
+		return cloned;
+	}
 	
 }

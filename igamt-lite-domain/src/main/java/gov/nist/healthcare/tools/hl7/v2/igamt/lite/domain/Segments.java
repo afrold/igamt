@@ -173,7 +173,7 @@ public class Segments extends TextbasedSectionModel implements java.io.Serializa
     clonedSegments.setChildren(new HashSet<Segment>());
     for (Segment s : this.children) {
       if (!segmentRecords.containsKey(s.getId())) {
-        Segment clonedSegment = s.clone(dtRecords, tableRecords);
+        Segment clonedSegment = s.clone();
         clonedSegment.setId(s.getId());
         clonedSegments.addSegment(clonedSegment);
         segmentRecords.put(s.getId(), clonedSegment);

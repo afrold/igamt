@@ -83,7 +83,7 @@ public class FlavorServiceImpl implements FlavorService {
       if (!pathGroups.isEmpty()) {
         Segment originalSeg = queryService.getSegmentsMap().get(segRef.getRef().getId());
         try {
-          Segment segmentFlavor = originalSeg.clone(null, null);
+          Segment segmentFlavor = originalSeg.clone();
           segmentFlavor.setExt("PC" + "_" + segRef.getPosition());
           segmentFlavor.setId(ObjectId.get().toString());
           segmentFlavor.setScope(SCOPE.USER);

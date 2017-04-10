@@ -272,7 +272,7 @@ public class Bootstrap implements InitializingBean {
 
 
 
-	  refactorCoConstrint();
+//	  refactorCoConstrint();
   }
   
   private void refactorCoConstrint(){

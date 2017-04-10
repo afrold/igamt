@@ -1,7 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -183,8 +182,7 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 		this.dynamicMapping = dynamicMapping;
 	}
 
-	public Segment clone(HashMap<String, Datatype> dtRecords, HashMap<String, Table> tableRecords)
-			throws CloneNotSupportedException {
+	public Segment clone() throws CloneNotSupportedException {
 		Segment clonedSegment = new Segment();
 		clonedSegment.setComment(comment);
 
@@ -192,7 +190,7 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 
 		clonedSegment.setFields(new ArrayList<Field>());
 		for (Field f : this.fields) {
-			clonedSegment.addField(f.clone(dtRecords, tableRecords));
+			clonedSegment.addField(f.clone());
 		}
 
 		clonedSegment.setValueSetBindings(new ArrayList<ValueSetOrSingleCodeBinding>());
@@ -388,6 +386,14 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 		results.addAll(this.retrieveConformanceStatementsForSingleCode());
 		results.addAll(this.retrieveConformanceStatementsForConstant());
 		return results;
+	}
+
+	public Field findFieldByPosition(Integer position) {
+		for (Field child : this.fields) {
+			if (child.getPosition().equals(position))
+				return child;
+		}
+		return null;
 	}
 
 }

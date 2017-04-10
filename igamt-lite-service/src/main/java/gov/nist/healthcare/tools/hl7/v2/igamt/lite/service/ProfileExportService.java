@@ -31,10 +31,6 @@ public interface ProfileExportService {
 
   InputStream exportAsXlsx(Profile p) throws IOException;
 
-  InputStream exportAsXml(Profile p) throws IOException;
-
-  InputStream exportAsZip(Profile p) throws IOException;
-
   InputStream exportAsDocx(Profile p) throws IOException;
 
   InputStream exportAsHtml(Profile p) throws IOException;
