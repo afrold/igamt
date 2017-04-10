@@ -6,7 +6,14 @@
             <xsl:attribute name="href">
                 <xsl:value-of select="concat('#{',@id,'}')"/>
             </xsl:attribute>
-            <xsl:value-of select="concat(@BindingIdentifier,' - ',@Description)"/>
+            <xsl:choose>
+            	<xsl:when test="@Name!=''">
+            		<xsl:value-of select="concat(@BindingIdentifier,' - ',@Name)"/>
+            	</xsl:when>
+            	<xsl:otherwise>
+            		<xsl:value-of select="@BindingIdentifier"/>
+            	</xsl:otherwise>
+            </xsl:choose>
         </xsl:element>
     </xsl:template>
 
