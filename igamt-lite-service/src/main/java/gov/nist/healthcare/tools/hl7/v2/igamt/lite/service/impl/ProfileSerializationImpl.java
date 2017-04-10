@@ -2196,16 +2196,34 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	private void normalizeProfile(Profile profile, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap) throws CloneNotSupportedException {
-		for(Message m:profile.getMessages().getChildren()){
-			for(ValueSetOrSingleCodeBinding binding:m.getValueSetBindings()){
+		for(String key:datatypesMap.keySet()){
+			Datatype d = datatypesMap.get(key);
+			for(ValueSetOrSingleCodeBinding binding:d.getValueSetBindings()){
 				if(binding instanceof ValueSetBinding){
 					ValueSetBinding valueSetBinding = (ValueSetBinding)binding;
-					List<ValueSetBinding> valueSetBindings = findvalueSetBinding(m.getValueSetBindings(), valueSetBinding.getBindingLocation());
+					List<ValueSetBinding> valueSetBindings = findvalueSetBinding(d.getValueSetBindings(), valueSetBinding.getBindingLocation());
 					List<String> pathList = Arrays.asList(valueSetBinding.getLocation().split("\\."));
-					SegmentRefOrGroup child = m.findChildByPosition(Integer.parseInt(pathList.remove(0)));
-					visitGroupOrSegmentRef(pathList, child, segmentsMap, datatypesMap, valueSetBindings);					
+
+
+					if(pathList.size() > 1){
+						Component c = d.findComponentByPosition(Integer.parseInt(pathList.remove(0)));
+						
+						Datatype childD = datatypesMap.get(c.getDatatype().getId());
+						Datatype copyD = childD.clone();
+						
+						int randumNum = new SecureRandom().nextInt(100000);
+						copyD.setId(d.getId() + "_" +  randumNum + "_AUTO");
+						datatypesMap.put(copyD.getId(), copyD);
+						c.getDatatype().setId(copyD.getId());
+						if(d.getId().contains("_AUTO")) {
+							datatypesMap.remove(d.getId());
+						}
+						
+						visitDatatype(pathList, copyD, datatypesMap, valueSetBindings);		
+					}
 				}
 			}
+			
 		}
 		
 		for(String key:segmentsMap.keySet()){
@@ -2239,34 +2257,16 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			
 		}
 		
-		for(String key:datatypesMap.keySet()){
-			Datatype d = datatypesMap.get(key);
-			for(ValueSetOrSingleCodeBinding binding:d.getValueSetBindings()){
+		for(Message m:profile.getMessages().getChildren()){
+			for(ValueSetOrSingleCodeBinding binding:m.getValueSetBindings()){
 				if(binding instanceof ValueSetBinding){
 					ValueSetBinding valueSetBinding = (ValueSetBinding)binding;
-					List<ValueSetBinding> valueSetBindings = findvalueSetBinding(d.getValueSetBindings(), valueSetBinding.getBindingLocation());
+					List<ValueSetBinding> valueSetBindings = findvalueSetBinding(m.getValueSetBindings(), valueSetBinding.getBindingLocation());
 					List<String> pathList = Arrays.asList(valueSetBinding.getLocation().split("\\."));
-
-
-					if(pathList.size() > 1){
-						Component c = d.findComponentByPosition(Integer.parseInt(pathList.remove(0)));
-						
-						Datatype childD = datatypesMap.get(c.getDatatype().getId());
-						Datatype copyD = childD.clone();
-						
-						int randumNum = new SecureRandom().nextInt(100000);
-						copyD.setId(d.getId() + "_" +  randumNum + "_AUTO");
-						datatypesMap.put(copyD.getId(), copyD);
-						c.getDatatype().setId(copyD.getId());
-						if(d.getId().contains("_AUTO")) {
-							datatypesMap.remove(d.getId());
-						}
-						
-						visitDatatype(pathList, copyD, datatypesMap, valueSetBindings);		
-					}
+					SegmentRefOrGroup child = m.findChildByPosition(Integer.parseInt(pathList.remove(0)));
+					visitGroupOrSegmentRef(pathList, child, segmentsMap, datatypesMap, valueSetBindings);					
 				}
 			}
-			
 		}
 		
 	}
@@ -2747,9 +2747,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			
 			if(s.getDynamicMappingDefinition() != null){
 				for (DynamicMappingItem item : s.getDynamicMappingDefinition().getDynamicMappingItems()) {
-					Datatype dt = datatypeService.findById(item.getDatatypeId());
-					if (dt != null) {
-						this.addDatatype(dt, datatypesMap);
+					if(item != null && item.getDatatypeId() != null){
+						Datatype dt = datatypeService.findById(item.getDatatypeId());
+						if (dt != null) {
+							this.addDatatype(dt, datatypesMap);
+						}	
 					}
 				}	
 			}
