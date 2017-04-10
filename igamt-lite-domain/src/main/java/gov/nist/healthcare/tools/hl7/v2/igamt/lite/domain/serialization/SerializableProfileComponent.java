@@ -27,12 +27,15 @@ public class SerializableProfileComponent extends SerializableSection {
 
     private ProfileComponent profileComponent;
     Map<SubProfileComponentAttributes,String> definitionTexts;
+    String defPreText, defPostText;
 
     public SerializableProfileComponent(String id, String prefix, String position,
-        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts) {
+        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText) {
         super(id, prefix, position, headerLevel, title);
         this.profileComponent = profileComponent;
         this.definitionTexts = definitionTexts;
+        this.defPreText = defPreText;
+        this.defPostText = defPostText;
     }
 
     @Override public Element serializeElement() {
@@ -46,6 +49,16 @@ public class SerializableProfileComponent extends SerializableSection {
         } else {
             profileComponentElement
                 .addAttribute(new Attribute("Description", new String()));
+        }
+        if ((this.defPreText != null && !this.defPreText.isEmpty()) || (this.defPostText != null && !this.defPostText.isEmpty())) {
+            if (this.defPreText != null && !this.defPreText.isEmpty()) {
+            	profileComponentElement.appendChild(super.createTextElement("DefPreText",
+                    this.defPreText));
+            }
+            if (this.defPostText != null && !this.defPostText.isEmpty()) {
+            	profileComponentElement.appendChild(super.createTextElement("DefPostText",
+                    this.defPostText));
+            }
         }
         if (this.profileComponent.getComment() != null && !this.profileComponent.getComment().isEmpty()) {
             profileComponentElement.addAttribute(new Attribute("Comment", this.profileComponent.getComment()));

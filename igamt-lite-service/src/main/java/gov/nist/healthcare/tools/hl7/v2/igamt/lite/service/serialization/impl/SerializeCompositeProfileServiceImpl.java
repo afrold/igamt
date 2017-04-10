@@ -27,9 +27,6 @@ import java.util.List;
 @Service
 public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrCompositeProfile implements SerializeCompositeProfileService {
 
-    @Autowired
-    private TableService tableService;
-
     @Override
     public SerializableCompositeProfile serializeCompositeProfile(CompositeProfile compositeProfile,
         String prefix, SerializationLayout serializationLayout, String hl7Version,
@@ -37,7 +34,7 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         String type = "ConformanceStatement";
         SerializableConstraints serializableConformanceStatements = super.serializeConstraints(
-            compositeProfile.getConformanceStatements(), compositeProfile.getName(),
+        		compositeProfile.retrieveAllConformanceStatements(), compositeProfile.getName(),
             compositeProfile.getPosition(), type);
         type = "ConditionPredicate";
         SerializableConstraints serializablePredicates = super.serializeConstraints(
