@@ -155,6 +155,7 @@ public class SerializableSection extends SerializableElement {
                         }
                         location += valueSetOrSingleCodeBinding.getLocation();
                         valueSetBindingElement.addAttribute(new Attribute("Location", location));
+                        valueSetBindingElement.addAttribute(new Attribute("SortLocation", valueSetOrSingleCodeBinding.getLocation()));
                     }
                     if(valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
                         valueSetBindingElement.addAttribute(new Attribute("Type","VS"));

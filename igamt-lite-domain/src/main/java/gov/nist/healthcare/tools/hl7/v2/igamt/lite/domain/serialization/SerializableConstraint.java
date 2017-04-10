@@ -37,7 +37,7 @@ public class SerializableConstraint extends SerializableElement{
         Element elmConstraint = new Element("Constraint");
         elmConstraint.addAttribute(
             new Attribute("Id", constraint.getConstraintId() == null ? "" : constraint.getConstraintId()));
-        if(null!=constraint.getConstraintTarget()&&constraint.getConstraintTarget().length()>"[".length()) {
+        if(null!=constraint.getConstraintTarget()&&constraint.getConstraintTarget().length()>"[".length()&&constraint.getConstraintTarget().contains("[")) {
             elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()
                 .substring(0, constraint.getConstraintTarget().indexOf('['))));
         } else {
