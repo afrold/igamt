@@ -77,6 +77,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UnchangedDataType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VariesMapItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
@@ -272,7 +273,7 @@ public class Bootstrap implements InitializingBean {
 
 
 
-	  refactorCoConstrint();
+	  //refactorCoConstrint();
   }
   
   private void refactorCoConstrint(){
@@ -1059,6 +1060,10 @@ public class Bootstrap implements InitializingBean {
     defaultConfiguration.setSegmentsExport(displaySelectives);
 
     defaultConfiguration.setValueSetsExport(displaySelectives);
+    
+
+    ValueSetMetadataConfig valueSetMetadataConfig = new ValueSetMetadataConfig(true,true,true);
+    defaultConfiguration.setValueSetsMetadata(valueSetMetadataConfig);
 
     // Default column
     ArrayList<NameAndPositionAndPresence> messageColumnsDefaultList =

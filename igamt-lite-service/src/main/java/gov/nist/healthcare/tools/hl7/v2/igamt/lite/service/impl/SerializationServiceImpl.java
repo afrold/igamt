@@ -363,7 +363,7 @@ import java.util.*;
                 SerializableTable serializableTable = serializeTableService
                     .serializeTable(tableLink,
                         prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                        tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig);
+                        tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig, exportConfig.getValueSetsMetadata());
                 valueSetsSection.addSection(serializableTable);
             }
         }
@@ -375,7 +375,7 @@ import java.util.*;
                         SerializableTable serializableTable = serializeTableService
                             .serializeTable(tableLink,
                                 prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                                tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig);
+                                tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig, exportConfig.getValueSetsMetadata());
                         valueSetsSection.addSection(serializableTable);
                     }
                 }
