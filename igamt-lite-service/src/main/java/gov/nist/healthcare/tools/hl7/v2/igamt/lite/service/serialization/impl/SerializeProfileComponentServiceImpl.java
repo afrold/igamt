@@ -1,5 +1,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
@@ -9,11 +15,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -53,7 +54,15 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
                         }
                     }
                 }
-                SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponentLink.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent,definitionTexts);
+                String defPreText, defPostText;
+                defPreText = defPostText = null;
+                if(profileComponent.getDefPreText()!=null&&!profileComponent.getDefPreText().isEmpty()){
+                    defPreText = serializationUtil.cleanRichtext(profileComponent.getDefPreText());
+                }
+                if(profileComponent.getDefPostText()!=null&&!profileComponent.getDefPostText().isEmpty()){
+                    defPostText = serializationUtil.cleanRichtext(profileComponent.getDefPostText());
+                }
+                SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponentLink.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent,definitionTexts, defPreText,defPostText);
                 if(serializableProfileComponent != null) {
                     serializableSection.addSection(serializableProfileComponent);
                     return serializableSection;
