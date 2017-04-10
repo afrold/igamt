@@ -108,7 +108,7 @@ public class DocxExportUtil {
 						}
 						if (null != documentMetaData.getSubTitle() && !documentMetaData.getSubTitle().isEmpty()) {
 								wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle",
-										"Subtitle " + documentMetaData.getSubTitle());
+										documentMetaData.getSubTitle());
 						}
 				} else {
 						if(null!=metaData.getName() & !"".equals(metaData.getName())){
