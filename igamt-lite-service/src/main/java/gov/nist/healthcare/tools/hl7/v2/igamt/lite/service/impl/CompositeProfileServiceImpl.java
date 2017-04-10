@@ -128,6 +128,8 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     compositeProfile.setName(compositeProfileStructure.getName());
     compositeProfile.setDescription(compositeProfileStructure.getDescription());
     compositeProfile.setComment(compositeProfileStructure.getComment());
+    compositeProfile.setDefPreText(compositeProfileStructure.getDefPreText());
+    compositeProfile.setDefPostText(compositeProfileStructure.getDefPostText());
     compositeProfile.setCoreProfileId(compositeProfileStructure.getCoreProfileId());
     compositeProfile.setProfileComponents(compositeProfileStructure.getProfileComponentsInfo());
     compositeProfile.setDateUpdated(compositeProfileStructure.getDateUpdated());
