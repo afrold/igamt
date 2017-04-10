@@ -73,6 +73,7 @@
             </xsl:element>
             <xsl:element name="tbody">
                 <xsl:for-each select="ValueSetBinding">
+                	<xsl:sort select="@SortLocation" data-type="number" order="ascending" />
                     <xsl:element name="tr">
                         <xsl:attribute name="class">
                             <xsl:text>contentTr</xsl:text>
