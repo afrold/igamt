@@ -1,5 +1,12 @@
 angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http, $modal, CompositeProfileService, TableService, DatatypeService) {
 
+    $scope.accordStatus = {
+        isCustomHeaderOpen: false,
+        isFirstOpen: false,
+        isSecondOpen: true,
+        isThirdOpen: false,
+
+    };
     $scope.redirectVS = function(binding) {
 
         TableService.getOne(binding.tableId).then(function(valueSet) {
@@ -21,6 +28,16 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
             });
         });
     };
+    $scope.checkCompositeExt = function(ext) {
+        for (var i = 0; i < $rootScope.compositeProfiles.length; i++) {
+
+            if (ext === $rootScope.compositeProfilesStructureMap[$rootScope.compositeProfiles[i].id].ext && $rootScope.compositeProfilesStructureMap[$rootScope.compositeProfiles[i].id].id !== $rootScope.compositeProfileStructure.id) {
+                return true;
+            }
+
+        }
+        return false;
+    }
 
 
     $scope.save = function() {
@@ -38,8 +55,9 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
                 }
                 $rootScope.compositeProfilesStructureMap[result.id] = result;
                 console.log(result);
-                $rootScope.editCM(result);
                 cleanState();
+                $rootScope.editCM(result);
+
 
             },
             function(error) {

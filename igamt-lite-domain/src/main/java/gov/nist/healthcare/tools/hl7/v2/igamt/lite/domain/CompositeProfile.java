@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.bson.types.ObjectId;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 
 public class CompositeProfile extends DataModelWithConstraints
     implements java.io.Serializable, Cloneable, Comparable<CompositeProfile> {
@@ -242,6 +245,74 @@ public class CompositeProfile extends DataModelWithConstraints
   @Override
   public String toString() {
     return ReflectionToStringBuilder.toString(this);
+  }
+
+  public List<ConformanceStatement> retrieveConformanceStatementsForConstant() {
+
+    List<ConformanceStatement> results = new ArrayList<ConformanceStatement>();
+
+    for (SingleElementValue constant : this.singleElementValues) {
+      String[] paths = constant.getLocation().split("\\.");
+      String path = "";
+      for (String p : paths) {
+        path = path + "." + p + "[1]";
+      }
+      path = path.substring(1);
+
+      String constraintId = constant.location;
+      String description = this.getName() + "." + constant.getLocation() + "(" + constant.getName()
+          + ") SHALL contain the constant value '" + constant.getValue() + "'.";
+      String assertion = "<Assertion><PlainText Path=\"" + path + "\" Text=\"" + constant.getValue()
+          + "\" IgnoreCase=\"false\"/></Assertion>";
+      ConformanceStatement cs = new ConformanceStatement();
+      cs.setId(ObjectId.get().toString());
+      cs.setConstraintId(constraintId);
+      cs.setDescription(description);
+      cs.setAssertion(assertion);
+
+      results.add(cs);
+
+    }
+    return results;
+  }
+
+  public List<ConformanceStatement> retrieveConformanceStatementsForSingleCode() {
+    List<ConformanceStatement> results = new ArrayList<ConformanceStatement>();
+
+    for (ValueSetOrSingleCodeBinding vsoscb : this.valueSetBindings) {
+      if (vsoscb instanceof SingleCodeBinding) {
+        SingleCodeBinding scb = (SingleCodeBinding) vsoscb;
+
+        String[] paths = scb.getLocation().split("\\.");
+        String path = "";
+        for (String p : paths) {
+          path = path + "." + p + "[1]";
+        }
+        path = path.substring(1);
+
+        String constraintId = scb.getLocation();
+        String description = this.getName() + "." + scb.getLocation()
+            + " SHALL contain the constant value '" + scb.getCode().getValue()
+            + "' drawn from the code system '" + scb.getCode().getCodeSystem() + "'.";
+        String assertion = "<Assertion><PlainText Path=\"" + path + "\" Text=\""
+            + scb.getCode().getValue() + "\" IgnoreCase=\"false\"/></Assertion>";
+        ConformanceStatement cs = new ConformanceStatement();
+        cs.setId(ObjectId.get().toString());
+        cs.setConstraintId(constraintId);
+        cs.setDescription(description);
+        cs.setAssertion(assertion);
+
+        results.add(cs);
+      }
+    }
+    return results;
+  }
+
+  public List<ConformanceStatement> retrieveAllConformanceStatements() {
+    List<ConformanceStatement> results = this.conformanceStatements;
+    results.addAll(this.retrieveConformanceStatementsForSingleCode());
+    results.addAll(this.retrieveConformanceStatementsForConstant());
+    return results;
   }
 
 

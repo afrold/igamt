@@ -122,7 +122,7 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     compositeProfile.setSingleElementValues(coreMessage.getSingleElementValues());
     compositeProfile.setPredicates(coreMessage.getPredicates());
     compositeProfile.setComments(coreMessage.getComments());
-    browse(compositeProfile, pathGroups);
+    browse(compositeProfileStructure.getExt(), compositeProfile, pathGroups);
     compositeProfile.setSegmentsMap(queryService.getSegmentsMap());
     compositeProfile.setDatatypesMap(queryService.getDatatypesMap());
     compositeProfile.setName(compositeProfileStructure.getName());
@@ -136,13 +136,13 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
 
 
 
-  private void browse(DataModel dataModel, List<PathGroup> pathGroups) {
+  private void browse(String ext, DataModel dataModel, List<PathGroup> pathGroups) {
     for (PathGroup pathGroup : pathGroups) {
       try {
         DataModel dm = queryService.get(dataModel, pathGroup.getPath());
         DataModel context =
-            flavorService.createFlavor(dm, pathGroup.getAttributes(), pathGroup.getChildren());
-        browse(context, pathGroup.getChildren());
+            flavorService.createFlavor(ext, dm, pathGroup.getAttributes(), pathGroup.getChildren());
+        browse(ext, context, pathGroup.getChildren());
       } catch (NotFoundException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
