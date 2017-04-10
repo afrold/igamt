@@ -55,7 +55,7 @@
                 <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                     <md-content layout-padding>
 
-                        <md-input-container class="md-block" flex-gt-sm>
+                        <md-input-container class="md-block" flex-gt-sm >
                             <label class="input-left">Cover Picture</label>
                             <div class="vertical-align" style="margin-top:40px" ng-if="!viewSettings.tableReadonly" flow-init flow-name="uploader.flow" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()" flow-file-success="successUpload($file, $message, $data)">
 

@@ -2061,6 +2061,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                         //$scope.datatypeLibsStruct.push(result.data);
                         $rootScope.datatypeLibrary=result.data.datatypeLibrary;
                             console.log(result.data)
+                        $scope.datatypeLibMetaDataCopy=angular.copy(result.data.metaData);
+
 
                         DatatypeLibrarySvc.addChildrenFromDatatypes($rootScope.datatypeLibrary.id, $scope.addedDatatypes).then(function(result){
 
