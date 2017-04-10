@@ -1211,42 +1211,50 @@
     </div>
     <form role="form">
         <div class="modal-body" style="height:500px;overflow-y:scroll">
-            <div layout="row" layout-align="center center">
+            <div layout="row">
                 <div flex="30">
-                    <div>
-                        <div class=" panel panel-default" style="margin-top:10px;">
-                            <div class="panel-heading">Choose Profile Components <span title="If two profile components are in conflict, priority is for the profile component with higher position">(?)</span></div>
-                            <div class="panel-body" style="overflow-y: auto;height: 250px;">
-                                <table class="table table-condensed hl7-versions-valueset table-fixed">
-                                    <tbody>
-                                        <tr ng-repeat="pc in pcs" class="col-md-12">
-                                            <td class="col-md-10">
-                                                <div>
-                                                    <h5>{{pc.name}}</h5>
-                                                    <p style="max-width:250px">{{pc.description}}</p>
-                                                    <p style="max-width:250px"> {{pc.comment}}</p>
-                                                </div>
-                                            </td>
-                                            <td class="col-md-2">
-                                                <button ng-show="!checkExist(pc)" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="selectPC(pc)">
+
+                    <div class=" panel panel-default" style="margin-top:10px;">
+                        <div class="panel-heading">Choose Profile Components
+                            <!--<span title="If two profile components are in conflict, priority is for the profile component with higher position">(?)</span>-->
+                            <md-icon>
+                                <i class="material-icons">info_outline</i>
+                                <md-tooltip style="z-index: 99999999;">
+                                    If two profile components are in conflict, priority is for the profile component with higher position
+                                </md-tooltip>
+                            </md-icon>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-condensed hl7-versions-valueset table-fixed">
+                                <tbody>
+                                    <tr ng-repeat="pc in pcs" class="col-md-12">
+                                        <td class="col-md-10">
+                                            <div>
+                                                <h5 style="margin:0px;">{{pc.name}}</h5>
+                                                <p style="max-width:250px;margin:0px;">{{pc.description}}</p>
+                                                <p style="max-width:250px;margin:0px;"> {{pc.comment}}</p>
+                                            </div>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <button ng-show="!checkExist(pc)" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="selectPC(pc)">
 									        <span><i class="fa fa-plus fa-fw"></i></span>
 								        </button>
 
-                                            </td>
-                                        </tr>
+                                        </td>
+                                    </tr>
 
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                            </div>
                         </div>
-
                     </div>
+
+
                 </div>
                 <div flex="70">
                     <div>
-                        <div class=" panel panel-default" style="margin-top:5px;">
+                        <div class=" panel panel-default" style="margin-top:10px;">
                             <div class="panel-heading">Composite Profile</div>
                             <div class="panel-body" style="overflow-y: auto;height: 250px;">
                                 <div class="row margin-0 full-width hidden-xs">
@@ -1400,7 +1408,7 @@
     <div class="modal-header">
         <h3 class="modal-title">Create Composite Profile</h3>
     </div>
-    <form role="form">
+    <form role="form" name="newForm">
         <div class="modal-body" style="height:500px;overflow-y:scroll;">
             <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
                 <md-tab ng-disabled="true">
@@ -1417,7 +1425,21 @@
                                 <md-input-container class="md-block" flex-gt-sm>
                                     <label class="input-left">Name</label>
                                     <input type="text" name="name" ng-model="name" required>
+                                    <div ng-messages="newForm.name.$error">
+                                        <div ng-message="required">Name is required.</div>
+                                    </div>
 
+                                </md-input-container>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left">Extension</label>
+                                    <input type="text" name="ext" ng-model="ext" required ng-checkcompext property="new">
+
+                                    <div ng-messages="newForm.ext.$error">
+                                        <div ng-message="required">Extension is required.</div>
+                                        <div ng-message="checkcompext">Extension already exists.</div>
+                                        <!--<div class="has-error" ng-show="compExist">Extension already exists.</div>-->
+
+                                    </div>
                                 </md-input-container>
                                 <md-input-container class="md-block" flex-gt-sm>
                                     <label class="input-left">Description</label>
@@ -1440,73 +1462,91 @@
                         <i class="fa fa-code-fork fa-fw" aria-hidden="true"></i>Structure
                     </md-tab-label>
                     <md-tab-body>
-                        <div layout="row" layout-align="center center">
+                        <div layout="row">
                             <div flex="30">
-                                <div>
-                                    <div class=" panel panel-default" style="margin-top:10px;">
-                                        <div class="panel-heading">Choose Core Profile</div>
-                                        <div class="panel-body" style="overflow-y: auto;height: 50px;">
 
-                                            <table class="table table-condensed hl7-versions-valueset table-fixed">
-                                                <tbody>
-                                                    <tr ng-repeat="baseProfile in baseProfiles" class="col-md-12">
-                                                        <td class="col-md-10">
-                                                            <div>
-                                                                <h5>{{baseProfile.name}}</h5>
-                                                                <p style="max-width:250px">{{baseProfile.identifier}} : {{baseProfile.description}}</p>
+                                <div class=" panel panel-default" style="margin-top:10px;">
+                                    <div class="panel-heading">Choose Core Profile</div>
+                                    <div class="panel-body">
+                                        <table class="table table-condensed hl7-versions-valueset table-fixed">
+                                            <tbody>
+                                                <tr ng-repeat="baseProfile in baseProfiles" class="col-md-12">
+                                                    <td class="col-md-10">
+                                                        <div>
+                                                            <h5 style="margin:0px;">{{baseProfile.name}}</h5>
+                                                            <p style="max-width:250px;margin:0px;">{{baseProfile.identifier}} : {{baseProfile.description}}</p>
 
-                                                            </div>
-                                                        </td>
-                                                        <td class="col-md-2">
-                                                            <button ng-show="baseProfile.id!==baseP.id" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="selectBaseProfile(baseProfile)">
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <button ng-show="baseProfile.id!==baseP.id" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="selectBaseProfile(baseProfile)">
 									        <span><i class="fa fa-plus fa-fw"></i></span>
 								        </button>
 
-                                                        </td>
-                                                    </tr>
+                                                    </td>
+                                                </tr>
 
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <div>
 
-                                    <div class=" panel panel-default" style="margin-top:10px;">
-                                        <div class="panel-heading">Choose Profile Components <span title="If two profile components are in conflict, priority is for the profile component with higher position">(?)</span></div>
-                                        <div class="panel-body" style="overflow-y: auto;height: 100px;">
-                                            <table class="table table-condensed hl7-versions-valueset table-fixed">
-                                                <tbody>
-                                                    <tr ng-repeat="pc in pcs" class="col-md-12">
-                                                        <td class="col-md-10">
-                                                            <div>
-                                                                <h5>{{pc.name}}</h5>
-                                                                <p style="max-width:250px">{{pc.description}}</p>
-                                                                <p style="max-width:250px"> {{pc.comment}}</p>
-                                                            </div>
-                                                        </td>
-                                                        <td class="col-md-2">
-                                                            <button ng-show="!checkExist(pc)" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="selectPC(pc)">
+
+
+                                <div class=" panel panel-default" style="margin-top:10px;">
+                                    <div class="panel-heading">Choose Profile Components
+                                        <!--<span title="If two profile components are in conflict, priority is for the profile component with higher position">
+                                                <md-icon>
+                                                    <i class="material-icons">info_outline</i>
+                                                </md-icon>
+                                            </span>-->
+
+
+
+                                        <md-icon>
+                                            <i class="material-icons">info_outline</i>
+                                            <md-tooltip style="z-index: 99999999;">
+                                                If two profile components are in conflict, priority is for the profile component with higher position
+                                            </md-tooltip>
+                                        </md-icon>
+
+
+
+                                    </div>
+                                    <div class="panel-body">
+                                        <table class="table table-condensed hl7-versions-valueset table-fixed">
+                                            <tbody>
+                                                <tr ng-repeat="pc in pcs" class="col-md-12">
+                                                    <td class="col-md-10">
+                                                        <div>
+                                                            <h5 style="margin:0px;">{{pc.name}}</h5>
+                                                            <p style="max-width:250px;margin:0px;">{{pc.description}}</p>
+                                                            <p style="max-width:250px;margin:0px;"> {{pc.comment}}</p>
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-md-2">
+                                                        <button ng-show="!checkExist(pc)" type="button" class="btn btn-raised btn-raised btn-xs btn-info" ng-click="selectPC(pc)">
                                                         <span><i class="fa fa-plus fa-fw"></i></span>
                                                     </button>
 
-                                                        </td>
-                                                    </tr>
+                                                    </td>
+                                                </tr>
 
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
 
-
                                 </div>
+
+
+
+
                             </div>
                             <div flex="70">
 
-                                <div class=" panel panel-default" style="margin-top:5px;">
+                                <div class=" panel panel-default" style="margin-top:10px;">
                                     <div class="panel-heading">Composite Profile</div>
                                     <div class="panel-body" style="overflow-y: auto;height: 345px;">
                                         <div class="row margin-0 full-width hidden-xs" ng-show="baseP">
@@ -1595,7 +1635,7 @@
             <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
                         &nbsp; </i>Cancel</span>
                     </button>
-            <button class="btn btn-raised btn-info btn-sm" ng-disabled="pcList.length<1 || !baseP || !name" ng-click="create()">
+            <button class="btn btn-raised btn-info btn-sm" ng-disabled="pcList.length<1 || !baseP || newForm.$invalid ||!newForm.$dirty" ng-click="create()">
                         <span><i class="fa fa-check fa-fw">&nbsp; </i>Create</span>
                     </button>
 

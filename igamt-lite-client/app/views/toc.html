@@ -124,7 +124,7 @@
                             <li ng-repeat="cm in ig.profile.compositeProfiles.children | orderBy :'name'" ui-tree-node ng-if="!collapsecompositemessage" data-type="compositeMessages">
                                 <div ui-tree-handle data-nodrag confirm-click style="margin-left:30px;">
                                     <span data-nodrag style="font-weight: normal;" context-menu="compositeMessagesOption" ng-class="{selected : cm.id===activeModel}" confirm-click ng-click="editCM(cm);">
-                                        {{cm.name}}
+                                        {{cm.name}}_{{cm.ext}}
                                     </span>
                                 </div>
                             </li>

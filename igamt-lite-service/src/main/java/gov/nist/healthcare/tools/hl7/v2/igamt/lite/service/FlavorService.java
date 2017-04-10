@@ -21,6 +21,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAtt
 public interface FlavorService {
 
 
-  public DataModel createFlavor(DataModel dm, List<SubProfileComponentAttributes> attributes,
-      List<PathGroup> pathGroups);
+  public DataModel createFlavor(String ext, DataModel dm,
+      List<SubProfileComponentAttributes> attributes, List<PathGroup> pathGroups);
 }

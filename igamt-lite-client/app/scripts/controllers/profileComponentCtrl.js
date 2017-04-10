@@ -7,6 +7,13 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.tabStatus = {
         active: 1
     };
+    $scope.accordStatus = {
+        isCustomHeaderOpen: false,
+        isFirstOpen: false,
+        isSecondOpen: true,
+        isThirdOpen: false,
+        
+    };
     $scope.redirectVS = function(binding) {
 
         TableService.getOne(binding.tableId).then(function(valueSet) {

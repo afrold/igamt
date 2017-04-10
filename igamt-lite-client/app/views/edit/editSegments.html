@@ -818,10 +818,10 @@
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)" ng-class="{ 'new': isChildNew(node), 'selected': isChildSelected(node)}">
         <td ng-controller="SegmentRowCtrl">
-            <a ng-show="editableField!==node.id" ng-click="editField(node)" class="point">
+            <a ng-show="editableField!==node.id" ng-if="node.added==='yes'" ng-click="editField(node)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
-            <a ng-show="editableField!==node.id" ng-click="deleteField(node,segment)" class="point">
+            <a ng-show="editableField!==node.id" ng-if="node.added==='yes'" ng-click="deleteField(node,segment)" class="point">
                 <span><i class="glyphicon glyphicon-trash"></i></span>
             </a>
             <ng-form name="{{formName}}" class="form-inline">

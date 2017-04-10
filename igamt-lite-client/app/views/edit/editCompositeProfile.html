@@ -120,11 +120,23 @@
                                     <md-content layout-padding>
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Name</label>
-                                            <input type="text" name="name" ng-change="setDirty()" ng-model="compositeProfileStructure.name">
+                                            <input type="text" name="name" ng-change="setDirty()" ng-model="compositeProfileStructure.name" required>
                                             <div ng-messages="editForm.name.$error">
                                                 <div ng-message="required">Name is required.</div>
                                             </div>
                                         </md-input-container>
+                                        <md-input-container class="md-block" flex-gt-sm>
+                                            <label class="input-left">Extension</label>
+                                            <input type="text" name="ext" ng-change="setDirty()" ng-model="compositeProfileStructure.ext" required ng-checkcompext property="old">
+
+                                            <div ng-messages="editForm.ext.$error">
+                                                <div ng-message="required">Extension is required.</div>
+                                                <div ng-message="checkcompext">Extension already exists.</div>
+                                                <!--<div class="has-error" ng-show="compExist">Extension already exists.</div>-->
+
+                                            </div>
+                                        </md-input-container>
+
 
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Identifier</label>
@@ -199,61 +211,93 @@
                             </md-tab-label>
                             <md-tab-body>
                                 <div style="margin-top: 20px ">
-                                    <div class="pull-left">
-                                        <ul class="list-group">
-                                            <li class="list-group-item">
-                                                <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span> From Composite Profile
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span> From Segment
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span> From Field's Data Type
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span> From Component's Data Type
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <accordion>
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div>
+                                                    <textarea froala="froalaEditorOptions" ng-model="compositeProfileStructure.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Composite Profile Definition</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div>
+                                                    <div class="pull-left">
+                                                        <ul class="list-group">
+                                                            <li class="list-group-item">
+                                                                <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span> From Composite Profile
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span> From Segment
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span> From Field's Data Type
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span> From Component's Data Type
+                                                            </li>
+                                                        </ul>
+                                                    </div>
 
 
-                                    <div class="col-md-12 " ng-show="compositeProfile.children.length>0" style="overflow-y:auto;">
-                                        <table id="compositeProfileTable" tt-table tt-params="compositeProfileParams" class="table table-bordered table-fix-header table-condensed profile-table">
-                                            <thead>
-                                                <tr class="tbl-header" style="">
-                                                    <th class="col-md-1 col-fixed-250" rowspan="2"> Name</th>
-                                                    <th class="col-md-1 col-fixed-80" rowspan="2">Usage</th>
-                                                    <th class="col-md-1 col-fixed-100" colspan="2">Cardinality</th>
-                                                    <th class="col-md-1 col-fixed-100" colspan="2">Length</th>
-                                                    <th class="col-md-1 col-fixed-30" rowspan="2" ng-show="showConfLength()"> ConfLength </th>
-                                                    <th class="col-md-1 col-fixed-35" rowspan="2">Data Type
-                                                    </th>
-                                                    <th class="col-md-1 col-fixed-33" rowspan="2">Value Set/Single Code
-                                                    </th>
-                                                    <th class="col-md-1 col-fixed-33" rowspan="2">Constant Value
-                                                    </th>
-                                                    <th class="col-md-1" ng-style="predWidthx" rowspan="2">Predicate
-                                                    </th>
-                                                    <th class="col-md-1" ng-style="csWidthx" rowspan="2">Conformance Statement
-                                                    </th>
-                                                    <th class="col-md-1 col-fixed-80" rowspan="2">Definition Text
-                                                    </th>
-                                                    <th class="col-md-1" ng-style="commentWidth" rowspan="2">Comment
-                                                    </th>
+                                                    <div class="col-md-12 " ng-show="compositeProfile.children.length>0" style="overflow-y:auto;">
+                                                        <table id="compositeProfileTable" tt-table tt-params="compositeProfileParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                                                            <thead>
+                                                                <tr class="tbl-header" style="">
+                                                                    <th class="col-md-1 col-fixed-250" rowspan="2"> Name</th>
+                                                                    <th class="col-md-1 col-fixed-80" rowspan="2">Usage</th>
+                                                                    <th class="col-md-1 col-fixed-100" colspan="2">Cardinality</th>
+                                                                    <th class="col-md-1 col-fixed-100" colspan="2">Length</th>
+                                                                    <th class="col-md-1 col-fixed-30" rowspan="2" ng-show="showConfLength()"> ConfLength </th>
+                                                                    <th class="col-md-1 col-fixed-35" rowspan="2">Data Type
+                                                                    </th>
+                                                                    <th class="col-md-1 col-fixed-33" rowspan="2">Value Set/Single Code
+                                                                    </th>
+                                                                    <th class="col-md-1 col-fixed-33" rowspan="2">Constant Value
+                                                                    </th>
+                                                                    <th class="col-md-1" ng-style="predWidthx" rowspan="2">Predicate
+                                                                    </th>
+                                                                    <th class="col-md-1" ng-style="csWidthx" rowspan="2">Conformance Statement
+                                                                    </th>
+                                                                    <th class="col-md-1 col-fixed-80" rowspan="2">Definition Text
+                                                                    </th>
+                                                                    <th class="col-md-1" ng-style="commentWidth" rowspan="2">Comment
+                                                                    </th>
 
 
-                                                </tr>
-                                                <tr class="tbl-header">
-                                                    <th class="col-xs-1 col-fixed-50" style="width:2%">min</th>
-                                                    <th class="col-xs-1 col-fixed-50" style="width:2%">max</th>
-                                                    <th class="col-xs-1 col-fixed-50" style="width:2%">min</th>
-                                                    <th class="col-xs-1 col-fixed-50" style="width:2%">max</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
+                                                                </tr>
+                                                                <tr class="tbl-header">
+                                                                    <th class="col-xs-1 col-fixed-50" style="width:2%">min</th>
+                                                                    <th class="col-xs-1 col-fixed-50" style="width:2%">max</th>
+                                                                    <th class="col-xs-1 col-fixed-50" style="width:2%">min</th>
+                                                                    <th class="col-xs-1 col-fixed-50" style="width:2%">max</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody>
+                                                        </table>
 
-                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isThirdOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>                                                </accordion-heading>
+                                            <div class="panel-body">
+                                                <div>
+                                                    <textarea froala="froalaEditorOptions" ng-model="compositeProfileStructure.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </accordion>
+
 
 
                                 </div>
@@ -288,7 +332,7 @@
 
 
         <td class="col-md-1 col-fixed-250">
-           
+
             <span ng-if="node.type=='datatype'" class="label label-default label-icon">D</span>
             <span ng-if="node.type=='group'" class="label label-success label-icon">G</span>
             <span ng-if="node.type=='segmentRef'||node.type=='segment'" class="label label-segment label-icon">S</span>

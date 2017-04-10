@@ -21,6 +21,8 @@ public class ProfileComponent
   private String name;
   private String description;
   private String Comment;
+  private String defPreText = "";
+  private String defPostText = "";
   private Date dateUpdated;
   private List<String> compositeProfileStructureList;
   private List<SubProfileComponent> children = new ArrayList<SubProfileComponent>();
@@ -97,6 +99,23 @@ public class ProfileComponent
     Comment = comment;
   }
 
+
+
+  public String getDefPreText() {
+    return defPreText;
+  }
+
+  public void setDefPreText(String defPreText) {
+    this.defPreText = defPreText;
+  }
+
+  public String getDefPostText() {
+    return defPostText;
+  }
+
+  public void setDefPostText(String defPostText) {
+    this.defPostText = defPostText;
+  }
 
   public Date getDateUpdated() {
     return dateUpdated;
