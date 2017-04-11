@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,7 +39,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -332,6 +332,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element ss = new nu.xom.Element("Segments");
 		for (String key : segmentsMap.keySet()) {
 			Segment s = segmentsMap.get(key);
+			System.out.println(key);
+			System.out.println(s.getId());
 			ss.appendChild(this.serializeSegment(s, tablesMap, datatypesMap));
 		}
 		e.appendChild(ss);
@@ -1652,8 +1654,13 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		}
 
 		for (int i = 1; i < fields.size() + 1; i++) {
+			
 			Field f = fields.get(i);
+			System.out.println(s.getLabel());
+			System.out.println(f.getPosition());
+			System.out.println(f.getDatatype().getId());
 			Datatype d = datatypesMap.get(f.getDatatype().getId());
+			System.out.println(f.getDatatype().getId());
 			nu.xom.Element elmField = new nu.xom.Element("Field");
 			elmField.addAttribute(new Attribute("Name", serializationUtil.str(f.getName())));
 			elmField.addAttribute(new Attribute("Usage", serializationUtil.str(f.getUsage().toString())));
@@ -1742,7 +1749,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 			for (int i = 1; i < components.size() + 1; i++) {
 				Component c = components.get(i);
-				Datatype componentDatatype = datatypeService.findById(c.getDatatype().getId());
+				Datatype componentDatatype = datatypesMap.get(c.getDatatype().getId());
 				nu.xom.Element elmComponent = new nu.xom.Element("Component");
 				elmComponent.addAttribute(new Attribute("Name", serializationUtil.str(c.getName())));
 				elmComponent.addAttribute(new Attribute("Usage", serializationUtil.str(c.getUsage().toString())));
@@ -1778,7 +1785,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					if (bindingStrength != null)
 						elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
 
-					if(d != null && d.getComponents() != null && d.getComponents().size() > 0){
+					if(componentDatatype != null && componentDatatype.getComponents() != null && componentDatatype.getComponents().size() > 0){
 						if(bindingLocation != null){
 							bindingLocation = bindingLocation.replaceAll("\\s+","").replaceAll("or", ":");
 						}else{
@@ -2158,8 +2165,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		ZipOutputStream out = new ZipOutputStream(outputStream);
 
 		String profileXMLStr = this.serializeProfileToDoc(profile, metadata, dateUpdated, segmentsMap, datatypesMap, tablesMap).toXML();
-		String valueSetXMLStr = tableSerializationService.serializeTableLibraryToXML(profile, metadata, dateUpdated);
-		String constraintXMLStr = constraintsSerializationService.serializeConstraintsToXML(profile, metadata, dateUpdated);
+		String valueSetXMLStr = tableSerializationService.serializeTableLibraryUsingMapToXML(profile, metadata, tablesMap, dateUpdated);
+		String constraintXMLStr = constraintsSerializationService.serializeConstraintsUsingMapToXML(profile, metadata, segmentsMap, datatypesMap, tablesMap, dateUpdated);
 
 //		Exception profileError = null;
 //		try {
@@ -2196,34 +2203,37 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	private void normalizeProfile(Profile profile, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap) throws CloneNotSupportedException {
+		HashMap<String, Datatype> toBeAddedDTs = new HashMap<String, Datatype>();
+		HashMap<String, Segment> toBeAddedSegs = new HashMap<String, Segment>();
+		
 		for(String key:datatypesMap.keySet()){
 			Datatype d = datatypesMap.get(key);
 			for(ValueSetOrSingleCodeBinding binding:d.getValueSetBindings()){
 				if(binding instanceof ValueSetBinding){
 					ValueSetBinding valueSetBinding = (ValueSetBinding)binding;
-					List<ValueSetBinding> valueSetBindings = findvalueSetBinding(d.getValueSetBindings(), valueSetBinding.getBindingLocation());
-					List<String> pathList = Arrays.asList(valueSetBinding.getLocation().split("\\."));
+					List<ValueSetBinding> valueSetBindings = findvalueSetBinding(d.getValueSetBindings(), valueSetBinding.getLocation());
+					List<String> pathList = new LinkedList<String> (Arrays.asList(valueSetBinding.getLocation().split("\\.")));
 
 
 					if(pathList.size() > 1){
 						Component c = d.findComponentByPosition(Integer.parseInt(pathList.remove(0)));
 						
 						Datatype childD = datatypesMap.get(c.getDatatype().getId());
+						if(childD == null) childD = toBeAddedDTs.get(c.getDatatype().getId());
 						Datatype copyD = childD.clone();
 						
 						int randumNum = new SecureRandom().nextInt(100000);
-						copyD.setId(d.getId() + "_" +  randumNum + "_AUTO");
-						datatypesMap.put(copyD.getId(), copyD);
+						copyD.setId(d.getId() + "_A" +  randumNum);
+						String ext = d.getExt();
+						if(ext == null) ext = "";
+						copyD.setExt(ext + "_A" + randumNum);
+						toBeAddedDTs.put(copyD.getId(), copyD);
 						c.getDatatype().setId(copyD.getId());
-						if(d.getId().contains("_AUTO")) {
-							datatypesMap.remove(d.getId());
-						}
 						
-						visitDatatype(pathList, copyD, datatypesMap, valueSetBindings);		
+						visitDatatype(pathList, copyD, datatypesMap, valueSetBindings, toBeAddedDTs);		
 					}
 				}
 			}
-			
 		}
 		
 		for(String key:segmentsMap.keySet()){
@@ -2231,25 +2241,25 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			for(ValueSetOrSingleCodeBinding binding:s.getValueSetBindings()){
 				if(binding instanceof ValueSetBinding){
 					ValueSetBinding valueSetBinding = (ValueSetBinding)binding;
-					List<ValueSetBinding> valueSetBindings = findvalueSetBinding(s.getValueSetBindings(), valueSetBinding.getBindingLocation());
-					List<String> pathList = Arrays.asList(valueSetBinding.getLocation().split("\\."));
-
+					List<ValueSetBinding> valueSetBindings = findvalueSetBinding(s.getValueSetBindings(), valueSetBinding.getLocation());
+					List<String> pathList = new LinkedList<String> (Arrays.asList(valueSetBinding.getLocation().split("\\.")));
 
 					if(pathList.size() > 1){
 						Field f = s.findFieldByPosition(Integer.parseInt(pathList.remove(0)));
 						
 						Datatype d = datatypesMap.get(f.getDatatype().getId());
+						if(d == null) d = toBeAddedDTs.get(f.getDatatype().getId());
 						Datatype copyD = d.clone();
 						
 						int randumNum = new SecureRandom().nextInt(100000);
-						copyD.setId(d.getId() + "_" +  randumNum + "_AUTO");
-						datatypesMap.put(copyD.getId(), copyD);
+						copyD.setId(d.getId() + "_A" +  randumNum);
+						String ext = d.getExt();
+						if(ext == null) ext = "";
+						copyD.setExt(ext + "_A" + randumNum);
+						toBeAddedDTs.put(copyD.getId(), copyD);
 						f.getDatatype().setId(copyD.getId());
-						if(d.getId().contains("_AUTO")) {
-							datatypesMap.remove(d.getId());
-						}
-						
-						visitDatatype(pathList, copyD, datatypesMap, valueSetBindings);		
+			
+						visitDatatype(pathList, copyD, datatypesMap, valueSetBindings, toBeAddedDTs);		
 					}
 					
 				}
@@ -2261,45 +2271,53 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			for(ValueSetOrSingleCodeBinding binding:m.getValueSetBindings()){
 				if(binding instanceof ValueSetBinding){
 					ValueSetBinding valueSetBinding = (ValueSetBinding)binding;
-					List<ValueSetBinding> valueSetBindings = findvalueSetBinding(m.getValueSetBindings(), valueSetBinding.getBindingLocation());
-					List<String> pathList = Arrays.asList(valueSetBinding.getLocation().split("\\."));
+					List<ValueSetBinding> valueSetBindings = findvalueSetBinding(m.getValueSetBindings(), valueSetBinding.getLocation());
+					List<String> pathList = new LinkedList<String> ( Arrays.asList(valueSetBinding.getLocation().split("\\.")));
 					SegmentRefOrGroup child = m.findChildByPosition(Integer.parseInt(pathList.remove(0)));
-					visitGroupOrSegmentRef(pathList, child, segmentsMap, datatypesMap, valueSetBindings);					
+					visitGroupOrSegmentRef(pathList, child, segmentsMap, datatypesMap, valueSetBindings, toBeAddedDTs, toBeAddedSegs);					
 				}
 			}
 		}
-		
+		System.out.println("TOBEADDED DT");
+		for(String key:toBeAddedDTs.keySet()){
+			System.out.println(key);
+			datatypesMap.put(key, toBeAddedDTs.get(key));
+		}
+		System.out.println("TOBEADDED SEG");
+		for(String key:toBeAddedSegs.keySet()){
+			System.out.println(key);
+			System.out.println(toBeAddedSegs.get(key).getLabel());
+			segmentsMap.put(key, toBeAddedSegs.get(key));
+		}		
 	}
 
-	private List<ValueSetBinding> findvalueSetBinding(List<ValueSetOrSingleCodeBinding> valueSetBindings, String bindingLocation) {
+	private List<ValueSetBinding> findvalueSetBinding(List<ValueSetOrSingleCodeBinding> valueSetBindings, String location) {
 		List<ValueSetBinding> resutls = new ArrayList<ValueSetBinding>();
 		for(ValueSetOrSingleCodeBinding binding:valueSetBindings){
 			if(binding instanceof ValueSetBinding){
 				ValueSetBinding valueSetBinding = (ValueSetBinding)binding;
-				resutls.add(valueSetBinding);
+				if(valueSetBinding.getLocation().equals(location)) resutls.add(valueSetBinding);
 			}
 		}
 		return resutls;
 	}
 
-	private void visitGroupOrSegmentRef(List<String> pathList, SegmentRefOrGroup srog, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap, List<ValueSetBinding> valueSetBindings) throws CloneNotSupportedException {
+	private void visitGroupOrSegmentRef(List<String> pathList, SegmentRefOrGroup srog, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap, List<ValueSetBinding> valueSetBindings, HashMap<String, Datatype> toBeAddedDTs, HashMap<String, Segment> toBeAddedSegs) throws CloneNotSupportedException {
 		if(srog instanceof Group){
 			Group g = (Group)srog;
 			SegmentRefOrGroup child = g.findChildByPosition(Integer.parseInt(pathList.remove(0)));
-			visitGroupOrSegmentRef(pathList, child, segmentsMap, datatypesMap, valueSetBindings);
+			visitGroupOrSegmentRef(pathList, child, segmentsMap, datatypesMap, valueSetBindings, toBeAddedDTs, toBeAddedSegs);
 		}else{
 			SegmentRef sr = (SegmentRef)srog;
+			System.out.println("REF id:::" + sr.getRef().getId());
 			Segment s = segmentsMap.get(sr.getRef().getId());
-			
+			if(s == null) s = toBeAddedSegs.get(sr.getRef().getId());
 			Segment copyS = s.clone();
 			int randumNum = new SecureRandom().nextInt(100000);
-			copyS.setId(s.getId() + "_" +  randumNum + "_AUTO");
-			segmentsMap.put(copyS.getId(), copyS);
-			sr.setId(copyS.getId());
-			if(s.getId().contains("_AUTO")) {
-				segmentsMap.remove(s.getId());
-			}
-			
+			copyS.setId(s.getId() + "_A" +  randumNum);
+			String ext = s.getExt();
+			if(ext == null) ext = "";
+			copyS.setExt(ext + "_A" + randumNum);
 
 			if(pathList.size() == 1){
 				List<ValueSetBinding> newValueSetBindings = new ArrayList<ValueSetBinding>();
@@ -2308,29 +2326,35 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					newValueSetBinding.setLocation(pathList.get(0));
 					newValueSetBindings.add(newValueSetBinding);
 				}
-				this.deleteValueSetBindinigsByLocation(copyS.getValueSetBindings(), pathList.get(0));
+				List<ValueSetOrSingleCodeBinding> toBeDeleted = this.findToBeDeletedValueSetBindinigsByLocation(copyS.getValueSetBindings(), pathList.get(0));
+				for(ValueSetOrSingleCodeBinding binding:toBeDeleted){
+					copyS.getValueSetBindings().remove(binding);
+				}
 				copyS.getValueSetBindings().addAll(newValueSetBindings);
 				
 			}else if(pathList.size() > 1){
 				Field f = copyS.findFieldByPosition(Integer.parseInt(pathList.remove(0)));
-				
 				Datatype d = datatypesMap.get(f.getDatatype().getId());
+				if(d == null) d = toBeAddedDTs.get(f.getDatatype().getId());
 				Datatype copyD = d.clone();
 				
 				randumNum = new SecureRandom().nextInt(100000);
-				copyD.setId(d.getId() + "_" +  randumNum + "_AUTO");
-				datatypesMap.put(copyD.getId(), copyD);
+				copyD.setId(d.getId() + "_A" +  randumNum);
+				String ext2 = d.getExt();
+				if(ext2 == null) ext2 = "";
+				copyD.setExt(ext2 + "_A" + randumNum);
+				toBeAddedDTs.put(copyD.getId(), copyD);
+				System.out.println("------WOOOOO");
+				System.out.println(copyD.getId());
 				f.getDatatype().setId(copyD.getId());
-				if(d.getId().contains("_AUTO")) {
-					datatypesMap.remove(d.getId());
-				}
-				
-				visitDatatype(pathList, copyD, datatypesMap, valueSetBindings);				
+				visitDatatype(pathList, copyD, datatypesMap, valueSetBindings, toBeAddedDTs);				
 			}
+			sr.getRef().setId(copyS.getId());
+			toBeAddedSegs.put(copyS.getId(), copyS);
 		}
 	}
 
-	private void deleteValueSetBindinigsByLocation(List<ValueSetOrSingleCodeBinding> valueSetBindings, String location) {
+	private List<ValueSetOrSingleCodeBinding> findToBeDeletedValueSetBindinigsByLocation(List<ValueSetOrSingleCodeBinding> valueSetBindings, String location) {
 		
 		List<ValueSetOrSingleCodeBinding> toBeDeleted = new ArrayList<ValueSetOrSingleCodeBinding>();
 		
@@ -2340,12 +2364,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			}
 		}
 		
-		for(ValueSetOrSingleCodeBinding binding:toBeDeleted){
-			valueSetBindings.remove(binding);
-		}
+		return toBeDeleted;
 	}
 
-	private void visitDatatype(List<String> pathList, Datatype datatype, HashMap<String, Datatype> datatypesMap, List<ValueSetBinding> valueSetBindings) throws CloneNotSupportedException {
+	private void visitDatatype(List<String> pathList, Datatype datatype, HashMap<String, Datatype> datatypesMap, List<ValueSetBinding> valueSetBindings, HashMap<String, Datatype> toBeAddedDTs) throws CloneNotSupportedException {
 		if(pathList.size() == 1){
 			List<ValueSetBinding> newValueSetBindings = new ArrayList<ValueSetBinding>();
 			for(ValueSetBinding binding:valueSetBindings){
@@ -2353,24 +2375,29 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				newValueSetBinding.setLocation(pathList.get(0));
 				newValueSetBindings.add(newValueSetBinding);
 			}
-			this.deleteValueSetBindinigsByLocation(datatype.getValueSetBindings(), pathList.get(0));
-			datatype.getValueSetBindings().addAll(newValueSetBindings);
+			List<ValueSetOrSingleCodeBinding> toBeDeleted = this.findToBeDeletedValueSetBindinigsByLocation(datatype.getValueSetBindings(), pathList.get(0));
 			
+			for(ValueSetOrSingleCodeBinding binding:toBeDeleted){
+				datatype.getValueSetBindings().remove(binding);
+			}
+
+			datatype.getValueSetBindings().addAll(newValueSetBindings);
+		
 		}else if(pathList.size() > 1){
 			Component c = datatype.findComponentByPosition(Integer.parseInt(pathList.remove(0)));
 			
 			Datatype d = datatypesMap.get(c.getDatatype().getId());
+			if(d == null) d = toBeAddedDTs.get(c.getDatatype().getId());
 			Datatype copyD = d.clone();
 			
 			int randumNum = new SecureRandom().nextInt(100000);
-			copyD.setId(d.getId() + "_" +  randumNum + "_AUTO");
-			datatypesMap.put(copyD.getId(), copyD);
+			copyD.setId(d.getId() + "_A" +  randumNum);
+			String ext = d.getExt();
+			if(ext == null) ext = "";
+			copyD.setExt(ext + "_A" + randumNum);
+			toBeAddedDTs.put(copyD.getId(), copyD);
 			c.getDatatype().setId(copyD.getId());
-			if(d.getId().contains("_AUTO")) {
-				datatypesMap.remove(d.getId());
-			}
-			
-			visitDatatype(pathList, copyD, datatypesMap, valueSetBindings);	
+			visitDatatype(pathList, copyD, datatypesMap, valueSetBindings, toBeAddedDTs);	
 		}
 		
 	}

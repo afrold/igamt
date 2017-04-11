@@ -93,46 +93,16 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
   public Field clone()
       throws CloneNotSupportedException {
     Field clonedField = new Field();
-
-    clonedField.setId(id);
-    clonedField.setComment(comment);
+    clonedField.setId(ObjectId.get().toString());
     clonedField.setConfLength(confLength);
     clonedField.setDatatype(datatype.clone());
-
-    // if (dtRecords.containsKey(datatype)) {
-    // clonedField.setDatatype(dtRecords.get(datatype.getId()));
-    // } else {
-    // Datatype dt = datatype.clone(dtRecords, tableRecords);
-    // clonedField.setDatatype(dt);
-    // dtRecords.put(datatype.getId(), dt);
-    // }
     clonedField.setItemNo(itemNo);
     clonedField.setMax(max);
     clonedField.setMaxLength(maxLength);
     clonedField.setMin(min);
     clonedField.setMinLength(minLength);
     clonedField.setName(name);
-
     clonedField.setPosition(position);
-
-    clonedField.setTables(new ArrayList<TableLink>());
-    for (TableLink tl : this.tables) {
-      clonedField.getTables().add(tl.clone());
-    }
-
-
-    // if (table != null) {
-    // if (tableRecords.containsKey(table.getId())) {
-    // clonedField.setTable(tableRecords.get(table.getId()));
-    // } else {
-    // Table dt = table.clone();
-    // clonedField.setTable(dt);
-    // tableRecords.put(table.getId(), dt);
-    // }
-    // } else {
-    // clonedField.setTable(null);
-    // }
-
     clonedField.setText(text);
     clonedField.setUsage(usage);
 

@@ -99,7 +99,7 @@ import java.util.Map;
                     defPostText = serializationUtil.cleanRichtext(segment.getText2());
                 }
             }
-            List<ConformanceStatement> generatedConformanceStatements = segment.retrieveAllConformanceStatements();
+            List<ConformanceStatement> generatedConformanceStatements = segment.retrieveAllConformanceStatements(compositeProfileTables);
             segment.setConformanceStatements(generatedConformanceStatements);
             List<SerializableConstraint> constraints =
                 serializeConstraintService.serializeConstraints(segment, segment.getName() + "-");

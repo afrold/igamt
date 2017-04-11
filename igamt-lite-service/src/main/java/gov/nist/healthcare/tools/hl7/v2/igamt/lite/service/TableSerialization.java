@@ -13,10 +13,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -29,6 +31,8 @@ public interface TableSerialization {
 	String serializeTableLibraryToXML(TableLibrary tableLibrary, DocumentMetaData metadata, Date dateUpdated);
 
 	String serializeTableLibraryToXML(Profile profile, DocumentMetaData metadata, Date dateUpdated);
+	
+	String serializeTableLibraryUsingMapToXML(Profile profile, DocumentMetaData metadata, HashMap<String, Table> tablesMap, Date dateUpdated);
 
 	String serializeTableLibraryToXML(DatatypeLibrary datatypeLibrary);
 

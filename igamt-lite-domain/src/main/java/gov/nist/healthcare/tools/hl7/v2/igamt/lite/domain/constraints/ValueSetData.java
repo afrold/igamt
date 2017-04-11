@@ -21,6 +21,7 @@ public class ValueSetData {
 	}
 
 	public ValueSetBindingStrength getBindingStrength() {
+		if(bindingStrength == null) return ValueSetBindingStrength.R;
 		return bindingStrength;
 	}
 

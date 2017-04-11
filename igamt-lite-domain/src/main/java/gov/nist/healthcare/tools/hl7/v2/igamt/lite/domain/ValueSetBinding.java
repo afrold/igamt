@@ -54,10 +54,10 @@ public class ValueSetBinding extends ValueSetOrSingleCodeBinding  implements Ser
 		ValueSetBinding cloned = new ValueSetBinding();
 		cloned.setBindingLocation(bindingLocation);
 		cloned.setBindingStrength(bindingStrength);
-		cloned.setId(bindingLocation);
-		cloned.setLocation(bindingLocation);
-		cloned.setTableId(bindingLocation);
-		cloned.setType(bindingLocation);
+		cloned.setId(id);
+		cloned.setLocation(location);
+		cloned.setTableId(tableId);
+		cloned.setType(type);
 		cloned.setUsage(usage);
 		return cloned;
 	}
