@@ -17,9 +17,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PathGroup;
@@ -32,11 +34,17 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PathGroupService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.QueryService;
+import javassist.NotFoundException;
 
 @Service
 
 public class PathGroupServiceImpl implements PathGroupService {
+
+  @Autowired
+  QueryService queryService;
 
   @Override
   public List<PathGroup> buildPathGroups(Message coreMessage, List<ProfileComponent> pcs,
@@ -115,6 +123,63 @@ public class PathGroupServiceImpl implements PathGroupService {
               coreMessage.getSingleElementValues().add(sub.getSingleElementValues());
             }
           }
+          if (sub.getPredicates() != null && !sub.getPredicates().isEmpty()) {
+            Predicate pred = sub.getPredicates().get(0);
+            boolean predExist = false;
+            for (Predicate predicate : coreMessage.getPredicates()) {
+              if (predicate.getConstraintTarget().equals(pred.getConstraintTarget())) {
+                predExist = true;
+                predicate.setAssertion(pred.getAssertion());
+                predicate.setConstraintClassification(pred.getConstraintClassification());
+                predicate.setConstraintId(pred.getConstraintId());
+                predicate.setDescription(pred.getDescription());
+                predicate.setFalseUsage(pred.getFalseUsage());
+                predicate.setReference(pred.getReference());
+                predicate.setTrueUsage(pred.getTrueUsage());
+                predicate.setContext(pred.getContext());
+              }
+            }
+            if (!predExist) {
+              if (pred.getContext().getName().equals(coreMessage.getStructID())) {
+                coreMessage.getPredicates().add(pred);
+              } else {
+
+                try {
+                  DataModel dm = queryService.get(coreMessage, pred.getContext().getPath());
+                  System.out.println(dm.getType());
+                  if (dm instanceof Group) {
+                    Group grp = (Group) dm;
+
+                    boolean grpPredExist = false;
+                    for (Predicate pr : grp.getPredicates()) {
+
+                      if (refinePath(pr.getConstraintTarget())
+                          .equals(sub.getPath().substring(sub.getPath().indexOf('.') + 1)
+                              .replace((pred.getContext().getPath() + '.'), ""))) {
+                        grpPredExist = true;
+                        pr.setAssertion(pred.getAssertion());
+                        pr.setConstraintClassification(pred.getConstraintClassification());
+                        pr.setConstraintId(pred.getConstraintId());
+                        pr.setDescription(pred.getDescription());
+                        pr.setFalseUsage(pred.getFalseUsage());
+                        pr.setReference(pred.getReference());
+                        pr.setTrueUsage(pred.getTrueUsage());
+                        pr.setContext(pred.getContext());
+                      }
+                    }
+                    if (!grpPredExist) {
+                      grp.addPredicate(pred);
+                    }
+                  }
+                } catch (NotFoundException e) {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+                }
+              }
+
+            }
+
+          }
 
         }
       }
@@ -136,6 +201,24 @@ public class PathGroupServiceImpl implements PathGroupService {
     return pathGroups;
   }
 
+  private String refinePath(String instancePath) {
+    String[] pathArray = null;
+    if (!instancePath.isEmpty()) {
+      pathArray = instancePath.split("\\.");
+    }
+    String positionPath = new String();
+    for (String s : pathArray) {
+      String position = s.split("\\[")[0];
+      positionPath = positionPath + '.' + position;
+
+    }
+    if (!positionPath.isEmpty()) {
+      positionPath = positionPath.substring(1);
+
+    }
+    return positionPath;
+  }
+
 
 
   private List<SubProfileComponent> addMultipleFromSegmentName(SubProfileComponent subPc,
@@ -151,58 +234,86 @@ public class PathGroupServiceImpl implements PathGroupService {
       } else if (child instanceof SegmentRef) {
         SegmentRef segRef = (SegmentRef) child;
         Segment seg = segmentsMap.get(segRef.getRef().getId());
-        List<ValueSetOrSingleCodeBinding> toRemove = new ArrayList<>();
-        if (subPc.getValueSetBindings() != null) {
-          for (ValueSetOrSingleCodeBinding v : subPc.getValueSetBindings()) {
-            for (ValueSetOrSingleCodeBinding vsb : seg.getValueSetBindings()) {
-              if (v.getLocation().equals(vsb.getLocation())) {
-                toRemove.add(vsb);
+        if (subPc.getPath().startsWith(seg.getLabel()) && segLabel.equals(seg.getLabel())) {
+
+          List<ValueSetOrSingleCodeBinding> toRemove = new ArrayList<>();
+          if (subPc.getValueSetBindings() != null && subPc.getPath().startsWith(segLabel)) {
+            for (ValueSetOrSingleCodeBinding v : subPc.getValueSetBindings()) {
+              for (ValueSetOrSingleCodeBinding vsb : seg.getValueSetBindings()) {
+                if (v.getLocation().equals(vsb.getLocation())) {
+                  toRemove.add(vsb);
+                }
               }
             }
+            seg.getValueSetBindings().removeAll(toRemove);
+
+            seg.getValueSetBindings().addAll(subPc.getValueSetBindings());
+
+
           }
-          seg.getValueSetBindings().removeAll(toRemove);
-
-          seg.getValueSetBindings().addAll(subPc.getValueSetBindings());
-
-
-        }
-        List<Comment> commentToRemove = new ArrayList<>();
-        if (subPc.getComments() != null) {
-          for (Comment v : subPc.getComments()) {
-            for (Comment vsb : seg.getComments()) {
-              if (v.getLocation().equals(vsb.getLocation())) {
-                commentToRemove.add(vsb);
+          List<Comment> commentToRemove = new ArrayList<>();
+          if (subPc.getComments() != null) {
+            for (Comment v : subPc.getComments()) {
+              for (Comment vsb : seg.getComments()) {
+                if (v.getLocation().equals(vsb.getLocation())) {
+                  commentToRemove.add(vsb);
+                }
               }
             }
+            seg.getComments().removeAll(commentToRemove);
+            seg.getComments().addAll(subPc.getComments());
+
+
           }
-          seg.getComments().removeAll(commentToRemove);
-          seg.getComments().addAll(subPc.getComments());
-
-
-        }
-        if (subPc.getSingleElementValues() != null
-            && subPc.getSingleElementValues().getLocation() != null) {
-          boolean sevExist = false;
-          for (SingleElementValue sev : seg.getSingleElementValues()) {
-            if (sev.getLocation().equals(subPc.getSingleElementValues().getLocation())) {
-              sevExist = true;
-              sev.setValue(subPc.getSingleElementValues().getValue());
+          if (subPc.getSingleElementValues() != null
+              && subPc.getSingleElementValues().getLocation() != null) {
+            boolean sevExist = false;
+            for (SingleElementValue sev : seg.getSingleElementValues()) {
+              if (sev.getLocation().equals(subPc.getSingleElementValues().getLocation())) {
+                sevExist = true;
+                sev.setValue(subPc.getSingleElementValues().getValue());
+              }
+            }
+            if (!sevExist) {
+              seg.getSingleElementValues().add(subPc.getSingleElementValues());
             }
           }
-          if (!sevExist) {
-            seg.getSingleElementValues().add(subPc.getSingleElementValues());
+          if (subPc.getPredicates() != null && !subPc.getPredicates().isEmpty()
+              && subPc.getPath().startsWith(segLabel)) {
+
+            Predicate pred = subPc.getPredicates().get(0);
+            boolean predExist = false;
+            for (Predicate predicate : seg.getPredicates()) {
+              if (predicate.getConstraintTarget().equals(pred.getConstraintTarget())) {
+                predExist = true;
+                predicate.setAssertion(pred.getAssertion());
+                predicate.setConstraintClassification(pred.getConstraintClassification());
+                predicate.setConstraintId(pred.getConstraintId());
+                predicate.setDescription(pred.getDescription());
+                predicate.setFalseUsage(pred.getFalseUsage());
+                predicate.setReference(pred.getReference());
+                predicate.setTrueUsage(pred.getTrueUsage());
+              }
+            }
+            if (!predExist && subPc.getPath().startsWith(segLabel)) {
+              System.out.println(subPc.getPath());
+              System.out.println(seg.getName());
+              seg.getPredicates().add(pred);
+            }
+
+          }
+          String p = path + "." + segRef.getPosition();
+          if (segRef.getRef().getLabel().equals(segLabel)) {
+            SubProfileComponent sub = new SubProfileComponent();
+            sub.setAttributes(subPc.getAttributes());
+            sub.setName(subPc.getName());
+            sub.setPosition(subPc.getPosition());
+            sub.setType(subPc.getType());
+            sub.setPath(subPc.getPath().replace(segLabel, p));
+            result.add(sub);
           }
         }
-        String p = path + "." + segRef.getPosition();
-        if (segRef.getRef().getLabel().equals(segLabel)) {
-          SubProfileComponent sub = new SubProfileComponent();
-          sub.setAttributes(subPc.getAttributes());
-          sub.setName(subPc.getName());
-          sub.setPosition(subPc.getPosition());
-          sub.setType(subPc.getType());
-          sub.setPath(subPc.getPath().replace(segLabel, p));
-          result.add(sub);
-        }
+
       }
     }
     return result;

@@ -38,8 +38,6 @@ public interface IGDocumentExportService {
 
   InputStream exportAsXlsx(IGDocument d) throws IOException;
 
-  InputStream exportAsXml(IGDocument d) throws IOException;
-
   InputStream exportAsXmlDisplay(IGDocument d) throws IOException;
 
   InputStream exportAsXmlSegment(SegmentLink sl) throws IOException;
@@ -47,8 +45,6 @@ public interface IGDocumentExportService {
   InputStream exportAsXmlDatatype(DatatypeLink dl) throws IOException;
 
   InputStream exportAsXmlTable(TableLink tl) throws IOException;
-
-  InputStream exportAsZip(IGDocument d) throws IOException;
 
   InputStream exportAsDocx(IGDocument d) throws IOException;
 

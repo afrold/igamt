@@ -43,7 +43,8 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
     @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         String type = "ConformanceStatement";
-        SerializableConstraints serializableConformanceStatements = serializeConstraints(message.getConformanceStatements(),message.getName(),message.getPosition(),type);
+        List<ConformanceStatement> generatedConformanceStatements = message.retrieveAllConformanceStatements();
+        SerializableConstraints serializableConformanceStatements = serializeConstraints(generatedConformanceStatements,message.getName(),message.getPosition(),type);
         type = "ConditionPredicate";
         SerializableConstraints serializablePredicates = serializeConstraints(message.getPredicates(),message.getName(),message.getPosition(),type);
         int segmentSectionPosition = 1;

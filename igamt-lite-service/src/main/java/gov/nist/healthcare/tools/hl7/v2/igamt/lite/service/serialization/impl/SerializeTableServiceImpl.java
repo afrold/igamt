@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableTable;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeTableService;
@@ -38,7 +39,7 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     SerializationUtil serializationUtil;
 
     @Override public SerializableTable serializeTable(TableLink tableLink, String prefix,
-        Integer position, CodeUsageConfig valueSetCodesUsageConfig) {
+        Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig) {
         if(tableLink!=null && tableLink.getId()!=null) {
             Table table = tableService.findById(tableLink.getId());
             String id = tableLink.getId();
@@ -63,7 +64,7 @@ public class SerializeTableServiceImpl implements SerializeTableService {
                     }
                 }
                 table.setCodes(toBeExportedCodes);
-                serializedTable = new SerializableTable(id,prefix,String.valueOf(position),headerLevel,title,table,tableLink.getBindingIdentifier(),defPreText,defPostText);
+                serializedTable = new SerializableTable(id,prefix,String.valueOf(position),headerLevel,title,table,tableLink.getBindingIdentifier(),defPreText,defPostText, valueSetMetadataConfig);
             }
             return serializedTable;
         }

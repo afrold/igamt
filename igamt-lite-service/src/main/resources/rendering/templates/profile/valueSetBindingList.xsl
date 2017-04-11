@@ -64,15 +64,16 @@
                         <xsl:text>Binding Location</xsl:text>
                     </xsl:element>
                     <xsl:element name="th">
-                        <xsl:text>Code Value</xsl:text>
+                        <xsl:text>Single Code Value</xsl:text>
                     </xsl:element>
                     <xsl:element name="th">
-                        <xsl:text>Code System</xsl:text>
+                        <xsl:text>Single Code System</xsl:text>
                     </xsl:element>
                 </xsl:element>
             </xsl:element>
             <xsl:element name="tbody">
                 <xsl:for-each select="ValueSetBinding">
+                	<xsl:sort select="@SortLocation" data-type="number" order="ascending" />
                     <xsl:element name="tr">
                         <xsl:attribute name="class">
                             <xsl:text>contentTr</xsl:text>

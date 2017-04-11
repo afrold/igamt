@@ -29,7 +29,12 @@ import java.util.ArrayList;
     private String type;
     private boolean unboundHL7 = false;
     private boolean unboundCustom = false;
-    private boolean includePC = true;
+    private boolean includeMessageTable = true;
+    private boolean includeSegmentTable = true;
+    private boolean includeDatatypeTable = true;
+    private boolean includeValueSetsTable = true;
+    private boolean includeCompositeProfileTable = true;
+    private boolean includeProfileComponentTable = true;
 
     private UsageConfig segmentORGroupsMessageExport;
     private UsageConfig segmentORGroupsCompositeProfileExport;
@@ -50,6 +55,7 @@ import java.util.ArrayList;
     private ColumnsConfig profileComponentColumn;
     private ColumnsConfig datatypeColumn;
     private ColumnsConfig valueSetColumn;
+    private ValueSetMetadataConfig valueSetsMetadata;
 
 
 
@@ -58,6 +64,12 @@ import java.util.ArrayList;
         defaultConfiguration.setDefaultType(true);
         defaultConfiguration.setAccountId(null);
         defaultConfiguration.setType(type);
+        defaultConfiguration.setIncludeMessageTable(true);
+        defaultConfiguration.setIncludeSegmentTable(true);
+        defaultConfiguration.setIncludeDatatypeTable(true);
+        defaultConfiguration.setIncludeValueSetsTable(true);
+        defaultConfiguration.setIncludeCompositeProfileTable(true);
+        defaultConfiguration.setIncludeProfileComponentTable(true);
         // Default Usages
         UsageConfig displayAll = new UsageConfig();
         UsageConfig displaySelectives = new UsageConfig();
@@ -91,6 +103,9 @@ import java.util.ArrayList;
         defaultConfiguration.setSegmentsExport(displaySelectives);
 
         defaultConfiguration.setValueSetsExport(displaySelectives);
+        
+        ValueSetMetadataConfig valueSetMetadataConfig = new ValueSetMetadataConfig(true,true,true);
+        defaultConfiguration.setValueSetsMetadata(valueSetMetadataConfig);
 
         // Default column
         ArrayList<NameAndPositionAndPresence> messageColumnsDefaultList =
@@ -208,12 +223,52 @@ import java.util.ArrayList;
         this.unboundCustom = unboundCustom;
     }
 
-    public boolean isIncludePC() {
-        return includePC;
+    public boolean isIncludeMessageTable() {
+        return includeMessageTable;
     }
 
-    public void setIncludePC(boolean includePC) {
-        this.includePC = includePC;
+    public void setIncludeMessageTable(boolean includeMessageTable) {
+        this.includeMessageTable = includeMessageTable;
+    }
+
+    public boolean isIncludeSegmentTable() {
+        return includeSegmentTable;
+    }
+
+    public void setIncludeSegmentTable(boolean includeSegmentTable) {
+        this.includeSegmentTable = includeSegmentTable;
+    }
+
+    public boolean isIncludeDatatypeTable() {
+        return includeDatatypeTable;
+    }
+
+    public void setIncludeDatatypeTable(boolean includeDatatypeTable) {
+        this.includeDatatypeTable = includeDatatypeTable;
+    }
+
+    public boolean isIncludeValueSetsTable() {
+        return includeValueSetsTable;
+    }
+
+    public void setIncludeValueSetsTable(boolean includeValueSetsTable) {
+        this.includeValueSetsTable = includeValueSetsTable;
+    }
+
+    public boolean isIncludeCompositeProfileTable() {
+        return includeCompositeProfileTable;
+    }
+
+    public void setIncludeCompositeProfileTable(boolean includeCompositeProfileTable) {
+        this.includeCompositeProfileTable = includeCompositeProfileTable;
+    }
+
+    public boolean isIncludeProfileComponentTable() {
+        return includeProfileComponentTable;
+    }
+
+    public void setIncludeProfileComponentTable(boolean includeProfileComponentTable) {
+        this.includeProfileComponentTable = includeProfileComponentTable;
     }
 
     public UsageConfig getSegmentORGroupsMessageExport() {
@@ -336,4 +391,14 @@ import java.util.ArrayList;
     public void setProfileComponentColumn(ColumnsConfig profileComponentColumn) {
         this.profileComponentColumn = profileComponentColumn;
     }
+
+	public ValueSetMetadataConfig getValueSetsMetadata() {
+		return valueSetsMetadata;
+	}
+
+	public void setValueSetsMetadata(ValueSetMetadataConfig valueSetsMetadata) {
+		this.valueSetsMetadata = valueSetsMetadata;
+	}
+    
+    
 }

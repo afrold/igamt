@@ -26,12 +26,6 @@ public interface ProfileSerialization {
 
 	Profile deserializeXMLToProfile(Document docProfile, Document docValueSet, Document docConstraints);
 
-	String serializeProfileToXML(Profile profile, DocumentMetaData metadata, Date dateUpdated);
-
-	Document serializeProfileToDoc(Profile profile, DocumentMetaData metadata, Date dateUpdated);
-
-	InputStream serializeProfileToZip(Profile profile, DocumentMetaData metadata, Date dateUpdated) throws IOException;
-
 	InputStream serializeProfileToZip(Profile profile, String[] ids, DocumentMetaData metadata, Date dateUpdated)
 			throws IOException, CloneNotSupportedException;
 

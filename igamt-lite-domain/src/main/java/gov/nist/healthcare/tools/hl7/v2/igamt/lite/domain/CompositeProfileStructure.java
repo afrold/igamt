@@ -29,8 +29,11 @@ public class CompositeProfileStructure {
   @Id
   private String id;
   private String name;
+  private String ext;
   private String description;
   private String comment;
+  private String defPreText = "";
+  private String defPostText = "";
   private String coreProfileId;
   private Date dateUpdated;
   private List<ApplyInfo> profileComponentsInfo;
@@ -53,6 +56,15 @@ public class CompositeProfileStructure {
     this.name = name;
   }
 
+
+  public String getExt() {
+    return ext;
+  }
+
+  public void setExt(String ext) {
+    this.ext = ext;
+  }
+
   public String getDescription() {
     return description;
   }
@@ -68,6 +80,23 @@ public class CompositeProfileStructure {
 
   public void setComment(String comment) {
     this.comment = comment;
+  }
+
+
+  public String getDefPreText() {
+    return defPreText;
+  }
+
+  public void setDefPreText(String defPreText) {
+    this.defPreText = defPreText;
+  }
+
+  public String getDefPostText() {
+    return defPostText;
+  }
+
+  public void setDefPostText(String defPostText) {
+    this.defPostText = defPostText;
   }
 
   public String getCoreProfileId() {

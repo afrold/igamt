@@ -41,37 +41,13 @@ public class Component extends DataElement implements Cloneable {
   @Override
   public Component clone() throws CloneNotSupportedException {
     Component clonedObj = new Component();
-    clonedObj.setId(id);
-    clonedObj.setComment(comment);
+    clonedObj.setId(ObjectId.get().toString());
     clonedObj.setConfLength(confLength);
     clonedObj.setDatatype(datatype);
-    // if (datatypeRecords.containsKey(datatype.getId())) {
-    // clonedObj.setDatatype(datatypeRecords.get(datatype.getId()));
-    // } else {
-    // Datatype dt = datatype.clone(datatypeRecords, tableRecords);
-    // clonedObj.setDatatype(dt);
-    // datatypeRecords.put(datatype.getId(), dt);
-    // }
     clonedObj.setMaxLength(maxLength);
     clonedObj.setMinLength(minLength);
     clonedObj.setName(name);
     clonedObj.setPosition(position);
-
-    clonedObj.setTables(new ArrayList<TableLink>());
-    for (TableLink tl : this.tables) {
-      clonedObj.getTables().add(tl.clone());
-    }
-    // if (table != null) {
-    // if (tableRecords.containsKey(table.getId())) {
-    // clonedObj.setTable(tableRecords.get(table.getId()));
-    // } else {
-    // Table dt = table.clone();
-    // clonedObj.setTable(dt);
-    // tableRecords.put(table.getId(), dt);
-    // }
-    // } else {
-    // clonedObj.setTable(null);
-    // }
     clonedObj.setUsage(usage);
     return clonedObj;
   }

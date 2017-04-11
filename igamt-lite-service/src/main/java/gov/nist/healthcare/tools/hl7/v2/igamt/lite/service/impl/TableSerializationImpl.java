@@ -452,4 +452,136 @@ public class TableSerializationImpl implements TableSerialization {
 				return null;
 		}
 
+		@Override
+		public String serializeTableLibraryUsingMapToXML(Profile profile, DocumentMetaData metadata, HashMap<String, Table> tablesMap, Date dateUpdated) {
+			TableLibrary tableLibrary = profile.getTableLibrary();
+
+			nu.xom.Element elmTableLibrary = new nu.xom.Element("ValueSetLibrary");
+			
+			Attribute schemaDecl = new Attribute("noNamespaceSchemaLocation", "https://raw.githubusercontent.com/Jungyubw/NIST_healthcare_hl7_v2_profile_schema/master/Schema/NIST%20Validation%20Schema/ValueSets.xsd");
+			schemaDecl.setNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+			elmTableLibrary.addAttribute(schemaDecl);
+
+			if (tableLibrary.getValueSetLibraryIdentifier() == null
+					|| tableLibrary.getValueSetLibraryIdentifier().equals("")) {
+					elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier", UUID.randomUUID().toString()));
+			} else {
+					elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier",
+							serializationUtil.str(tableLibrary.getValueSetLibraryIdentifier())));
+			}
+			nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
+			if (metadata == null) {
+					elmMetaData.addAttribute(new Attribute("Name", "Vocab for " + "Profile"));
+					elmMetaData.addAttribute(new Attribute("OrgName", "NIST"));
+					elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
+					elmMetaData.addAttribute(new Attribute("Date", ""));
+			} else {
+					elmMetaData.addAttribute(new Attribute("Name", !serializationUtil.str(metadata.getTitle()).equals("")
+							? serializationUtil.str(metadata.getTitle()) : "No Title Info"));
+					elmMetaData.addAttribute(new Attribute("OrgName", !serializationUtil.str(metadata.getOrgName()).equals("")
+							? serializationUtil.str(metadata.getOrgName()) : "No Org Info"));
+					elmMetaData.addAttribute(new Attribute("Version", !serializationUtil.str(metadata.getVersion()).equals("")
+							? serializationUtil.str(metadata.getVersion()) : "No Version Info"));
+					elmMetaData.addAttribute(
+							new Attribute("Date", dateUpdated != null ? DateUtils.format(dateUpdated) : "No Date Info"));
+
+					if (profile.getMetaData().getSpecificationName() != null
+							&& !profile.getMetaData().getSpecificationName().equals(""))
+							elmMetaData.addAttribute(new Attribute("SpecificationName",
+									serializationUtil.str(profile.getMetaData().getSpecificationName())));
+					if (profile.getMetaData().getStatus() != null && !profile.getMetaData().getStatus().equals(""))
+							elmMetaData.addAttribute(new Attribute("Status", serializationUtil.str(
+									profile.getMetaData().getStatus())));
+					if (profile.getMetaData().getTopics() != null && !profile.getMetaData().getTopics().equals(""))
+							elmMetaData.addAttribute(new Attribute("Topics", serializationUtil.str(
+									profile.getMetaData().getTopics())));
+			}
+
+			HashMap<String, nu.xom.Element> valueSetDefinitionsMap = new HashMap<String, nu.xom.Element>();
+
+			for (TableLink link : tableLibrary.getChildren()) {
+					Table t = tablesMap.get(link.getId());
+
+					if (t != null) {
+							nu.xom.Element elmValueSetDefinition = new nu.xom.Element("ValueSetDefinition");
+							if(t.getHl7Version() != null && !t.getHl7Version().equals("")){
+								elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", serializationUtil.str(t.getBindingIdentifier() + "_" + t.getHl7Version().replaceAll("\\.", "-"))));
+							}else {
+								elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", serializationUtil.str(t.getBindingIdentifier())));	
+							}
+							
+							elmValueSetDefinition.addAttribute(new Attribute("Name", serializationUtil.str(t.getName())));
+							if (t.getDescription() != null && !t.getDescription().equals(""))
+									elmValueSetDefinition
+											.addAttribute(new Attribute("Description", serializationUtil.str(t.getDescription())));
+							if (t.getVersion() != null && !t.getVersion().equals(""))
+									elmValueSetDefinition.addAttribute(
+											new Attribute("Version", serializationUtil.str(t.getVersion())));
+							if (t.getOid() != null && !t.getOid().equals(""))
+									elmValueSetDefinition.addAttribute(new Attribute("Oid", serializationUtil.str(t.getOid())));
+							if (t.getStability() != null && !t.getStability().equals(""))
+									elmValueSetDefinition
+											.addAttribute(new Attribute("Stability", serializationUtil.str(t.getStability().value())));
+							if (t.getExtensibility() != null && !t.getExtensibility().equals(""))
+									elmValueSetDefinition
+											.addAttribute(
+													new Attribute("Extensibility", serializationUtil.str(t.getExtensibility().value())));
+							if (t.getContentDefinition() != null && !t.getContentDefinition().equals(""))
+									elmValueSetDefinition.addAttribute(
+											new Attribute("ContentDefinition", serializationUtil.str(t.getContentDefinition().value())));
+
+							nu.xom.Element elmValueSetDefinitions = null;
+							if (t.getGroup() != null && !t.getGroup().equals("")) {
+									elmValueSetDefinitions = valueSetDefinitionsMap.get(t.getGroup());
+							} else {
+									elmValueSetDefinitions = valueSetDefinitionsMap.get("NOGroup");
+							}
+							if (elmValueSetDefinitions == null) {
+									elmValueSetDefinitions = new nu.xom.Element("ValueSetDefinitions");
+
+									if (t.getGroup() != null && !t.getGroup().equals("")) {
+											elmValueSetDefinitions.addAttribute(new Attribute("Group", t.getGroup()));
+											elmValueSetDefinitions.addAttribute(new Attribute("Order", t.getOrder() + ""));
+											valueSetDefinitionsMap.put(t.getGroup(), elmValueSetDefinitions);
+									} else {
+											elmValueSetDefinitions.addAttribute(new Attribute("Group", "NOGroup"));
+											elmValueSetDefinitions.addAttribute(new Attribute("Order", "0"));
+											valueSetDefinitionsMap.put("NOGroup", elmValueSetDefinitions);
+									}
+
+							}
+							elmValueSetDefinitions.appendChild(elmValueSetDefinition);
+
+							if (t.getCodes() != null) {
+									for (Code c : t.getCodes()) {
+											nu.xom.Element elmValueElement = new nu.xom.Element("ValueElement");
+											elmValueElement.addAttribute(new Attribute("Value", serializationUtil.str(c.getValue())));
+											elmValueElement.addAttribute(new Attribute("DisplayName", serializationUtil.str(
+													c.getLabel() + "")));
+											if (c.getCodeSystem() != null && !c.getCodeSystem().equals(""))
+													elmValueElement
+															.addAttribute(new Attribute("CodeSystem", serializationUtil.str(c.getCodeSystem())));
+											if (c.getCodeSystemVersion() != null && !c.getCodeSystemVersion().equals(""))
+													elmValueElement.addAttribute(
+															new Attribute("CodeSystemVersion", serializationUtil.str(c.getCodeSystemVersion())));
+											if (c.getCodeUsage() != null && !c.getCodeUsage().equals(""))
+													elmValueElement.addAttribute(new Attribute("Usage", serializationUtil.str(c.getCodeUsage())));
+											if (c.getComments() != null && !c.getComments().equals(""))
+													elmValueElement.addAttribute(
+															new Attribute("Comments", serializationUtil.str(c.getComments())));
+											elmValueSetDefinition.appendChild(elmValueElement);
+									}
+							}
+					}
+			}
+
+			elmTableLibrary.appendChild(elmMetaData);
+
+			for (nu.xom.Element elmValueSetDefinitions : valueSetDefinitionsMap.values()) {
+					elmTableLibrary.appendChild(elmValueSetDefinitions);
+			}
+			
+			return elmTableLibrary.toXML();
+		}
+
 }

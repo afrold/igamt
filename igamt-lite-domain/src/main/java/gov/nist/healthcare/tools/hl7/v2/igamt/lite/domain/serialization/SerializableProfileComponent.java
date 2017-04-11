@@ -1,11 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,12 +27,15 @@ public class SerializableProfileComponent extends SerializableSection {
 
     private ProfileComponent profileComponent;
     Map<SubProfileComponentAttributes,String> definitionTexts;
+    String defPreText, defPostText;
 
     public SerializableProfileComponent(String id, String prefix, String position,
-        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts) {
+        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText) {
         super(id, prefix, position, headerLevel, title);
         this.profileComponent = profileComponent;
         this.definitionTexts = definitionTexts;
+        this.defPreText = defPreText;
+        this.defPostText = defPostText;
     }
 
     @Override public Element serializeElement() {
@@ -44,6 +49,16 @@ public class SerializableProfileComponent extends SerializableSection {
         } else {
             profileComponentElement
                 .addAttribute(new Attribute("Description", new String()));
+        }
+        if ((this.defPreText != null && !this.defPreText.isEmpty()) || (this.defPostText != null && !this.defPostText.isEmpty())) {
+            if (this.defPreText != null && !this.defPreText.isEmpty()) {
+            	profileComponentElement.appendChild(super.createTextElement("DefPreText",
+                    this.defPreText));
+            }
+            if (this.defPostText != null && !this.defPostText.isEmpty()) {
+            	profileComponentElement.appendChild(super.createTextElement("DefPostText",
+                    this.defPostText));
+            }
         }
         if (this.profileComponent.getComment() != null && !this.profileComponent.getComment().isEmpty()) {
             profileComponentElement.addAttribute(new Attribute("Comment", this.profileComponent.getComment()));
@@ -95,8 +110,8 @@ public class SerializableProfileComponent extends SerializableSection {
                             subProfileComponentElement.addAttribute(new Attribute("ValueSet", StringUtils.join(valueSets, ", ")));
                         }
                     }
-                    if(subProfileComponent.getSingleElementValues()!=null){
-                        subProfileComponentElement.addAttribute(new Attribute("SingleElement",
+                    if(subProfileComponent.getSingleElementValues()!=null && subProfileComponent.getSingleElementValues().getValue() != null){
+                    	subProfileComponentElement.addAttribute(new Attribute("SingleElement",
                             subProfileComponent.getSingleElementValues().getValue()));
                     }
 
@@ -127,6 +142,17 @@ public class SerializableProfileComponent extends SerializableSection {
                             .addAttribute(new Attribute("DefinitionText", definitionTexts.get(subProfileComponentAttributes)));
                     }
                     profileComponentElement.appendChild(subProfileComponentElement);
+                    if(subProfileComponent.getPredicates()!=null && !subProfileComponent.getPredicates().isEmpty()){
+                    	List<SerializableConstraint> serializableConstraints = new ArrayList<>();
+                    	for(Predicate predicate : subProfileComponent.getPredicates()){
+                    		SerializableConstraint serializableConstraint = new SerializableConstraint(predicate, subProfileComponent.getPath());
+                    		serializableConstraints.add(serializableConstraint);
+                    	}
+                    	if(!serializableConstraints.isEmpty()){
+                    		profileComponentElement.appendChild(new SerializableConstraints(serializableConstraints, this.profileComponent.getId(), "", "Conformance Statements", "").serializeElement());
+                    	}
+                    }
+                    	
                 }
             }
         }

@@ -22,6 +22,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -72,7 +73,13 @@ public class QueryServiceImpl implements QueryService {
         grp.setChildren(cp.getChildren());
         DataModel dm = getFromGroup(grp, pre);
         return get(dm, post);
-      } else {
+      } else if (context instanceof Message) {
+        Group grp = new Group();
+        Message cp = (Message) context;
+        grp.setName(cp.getStructID());
+        grp.setChildren(cp.getChildren());
+        DataModel dm = getFromGroup(grp, pre);
+        return get(dm, post);
       }
 
     }

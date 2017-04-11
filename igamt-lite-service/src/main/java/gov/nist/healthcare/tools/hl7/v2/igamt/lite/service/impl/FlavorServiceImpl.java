@@ -23,6 +23,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PathGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
@@ -41,9 +42,27 @@ public class FlavorServiceImpl implements FlavorService {
   DatatypeService datatypeService;
 
   @Override
-  public DataModel createFlavor(DataModel dm, List<SubProfileComponentAttributes> attributes,
-      List<PathGroup> pathGroups) {
-    if (dm instanceof SegmentRef) {
+  public DataModel createFlavor(String ext, DataModel dm,
+      List<SubProfileComponentAttributes> attributes, List<PathGroup> pathGroups) {
+    if (dm instanceof Group) {
+      Group grp = (Group) dm;
+
+      if (attributes != null && !attributes.isEmpty()) {
+        for (SubProfileComponentAttributes attr : attributes) {
+
+          if (attr.getMax() != null) {
+            grp.setMax(attr.getMax());
+          }
+          if (attr.getMin() != null) {
+            grp.setMin(attr.getMin());
+          }
+          if (attr.getUsage() != null) {
+            grp.setUsage(attr.getUsage());
+          }
+        }
+      }
+      return grp;
+    } else if (dm instanceof SegmentRef) {
       SegmentRef segRef = (SegmentRef) dm;
       if (attributes != null && !attributes.isEmpty()) {
         for (SubProfileComponentAttributes attr : attributes) {
@@ -64,8 +83,8 @@ public class FlavorServiceImpl implements FlavorService {
       if (!pathGroups.isEmpty()) {
         Segment originalSeg = queryService.getSegmentsMap().get(segRef.getRef().getId());
         try {
-          Segment segmentFlavor = originalSeg.clone(null, null);
-          segmentFlavor.setExt("PC" + "_" + segRef.getPosition());
+          Segment segmentFlavor = originalSeg.clone();
+          segmentFlavor.setExt(ext + "_" + segRef.getPosition());
           segmentFlavor.setId(ObjectId.get().toString());
           segmentFlavor.setScope(SCOPE.USER);
           queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
@@ -125,7 +144,7 @@ public class FlavorServiceImpl implements FlavorService {
         Datatype originalDt = queryService.getDatatypesMap().get(field.getDatatype().getId());
         try {
           Datatype datatypeFlavor = originalDt.clone();
-          datatypeFlavor.setExt("PC" + "_" + field.getPosition());
+          datatypeFlavor.setExt(ext + "_" + field.getPosition());
           datatypeFlavor.setId(ObjectId.get().toString());
           datatypeFlavor.setScope(SCOPE.USER);
           queryService.getDatatypesMap().put(datatypeFlavor.getId(), datatypeFlavor);
@@ -176,7 +195,7 @@ public class FlavorServiceImpl implements FlavorService {
         Datatype originalDt = queryService.getDatatypesMap().get(component.getDatatype().getId());
         try {
           Datatype datatypeFlavor = originalDt.clone();
-          datatypeFlavor.setExt("PC" + "_" + component.getPosition());
+          datatypeFlavor.setExt(ext + "_" + component.getPosition());
           datatypeFlavor.setId(ObjectId.get().toString());
           datatypeFlavor.setScope(SCOPE.USER);
           queryService.getDatatypesMap().put(datatypeFlavor.getId(), datatypeFlavor);

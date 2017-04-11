@@ -7,20 +7,41 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Ismail Mellouli (NIST) Mar 14, 2017
+ * that they have been modified. Ismail Mellouli (NIST) Apr 10, 2017
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-import java.util.List;
+public class PredicateContext {
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PathGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
+  private String type;
+  private String name;
+  private String path;
 
-public interface FlavorService {
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
+  }
 
 
-  public DataModel createFlavor(String ext, DataModel dm,
-      List<SubProfileComponentAttributes> attributes, List<PathGroup> pathGroups);
+
 }

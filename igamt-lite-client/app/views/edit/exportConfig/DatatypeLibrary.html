@@ -1,100 +1,163 @@
-<div class="alert alert-config">
-    Datatypes and linked value sets of a datatype library are exported as tables. Filters can be applied to export a subset desired tables.
-</div>
+<div class="alert alert-config">Datatypes and linked value sets of
+	a datatype library are exported as tables. Filters can be applied to
+	export a subset desired tables.</div>
 
 <div class="pull-right addMargin">
-    <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-            ng-disabled="!changed"
-            ng-click="override(datatypeLibraryExportConfig,'Datatype Library')">
-        <span><i class="fa fa-check fa-fw"></i> Apply</span>
-    </button>
-    <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!changed" ng-click="reset(datatypeLibraryExportConfig,'Datatype Library')">
-        <span><i class="fa fa-times fa-fw"></i> Reset</span>
-    </button>
-    <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default"  ng-click="restoreDefault(datatypeLibraryExportConfig,'Datatype Library')">
-        <span><i class="fa fa-refresh" aria-hidden="true"></i> Restore Default</span>
-    </button>
+	<button title="Save Changes" type="button"
+		class="btn btn-raised btn-sm btn-success" ng-disabled="!changed"
+		ng-click="override(datatypeLibraryExportConfig,'Datatype Library')">
+		<span><i class="fa fa-check fa-fw"></i> Apply</span>
+	</button>
+	<button title="Reset Changes" type="button"
+		class="btn btn-raised btn-sm btn-warning" ng-disabled="!changed"
+		ng-click="reset(datatypeLibraryExportConfig,'Datatype Library')">
+		<span><i class="fa fa-times fa-fw"></i> Reset</span>
+	</button>
+	<button title="Restore Default" type="button"
+		class="btn btn-raised btn-sm btn-default"
+		ng-click="restoreDefault(datatypeLibraryExportConfig,'Datatype Library')">
+		<span><i class="fa fa-refresh" aria-hidden="true"></i> Restore
+			Default</span>
+	</button>
 
 </div>
 
-<div layout="row" layout-align="center start" style="width:100%">
-    <div flex="50" class="conf-box" >
-        <div class="page-header">
+<div layout="row" layout-align="center start" style="width: 100%">
+	<div flex="50" class="conf-box">
+		<div class="page-header">
 
-            <span class="header5">Data Type Table Options</span>
-        </div>
-        <div layout="row" layout-align="center start" style="width:100%">
+			<span class="header5">Data Type Table Options</span>
+		</div>
+		<div layout="row" layout-align="center start" style="width: 100%">
 
-            <div class="panel panel-default" flex="50">
-                <div class="panel-heading beige"><strong>USAGES </strong> </div>
-                <div class="panel-body container">
-                    <div class="container">
-                        <label style="color:black">Components to Export:</label>
-                        <br/>
-                        <md-checkbox  class="md-primary" ng-model="datatypeLibraryExportConfig.componentExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
-                        </label></md-checkbox>
-                        <md-checkbox  class="md-primary" type="checkbox" ng-model="datatypeLibraryExportConfig.componentExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
-                        </label></md-checkbox>
-                        <md-checkbox  class="md-primary" type="checkbox" ng-model="datatypeLibraryExportConfig.componentExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
-                        </label></md-checkbox>
-                        <md-checkbox  class="md-primary"type="checkbox" ng-model="datatypeLibraryExportConfig.componentExport.o" ng-change="setChanged()"> <label style="color:black">O
-                        </label></md-checkbox>
-                        <md-checkbox  class="md-primary" type="checkbox" ng-model="datatypeLibraryExportConfig.componentExport.x" ng-change="setChanged()"> <label style="color:black">X
-                        </label></md-checkbox>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default" flex="50" style="margin-left:10px;">
-                <div class="panel-heading beige"> <strong> Columns </strong></div>
-                <div class="panel-body container">
-                    <div style="width:100%" >
+			<div class="panel panel-default" flex="50">
+				<div class="panel-heading beige">
+					<strong>USAGES </strong>
+				</div>
+				<div class="panel-body container">
+					<div class="container">
+						<label style="color: black">Components to Export:</label> <br />
+						<md-checkbox class="md-primary"
+							ng-model="datatypeLibraryExportConfig.componentExport.r"
+							ng-change="setChanged()" disabled> <label
+							style="color: black">R </label></md-checkbox>
+						<md-checkbox class="md-primary" type="checkbox"
+							ng-model="datatypeLibraryExportConfig.componentExport.re"
+							ng-change="setChanged()" disabled> <label
+							style="color: black">RE </label></md-checkbox>
+						<md-checkbox class="md-primary" type="checkbox"
+							ng-model="datatypeLibraryExportConfig.componentExport.c"
+							ng-change="setChanged()" disabled> <label
+							style="color: black">C </label></md-checkbox>
+						<md-checkbox class="md-primary" type="checkbox"
+							ng-model="datatypeLibraryExportConfig.componentExport.o"
+							ng-change="setChanged()"> <label
+							style="color: black">O </label></md-checkbox>
+						<md-checkbox class="md-primary" type="checkbox"
+							ng-model="datatypeLibraryExportConfig.componentExport.x"
+							ng-change="setChanged()"> <label
+							style="color: black">X </label></md-checkbox>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default" flex="50" style="margin-left: 10px;">
+				<div class="panel-heading beige">
+					<strong> Columns </strong>
+				</div>
+				<div class="panel-body container">
+					<div style="width: 100%">
 
 
-                        <div  style="padding-left:15px; " ng-repeat="c in datatypeLibraryExportConfig.datatypeColumn.columns">
+						<div style="padding-left: 15px;"
+							ng-repeat="c in datatypeLibraryExportConfig.datatypeColumn.columns">
 
-                            <md-checkbox  class="md-primary" type="checkbox" ng-model="c.present" ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
-                            </label></md-checkbox><br/>
+							<md-checkbox class="md-primary" type="checkbox"
+								ng-model="c.present" ng-change="setChanged()"
+								ng-disabled="c.disabled"> <label
+								style="color: black">{{c.name}} </label></md-checkbox>
+							<br />
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div flex="50" class="conf-box">
-        <div class="page-header">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div flex="50" class="conf-box">
+		<div class="page-header">
 
-            <span class="header5">Value Sets Table Options</span>
-        </div>
-        <div layout="row" layout-align="center start" style="width:100%">
-            <div class="panel panel-default" flex="50">
-                <div class="panel-heading beige"> <strong> USAGES </strong> </div>
-                <div class="panel-body container">
-                    <div class="container">
-                        <label style="color:black">Codes to Export:</label><br/>
+			<span class="header5">Value Sets Table Options</span>
+		</div>
+		<div layout="row" layout-align="center start" style="width: 100%">
+			<div class="panel panel-default" flex="50">
+				<div class="panel-heading beige">
+					<strong> USAGES </strong>
+				</div>
+				<div class="panel-body container">
+					<div class="container">
+						<label style="color: black">Codes to Export:</label><br />
 
-                        <md-checkbox class="md-primary"type="checkbox" ng-model="datatypeLibraryExportConfig.codesExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
-                        </label></md-checkbox>
-                        <md-checkbox  class="md-primary" type="checkbox" ng-model="datatypeLibraryExportConfig.codesExport.p" ng-change="setChanged()"> <label style="color:black">P
-                        </label></md-checkbox>
-                        <md-checkbox  class="md-primary" type="checkbox" ng-model="datatypeLibraryExportConfig.codesExport.e" ng-change="setChanged()"> <label style="color:black">E
-                        </label></md-checkbox>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default" flex="50" style="margin-left:10px;">
-                <div class="panel-heading beige"> <strong> Columns </strong></div>
-                <div class="panel-body container">
-                    <div style="width:100%" >
-                        <div  style="padding-left:15px; " ng-repeat="c in datatypeLibraryExportConfig.valueSetColumn.columns">
-                            <md-checkbox  class="md-primary" type="checkbox" ng-model="c.present" ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
-                            </label></md-checkbox><br/>
+						<md-checkbox class="md-primary" type="checkbox"
+							ng-model="datatypeLibraryExportConfig.codesExport.r"
+							ng-change="setChanged()" disabled> <label
+							style="color: black">R </label></md-checkbox>
+						<md-checkbox class="md-primary" type="checkbox"
+							ng-model="datatypeLibraryExportConfig.codesExport.p"
+							ng-change="setChanged()"> <label
+							style="color: black">P </label></md-checkbox>
+						<md-checkbox class="md-primary" type="checkbox"
+							ng-model="datatypeLibraryExportConfig.codesExport.e"
+							ng-change="setChanged()"> <label
+							style="color: black">E </label></md-checkbox>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default" flex="50" style="margin-left: 10px;">
+				<div class="panel-heading beige">
+					<strong> Columns </strong>
+				</div>
+				<div class="panel-body container">
+					<div style="width: 100%">
+						<div style="padding-left: 15px;"
+							ng-repeat="c in datatypeLibraryExportConfig.valueSetColumn.columns">
+							<md-checkbox class="md-primary" type="checkbox"
+								ng-model="c.present" ng-change="setChanged()"
+								ng-disabled="c.disabled"> <label
+								style="color: black">{{c.name}} </label></md-checkbox>
+							<br />
 
-                        </div>
-                    </div>
-                </div>
+						</div>
+					</div>
+				</div>
 
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+		<div layout="row" layout-align="left start"
+			style="margin-top: 10px; width: 100%">
+			<div class="panel panel-default" flex="50">
+				<div class="panel-heading beige">
+					<strong>Metadata</strong>
+				</div>
+				<div class="panel-body container">
+					<div class="container">
+						<md-checkbox class="md-primary"
+							ng-model="datatypeLibraryExportConfig.valueSetsMetadata.stability"
+							ng-change="setChanged()"> <label
+							style="color: black">Stability</label></md-checkbox>
+						<br />
+						<md-checkbox class="md-primary"
+							ng-model="datatypeLibraryExportConfig.valueSetsMetadata.extensibility"
+							ng-change="setChanged()"> <label
+							style="color: black">Extensibility</label></md-checkbox>
+						<br />
+						<md-checkbox class="md-primary"
+							ng-model="datatypeLibraryExportConfig.valueSetsMetadata.contentDefinition"
+							ng-change="setChanged()"> <label
+							style="color: black">Content Definition</label></md-checkbox>
+						<br />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

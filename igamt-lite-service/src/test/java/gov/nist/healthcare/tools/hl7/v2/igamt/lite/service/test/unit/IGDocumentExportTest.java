@@ -153,19 +153,4 @@ public class IGDocumentExportTest {
             e.printStackTrace();
         }
     }
-    @Test
-    public void testXmlExport(){
-        IGDocument igDocument = igDocumentService.findById(IG_DOCUMENT_TEST_ID);
-        try {
-            File xmlFile = new File(EXPORT_BASE_PATH+".xml");
-            if(xmlFile.exists()){
-                xmlFile.delete();
-            }
-            if(xmlFile.createNewFile()) {
-                FileUtils.copyInputStreamToFile(exportService.exportIGDocumentAsXml(igDocument), xmlFile);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -3881,6 +3881,17 @@ angular.module('igl').controller('createCompositeProfileCtrl',
         $scope.baseProfiles = $rootScope.messages.children;
         $scope.pcs = $rootScope.profileComponents;
         $scope.position = 1;
+        
+        $scope.checkCompositeExt = function(ext){
+            for(var i=0;i<$rootScope.compositeProfiles.length;i++){
+                
+                if(ext === $rootScope.compositeProfilesStructureMap[$rootScope.compositeProfiles[i].id].ext){
+                    return true;
+                }
+
+            }
+            return false;
+        }
 
 
         $scope.changePage = function() {
@@ -3930,6 +3941,7 @@ angular.module('igl').controller('createCompositeProfileCtrl',
                 coreProfileId: $scope.baseP.id,
                 profileComponentsInfo: $scope.pcList,
                 name: $scope.name,
+                ext:$scope.ext,
                 description: $scope.description,
                 comment: $scope.comment
             };

@@ -169,7 +169,7 @@ import java.util.*;
         }
         int currentPosition = 1;
         //Profile Component serialization
-        if(exportConfig.isIncludePC()){
+        if(exportConfig.isIncludeProfileComponentTable()){
             SerializableSection profileComponentSection = this.serializeProfileComponent(profile.getProfileComponentLibrary(),currentPosition);
             if(profileComponentSection!=null) {
                 profileSection.addSection(profileComponentSection);
@@ -179,14 +179,14 @@ import java.util.*;
 
         //Message Serialization
         SerializableSection messageSection = this.serializeMessages(profile, serializationLayout,igDocument.getMetaData().getHl7Version(),currentPosition);
-        if(messageSection!=null) {
+        if(exportConfig.isIncludeMessageTable() && messageSection!=null) {
             profileSection.addSection(messageSection);
             currentPosition ++;
         }
 
         //Composite profiles serialization
         SerializableSection compositeProfilesSection = this.serializeCompositeProfiles(profile, serializationLayout,igDocument.getMetaData().getHl7Version(),currentPosition);
-        if(compositeProfilesSection!=null) {
+        if(exportConfig.isIncludeCompositeProfileTable() && compositeProfilesSection!=null) {
             profileSection.addSection(compositeProfilesSection);
             currentPosition ++;
         }
@@ -194,7 +194,7 @@ import java.util.*;
         //Segments serialization
         UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
         SerializableSection segmentsSection = this.serializeSegments(profile,fieldsUsageConfig, currentPosition);
-        if(!serializationLayout.equals(SerializationLayout.PROFILE) && segmentsSection != null) {
+        if(exportConfig.isIncludeSegmentTable() && !serializationLayout.equals(SerializationLayout.PROFILE) && segmentsSection != null) {
             profileSection.addSection(segmentsSection);
             currentPosition ++;
         }
@@ -205,14 +205,14 @@ import java.util.*;
             serializeMaster = false;
         }
         SerializableSection datatypeSection = this.serializeDatatypes(profile.getDatatypeLibrary(),currentPosition,serializeMaster);
-        if(datatypeSection != null) {
+        if(exportConfig.isIncludeDatatypeTable() && datatypeSection != null) {
             profileSection.addSection(datatypeSection);
             currentPosition ++;
         }
 
         //Value sets serialization
         SerializableSection valueSetsSection = this.serializeValueSets(profile.getTableLibrary(),currentPosition);
-        if(valueSetsSection != null) {
+        if(exportConfig.isIncludeValueSetsTable() && valueSetsSection != null) {
             profileSection.addSection(valueSetsSection);
             currentPosition ++;
         }
@@ -363,7 +363,7 @@ import java.util.*;
                 SerializableTable serializableTable = serializeTableService
                     .serializeTable(tableLink,
                         prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                        tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig);
+                        tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig, exportConfig.getValueSetsMetadata());
                 valueSetsSection.addSection(serializableTable);
             }
         }
@@ -375,7 +375,7 @@ import java.util.*;
                         SerializableTable serializableTable = serializeTableService
                             .serializeTable(tableLink,
                                 prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                                tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig);
+                                tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig, exportConfig.getValueSetsMetadata());
                         valueSetsSection.addSection(serializableTable);
                     }
                 }

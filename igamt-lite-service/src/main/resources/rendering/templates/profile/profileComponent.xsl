@@ -1,4 +1,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:import href="/rendering/templates/profile/constraint.xsl"/>
+    <xsl:include href="/rendering/templates/profile/definitionText.xsl"/>
 
     <xsl:template match="ProfileComponent" mode="toc">
         <xsl:element name="a">
@@ -16,6 +18,13 @@
             <xsl:element name="p">
                 <xsl:value-of select="@Description"/>
             </xsl:element>
+        </xsl:if>
+        <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
+            <xsl:call-template name="definitionText">
+                <xsl:with-param name="type">
+                    <xsl:text>pre</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
         </xsl:if>
         <xsl:element name="table">
             <xsl:attribute name="class">
@@ -277,6 +286,41 @@
                 </xsl:element>
             </xsl:element>
         </xsl:element>
+    	<xsl:if test="count(Constraints/Constraint[@Type='pre']) &gt; 0">
+            <xsl:element name="h4">
+                <xsl:text>Conditional Predicates</xsl:text>
+            </xsl:element>
+            <xsl:element name="table">
+                <xsl:attribute name="class">
+                    <xsl:text>contentTable</xsl:text>
+                </xsl:attribute>
+                <xsl:call-template name="predicateHeader"/>
+                <xsl:element name="tbody">
+                    <xsl:for-each select="./Constraints/Constraint[@Type='pre']">
+                        <xsl:sort select="@Position" data-type="number"></xsl:sort>
+                        <xsl:call-template name="ConstraintContent">
+                            <xsl:with-param name="mode">
+                                <xsl:text>standalone</xsl:text>
+                            </xsl:with-param>
+                            <xsl:with-param name="type">
+                                <xsl:text>pre</xsl:text>
+                            </xsl:with-param>
+                            <xsl:with-param name="displayPeriod">
+                                <xsl:text>false</xsl:text>
+                            </xsl:with-param>
+                        </xsl:call-template>
+                    </xsl:for-each>
+                </xsl:element>
+            </xsl:element>
+        </xsl:if>
+		<xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+			<xsl:call-template name="definitionText">
+				<xsl:with-param name="type">
+					<xsl:text>post</xsl:text>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
+        
     </xsl:template>
 
 </xsl:stylesheet>

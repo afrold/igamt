@@ -1,342 +1,528 @@
 <div ng-controller="EditAreaCtrl" ng-init="init">
-    <div class="alert alert-config">
-        The implementation guide is exported as individual message profiles. A profile will contain it’s Message Structure Definition, Profile Components, and Segments. Data Types and Value Sets Organized as individual profiles. Contains Message Definition and all pertaining Profile Components and Segments. Data Type and Value Sets are rendered in a single separate section regardless of the profile in which they are used. Both the narrative and messaging aspects are exported.
-    </div>
-<div class="pull-right addMargin">
-                         <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                               ng-disabled="!changed"
-                               ng-click="override(profileStyleExportConfig,'Profile Style'); ">
-                              <span><i class="fa fa-check fa-fw"></i>Apply</span>
-                        </button>
-                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"  ng-disabled="!changed" ng-click="reset(profileStyleExportConfig,'Profile Style')">
-                                  <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                         </button>
-                         <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default" ng-click="restoreDefault(profileStyleExportConfig,'Profile Style')">
-                                  <span><i class="fa fa-refresh" aria-hidden="true"></i> Restore Default</span>
-                         </button>
+	<div class="alert alert-config">The implementation guide is
+		exported as individual message profiles. A profile will contain it’s
+		Message Structure Definition, Profile Components, and Segments. Data
+		Types and Value Sets Organized as individual profiles. Contains
+		Message Definition and all pertaining Profile Components and Segments.
+		Data Type and Value Sets are rendered in a single separate section
+		regardless of the profile in which they are used. Both the narrative
+		and messaging aspects are exported.</div>
+	<div class="pull-right addMargin">
+		<button title="Save Changes" type="button"
+			class="btn btn-raised btn-sm btn-success" ng-disabled="!changed"
+			ng-click="override(profileStyleExportConfig,'Profile Style'); ">
+			<span><i class="fa fa-check fa-fw"></i>Apply</span>
+		</button>
+		<button title="Reset Changes" type="button"
+			class="btn btn-raised btn-sm btn-warning" ng-disabled="!changed"
+			ng-click="reset(profileStyleExportConfig,'Profile Style')">
+			<span><i class="fa fa-times fa-fw"></i> Reset</span>
+		</button>
+		<button title="Restore Default" type="button"
+			class="btn btn-raised btn-sm btn-default"
+			ng-click="restoreDefault(profileStyleExportConfig,'Profile Style')">
+			<span><i class="fa fa-refresh" aria-hidden="true"></i> Restore
+				Default</span>
+		</button>
 
+	</div>
+
+	<div layout="row" layout-align="center start" style="width: 100%">
+		<div flex="50" class="conf-box">
+			<div class="page-header">
+				<span class="header5"><md-checkbox class="md-primary"
+						ng-model="profileStyleExportConfig.includeMessageTable"
+						ng-change="setChanged()" />Message Table Options</span>
+			</div>
+			<div layout="row" layout-align="center start" style="width: 100%">
+
+				<div class="panel panel-default" flex="50">
+					<div class="panel-heading beige">
+						<strong>USAGES</strong>
+					</div>
+					<div class="panel-body container">
+						<div class="container">
+							<label style="color: black"> Segments/Groups to Export:</label> <br />
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.segmentORGroupsMessageExport.r"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">R </label></md-checkbox>
+
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.segmentORGroupsMessageExport.re"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">RE </label></md-checkbox>
+							</label>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.segmentORGroupsMessageExport.c"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">C </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.segmentORGroupsMessageExport.o"
+								ng-change="setChanged()"> <label
+								style="color: black">O </label></md-checkbox>
+							</label>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.segmentORGroupsMessageExport.x"
+								ng-change="setChanged()"> <label
+								style="color: black">X </label></md-checkbox>
+							</label>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="panel panel-default" flex="50"
+					style="margin-left: 10px;">
+					<div class="panel-heading beige">
+						<strong> Columns </strong>
+					</div>
+					<div class="panel-body container">
+						<div style="width: 100%">
+
+
+							<div style="padding-left: 15px;"
+								ng-repeat="c in profileStyleExportConfig.messageColumn.columns">
+
+								<md-checkbox class="md-primary" ng-model="c.present"
+									ng-disabled="c.disabled" ng-change="setChanged()">
+								<label style="color: black">{{c.name}} </label> <br />
+								</md-checkbox>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div flex="50" class="conf-box">
+			<div class="page-header">
+				<span class="header5"><md-checkbox class="md-primary"
+						ng-model="profileStyleExportConfig.includeSegmentTable"
+						ng-change="setChanged()" />Segment Table Options</span>
+			</div>
+			<div layout="row" layout-align="center start" style="width: 100%">
+				<div class="panel panel-default" flex="50">
+					<div class="panel-heading beige">
+						<strong> USAGES </strong>
+					</div>
+					<div class="panel-body container">
+						<div class="container">
+							<label style="color: black"> Segments to Export:</label> <br />
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.segmentsExport.r"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">R </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.segmentsExport.re"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">RE </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.segmentsExport.c"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">C </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.segmentsExport.o"
+								ng-change="setChanged()"> <label
+								style="color: black">O </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.segmentsExport.x"
+								ng-change="setChanged()"> <label
+								style="color: black">X </label></md-checkbox>
+
+						</div>
+						<hr style="border-top: 2px solid #271e1e;" />
+						<div class="container">
+							<label style="color: black">Fields to Export:</label> </br>
+
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.fieldsExport.r"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">R </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.fieldsExport.re"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">RE </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.fieldsExport.c"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">C </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.fieldsExport.o"
+								ng-change="setChanged()"> <label
+								style="color: black">O </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.fieldsExport.x"
+								ng-change="setChanged()"> <label
+								style="color: black">X </label></md-checkbox>
+
+						</div>
+
+
+					</div>
+
+				</div>
+
+
+
+				<div class="panel panel-default" flex="50"
+					style="margin-left: 10px;">
+					<div class="panel-heading beige">
+						<strong> Columns </strong>
+					</div>
+					<div class="panel-body container">
+						<div style="width: 100%">
+
+
+							<div style="padding-left: 15px;"
+								ng-repeat="c in profileStyleExportConfig.segmentColumn.columns">
+
+								<md-checkbox class="md-primary" ng-model="c.present"
+									ng-disabled="c.disabled" ng-change="setChanged()">
+								<label style="color: black">{{c.name}} </label> <br />
+								</md-checkbox>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<div layout="row" layout-align="center start" style="width: 100%">
+		<div flex="50" class="conf-box">
+			<div class="page-header">
+
+				<span class="header5"><md-checkbox class="md-primary"
+						ng-model="profileStyleExportConfig.includeDatatypeTable"
+						ng-change="setChanged()" />Data Type Table Options</span>
+			</div>
+			<div layout="row" layout-align="center start" style="width: 100%">
+
+				<div class="panel panel-default" flex="50">
+					<div class="panel-heading beige">
+						<strong>USAGES </strong>
+					</div>
+					<div class="panel-body container">
+						<div class="container">
+							<label style="color: black">Datatypes to export:</label> <br />
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.datatypesExport.r"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">R </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.datatypesExport.re"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">RE </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.datatypesExport.c"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">C </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.datatypesExport.o"
+								ng-change="setChanged()"> <label
+								style="color: black">O </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.datatypesExport.x"
+								ng-change="setChanged()"> <label
+								style="color: black">X </label></md-checkbox>
+
+						</div>
+						<hr style="border-top: 2px solid #271e1e;" />
+						<div class="container">
+							<label style="color: black">Components to Export:</label> <br />
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.componentExport.r"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">R </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.componentExport.re"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">RE </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.componentExport.c"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">C </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.componentExport.o"
+								ng-change="setChanged()"> <label
+								style="color: black">O </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.componentExport.x"
+								ng-change="setChanged()"> <label
+								style="color: black">X </label></md-checkbox>
+
+						</div>
+
+
+					</div>
+
+				</div>
+
+
+
+				<div class="panel panel-default" flex="50"
+					style="margin-left: 10px;">
+					<div class="panel-heading beige">
+						<strong> Columns </strong>
+					</div>
+					<div class="panel-body container">
+						<div style="width: 100%">
+
+
+							<div style="padding-left: 15px;"
+								ng-repeat="c in profileStyleExportConfig.datatypeColumn.columns">
+
+								<md-checkbox class="md-primary" ng-model="c.present"
+									ng-change="setChanged()" ng-disabled="c.disabled">
+								<label style="color: black">{{c.name}} </label></md-checkbox>
+								<br />
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div flex="50" class="conf-box">
+			<div class="page-header">
+
+				<span class="header5"><md-checkbox class="md-primary"
+						ng-model="profileStyleExportConfig.includeValueSetsTable"
+						ng-change="setChanged()" />Value Sets Table Options</span>
+			</div>
+			<div layout="row" layout-align="center start" style="width: 100%">
+				<div class="panel panel-default" flex="50">
+					<div class="panel-heading beige">
+						<strong> USAGES </strong>
+					</div>
+					<div class="panel-body container">
+						<div class="container">
+							<label style="color: black"> Value Sets to Export:</label> <br />
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.valueSetsExport.r"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">R </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.valueSetsExport.re"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">RE </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.valueSetsExport.c"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">C</label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.valueSetsExport.o"
+								ng-change="setChanged()"> <label
+								style="color: black">O</label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.valueSetsExport.x"
+								ng-change="setChanged()"> <label
+								style="color: black">X </label></md-checkbox>
+							<br />
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.unboundHL7"
+								ng-change="setChanged()"> <label
+								style="color: black">All HL7 Unbound </label></md-checkbox>
+							<br />
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.unboundCustom"
+								ng-change="setChanged()"> <label
+								style="color: black">All Custom Unbound </label></md-checkbox>
+						</div>
+						<hr style="border-top: 2px solid #271e1e;" />
+						<div class="container">
+							<label style="color: black">Codes to Export:</label><br />
+
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.codesExport.r"
+								ng-change="setChanged()" disabled> <label
+								style="color: black">R </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.codesExport.p"
+								ng-change="setChanged()"> <label
+								style="color: black">P </label></md-checkbox>
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.codesExport.e"
+								ng-change="setChanged()"> <label
+								style="color: black">E </label></md-checkbox>
+
+						</div>
+
+
+					</div>
+
+				</div>
+				<div class="panel panel-default" flex="50"
+					style="margin-left: 10px;">
+					<div class="panel-heading beige">
+						<strong> Columns </strong>
+					</div>
+					<div class="panel-body container">
+						<div style="width: 100%">
+							<div style="padding-left: 15px;"
+								ng-repeat="c in profileStyleExportConfig.valueSetColumn.columns">
+
+								<md-checkbox class="md-primary" ng-model="c.present"
+									ng-change="setChanged()" ng-disabled="c.disabled">
+								<label style="color: black">{{c.name}} </label></md-checkbox>
+								<br />
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div layout="row" layout-align="left start"
+				style="margin-top: 10px; width: 100%">
+				<div class="panel panel-default" flex="50">
+					<div class="panel-heading beige">
+						<strong>Metadata</strong>
+					</div>
+					<div class="panel-body container">
+						<div class="container">
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.valueSetsMetadata.stability"
+								ng-change="setChanged()"> <label
+								style="color: black">Stability</label></md-checkbox>
+							<br />
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.valueSetsMetadata.extensibility"
+								ng-change="setChanged()"> <label
+								style="color: black">Extensibility</label></md-checkbox>
+							<br />
+							<md-checkbox class="md-primary"
+								ng-model="profileStyleExportConfig.valueSetsMetadata.contentDefinition"
+								ng-change="setChanged()"> <label
+								style="color: black">Content Definition</label></md-checkbox>
+							<br />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-    <div class="container">
-        <md-checkbox class="md-primary" ng-model="profileStyleExportConfig.includePC" ng-change="setChanged()">
+<div layout="row" layout-align="center start" style="width: 100%">
+	<div flex="50" class="conf-box">
+		<div class="page-header">
+			<span class="header5"><md-checkbox class="md-primary"
+					ng-model="profileStyleExportConfig.includeCompositeProfileTable"
+					ng-change="setChanged()" />Composite Profile Table Options</span>
+		</div>
+		<div layout="row" layout-align="center start" style="width: 100%">
+			<div class="panel panel-default" flex="50">
+				<div class="panel-heading beige">
+					<strong>USAGES</strong>
+				</div>
+				<div class="panel-body container">
+					<div class="container">
+						<label style="color: black"> Segments/Groups to Export:</label> <br />
+						<md-checkbox class="md-primary"
+							ng-model="profileStyleExportConfig.segmentORGroupsCompositeProfileExport.r"
+							ng-change="setChanged()" disabled> <label
+							style="color: black">R </label></md-checkbox>
+						<md-checkbox class="md-primary"
+							ng-model="profileStyleExportConfig.segmentORGroupsCompositeProfileExport.re"
+							ng-change="setChanged()" disabled> <label
+							style="color: black">RE </label></md-checkbox>
+						</label>
+						<md-checkbox class="md-primary"
+							ng-model="profileStyleExportConfig.segmentORGroupsCompositeProfileExport.c"
+							ng-change="setChanged()" disabled> <label
+							style="color: black">C </label></md-checkbox>
+						<md-checkbox class="md-primary"
+							ng-model="profileStyleExportConfig.segmentORGroupsCompositeProfileExport.o"
+							ng-change="setChanged()"> <label
+							style="color: black">O </label></md-checkbox>
+						</label>
+						<md-checkbox class="md-primary"
+							ng-model="profileStyleExportConfig.segmentORGroupsCompositeProfileExport.x"
+							ng-change="setChanged()"> <label
+							style="color: black">X </label></md-checkbox>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default" flex="50" style="margin-left: 10px;">
+				<div class="panel-heading beige">
+					<strong> Columns </strong>
+				</div>
+				<div class="panel-body container">
+					<div style="width: 100%">
+						<div style="padding-left: 15px;"
+							ng-repeat="c in profileStyleExportConfig.compositeProfileColumn.columns">
+							<md-checkbox class="md-primary" ng-model="c.present"
+								ng-disabled="c.disabled" ng-change="setChanged()">
+							<label style="color: black">{{c.name}} </label> <br />
+							</md-checkbox>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-            Include Profile Component</md-checkbox>
-    </div>
-    
-    
-    <div layout="row" layout-align="center start" style="width:100%">
-        <div flex="50" class="conf-box" >
-            <div class="page-header">
-                <span class="header5">Message Table Options</span>
-            </div>
-            <div layout="row" layout-align="center start" style="width:100%">
-
-                <div class="panel panel-default" flex="50">
-                    <div class="panel-heading beige"><strong>USAGES</strong></div>
-                    <div class="panel-body container">
-                        <div class="container">
-                            <label style="color:black"> Segments/Groups to Export:</label>
-                            <br/>
-                            <md-checkbox class="md-primary" ng-model="profileStyleExportConfig.segmentORGroupsMessageExport.r" ng-change="setChanged()" disabled> <label style="color:black">R  </label></md-checkbox>
-
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.segmentORGroupsMessageExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE  </label></md-checkbox>
-                            </label>
-                            <md-checkbox class="md-primary" ng-model="profileStyleExportConfig.segmentORGroupsMessageExport.c" ng-change="setChanged()" disabled> <label style="color:black">C  </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.segmentORGroupsMessageExport.o" ng-change="setChanged()"> <label style="color:black">O  </label></md-checkbox>
-                            </label>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.segmentORGroupsMessageExport.x" ng-change="setChanged()"> <label style="color:black">X  </label></md-checkbox>
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="panel panel-default" flex="50" style="margin-left:10px;">
-                    <div class="panel-heading beige"> <strong> Columns </strong></div>
-                    <div class="panel-body container">
-                        <div style="width:100%" >
-
-
-                            <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.messageColumn.columns">
-
-                                <md-checkbox  class="md-primary" ng-model="c.present" ng-disabled="c.disabled" ng-change="setChanged()"> <label style="color:black">{{c.name}}
-                                </label><br/>
-                                </md-checkbox>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div flex="50" class="conf-box">
-            <div class="page-header">
-                <span class="header5">Segment Table Options</span>
-            </div>
-            <div layout="row" layout-align="center start" style="width:100%">
-                <div class="panel panel-default" flex="50">
-                    <div class="panel-heading beige"> <strong> USAGES </strong></div>
-                    <div class="panel-body container">
-                        <div class="container">
-                            <label style="color:black"> Segments to Export:</label>
-                            <br/>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.segmentsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.segmentsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.segmentsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary"ng-model="profileStyleExportConfig.segmentsExport.o" ng-change="setChanged()"> <label style="color:black">O
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.segmentsExport.x" ng-change="setChanged()"> <label style="color:black">X
-                            </label></md-checkbox>
-
-                        </div>
-                        <hr style="border-top: 2px solid #271e1e;"/>
-                        <div class="container">
-                            <label style="color:black">Fields to Export:</label>
-                            </br>
-
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.fieldsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.fieldsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.fieldsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.fieldsExport.o" ng-change="setChanged()"> <label style="color:black">O
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.fieldsExport.x" ng-change="setChanged()"> <label style="color:black">X
-                            </label></md-checkbox>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="panel panel-default" flex="50" style="margin-left:10px;">
-                    <div class="panel-heading beige"> <strong> Columns </strong></div>
-                    <div class="panel-body container">
-                        <div style="width:100%" >
-
-
-                            <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.segmentColumn.columns">
-
-                                <md-checkbox  class="md-primary" ng-model="c.present"  ng-disabled="c.disabled" ng-change="setChanged()"> <label style="color:black">{{c.name}}
-                                </label><br/></md-checkbox>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-    <div layout="row" layout-align="center start" style="width:100%">
-        <div flex="50" class="conf-box" >
-            <div class="page-header">
-
-                <span class="header5">Data Type Table Options</span>
-            </div>
-            <div layout="row" layout-align="center start" style="width:100%">
-
-                <div class="panel panel-default" flex="50">
-                    <div class="panel-heading beige"><strong>USAGES </strong> </div>
-                    <div class="panel-body container">
-                        <div class="container">
-                            <label style="color:black">Datatypes to export:</label>
-                            <br/>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.datatypesExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.datatypesExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.datatypesExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.datatypesExport.o" ng-change="setChanged()"> <label style="color:black">O
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.datatypesExport.x" ng-change="setChanged()">  <label style="color:black">X
-                            </label></md-checkbox>
-
-                        </div>
-                        <hr style="border-top: 2px solid #271e1e;"/>
-                        <div class="container">
-                            <label style="color:black">Components to Export:</label>
-                            <br/>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.componentExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.componentExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.componentExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.componentExport.o" ng-change="setChanged()"> <label style="color:black">O
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.componentExport.x" ng-change="setChanged()"> <label style="color:black">X
-                            </label></md-checkbox>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="panel panel-default" flex="50" style="margin-left:10px;">
-                    <div class="panel-heading beige"> <strong> Columns </strong></div>
-                    <div class="panel-body container">
-                        <div style="width:100%" >
-
-
-                            <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.datatypeColumn.columns">
-
-                                <md-checkbox  class="md-primary" ng-model="c.present" ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
-                                </label></md-checkbox><br/>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div flex="50" class="conf-box">
-            <div class="page-header">
-
-                <span class="header5">Value Sets Table Options</span>
-            </div>
-            <div layout="row" layout-align="center start" style="width:100%">
-                <div class="panel panel-default" flex="50">
-                    <div class="panel-heading beige"> <strong> USAGES </strong> </div>
-                    <div class="panel-body container">
-                        <div class="container">
-                            <label style="color:black"> Value Sets to Export:</label>
-                            <br/><md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.valueSetsExport.r" ng-change="setChanged()" disabled><label style="color:black">R
-                        </label></md-checkbox><md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.valueSetsExport.re" ng-change="setChanged()" disabled><label style="color:black">RE
-                        </label></md-checkbox><md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.valueSetsExport.c" ng-change="setChanged()" disabled><label style="color:black">C</label></md-checkbox><md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.valueSetsExport.o" ng-change="setChanged()"><label style="color:black">O</label></md-checkbox><md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.valueSetsExport.x" ng-change="setChanged()"><label style="color:black">X
-                        </label></md-checkbox>
-                            <br/>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.unboundHL7" ng-change="setChanged()"> <label style="color:black">All HL7 Unbound
-                            </label></md-checkbox>
-                            <br/>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.unboundCustom" ng-change="setChanged()"> <label style="color:black">All Custom Unbound
-                            </label></md-checkbox>
-                        </div>
-                        <hr style="border-top: 2px solid #271e1e; "/>
-                        <div class="container">
-                            <label style="color:black">Codes to Export:</label><br/>
-
-                            <md-checkbox class="md-primary" ng-model="profileStyleExportConfig.codesExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.codesExport.p" ng-change="setChanged()"> <label style="color:black">P
-                            </label></md-checkbox>
-                            <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.codesExport.e" ng-change="setChanged()"> <label style="color:black">E
-                            </label></md-checkbox>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-                <div class="panel panel-default" flex="50" style="margin-left:10px;">
-                    <div class="panel-heading beige"> <strong> Columns </strong></div>
-                    <div class="panel-body container">
-                        <div style="width:100%" >
-                            <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.valueSetColumn.columns">
-
-                                <md-checkbox  class="md-primary" ng-model="c.present" ng-change="setChanged()" ng-disabled="c.disabled"> <label style="color:black">{{c.name}}
-                                </label></md-checkbox><br/>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div layout="row" layout-align="center start" style="width:100%">
-    <div flex="50" class="conf-box" >
-        <div class="page-header">
-            <span class="header5">Composite Profile Table Options</span>
-        </div>
-        <div layout="row" layout-align="center start" style="width:100%">
-            <div class="panel panel-default" flex="50">
-                <div class="panel-heading beige"><strong>USAGES</strong></div>
-                <div class="panel-body container">
-                    <div class="container">
-                        <label style="color:black"> Segments/Groups to Export:</label>
-                        <br/>
-                        <md-checkbox class="md-primary" ng-model="profileStyleExportConfig.segmentORGroupsCompositeProfileExport.r" ng-change="setChanged()" disabled> <label style="color:black">R  </label></md-checkbox>
-                        <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.segmentORGroupsCompositeProfileExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE  </label></md-checkbox>
-                        </label>
-                        <md-checkbox class="md-primary" ng-model="profileStyleExportConfig.segmentORGroupsCompositeProfileExport.c" ng-change="setChanged()" disabled> <label style="color:black">C  </label></md-checkbox>
-                        <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.segmentORGroupsCompositeProfileExport.o" ng-change="setChanged()"> <label style="color:black">O  </label></md-checkbox>
-                        </label>
-                        <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.segmentORGroupsCompositeProfileExport.x" ng-change="setChanged()"> <label style="color:black">X  </label></md-checkbox>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default" flex="50" style="margin-left:10px;">
-                <div class="panel-heading beige"> <strong> Columns </strong></div>
-                <div class="panel-body container">
-                    <div style="width:100%" >
-                        <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.compositeProfileColumn.columns">
-                            <md-checkbox  class="md-primary" ng-model="c.present" ng-disabled="c.disabled" ng-change="setChanged()"> <label style="color:black">{{c.name}}
-                            </label><br/>
-                            </md-checkbox>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div flex="50" class="conf-box">
-        <div class="page-header">
-            <span class="header5">Profile Component Table Options</span>
-        </div>
-        <div layout="row" layout-align="center start" style="width:100%">
-            <div class="panel panel-default" flex="50">
-                <div class="panel-heading beige"> <strong> USAGES </strong></div>
-                <div class="panel-body container">
-                    <div class="container">
-                        <label style="color:black"> Items to Export:</label>
-                        <br/>
-                        <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.profileComponentItemsExport.r" ng-change="setChanged()" disabled> <label style="color:black">R
-                        </label></md-checkbox>
-                        <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.profileComponentItemsExport.re" ng-change="setChanged()" disabled> <label style="color:black">RE
-                        </label></md-checkbox>
-                        <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.profileComponentItemsExport.c" ng-change="setChanged()" disabled> <label style="color:black">C
-                        </label></md-checkbox>
-                        <md-checkbox  class="md-primary"ng-model="profileStyleExportConfig.profileComponentItemsExport.o" ng-change="setChanged()"> <label style="color:black">O
-                        </label></md-checkbox>
-                        <md-checkbox  class="md-primary" ng-model="profileStyleExportConfig.profileComponentItemsExport.x" ng-change="setChanged()"> <label style="color:black">X
-                        </label></md-checkbox>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default" flex="50" style="margin-left:10px;">
-                <div class="panel-heading beige"> <strong> Columns </strong></div>
-                <div class="panel-body container">
-                    <div style="width:100%" >
-                        <div  style="padding-left:15px; " ng-repeat="c in profileStyleExportConfig.profileComponentColumn.columns">
-                            <md-checkbox  class="md-primary" ng-model="c.present"  ng-disabled="c.disabled" ng-change="setChanged()"> <label style="color:black">{{c.name}}
-                            </label><br/></md-checkbox>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div flex="50" class="conf-box">
+		<div class="page-header">
+			<span class="header5"><md-checkbox class="md-primary"
+					ng-model="profileStyleExportConfig.includeProfileComponentTable"
+					ng-change="setChanged()" />Profile Component Table Options</span>
+		</div>
+		<div layout="row" layout-align="center start" style="width: 100%">
+			<div class="panel panel-default" flex="50">
+				<div class="panel-heading beige">
+					<strong> USAGES </strong>
+				</div>
+				<div class="panel-body container">
+					<div class="container">
+						<label style="color: black"> Items to Export:</label> <br />
+						<md-checkbox class="md-primary"
+							ng-model="profileStyleExportConfig.profileComponentItemsExport.r"
+							ng-change="setChanged()" disabled> <label
+							style="color: black">R </label></md-checkbox>
+						<md-checkbox class="md-primary"
+							ng-model="profileStyleExportConfig.profileComponentItemsExport.re"
+							ng-change="setChanged()" disabled> <label
+							style="color: black">RE </label></md-checkbox>
+						<md-checkbox class="md-primary"
+							ng-model="profileStyleExportConfig.profileComponentItemsExport.c"
+							ng-change="setChanged()" disabled> <label
+							style="color: black">C </label></md-checkbox>
+						<md-checkbox class="md-primary"
+							ng-model="profileStyleExportConfig.profileComponentItemsExport.o"
+							ng-change="setChanged()"> <label
+							style="color: black">O </label></md-checkbox>
+						<md-checkbox class="md-primary"
+							ng-model="profileStyleExportConfig.profileComponentItemsExport.x"
+							ng-change="setChanged()"> <label
+							style="color: black">X </label></md-checkbox>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default" flex="50" style="margin-left: 10px;">
+				<div class="panel-heading beige">
+					<strong> Columns </strong>
+				</div>
+				<div class="panel-body container">
+					<div style="width: 100%">
+						<div style="padding-left: 15px;"
+							ng-repeat="c in profileStyleExportConfig.profileComponentColumn.columns">
+							<md-checkbox class="md-primary" ng-model="c.present"
+								ng-disabled="c.disabled" ng-change="setChanged()">
+							<label style="color: black">{{c.name}} </label> <br />
+							</md-checkbox>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 </div>
