@@ -1,6 +1,6 @@
 angular.module('igl').controller(
     'HL7VersionsDlgCtrl',
-    function($scope, $rootScope, $modal, $log, $http, $httpBackend, userInfoService) {
+    function($scope, $rootScope, $mdDialog, $log, $http, $httpBackend, userInfoService) {
 
         $rootScope.clickSource = {};
         $scope.selectedHL7Version = "";
@@ -10,7 +10,7 @@ angular.module('igl').controller(
         $scope.hl7Versions = function(clickSource) {
             $rootScope.clickSource = clickSource;
             if ($rootScope.hasChanges()) {
-                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                $rootScope.openConfirmLeaveDlg().then(function() {
                     $rootScope.clearChanges();
                     $rootScope.closeIGDocument();
                     $rootScope.hl7Versions = [];
@@ -27,7 +27,7 @@ angular.module('igl').controller(
         };
 
         $scope.confirmOpen = function(igdocument) {
-            return $modal.open({
+            return $mdDialog.show({
                 templateUrl: 'ConfirmIGDocumentOpenCtrl.html',
                 controller: 'ConfirmIGDocumentOpenCtrl',
                 resolve: {
@@ -35,7 +35,7 @@ angular.module('igl').controller(
                         return igdocument;
                     }
                 }
-            }).result.then(function(igdocument) {
+            }).then(function(igdocument) {
                 $rootScope.clearChanges();
                 $scope.hl7VersionsInstance();
             }, function() {
@@ -49,10 +49,11 @@ angular.module('igl').controller(
                 for (var i = 0; i < length; i++) {
                     hl7Versions.push(response.data[i]);
                 }
-                return $modal.open({
-                    templateUrl: 'hl7VersionsDlg.html',
+                return $mdDialog.show({
+                    templateUrl: 'hl7VersionsDlgMD.html',
                     controller: 'HL7VersionsInstanceDlgCtrl',
-                    windowClass: 'hl7-versions-modal',
+                    scope: $scope,
+                    preserveScope: true,
                     resolve: {
                         hl7Versions: function() {
                             return hl7Versions;
@@ -67,7 +68,7 @@ angular.module('igl').controller(
                             }
                         }
                     }
-                }).result.then(function(igdocument) {
+                }).then(function(igdocument) {
                     $rootScope
                         .$emit(
                             'event:openIGDocumentRequest',
@@ -99,10 +100,14 @@ angular.module('igl').controller(
 
 angular.module('igl').controller(
     'HL7VersionsInstanceDlgCtrl',
-    function($scope, $rootScope, $modalInstance, $http, hl7Versions, ProfileAccessSvc, MessageEventsSvc, SegmentService, DatatypeService, TableService, TableLibrarySvc, SegmentLibrarySvc, DatatypeLibrarySvc, IgDocumentService, $timeout, ngTreetableParams, userInfoService, hl7Version, MessagesSvc) {
+    function($scope, $rootScope, $mdDialog, $http, hl7Versions, ProfileAccessSvc, MessageEventsSvc, SegmentService, DatatypeService, TableService, TableLibrarySvc, SegmentLibrarySvc, DatatypeLibrarySvc, IgDocumentService, $timeout, ngTreetableParams, userInfoService, hl7Version, MessagesSvc) {
 
         $scope.hl7Versions = hl7Versions;
         $scope.hl7Version = hl7Version;
+        $scope.messageEventsParams=null;
+        // $scope.hl7VersionsDlgForm={
+        // }
+        // $scope.hl7VersionsDlgForm.metaData={};
         $scope.selectedHL7Version = hl7Version;
         $scope.okDisabled = true;
         $scope.messageIds = [];
@@ -117,29 +122,64 @@ angular.module('igl').controller(
             isSecondOpen: true,
             isFirstDisabled: false
         };
+        $scope.tabs = [{active: true}, {active: false}];
+        $scope.make_active = function(x) {
 
-
-        $scope.messageEventsParams = new ngTreetableParams({
-            getNodes: function(parent) {
-                return parent && parent != null ? parent.children : $scope.hl7Version != null ? MessageEventsSvc.getMessageEvents($scope.hl7Version) : [];
-            },
-            getTemplate: function(node) {
-                return 'MessageEventsNode.html';
+            for(i=0; i<$scope.tabs.length;i++){
+                if(i==x){
+                    $scope.tabs[i].active = true;
+                }else{
+                    $scope.tabs[i].active=false;
+                }
             }
-        });
+
+        };
+
+        //
+        // $scope.getMessageEvents=function(){
+        //    var messageParm = new ngTreetableParams({
+        //         getNodes: function(parent) {
+        //             return parent && parent != null ? parent.children : $scope.hl7Version != null ? MessageEventsSvc.getMessageEvents($scope.hl7Version) : [];
+        //         },
+        //         getTemplate: function(node) {
+        //             return 'MessageEventsNode.html';
+        //         }
+        //     });
+        //     return messageParm;
+        // }
 
 
-        $scope.loadIGDocumentsByVersion = function() {
+
+        $scope.loadIGDocumentsByVersion = function(hl7Version) {
+            console.log($scope.messageEventsParams);
             $scope.loading = true;
             $scope.eventList = [];
             $scope.selectedHL7Version = hl7Version;
+            $scope.hl7Version = hl7Version;
+
             messageEvents = [];
-            $timeout(function() {
-                if ($scope.messageEventsParams)
-                    $scope.messageEventsParams.refresh();
+            if($scope.messageEventsParams){
+                $timeout(function() {
+                    if ($scope.messageEventsParams)
+                        $scope.messageEventsParams.refresh();
+                    $scope.loading = false;
+                });
+            }else {
+                console.log("creating"+$scope.hl7Version);
+
+                $scope.messageEventsParams= new ngTreetableParams({
+                    getNodes: function (parent) {
+                        return parent && parent != null ? parent.children : $scope.hl7Version != null ? MessageEventsSvc.getMessageEvents($scope.hl7Version) : [];
+                    },
+                    getTemplate: function (node) {
+                        return 'MessageEventsNode.html';
+                    }
+                });
                 $scope.loading = false;
-            });
+            }
+
         };
+
 
         $scope.isBranch = function(node) {
             var rval = false;
@@ -208,18 +248,17 @@ angular.module('igl').controller(
             $scope.messageEvents = messageEvents;
             switch ($rootScope.clickSource) {
                 case "btn":
-                    {
-                        if (!$scope.hl7VersionsDlgForm.$invalid) {
-                            createIGDocument($scope.hl7Version, messageEvents);
-                        }
+                {
+                        createIGDocument($scope.hl7Version, messageEvents);
 
-                        break;
-                    }
+
+                    break;
+                }
                 case "ctx":
-                    {
-                        updateIGDocument(messageEvents);
-                        break;
-                    }
+                {
+                    updateIGDocument(messageEvents);
+                    break;
+                }
             }
         };
 
@@ -239,7 +278,7 @@ angular.module('igl').controller(
                     function(response) {
                         var igdocument = angular
                             .fromJson(response.data);
-                        $modalInstance.close(igdocument);
+                        $mdDialog.hide(igdocument);
                     },
                     function(response) {
                         $rootScope.msg().text = response.data;
@@ -361,6 +400,8 @@ angular.module('igl').controller(
                                                 console.log("=+++++result");
                                                 console.log(result);
                                                 $rootScope.processMessageTree(result[i]);
+
+                                                $mdDialog.hide($rootScope.igdocument);
                                             }
 
                                         });
@@ -381,7 +422,6 @@ angular.module('igl').controller(
 
 
 
-                $modalInstance.dismiss('cancel');
             }, function(response) {
                 $rootScope.msg().text = response.data;
                 $rootScope.msg().type = "danger";
@@ -399,7 +439,7 @@ angular.module('igl').controller(
             //     function (response) {
             //         var igdocument = angular
             //             .fromJson(response.data);
-            //         $modalInstance.close(igdocument);
+            //         $mdDialog.hide(igdocument);
             //     }, function (response) {
             //         $rootScope.msg().text = response.data;
             //         $rootScope.msg().type = "danger";
@@ -409,10 +449,15 @@ angular.module('igl').controller(
         };
 
         if ($scope.hl7Version != null) {
-            $scope.loadIGDocumentsByVersion();
+            $scope.loadIGDocumentsByVersion($scope.hl7Version);
         }
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            console.log("Hiding ")
+            $mdDialog.hide();
         };
+
+
+
+
     });
