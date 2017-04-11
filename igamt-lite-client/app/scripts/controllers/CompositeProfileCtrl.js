@@ -382,11 +382,49 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
 
         return result;
     };
+    $scope.groupsPredicates = [];
+
+    $scope.findGroupsPredicates = function(children) {
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].type === 'group') {
+                if (children[i].predicates && children[i].predicates.length > 0) {
+                    for (var j = 0; j < children[i].predicates.length; j++) {
+                        if (children[i].predicates[j].context === null) {
+                            children[i].predicates[j].context = {
+                                type: children[i].type,
+                                name: children[i].name,
+                                path: $rootScope.refinePath(children[i].path),
+                            }
+                        }
+                    }
+                    $scope.groupsPredicates.push.apply($scope.groupsPredicates, children[i].predicates);
+                }
+                $scope.findGroupsPredicates(children[i].children);
+
+            }
+        }
+    }
+    $scope.findGroupsPredicates($rootScope.compositeProfile.children);
+    console.log("$scope.groupsPredicates");
+    console.log($scope.groupsPredicates);
 
     $scope.findingPredicates = function(node) {
 
         var result = null;
         if (node && $rootScope.compositeProfile) {
+            result = _.find($scope.groupsPredicates, function(p) {
+                if (p.context && p.context.type === "group") {
+
+                    //var tempath = node.path.replace(p.context.path + '.', '');
+                    return (p.context.path + '.' + $rootScope.refinePath(p.constraintTarget)) == $rootScope.refinePath(node.path);
+                }
+
+            });
+            if (result) {
+               
+                result.from = 'message';
+                return result;
+            }
             result = _.find($rootScope.compositeProfile.predicates, function(binding) {
                 return binding.constraintTarget == node.path;
             });
@@ -394,6 +432,8 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
                 result.from = 'message';
                 return result;
             }
+
+
 
             if (node.segment) {
                 var parentSeg = $rootScope.compositeProfile.segmentsMap[node.segment];

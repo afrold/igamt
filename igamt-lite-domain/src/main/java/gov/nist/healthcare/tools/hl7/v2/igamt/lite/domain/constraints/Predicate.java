@@ -1,10 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
-
 import java.io.Serializable;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 
 // @Entity
 // @Table(name = "PREDICATE")
@@ -13,8 +13,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Predicate extends Constraint implements Serializable {
 
   /**
-	 * 
-	 */
+   * 
+   */
   private static final long serialVersionUID = 5723342171557075960L;
 
   public Predicate() {
@@ -26,6 +26,8 @@ public class Predicate extends Constraint implements Serializable {
 
   // @Column(name = "FALSEUSAGE")
   private Usage falseUsage;
+
+  private PredicateContext context;
 
   public Usage getTrueUsage() {
     return trueUsage;
@@ -41,6 +43,15 @@ public class Predicate extends Constraint implements Serializable {
 
   public void setFalseUsage(Usage falseUsage) {
     this.falseUsage = falseUsage;
+  }
+
+
+  public PredicateContext getContext() {
+    return context;
+  }
+
+  public void setContext(PredicateContext context) {
+    this.context = context;
   }
 
   @Override
