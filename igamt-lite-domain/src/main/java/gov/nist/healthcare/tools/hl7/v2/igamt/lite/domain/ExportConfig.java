@@ -55,6 +55,7 @@ import java.util.ArrayList;
     private ColumnsConfig profileComponentColumn;
     private ColumnsConfig datatypeColumn;
     private ColumnsConfig valueSetColumn;
+    private ValueSetMetadataConfig valueSetsMetadata;
 
 
 
@@ -102,6 +103,9 @@ import java.util.ArrayList;
         defaultConfiguration.setSegmentsExport(displaySelectives);
 
         defaultConfiguration.setValueSetsExport(displaySelectives);
+        
+        ValueSetMetadataConfig valueSetMetadataConfig = new ValueSetMetadataConfig(true,true,true);
+        defaultConfiguration.setValueSetsMetadata(valueSetMetadataConfig);
 
         // Default column
         ArrayList<NameAndPositionAndPresence> messageColumnsDefaultList =
@@ -387,4 +391,14 @@ import java.util.ArrayList;
     public void setProfileComponentColumn(ColumnsConfig profileComponentColumn) {
         this.profileComponentColumn = profileComponentColumn;
     }
+
+	public ValueSetMetadataConfig getValueSetsMetadata() {
+		return valueSetsMetadata;
+	}
+
+	public void setValueSetsMetadata(ValueSetMetadataConfig valueSetsMetadata) {
+		this.valueSetsMetadata = valueSetsMetadata;
+	}
+    
+    
 }

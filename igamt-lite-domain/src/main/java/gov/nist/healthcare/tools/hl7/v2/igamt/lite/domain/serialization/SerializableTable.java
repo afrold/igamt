@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -22,14 +23,16 @@ public class SerializableTable extends SerializableSection {
 
     private Table table;
     private String bindingIdentifier, defPreText, defPostText;
+    private ValueSetMetadataConfig valueSetMetadataConfig;
 
     public SerializableTable(String id, String prefix, String position, String headerLevel, String title, Table table,
-        String bindingIdentifier, String defPreText, String defPostText) {
+        String bindingIdentifier, String defPreText, String defPostText, ValueSetMetadataConfig valueSetMetadataConfig) {
         super(id, prefix, position, headerLevel, title);
         this.table = table;
         this.bindingIdentifier = bindingIdentifier;
         this.defPreText = defPreText;
         this.defPostText = defPostText;
+        this.valueSetMetadataConfig = valueSetMetadataConfig;
     }
 
     @Override public Element serializeElement() {
@@ -49,16 +52,24 @@ public class SerializableTable extends SerializableSection {
                 (this.table.getVersion() == null) ? "" : "" + this.table.getVersion()));
             valueSetDefinitionElement.addAttribute(
                 new Attribute("Oid", (this.table.getOid() == null) ? "" : this.table.getOid()));
-            valueSetDefinitionElement.addAttribute(new Attribute("Stability",
-                (this.table.getStability() == null) ? "" : this.table.getStability().value()));
-            valueSetDefinitionElement.addAttribute(new Attribute("Extensibility",
-                (this.table.getExtensibility() == null) ?
-                    "" :
-                    this.table.getExtensibility().value()));
-            valueSetDefinitionElement.addAttribute(new Attribute("ContentDefinition",
-                (this.table.getContentDefinition() == null) ?
-                    "" :
-                    this.table.getContentDefinition().value()));
+            if(this.valueSetMetadataConfig!=null){
+	            if(valueSetMetadataConfig.isStability()){
+	            	valueSetDefinitionElement.addAttribute(new Attribute("Stability",
+		                (this.table.getStability() == null) ? "" : this.table.getStability().value()));
+	            }
+	            if(valueSetMetadataConfig.isExtensibility()){
+		            valueSetDefinitionElement.addAttribute(new Attribute("Extensibility",
+		                (this.table.getExtensibility() == null) ?
+		                    "" :
+		                    this.table.getExtensibility().value()));
+	            }
+	            if(valueSetMetadataConfig.isContentDefinition()){
+		            valueSetDefinitionElement.addAttribute(new Attribute("ContentDefinition",
+		                (this.table.getContentDefinition() == null) ?
+		                    "" :
+		                    this.table.getContentDefinition().value()));
+	            }
+            }
             valueSetDefinitionElement.addAttribute(new Attribute("id", this.table.getId()));
 
             if (this.table.getCodes() != null) {
