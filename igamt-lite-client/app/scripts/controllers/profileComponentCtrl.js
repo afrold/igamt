@@ -12,7 +12,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         isFirstOpen: false,
         isSecondOpen: true,
         isThirdOpen: false,
-        
+
     };
     $scope.redirectVS = function(binding) {
 
@@ -109,7 +109,15 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             if (!node.predicates || node.predicates.length <= 0) {
                 if (node.from === "message") {
 
-                    result = _.find(node.oldPredicates, function(p) { return $rootScope.refinePath(p.constraintTarget) == path; });
+                    result = _.find(node.oldPredicates, function(p) {
+                        if (p.context && p.context.type === "group") {
+                            var tempath = path.replace(p.context.path + '.', '');
+                            return $rootScope.refinePath(p.constraintTarget) == tempath
+                        } else {
+                            return $rootScope.refinePath(p.constraintTarget) == path;
+                        }
+
+                    });
                     if (result) {
                         result.bindingFrom = 'message';
                         return result;
@@ -126,7 +134,17 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             } else {
                 if (node.from === "message") {
 
-                    result = _.find(node.predicates, function(p) { return $rootScope.refinePath(p.constraintTarget) == path; });
+                    result = _.find(node.predicates, function(p) {
+                        if (p.context && p.context.type === "group") {
+                            var tempath = path.replace(p.context.path + '.', '');
+                            //path = p.context.path + '.' + path;
+                            return $rootScope.refinePath(p.constraintTarget) == tempath
+                        } else {
+                            return $rootScope.refinePath(p.constraintTarget) == path;
+                        }
+
+                    });
+
                     if (result) {
                         result.bindingFrom = 'message';
                         return result;
@@ -1056,19 +1074,33 @@ angular.module('igl').controller('addComponentsCtrl',
         console.log("current pc");
         console.log(currentPc);
         $scope.findPredicates = function(node) {
-            console.log("111111");
-            console.log(node);
-            var p = "1[1].1[1]";
-            console.log($rootScope.refinePath(p));
-            console.log("111111");
+
             var result = [];
             if (node) {
                 var index = node.path.indexOf(".");
                 var path = node.path.substr(index + 1);
+
+                result = _.filter(node.parentGroupPredicates, function(p) {
+                    if (p.context && p.context.type === "group") {
+                        var tempath = path.replace(p.context.path + '.', '');
+                        return $rootScope.refinePath(p.constraintTarget) == tempath
+                    } else {
+                        return $rootScope.refinePath(p.constraintTarget) == tempath;
+                    }
+
+                });
+                console.log("$$$$$$$$$");
+                console.log(result);
+                if (result && result.length > 0) {
+                    return result;
+                }
+
                 result = _.filter(node.parentPredicates, function(predicate) { return $rootScope.refinePath(predicate.constraintTarget) === path; });
                 if (result && result.length > 0) {
                     return result;
                 }
+
+
             }
             return result;
 
@@ -1137,6 +1169,17 @@ angular.module('igl').controller('addComponentsCtrl',
                                     parent.children[i].parentComments = parent.parentComments;
                                     parent.children[i].parentPredicates = parent.parentPredicates;
                                     parent.children[i].parentSingleElementValues = parent.parentSingleElementValues;
+                                    parent.children[i].parentGroupPredicates = parent.predicates;
+                                    var index = parent.children[i].parent.indexOf(".");
+                                    var grpPath = parent.children[i].parent.substr(index + 1);
+                                    for (var k = 0; k < parent.children[i].parentGroupPredicates.length; k++) {
+                                        parent.children[i].parentGroupPredicates[k].context = {
+                                            type: parent.type,
+                                            name: parent.name,
+                                            path: grpPath
+
+                                        }
+                                    }
                                     //parent.children[i].sourceId = parent.sourceId;
                                     parent.children[i].source = parent.source;
 
@@ -1144,6 +1187,7 @@ angular.module('igl').controller('addComponentsCtrl',
 
                                         parent.children[i].children = segmentsMap[parent.children[i].ref.id].fields;
                                         parent.children[i].parentPredicates = parent.parentPredicates;
+                                        //parent.children[i].parentGroupPredicates = parent.parentGroupPredicates;
                                         // parent.children[i].sourceId = parent.sourceId;
                                         parent.children[i].source = parent.source;
                                         parent.children[i].from = "message";
@@ -1155,6 +1199,8 @@ angular.module('igl').controller('addComponentsCtrl',
                                     parent.children[i].parentValueSetBindings = parent.valueSetBindings;
                                     parent.children[i].parentComments = parent.comments;
                                     parent.children[i].parentSingleElementValues = parent.singleElementValues;
+
+
                                     parent.children[i].parentPredicates = parent.predicates;
                                     //parent.children[i].sourceId = parent.id;
                                     parent.children[i].source = {};
@@ -1175,6 +1221,8 @@ angular.module('igl').controller('addComponentsCtrl',
                                     parent.children[i].parentComments = parent.parentComments;
                                     parent.children[i].parentSingleElementValues = parent.parentSingleElementValues;
                                     parent.children[i].parentPredicates = parent.parentPredicates;
+                                    parent.children[i].parentGroupPredicates = parent.parentGroupPredicates;
+
                                     //parent.children[i].sourceId = parent.sourceId;
                                     parent.children[i].source = parent.source;
                                     parent.children[i].source.segmentId = parent.ref.id;
@@ -1190,6 +1238,8 @@ angular.module('igl').controller('addComponentsCtrl',
                                     parent.children[i].parentComments = parent.parentComments;
                                     parent.children[i].parentSingleElementValues = parent.parentSingleElementValues;
                                     parent.children[i].parentPredicates = parent.parentPredicates;
+                                    parent.children[i].parentGroupPredicates = parent.parentGroupPredicates;
+
                                     //parent.children[i].sourceId = parent.sourceId;
                                     parent.children[i].source = parent.source;
 
@@ -1238,6 +1288,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     path: pc.parent + '.' + pc.position,
                     itemId: pc.id,
                     parentPredicates: pc.parentPredicates,
+                    parentGroupPredicates: pc.parentGroupPredicates,
                     source: pc.source,
                     from: "message",
                     attributes: {
@@ -1275,6 +1326,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     path: pc.parent + '.' + pc.position,
                     itemId: pc.id,
                     parentPredicates: pc.parentPredicates,
+                    parentGroupPredicates: pc.parentGroupPredicates,
                     source: pc.source,
                     from: "message",
                     attributes: {
@@ -1303,6 +1355,8 @@ angular.module('igl').controller('addComponentsCtrl',
                         parentComments: pc.parentComments,
                         parentSingleElementValues: pc.parentSingleElementValues,
                         parentPredicates: pc.parentPredicates,
+                        parentGroupPredicates: pc.parentGroupPredicates,
+
                         source: pc.source,
                         from: "segment",
                         // oldValueSetBindings: $scope.findingBindings(pc),
@@ -1375,6 +1429,8 @@ angular.module('igl').controller('addComponentsCtrl',
                     parentSingleElementValues: pc.parentSingleElementValues,
                     parentComments: pc.parentComments,
                     parentPredicates: pc.parentPredicates,
+                    parentGroupPredicates: pc.parentGroupPredicates,
+
                     source: pc.source,
                     itemId: pc.id,
                     from: parent.from,
@@ -1412,6 +1468,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     path: $rootScope.segmentsMap[pc.id].label,
                     pathExp: $rootScope.segmentsMap[pc.id].label,
                     parentPredicates: pc.parentPredicates,
+                    parentGroupPredicates: pc.parentGroupPredicates,
                     source: pc.source,
                     from: "segment",
                     itemId: pc.id,
@@ -1795,18 +1852,15 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
     var pathArray = [];
 
     if (path) pathArray = path.split('.');
-    console.log(path);
-    console.log(pathArray);
+
     var positionPath = '';
     for (var i in pathArray) {
 
         if (positionPath === '') {
-            console.log("if");
-            console.log(pathArray[i]);
+
             positionPath = pathArray[i] + '[1]';
         } else {
-            console.log("else ");
-            console.log(positionPath);
+
             positionPath = positionPath + '.' + pathArray[i] + '[1]';
         }
 
@@ -1815,8 +1869,6 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
     }
 
     //if (positionPath != '') positionPath = positionPath.substr(1);
-    console.log("positionPath");
-    console.log(positionPath);
 
     $scope.selectedMessage = angular.copy($rootScope.messagesMap[node.source.messageId]);
 
@@ -1825,6 +1877,9 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
     $scope.selectedNode = angular.copy(node);
     $scope.selectedNode.locationPath = angular.copy($scope.selectedNode.path);
     $scope.selectedNode.path = positionPath;
+    console.log("$scope.selectedNode.path ");
+    console.log($scope.selectedNode.path);
+
     $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -1837,7 +1892,10 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
     $scope.changed = false;
+    $rootScope.processMessageTree($scope.selectedMessage);
     $scope.treeDataForMessage.push($scope.selectedMessage);
+    console.log("$scope.treeDataForMessage");
+    console.log($scope.treeDataForMessage);
     $scope.draggingStatus = null;
     $scope.listGlobalPredicates = [];
     $scope.existingPredicate = null;
@@ -1883,9 +1941,25 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
         $scope.existingContext = $scope.selectedContextNode;
         if (!$scope.existingContext.positionPath || $scope.existingContext.positionPath == '') {
             $scope.existingPredicate.constraintTarget = $scope.selectedNode.path;
+            $scope.existingPredicate.context = {
+                type: $scope.existingContext.type,
+                name: $scope.existingContext.structID,
+                path: ''
+            };
         } else {
             $scope.existingPredicate.constraintTarget = $scope.selectedNode.path.replace($scope.existingContext.positionPath + '.', '');
+            $scope.existingPredicate.context = {
+                type: $scope.existingContext.type,
+                name: $scope.existingContext.name,
+                path: $rootScope.refinePath($scope.existingContext.positionPath)
+            };
         }
+
+        console.log("$scope.existingPredicate");
+        console.log($scope.existingPredicate);
+        console.log($scope.existingContext);
+        console.log($scope.contextKey);
+
     };
 
     $scope.selectContext = function(selectedContextNode) {
@@ -1893,6 +1967,9 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
         $scope.selectedContextNode = selectedContextNode;
         $scope.selectedContextNode.pathInfoSet = [];
         $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null, $scope.contextKey);
+        console.log("$scope.selectedContextNode");
+        console.log($scope.selectedContextNode);
+
         $scope.initPredicate();
         $scope.initComplexPredicate();
         $scope.tempPredicates = [];
@@ -2185,6 +2262,8 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
                 }
                 if (positionPath == $scope.selectedNode.path) {
                     $scope.existingPredicate = current.predicates[i];
+                    console.log("-----------");
+                    console.log(current);
                     $scope.existingContext = current;
                 }
             }
@@ -2207,8 +2286,10 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
 
     $scope.initPredicate();
     $scope.initComplexPredicate();
-    // $scope.findAllGlobalPredicates();
+    $scope.findAllGlobalPredicates();
     $scope.existingPredicate = $scope.findExistingPredicate();
+    console.log("first");
+    console.log($scope.existingPredicate);
     $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
 
 });

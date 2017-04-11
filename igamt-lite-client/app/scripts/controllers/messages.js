@@ -2125,6 +2125,8 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalI
     $scope.secondNodeData = null;
     $scope.changed = false;
     $scope.treeDataForMessage.push($scope.selectedMessage);
+    console.log("$scope.treeDataForMessage");
+    console.log($scope.treeDataForMessage);
     $scope.draggingStatus = null;
     $scope.listGlobalPredicates = [];
     $scope.existingPredicate = null;

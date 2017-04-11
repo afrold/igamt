@@ -347,7 +347,7 @@
             <div ng-if="node.usage !== 'C'  || (node.usage === 'C' && !findingPredicates(node))">
                 {{node.usage}}
             </div>
-            <div ng-if="findingPredicates(node)" class="badge label-white">
+            <div ng-if="findingPredicates(node)">
                 C({{findingPredicates(node).trueUsage}}/{{findingPredicates(node).falseUsage}})
 
             </div>
@@ -392,9 +392,8 @@
 
         </td>
         <td class="col-md-2 col-fixed-35 " ng-if="node.type==='field' || node.type==='component'">
-            <a class="point">
+            <a >
                 <display-label of="compositeProfile.datatypesMap[node.datatype.id]" desc="false"></display-label>
-
             </a>
 
         </td>

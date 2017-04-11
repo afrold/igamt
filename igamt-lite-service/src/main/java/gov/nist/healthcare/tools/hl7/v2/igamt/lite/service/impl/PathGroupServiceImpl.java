@@ -17,9 +17,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PathGroup;
@@ -34,10 +36,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentCom
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PathGroupService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.QueryService;
+import javassist.NotFoundException;
 
 @Service
 
 public class PathGroupServiceImpl implements PathGroupService {
+
+  @Autowired
+  QueryService queryService;
 
   @Override
   public List<PathGroup> buildPathGroups(Message coreMessage, List<ProfileComponent> pcs,
@@ -129,10 +136,47 @@ public class PathGroupServiceImpl implements PathGroupService {
                 predicate.setFalseUsage(pred.getFalseUsage());
                 predicate.setReference(pred.getReference());
                 predicate.setTrueUsage(pred.getTrueUsage());
+                predicate.setContext(pred.getContext());
               }
             }
             if (!predExist) {
-              coreMessage.getPredicates().add(pred);
+              if (pred.getContext().getName().equals(coreMessage.getStructID())) {
+                coreMessage.getPredicates().add(pred);
+              } else {
+
+                try {
+                  DataModel dm = queryService.get(coreMessage, pred.getContext().getPath());
+                  System.out.println(dm.getType());
+                  if (dm instanceof Group) {
+                    Group grp = (Group) dm;
+
+                    boolean grpPredExist = false;
+                    for (Predicate pr : grp.getPredicates()) {
+
+                      if (refinePath(pr.getConstraintTarget())
+                          .equals(sub.getPath().substring(sub.getPath().indexOf('.') + 1)
+                              .replace((pred.getContext().getPath() + '.'), ""))) {
+                        grpPredExist = true;
+                        pr.setAssertion(pred.getAssertion());
+                        pr.setConstraintClassification(pred.getConstraintClassification());
+                        pr.setConstraintId(pred.getConstraintId());
+                        pr.setDescription(pred.getDescription());
+                        pr.setFalseUsage(pred.getFalseUsage());
+                        pr.setReference(pred.getReference());
+                        pr.setTrueUsage(pred.getTrueUsage());
+                        pr.setContext(pred.getContext());
+                      }
+                    }
+                    if (!grpPredExist) {
+                      grp.addPredicate(pred);
+                    }
+                  }
+                } catch (NotFoundException e) {
+                  // TODO Auto-generated catch block
+                  e.printStackTrace();
+                }
+              }
+
             }
 
           }
@@ -155,6 +199,24 @@ public class PathGroupServiceImpl implements PathGroupService {
     }
 
     return pathGroups;
+  }
+
+  private String refinePath(String instancePath) {
+    String[] pathArray = null;
+    if (!instancePath.isEmpty()) {
+      pathArray = instancePath.split("\\.");
+    }
+    String positionPath = new String();
+    for (String s : pathArray) {
+      String position = s.split("\\[")[0];
+      positionPath = positionPath + '.' + position;
+
+    }
+    if (!positionPath.isEmpty()) {
+      positionPath = positionPath.substring(1);
+
+    }
+    return positionPath;
   }
 
 
