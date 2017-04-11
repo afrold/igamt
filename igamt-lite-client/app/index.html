@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en" class="ng-app:igl" id="ng-app" ng-app="igl">
+<html class="no-js" lang="en" class="ng-app:igl" id="ng-app" ng-app="igl" >
 
 <head>
     <meta charset="utf-8">
@@ -80,15 +80,15 @@
     </style>
 </head>
 
-<body ng-controller="MainCtrl" ng-init="init()" window-exit confirm-on-leave block-ui="main">
+<body ng-controller="MainCtrl" ng-init="init()" window-exit confirm-on-leave block-ui="main" style="overflow-y: hidden">
     <div id="wrapper" flow-prevent-drop>
-        <div ng-include="'views/header.html'"></div>
+        <div ng-include="'views/header.html'" style="max-height: 20%;"></div>
         <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
         your browser</a> to improve your experience.</p>
     <![endif]-->
         <!-- Add your site or application content here -->
-        <div id="appcontainer" class="">
+        <div id="appcontainer" style="max-height:80%;overflow-y:scroll">
             <!--<div class="container">-->
             <!--<div class="row">-->
             <!--<div ng-class="'alert alert-'+msg().type" ng-show="msg().show && !msg().skip" id="ehralert">-->
@@ -97,10 +97,11 @@
             <!--</div>-->
             <!--</div>-->
             <!--</div>-->
-            <div ng-view></div>
+            <div ng-view ></div>
+            <div ng-include="'views/footer.html'"></div>
         </div>
-        <div ng-include="'views/footer.html'"></div>
-        <div ng-include="'views/templates.html'"></div>
+
+        <!--<div ng-include="'views/templates.html'"></div>-->
         <div ng-include="'views/materialDialogs.html'"></div>
         <div ng-include="'views/edit/editDatatypes.html'"></div>
         <div ng-include="'views/edit/editDatatypeInLibrary.html'"></div>

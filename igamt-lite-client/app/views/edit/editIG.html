@@ -40,7 +40,7 @@
                 </div>
              </div>
 
-            <div class="col-md-12" style="background-color: rgb(247, 247, 247)">
+            <div class="col-md-12">
                 <md-switch ng-model="filtering" aria-label="Switch 6" ng-change="displayTree(!filtering)" style="margin:0px !important;" class="md-primary col-md-4">
                 Filter <span ng-if="!filtering">OFF</span><span ng-if="filtering">ON</span>
                 </md-switch>
@@ -153,7 +153,7 @@
                         </md-menu>
                         <md-menu>
                             <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                <button ng-click="close()">
+                                <button ng-click="close()" md-colors="{background:'orange'}">
 
                                 <i class="fa fa-close fa-fw"></i> Close
                             </button>
@@ -165,7 +165,7 @@
 
 
                     </md-menu-bar>
-                </divflex>
+                </div>
 
             </div>
              </div>
