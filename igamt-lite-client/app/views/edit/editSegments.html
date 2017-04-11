@@ -327,7 +327,7 @@
                                                                     <th ng-show="!segment.coConstraintsTable.ifColumnDefinition" bgcolor="#1565c0" style="text-align:center;">
                                                                         <span style="color:black" ng-click="openDialogForEditCoConstraintIFDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add IF Column</span>
                                                                     </th>
-                                                                    <th ng-show="segment.coConstraintsTable.ifColumnDefinition" bgcolor="white" style="text-align:center;border:0;">
+                                                                    <th ng-show="segment.coConstraintsTable.ifColumnDefinition" bgcolor="#1565c0" style="text-align:center;border:0;">
                                                                     </th>
                                                                     <th ng-show="!segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length == 0" bgcolor="#efefef" style="text-align:center;">
                                                                         <span style="color:black" ng-click="openDialogForEditCoConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add THEN Column</span>
@@ -385,7 +385,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr ng-show="segment.coConstraintsTable.rowSize > 0" ng-repeat="n in [].constructor(segment.coConstraintsTable.rowSize) track by $index" ng-init="rowIndex = $index">
-                                                                    <td bgcolor="#1565c0" style="text-align:center;" ng-show="segment.coConstraintsTable.ifColumnDefinition">
+                                                                    <td style="text-align:center;" ng-show="segment.coConstraintsTable.ifColumnDefinition">
                                                                         <span class="form-inline">
                                                                             <input class="form-control"
                                                                                    style="width:70%"
@@ -461,7 +461,7 @@
                                                                     <td ng-show="!segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length == 0" style="text-align:center;">
                                                                     </td>
 
-                                                                    <td bgcolor="#4caf50" ng-repeat="columnDefinition in segment.coConstraintsTable.userColumnDefinitionList" style="text-align:center;">
+                                                                    <td ng-repeat="columnDefinition in segment.coConstraintsTable.userColumnDefinitionList" style="text-align:center;">
                                                                         <input class="form-control"
                                                                                ng-change="setDirty();"
                                                                                ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'"
