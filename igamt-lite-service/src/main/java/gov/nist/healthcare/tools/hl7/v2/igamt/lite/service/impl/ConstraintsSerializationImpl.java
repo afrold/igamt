@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -593,8 +594,70 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				}
 				return null;
 		}
-
+		
 		private Constraints findAllConformanceStatement(Profile profile) {
+			Constraints constraints = new Constraints();
+			Context dtContext = new Context();
+			Context sContext = new Context();
+			Context gContext = new Context();
+			Context mContext = new Context();
+
+			Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+
+			byNameOrByIDs = new HashSet<ByNameOrByID>();
+			for (Message m : profile.getMessages().getChildren()) {
+					ByID byID = new ByID();
+					byID.setByID(m.getId());
+					if (m.getConformanceStatements().size() > 0) {
+							byID.setConformanceStatements(m.getConformanceStatements());
+							byNameOrByIDs.add(byID);
+					}
+			}
+			mContext.setByNameOrByIDs(byNameOrByIDs);
+			
+			byNameOrByIDs = new HashSet<ByNameOrByID>();
+			for (Message m : profile.getMessages().getChildren()) {
+				
+				for(SegmentRefOrGroup sog:m.getChildren()){
+					if(sog instanceof Group){
+						byNameOrByIDs = findAllConformanceStatementsForGroup((Group)sog, byNameOrByIDs);
+					}
+				}
+			}
+			mContext.setByNameOrByIDs(byNameOrByIDs);
+
+			byNameOrByIDs = new HashSet<ByNameOrByID>();
+			for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
+					Segment s = segmentService.findById(sl.getId());
+					ByID byID = new ByID();
+					byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
+					if (s.getConformanceStatements().size() > 0) {
+							byID.setConformanceStatements(s.getConformanceStatements());
+							byNameOrByIDs.add(byID);
+					}
+			}
+			sContext.setByNameOrByIDs(byNameOrByIDs);
+
+			byNameOrByIDs = new HashSet<ByNameOrByID>();
+			for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
+					Datatype d = datatypeService.findById(dl.getId());
+					ByID byID = new ByID();
+					byID.setByID(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"));
+					if (d.getConformanceStatements().size() > 0) {
+							byID.setConformanceStatements(d.getConformanceStatements());
+							byNameOrByIDs.add(byID);
+					}
+			}
+			dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+			constraints.setDatatypes(dtContext);
+			constraints.setSegments(sContext);
+			constraints.setGroups(gContext);
+			constraints.setMessages(mContext);
+			return constraints;
+	}
+
+		private Constraints findAllConformanceStatement(Profile profile, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) {
 				Constraints constraints = new Constraints();
 				Context dtContext = new Context();
 				Context sContext = new Context();
@@ -607,8 +670,8 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				for (Message m : profile.getMessages().getChildren()) {
 						ByID byID = new ByID();
 						byID.setByID(m.getId());
-						if (m.getConformanceStatements().size() > 0) {
-								byID.setConformanceStatements(m.getConformanceStatements());
+						if (m.retrieveAllConformanceStatements().size() > 0) {
+								byID.setConformanceStatements(m.retrieveAllConformanceStatements());
 								byNameOrByIDs.add(byID);
 						}
 				}
@@ -626,26 +689,26 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				mContext.setByNameOrByIDs(byNameOrByIDs);
 
 				byNameOrByIDs = new HashSet<ByNameOrByID>();
-				for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
-						Segment s = segmentService.findById(sl.getId());
-						ByID byID = new ByID();
-						byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
-						if (s.getConformanceStatements().size() > 0) {
-								byID.setConformanceStatements(s.getConformanceStatements());
-								byNameOrByIDs.add(byID);
-						}
+				for(String key:segmentsMap.keySet()){
+					Segment s = segmentsMap.get(key);
+					ByID byID = new ByID();
+					byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
+					if (s.retrieveAllConformanceStatements(tablesMap).size() > 0) {
+							byID.setConformanceStatements(s.retrieveAllConformanceStatements(tablesMap));
+							byNameOrByIDs.add(byID);
+					}
 				}
 				sContext.setByNameOrByIDs(byNameOrByIDs);
 
 				byNameOrByIDs = new HashSet<ByNameOrByID>();
-				for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
-						Datatype d = datatypeService.findById(dl.getId());
-						ByID byID = new ByID();
-						byID.setByID(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"));
-						if (d.getConformanceStatements().size() > 0) {
-								byID.setConformanceStatements(d.getConformanceStatements());
-								byNameOrByIDs.add(byID);
-						}
+				for(String key:datatypesMap.keySet()){
+					Datatype d = datatypesMap.get(key);
+					ByID byID = new ByID();
+					byID.setByID(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"));
+					if (d.retrieveAllConformanceStatements().size() > 0) {
+							byID.setConformanceStatements(d.retrieveAllConformanceStatements());
+							byNameOrByIDs.add(byID);
+					}
 				}
 				dtContext.setByNameOrByIDs(byNameOrByIDs);
 
@@ -666,7 +729,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			
 			for(SegmentRefOrGroup sog:g.getChildren()){
 				if(sog instanceof Group){
-					byNameOrByIDs = findAllPredicatesForGroup((Group)sog, byNameOrByIDs);
+					byNameOrByIDs = findAllConformanceStatementsForGroup((Group)sog, byNameOrByIDs);
 				}
 			}
 			
@@ -695,6 +758,68 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			
 			
 		}
+		
+		private Constraints findAllPredicates(Profile profile,HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) {
+			Constraints constraints = new Constraints();
+			Context dtContext = new Context();
+			Context sContext = new Context();
+			Context gContext = new Context();
+			Context mContext = new Context();
+
+			Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+			byNameOrByIDs = new HashSet<ByNameOrByID>();
+			for (Message m : profile.getMessages().getChildren()) {
+					ByID byID = new ByID();
+					byID.setByID(m.getId());
+					if (m.getPredicates().size() > 0) {
+						byID.setPredicates(m.getPredicates());
+						byNameOrByIDs.add(byID);
+					}
+			}
+			mContext.setByNameOrByIDs(byNameOrByIDs);
+			
+			byNameOrByIDs = new HashSet<ByNameOrByID>();
+			for (Message m : profile.getMessages().getChildren()) {
+				
+				for(SegmentRefOrGroup sog:m.getChildren()){
+					if(sog instanceof Group){
+						byNameOrByIDs = findAllPredicatesForGroup((Group)sog, byNameOrByIDs);
+					}
+				}
+			}
+			mContext.setByNameOrByIDs(byNameOrByIDs);
+
+			byNameOrByIDs = new HashSet<ByNameOrByID>();
+			for(String key:segmentsMap.keySet()){
+				Segment s = segmentsMap.get(key);
+				ByID byID = new ByID();
+				byID.setByID(s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-"));
+				if (s.getPredicates().size() > 0) {
+						byID.setPredicates(s.getPredicates());
+						byNameOrByIDs.add(byID);
+				}
+			}
+		
+			sContext.setByNameOrByIDs(byNameOrByIDs);
+
+			byNameOrByIDs = new HashSet<ByNameOrByID>();
+			for(String key:datatypesMap.keySet()){
+					Datatype d = datatypesMap.get(key);
+					ByID byID = new ByID();
+					byID.setByID(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"));
+					if (d.getPredicates().size() > 0) {
+							byID.setPredicates(d.getPredicates());
+							byNameOrByIDs.add(byID);
+					}
+			}
+			dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+			constraints.setGroups(gContext);
+			constraints.setDatatypes(dtContext);
+			constraints.setSegments(sContext);
+			constraints.setMessages(mContext);
+			return constraints;
+	}
 
 		private Constraints findAllPredicates(Profile profile) {
 				Constraints constraints = new Constraints();
@@ -807,6 +932,55 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				constraints.setSegments(sContext);
 				constraints.setMessages(mContext);
 				return constraints;
+		}
+
+		@Override
+		public String serializeConstraintsUsingMapToXML(Profile profile, DocumentMetaData metadata,
+				HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
+				HashMap<String, Table> tablesMap, Date dateUpdated) {
+			
+			Constraints predicates = findAllPredicates(profile, segmentsMap, datatypesMap, tablesMap);
+			Constraints conformanceStatements = findAllConformanceStatement(profile, segmentsMap, datatypesMap, tablesMap);
+
+			nu.xom.Element e = new nu.xom.Element("ConformanceContext");
+			Attribute schemaDecl = new Attribute("noNamespaceSchemaLocation", "https://raw.githubusercontent.com/Jungyubw/NIST_healthcare_hl7_v2_profile_schema/master/Schema/NIST%20Validation%20Schema/ConformanceContext.xsd");
+			schemaDecl.setNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+			e.addAttribute(schemaDecl);
+
+			if (profile.getConstraintId() == null || profile.getConstraintId().equals("")) {
+					e.addAttribute(new Attribute("UUID", UUID.randomUUID().toString()));
+			} else {
+					e.addAttribute(new Attribute("UUID", profile.getConstraintId()));
+			}
+
+			nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
+			if (metadata == null) {
+					elmMetaData.addAttribute(new Attribute("Name", "Constraints for " + "Profile"));
+					elmMetaData.addAttribute(new Attribute("OrgName", "NIST"));
+					elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
+					elmMetaData.addAttribute(new Attribute("Date", ""));
+			} else {
+					elmMetaData.addAttribute(new Attribute("Name", !serializationUtil.str(metadata.getTitle()).equals("")
+							? serializationUtil.str(metadata.getTitle()) : "No Title Info"));
+					elmMetaData.addAttribute(new Attribute("OrgName", !serializationUtil.str(metadata.getOrgName()).equals("")
+							? serializationUtil.str(metadata.getOrgName()) : "No Org Info"));
+					elmMetaData.addAttribute(new Attribute("Version", !serializationUtil.str(metadata.getVersion()).equals("")
+							? serializationUtil.str(metadata.getVersion()) : "No Version Info"));
+					elmMetaData.addAttribute(
+							new Attribute("Date", dateUpdated != null ? DateUtils.format(dateUpdated) : "No Date Info"));
+
+					if (profile.getMetaData().getSpecificationName() != null && !profile.getMetaData().getSpecificationName().equals(""))
+							elmMetaData.addAttribute(new Attribute("SpecificationName", serializationUtil.str(profile.getMetaData().getSpecificationName())));
+					if (profile.getMetaData().getStatus() != null && !profile.getMetaData().getStatus().equals(""))
+							elmMetaData.addAttribute(new Attribute("Status", serializationUtil.str(profile.getMetaData().getStatus())));
+					if (profile.getMetaData().getTopics() != null && !profile.getMetaData().getTopics().equals(""))
+							elmMetaData.addAttribute(new Attribute("Topics", serializationUtil.str(profile.getMetaData().getTopics())));
+			}
+			e.appendChild(elmMetaData);
+
+			this.serializeMain(e, predicates, conformanceStatements);
+
+			return e.toXML();
 		}
 
 }

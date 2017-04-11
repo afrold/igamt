@@ -194,25 +194,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	static String tableVSeparator = "D3D3D3";
 
 	@Override
-	public InputStream exportAsXml(Profile p) {
-		if (p != null) {
-			return IOUtils.toInputStream(new ProfileSerializationImpl().serializeProfileToXML(p, new DocumentMetaData(),
-					p.getDateUpdated()));
-		} else {
-			return new NullInputStream(1L);
-		}
-	}
-
-	@Override
-	public InputStream exportAsZip(Profile p) throws IOException {
-		if (p != null) {
-			return new ProfileSerializationImpl().serializeProfileToZip(p, new DocumentMetaData(), p.getDateUpdated());
-		} else {
-			return new NullInputStream(1L);
-		}
-	}
-
-	@Override
 	public InputStream exportAsDocx(Profile p) {
 		if (p != null) {
 			return exportAsDocxWithDocx4J(p);

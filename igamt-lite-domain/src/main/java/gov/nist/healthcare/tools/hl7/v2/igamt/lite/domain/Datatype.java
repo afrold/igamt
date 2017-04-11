@@ -230,8 +230,8 @@ public class Datatype extends DataModelWithConstraints
 		clonedDT.setPublicationVersion(this.getPublicationVersion());
 		clonedDT.setHl7Version(this.hl7Version);
 		clonedDT.setParentVersion(null);
-		this.setHl7versions(this.hl7versions);
-		this.setDateUpdated(new Date());
+		clonedDT.setHl7versions(this.hl7versions);
+		clonedDT.setDateUpdated(new Date());
 		return clonedDT;
 	}
 
@@ -432,6 +432,14 @@ public class Datatype extends DataModelWithConstraints
 		results.addAll(this.retrieveConformanceStatementsForSingleCode());
 		results.addAll(this.retrieveConformanceStatementsForConstant());
 		return results;
+	}
+
+	public Component findComponentByPosition(int position) {
+		for (Component child : this.components) {
+			if (child.getPosition().equals(position))
+				return child;
+		}
+		return null;
 	}
 
 }

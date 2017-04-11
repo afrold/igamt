@@ -196,27 +196,6 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
 	static String inlineConstraints = "false";
 
-	@Override
-	public InputStream exportAsXml(IGDocument d) {
-		if (d != null) {
-
-			return IOUtils.toInputStream(profileSerializationService.serializeProfileToXML(d.getProfile(),
-					d.getMetaData(), d.getDateUpdated()));
-		} else {
-			return new NullInputStream(1L);
-		}
-	}
-
-	@Override
-	public InputStream exportAsZip(IGDocument d) throws IOException {
-		if (d != null) {
-			return profileSerializationService.serializeProfileToZip(d.getProfile(), d.getMetaData(),
-					d.getDateUpdated());
-		} else {
-			return new NullInputStream(1L);
-		}
-	}
-
 	public InputStream exportAsZip(DatatypeLibrary d) throws IOException {
 		if (d != null) {
 			return profileSerializationService.serializeDatatypeToZip(d);

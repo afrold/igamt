@@ -549,5 +549,12 @@ public class Message extends DataModelWithConstraints implements java.io.Seriali
 		results.addAll(this.retrieveConformanceStatementsForConstant());
 		return results;
 	}
+	
+	public SegmentRefOrGroup findChildByPosition(Integer position){
+		for(SegmentRefOrGroup child:this.children){
+			if(child.getPosition().equals(position)) return child;
+		}
+		return null;
+	}
 
 }

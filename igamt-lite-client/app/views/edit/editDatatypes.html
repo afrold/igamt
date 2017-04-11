@@ -533,19 +533,6 @@
                                                         ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>
                                                 </accordion-heading>
                                                 <div class="panel-body">
-
-                                                    <div class="col-md-12 igl-page-header">
-
-                                                <span class="pull-right">
-                                                                <button class="btn btn-raised btn-primary btn-xs"
-                                                                        ng-click="managePredicate(null);"
-                                                                        type="button"
-                                                                        ng-hide="viewSettings.tableReadonly || datatype.status==='PUBLISHED' || !datatype.components || datatype.components.length == 0"><span><i
-                                                                        class="fa fa-plus fa-fw">
-                                                                    &nbsp; </i>Add Predicate</span></button>
-                                                </span>
-                                                    </div>
-
                                                     <div class="col-md-12">
                                                         <span ng-hide="datatype.predicates.length > 0">No conditional predicate</span>
                                                         <table st-table="displayed" st-safe-src="datatype.predicates"
