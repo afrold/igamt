@@ -18,13 +18,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -46,6 +46,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
 import nu.xom.Attribute;
 
 @Service
@@ -453,7 +454,7 @@ public class TableSerializationImpl implements TableSerialization {
 		}
 
 		@Override
-		public String serializeTableLibraryUsingMapToXML(Profile profile, DocumentMetaData metadata, HashMap<String, Table> tablesMap, Date dateUpdated) {
+		public String serializeTableLibraryUsingMapToXML(Profile profile, DocumentMetaData metadata, Map<String, Table> tablesMap, Date dateUpdated) {
 			TableLibrary tableLibrary = profile.getTableLibrary();
 
 			nu.xom.Element elmTableLibrary = new nu.xom.Element("ValueSetLibrary");

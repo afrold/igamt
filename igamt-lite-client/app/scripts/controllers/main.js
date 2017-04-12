@@ -4480,9 +4480,15 @@ angular.module('igl').controller('labelController', function($scope) {
 
     $scope.getDescriptionLabel=function (element) {
         if(element.type==='table') {
-            return element.name;
+
+            if(element.name&&element.name!==''){
+                return "-"+element.name;
+            }else{
+                return "";
+            }
+
         }else{
-            return element.description;
+            return "-"+element.description;
         }
 
     }

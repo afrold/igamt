@@ -14,6 +14,7 @@ angular.module('igl')
     $rootScope.editForm = $scope.editForm;
     $scope.tmpIgs = [].concat($rootScope.igs);
     $scope.error = null;
+    $rootScope.chipsReadOnly=true;
     $scope.loadingTree = false;
     $scope.filtering = false;
     $scope.tocView = 'views/toc.html';
@@ -30,13 +31,15 @@ angular.module('igl')
     };
     $rootScope.usageF = false;
     $scope.nodeReady = true;
-    $scope.igDocumentTypes = [{
+    $scope.igDocumentTypes = [
+        {
+            name: "Access My implementation guides",
+            type: 'USER'
+        },
+        {
         name: "Browse Existing Preloaded Implementation Guides",
         type: 'PRELOADED'
-    }, {
-        name: "Access My implementation guides",
-        type: 'USER'
-    }, {
+    },{
         name: "Shared Implementation Guides",
         type: 'SHARED'
     }];
@@ -456,6 +459,14 @@ angular.module('igl')
         $scope.tocView = 'views/toc.html';
         blockUI.stop();
 
+    }
+    $scope.displayTree=function(bool){
+        if(bool){
+            $scope.displayRegularTree();
+        }
+        else{
+            $scope.displayFilteredTree();
+        }
     }
 
     $scope.edit = function(igdocument) {
@@ -952,7 +963,7 @@ angular.module('igl')
         if ($rootScope.hasChanges()) {
             $rootScope.openConfirmLeaveDlg().result.then(function() {
                 if ($scope.editForm) {
-                    console.log("Cleeaning");
+                    console.log("Cleaning");
                     $scope.editForm.$setPristine();
                     $scope.editForm.$dirty = false;
                     $scope.editForm.$invalid = false;
@@ -965,12 +976,45 @@ angular.module('igl')
         } else {
             $scope.processSelectMessagesForExport(igdocument);
         }
-    }
+    };
+
+    $scope.selectCompositeProfilesForExport = function(igdocument) {
+        if ($rootScope.hasChanges()) {
+            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                if ($scope.editForm) {
+                    console.log("Cleaning");
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                    $scope.editForm.$invalid = false;
+
+                }
+                $rootScope.clearChanges();
+                $scope.processSelectCompositeProfilesForExport(igdocument);
+
+            });
+        } else {
+            $scope.processSelectCompositeProfilesForExport(igdocument);
+        }
+    };
 
     $scope.processSelectMessagesForExport = function(igdocument) {
         var modalInstance = $modal.open({
             templateUrl: 'SelectMessagesForExportCtrl.html',
             controller: 'SelectMessagesForExportCtrl',
+            windowClass: 'conformance-profiles-modal',
+            resolve: {
+                igdocumentToSelect: function() {
+                    return igdocument;
+                }
+            }
+        });
+        modalInstance.result.then(function() {}, function() {});
+    };
+
+    $scope.processSelectCompositeProfilesForExport = function(igdocument) {
+        var modalInstance = $modal.open({
+            templateUrl: 'SelectCompositeProfilesForExportCtrl.html',
+            controller: 'SelectCompositeProfilesForExportCtrl',
             windowClass: 'conformance-profiles-modal',
             resolve: {
                 igdocumentToSelect: function() {
@@ -2232,7 +2276,7 @@ angular.module('igl').controller('CreateNewIGAlertCtrl', function($scope, $rootS
     };
 });
 
-angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $modalInstance, igdocumentToOpen, $rootScope, $http) {
+angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $mdDialog, igdocumentToOpen, $rootScope, $http) {
     $scope.igdocumentToOpen = igdocumentToOpen;
     $scope.loading = false;
 
@@ -2242,7 +2286,7 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $
             var index = $rootScope.igs.indexOf($rootScope.igdocument);
             $rootScope.igs[index] = angular.fromJson(response.data);
             $scope.loading = false;
-            $modalInstance.close($scope.igdocumentToOpen);
+            $mdDialog.hide($scope.igdocumentToOpen);
         }, function(error) {
             $scope.loading = false;
             $rootScope.msg().text = "igResetFailed";
@@ -2262,13 +2306,13 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $
             $rootScope.igdocument.metaData.date = saveResponse.date;
             $rootScope.igdocument.metaData.version = saveResponse.version;
             $scope.loading = false;
-            $modalInstance.close($scope.igdocumentToOpen);
+            $mdDialog.hide($scope.igdocumentToOpen);
         }, function(error) {
             $rootScope.msg().text = "igSaveFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
             $scope.loading = false;
-            $modalInstance.dismiss('cancel');
+            $mdDialog.hide('cancel');
         });
     };
 
@@ -2371,6 +2415,110 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootSc
         blockUI.stop();
 
     };
+});
+
+angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window) {
+    $scope.igdocumentToSelect = igdocumentToSelect;
+    $scope.xmlFormat = 'Validation';
+    $scope.selectedCompositeProfileIDs = [];
+    $scope.loading = false;
+    $scope.info = { text: undefined, show: false, type: null, details: null };
+    $scope.redirectUrl = null;
+
+    $scope.trackSelections = function(bool, id) {
+        if (bool) {
+            $scope.selectedCompositeProfileIDs.push(id);
+        } else {
+            for (var i = 0; i < $scope.selectedCompositeProfileIDs.length; i++) {
+                if ($scope.selectedCompositeProfileIDs[i].id == id) {
+                    $scope.selectedCompositeProfileIDs.splice(i, 1);
+                }
+            }
+        }
+    };
+
+    $scope.exportAsZIPforSelectedCompositeProfiles = function() {
+        $scope.loading = true;
+        ExportSvc.exportAsXMLByCompositeProfileIds($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, $scope.xmlFormat);
+        $scope.loading = false;
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.viewErrors = function(errorDetails) {
+        if ($scope.gvtErrorsDialog && $scope.gvtErrorsDialog != null && $scope.gvtErrorsDialog.opened) {
+            $scope.gvtErrorsDialog.dismiss('cancel');
+        }
+        $scope.gvtErrorsDialog = $modal.open({
+            backdrop: 'static',
+            keyboard: 'true',
+            controller: 'GVTErrorsCtrl',
+            windowClass: 'conformance-profiles-modal',
+            templateUrl: 'views/gvt/errorDetails.html',
+            resolve: {
+                errorDetails: function() {
+                    return errorDetails;
+                }
+            }
+        });
+    };
+
+    $scope.exportAsZIPToGVT = function() {
+        $scope.loading = true;
+        $scope.info.text = null;
+        $scope.info.show = false;
+        $scope.info.type = 'danger';
+        if ($scope.gvtLoginDialog && $scope.gvtLoginDialog != null && $scope.gvtLoginDialog.opened) {
+            $scope.gvtLoginDialog.dismiss('cancel');
+        }
+        $scope.gvtLoginDialog = $modal.open({
+            backdrop: 'static',
+            keyboard: 'false',
+            controller: 'GVTLoginCtrl',
+            size: 'lg',
+            templateUrl: 'views/gvt/login.html',
+            resolve: {
+                user: function() {
+                    return { username: null, password: null };
+                }
+            }
+        });
+
+        $scope.gvtLoginDialog.result.then(function(auth) {
+            GVTSvc.exportToGVTForCompositeProfile($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, auth).then(function(map) {
+                var response = angular.fromJson(map.data);
+                if (response.success === false) {
+                    $scope.info.text = "gvtExportFailed";
+                    $scope.info['details'] = response;
+                    $scope.info.show = true;
+                    $scope.info.type = 'danger';
+                    $scope.loading = false;
+                } else {
+                    var token = response.token;
+                    $scope.info.text = 'gvtRedirectInProgress';
+                    $scope.info.show = true;
+                    $scope.info.type = 'info';
+                    $scope.redirectUrl = $rootScope.appInfo.gvtUrl + $rootScope.appInfo.gvtUploadTokenContext + "?x=" + encodeURIComponent(token) + "&y=" + encodeURIComponent(auth);
+                    $timeout(function() {
+                        $scope.loading = false;
+                        $window.open($scope.redirectUrl, "_target", "", false);
+                    }, 3000);
+                }
+            }, function(error) {
+                $scope.info.text = "gvtExportFailed";
+                $scope.info.show = true;
+                $scope.info.type = 'danger';
+                $scope.loading = false;
+            });
+        }, function() {
+            $scope.info.show = false;
+            $scope.loading = false;
+        });
+    };
+
+
 });
 
 angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window) {
@@ -3211,7 +3359,7 @@ angular.module('igl').controller('AddMasterDatatypes',
                 $rootScope.msg().text = "datatypeAdded";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
-                $modalInstance.close(datatypes);
+                $mdDialog.hide(datatypes);
             }, function(error) {
                 $rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
@@ -3581,7 +3729,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalI
             $rootScope.msg().text = "igSharedSuccessfully";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
-            $modalInstance.close();
+            $mdDialog.hide();
         }, function(error) {
             $scope.error = error.data;
             console.log(error);
@@ -3666,7 +3814,7 @@ angular.module('igl').controller('UnShareIGDocumentCtrl', function($scope, $moda
             $rootScope.msg().text = "igUnSharedSuccessfully";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
-            $modalInstance.close();
+            $mdDialog.hide();
         }, function(error) {
 
             $rootScope.msg().text = error.data.text;
@@ -3702,7 +3850,7 @@ angular.module('igl').controller('createProfileComponentCtrl',
                 $rootScope.profileComponents.push(profileC);
                 $rootScope.profileComponentsMap[profileC.id] = profileC;
                 $scope.Activate(profileC.id);
-                $modalInstance.close(profileC);
+                $mdDialog.hide(profileC);
 
             });
 
@@ -3838,7 +3986,7 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
                     }
 
                     console.log($rootScope.igdocument);
-                    $modalInstance.close(cpStructure);
+                    $mdDialog.hide(cpStructure);
 
                 });
 
@@ -3963,7 +4111,7 @@ angular.module('igl').controller('createCompositeProfileCtrl',
                     }
                     $rootScope.compositeProfilesStructureMap[cpStructure.id] = cpStructure;
                     console.log($rootScope.igdocument);
-                    $modalInstance.close(cpStructure);
+                    $mdDialog.hide(cpStructure);
 
                 });
 
@@ -4008,7 +4156,7 @@ angular.module('igl').controller('CustomExportCtrl', function($scope, $modalInst
                 }
             }
         }
-        $modalInstance.close();
+        $mdDialog.hide();
     };
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');

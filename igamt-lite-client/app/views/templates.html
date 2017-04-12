@@ -2141,12 +2141,12 @@
             </div>
             <div ng-if="data.type==='field' || data.type==='component' ">
                 <div ng-if="data.child.components && data.child.components.length> 0">
-                        <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
-                    </div>
-                    <div ng-if="!data.child.components ||  data.child.components.length == 0">
-                        <i class="fa fa-check" />
-                    </div>
+                    <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
                 </div>
+                <div ng-if="!data.child.components ||  data.child.components.length == 0">
+                    <i class="fa fa-check" />
+                </div>
+            </div>
         </td>
         <td ng-if="!data.folderClass">
             <div ng-if="data.type === 'message' || data.type === 'group' || data.type === 'segmentRef'">
@@ -5080,9 +5080,10 @@
                 {{getScopeLabel(element)}}
 
         <span ng-if="element.publicationVersion&&element.status==='PUBLISHED'" class="version-badge">v{{element.publicationVersion}}</span>
+
     </span>
     <span>{{getLabel(element)}}</span>
-    <span ng-if="description&&getDescriptionLabel(element)=''">-{{getDescriptionLabel(element)}}</span>
+    <span ng-if="description">{{getDescriptionLabel(element)}}</span>
     <div>
         <span class="version-badge-under" ng-repeat="version in element.hl7versions" style="margin-left:2px;">{{version}}</span>
     </div>

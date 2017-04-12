@@ -13,7 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
@@ -35,6 +35,6 @@ public interface ConstraintsSerialization {
 	nu.xom.Document serializeConstraintsToDoc(Profile profile, DocumentMetaData metadata, Date dateUpdated);
 
 	String serializeConstraintsUsingMapToXML(Profile profile, DocumentMetaData metadata,
-			HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
-			HashMap<String, Table> tablesMap, Date dateUpdated);
+			Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
+			Map<String, Table> tablesMap, Date dateUpdated);
 }

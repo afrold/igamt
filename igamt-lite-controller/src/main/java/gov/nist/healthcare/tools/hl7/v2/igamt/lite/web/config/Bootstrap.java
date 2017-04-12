@@ -272,7 +272,7 @@ public class Bootstrap implements InitializingBean {
     // fixValueSetNameAndDescription();
 
 
-	  refactorCoConstrint();
+//	  refactorCoConstrint();
 
   }
   
