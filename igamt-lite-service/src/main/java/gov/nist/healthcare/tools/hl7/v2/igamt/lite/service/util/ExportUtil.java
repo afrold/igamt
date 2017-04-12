@@ -13,15 +13,22 @@ import org.docx4j.jaxb.Context;
 import org.docx4j.model.fields.FieldUpdater;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.wml.BooleanDefaultTrue;
+import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.HpsMeasure;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.RPr;
+import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Tr;
+import org.docx4j.wml.TrPr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.tidy.Tidy;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -32,7 +39,9 @@ import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -112,7 +121,18 @@ import java.util.UUID;
             XHTMLImporterImpl xHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
             wordMLPackage.getMainDocumentPart().getContent()
                 .addAll(xHTMLImporter.convert(html, null));
-
+        	List<Object> nodes = getAllElementFromObject(wordMLPackage.getMainDocumentPart(), org.docx4j.wml.Tbl.class);
+        	BooleanDefaultTrue bdt = Context.getWmlObjectFactory().createBooleanDefaultTrue();
+        	for(Object node : nodes){
+        		if(node instanceof Tbl){
+        			Tbl tbl = (Tbl) node;
+        			if(tbl.getContent().get(0) instanceof Tr){
+        				Tr tr  = (Tr) tbl.getContent().get(0);
+        				tr.getTrPr().getCnfStyleOrDivIdOrGridBefore().add(Context.getWmlObjectFactory().createCTTrPrBaseTblHeader(bdt));
+        			}
+        		}
+        	}
+		
             docxExportUtil.loadTemplateForDocx4j(
                 wordMLPackage); // Repeats the lines above but necessary; don't delete
 
@@ -134,6 +154,21 @@ import java.util.UUID;
             e.printStackTrace();
             return new NullInputStream(1L);
         }
+    }
+    
+    public static List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
+        List<Object> result = new ArrayList<Object>();
+        if (obj instanceof JAXBElement) obj = ((JAXBElement<?>) obj).getValue();
+
+        if (obj.getClass().equals(toSearch))
+            result.add(obj);
+        else if (obj instanceof ContentAccessor) {
+            List<?> children = ((ContentAccessor) obj).getContent();
+            for (Object child : children) {
+                result.addAll(getAllElementFromObject(child, toSearch));
+            }
+        }
+        return result;
     }
 
     public InputStream exportAsHtmlFromXsl(String xmlString, String xslPath,
