@@ -65,7 +65,7 @@ import java.util.UUID;
 
     @Autowired private DocxExportUtil docxExportUtil;
 
-    private static final int MAX_IMAGE_WIDTH_EMU = 8000000;
+    private static final int MAX_IMAGE_WIDTH_EMU = 6000000;
 
     public InputStream exportAsDocxFromXml(String xmlString, String xmlPath,
         ExportParameters exportParameters, MetaData metaData, Date dateUpdated) {

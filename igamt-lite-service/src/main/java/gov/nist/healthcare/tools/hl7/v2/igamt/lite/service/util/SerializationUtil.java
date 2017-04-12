@@ -80,6 +80,8 @@ public class SerializationUtil {
             GridFSDBFile dbFile = fileStorageService.findOneByFilename(filename);
             if (dbFile != null) {
               imgis = dbFile.getInputStream();
+              /*
+               * This is only used if we want to resize the image result of the bytes array
               String style = elementImg.attr("style");
               StyleSheet styleSheet = new StyleSheet();
               AttributeSet dec = styleSheet.getDeclaration(style);
@@ -95,6 +97,8 @@ public class SerializationUtil {
               elementImg.removeAttr("style");
               elementImg.attr("width","'"+(int)widthDouble+"px'");
               elementImg.attr("height","'"+(int)heightDouble+"px'");
+              */
+              bytes = IOUtils.toByteArray(imgis);
             }
           } else {
             String filename = elementImg.attr("src");
