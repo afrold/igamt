@@ -39,6 +39,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.CompositeProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;

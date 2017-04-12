@@ -208,8 +208,17 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 	public InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids)
 			throws IOException, CloneNotSupportedException {
 		if (d != null) {
-			return profileSerializationService.serializeProfileToZip(d.getProfile(), mids, d.getMetaData(),
-					d.getDateUpdated());
+			return profileSerializationService.serializeProfileToZip(d.getProfile(), mids, d.getMetaData(), d.getDateUpdated());
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+	
+	@Override
+	public InputStream exportAsValidationForSelectedCompositeProfiles(IGDocument d, String[] cids)
+			throws IOException, CloneNotSupportedException {
+		if (d != null) {
+			return profileSerializationService.serializeCompositeProfileToZip(d, cids);
 		} else {
 			return new NullInputStream(1L);
 		}

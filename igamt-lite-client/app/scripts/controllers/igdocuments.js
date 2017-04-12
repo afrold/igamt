@@ -952,7 +952,7 @@ angular.module('igl')
         if ($rootScope.hasChanges()) {
             $rootScope.openConfirmLeaveDlg().result.then(function() {
                 if ($scope.editForm) {
-                    console.log("Cleeaning");
+                    console.log("Cleaning");
                     $scope.editForm.$setPristine();
                     $scope.editForm.$dirty = false;
                     $scope.editForm.$invalid = false;
@@ -965,12 +965,45 @@ angular.module('igl')
         } else {
             $scope.processSelectMessagesForExport(igdocument);
         }
-    }
+    };
+
+    $scope.selectCompositeProfilesForExport = function(igdocument) {
+        if ($rootScope.hasChanges()) {
+            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                if ($scope.editForm) {
+                    console.log("Cleaning");
+                    $scope.editForm.$setPristine();
+                    $scope.editForm.$dirty = false;
+                    $scope.editForm.$invalid = false;
+
+                }
+                $rootScope.clearChanges();
+                $scope.processSelectCompositeProfilesForExport(igdocument);
+
+            });
+        } else {
+            $scope.processSelectCompositeProfilesForExport(igdocument);
+        }
+    };
 
     $scope.processSelectMessagesForExport = function(igdocument) {
         var modalInstance = $modal.open({
             templateUrl: 'SelectMessagesForExportCtrl.html',
             controller: 'SelectMessagesForExportCtrl',
+            windowClass: 'conformance-profiles-modal',
+            resolve: {
+                igdocumentToSelect: function() {
+                    return igdocument;
+                }
+            }
+        });
+        modalInstance.result.then(function() {}, function() {});
+    };
+
+    $scope.processSelectCompositeProfilesForExport = function(igdocument) {
+        var modalInstance = $modal.open({
+            templateUrl: 'SelectCompositeProfilesForExportCtrl.html',
+            controller: 'SelectCompositeProfilesForExportCtrl',
             windowClass: 'conformance-profiles-modal',
             resolve: {
                 igdocumentToSelect: function() {
@@ -2371,6 +2404,110 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function($scope, $rootSc
         blockUI.stop();
 
     };
+});
+
+angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window) {
+    $scope.igdocumentToSelect = igdocumentToSelect;
+    $scope.xmlFormat = 'Validation';
+    $scope.selectedCompositeProfileIDs = [];
+    $scope.loading = false;
+    $scope.info = { text: undefined, show: false, type: null, details: null };
+    $scope.redirectUrl = null;
+
+    $scope.trackSelections = function(bool, id) {
+        if (bool) {
+            $scope.selectedCompositeProfileIDs.push(id);
+        } else {
+            for (var i = 0; i < $scope.selectedCompositeProfileIDs.length; i++) {
+                if ($scope.selectedCompositeProfileIDs[i].id == id) {
+                    $scope.selectedCompositeProfileIDs.splice(i, 1);
+                }
+            }
+        }
+    };
+
+    $scope.exportAsZIPforSelectedCompositeProfiles = function() {
+        $scope.loading = true;
+        ExportSvc.exportAsXMLByCompositeProfileIds($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, $scope.xmlFormat);
+        $scope.loading = false;
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.viewErrors = function(errorDetails) {
+        if ($scope.gvtErrorsDialog && $scope.gvtErrorsDialog != null && $scope.gvtErrorsDialog.opened) {
+            $scope.gvtErrorsDialog.dismiss('cancel');
+        }
+        $scope.gvtErrorsDialog = $modal.open({
+            backdrop: 'static',
+            keyboard: 'true',
+            controller: 'GVTErrorsCtrl',
+            windowClass: 'conformance-profiles-modal',
+            templateUrl: 'views/gvt/errorDetails.html',
+            resolve: {
+                errorDetails: function() {
+                    return errorDetails;
+                }
+            }
+        });
+    };
+
+    $scope.exportAsZIPToGVT = function() {
+        $scope.loading = true;
+        $scope.info.text = null;
+        $scope.info.show = false;
+        $scope.info.type = 'danger';
+        if ($scope.gvtLoginDialog && $scope.gvtLoginDialog != null && $scope.gvtLoginDialog.opened) {
+            $scope.gvtLoginDialog.dismiss('cancel');
+        }
+        $scope.gvtLoginDialog = $modal.open({
+            backdrop: 'static',
+            keyboard: 'false',
+            controller: 'GVTLoginCtrl',
+            size: 'lg',
+            templateUrl: 'views/gvt/login.html',
+            resolve: {
+                user: function() {
+                    return { username: null, password: null };
+                }
+            }
+        });
+
+        $scope.gvtLoginDialog.result.then(function(auth) {
+            GVTSvc.exportToGVTForCompositeProfile($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, auth).then(function(map) {
+                var response = angular.fromJson(map.data);
+                if (response.success === false) {
+                    $scope.info.text = "gvtExportFailed";
+                    $scope.info['details'] = response;
+                    $scope.info.show = true;
+                    $scope.info.type = 'danger';
+                    $scope.loading = false;
+                } else {
+                    var token = response.token;
+                    $scope.info.text = 'gvtRedirectInProgress';
+                    $scope.info.show = true;
+                    $scope.info.type = 'info';
+                    $scope.redirectUrl = $rootScope.appInfo.gvtUrl + $rootScope.appInfo.gvtUploadTokenContext + "?x=" + encodeURIComponent(token) + "&y=" + encodeURIComponent(auth);
+                    $timeout(function() {
+                        $scope.loading = false;
+                        $window.open($scope.redirectUrl, "_target", "", false);
+                    }, 3000);
+                }
+            }, function(error) {
+                $scope.info.text = "gvtExportFailed";
+                $scope.info.show = true;
+                $scope.info.type = 'danger';
+                $scope.loading = false;
+            });
+        }, function() {
+            $scope.info.show = false;
+            $scope.loading = false;
+        });
+    };
+
+
 });
 
 angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window) {

@@ -123,14 +123,19 @@
                                 data-toggle="dropdown" aria-expanded="false"><span class="caret"></span> <span
                                 class="sr-only">Toggle Dropdown</span></button>
                         <ul class="dropdown-menu igl-menu" role="menu">
-                            <li class="drop-accordian"><a class="point" ng-click="selectMessagesForExport(igdocument)">As
-                                XML</a>
+                            <li class="drop-accordian"><a class="point" ng-click="$event.stopPropagation();xmlDrop = !xmlDrop">As XML <span class="caret"><!-- --></span></a>
+                                <ul class="drop-accordian-menu" ng-show="xmlDrop">
+                                    <li>
+                                        <a class="point" ng-click="selectMessagesForExport(igdocument)">Conformance Profiles</a>
+                                    </li>
+                                    <li>
+                                        <a class="point" ng-click="selectCompositeProfilesForExport(igdocument)">Composite Profiles</a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="drop-accordian"><a class="point"
-                                                          ng-click="$event.stopPropagation();wordDrop = !wordDrop">As
-                                WORD <span class="caret"><!-- --></span></a>
+                            <li class="drop-accordian"><a class="point" ng-click="$event.stopPropagation();wordDrop = !wordDrop">As WORD <span class="caret"><!-- --></span></a>
                                 <ul class="drop-accordian-menu" ng-show="wordDrop">
-                                    <li title="  The implementation guide is exported as individual message profiles. A profile will contain it’s Message Structure Definition, Profile Components, and Segments. Data Types and Value Sets Organized as individual profiles. Contains Message Definition and all pertaining Profile Components and Segments. Data Type and Value Sets are rendered in a single separate section regardless of the profile in which they are used. Both the narrative and messaging aspects are exported.">
+                                    <li title="The implementation guide is exported as individual message profiles. A profile will contain it’s Message Structure Definition, Profile Components, and Segments. Data Types and Value Sets Organized as individual profiles. Contains Message Definition and all pertaining Profile Components and Segments. Data Type and Value Sets are rendered in a single separate section regardless of the profile in which they are used. Both the narrative and messaging aspects are exported.">
                                         <a class="point" ng-click="exportAsWithLayout('docx','IgDocument')">IG Style</a>
                                     </li>
                                     <li title="Export In Profile Style. The segments definitions are inside each conformance profile, No HL7 base data type, value set or segment is included">

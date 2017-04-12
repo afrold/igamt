@@ -18,6 +18,7 @@ import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -657,7 +658,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			return constraints;
 	}
 
-		private Constraints findAllConformanceStatement(Profile profile, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) {
+		private Constraints findAllConformanceStatement(Profile profile, Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
 				Constraints constraints = new Constraints();
 				Context dtContext = new Context();
 				Context sContext = new Context();
@@ -759,7 +760,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			
 		}
 		
-		private Constraints findAllPredicates(Profile profile,HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) {
+		private Constraints findAllPredicates(Profile profile,Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
 			Constraints constraints = new Constraints();
 			Context dtContext = new Context();
 			Context sContext = new Context();
@@ -936,8 +937,8 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
 		@Override
 		public String serializeConstraintsUsingMapToXML(Profile profile, DocumentMetaData metadata,
-				HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
-				HashMap<String, Table> tablesMap, Date dateUpdated) {
+				Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
+				Map<String, Table> tablesMap, Date dateUpdated) {
 			
 			Constraints predicates = findAllPredicates(profile, segmentsMap, datatypesMap, tablesMap);
 			Constraints conformanceStatements = findAllConformanceStatement(profile, segmentsMap, datatypesMap, tablesMap);
