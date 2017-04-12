@@ -332,6 +332,16 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
         return result;
     };
+    $scope.findingConfSt = function(node) {
+        if (node) {
+            if (!node.conformanceStatements || node.conformanceStatements.length <= 0) {
+                return node.oldConformanceStatements;
+            } else {
+                return node.conformanceStatements;
+            }
+        }
+
+    };
     $scope.findingComments = function(node) {
         var result = [];
 
@@ -422,6 +432,38 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             $scope.setDirty();
         });
     };
+    $scope.showConfSt = false;
+    $scope.seeConfSt = function(node) {
+        $scope.showConfSt = true;
+        $scope.currentNode = node;
+    };
+    $scope.unseeConfSt = function(node) {
+        $scope.showConfSt = false;
+        $scope.currentNode = null;
+    };
+    $scope.openAddGlobalConformanceStatementDialog = function(node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'GlobalConformanceStatementCtrlInPc.html',
+            controller: 'GlobalConformanceStatementCtrlInPc',
+            windowClass: 'app-modal-window',
+            keyboard: false,
+            resolve: {
+                node: function() {
+                    return node;
+                },
+            }
+        });
+        modalInstance.result.then(function(confs) {
+            if (confs) {
+                //$rootScope.message = message;
+                //$scope.findAllGlobalConstraints();
+                console.log(confs);
+                node.conformanceStatements = confs;
+                $scope.setDirty();
+            }
+        }, function() {});
+    };
+
     $scope.addSev = function(node) {
         var sev = {};
         var index = node.path.indexOf(".");
@@ -593,6 +635,10 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         node.predicates = [];
         $scope.setDirty();
 
+    };
+    $scope.cancelConfSt = function(node) {
+        node.conformanceStatements = [];
+        $scope.setDirty();
     };
     $scope.initUsage = function(node) {
         if (node.attributes.usage) {
@@ -1281,7 +1327,25 @@ angular.module('igl').controller('addComponentsCtrl',
             var parent = currentScope.parentNode;
             console.log('parent Node details: ', currentScope.parentNode);
             console.log('selected Node details: ', currentScope.node);
-            if (pc.type === 'segmentRef') {
+            if (pc.type === 'message') {
+
+                var newPc = {
+                    id: new ObjectId().toString(),
+                    type: pc.type,
+                    name: pc.name,
+                    path: pc.structID,
+                    source: {
+                        messageId: pc.id,
+                    },
+                    oldConformanceStatements: pc.conformanceStatements,
+                    from: "message",
+                    attributes: {
+
+                    },
+                    appliedTo: [],
+                    version: ""
+                };
+            } else if (pc.type === 'segmentRef') {
                 var newPc = {
                     id: new ObjectId().toString(),
                     type: pc.type,
@@ -1327,6 +1391,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     itemId: pc.id,
                     parentPredicates: pc.parentPredicates,
                     parentGroupPredicates: pc.parentGroupPredicates,
+                    oldConformanceStatements: pc.conformanceStatements,
                     source: pc.source,
                     from: "message",
                     attributes: {
@@ -1894,8 +1959,6 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
     $scope.changed = false;
     $rootScope.processMessageTree($scope.selectedMessage);
     $scope.treeDataForMessage.push($scope.selectedMessage);
-    console.log("$scope.treeDataForMessage");
-    console.log($scope.treeDataForMessage);
     $scope.draggingStatus = null;
     $scope.listGlobalPredicates = [];
     $scope.existingPredicate = null;
@@ -1955,10 +2018,6 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
             };
         }
 
-        console.log("$scope.existingPredicate");
-        console.log($scope.existingPredicate);
-        console.log($scope.existingContext);
-        console.log($scope.contextKey);
 
     };
 
@@ -2586,5 +2645,315 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
     $scope.initPredicate();
     $scope.initComplexPredicate();
     $scope.existingPredicate = $scope.findExistingPredicate();
+
+});
+
+
+angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function($scope, $modalInstance, node, $rootScope, $q) {
+    //$scope.selectedMessage = angular.copy(selectedMessage);
+
+    $scope.constraints = [];
+    $scope.firstConstraint = null;
+    $scope.secondConstraint = null;
+    $scope.compositeType = null;
+    $scope.complexConstraint = null;
+    $scope.newComplexConstraintId = null;
+    $scope.selectedContextNode = null;
+    $scope.treeDataForMessage = [];
+    $scope.constraintType = 'Plain';
+    $scope.firstNodeData = null;
+    $scope.secondNodeData = null;
+    $scope.changed = false;
+    // $scope.selectedMessage.pathInfoSet = [];
+    // $scope.treeDataForMessage.push($scope.selectedMessage);
+    $scope.draggingStatus = null;
+    $scope.contextKey = null;
+
+    $scope.setChanged = function() {
+        $scope.changed = true;
+    };
+
+    $scope.toggleChildren = function(data) {
+        data.childrenVisible = !data.childrenVisible;
+        data.folderClass = data.childrenVisible ? "fa-minus" : "fa-plus";
+    };
+
+    $scope.beforeNodeDrop = function() {
+        var deferred = $q.defer();
+        if ($scope.draggingStatus === 'MessageTreeNodeDragging') {
+            deferred.resolve();
+        } else {
+            deferred.reject();
+        }
+        return deferred.promise;
+    };
+
+    $scope.afterNodeDrop = function() {
+        $scope.draggingStatus = null;
+        $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
+        $scope.generateFirstPositionAndLocationPath();
+    };
+
+    $scope.afterSecondNodeDrop = function() {
+        $scope.draggingStatus = null;
+        $scope.newConstraint.pathInfoSet_2 = $scope.secondNodeData.pathInfoSet;
+        $scope.generateSecondPositionAndLocationPath();
+    };
+
+    $scope.draggingNodeFromContextTree = function(event, ui, nodeData) {
+        $scope.draggingStatus = 'MessageTreeNodeDragging';
+    };
+
+    $scope.findSegRefOrGrpFromMsgByPath = function(children, path) {
+
+        var pathArray = path.split('.');
+
+        if (pathArray.length > 1) {
+            for (i in children) {
+                if (children[i].position === pathArray[0] && children[i].type === "group") {
+                    pathArray.splice(0, 1);
+                    return $scope.findSegRefOrGrpFromMsgByPath(children[i].children, pathArray.join("."));
+                }
+            }
+        } else if (pathArray.length === 1) {
+            for (i in children) {
+
+
+                if (children[i].position === parseInt(pathArray[0])) {
+                    return children[i];
+                }
+            }
+        }
+
+    };
+    $scope.selectContext = function(selectedContextNode) {
+        $scope.contextKey = new ObjectId().toString();
+        $scope.selectedContextNode = selectedContextNode;
+        $scope.selectedContextNode.pathInfoSet = [];
+        $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null, $scope.contextKey);
+        console.log("$scope.selectedContextNode");
+        console.log($scope.contextKey);
+
+        console.log($scope.selectedContextNode);
+        $scope.initConformanceStatement();
+    };
+
+
+
+
+
+
+
+    $scope.generateFirstPositionAndLocationPath = function() {
+        if ($scope.newConstraint.pathInfoSet_1) {
+            var positionPath = '';
+            var locationPath = '';
+            for (var i in $scope.newConstraint.pathInfoSet_1) {
+                if (i > 0) {
+                    var pathInfo = $scope.newConstraint.pathInfoSet_1[i];
+                    positionPath = positionPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
+                    locationPath = locationPath + "." + pathInfo.locationName + "[" + pathInfo.instanceNumber + "]";
+
+                    if (i == $scope.newConstraint.pathInfoSet_1.length - 1) {
+                        locationPath = locationPath + " (" + pathInfo.nodeName + ")";
+                    }
+                }
+            }
+
+            $scope.newConstraint.position_1 = positionPath.substr(1);
+            $scope.newConstraint.location_1 = locationPath.substr(1);
+        }
+    };
+
+    $scope.generateSecondPositionAndLocationPath = function() {
+        if ($scope.newConstraint.pathInfoSet_2) {
+            var positionPath = '';
+            var locationPath = '';
+            for (var i in $scope.newConstraint.pathInfoSet_2) {
+                if (i > 0) {
+                    var pathInfo = $scope.newConstraint.pathInfoSet_2[i];
+                    positionPath = positionPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
+                    locationPath = locationPath + "." + pathInfo.locationName + "[" + pathInfo.instanceNumber + "]";
+
+                    if (i == $scope.newConstraint.pathInfoSet_2.length - 1) {
+                        locationPath = locationPath + " (" + pathInfo.nodeName + ")";
+                    }
+                }
+            }
+
+            $scope.newConstraint.position_2 = positionPath.substr(1);
+            $scope.newConstraint.location_2 = locationPath.substr(1);
+        }
+    };
+
+    $scope.draggingNodeFromMessageTree = function(event, ui, nodeData) {
+        $scope.draggingStatus = 'MessageTreeNodeDragging';
+    };
+
+    $scope.generatePathInfo = function(current, positionNumber, locationName, instanceNumber, isInstanceNumberEditable, nodeName, key) {
+        var pathInfo = {};
+        pathInfo.positionNumber = positionNumber;
+        pathInfo.locationName = locationName;
+        pathInfo.nodeName = nodeName;
+        pathInfo.instanceNumber = instanceNumber;
+        pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
+        current.contextKey = key;
+        current.pathInfoSet.push(pathInfo);
+
+        if (current.type == 'message' || current.type == 'group') {
+            for (var i in current.children) {
+                var segGroup = current.children[i];
+                segGroup.pathInfoSet = angular.copy(current.pathInfoSet);
+                var childPositionNumber = segGroup.position;
+                var childLocationName = '';
+                var childNodeName = '';
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
+                if (segGroup.max != '1') {
+                    childInstanceNumber = '*';
+                    childisInstanceNumberEditable = true;
+                }
+                if (segGroup.type == 'group') {
+                    childNodeName = segGroup.name;
+                    childLocationName = segGroup.name.substr(segGroup.name.lastIndexOf('.') + 1);
+                } else {
+                    var s = angular.copy($rootScope.segmentsMap[segGroup.ref.id]);
+                    s.id = new ObjectId().toString();
+                    childLocationName = s.name;
+                    childNodeName = s.name;
+                    segGroup.segment = s;
+                }
+                $scope.generatePathInfo(segGroup, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName, key);
+            }
+        } else if (current.type == 'segmentRef') {
+            var seg = current.segment;
+            for (var i in seg.fields) {
+                var f = seg.fields[i];
+                f.pathInfoSet = angular.copy(current.pathInfoSet);
+
+                var childPositionNumber = f.position;
+                var childLocationName = f.position;
+                var childNodeName = f.name;
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
+                if (f.max != '1') {
+                    childInstanceNumber = '*';
+                    childisInstanceNumberEditable = true;
+                }
+                var child = angular.copy($rootScope.datatypesMap[f.datatype.id]);
+                child.id = new ObjectId().toString();
+                f.child = child;
+                $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName, key);
+            }
+        } else if (current.type == 'field' || current.type == 'component') {
+            var dt = current.child;
+            for (var i in dt.components) {
+                var c = dt.components[i];
+                c.pathInfoSet = angular.copy(current.pathInfoSet);
+                var childPositionNumber = c.position;
+                var childLocationName = c.position;
+                var childNodeName = c.name;
+                var childInstanceNumber = "1";
+                var childisInstanceNumberEditable = false;
+                var child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
+                child.id = new ObjectId().toString();
+                c.child = child;
+                $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName, key);
+            }
+        }
+    };
+
+    $scope.initConformanceStatement = function() {
+        $scope.newConstraint = angular.fromJson({
+            pathInfoSet_1: null,
+            pathInfoSet_2: null,
+            position_1: null,
+            position_2: null,
+            location_1: null,
+            location_2: null,
+            freeText: null,
+            verb: null,
+            ignoreCase: false,
+            constraintId: null,
+            contraintType: null,
+            value: null,
+            value2: null,
+            valueSetId: null,
+            bindingStrength: 'R',
+            bindingLocation: '1'
+        });
+    };
+
+    $scope.initComplexStatement = function() {
+        $scope.constraints = [];
+        $scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
+        $scope.complexConstraint = null;
+        $scope.newComplexConstraintId = null;
+    }
+
+    $scope.addConformanceStatement = function() {
+        var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
+        console.log($scope.selectedContextNode);
+        $scope.selectedContextNode.conformanceStatements.push(cs);
+        $scope.changed = true;
+        $scope.initConformanceStatement();
+    };
+
+    $scope.deleteConformanceStatement = function(conformanceStatement) {
+        $scope.selectedContextNode.conformanceStatements.splice($scope.selectedContextNode.conformanceStatements.indexOf(conformanceStatement), 1);
+        $scope.changed = true;
+    };
+
+    $scope.addFreeTextConformanceStatement = function() {
+        var cs = $rootScope.generateFreeTextConformanceStatement($scope.newConstraint);
+        $scope.selectedContextNode.conformanceStatements.push(cs);
+        $scope.changed = true;
+        $scope.initConformanceStatement();
+    };
+
+    $scope.addComplexConformanceStatement = function() {
+        $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
+        $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+        $scope.selectedContextNode.conformanceStatements.push($scope.complexConstraint);
+        $scope.initComplexStatement();
+        $scope.changed = true;
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss();
+    };
+
+    $scope.saveclose = function() {
+        //$rootScope.recordChanged();
+
+        $modalInstance.close($scope.selectedContextNode.conformanceStatements);
+    };
+
+    $scope.initConformanceStatement();
+    $scope.initComplexStatement();
+    if (node.type === "group") {
+        var index = node.path.indexOf(".");
+        var path = node.path.substr(index + 1);
+        $scope.selectedMessage = angular.copy($rootScope.messagesMap[node.source.messageId]);
+        $scope.selectedMessage = $scope.findSegRefOrGrpFromMsgByPath($scope.selectedMessage.children, path);
+        $scope.selectedMessage.conformanceStatements = node.conformanceStatements;
+        $scope.selectedMessage.pathInfoSet = [];
+        $scope.treeDataForMessage.push($scope.selectedMessage);
+        $scope.selectContext($scope.selectedMessage);
+    } else if (node.type === "message") {
+        console.log("MESSAGE");
+        $scope.selectedMessage = angular.copy($rootScope.messagesMap[node.source.messageId]);
+        $scope.selectedMessage.conformanceStatements = node.conformanceStatements;
+        $scope.selectedMessage.pathInfoSet = [];
+        $scope.treeDataForMessage.push($scope.selectedMessage);
+        $scope.selectContext($scope.selectedMessage);
+
+
+
+    }
+    $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
+
 
 });

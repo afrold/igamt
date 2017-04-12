@@ -5,6 +5,7 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         isFirstOpen: false,
         isSecondOpen: true,
         isThirdOpen: false,
+        isFourthOpen: false,
 
     };
     $scope.redirectVS = function(binding) {
@@ -165,6 +166,23 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
 
         });
 
+    };
+    $scope.findingConfStInMsg = function(profile) {
+        var results = [];
+        if (profile.conformanceStatements && profile.conformanceStatements.length > 0) {
+            results.push(profile);
+        }
+        for (i in profile.children) {
+
+            if (profile.children[i].type === 'group') {
+                results.push.apply($scope.findingConfStInMsg(profile.children[i]));
+            } else {
+                if (profile.children[i].conformanceStatements && profile.children[i].conformanceStatements.length > 0) {
+                    results.push(profile.children[i].conformanceStatements);
+                }
+            }
+        }
+        return results;
     };
     $scope.isAvailableConstantValue = function(node) {
         if (node.type === "field" || node.type === "component") {
@@ -414,14 +432,18 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         if (node && $rootScope.compositeProfile) {
             result = _.find($scope.groupsPredicates, function(p) {
                 if (p.context && p.context.type === "group") {
-
                     //var tempath = node.path.replace(p.context.path + '.', '');
-                    return (p.context.path + '.' + $rootScope.refinePath(p.constraintTarget)) == $rootScope.refinePath(node.path);
+                    if (node.type === 'group' && p.context.path === $rootScope.refinePath(p.constraintTarget) && parseInt($rootScope.refinePath(p.constraintTarget)) === node.position) {
+                        return true;
+                    } else {
+                        return (p.context.path + '.' + $rootScope.refinePath(p.constraintTarget)) == $rootScope.refinePath(node.path);
+
+                    }
                 }
 
             });
             if (result) {
-               
+
                 result.from = 'message';
                 return result;
             }

@@ -55,6 +55,7 @@ public class PathGroupServiceImpl implements PathGroupService {
       List<SubProfileComponent> toRemove = new ArrayList<>();
       List<SubProfileComponent> toAdd = new ArrayList<>();
       for (SubProfileComponent subPc : pc.getChildren()) {
+
         if (!subPc.getPath().startsWith(coreMessage.getStructID())) {
           String[] elements = subPc.getPath().split("\\.", 2);
           String segName = elements[0];
@@ -80,6 +81,11 @@ public class PathGroupServiceImpl implements PathGroupService {
         if (!sub.getPath().startsWith(coreMessage.getStructID())) {
 
         } else {
+          if (sub.getPath().equals(coreMessage.getStructID())) {
+            if (sub.getConformanceStatements() != null) {
+              coreMessage.setConformanceStatements(sub.getConformanceStatements());
+            }
+          }
           if (sub.getValueSetBindings() != null) {
             for (ValueSetOrSingleCodeBinding v : sub.getValueSetBindings()) {
               for (ValueSetOrSingleCodeBinding vsb : coreMessage.getValueSetBindings()) {

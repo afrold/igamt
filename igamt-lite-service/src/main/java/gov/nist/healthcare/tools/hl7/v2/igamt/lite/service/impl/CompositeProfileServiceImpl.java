@@ -122,6 +122,7 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     compositeProfile.setSingleElementValues(coreMessage.getSingleElementValues());
     compositeProfile.setPredicates(coreMessage.getPredicates());
     compositeProfile.setComments(coreMessage.getComments());
+    compositeProfile.setConformanceStatements(coreMessage.getConformanceStatements());
     browse(compositeProfileStructure.getExt(), compositeProfile, pathGroups);
     compositeProfile.setSegmentsMap(queryService.getSegmentsMap());
     compositeProfile.setDatatypesMap(queryService.getDatatypesMap());

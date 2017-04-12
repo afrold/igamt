@@ -145,6 +145,8 @@
                                                                     <td class="col-md-1 col-fixed-250">
                                                                         <span ng-if="node.type=='datatype'" class="label label-default label-icon">D</span>
                                                                         <span ng-if="node.type=='group'" class="label label-success label-icon">G</span>
+                                                                        <span ng-if="node.type=='message'" class="label label-success label-icon">M</span>
+
                                                                         <span ng-if="node.type=='segmentRef'||node.type=='segment'" class="label label-segment label-icon">S</span>
                                                                         <span class="label label-field label-icon" ng-if="node.type==='field'">F</span>
                                                                         <span class="label label-component label-icon" ng-if="node.type==='component'">C</span>
@@ -171,11 +173,11 @@
 
 
                                                                     </td>
-                                                                    <td ng-class="{'col-md-2 col-fixed-80 select-change':node.attributes.usage,'col-md-2 col-fixed-80':!node.attributes.usage}">
-                                                                        <div ng-if="node.usage !== 'C'  || (node.usage === 'C' && !findingPredicates(node))">
+                                                                    <td ng-class="{'col-md-2 col-fixed-80 select-change':node.attributes.usage,'col-md-2 col-fixed-80':!node.attributes.usage,'emptyCol':node.type==='message'}">
+                                                                        <div ng-if="node.usage !== 'C'  || (node.usage === 'C' && !findingPredicates(node))" ng-hide="node.type==='message'">
                                                                             <select style="width:50px;" ng-init="initUsage(node)" name="usage" ng-change="setDirty();updateUsage(node);" class="form-control input-sm" ng-model="node.usage">
-                                                                <option ng-repeat="usage in config.usages">{{usage}}</option>
-                                                            </select>
+                                                                                <option ng-repeat="usage in config.usages">{{usage}}</option>
+                                                                            </select>
                                                                         </div>
 
                                                                         <span ng-if="findingPredicates(node)" class="badge label-white">
@@ -188,23 +190,23 @@
                                                                     </td>
 
 
-                                                                    <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component'">
+                                                                    <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component'|| node.type==='message'">
                                                                     </td>
-                                                                    <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.min,'col-md-1 col-fixed-100':!node.attributes.min}" ng-if="node.type!=='component'">
+                                                                    <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.min,'col-md-1 col-fixed-100':!node.attributes.min}" ng-if="node.type!=='component' && node.type!=='message'">
                                                                         <input style="width:50px;" ng-init="initMinCard(node)" ng-change="setDirty();updateMinCard(node);" class="form-control" name="min" ng-pattern="/^\d+$/" ng-model="node.min" ng-minlength="1">
                                                                         <a ng-show="node.attributes.min" ng-click="cancelMinCard(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                                     </td>
 
 
-                                                                    <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component'">
+                                                                    <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component' || node.type==='message'">
                                                                     </td>
-                                                                    <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.max,'col-md-1 col-fixed-100':!node.attributes.max}" ng-if="node.type!=='component'">
+                                                                    <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.max,'col-md-1 col-fixed-100':!node.attributes.max}" ng-if="node.type!=='component' && node.type!=='message'">
                                                                         <input style="width:50px;" ng-init="initMaxCard(node)" ng-change="setDirty();updateMaxCard(node);" class="form-control" name="max" ng-pattern="/^\d+$|^\*?$/" ng-model="node.max">
                                                                         <a ng-show="node.attributes.max" ng-click="cancelMaxCard(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                                     </td>
 
 
-                                                                    <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
+                                                                    <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type!=='field' && node.type!=='component' ">
 
                                                                     </td>
                                                                     <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.minLength,'col-md-1 col-fixed-100':!node.attributes.minLength}" ng-if="node.type==='field' || node.type==='component'">
@@ -233,25 +235,13 @@
 
                                                                     </td>
                                                                     <td ng-class="{'col-md-2 col-fixed-350 input-change ':node.attributes.datatype,'col-md-2 col-fixed-350':!node.attributes.datatype}" ng-if="node.type==='field' || node.type==='component'">
-                                                                        <!--<a ng-init="initDatatype(node)" class="point" ng-show="editableDT!==node.id" ng-click="redirectDT(node.datatype)">
-                                                        {{getDatatypeLabel(datatypesMap[node.datatype.id])}}
-                                                    </a>
-                                                        <a ng-show="editableDT!==node.id&&node.datatype" ng-click="editDT(node)" class="point">
-                                                            <span><i class="fa fa-pencil fa-fw"></i></span>
-                                                        </a>
-                                                        <a ng-click="editDatatype=true;editDT(node);" ng-hide="node.datatype||editableDT===node.id"><i class="fa fa-plus fa-fw"></i></a>
-                                                        <select ng-show="editableDT===node.id" ng-model="node.datatype" ng-change="selectDT(node)" class="form-control">
-                                                        <option ng-repeat="datatype in datatypes" value="{{datatype}}" ng-selected="node.datatype.id===datatype.id"> {{getDatatypeLabel(datatype)}} {{::datatype.hl7Version}}
-                                                        </option>
-                                                        <option ng-click="otherDT(node)" value="Others"> Others</option>
-                                                    </select>
-                                                        <a ng-click="editDatatype=false;cancelDatatype(node)" ng-show="node.datatype||editableDT===node.id"><i class="fa fa-remove fa-fw"></i></a>-->
+
                                                                         <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node);initDatatype(node)">
                                                                             <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                                                                                 <span class="badge label-white" ng-show="editableDT!==node.id">
-                                                                 <display-label of="datatypesMap[node.datatype.id]" desc="false"  ng-click="redirectDT(node.datatype)"></display-label>
-                                                                <span title="Change Datatype" ng-click="editDatatype=true;editDT(node)">
-                                                                <i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                                                                    <display-label of="datatypesMap[node.datatype.id]" desc="false"  ng-click="redirectDT(node.datatype)"></display-label>
+                                                                                    <span title="Change Datatype" ng-click="editDatatype=true;editDT(node)">
+                                                                                    <i class="fa fa-pencil fa-fw edit-icon"></i></span>
                                                                                 </span>
 
                                                                                 <div ng-if="editableDT===node.id">
@@ -266,9 +256,7 @@
                                                                                     <a ng-show="node.attributes.datatype" ng-show="node.datatype||editableDT===node.id" ng-click="editDatatype=false;cancelDatatype(node)" class="point">
                                                                                         <span><i class="glyphicon glyphicon-remove"></i></span>
                                                                                     </a>
-                                                                                    <!--<a ng-show="datatypesMap[node.datatype.id].name.toUpperCase() === 'varies'.toUpperCase()" ng-click="showEditDynamicMappingDlg(node)" class="point">
-                                                                        <span><i class="fa fa-cog" aria-hidden="true"></i></span>
-                                                                    </a>-->
+                                                                                  
                                                                                 </div>
                                                                             </div>
                                                                         </ng-form>
@@ -356,7 +344,23 @@
 
                                                                         </div>
                                                                     </td>
-                                                                    <td class="col-md-1">
+                                                                    <td style="text-align:center" ng-class="{'input-change':(node.conformanceStatements && node.conformanceStatements.length>0)}">
+                                                                        <!--<div ng-repeat="confSt in findingConfSt(node)">
+                                                                            <span title="{{confSt.description}}">  
+                                                                                {{getConstraintAsTruncatedString(confSt, 15)}}
+                                                                            </span>
+                                                                        </div>-->
+                                                                        <span>
+                                                                            <i style="font-size:15px;" ng-show="!currentNode || currentNode.id !==node.id" ng-click="seeConfSt(node)" class="material-icons">visibility</i>
+                                                                            <i style="font-size:15px;" ng-show="currentNode && currentNode.id ===node.id" ng-click="unseeConfSt(node)" class="material-icons">visibility_off</i>
+                                                                            <i  ng-click="cancelConfSt(node)" ng-show="node.conformanceStatements && node.conformanceStatements.length>0" class="fa fa-times fa-fw"></i>
+                                                                        </span>
+                                                                        <!--<a ng-click="openAddGlobalConformanceStatementDialog(node)" class="point">
+                                                                            <i class="fa fa-pencil fa-fw" ng-if="(node.conformanceStatements && node.conformanceStatements.length>0)||(node.oldConformanceStatements && node.oldConformanceStatements.length>0)"></i>
+                                                                            <i class="fa fa-plus fa-fw" ng-if="node.conformanceStatements.length===0 && node.conformanceStatements.lengtt===0 "></i>
+                                                                        </a>-->
+
+
                                                                     </td>
 
 
@@ -374,14 +378,14 @@
                                                                     </td>
 
 
-                                                                    <td style="text-align:center" ng-class="{'input-change':(node.comments && node.comments.length>0)}">
+                                                                    <td style="text-align:center" ng-class="{'input-change':(node.comments && node.comments.length>0),'emptyCol':node.type==='message'}">
                                                                         <div ng-repeat="comment in findingComments(node)">
                                                                             <span class="badge label-white">
                                                         <span ng-class="{'label-message-icon' : comment.from == 'message', 'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                                                                             <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-click="editCommentDlg(node, comment, false, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
                                                                             </span>
                                                                         </div>
-                                                                        <a class="point">
+                                                                        <a class="point" ng-hide="node.type==='message'">
                                                                             <span ng-click="editCommentDlg(node, null, false, 'message')"><i class="fa fa-plus fa-fw"></i></span>
                                                                             <a ng-show="node.comments && node.comments.length>0" ng-click="cancelComments(node)"><i class="fa fa-remove fa-fw"></i></a>
 
@@ -390,8 +394,8 @@
 
                                                                     <td class="col-md-1" ng-style="commentWidth">
                                                                         <button type="button" class="btn btn-raised btn-raised btn-xs btn-danger" ng-click="removePcEntry(node)">
-                                                        <span><i class="fa fa-times fa-fw"></i></span>
-                                                    </button>
+                                                                            <span><i class="fa fa-times fa-fw"></i></span>
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
                                                                 <tr class="dndPlaceholder">
@@ -399,6 +403,37 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
+                                                        <div class=" panel panel-default" style="margin-top:10px;" ng-show="showConfSt">
+                                                            <div class="panel-heading">Conformance Statements</div>
+                                                            <div class="panel-body">
+                                                                <span class="pull-right" class="margin-right:5px">
+                                                                <button title="Add/Edit Conformance Statements" type="button" class="btn btn-raised btn-sm btn-success" ng-click="openAddGlobalConformanceStatementDialog(currentNode)">
+                                                                    <span><i class="fa fa-plus fa-fw"></i> Add/Edit Conformance Statements</span>
+                                                                </button>
+                                                                </span>
+                                                                <div class="col-md-12">
+                                                                    <span ng-hide="findingConfSt(currentNode) && findingConfSt(currentNode).length>0">No Conformance statement</span>
+                                                                    <div>
+                                                                        <span ng-show="currentNode.type =='group'">Group : {{currentNode.name}}</span>
+                                                                        <span ng-show="currentNode.type =='message'">Message : {{currentNode.name}}</span>
+                                                                        <table st-table="displayed" st-safe-src="findingConfSt(currentNode)" class="table table-striped table-bordered">
+                                                                            <thead>
+                                                                                <tr class="tbl-header">
+                                                                                    <th st-sort="constraintId" class="col-md-2">ID</th>
+                                                                                    <th class="col-md-10">Description</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr ng-repeat="c in displayed">
+                                                                                    <td class="col-md-2">{{c.constraintId}}</td>
+                                                                                    <td class="col-md-10">{{c.description}}</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
                                                     </div>
 
@@ -984,7 +1019,7 @@
     <tr tt-node is-branch="node.children!==undefined && node.children.length>0">
 
         <td>
-            <a ng-if="node.type==='group'||node.type==='segmentRef'||node.type==='field'||node.type==='component'" class="pointer " ng-click="addElementPc(node,$event) "><i class="fa fa-plus fa-fw "></i></a>
+            <a ng-if="node.type==='group'||node.type==='segmentRef'||node.type==='field'||node.type==='component'|| node.type==='message'" class="pointer " ng-click="addElementPc(node,$event) "><i class="fa fa-plus fa-fw "></i></a>
 
             <span ng-if="node.type==='group'" class="label label-success label-icon">G</span>
             <span ng-if="node.type==='segmentRef'" class="label label-segment label-icon">S</span>
