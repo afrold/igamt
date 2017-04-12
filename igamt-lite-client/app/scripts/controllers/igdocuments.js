@@ -14,6 +14,7 @@ angular.module('igl')
     $rootScope.editForm = $scope.editForm;
     $scope.tmpIgs = [].concat($rootScope.igs);
     $scope.error = null;
+    $rootScope.chipsReadOnly=true;
     $scope.loadingTree = false;
     $scope.filtering = false;
     $scope.tocView = 'views/toc.html';
@@ -30,13 +31,15 @@ angular.module('igl')
     };
     $rootScope.usageF = false;
     $scope.nodeReady = true;
-    $scope.igDocumentTypes = [{
+    $scope.igDocumentTypes = [
+        {
+            name: "Access My implementation guides",
+            type: 'USER'
+        },
+        {
         name: "Browse Existing Preloaded Implementation Guides",
         type: 'PRELOADED'
-    }, {
-        name: "Access My implementation guides",
-        type: 'USER'
-    }, {
+    },{
         name: "Shared Implementation Guides",
         type: 'SHARED'
     }];
@@ -456,6 +459,14 @@ angular.module('igl')
         $scope.tocView = 'views/toc.html';
         blockUI.stop();
 
+    }
+    $scope.displayTree=function(bool){
+        if(bool){
+            $scope.displayRegularTree();
+        }
+        else{
+            $scope.displayFilteredTree();
+        }
     }
 
     $scope.edit = function(igdocument) {
@@ -2265,7 +2276,7 @@ angular.module('igl').controller('CreateNewIGAlertCtrl', function($scope, $rootS
     };
 });
 
-angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $modalInstance, igdocumentToOpen, $rootScope, $http) {
+angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $mdDialog, igdocumentToOpen, $rootScope, $http) {
     $scope.igdocumentToOpen = igdocumentToOpen;
     $scope.loading = false;
 
@@ -2275,7 +2286,7 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $
             var index = $rootScope.igs.indexOf($rootScope.igdocument);
             $rootScope.igs[index] = angular.fromJson(response.data);
             $scope.loading = false;
-            $modalInstance.close($scope.igdocumentToOpen);
+            $mdDialog.hide($scope.igdocumentToOpen);
         }, function(error) {
             $scope.loading = false;
             $rootScope.msg().text = "igResetFailed";
@@ -2295,13 +2306,13 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function($scope, $
             $rootScope.igdocument.metaData.date = saveResponse.date;
             $rootScope.igdocument.metaData.version = saveResponse.version;
             $scope.loading = false;
-            $modalInstance.close($scope.igdocumentToOpen);
+            $mdDialog.hide($scope.igdocumentToOpen);
         }, function(error) {
             $rootScope.msg().text = "igSaveFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
             $scope.loading = false;
-            $modalInstance.dismiss('cancel');
+            $mdDialog.hide('cancel');
         });
     };
 
@@ -3348,7 +3359,7 @@ angular.module('igl').controller('AddMasterDatatypes',
                 $rootScope.msg().text = "datatypeAdded";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
-                $modalInstance.close(datatypes);
+                $mdDialog.hide(datatypes);
             }, function(error) {
                 $rootScope.saving = false;
                 $rootScope.msg().text = error.data.text;
@@ -3718,7 +3729,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalI
             $rootScope.msg().text = "igSharedSuccessfully";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
-            $modalInstance.close();
+            $mdDialog.hide();
         }, function(error) {
             $scope.error = error.data;
             console.log(error);
@@ -3803,7 +3814,7 @@ angular.module('igl').controller('UnShareIGDocumentCtrl', function($scope, $moda
             $rootScope.msg().text = "igUnSharedSuccessfully";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
-            $modalInstance.close();
+            $mdDialog.hide();
         }, function(error) {
 
             $rootScope.msg().text = error.data.text;
@@ -3839,7 +3850,7 @@ angular.module('igl').controller('createProfileComponentCtrl',
                 $rootScope.profileComponents.push(profileC);
                 $rootScope.profileComponentsMap[profileC.id] = profileC;
                 $scope.Activate(profileC.id);
-                $modalInstance.close(profileC);
+                $mdDialog.hide(profileC);
 
             });
 
@@ -3975,7 +3986,7 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
                     }
 
                     console.log($rootScope.igdocument);
-                    $modalInstance.close(cpStructure);
+                    $mdDialog.hide(cpStructure);
 
                 });
 
@@ -4100,7 +4111,7 @@ angular.module('igl').controller('createCompositeProfileCtrl',
                     }
                     $rootScope.compositeProfilesStructureMap[cpStructure.id] = cpStructure;
                     console.log($rootScope.igdocument);
-                    $modalInstance.close(cpStructure);
+                    $mdDialog.hide(cpStructure);
 
                 });
 
@@ -4145,7 +4156,7 @@ angular.module('igl').controller('CustomExportCtrl', function($scope, $modalInst
                 }
             }
         }
-        $modalInstance.close();
+        $mdDialog.hide();
     };
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
