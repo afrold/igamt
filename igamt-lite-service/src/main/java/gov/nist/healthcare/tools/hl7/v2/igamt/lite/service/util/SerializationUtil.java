@@ -9,10 +9,21 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.html.CSS;
+import javax.swing.text.html.StyleSheet;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
@@ -24,6 +35,8 @@ public class SerializationUtil {
 
   @Autowired
   private FileStorageService fileStorageService;
+
+  private static final Integer IMG_MAX_WIDTH = 100;
 
   public String str(String value) {
     return value != null ? value : "";
@@ -67,7 +80,21 @@ public class SerializationUtil {
             GridFSDBFile dbFile = fileStorageService.findOneByFilename(filename);
             if (dbFile != null) {
               imgis = dbFile.getInputStream();
-              bytes = IOUtils.toByteArray(imgis);
+              String style = elementImg.attr("style");
+              StyleSheet styleSheet = new StyleSheet();
+              AttributeSet dec = styleSheet.getDeclaration(style);
+              Object width = dec.getAttribute(CSS.Attribute.WIDTH);
+              double widthDouble = Double.parseDouble(width.toString().replace("px", ""));
+              Object height = dec.getAttribute(CSS.Attribute.HEIGHT);
+              double heightDouble =  Double.parseDouble(height.toString().replace("px", ""));
+              if(widthDouble>IMG_MAX_WIDTH){
+                heightDouble = (heightDouble*IMG_MAX_WIDTH)/widthDouble;
+                widthDouble = IMG_MAX_WIDTH;
+              }
+              bytes = this.scale(IOUtils.toByteArray(imgis),(int) widthDouble,(int)  heightDouble);
+              elementImg.removeAttr("style");
+              elementImg.attr("width","'"+(int)widthDouble+"px'");
+              elementImg.attr("height","'"+(int)heightDouble+"px'");
             }
           } else {
             String filename = elementImg.attr("src");
@@ -84,8 +111,8 @@ public class SerializationUtil {
         if (elementImg.attr("alt") == null || elementImg.attr("alt").isEmpty()){
           elementImg.attr("alt", ".");
       }
-      String imgStyle = elementImg.attr("style");
-      elementImg.attr("style", imgStyle.replace("px;", ";"));
+      //String imgStyle = elementImg.attr("style");
+      //elementImg.attr("style", "" + imgStyle);
 //    style="width: 300px;
       } catch (RuntimeException e) {
         e.printStackTrace(); // If error, we leave the original document
@@ -106,6 +133,42 @@ public class SerializationUtil {
     String html = doc.body().html();
     html = html.replace("<br>", "<br />");
     return "<div class=\"fr-view\">" + html + "</div>";
+  }
+
+  private byte[] scale(byte[] fileData, int width, int height) {
+    ByteArrayInputStream in = new ByteArrayInputStream(fileData);
+    try {
+      BufferedImage img = ImageIO.read(in);
+      if(height == 0) {
+        height = (width * img.getHeight())/ img.getWidth();
+      }
+      if(width == 0) {
+        width = (height * img.getWidth())/ img.getHeight();
+      }
+      Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+      BufferedImage imageBuff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+      imageBuff.getGraphics().drawImage(scaledImage, 0, 0, new Color(0,0,0), null);
+
+      ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+      ImageIO.write(imageBuff, "jpg", buffer);
+
+      return buffer.toByteArray();
+    } catch (IOException e) {
+      return fileData;
+    }
+  }
+
+  private BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight, boolean preserveAlpha) {
+    int imageType = preserveAlpha ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+    BufferedImage scaledBI = new BufferedImage(scaledWidth, scaledHeight, imageType);
+    Graphics2D g = scaledBI.createGraphics();
+    if (preserveAlpha) {
+      g.setComposite(AlphaComposite.Src);
+    }
+    g.drawImage(originalImage, 0, 0, scaledWidth, scaledHeight, null);
+    g.dispose();
+    return scaledBI;
   }
 
   public void setSectionsPrefixes(Set<Section> sections, String prefix, Integer depth,
