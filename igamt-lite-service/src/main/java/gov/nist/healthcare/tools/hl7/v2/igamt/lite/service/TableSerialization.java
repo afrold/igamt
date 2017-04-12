@@ -13,7 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
@@ -32,7 +32,7 @@ public interface TableSerialization {
 
 	String serializeTableLibraryToXML(Profile profile, DocumentMetaData metadata, Date dateUpdated);
 	
-	String serializeTableLibraryUsingMapToXML(Profile profile, DocumentMetaData metadata, HashMap<String, Table> tablesMap, Date dateUpdated);
+	String serializeTableLibraryUsingMapToXML(Profile profile, DocumentMetaData metadata, Map<String, Table> tablesMap, Date dateUpdated);
 
 	String serializeTableLibraryToXML(DatatypeLibrary datatypeLibrary);
 

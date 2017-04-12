@@ -40,6 +40,12 @@ angular.module('igl').factory('GVTSvc',
             return $http.post('api/igdocuments/' + id + '/export/gvt',mids,{headers:httpHeaders});
         };
 
+        svc.exportToGVTForCompositeProfile = function(id, cids, auth) {
+            var httpHeaders = {};
+            httpHeaders['gvt-auth'] = auth;
+            return $http.post('api/igdocuments/' + id + '/export/gvt/composite',cids,{headers:httpHeaders});
+        };
+
         return svc;
     }]);
 
