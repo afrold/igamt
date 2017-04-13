@@ -388,7 +388,14 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 		return results;
 	}
 
-	public List<ConformanceStatement> retrieveAllConformanceStatements(Map<String, Table> tablesMap) {
+	public List<ConformanceStatement> retrieveAllConformanceStatements() {
+		List<ConformanceStatement> results = this.conformanceStatements;
+		results.addAll(this.retrieveConformanceStatementsForSingleCode());
+		results.addAll(this.retrieveConformanceStatementsForConstant());
+		return results;
+	}
+	
+	public List<ConformanceStatement> retrieveAllConformanceStatementsForXML(Map<String, Table> tablesMap) {
 		List<ConformanceStatement> results = this.conformanceStatements;
 		results.addAll(this.retrieveConformanceStatementsForSingleCode());
 		results.addAll(this.retrieveConformanceStatementsForConstant());
