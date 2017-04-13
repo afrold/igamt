@@ -1458,13 +1458,14 @@ angular.module('igl')
     });
 
 
-angular.module('igl').controller('DatatypeRowCtrl', function($scope, $filter) {
+angular.module('igl').controller('FormRowCtrl', function($scope, $filter) {
         $scope.init = function(node) {
             $scope.node = node;
         }
 
         $scope.formName = "form_" + new Date().getTime();
     });
+
 
 angular.module('igl').controller('SelectDatatypeFlavorCtrl', function($scope, $filter, $modalInstance, $rootScope, $http, currentDatatype, DatatypeService, $rootScope, hl7Version, ngTreetableParams, ViewSettings, DatatypeLibrarySvc, $q, datatypeLibrary, TableService) {
         $scope.resultsError = null;

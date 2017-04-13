@@ -17,7 +17,7 @@
             <p>No Implementation Guide Selected.</p>
         </div>
     </div>
-    <div ng-show="isEditing" ng-controller="EditAreaCtrl" ng-init="init">
+    <div ng-show="isEditing">
         <div class="row">
             <div class="col-md-12" ng-show="igDocumentMsg !== null">
                 <div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">
@@ -40,10 +40,12 @@
                 </div>
              </div>
 
-            <div class="col-md-12">
-                <md-switch ng-model="filtering" aria-label="Switch 6" ng-change="displayTree(!filtering)" style="margin:0px !important;" class="md-primary col-md-4">
-                Filter <span ng-if="!filtering">OFF</span><span ng-if="filtering">ON</span>
+            <div class="col-md-12 ig-menu-bar">
+                <span>
+                <md-switch ng-model="filtering" aria-label="Switch 6" ng-change="displayTree(!filtering)" style="margin-bottom: 0px;margin-top: 3px !important;" class="md-primary col-md-4">
+                 <span  class="white-color" ng-if="!filtering">OFF</span><span ng-if="filtering">ON</span>
                 </md-switch>
+                </span>
                 <div class="col-md-8">
 
 
@@ -52,7 +54,7 @@
                         <md-menu>
 
                             <!--<md-button ng-click="$mdMenu.open()" type="button" md-colors="{background:'indigo'}">-->
-                                <button ng-click="$mdMenu.open()" type="button">
+                            <button ng-click="$mdMenu.open()" type="button" class="white-color">
 
                                 <i class="fa fa-download fa-fw"></i> Export
                             </button>
@@ -117,7 +119,7 @@
                         </md-menu>
 
                         <md-menu>
-                            <button ng-click="$mdMenu.open()" >
+                            <button ng-click="$mdMenu.open()" class="white-color">
                                 Filter
                             </button>
                             <md-menu-content>
@@ -137,26 +139,33 @@
                         <md-menu  ng-if="igdocument.accountId == getAccountID()">
                             <!--<md-menu class="pull-right" ng-if="igdocument.accountId == getAccountID()">-->
 
-                            <button ng-click="shareModal(igdocument)">
+                            <button ng-click="shareModal(igdocument)" class="white-color" >
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
                             </button>
+                            <md-menu-content>
+                            </md-menu-content>
 
                         </md-menu>
                         <md-menu>
-                            <!--<md-button title="Verify IG" type="button"-->
+                            <!--<md-button aria-label="Verify IG" type="button"-->
                             <!--ng-click="validateIg()" md-colors="{background:'green'}">-->
-                            <button title="Verify IG" type="button"
+                            <button aria-label="Verify IG" type="button" class="white-color"
                                     ng-click="validateIg()">
                                 <i class="fa fa-check" aria-hidden="true"></i> Verify
                             </button>
 
+                            <md-menu-content>
+                            </md-menu-content>
+
                         </md-menu>
                         <md-menu>
                             <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                <button ng-click="close()" md-colors="{background:'orange'}">
+                                <button ng-click="close()" class="white-color">
 
                                 <i class="fa fa-close fa-fw"></i> Close
                             </button>
+                            <md-menu-content>
+                            </md-menu-content>
                         </md-menu>
 
 
@@ -189,11 +198,11 @@
         </div>
         <div>
             <!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
-            <!--<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
+            <!--<button aria-label="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
             <!--<i class="fa fa-caret-right"></i>-->
             <!--</button>-->
             <!--</div>-->
-            <div layout="row">
+            <div layout="row" ng-controller="EditAreaCtrl" ng-init="init">
                     <!-- Default panel contents -->
 
 
@@ -204,7 +213,7 @@
                             <!--Filter <span ng-if="!filtering">OFF</span><span ng-if="filtering">ON</span>-->
                         <!--</md-switch>-->
                         <!--</span>-->
-                        <!--<button flex="10" title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default"-->
+                        <!--<button flex="10" aria-label="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default"-->
                                 <!--style="margin:0px" ng-click="hideToc = !hideToc"><i class="fa fa-caret-left"></i>-->
                         <!--</button>-->
                     <!--</div>-->
@@ -221,7 +230,7 @@
                             </div>
                         </form>
 
-            </div>
+                </div>
         </div>
         </div>
     </div>

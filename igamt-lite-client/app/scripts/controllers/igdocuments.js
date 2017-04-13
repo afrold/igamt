@@ -33,11 +33,11 @@ angular.module('igl')
     $scope.nodeReady = true;
     $scope.igDocumentTypes = [
         {
-            name: "Access My implementation guides",
+            name: "My Implementation Guides",
             type: 'USER'
         },
         {
-        name: "Browse Existing Preloaded Implementation Guides",
+        name: "Preloaded Implementation Guides",
         type: 'PRELOADED'
     },{
         name: "Shared Implementation Guides",
