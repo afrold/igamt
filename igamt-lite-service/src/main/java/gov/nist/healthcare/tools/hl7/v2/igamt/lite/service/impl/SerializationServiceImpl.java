@@ -16,6 +16,8 @@ import nu.xom.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.*;
 
 /**
@@ -61,7 +63,7 @@ import java.util.*;
 
     private List<DatatypeLink> bindedDatatypes;
 
-    private List<TableLink> bindedTables;
+    private List<String> bindedTables;
 
     private List<CompositeProfile> compositeProfiles;
 
@@ -86,7 +88,10 @@ import java.util.*;
         serializableStructure.addSerializableElement(serializableMetadata);
         SerializableSections serializableSections = new SerializableSections();
         this.bindedDatatypes = new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
-        this.bindedTables = new ArrayList<>(datatypeLibraryDocument.getTableLibrary().getChildren());
+        this.bindedTables = new ArrayList<>();
+        for(TableLink tableLink : datatypeLibraryDocument.getTableLibrary().getChildren()){
+          this.bindedTables.add(tableLink.getId());
+        }
         SerializableSection datatypeSection = this.serializeDatatypes(
             datatypeLibraryDocument.getDatatypeLibrary(), 1, true);
         //datatypeSection.setTitle("Data Types");
@@ -359,12 +364,15 @@ import java.util.*;
         Collections.sort(tableLinkList);
         CodeUsageConfig valueSetCodesUsageConfig = this.exportConfig.getCodesExport();
         if(bindedTables!= null && !bindedTables.isEmpty()) {
-            for (TableLink tableLink : bindedTables) {
-                SerializableTable serializableTable = serializeTableService
-                    .serializeTable(tableLink,
-                        prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
-                        tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig, exportConfig.getValueSetsMetadata());
-                valueSetsSection.addSection(serializableTable);
+            for (String tableId : bindedTables) {
+              TableLink tableLink = findTableLinkById(tableId, tableLinkList);
+              if(tableLink!=null){
+                  SerializableTable serializableTable = serializeTableService
+                        .serializeTable(tableLink,
+                            prefix + "." + String.valueOf(tableLinkList.indexOf(tableLink) + 1),
+                            tableLinkList.indexOf(tableLink), valueSetCodesUsageConfig, exportConfig.getValueSetsMetadata());
+                  valueSetsSection.addSection(serializableTable);
+              }
             }
         }
         if(unbindedTables != null && !unbindedTables.isEmpty()){
@@ -382,6 +390,15 @@ import java.util.*;
             }
         }
         return valueSetsSection;
+    }
+    
+    private TableLink findTableLinkById(String tableId, List<TableLink> tableLinkList){
+      for(TableLink tableLink : tableLinkList){
+        if(tableLink.getId().equals(tableId)){
+          return tableLink;
+        }
+      }
+      return null;
     }
 
     private SerializableSection serializeDatatypes(DatatypeLibrary datatypeLibrary, int sectionPosition, boolean serializeMaster) {
@@ -517,11 +534,13 @@ import java.util.*;
                         .diplayUsage(field.getUsage(), this.exportConfig.getDatatypesExport())) {
                         bindedDatatypes.add(field.getDatatype());
                     }
-                    for (TableLink tableLink : field.getTables()) {
-                        if (!bindedTables.contains(tableLink) && ExportUtil
-                            .diplayUsage(field.getUsage(), this.exportConfig.getValueSetsExport())) {
-                            bindedTables.add(tableLink);
+                    for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()){
+                      if(valueSetOrSingleCodeBinding instanceof ValueSetBinding){
+                        if(!bindedTables.contains(valueSetOrSingleCodeBinding.getTableId()) && ExportUtil.diplayUsage(valueSetOrSingleCodeBinding.getUsage(), this.exportConfig.getValueSetsExport())){
+                          bindedTables.add(valueSetOrSingleCodeBinding.getTableId());
+                          removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
                         }
+                      }
                     }
                 }
             }
@@ -530,17 +549,6 @@ import java.util.*;
                 identifyBindedItems(children, compositeProfile);
             }
         }
-    }
-
-    private TableLink findTableLink(String tableId) {
-        if(tableId!=null) {
-            for (TableLink tableLink : this.tableLibrary) {
-                if (tableLink.getId() != null && tableLink.getId().equals(tableId)) {
-                    return tableLink;
-                }
-            }
-        }
-        return null;
     }
 
     private void removeFromUnbindedTables(String tableId) {
@@ -614,10 +622,10 @@ import java.util.*;
         return null;
     }
 
-    private CompositeProfile getTableCompositeProfile(TableLink tableLink) {
+    private CompositeProfile getTableCompositeProfile(String tableId) {
         if(this.compositeProfiles!=null && !this.compositeProfiles.isEmpty()) {
             for (CompositeProfile compositeProfile : this.compositeProfiles) {
-                if (compositeProfile.getTablesMap().containsKey(tableLink.getId())) {
+                if (compositeProfile.getTablesMap().containsKey(tableId)) {
                     return compositeProfile;
                 }
             }

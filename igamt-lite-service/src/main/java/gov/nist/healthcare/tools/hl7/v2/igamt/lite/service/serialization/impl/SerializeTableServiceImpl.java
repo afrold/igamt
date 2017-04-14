@@ -41,33 +41,40 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     @Override public SerializableTable serializeTable(TableLink tableLink, String prefix,
         Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig) {
         if(tableLink!=null && tableLink.getId()!=null) {
-            Table table = tableService.findById(tableLink.getId());
-            String id = tableLink.getId();
-            String title = "ID not found: "+tableLink.getId();
-            String headerLevel = String.valueOf(3);
-            String defPreText,defPostText;
-            defPreText = defPostText = "";
-            SerializableTable serializedTable = null;
-            if(table!=null) {
-                id = table.getId();
-                title = table.getBindingIdentifier() + " - " + table.getDescription();
-                if (table.getDefPreText() != null && !table.getDefPreText().isEmpty()) {
-                    defPreText = serializationUtil.cleanRichtext(table.getDefPreText());
-                }
-                if (table.getDefPostText() != null && !table.getDefPostText().isEmpty()) {
-                    defPostText = serializationUtil.cleanRichtext(table.getDefPostText());
-                }
-                List<Code> toBeExportedCodes = new ArrayList<>();
-                for(Code code : table.getCodes()){
-                    if(ExportUtil.diplayCodeUsage(code.getCodeUsage(),valueSetCodesUsageConfig)){
-                        toBeExportedCodes.add(code);
-                    }
-                }
-                table.setCodes(toBeExportedCodes);
-                serializedTable = new SerializableTable(id,prefix,String.valueOf(position),headerLevel,title,table,tableLink.getBindingIdentifier(),defPreText,defPostText, valueSetMetadataConfig);
-            }
-            return serializedTable;
+          Table table = tableService.findById(tableLink.getId());
+          return this.serializeTable(tableLink, table, prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig);
         }
         return null;
+    }
+
+    @Override
+    public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix,
+        Integer position, CodeUsageConfig valueSetCodesUsageConfig,
+        ValueSetMetadataConfig valueSetMetadataConfig) {
+      String id = tableLink.getId();
+      String title = "ID not found: "+tableLink.getId();
+      String headerLevel = String.valueOf(3);
+      String defPreText,defPostText;
+      defPreText = defPostText = "";
+      SerializableTable serializedTable = null;
+      if(table!=null) {
+          id = table.getId();
+          title = table.getBindingIdentifier() + " - " + table.getDescription();
+          if (table.getDefPreText() != null && !table.getDefPreText().isEmpty()) {
+              defPreText = serializationUtil.cleanRichtext(table.getDefPreText());
+          }
+          if (table.getDefPostText() != null && !table.getDefPostText().isEmpty()) {
+              defPostText = serializationUtil.cleanRichtext(table.getDefPostText());
+          }
+          List<Code> toBeExportedCodes = new ArrayList<>();
+          for(Code code : table.getCodes()){
+              if(ExportUtil.diplayCodeUsage(code.getCodeUsage(),valueSetCodesUsageConfig)){
+                  toBeExportedCodes.add(code);
+              }
+          }
+          table.setCodes(toBeExportedCodes);
+          serializedTable = new SerializableTable(id,prefix,String.valueOf(position),headerLevel,title,table,tableLink.getBindingIdentifier(),defPreText,defPostText, valueSetMetadataConfig);
+      }
+      return serializedTable;
     }
 }
