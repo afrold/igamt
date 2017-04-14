@@ -66,6 +66,18 @@
                 </xsl:attribute>
                 <xsl:value-of select="@OrgName"></xsl:value-of>
             </xsl:element>
+            <xsl:element name="p">
+            	<xsl:text>Generated with </xsl:text>
+            	<xsl:element name="a">
+            		<xsl:attribute name="href">
+            			<xsl:text>https://hl7v2.igamt.nist.gov</xsl:text>
+           			</xsl:attribute>
+           			<xsl:attribute name="target">
+           				<xsl:text>_blank</xsl:text>
+           			</xsl:attribute>
+           			<xsl:text>IGAMT</xsl:text>
+        		</xsl:element>
+            </xsl:element>
         </xsl:element>
     </xsl:template>
 </xsl:stylesheet>
