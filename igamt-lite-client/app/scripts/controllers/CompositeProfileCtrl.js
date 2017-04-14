@@ -1,10 +1,11 @@
-angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http, $modal, CompositeProfileService, TableService, DatatypeService) {
+angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $rootScope, $http, $modal, CompositeProfileService, TableService, DatatypeService, $mdDialog) {
 
     $scope.accordStatus = {
         isCustomHeaderOpen: false,
         isFirstOpen: false,
         isSecondOpen: true,
         isThirdOpen: false,
+        isFourthOpen: false,
 
     };
     $scope.redirectVS = function(binding) {
@@ -165,6 +166,50 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
 
         });
 
+    };
+    $scope.seeConfSt = function(node, context) {
+        $mdDialog.show({
+            templateUrl: 'GlobalConformanceStatementCtrlInPc.html',
+            parent: angular.element(document).find('body'),
+            controller: 'SeeConfStDlgCtl',
+            clickOutsideToClose: true,
+            locals: {
+                node: node,
+                context: context
+            }
+
+        }).then(function() {
+
+        });
+    };
+    $scope.findingConfSt = function(node) {
+        if (node.type === "group") {
+            if (node.conformanceStatements && node.conformanceStatements.length > 0) {
+                return node.conformanceStatements;
+            }
+        } else if (node.type === "segmentRef") {
+            if ($rootScope.compositeProfile.segmentsMap[node.ref.id].conformanceStatements && $rootScope.compositeProfile.segmentsMap[node.ref.id].conformanceStatements.length > 0) {
+                return $rootScope.compositeProfile.segmentsMap[node.ref.id].conformanceStatements;
+            }
+        }
+
+    }
+    $scope.findingConfStInMsg = function(profile) {
+        var results = [];
+        if (profile.conformanceStatements && profile.conformanceStatements.length > 0) {
+            results.push(profile);
+        }
+        for (i in profile.children) {
+
+            if (profile.children[i].type === 'group') {
+                results.push.apply($scope.findingConfStInMsg(profile.children[i]));
+            } else {
+                if (profile.children[i].conformanceStatements && profile.children[i].conformanceStatements.length > 0) {
+                    results.push(profile.children[i].conformanceStatements);
+                }
+            }
+        }
+        return results;
     };
     $scope.isAvailableConstantValue = function(node) {
         if (node.type === "field" || node.type === "component") {
@@ -414,14 +459,18 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         if (node && $rootScope.compositeProfile) {
             result = _.find($scope.groupsPredicates, function(p) {
                 if (p.context && p.context.type === "group") {
-
                     //var tempath = node.path.replace(p.context.path + '.', '');
-                    return (p.context.path + '.' + $rootScope.refinePath(p.constraintTarget)) == $rootScope.refinePath(node.path);
+                    if (node.type === 'group' && p.context.path === $rootScope.refinePath(p.constraintTarget) && parseInt($rootScope.refinePath(p.constraintTarget)) === node.position) {
+                        return true;
+                    } else {
+                        return (p.context.path + '.' + $rootScope.refinePath(p.constraintTarget)) == $rootScope.refinePath(node.path);
+
+                    }
                 }
 
             });
             if (result) {
-               
+
                 result.from = 'message';
                 return result;
             }
@@ -503,5 +552,23 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
 
         return result;
     }
+
+});
+
+angular.module('igl').controller('SeeConfStDlgCtl', function($scope, $rootScope, $mdDialog, node, context) {
+    if (node.type === "group") {
+        $scope.selectedContextNode = node;
+
+    } else if (node.type === "segmentRef") {
+            $scope.selectedContextNode = $rootScope.compositeProfile.segmentsMap[node.ref.id];
+
+    }
+    $scope.seeOrEdit = context;
+
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
 
 });
