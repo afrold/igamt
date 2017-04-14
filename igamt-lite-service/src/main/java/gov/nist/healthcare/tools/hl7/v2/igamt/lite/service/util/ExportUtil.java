@@ -9,19 +9,24 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
+import org.docx4j.dml.CTPositiveSize2D;
+import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.fields.FieldUpdater;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.wml.HpsMeasure;
-import org.docx4j.wml.ObjectFactory;
-import org.docx4j.wml.RPr;
+import org.docx4j.openpackaging.parts.Part;
+import org.docx4j.openpackaging.parts.PartName;
+import org.docx4j.openpackaging.parts.WordprocessingML.ImageJpegPart;
+import org.docx4j.wml.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.tidy.Tidy;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -32,7 +37,9 @@ import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -58,6 +65,8 @@ import java.util.UUID;
 
     @Autowired private DocxExportUtil docxExportUtil;
 
+    private static final int MAX_IMAGE_WIDTH_EMU = 6000000;
+
     public InputStream exportAsDocxFromXml(String xmlString, String xmlPath,
         ExportParameters exportParameters, MetaData metaData, Date dateUpdated) {
 
@@ -69,16 +78,6 @@ import java.util.UUID;
             WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage
                 .load(this.getClass().getResourceAsStream("/rendering/lri_template.dotx"));
             ObjectFactory factory = Context.getWmlObjectFactory();
-            RPr runProperties = factory.createRPr();
-            HpsMeasure size = new HpsMeasure();
-            if (exportParameters.getExportFontConfig() != null) {
-                BigInteger fontSize =
-                    BigInteger.valueOf(exportParameters.getExportFontConfig().getFontSize());
-                size.setVal(fontSize);
-                runProperties.setSz(size);
-                runProperties.setSzCs(size);
-            }
-            wordMLPackage.getMainDocumentPart().addObject(runProperties);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             String formattedDateUpdated = simpleDateFormat.format(dateUpdated);
             docxExportUtil
@@ -112,7 +111,31 @@ import java.util.UUID;
             XHTMLImporterImpl xHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
             wordMLPackage.getMainDocumentPart().getContent()
                 .addAll(xHTMLImporter.convert(html, null));
-
+        	List<Object> nodes = getAllElementFromObject(wordMLPackage.getMainDocumentPart(), org.docx4j.wml.Tbl.class);
+        	BooleanDefaultTrue bdt = Context.getWmlObjectFactory().createBooleanDefaultTrue();
+        	for(Object node : nodes){
+        		if(node instanceof Tbl){
+        			Tbl tbl = (Tbl) node;
+        			if(tbl.getContent().get(0) instanceof Tr){
+        				Tr tr  = (Tr) tbl.getContent().get(0);
+        				tr.getTrPr().getCnfStyleOrDivIdOrGridBefore().add(Context.getWmlObjectFactory().createCTTrPrBaseTblHeader(bdt));
+        			}
+        		}
+        	}
+            nodes = getAllElementFromObject(wordMLPackage.getMainDocumentPart(), org.docx4j.wml.Drawing.class);
+            for(Object node : nodes){
+                if(node instanceof Drawing) {
+                    Drawing drawing = (Drawing) node;
+                    CTPositiveSize2D currentSize = ((Inline) drawing.getAnchorOrInline().get(0)).getExtent();
+                    if(currentSize.getCx()>MAX_IMAGE_WIDTH_EMU) {
+                        CTPositiveSize2D size = new CTPositiveSize2D();
+                        size.setCy(currentSize.getCy() * MAX_IMAGE_WIDTH_EMU / currentSize.getCx());
+                        size.setCx(MAX_IMAGE_WIDTH_EMU);
+                        ((Inline) drawing.getAnchorOrInline().get(0)).setExtent(size);
+                    }
+                }
+            }
+		
             docxExportUtil.loadTemplateForDocx4j(
                 wordMLPackage); // Repeats the lines above but necessary; don't delete
 
@@ -134,6 +157,21 @@ import java.util.UUID;
             e.printStackTrace();
             return new NullInputStream(1L);
         }
+    }
+    
+    public static List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
+        List<Object> result = new ArrayList<Object>();
+        if (obj instanceof JAXBElement) obj = ((JAXBElement<?>) obj).getValue();
+
+        if (obj.getClass().equals(toSearch))
+            result.add(obj);
+        else if (obj instanceof ContentAccessor) {
+            List<?> children = ((ContentAccessor) obj).getContent();
+            for (Object child : children) {
+                result.addAll(getAllElementFromObject(child, toSearch));
+            }
+        }
+        return result;
     }
 
     public InputStream exportAsHtmlFromXsl(String xmlString, String xslPath,
@@ -200,7 +238,9 @@ import java.util.UUID;
         transformer = factoryTf.newTransformer(xslt);
         //Set the parameters
         for (Map.Entry<String, String> param : exportParameters.toMap().entrySet()) {
+          if(param!=null && param.getKey() != null && param.getValue() != null){  
             transformer.setParameter(param.getKey(), param.getValue());
+          }
         }
         transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
         return tmpHtmlFile;

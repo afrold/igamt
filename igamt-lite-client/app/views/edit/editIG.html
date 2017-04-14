@@ -47,9 +47,6 @@
                 </md-switch>
                 </span>
                 <div class="col-md-8">
-
-
-
                     <md-menu-bar class="pull-right">
                         <md-menu>
 
@@ -61,7 +58,23 @@
 
 
                             <md-menu-content>
-
+                                <md-menu-item>
+                                    <md-menu>
+                                        <md-button ng-click="$mdMenu.open()">As XML</md-button>
+                                        <md-menu-content>
+                                            <md-menu-item>
+                                                <md-button  ng-click="selectMessagesForExport(igdocument)">
+                                                    Conformance Profile
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item>
+                                                <md-button ng-click="selectCompositeProfilesForExport(igdocument)" >
+                                                    Composite Profile
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </md-menu-item>
                                 <md-menu-item>
                                     <md-menu>
                                         <md-button ng-click="$mdMenu.open()">As HTML</md-button>
@@ -85,8 +98,6 @@
                                         </md-menu-content>
                                     </md-menu>
                                 </md-menu-item>
-
-
                                 <md-menu-item>
                                     <md-menu>
                                         <md-button ng-click="$mdMenu.open()">As Word</md-button>
@@ -111,10 +122,6 @@
                                         </md-menu-content>
                                     </md-menu>
                                 </md-menu-item>
-                                <md-menu-item>
-                                        <md-button ng-click="selectMessagesForExport(igdocument)"> XML</md-button>
-                                </md-menu-item>
-
                             </md-menu-content>
                         </md-menu>
 

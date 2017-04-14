@@ -27,9 +27,10 @@ public interface IGDocumentExportService {
 
   InputStream exportAsPdf(IGDocument d) throws IOException;
 
-  InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids)
-      throws IOException, CloneNotSupportedException;
+  InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
 
+  InputStream exportAsValidationForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException;
+  
   InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids) throws IOException,
       CloneNotSupportedException;
 

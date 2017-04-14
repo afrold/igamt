@@ -112,7 +112,9 @@
     <xsl:variable name="columnDisplay.valueSet.codeSystem" select="$valueSetColumnCodeSystem"/>
     <xsl:param name="valueSetColumnDescription" select="'true'"/>
     <xsl:variable name="columnDisplay.valueSet.description" select="$valueSetColumnDescription"/>
-
+    <xsl:param name="valueSetColumnComment" select="'true'"/>
+    <xsl:variable name="columnDisplay.valueSet.comment" select="$valueSetColumnComment"/>
+    
 <!--     <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/loose.dtd"
    doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" />
  -->

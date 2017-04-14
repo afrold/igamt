@@ -59,9 +59,6 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
                                 </md-tab-label>
                                 <md-tab-body>
-
-
-
                                     <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                                         <md-content layout-padding>
                                             <md-input-container class="md-block" flex-gt-sm>
@@ -324,28 +321,28 @@
                                                         <table class="table table-striped table-bordered">
                                                             <thead>
                                                                 <tr ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" class="tbl-header">
-                                                                    <th ng-show="!segment.coConstraintsTable.ifColumnDefinition" bgcolor="#4caf50" style="text-align:center;">
+                                                                    <th ng-show="!segment.coConstraintsTable.ifColumnDefinition" bgcolor="#1565c0" style="text-align:center;">
                                                                         <span style="color:black" ng-click="openDialogForEditCoConstraintIFDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add IF Column</span>
                                                                     </th>
-                                                                    <th ng-show="segment.coConstraintsTable.ifColumnDefinition" bgcolor="white" style="text-align:center;border:0;">
+                                                                    <th ng-show="segment.coConstraintsTable.ifColumnDefinition" bgcolor="#1565c0" style="text-align:center;border:0;">
                                                                     </th>
-                                                                    <th ng-show="!segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length == 0" bgcolor="#1565c0" style="text-align:center;">
-                                                                        <span style="color:white" ng-click="openDialogForEditCoConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add THEN Column</span>
+                                                                    <th ng-show="!segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length == 0" bgcolor="#efefef" style="text-align:center;">
+                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add THEN Column</span>
                                                                     </th>
-                                                                    <th ng-show="segment.coConstraintsTable.thenColumnDefinitionList && segment.coConstraintsTable.thenColumnDefinitionList.length > 0" colspan="{{segment.coConstraintsTable.thenColumnDefinitionList.length}}" bgcolor="#1565c0" style="text-align:center;">
-                                                                        <span style="color:white" ng-click="openDialogForEditCoConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add THEN Column</span>
+                                                                    <th ng-show="segment.coConstraintsTable.thenColumnDefinitionList && segment.coConstraintsTable.thenColumnDefinitionList.length > 0" colspan="{{segment.coConstraintsTable.thenColumnDefinitionList.length}}" bgcolor="#efefef" style="text-align:center;">
+                                                                        <span style="color:black" ng-click="openDialogForEditCoConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add THEN Column</span>
                                                                     </th>
-                                                                    <th ng-show="!segment.coConstraintsTable.userColumnDefinitionList || segment.coConstraintsTable.userColumnDefinitionList.length == 0" bgcolor="#efefef" style="text-align:center;">
+                                                                    <th ng-show="!segment.coConstraintsTable.userColumnDefinitionList || segment.coConstraintsTable.userColumnDefinitionList.length == 0" bgcolor="#4caf50" style="text-align:center;">
                                                                         <span style="color:black" ng-click="openDialogForEditCoConstraintUSERDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add USER Column</span>
                                                                     </th>
-                                                                    <th ng-show="segment.coConstraintsTable.userColumnDefinitionList && segment.coConstraintsTable.userColumnDefinitionList.length > 0" colspan="{{segment.coConstraintsTable.userColumnDefinitionList.length}}" bgcolor="#efefef" style="text-align:center;">
+                                                                    <th ng-show="segment.coConstraintsTable.userColumnDefinitionList && segment.coConstraintsTable.userColumnDefinitionList.length > 0" colspan="{{segment.coConstraintsTable.userColumnDefinitionList.length}}" bgcolor="#4caf50" style="text-align:center;">
                                                                         <span style="color:black" ng-click="openDialogForEditCoConstraintUSERDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add USER Column<</span>
                                                                     </th>
                                                                     <th bgcolor="white" style="text-align:center;border:0;">
                                                                     </th>
                                                                 </tr>
                                                                 <tr class="tbl-header">
-                                                                    <th bgcolor="#4caf50" style="text-align:center;" ng-show="segment.coConstraintsTable.ifColumnDefinition">
+                                                                    <th bgcolor="#1565c0" style="text-align:center;" ng-show="segment.coConstraintsTable.ifColumnDefinition">
                                                                         <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='field'" class="label label-field label-icon">F</span>
                                                                         <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='component'" class="label label-component label-icon">C</span>
                                                                         <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
@@ -355,10 +352,10 @@
                                                                         <span style="color:black" ng-click="openDialogForEditCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-pencil" aria-hidden="true"></i></span>
                                                                         <span style="color:red" ng-click="delCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-times" aria-hidden="true"></i></span>
                                                                     </th>
-                                                                    <th ng-show="!segment.coConstraintsTable.ifColumnDefinition" bgcolor="#4caf50" style="text-align:center;">
-                                                                        Need IF Column Definition
+                                                                    <th bgcolor="#1565c0" ng-show="!segment.coConstraintsTable.ifColumnDefinition" style="text-align:center;">
+                                                                        <span style="color:black">Need IF Column Definition</span>
                                                                     </th>
-                                                                    <th bgcolor="#1565c0" style="text-align:center;" ng-repeat="columnDefinition in segment.coConstraintsTable.thenColumnDefinitionList">
+                                                                    <th bgcolor="#efefef" style="text-align:center;" ng-repeat="columnDefinition in segment.coConstraintsTable.thenColumnDefinitionList">
                                                                         <span ng-show="columnDefinition.type=='field'" class="label label-field label-icon">F</span>
                                                                         <span ng-show="columnDefinition.type=='component'" class="label label-component label-icon">C</span>
                                                                         <span ng-show="columnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
@@ -368,16 +365,16 @@
                                                                         <span style="color:black" ng-click="openDialogForEditCoConstraintTHENDefinition(columnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-pencil" aria-hidden="true"></i></span>
                                                                         <span style="color:red" ng-click="delCoConstraintTHENDefinition(columnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-times" aria-hidden="true"></i></span>
                                                                     </th>
-                                                                    <th bgcolor="#1565c0" ng-show="!segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length == 0" style="text-align:center;">
-                                                                        Need THEN Column Definition
+                                                                    <th bgcolor="#efefef" ng-show="!segment.coConstraintsTable.thenColumnDefinitionList || segment.coConstraintsTable.thenColumnDefinitionList.length == 0" style="text-align:center;">
+                                                                        <span style="color:black">Need THEN Column Definition</span>
                                                                     </th>
-                                                                    <th bgcolor="#efefef" style="text-align:center;" ng-repeat="columnDefinition in segment.coConstraintsTable.userColumnDefinitionList">
+                                                                    <th bgcolor="#4caf50" style="text-align:center;" ng-repeat="columnDefinition in segment.coConstraintsTable.userColumnDefinitionList">
                                                                         <span style="color:black">{{columnDefinition.title}}</span>
                                                                         <span style="color:black" ng-click="openDialogForEditCoConstraintUSERDefinition(columnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-pencil" aria-hidden="true"></i></span>
                                                                         <span style="color:red" ng-click="delCoConstraintUSERDefinition(columnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-times" aria-hidden="true"></i></span>
                                                                     </th>
-                                                                    <th bgcolor="#efefef" ng-show="!segment.coConstraintsTable.userColumnDefinitionList || segment.coConstraintsTable.userColumnDefinitionList.length == 0" style="text-align:center;color:black;">
-                                                                        Need USER Column Definition
+                                                                    <th bgcolor="#4caf50" ng-show="!segment.coConstraintsTable.userColumnDefinitionList || segment.coConstraintsTable.userColumnDefinitionList.length == 0" style="text-align:center;color:black;">
+                                                                        <span style="color:black">Need USER Column Definition</span>
                                                                     </th>
                                                                     <th bgcolor="#add8e6" style="text-align:center;">
                                                                     </th>

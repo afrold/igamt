@@ -3,8 +3,11 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintColumnDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
@@ -99,13 +102,13 @@ import java.util.Map;
                     defPostText = serializationUtil.cleanRichtext(segment.getText2());
                 }
             }
-            List<ConformanceStatement> generatedConformanceStatements = segment.retrieveAllConformanceStatements(compositeProfileTables);
+            List<ConformanceStatement> generatedConformanceStatements = segment.retrieveAllConformanceStatements();
             segment.setConformanceStatements(generatedConformanceStatements);
             List<SerializableConstraint> constraints =
                 serializeConstraintService.serializeConstraints(segment, segment.getName() + "-");
             Map<Field, Datatype> fieldDatatypeMap = new HashMap<>();
             Map<Field, List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap = new HashMap<>();
-            Map<CCValue, Table> coConstraintValueTableMap = new HashMap<>();
+            Map<String, Table> coConstraintValueTableMap = new HashMap<>();
             List<Table> tables = new ArrayList<>();
             for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()){
                 if(valueSetOrSingleCodeBinding.getTableId()!=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
@@ -153,28 +156,26 @@ import java.util.Map;
             for(Field field : fieldsToBeRemoved){
                 segment.getFields().remove(field);
             }
-            if (segment.getCoConstraints() != null) {
-                CoConstraints coConstraints = segment.getCoConstraints();
-                if (coConstraints.getConstraints() != null && !coConstraints.getConstraints()
-                    .isEmpty()) {
-                    for (CoConstraint coConstraint : coConstraints.getConstraints()) {
-                        if (coConstraint.getValues() != null && !coConstraint.getValues()
-                            .isEmpty()) {
-                            for (CCValue ccValue : coConstraint.getValues()) {
-                                Table table = null;
-                                if(compositeProfileTables!=null && !compositeProfileTables.isEmpty()){
-                                    table = compositeProfileTables.get(ccValue.getValue());
-                                }
-                                if(table == null) {
-                                    table = tableService.findById(ccValue.getValue());
-                                }
-                                if (table != null) {
-                                    coConstraintValueTableMap.put(ccValue, table);
-                                }
-                            }
-                        }
+            if (segment.getCoConstraintsTable() != null && segment.getCoConstraintsTable().getRowSize() > 0) {
+              for(int i=0;i<segment.getCoConstraintsTable().getRowSize();i++){
+                for(CoConstraintColumnDefinition coConstraintColumnDefinition : segment.getCoConstraintsTable().getThenColumnDefinitionList()){
+                  CoConstraintTHENColumnData coConstraintTHENColumnData = segment.getCoConstraintsTable().getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);
+                  if(!coConstraintTHENColumnData.getValueSets().isEmpty()){
+                    for(ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()){
+                      Table table = null;
+                      if(compositeProfileTables!=null && !compositeProfileTables.isEmpty()){
+                          table = compositeProfileTables.get(valueSetData.getTableId());
+                      }
+                      if(table == null) {
+                          table = tableService.findById(valueSetData.getTableId());
+                      }
+                      if (table != null) {
+                          coConstraintValueTableMap.put(valueSetData.getTableId(), table);
+                      }
                     }
+                  }
                 }
+              }
             }
             Boolean showConfLength = serializationUtil.isShowConfLength(segment.getHl7Version());
             SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables, coConstraintValueTableMap,showConfLength);

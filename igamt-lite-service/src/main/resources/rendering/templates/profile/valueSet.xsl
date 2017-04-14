@@ -74,10 +74,15 @@
             </xsl:element>
             <xsl:element name="col">
                 <xsl:attribute name="width">
-                    <xsl:text>60%</xsl:text>
+                    <xsl:text>40%</xsl:text>
                 </xsl:attribute>
             </xsl:element>
-            <xsl:element name="thead">
+            <xsl:element name="col">
+                <xsl:attribute name="width">
+                    <xsl:text>20%</xsl:text>
+                </xsl:attribute>
+            </xsl:element>    
+            <xsl:element name="thead">     
                 <xsl:attribute name="class">
                     <xsl:text>contentThead</xsl:text>
                 </xsl:attribute>
@@ -100,6 +105,11 @@
                     <xsl:if test="$columnDisplay.valueSet.description = 'true'">
                         <xsl:element name="th">
                             <xsl:text>Description</xsl:text>
+                        </xsl:element>
+                    </xsl:if>
+                    <xsl:if test="$columnDisplay.valueSet.comment = 'true'">
+                        <xsl:element name="th">
+                            <xsl:text>Comment</xsl:text>
                         </xsl:element>
                     </xsl:if>
                 </xsl:element>

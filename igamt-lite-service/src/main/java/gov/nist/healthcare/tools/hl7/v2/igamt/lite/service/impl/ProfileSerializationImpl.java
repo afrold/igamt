@@ -39,6 +39,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,8 @@ import org.xml.sax.SAXException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -60,6 +63,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
@@ -86,6 +90,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ConstraintsSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
@@ -114,6 +119,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	@Autowired
 	private TableSerialization tableSerializationService;
+	
+	@Autowired
+	private CompositeProfileService compositeProfileService;
 
 	@Autowired
 	private ConstraintsSerialization constraintsSerializationService;
@@ -316,9 +324,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	private nu.xom.Document serializeProfileToDoc(Profile profile, DocumentMetaData metadata, Date dateUpdated,
-			HashMap<String, Segment> segmentsMap, 
-			HashMap<String, Datatype> datatypesMap,
-			HashMap<String, Table> tablesMap) {
+			Map<String, Segment> segmentsMap, 
+			Map<String, Datatype> datatypesMap,
+			Map<String, Table> tablesMap) {
 		
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
 		this.serializeProfileMetaData(e, profile, metadata);
@@ -564,7 +572,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return segmentsMap;
 	}
 
-	private nu.xom.Element serializeMessage(Message m, HashMap<String, Segment> segmentsMap) {
+	private nu.xom.Element serializeMessage(Message m, Map<String, Segment> segmentsMap) {
 		nu.xom.Element elmMessage = new nu.xom.Element("Message");
 		elmMessage.addAttribute(new Attribute("ID", m.getId()));
 		if (m.getIdentifier() != null && !m.getIdentifier().equals(""))
@@ -624,7 +632,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return elmMessage;
 	}
 
-	private nu.xom.Element serializeGroup(Group group, HashMap<String, Segment> segmentsMap) {
+	private nu.xom.Element serializeGroup(Group group, Map<String, Segment> segmentsMap) {
 		nu.xom.Element elmGroup = new nu.xom.Element("Group");
 		elmGroup.addAttribute(new Attribute("ID", serializationUtil.str(group.getName())));
 		elmGroup.addAttribute(new Attribute("Name", serializationUtil.str(group.getName())));
@@ -785,7 +793,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return elmGroup;
 	}
 
-	private nu.xom.Element serializeSegmentRef(SegmentRef segmentRef, HashMap<String, Segment> segmentsMap) {
+	private nu.xom.Element serializeSegmentRef(SegmentRef segmentRef, Map<String, Segment> segmentsMap) {
 		Segment s = segmentsMap.get(segmentRef.getRef().getId());
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		elmSegment.addAttribute(new Attribute("Ref",
@@ -1539,7 +1547,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return null;
 	}
 
-	private nu.xom.Element serializeSegment(Segment s, HashMap<String, Table> tablesMap, HashMap<String, Datatype> datatypesMap) {
+	private nu.xom.Element serializeSegment(Segment s, Map<String, Table> tablesMap, Map<String, Datatype> datatypesMap) {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		elmSegment.addAttribute(new Attribute("ID", s.getLabel() + "_" + s.getHl7Version().replaceAll("\\.", "-")));
 		elmSegment.addAttribute(new Attribute("Name", serializationUtil.str(s.getName())));
@@ -1732,7 +1740,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return result;
 	}
 
-	private nu.xom.Element serializeDatatypeForValidation(Datatype d, HashMap<String, Table> tablesMap, HashMap<String, Datatype> datatypesMap) {
+	private nu.xom.Element serializeDatatypeForValidation(Datatype d, Map<String, Table> tablesMap, Map<String, Datatype> datatypesMap) {
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
 		elmDatatype.addAttribute(new Attribute("ID",serializationUtil.str(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"))));
 		elmDatatype.addAttribute(new Attribute("Name", serializationUtil.str(d.getName())));
@@ -2151,9 +2159,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	private InputStream serializeProfileToZip(Profile profile, DocumentMetaData metadata, java.util.Date dateUpdated,
-			HashMap<String, Segment> segmentsMap, 
-			HashMap<String, Datatype> datatypesMap,
-			HashMap<String, Table> tablesMap) throws IOException, CloneNotSupportedException {
+			Map<String, Segment> segmentsMap, 
+			Map<String, Datatype> datatypesMap,
+			Map<String, Table> tablesMap) throws IOException, CloneNotSupportedException {
 		
 		
 		this.normalizeProfile(profile, segmentsMap, datatypesMap);
@@ -2202,9 +2210,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return new ByteArrayInputStream(bytes);
 	}
 
-	private void normalizeProfile(Profile profile, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap) throws CloneNotSupportedException {
-		HashMap<String, Datatype> toBeAddedDTs = new HashMap<String, Datatype>();
-		HashMap<String, Segment> toBeAddedSegs = new HashMap<String, Segment>();
+	private void normalizeProfile(Profile profile, Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap) throws CloneNotSupportedException {
+		Map<String, Datatype> toBeAddedDTs = new HashMap<String, Datatype>();
+		Map<String, Segment> toBeAddedSegs = new HashMap<String, Segment>();
 		
 		for(String key:datatypesMap.keySet()){
 			Datatype d = datatypesMap.get(key);
@@ -2302,7 +2310,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return resutls;
 	}
 
-	private void visitGroupOrSegmentRef(List<String> pathList, SegmentRefOrGroup srog, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap, List<ValueSetBinding> valueSetBindings, HashMap<String, Datatype> toBeAddedDTs, HashMap<String, Segment> toBeAddedSegs) throws CloneNotSupportedException {
+	private void visitGroupOrSegmentRef(List<String> pathList, SegmentRefOrGroup srog, Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap, List<ValueSetBinding> valueSetBindings, Map<String, Datatype> toBeAddedDTs, Map<String, Segment> toBeAddedSegs) throws CloneNotSupportedException {
 		if(srog instanceof Group){
 			Group g = (Group)srog;
 			SegmentRefOrGroup child = g.findChildByPosition(Integer.parseInt(pathList.remove(0)));
@@ -2367,7 +2375,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return toBeDeleted;
 	}
 
-	private void visitDatatype(List<String> pathList, Datatype datatype, HashMap<String, Datatype> datatypesMap, List<ValueSetBinding> valueSetBindings, HashMap<String, Datatype> toBeAddedDTs) throws CloneNotSupportedException {
+	private void visitDatatype(List<String> pathList, Datatype datatype, Map<String, Datatype> datatypesMap, List<ValueSetBinding> valueSetBindings, Map<String, Datatype> toBeAddedDTs) throws CloneNotSupportedException {
 		if(pathList.size() == 1){
 			List<ValueSetBinding> newValueSetBindings = new ArrayList<ValueSetBinding>();
 			for(ValueSetBinding binding:valueSetBindings){
@@ -2633,6 +2641,91 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		return this.serializeProfileGazelleToZip(filteredProfile);
 	}
+	
+	
+	//TODO
+	@Override
+	public InputStream serializeCompositeProfileToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException {
+		Map<String, Segment> segmentsMap = new HashMap<String, Segment>();
+		Map<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
+		Map<String, Table> tablesMap = new HashMap<String, Table>();
+		
+		for(SegmentLink sl: doc.getProfile().getSegmentLibrary().getChildren()){
+			if (sl != null) {
+				Segment s = segmentService.findById(sl.getId());
+				if (s != null) {
+					segmentsMap.put(s.getId(), s);
+				}
+			}
+		}
+		
+		for(DatatypeLink dl: doc.getProfile().getDatatypeLibrary().getChildren()){
+			if (dl != null) {
+				Datatype d = datatypeService.findById(dl.getId());
+				if (d != null) {
+					datatypesMap.put(d.getId(), d);
+				}
+			}
+		}
+		
+		for (TableLink tl : doc.getProfile().getTableLibrary().getChildren()) {
+			if (tl != null) {
+				Table t = tableService.findById(tl.getId());
+				if (t != null) {
+					tablesMap.put(t.getId(), t);
+				}
+			}
+		}
+		
+		
+		
+		Profile filteredProfile = new Profile();
+		filteredProfile.setBaseId(doc.getProfile().getBaseId());
+		filteredProfile.setChanges(doc.getProfile().getChanges());
+		filteredProfile.setComment(doc.getProfile().getComment());
+		filteredProfile.setConstraintId(doc.getProfile().getConstraintId());
+		filteredProfile.setScope(doc.getProfile().getScope());
+		filteredProfile.setSectionContents(doc.getProfile().getSectionContents());
+		filteredProfile.setSectionDescription(doc.getProfile().getSectionDescription());
+		filteredProfile.setSectionPosition(doc.getProfile().getSectionPosition());
+		filteredProfile.setSectionTitle(doc.getProfile().getSectionTitle());
+		filteredProfile.setSourceId(doc.getProfile().getSourceId());
+		filteredProfile.setType(doc.getProfile().getType());
+		filteredProfile.setUsageNote(doc.getProfile().getUsageNote());
+		filteredProfile.setMetaData(doc.getProfile().getMetaData());
+		
+		Messages messages = new Messages();
+		for(CompositeProfileStructure cps:doc.getProfile().getCompositeProfiles().getChildren()){
+			if (Arrays.asList(ids).contains(cps.getId())){
+				CompositeProfile cp = compositeProfileService.buildCompositeProfile(cps);
+				segmentsMap.putAll(cp.getSegmentsMap());
+				datatypesMap.putAll(cp.getDatatypesMap());
+				messages.addMessage(cp.convertMessage());
+			}
+		}
+	
+		SegmentLibrary segments = new SegmentLibrary();
+		for (String key : segmentsMap.keySet()) {
+			segments.addSegment(segmentsMap.get(key));
+		}
+
+		DatatypeLibrary datatypes = new DatatypeLibrary();
+		for (String key : datatypesMap.keySet()) {
+			datatypes.addDatatype(datatypesMap.get(key));
+		}
+
+		TableLibrary tables = new TableLibrary();
+		for (String key : tablesMap.keySet()) {
+			tables.addTable(tablesMap.get(key));
+		}
+
+		filteredProfile.setDatatypeLibrary(datatypes);
+		filteredProfile.setSegmentLibrary(segments);
+		filteredProfile.setMessages(messages);
+		filteredProfile.setTableLibrary(tables);
+
+		return this.serializeProfileToZip(filteredProfile, doc.getMetaData(), doc.getDateUpdated(), segmentsMap, datatypesMap, tablesMap);
+	}
 
 	@Override
 	public InputStream serializeProfileToZip(Profile original, String[] ids, DocumentMetaData metadata,
@@ -2805,7 +2898,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	}
 
-	private void addDatatype(Datatype d, HashMap<String, Datatype> datatypesMap) {
+	private void addDatatype(Datatype d, Map<String, Datatype> datatypesMap) {
 		if (d != null) {
 			datatypesMap.put(d.getId(), d);
 			for (Component c : d.getComponents()) {
