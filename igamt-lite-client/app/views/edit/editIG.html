@@ -17,7 +17,7 @@
             <p>No Implementation Guide Selected.</p>
         </div>
     </div>
-    <div ng-show="isEditing" ng-controller="EditAreaCtrl" ng-init="init">
+    <form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form ng-show="isEditing" ng-controller="EditAreaCtrl" ng-init="init">
         <div class="row">
             <div class="col-md-12" ng-show="igDocumentMsg !== null">
                 <div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">
@@ -40,16 +40,18 @@
                 </div>
              </div>
 
-            <div class="col-md-12">
-                <md-switch ng-model="filtering" aria-label="Switch 6" ng-change="displayTree(!filtering)" style="margin:0px !important;" class="md-primary col-md-4">
-                Filter <span ng-if="!filtering">OFF</span><span ng-if="filtering">ON</span>
+            <div class="col-md-12 ig-menu-bar">
+                <span>
+                <md-switch ng-model="filtering" aria-label="Switch 6" ng-change="displayTree(!filtering)" style="margin-bottom: 0px;margin-top: 3px !important;" class="md-primary col-md-4">
+                 <span  class="white-color" ng-if="!filtering">OFF</span><span ng-if="filtering">ON</span>
                 </md-switch>
+                </span>
                 <div class="col-md-8">
                     <md-menu-bar class="pull-right">
                         <md-menu>
 
                             <!--<md-button ng-click="$mdMenu.open()" type="button" md-colors="{background:'indigo'}">-->
-                                <button ng-click="$mdMenu.open()" type="button">
+                            <button ng-click="$mdMenu.open()" type="button" class="white-color">
 
                                 <i class="fa fa-download fa-fw"></i> Export
                             </button>
@@ -124,7 +126,7 @@
                         </md-menu>
 
                         <md-menu>
-                            <button ng-click="$mdMenu.open()" >
+                            <button ng-click="$mdMenu.open()" class="white-color">
                                 Filter
                             </button>
                             <md-menu-content>
@@ -144,26 +146,33 @@
                         <md-menu  ng-if="igdocument.accountId == getAccountID()">
                             <!--<md-menu class="pull-right" ng-if="igdocument.accountId == getAccountID()">-->
 
-                            <button ng-click="shareModal(igdocument)">
+                            <button ng-click="shareModal(igdocument)" class="white-color" >
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
                             </button>
+                            <md-menu-content>
+                            </md-menu-content>
 
                         </md-menu>
                         <md-menu>
-                            <!--<md-button title="Verify IG" type="button"-->
+                            <!--<md-button aria-label="Verify IG" type="button"-->
                             <!--ng-click="validateIg()" md-colors="{background:'green'}">-->
-                            <button title="Verify IG" type="button"
+                            <button aria-label="Verify IG" type="button" class="white-color"
                                     ng-click="validateIg()">
                                 <i class="fa fa-check" aria-hidden="true"></i> Verify
                             </button>
 
+                            <md-menu-content>
+                            </md-menu-content>
+
                         </md-menu>
                         <md-menu>
                             <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                <button ng-click="close()" md-colors="{background:'orange'}">
+                                <button ng-click="close()" class="white-color">
 
                                 <i class="fa fa-close fa-fw"></i> Close
                             </button>
+                            <md-menu-content>
+                            </md-menu-content>
                         </md-menu>
 
 
@@ -176,7 +185,7 @@
 
             </div>
              </div>
-    </div>
+
         <div class="row" ng-show="showErrorCount(igdocument.id)  && showIgErrorNotification"
              style="margin-right: 15px;margin-left: 5px;">
             <div class="alert has-error" ng-show="errorCount(igdocument.id)>0">
@@ -195,26 +204,7 @@
             </div>
         </div>
         <div>
-            <!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
-            <!--<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
-            <!--<i class="fa fa-caret-right"></i>-->
-            <!--</button>-->
-            <!--</div>-->
             <div layout="row">
-                    <!-- Default panel contents -->
-
-
-
-                        <!--<span flex="50"> <i flex="10" class="glyphicon glyphicon-list"></i>Table of Contents </span>-->
-                        <!--<span flex="40" style="max-height: 20px;">-->
-                        <!--<md-switch ng-model="filtering" aria-label="Switch 6" ng-change="displayTree(!filtering)" style="margin:0px !important;">-->
-                            <!--Filter <span ng-if="!filtering">OFF</span><span ng-if="filtering">ON</span>-->
-                        <!--</md-switch>-->
-                        <!--</span>-->
-                        <!--<button flex="10" title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default"-->
-                                <!--style="margin:0px" ng-click="hideToc = !hideToc"><i class="fa fa-caret-left"></i>-->
-                        <!--</button>-->
-                    <!--</div>-->
                 <div flex="30">
                     <div style="width:100%; max-height: 800px; overflow: scroll;background-color: rgba(238, 238, 238, 0.46); padding-top: 20px;" md-whiteframe="4">
                     <div ng-include="tocView"></div>
@@ -222,16 +212,16 @@
                 </div>
 
                 <div flex="70">
-                        <form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form>
+
                             <div id="edit" ng-show="subview" style="width:100%; max-height: 800px; background-color: white;overflow: scroll;">
                                 <div ng-include="subview"></div>
                             </div>
-                        </form>
 
+
+                </div>
             </div>
         </div>
-        </div>
-    </div>
+    </form>
 </div>
 
 <div ng-show="loadingIGDocument" style="text-align:center;padding-top:20px; padding-bottom:20px ">

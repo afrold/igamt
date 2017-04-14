@@ -939,7 +939,7 @@
     <tr tt-node is-branch="hasChildren(node)"
         ng-show="(isVisible(node) &&( node.usage==='R' ||node.usage==='RE' ||node.usage==='C' )&& $root.usageF) || (isVisible(node) && !$root.usageF)"
         ng-class="{ 'new': isChildNew(node),'selected': isChildSelected(node)}">
-        <td ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+        <td ng-controller="FormRowCtrl" ng-init="init(node)">
             <!--<a ng-show="editableSeg!==node.id" ng-click="editComponent(node,datatype)" class="point">-->
             <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
             <!--</a>-->
@@ -995,12 +995,24 @@
         <td ng-class="hasUsageError(node.id)" data-toggle="tooltip" title="{{displayMessageError(node.id,'USAGE')}}">
             <div>
                 <span ng-if="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)"
-                      ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+                      ng-controller="FormRowCtrl" ng-init="init(node)">
                     <ng-form name="{{formName}}" class="form-inline">
-                        <select class="form-control input-sm" name="usage" id="usage"
-                                ng-change="setUsage(node); openPredicateDialog(node);"
-                                ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
-                                required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
+                        <!--<select class="form-control input-sm" name="usage" id="usage"-->
+                                <!--ng-change="setUsage(node); openPredicateDialog(node);"-->
+                                <!--ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"-->
+                                <!--required ng-model="node.usage" ng-options="usage for usage in config.usages"/>-->
+                             <md-select placeholder="Select Usage" name="usage" id="usage" class="inside-table"
+                                        ng-change="setUsage(node); openPredicateDialog(node);"
+                                        ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
+                                        required ng-model="node.usage" >
+
+                                 <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                     {{usage}}
+
+                                 </md-option>
+                             </md-select>
+
+
                     </ng-form>
                 </span>
 
@@ -1018,21 +1030,27 @@
         <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.id)}"
             data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
-                <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
-                    <input style="width:45%" class="form-control" name="minLength" ng-change="setDirty()" type="number"
+                <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
+
+                    <md-input-container flex="50" class="withoutMargin">
+                    <input  name="minLength" ng-change="setDirty()" type="number"
                            min="0" ng-pattern="'\\d*[#=]{0,1}'"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.minLength.$invalid}"
                            ng-model="node.minLength" required ng-minlength="1"/>
-                    <input style="width:45%" class="form-control" type="text" name="maxLength" ng-change="setDirty()"
+                    </md-input-container>
+                    <md-input-container flex="50" class="withoutMargin">
+                    <input  type="text" name="maxLength" ng-change="setDirty()"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.maxLength.$invalid}"
                            ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required/>
+                    </md-input-container>
+
                 </ng-form>
             </div>
         </td>
         <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasConfError(node.id) && datatypesMap[node.datatype.id].components.length===0}"
             ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.id,'CONFLENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
-                <ng-form name="{{formName}}" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+                <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)">
                     <input style="width:50%" class="form-control" type="text" name="confLength" ng-change="setDirty()"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.confLength.$invalid}"
                            ng-pattern="'\\d*[#=]{0,1}'" ng-model-options="{allowInvalid:true}"
@@ -1042,7 +1060,7 @@
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')"
             ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:center">
-            <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+            <ng-form name="innerForm" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)">
                 <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                     <span class="badge label-white" ng-show="editableDT!==node.id">
                         <span title="{{datatypesMap[node.datatype.id].hl7Version}}"
@@ -1053,7 +1071,7 @@
                     </span>
 
                     <div ng-if="editableDT===node.id">
-                        <!--<select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm" ng-controller="DatatypeRowCtrl" ng-init="init(node)">-->
+                        <!--<select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm" ng-controller="FormRowCtrl" ng-init="init(node)">-->
                         <!--<option ng-repeat="datatype in results" value="{{datatype}}"-->
                         <!--ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatypesMap[datatype.id])}} {{datatypesMap[datatype.id].hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}-->
                         <!--</option>-->
@@ -1061,7 +1079,7 @@
 
 
                         <md-select placeholder="Select Data type" ng-model="node.datatype"
-                                   ng-change="backDT();setDirty()" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+                                   ng-change="backDT();setDirty()">
                             <md-option ng-value="datatype" ng-repeat="datatype in results">
                                 <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
                             </md-option>

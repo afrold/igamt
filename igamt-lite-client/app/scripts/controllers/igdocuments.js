@@ -33,11 +33,11 @@ angular.module('igl')
     $scope.nodeReady = true;
     $scope.igDocumentTypes = [
         {
-            name: "Access My implementation guides",
+            name: "My Implementation Guides",
             type: 'USER'
         },
         {
-        name: "Browse Existing Preloaded Implementation Guides",
+        name: "Preloaded Implementation Guides",
         type: 'PRELOADED'
     },{
         name: "Shared Implementation Guides",
@@ -256,7 +256,7 @@ angular.module('igl')
         $rootScope.$on('event:saveAndExecLogout', function(event) {
             if ($rootScope.igdocument != null) {
                 if ($rootScope.hasChanges()) {
-                    $rootScope.openConfirmLeaveDlg().result.then(function() {
+                    $rootScope.openConfirmLeaveDlg().then(function() {
                         $rootScope.$emit('event:execLogout');
                     });
                 } else {
@@ -401,7 +401,7 @@ angular.module('igl')
         };
 
         if ($rootScope.hasChanges()) {
-            $rootScope.openConfirmLeaveDlg().result.then(function() {
+            $rootScope.openConfirmLeaveDlg().then(function() {
                 process();
             });
         } else {
@@ -961,7 +961,7 @@ angular.module('igl')
 
     $scope.selectMessagesForExport = function(igdocument) {
         if ($rootScope.hasChanges()) {
-            $rootScope.openConfirmLeaveDlg().result.then(function() {
+            $rootScope.openConfirmLeaveDlg().then(function() {
                 if ($scope.editForm) {
                     console.log("Cleaning");
                     $scope.editForm.$setPristine();
@@ -1171,7 +1171,7 @@ angular.module('igl')
 
         if ($rootScope.hasChanges()) {
 
-            $rootScope.openConfirmLeaveDlg().result.then(function() {
+            $rootScope.openConfirmLeaveDlg().then(function() {
 
                 if ($rootScope.igdocument != null) {
                     if ($scope.editForm) {
@@ -1195,7 +1195,7 @@ angular.module('igl')
         if ($rootScope.hasChanges()) {
 
 
-            $rootScope.openConfirmLeaveDlg().result.then(function() {
+            $rootScope.openConfirmLeaveDlg().then(function() {
 
                 if ($rootScope.igdocument != null) {
                     if ($scope.editForm) {
@@ -1234,7 +1234,7 @@ angular.module('igl')
 
     $scope.close = function() {
         if ($rootScope.hasChanges()) {
-            $rootScope.openConfirmLeaveDlg().result.then(function() {
+            $rootScope.openConfirmLeaveDlg().then(function() {
                 $rootScope.closeIGDocument();
             });
         } else {
@@ -1716,6 +1716,108 @@ angular.module('igl')
             }
         }
     };
+    //
+
+
+    $rootScope.clickSource = {};
+    $scope.selectedHL7Version = "";
+
+    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+
+    $scope.hl7Versions = function(clickSource) {
+        $rootScope.clickSource = clickSource;
+        if ($rootScope.hasChanges()) {
+            $rootScope.openConfirmLeaveDlg().then(function() {
+                $rootScope.clearChanges();
+                $rootScope.closeIGDocument();
+                $rootScope.hl7Versions = [];
+                $scope.hl7VersionsInstance();
+            });
+        } else {
+            if (clickSource === 'btn' && $rootScope.igdocument != null) {
+                $rootScope.clearChanges();
+                $rootScope.closeIGDocument();
+            }
+            $rootScope.hl7Versions = [];
+            $scope.hl7VersionsInstance();
+        }
+    };
+
+    $scope.confirmOpen = function(igdocument) {
+        return $mdDialog.show({
+            templateUrl: 'ConfirmIGDocumentOpenCtrl.html',
+            controller: 'ConfirmIGDocumentOpenCtrl',
+            resolve: {
+                igdocumentToOpen: function() {
+                    return igdocument;
+                }
+            }
+        }).then(function(igdocument) {
+            $rootScope.clearChanges();
+            $scope.hl7VersionsInstance();
+        }, function() {
+            console.log("Changes discarded.");
+        });
+    };
+    $scope.hl7VersionsInstance = function() {
+        $scope.listHL7Versions().then(function(response) {
+            var hl7Versions = [];
+            var length = response.data.length;
+            for (var i = 0; i < length; i++) {
+                hl7Versions.push(response.data[i]);
+            }
+            return $mdDialog.show({
+                templateUrl: 'hl7VersionsDlgMD.html',
+                controller: 'HL7VersionsInstanceDlgCtrl',
+                scope: $scope,
+                preserveScope: true,
+                resolve: {
+                    hl7Versions: function() {
+                        return hl7Versions;
+                    },
+                    hl7Version: function() {
+                        console.log("$rootScope.clickSource=" + $rootScope.clickSource);
+                        if ($rootScope.clickSource === "ctx") {
+                            console.log("hl7Version=" + $rootScope.igdocument.profile.metaData.hl7Version);
+                            return $rootScope.igdocument.profile.metaData.hl7Version;
+                        } else {
+                            return null;
+                        }
+                    }
+                }
+            }).then(function(igdocument) {
+                $rootScope
+                    .$emit(
+                        'event:openIGDocumentRequest',
+                        igdocument);
+                $rootScope.$broadcast('event:IgsPushed',
+                    igdocument);
+            });
+        }, function(response) {
+            $rootScope.msg().text = "Cannot load the versions. Please try again";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+        });
+
+
+    };
+
+    $scope.listHL7Versions = function() {
+        return $http.get('api/igdocuments/findVersions', {
+            timeout: 60000
+        });
+    };
+
+
+    $scope.closedCtxMenu = function(node, $index) {
+        console.log("closedCtxMenu");
+    };
+
+
+
+
+
+
     $scope.selectCp = function(cp) {
         $rootScope.originalCompositeProfileStructure = cp;
         $rootScope.compositeProfileStructure = angular.copy(cp);
