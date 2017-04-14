@@ -171,6 +171,7 @@ public class SerializableSegment extends SerializableSection {
         thead.addAttribute(new Attribute("class", "contentThead"));
         Element tr = new Element("tr");
         Element th = new Element("th");
+        th.addAttribute(new Attribute("class","ifContentThead"));
         th.appendChild("IF");
         tr.appendChild(th);
         th = new Element("th");
@@ -184,6 +185,7 @@ public class SerializableSegment extends SerializableSection {
         thead.appendChild(tr);
         tr = new Element("tr");
         th = new Element("th");
+        th.addAttribute(new Attribute("class","ifContentThead"));
         th.appendChild(this.segment.getName()+"-"+coConstraintsTable.getIfColumnDefinition().getPath());
         tr.appendChild(th);
         for(CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getThenColumnDefinitionList()){
@@ -200,36 +202,54 @@ public class SerializableSegment extends SerializableSection {
         tableElement.appendChild(thead);
         Element tbody = new Element("tbody");
         for(int i=0;i<coConstraintsTable.getRowSize();i++){
-          tr = new Element("tr");
-          Element td = new Element("td");
-          td.appendChild(coConstraintsTable.getIfColumnData().get(i).getValueData().getValue());
-          tr.appendChild(td);
-          for(CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getThenColumnDefinitionList()){
-            CoConstraintTHENColumnData coConstraintTHENColumnData = coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);
-            td = new Element("td");
-            if(coConstraintTHENColumnData.getValueSets().isEmpty()){
-              td.appendChild(coConstraintTHENColumnData.getValueData().getValue());
-            } else {
-              ArrayList<String> valueSetsList = new ArrayList<>();
-              for(ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()){
-                Table table = coConstraintValueTableMap.get(valueSetData.getTableId());
-                if(table!=null){
-                  valueSetsList.add(table.getBindingIdentifier());
-                }
+          if(coConstraintsTable.getIfColumnData().get(i).getValueData().getValue()!=null && !coConstraintsTable.getIfColumnData().get(i).getValueData().getValue().isEmpty()){
+            boolean thenEmpty = true;
+            for(CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getThenColumnDefinitionList()){
+              if(!coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i).getValueSets().isEmpty() 
+                  || !coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i).getValueData().getValue().isEmpty()){
+                thenEmpty = false;
+                break;
               }
-              td.appendChild(StringUtils.join(valueSetsList,","));
             }
-            //td.appendChild(coConstraintTHENColumnData.get);
-            tr.appendChild(td);
+            if(!thenEmpty){
+              tr = new Element("tr");
+              Element td = new Element("td");
+              td.appendChild(coConstraintsTable.getIfColumnData().get(i).getValueData().getValue());
+              tr.appendChild(td);
+              for(CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getThenColumnDefinitionList()){
+                CoConstraintTHENColumnData coConstraintTHENColumnData = coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);
+                td = new Element("td");
+                if(coConstraintTHENColumnData.getValueSets().isEmpty()){
+                  if(coConstraintTHENColumnData.getValueData() == null || coConstraintTHENColumnData.getValueData().getValue() == null || coConstraintTHENColumnData.getValueData().getValue().isEmpty()){
+                    td.addAttribute(new Attribute("class","greyCell"));
+                  } else {
+                    td.appendChild(coConstraintTHENColumnData.getValueData().getValue());
+                  }
+                } else {
+                  ArrayList<String> valueSetsList = new ArrayList<>();
+                  for(ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()){
+                    Table table = coConstraintValueTableMap.get(valueSetData.getTableId());
+                    if(table!=null){
+                      valueSetsList.add(table.getBindingIdentifier());
+                    }
+                  }
+                  td.appendChild(StringUtils.join(valueSetsList,","));
+                }
+                tr.appendChild(td);
+              }
+              for(CoConstraintUserColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getUserColumnDefinitionList()){
+                CoConstraintUSERColumnData coConstraintUSERColumnData = coConstraintsTable.getUserMapData().get(coConstraintColumnDefinition.getId()).get(i);
+                td = new Element("td");
+                if(!coConstraintUSERColumnData.getText().isEmpty()){
+                  td.appendChild(coConstraintUSERColumnData.getText());
+                } else {
+                  td.addAttribute(new Attribute("class","greyCell"));
+                }
+                tr.appendChild(td);
+              }
+              tbody.appendChild(tr);
+            }
           }
-          
-          for(CoConstraintUserColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getUserColumnDefinitionList()){
-            CoConstraintUSERColumnData coConstraintUSERColumnData = coConstraintsTable.getUserMapData().get(coConstraintColumnDefinition.getId()).get(i);
-            td = new Element("td");
-            td.appendChild(coConstraintUSERColumnData.getText());
-            tr.appendChild(td);
-          }
-          tbody.appendChild(tr);
         }
         tableElement.appendChild(tbody);
         coConstraintsElement.appendChild(tableElement);
