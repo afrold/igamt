@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc', 'VersionAndUseService', '$q', 'DatatypeLibrarySvc', 'CloneDeleteSvc', 'TableService', 'TableLibrarySvc', function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc, VersionAndUseService, $q, DatatypeLibrarySvc, CloneDeleteSvc, TableService, TableLibrarySvc) {
+angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc', 'VersionAndUseService', '$q', 'DatatypeLibrarySvc', 'CloneDeleteSvc', 'TableService', 'TableLibrarySvc','$mdDialog', function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc, VersionAndUseService, $q, DatatypeLibrarySvc, CloneDeleteSvc, TableService, TableLibrarySvc,$mdDialog) {
     // This line fetches the info from the server if the user is currently
     // logged in.
     // If success, the app is updated according to the role.
@@ -3818,10 +3818,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         if ($rootScope.modalInstance != undefined && $rootScope.modalInstance != null && $rootScope.modalInstance.opened) {
             $rootScope.modalInstance.close();
         }
-        $rootScope.modalInstance = $modal.open({
+        $rootScope.modalInstance = $mdDialog.show({
             templateUrl: 'ConfirmLeaveDlg.html',
-            controller: 'ConfirmLeaveDlgCtrl',
-            'size': 'md'
+            controller: 'ConfirmLeaveDlgCtrl'
         });
         return $rootScope.modalInstance;
     };
@@ -3911,10 +3910,10 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
 
 
 
-angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalInstance, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc, DocumentationService, PcService,CompositeProfileService) {
+angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDialog, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc, DocumentationService, PcService,CompositeProfileService) {
     $scope.continue = function() {
         $rootScope.clearChanges();
-        $modalInstance.close();
+        $mdDialog.hide();
     };
 
 
@@ -3949,7 +3948,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $modalI
 
     $scope.error = null;
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 
     $scope.save = function() {
