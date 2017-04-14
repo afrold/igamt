@@ -1074,7 +1074,7 @@ public class Bootstrap implements InitializingBean {
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Element Name", 3, true, true));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Cardinality", 4, true, false));
     messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true, false));
-    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true, false));
+    messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 6, true, false));
 
     ArrayList<NameAndPositionAndPresence> segmentColumnsDefaultList =
         new ArrayList<NameAndPositionAndPresence>();
@@ -1117,6 +1117,7 @@ public class Bootstrap implements InitializingBean {
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true, true));
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, false, false));
     valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, true, true));
+    valueSetsDefaultList.add(new NameAndPositionAndPresence("Comment", 5, false, false));
 
     defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
 

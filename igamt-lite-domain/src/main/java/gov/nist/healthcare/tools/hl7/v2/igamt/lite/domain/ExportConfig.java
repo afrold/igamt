@@ -162,6 +162,7 @@ import java.util.ArrayList;
         valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true, true));
         valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, false, false));
         valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, true, true));
+        valueSetsDefaultList.add(new NameAndPositionAndPresence("Comment", 5, false, false));
 
         defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
         return defaultConfiguration;

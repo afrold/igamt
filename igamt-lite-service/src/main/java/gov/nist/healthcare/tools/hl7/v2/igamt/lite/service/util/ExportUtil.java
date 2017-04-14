@@ -238,7 +238,9 @@ import java.util.UUID;
         transformer = factoryTf.newTransformer(xslt);
         //Set the parameters
         for (Map.Entry<String, String> param : exportParameters.toMap().entrySet()) {
+          if(param!=null && param.getKey() != null && param.getValue() != null){  
             transformer.setParameter(param.getKey(), param.getValue());
+          }
         }
         transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
         return tmpHtmlFile;
