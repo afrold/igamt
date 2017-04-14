@@ -77,14 +77,12 @@
                     <xsl:text>40%</xsl:text>
                 </xsl:attribute>
             </xsl:element>
-            <xsl:element name="thead">
-                        <xsl:element name="col">
+            <xsl:element name="col">
                 <xsl:attribute name="width">
                     <xsl:text>20%</xsl:text>
                 </xsl:attribute>
-            </xsl:element>
-            <xsl:element name="thead">
-            
+            </xsl:element>    
+            <xsl:element name="thead">     
                 <xsl:attribute name="class">
                     <xsl:text>contentThead</xsl:text>
                 </xsl:attribute>
