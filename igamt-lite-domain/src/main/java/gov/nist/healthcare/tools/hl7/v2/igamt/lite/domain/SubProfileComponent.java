@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.annotation.Id;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 public class SubProfileComponent implements java.io.Serializable, Cloneable {
@@ -33,9 +32,7 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
       new ArrayList<ValueSetOrSingleCodeBinding>();
   private SingleElementValue oldSingleElementValues = new SingleElementValue();
   private SingleElementValue singleElementValues = new SingleElementValue();
-  private List<ConformanceStatement> oldConformanceStatements =
-      new ArrayList<ConformanceStatement>();
-  private List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
+
 
   private List<Comment> oldComments = new ArrayList<Comment>();
   private List<Comment> comments = new ArrayList<Comment>();
@@ -150,22 +147,6 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   }
 
 
-
-  public List<ConformanceStatement> getOldConformanceStatements() {
-    return oldConformanceStatements;
-  }
-
-  public void setOldConformanceStatements(List<ConformanceStatement> oldConformanceStatements) {
-    this.oldConformanceStatements = oldConformanceStatements;
-  }
-
-  public List<ConformanceStatement> getConformanceStatements() {
-    return conformanceStatements;
-  }
-
-  public void setConformanceStatements(List<ConformanceStatement> conformanceStatements) {
-    this.conformanceStatements = conformanceStatements;
-  }
 
   public List<Comment> getOldComments() {
     return oldComments;

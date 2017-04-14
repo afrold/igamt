@@ -256,7 +256,7 @@
                                                                                     <a ng-show="node.attributes.datatype" ng-show="node.datatype||editableDT===node.id" ng-click="editDatatype=false;cancelDatatype(node)" class="point">
                                                                                         <span><i class="glyphicon glyphicon-remove"></i></span>
                                                                                     </a>
-                                                                                  
+
                                                                                 </div>
                                                                             </div>
                                                                         </ng-form>
@@ -344,16 +344,26 @@
 
                                                                         </div>
                                                                     </td>
-                                                                    <td style="text-align:center" ng-class="{'input-change':(node.conformanceStatements && node.conformanceStatements.length>0)}">
+                                                                    <td style="text-align:center" ng-class="{'emptyCol':(node.type!=='message' && node.type!=='group' && node.type!=='segment' && node.type!=='segmentRef'),'input-change':(node.attributes.conformanceStatements && node.attributes.conformanceStatements.length>0)}">
                                                                         <!--<div ng-repeat="confSt in findingConfSt(node)">
                                                                             <span title="{{confSt.description}}">  
                                                                                 {{getConstraintAsTruncatedString(confSt, 15)}}
                                                                             </span>
                                                                         </div>-->
                                                                         <span>
-                                                                            <i style="font-size:15px;" ng-show="!currentNode || currentNode.id !==node.id" ng-click="seeConfSt(node)" class="material-icons">visibility</i>
-                                                                            <i style="font-size:15px;" ng-show="currentNode && currentNode.id ===node.id" ng-click="unseeConfSt(node)" class="material-icons">visibility_off</i>
-                                                                            <i  ng-click="cancelConfSt(node)" ng-show="node.conformanceStatements && node.conformanceStatements.length>0" class="fa fa-times fa-fw"></i>
+                                                                            <!--<i style="font-size:15px;" ng-show="!currentNode || currentNode.id !==node.id" ng-click="seeConfSt(node)" class="material-icons">visibility</i>
+                                                                            <i style="font-size:15px;" ng-show="currentNode && currentNode.id ===node.id" ng-click="unseeConfSt(node)" class="material-icons">visibility_off</i>-->
+                                                                            
+                                                                            <a ng-click="openAddGlobalConformanceStatementDialog(node,'edit')" class="point" ng-if="node.type!=='segmentRef' && (node.type==='message' || node.type==='group' || node.type==='segment') ">
+                                                                                <i class="fa fa-pencil fa-fw" ng-if="(findingConfSt(node) && findingConfSt(node).length>0)"></i>
+                                                                                <i class="fa fa-plus fa-fw" ng-if="!(findingConfSt(node) && findingConfSt(node).length>0)"></i>
+                                                                            </a>
+                                                                            <a ng-click="openAddGlobalConformanceStatementDialogSeg(node,'edit')" class="point" ng-if="node.type==='segmentRef'">
+                                                                                <i class="fa fa-pencil fa-fw" ng-if="(findingConfSt(node) && findingConfSt(node).length>0)"></i>
+                                                                                <i class="fa fa-plus fa-fw" ng-if="!(findingConfSt(node) && findingConfSt(node).length>0)"></i>
+                                                                            </a>
+
+                                                                            <i  ng-click="cancelConfSt(node)" ng-show="node.attributes.conformanceStatements && node.attributes.conformanceStatements.length>0" class="fa fa-times fa-fw"></i>
                                                                         </span>
                                                                         <!--<a ng-click="openAddGlobalConformanceStatementDialog(node)" class="point">
                                                                             <i class="fa fa-pencil fa-fw" ng-if="(node.conformanceStatements && node.conformanceStatements.length>0)||(node.oldConformanceStatements && node.oldConformanceStatements.length>0)"></i>
@@ -854,162 +864,180 @@
 
 
 <script type="text/ng-template" id="addComponents.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Add profile Components</h3>
-    </div>
-    <div class="modal-body">
-        <div class="container" style="margin-bottom: 20px;margin-top: 10px">
-            <div layout="row" style="padding-top:10px" layout-align="center center">
-                <div flex="50">
-                    <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
-                        <md-tab>
-                            <md-tab-label>Message</md-tab-label>
-                            <md-tab-body>
-                                <div class=" panel panel-default">
-                                    <div class="panel-heading">Choose Items</div>
-                                    <div class="panel-body">
+    <md-dialog aria-label="Items" style="width:100%;">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Add items </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
 
-                                        <table id="MsgProfileComponentTable" tt-table tt-params="MsgProfileComponentParams" class="table table-striped table-borderless table-condensed hl7-versions-valueset table-fixed">
-                                            <thead>
-                                                <!--<tr class="tbl-header">
+            <md-dialog-content>
+                <div class="md-dialog-content" style="overflow:scroll;">
+                    <div class="modal-body">
+
+                        <div layout="row" style="padding-top:10px" layout-align="center center">
+                            <div flex="50">
+                                <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+                                    <md-tab>
+                                        <md-tab-label>Message</md-tab-label>
+                                        <md-tab-body>
+                                            <div class=" panel panel-default">
+                                                <div class="panel-heading">Choose Items</div>
+                                                <div class="panel-body">
+
+                                                    <table id="MsgProfileComponentTable" tt-table tt-params="MsgProfileComponentParams" class="table table-striped table-borderless table-condensed hl7-versions-valueset table-fixed">
+                                                        <thead>
+                                                            <!--<tr class="tbl-header">
                                                 <th>Choose Profile Component</th>
 
                                             </tr>-->
 
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
 
-                                </div>
-                            </md-tab-body>
+                                            </div>
+                                        </md-tab-body>
 
-                        </md-tab>
-                        <md-tab>
-                            <md-tab-label>Segment</md-tab-label>
-                            <md-tab-body>
-                                <div class=" panel panel-default">
-                                    <div class="panel-heading">Choose Items</div>
-                                    <div class="panel-body">
+                                    </md-tab>
+                                    <md-tab>
+                                        <md-tab-label>Segment</md-tab-label>
+                                        <md-tab-body>
+                                            <div class=" panel panel-default">
+                                                <div class="panel-heading">Choose Items</div>
+                                                <div class="panel-body">
 
-                                        <table id="SegProfileComponentTable" tt-table tt-params="SegProfileComponentParams" class="table table-striped table-borderless table-condensed hl7-versions-valueset table-fixed">
+                                                    <table id="SegProfileComponentTable" tt-table tt-params="SegProfileComponentParams" class="table table-striped table-borderless table-condensed hl7-versions-valueset table-fixed">
+                                                        <thead>
+
+
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+
+                                        </md-tab-body>
+
+                                    </md-tab>
+                                    <md-tab></md-tab>
+                                </md-tabs>
+                            </div>
+                            <div flex="50">
+                                <div class=" panel panel-default" ng-show="selectedPC.length> 0" style="margin-top:47px;">
+                                    <div class="panel-heading">Selected Items</div>
+                                    <div class="panel-body" style="overflow-y: auto;height: 250px;">
+                                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                                             <thead>
+                                                <tr class="tbl-header">
+                                                    <th class="col-md-3">Path</th>
+                                                    <th class="col-md-2">Name</th>
 
 
+
+                                                    <th class="col-md-1" />
+                                                </tr>
                                             </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
+                                            <tbody>
+                                                <tr ng-repeat="pc in selectedPC">
+                                                    <td class="col-md-3">
+                                                        <span ng-if="pc.type=='datatype'" class="label label-default label-icon">D</span>
 
-                                </div>
-
-                            </md-tab-body>
-
-                        </md-tab>
-
-                    </md-tabs>
-                </div>
-                <div flex="50">
-                    <div class=" panel panel-default" ng-show="selectedPC.length> 0" style="margin-top:47px;">
-                        <div class="panel-heading">Selected Items</div>
-                        <div class="panel-body" style="overflow-y: auto;height: 250px;">
-                            <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                                <thead>
-                                    <tr class="tbl-header">
-                                        <th class="col-md-3">Path</th>
-                                        <th class="col-md-2">Name</th>
-
-
-
-                                        <th class="col-md-1" />
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="pc in selectedPC">
-                                        <td class="col-md-3">
-                                            <span ng-if="pc.type=='datatype'" class="label label-default label-icon">D</span>
-
-                                            <span ng-if="pc.type=='group'" class="label label-success label-icon">G</span>
-                                            <span ng-if="pc.type=='segmentRef'||pc.type=='segment'" class="label label-segment label-icon">S</span>
-                                            <span class="label label-field label-icon" ng-if="pc.type==='field'">F</span>
-                                            <span class="label label-component label-icon" ng-if="pc.type==='component'">C</span> {{pc.path}}
-                                        </td>
-                                        <td class="col-md-2"><span>
+                                                        <span ng-if="pc.type=='group'" class="label label-success label-icon">G</span>
+                                                        <span ng-if="pc.type=='segmentRef'||pc.type=='segment'" class="label label-segment label-icon">S</span>
+                                                        <span class="label label-field label-icon" ng-if="pc.type==='field'">F</span>
+                                                        <span class="label label-component label-icon" ng-if="pc.type==='component'">C</span> {{pc.path}}
+                                                    </td>
+                                                    <td class="col-md-2"><span>
                                         
                                         <span ng-if="pc.type==='segmentRef'">{{pc.attributes.oldRef.name}}</span>
-                                            <span ng-if="pc.type!=='segmentRef'">{{pc.name}}</span>
+                                                        <span ng-if="pc.type!=='segmentRef'">{{pc.name}}</span>
 
-                                            </span>
-                                            <!--<a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==' '&& dt.scope!=='MASTER '" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
+                                                        </span>
+                                                        <!--<a class="pointer" ng-show="!edit && dt.ext!==null && dt.ext!==' '&& dt.scope!=='MASTER '" ng-click="edit=true;checkExt(dt)"><i class="fa fa-pencil fa-fw"></i></a>
                                                 <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext" />-->
-                                            <!--<a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
+                                                        <!--<a class="pointer" ng-show="edit && checkedExt && NocheckedExt" ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
                                                 <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
                                                 <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>-->
-                                        </td>
+                                                    </td>
 
 
-                                        <td class="col-md-1"> <a class="pointer" ng-click="removeSelectedComp(pc)"><i class="fa fa-times fa-fw"></i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                                    <td class="col-md-1"> <a class="pointer" ng-click="removeSelectedComp(pc)"><i class="fa fa-times fa-fw"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--<div flex ng-show="selectedPC.length> 0">
+                                        <div class="igl-table">
+                                            <h5>Selected Profile Components</h5>
+                                            <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+                                                <thead>
+                                                    <tr class="tbl-header">
+                                                        <th class="col-md-3">Path</th>
+                                                        <th class="col-md-2">Name</th>
+
+
+
+                                                        <th class="col-md-1" />
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="pc in selectedPC">
+                                                        <td class="col-md-3">
+                                                            <span ng-if="pc.type=='datatype'" class="label label-default label-icon">D</span>
+
+                                                            <span ng-if="pc.type=='group'" class="label label-success label-icon">G</span>
+                                                            <span ng-if="pc.type=='segmentRef'||pc.type=='segment'" class="label label-segment label-icon">S</span>
+                                                            <span class="label label-field label-icon" ng-if="pc.type==='field'">F</span>
+                                                            <span class="label label-component label-icon" ng-if="pc.type==='component'">C</span> {{pc.path}}
+                                                        </td>
+                                                        <td class="col-md-2"><span>
+                                                            
+                                                            <span ng-if="pc.type==='segmentRef'">{{pc.attributes.oldRef.name}}</span>
+                                                            <span ng-if="pc.type!=='segmentRef'">{{pc.name}}</span>
+
+                                                            </span>
+                                                        
+                                                        </td>
+
+
+                                                        <td class="col-md-1"> <a class="pointer" ng-click="removeSelectedComp(pc)"><i class="fa fa-times fa-fw"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>-->
+
+
+
                         </div>
 
                     </div>
                 </div>
-                <!--<div flex ng-show="selectedPC.length> 0">
-                    <div class="igl-table">
-                        <h5>Selected Profile Components</h5>
-                        <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
-                            <thead>
-                                <tr class="tbl-header">
-                                    <th class="col-md-3">Path</th>
-                                    <th class="col-md-2">Name</th>
+                <md-dialog-actions layout="row">
+                    <md-button class="md-primary md-raised" md-autofocus ng-click="add()">
+                        Save
+                    </md-button>
+                </md-dialog-actions>
+            </md-dialog-content>
 
 
-
-                                    <th class="col-md-1" />
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="pc in selectedPC">
-                                    <td class="col-md-3">
-                                        <span ng-if="pc.type=='datatype'" class="label label-default label-icon">D</span>
-
-                                        <span ng-if="pc.type=='group'" class="label label-success label-icon">G</span>
-                                        <span ng-if="pc.type=='segmentRef'||pc.type=='segment'" class="label label-segment label-icon">S</span>
-                                        <span class="label label-field label-icon" ng-if="pc.type==='field'">F</span>
-                                        <span class="label label-component label-icon" ng-if="pc.type==='component'">C</span> {{pc.path}}
-                                    </td>
-                                    <td class="col-md-2"><span>
-                                        
-                                        <span ng-if="pc.type==='segmentRef'">{{pc.attributes.oldRef.name}}</span>
-                                        <span ng-if="pc.type!=='segmentRef'">{{pc.name}}</span>
-
-                                        </span>
-                                     
-                                    </td>
+        </form>
+    </md-dialog>
 
 
-                                    <td class="col-md-1"> <a class="pointer" ng-click="removeSelectedComp(pc)"><i class="fa fa-times fa-fw"></i></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>-->
-
-
-
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-info btn-sm" ng-click="add()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Add</span>
-        </button>
-    </div>
 </script>
 
 
@@ -1028,7 +1056,7 @@
 
             <span ng-bind="node.position"></span>.
             <span ng-if="node.name" ng-bind="node.name"></span>
-            <span ng-if="node.ref.name" ng-bind="segmentsMap[node.ref.id].label"></span>
+            <span ng-if="node.ref.name" ng-bind="$root.segmentsMap[node.ref.id].label"></span>
         </td>
 
     </tr>

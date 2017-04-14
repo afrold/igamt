@@ -3446,7 +3446,6 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         if (userInfoService.isAuthenticated()) {
             VersionAndUseService.findAll().then(function(result) {
                 angular.forEach(result, function(info) {
-                    console.log($rootScope.versionAndUseMap[info.id]);
                     $rootScope.versionAndUseMap[info.id] = info;
                 });
             });

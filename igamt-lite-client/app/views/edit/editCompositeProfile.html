@@ -298,17 +298,17 @@
                                         </div>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFourthOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>
+                                                <span style="color:white;">Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFourthOpen, 'fa-chevron-right': !accordStatus.isFourthOpen}"></i>
                                             </accordion-heading>
                                             <div class="panel-body">
                                                 
                                                 <div class="col-md-12">
-                                                    <span ng-hide="findingConfStInMsg(compositeProfile) && findingConfStInMsg(compositeProfile).length>0">No Conformance statement</span>
-                                                    <div ng-repeat="node in findingConfStInMsg(compositeProfile)">
-                                                        <span ng-show="node.type =='group'">Group : {{node.name}}</span>
-                                                        <span ng-show="node.type =='segmentRef'">Segment : {{node.ref.name}}</span>
-                                                        <span ng-show="node.type =='compositeProfile'">Composite Profile : {{node.name}}</span>
-                                                        <table st-table="displayed" st-safe-src="node.conformanceStatements" class="table table-striped table-bordered">
+                                                    <span ng-hide="compositeProfile.conformanceStatements && compositeProfile.conformanceStatements.length>0">No Conformance statement</span>
+                                                    <div>
+                                                        <!--<span ng-show="node.type =='group'">Group : {{node.name}}</span>
+                                                        <span ng-show="node.type =='segmentRef'">Segment : {{node.ref.name}}</span>-->
+                                                        <span >Composite Profile : {{compositeProfile.name}}</span>
+                                                        <table st-table="displayed" st-safe-src="compositeProfile.conformanceStatements" class="table table-striped table-bordered">
                                                             <thead>
                                                                 <tr class="tbl-header">
                                                                     <th st-sort="constraintId" class="col-md-2">ID</th>
@@ -485,6 +485,7 @@
             </div>
         </td>
         <td class="col-md-1">
+            <span><i style="font-size:15px;" ng-show="findingConfSt(node)" ng-click="seeConfSt(node,'see')" class="material-icons">visibility</i></span>
         </td>
 
 

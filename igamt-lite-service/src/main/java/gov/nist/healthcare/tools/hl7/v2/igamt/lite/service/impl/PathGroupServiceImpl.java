@@ -82,8 +82,8 @@ public class PathGroupServiceImpl implements PathGroupService {
 
         } else {
           if (sub.getPath().equals(coreMessage.getStructID())) {
-            if (sub.getConformanceStatements() != null) {
-              coreMessage.setConformanceStatements(sub.getConformanceStatements());
+            if (sub.getAttributes().getConformanceStatements() != null) {
+              coreMessage.setConformanceStatements(sub.getAttributes().getConformanceStatements());
             }
           }
           if (sub.getValueSetBindings() != null) {
