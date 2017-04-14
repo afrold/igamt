@@ -481,8 +481,22 @@
         <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
             <div>
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
-                    <select class="form-control input-sm" name="usage" ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node);" required
-                            ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
+                    <!--<select class="form-control input-sm" name="usage" ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node);" required-->
+                            <!--ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>-->
+
+
+                             <md-select placeholder="Select Usage" name="usage" id="usage" class="inside-table"
+                                       ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node); "
+                                        ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
+                                        required ng-model="node.obj.usage" >
+
+                                 <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                     {{usage}}
+
+                                 </md-option>
+                             </md-select>
+
+
                 </span>
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
                     <span class="badge label-white">
@@ -493,23 +507,30 @@
             </div>
         </td>
         <td ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
-            <div ng-controller="MessageRowCtrl">
-                <span ng-form name="{{formName}}" class="form-inline">
-                                                <input style="width:45%" class="form-control"
+            <div ng-controller="FormRowCtrl">
+                <ng-form name="{{formName}}" class="form-inline"  ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
+                    <md-input-container flex="50" class="withoutMargin">
+                                                <input
                                                        name="min"
                                                        min="0"
                                                        type="number"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
-                                                       ng-model="node.obj.min" required ng-minlength="1">
-                                                <input style="width:45%" class="form-control" type="text"
+                                                       ng-model="node.obj.min" required ng-minlength="1"/>
+                    </md-input-container>
+                    <md-input-container flex="50" class="withoutMargin">
+
+                                                <input type="text"
                                                        name="max"
                                                        ng-change="setDirty()"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.obj.max" required>
-                                            </span>
+                    </md-input-container>
+                </ng-form>
+
+
             </div>
         </td>
         <td class="emptyCol"></td>
@@ -625,8 +646,17 @@
         <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
             <div>
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
-                    <select class="form-control input-sm" name="usage" ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node);" required
-                            ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>
+
+                                <md-select placeholder="Select Usage" name="usage" id="usage" class="inside-table"
+                                           ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node); "
+                                           ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
+                                           required ng-model="node.obj.usage" >
+
+                                 <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                     {{usage}}
+
+                                 </md-option>
+                               </md-select>
                 </span>
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
                     <span class="badge label-white">
@@ -637,23 +667,28 @@
             </div>
         </td>
         <td ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
-            <div ng-controller="MessageRowCtrl" class="form-inline">
-                <span ng-form name="{{formName}}">
-                    <input style="width:45%" class="form-control"
-                           name="min"
-                           type="number"
-                           min="0"
-                           ng-change="setDirty()"
-                           ng-pattern="/^\d+$/"
-                           ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
-                           ng-model="node.obj.min" required ng-minlength="1"/>
-                    <input style="width:45%" class="form-control" type="text"
-                           name="max"
-                           ng-change="setDirty()"
-                           ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
-                           ng-pattern="/^\d+$|^\*?$/"
-                           ng-model="node.obj.max" required/>
-                </span>
+            <div ng-controller="FormRowCtrl" class="form-inline">
+                <ng-form name="{{formName}}" class="form-inline"  ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
+                    <md-input-container flex="50" class="withoutMargin">
+                        <input
+                                name="min"
+                                min="0"
+                                type="number"
+                                ng-change="setDirty()"
+                                ng-pattern="/^\d+$/"
+                                ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
+                                ng-model="node.obj.min" required ng-minlength="1"/>
+                    </md-input-container>
+                    <md-input-container flex="50" class="withoutMargin">
+
+                        <input type="text"
+                               name="max"
+                               ng-change="setDirty()"
+                               ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
+                               ng-pattern="/^\d+$|^\*?$/"
+                               ng-model="node.obj.max" required>
+                    </md-input-container>
+                </ng-form>
             </div>
         </td>
         <td class="emptyCol"></td>

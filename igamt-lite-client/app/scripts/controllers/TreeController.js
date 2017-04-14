@@ -212,7 +212,7 @@ angular
 
                         if ($rootScope.hasChanges()) {
 
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            $rootScope.openConfirmLeaveDlg().then(function() {
 
 
 
@@ -473,7 +473,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     process();
                                 });
                             } else {
@@ -549,7 +549,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     processAddSection();
                                 });
                             } else {
@@ -571,7 +571,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     CloneDeleteSvc.copySegment($itemScope.segment);
                                 });
                             } else {
@@ -597,7 +597,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     CloneDeleteSvc.copyDatatype($itemScope.data);
                                 });
                             } else {
@@ -621,7 +621,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     CloneDeleteSvc.copyDatatype($itemScope.data);
                                 });
                             } else {
@@ -643,7 +643,7 @@ angular
                             console.log($rootScope.versionAndUseMap[$itemScope.data.id]);
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     if ($rootScope.readyForNewVersion($itemScope.data)) {
                                         CloneDeleteSvc.upgradeDatatype($itemScope.data);
                                     } else {
@@ -668,7 +668,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     CloneDeleteSvc.copyDatatype($itemScope.data);
                                 });
                             } else {
@@ -693,7 +693,7 @@ angular
                             console.log($rootScope.versionAndUseMap[$itemScope.table.id]);
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     if ($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.table.id])) {
                                         CloneDeleteSvc.upgradeTable($itemScope.table);
                                     } else {
@@ -727,7 +727,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     CloneDeleteSvc.copyTable($itemScope.table);
                                 });
                             } else {
@@ -792,7 +792,7 @@ angular
                     ['Create Flavor',
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     CloneDeleteSvc.copyTable($itemScope.table);
                                 });
                             } else {
@@ -820,7 +820,7 @@ angular
                     ['Create Flavor',
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     console.log($scope.tableLibrary);
                                     console.log("table in lib");
                                     CloneDeleteSvc.copyTableINLIB($itemScope.table, $rootScope.tableLibrary);
@@ -849,7 +849,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     CloneDeleteSvc.copyMessage($itemScope.msg);
                                 });
                             } else {
@@ -877,7 +877,7 @@ angular
                     ['Add Profile', function($itemScope) {
                         if ($rootScope.hasChanges()) {
 
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            $rootScope.openConfirmLeaveDlg().then(function() {
                                 $scope.hl7Versions('ctx');
                             });
                         } else {
@@ -896,7 +896,7 @@ angular
                     ['Create Profile Component', function($itemScope) {
                         if ($rootScope.hasChanges()) {
 
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            $rootScope.openConfirmLeaveDlg().then(function() {
                                 $scope.createProfileComponent();
                             });
                         } else {
@@ -910,7 +910,7 @@ angular
                     ['Create Composite Profile', function($itemScope) {
                         if ($rootScope.hasChanges()) {
 
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            $rootScope.openConfirmLeaveDlg().then(function() {
                                 $scope.createCompositeProfile();
                             });
                         } else {
@@ -928,7 +928,7 @@ angular
                             console.log(profileComponent);
                             if (profileComponent.compositeProfileStructureList === null || (profileComponent.compositeProfileStructureList && profileComponent.compositeProfileStructureList.length === 0)) {
                                 if ($rootScope.hasChanges()) {
-                                    $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                    $rootScope.openConfirmLeaveDlg().then(function() {
                                         $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
                                     });
                                 } else {
@@ -951,7 +951,7 @@ angular
                     ['Add Profile Components', function($itemScope) {
                         console.log($itemScope.cm);
                         if ($rootScope.hasChanges()) {
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            $rootScope.openConfirmLeaveDlg().then(function() {
                                 $rootScope.addMorePcsToCompositeProfile($itemScope.cm);
                             });
                         } else {
@@ -968,7 +968,7 @@ angular
                         console.log($itemScope.cm);
 
                         if ($rootScope.hasChanges()) {
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            $rootScope.openConfirmLeaveDlg().then(function() {
                                 $rootScope.deleteCompositeProfile($itemScope.cm);
                             });
                         } else {
@@ -989,7 +989,7 @@ angular
                     ['Add Value Sets', function($itemScope) {
                         if ($rootScope.hasChanges()) {
 
-                            $rootScope.openConfirmLeaveDlg().result.then(function() {
+                            $rootScope.openConfirmLeaveDlg().then(function() {
                                 $scope.addTable($rootScope.igdocument);
                             });
                         } else {
@@ -1007,7 +1007,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     $scope.copyDatatype($itemScope.data);
                                 });
                             } else {
@@ -1031,7 +1031,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
 
                                     $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);
                                 });
@@ -1050,7 +1050,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
 
                                 });
@@ -1064,7 +1064,7 @@ angular
                             console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
 
                                     $rootScope.addDatatypesFromUserLib("2.1");
 
@@ -1084,7 +1084,7 @@ angular
                             console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
 
                                     $rootScope.addDatatypeFromMasterLib("2.1");
 
@@ -1104,7 +1104,7 @@ angular
                     //         console.log("adding datatype");
                     //         if ($rootScope.hasChanges()) {
                     //
-                    //             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                    //             $rootScope.openConfirmLeaveDlg().then(function() {
                     //
                     //                 $rootScope.addSharedDatatypes();
                     //
@@ -1126,7 +1126,7 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     $scope.addDatatypeTemplate();
 
 
@@ -1146,7 +1146,7 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     $scope.addDatatypeTemplate();
 
 
@@ -1163,7 +1163,7 @@ angular
                     //     function($itemScope) {
                     //         if ($rootScope.hasChanges()) {
                     //
-                    //             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                    //             $rootScope.openConfirmLeaveDlg().then(function() {
                     //
                     //                 $rootScope.addDatatypesFromUserLib("2.1");
                     //
@@ -1182,7 +1182,7 @@ angular
                     //     function($itemScope) {
                     //         if ($rootScope.hasChanges()) {
                     //
-                    //             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                    //             $rootScope.openConfirmLeaveDlg().then(function() {
                     //
                     //                 $rootScope.addDatatypeFromMasterLib("2.1");
                     //
@@ -1201,7 +1201,7 @@ angular
                     //     function($itemScope) {
                     //         if ($rootScope.hasChanges()) {
                     //
-                    //             $rootScope.openConfirmLeaveDlg().result.then(function() {
+                    //             $rootScope.openConfirmLeaveDlg().then(function() {
                     //
                     //                 $rootScope.addSharedDatatypes();
                     //
@@ -1226,7 +1226,7 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
 
                                 });
@@ -1243,7 +1243,7 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     $rootScope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
 
                                 });
@@ -1260,7 +1260,7 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     $rootScope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
 
                                 });
@@ -1276,7 +1276,7 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     $rootScope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
 
                                 });
@@ -1298,7 +1298,7 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     CloneDeleteSvc.createNewTable($rootScope.tableLibrary.scope, $scope.tableLibrary);
                                     $scope.editTableINLIB($rootScope.table);
                                 });
@@ -1315,7 +1315,7 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     $rootScope.addHL7Table($rootScope.tableLibrary, "2.1");
                                 });
                             } else {
@@ -1334,7 +1334,7 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     $rootScope.addPHINVADSTables($rootScope.tableLibrary);
                                 });
                             } else {
@@ -1348,7 +1348,7 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().result.then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function() {
                                     $rootScope.addCSVTables($$rootScope.tableLibrary);
                                 });
                             } else {
@@ -1370,7 +1370,7 @@ angular
 
                     if ($rootScope.hasChanges()) {
 
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
 
                             processEditSeg(seg);
                         });
@@ -1393,7 +1393,7 @@ angular
 
                     if ($rootScope.hasChanges()) {
 
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
                             processEditIg(ig);
                         });
                     } else {
@@ -1416,7 +1416,7 @@ angular
                     }
                     if ($rootScope.hasChanges()) {
 
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
                             processEditSection(section);
                         });
                     } else {
@@ -1440,7 +1440,7 @@ angular
                 $scope.editRoutSection = function(param) {
                     if ($rootScope.hasChanges()) {
 
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
                             processEditRoutSection(param);
                         });
                     } else {
@@ -1515,7 +1515,7 @@ angular
                     if ($rootScope.hasChanges()) {
                         console.log("found changes");
 
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
                             console.log("dialog opened");
                             processEditDataType(data);
                         });
@@ -1532,7 +1532,7 @@ angular
 
                 $rootScope.editTable = function(table) {
                     if ($rootScope.hasChanges()) {
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
                             processEditTable(table);
                         });
                     } else {
@@ -1549,7 +1549,7 @@ angular
 
                 $scope.editTableINLIB = function(table) {
                     if ($rootScope.hasChanges()) {
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
                             processEditTableInLib(table);
                         });
                     } else {
@@ -1571,7 +1571,7 @@ angular
                 $scope.editMessage = function(message) {
 
                     if ($rootScope.hasChanges()) {
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
                             processEditMessage(message);
                         });
                     } else {
@@ -1607,7 +1607,7 @@ angular
                 $rootScope.editPC = function(pc) {
 
                     if ($rootScope.hasChanges()) {
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
                             processEditPC(pc);
                         });
                     } else {
@@ -1618,7 +1618,7 @@ angular
                 $rootScope.editCM = function(cm) {
 
                     if ($rootScope.hasChanges()) {
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
                             processEditCM(cm);
                         });
                     } else {
@@ -1638,7 +1638,7 @@ angular
 
                     if ($rootScope.hasChanges()) {
 
-                        $rootScope.openConfirmLeaveDlg().result.then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function() {
                             processEditProfile();
                         });
                     } else {

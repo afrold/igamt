@@ -84,7 +84,7 @@ public class SerializableTable extends SerializableSection {
                     valueElement.addAttribute(
                         new Attribute("Usage", (c.getCodeUsage() == null) || c.getValue() ==null || "".equals(c.getValue()) || "...".equals(c.getValue()) ? "" : c.getCodeUsage()));
                     valueElement.addAttribute(
-                        new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
+                        new Attribute("Comment", (c.getComments() == null) ? "" : c.getComments()));
                     valueSetDefinitionElement.appendChild(valueElement);
                 }
             }

@@ -74,26 +74,59 @@
     </div>
 </script>
 <script type="text/ng-template" id="ConfirmLeaveDlg.html">
-    <div class="modal-header">
-        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Confirmation
-        </p>
-    </div>
-    <div class="modal-body">
-        <p style="text-align: left">You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.</p>
-    </div>
-    <div class="modal-footer">
+    <!--<div class="modal-header">-->
+        <!--<p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Confirmation-->
+        <!--</p>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+        <!--<p style="text-align: left">You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.</p>-->
+    <!--</div>-->
+    <!--<div class="modal-footer">-->
 
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i
+        <!--<md-button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i-->
+                <!--class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>-->
+        <!--</md-button>-->
+        <!--<md-button class="btn btn-raised btn-warning btn-sm" ng-click="discard()"><span><i-->
+                <!--class="fa fa-sign-out fa-fw">&nbsp; </i>Discard Changes</span>-->
+        <!--</md-button>-->
+        <!--<md-button class="btn btn-raised btn-success btn-sm" ng-click="save()"><span><i-->
+                <!--class="fa fa-sign-out fa-fw">&nbsp; </i>Save and Continue</span>-->
+        <!--</md-button>-->
+        <!--<div ng-show="error!=null" ng-bind="error"></div>-->
+    <!--</div>-->
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Confirmation </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <p style="text-align: left">You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.</p>
+
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-click="discard()"><span><i
+                </md-button>
+                <md-button class="btn btn-raised btn-warning btn-sm" ng-click="discard()"><span><i
                 class="fa fa-sign-out fa-fw">&nbsp; </i>Discard Changes</span>
-        </button>
-        <button class="btn btn-raised btn-success btn-sm" ng-click="save()"><span><i
+                </md-button>
+                <md-button class="btn btn-raised btn-success btn-sm" ng-click="save()"><span><i
                 class="fa fa-sign-out fa-fw">&nbsp; </i>Save and Continue</span>
-        </button>
-        <div ng-show="error!=null" ng-bind="error"></div>
-    </div>
+                </md-button>
+                <div ng-show="error!=null" ng-bind="error"></div>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="NotificationSuccessTemplate.html">
     <div class="ui-notification custom-template">

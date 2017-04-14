@@ -233,12 +233,8 @@
     </xsl:template>
 
     <xsl:template match="coconstraints">
-        <xsl:element name="p">
-            <xsl:element name="strong">
-                <xsl:element name="u">
-                    <xsl:text>Co-Constraints</xsl:text>
-                </xsl:element>
-            </xsl:element>
+        <xsl:element name="h4">
+            <xsl:text>Co-Constraints</xsl:text>
         </xsl:element>
         <xsl:copy-of select="table"/>
     </xsl:template>
