@@ -55,6 +55,7 @@ public class PathGroupServiceImpl implements PathGroupService {
       List<SubProfileComponent> toRemove = new ArrayList<>();
       List<SubProfileComponent> toAdd = new ArrayList<>();
       for (SubProfileComponent subPc : pc.getChildren()) {
+
         if (!subPc.getPath().startsWith(coreMessage.getStructID())) {
           String[] elements = subPc.getPath().split("\\.", 2);
           String segName = elements[0];
@@ -80,6 +81,11 @@ public class PathGroupServiceImpl implements PathGroupService {
         if (!sub.getPath().startsWith(coreMessage.getStructID())) {
 
         } else {
+          if (sub.getPath().equals(coreMessage.getStructID())) {
+            if (sub.getAttributes().getConformanceStatements() != null) {
+              coreMessage.setConformanceStatements(sub.getAttributes().getConformanceStatements());
+            }
+          }
           if (sub.getValueSetBindings() != null) {
             for (ValueSetOrSingleCodeBinding v : sub.getValueSetBindings()) {
               for (ValueSetOrSingleCodeBinding vsb : coreMessage.getValueSetBindings()) {
@@ -193,9 +199,9 @@ public class PathGroupServiceImpl implements PathGroupService {
       Collections.sort(pc.getChildren(), Comp);
       for (SubProfileComponent subPc : pc.getChildren()) {
         add(pathGroups, subPc.getPath(), subPc.getAttributes());
-
-
       }
+      System.out.println("=====");
+      System.out.println(pc.getChildren().get(0).toString());
     }
 
     return pathGroups;
@@ -334,6 +340,8 @@ public class PathGroupServiceImpl implements PathGroupService {
     }
     PathGroup grp = new PathGroup();
     createHierarchy(grp, path, attributes);
+    System.out.println("%%%%%%5");
+    System.out.println(grp.toString());
     pathGroups.add(grp);
   }
 

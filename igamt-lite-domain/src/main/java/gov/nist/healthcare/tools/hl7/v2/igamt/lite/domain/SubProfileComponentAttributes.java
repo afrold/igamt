@@ -17,6 +17,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+
 public class SubProfileComponentAttributes {
 
   private Usage usage;
@@ -41,6 +43,9 @@ public class SubProfileComponentAttributes {
   private String text = "";
   private SegmentLink ref;
   private SegmentLink oldRef;
+  private List<ConformanceStatement> oldConformanceStatements =
+      new ArrayList<ConformanceStatement>();
+  private List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
 
 
   public Usage getUsage() {
@@ -209,6 +214,23 @@ public class SubProfileComponentAttributes {
 
   public void setOldRef(SegmentLink oldRef) {
     this.oldRef = oldRef;
+  }
+
+
+  public List<ConformanceStatement> getOldConformanceStatements() {
+    return oldConformanceStatements;
+  }
+
+  public void setOldConformanceStatements(List<ConformanceStatement> oldConformanceStatements) {
+    this.oldConformanceStatements = oldConformanceStatements;
+  }
+
+  public List<ConformanceStatement> getConformanceStatements() {
+    return conformanceStatements;
+  }
+
+  public void setConformanceStatements(List<ConformanceStatement> conformanceStatements) {
+    this.conformanceStatements = conformanceStatements;
   }
 
   @Override

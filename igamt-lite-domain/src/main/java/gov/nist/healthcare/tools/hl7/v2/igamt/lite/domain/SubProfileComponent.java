@@ -32,6 +32,8 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
       new ArrayList<ValueSetOrSingleCodeBinding>();
   private SingleElementValue oldSingleElementValues = new SingleElementValue();
   private SingleElementValue singleElementValues = new SingleElementValue();
+
+
   private List<Comment> oldComments = new ArrayList<Comment>();
   private List<Comment> comments = new ArrayList<Comment>();
   private List<Predicate> oldPredicates = new ArrayList<Predicate>();
@@ -143,6 +145,7 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   public void setSingleElementValues(SingleElementValue singleElementValues) {
     this.singleElementValues = singleElementValues;
   }
+
 
 
   public List<Comment> getOldComments() {
