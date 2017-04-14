@@ -5272,8 +5272,8 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="col-md-2">
-                                                        <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text" />
-                                                        <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
+                                                        <input class="form-control" ng-class="{'form-control-invalid': $root.isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text" />
+                                                        <span style="color:red;" ng-show="$root.isEmptyConstraintID(newConstraint)">ID Empty</span>
                                                     </td>
                                                     <td class="col-md-8">
                                                         <input class="form-control" ng-model="newConstraint.freeText" type="text" />
@@ -5300,8 +5300,8 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="col-md-2">
-                                                        <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text" />
-                                                        <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
+                                                        <input class="form-control" ng-class="{'form-control-invalid': $root.isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text" />
+                                                        <span style="color:red;" ng-show="$root.isEmptyConstraintID(newConstraint)">ID Empty</span>
                                                     </td>
                                                     <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterNodeDrop'}">
                                                         <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
@@ -5333,12 +5333,12 @@
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2">
-                                                        <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'" />
-                                                        <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
+                                                        <select class="form-control" ng-class="{'form-control-invalid': $root.isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in $root.config.constraintVerbs | orderBy:'toString()'" />
+                                                        <span style="color:red;" ng-show="$root.isEmptyConstraintVerb(newConstraint)">Empty verb</span>
                                                     </td>
                                                     <td class="col-md-2">
-                                                        <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
-                                                        <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty constraint pattern</span>
+                                                        <select class="form-control" ng-class="{'form-control-invalid': $root.isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in $root.config.constraintTypes | orderBy:'toString()'" />
+                                                        <span style="color:red;" ng-show="$root.isEmptyConstraintPattern(newConstraint)">Empty constraint pattern</span>
                                                     </td>
                                                     <td class="col-md-2" ng-hide="newConstraint.contraintType == 'identical to another node' ||
                                      newConstraint.contraintType == 'equal to another node' ||
@@ -5354,40 +5354,40 @@
                                            newConstraint.contraintType == 'equal to or greater than' ||
                                            newConstraint.contraintType == 'less than' ||
                                            newConstraint.contraintType == 'equal to or less than'">
-                                <input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" type="text"/>
+                                <input class="form-control" ng-class="{'form-control-invalid': $root.isEmptyConstraintValue(newConstraint)}" ng-model="newConstraint.value" type="text"/>
                                 <span ng-show="newConstraint.contraintType == 'a literal value'">Case Insensitive: </span>
                                                         <input ng-show="newConstraint.contraintType == 'a literal value'" type="checkbox" ng-model="newConstraint.ignoreCase" />
-                                                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
+                                                        <span style="color:red;" ng-show="$root.isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </span>
                                                         <span ng-show="newConstraint.contraintType == 'one of list values'">
                                 <input class="form-control"
-                                       ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
+                                       ng-class="{'form-control-invalid': $root.isEmptyConstraintValue(newConstraint)}"
                                        ng-model="newConstraint.value"
                                        placeholder="Comma-Separated Values(CSV)"
                                        type="text"/>
-                                <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
+                                <span style="color:red;" ng-show="$root.isEmptyConstraintValue(newConstraint)">Empty list value</span>
                                                         </span>
                                                         <span ng-show="newConstraint.contraintType == 'formatted value'">
                                 <select class="form-control"
-                                        ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"
+                                        ng-class="{'form-control-invalid': $root.isEmptyConstraintValue(newConstraint)}"
                                         ng-model="newConstraint.value"
-                                        ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats | orderBy:'toString()'"/>
+                                        ng-options="predefinedFormat for predefinedFormat in $root.config.predefinedFormats | orderBy:'toString()'"/>
                                 <div ng-show="newConstraint.value === 'Regular expression'">
                                     <input class="form-control"
-                                           ng-class="{'form-control-invalid': isEmptyConstraintValue2(newConstraint)}"
+                                           ng-class="{'form-control-invalid': $root.isEmptyConstraintValue2(newConstraint)}"
                                            ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
                                 </div>
-                                <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty format</span>
-                                                        <span style="color:red;" ng-show="newConstraint.value === 'Regular expression' && isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
+                                <span style="color:red;" ng-show="$root.isEmptyConstraintValue(newConstraint)">Empty format</span>
+                                                        <span style="color:red;" ng-show="newConstraint.value === 'Regular expression' && $root.isEmptyConstraintValue2(newConstraint)">Empty regular expression</span>
                                                         </span>
                                                         <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
                                 <span>ValueSet ID: </span>
-                                                        <select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
-                                    <option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="{{getUpdatedBindingIdentifier(table)}}">
+                                                        <select class="form-control form-control-short" ng-class="{'form-control-invalid': $root.isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
+                                    <option ng-repeat="table in $root.tables track by table.id|orderBy:'+bindingIdentifier'" value="{{$root.getUpdatedBindingIdentifier(table)}}">
                                         {{::table.bindingIdentifier}}
                                     </option>
                                 </select>
-                                                        <span style="color:red;" ng-show="isEmptyConstraintValueSet(newConstraint)">Empty valueset</span>
+                                                        <span style="color:red;" ng-show="$root.isEmptyConstraintValueSet(newConstraint)">Empty valueset</span>
                                                         <br/>
                                                         <span>BindingStrength: </span>
                                                         <select name="bindingStrength" class="form-control form-control-short" ng-model="newConstraint.bindingStrength">
@@ -5436,7 +5436,7 @@
                                                         </div>
                                                     </td>
                                                     <td class="col-md-2" align="center">
-                                                        <button class="btn btn-raised btn-info btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId, 'message', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                                        <button class="btn btn-raised btn-info btn-xxs" ng-click="addConformanceStatement();" ng-disabled="$root.erorrForConfStatement(newConstraint, targetPlainId, 'message', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                         <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
                                                     </td>
                                                 </tr>
@@ -5463,7 +5463,7 @@
                                                         <span style="color:red;" ng-show="!newComplexConstraintId || newComplexConstraintId == ''">ID Empty</span>
                                                     </td>
                                                     <td class="col-md-2">
-                                                        <select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
+                                                        <select class="form-control" ng-class="{'form-control-invalid': $root.isEmptyCompositeType(compositeType)}" ng-model="compositeType">
                                         <option value="AND">AND</option>
                                         <option value="OR">OR</option>
                                         <option value="XOR">XOR</option>
@@ -5471,7 +5471,7 @@
                                         <option value="FORALL">FORALL(True, if all assertions are true)</option>
                                         <option value="EXIST">EXIST(True, if one of assertions is true)</option>
                                     </select>
-                                                        <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
+                                                        <span style="color:red;" ng-show="$root.isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                     </td>
                                                     <td class="col-md-1" align="center" style="width: 4.1667%">
                                                         <span ng-show="compositeType == 'IFTHEN'">IF</span>
@@ -5498,7 +5498,7 @@
                                                     </td>
                                                     <td class="col-md-1" align="center">
                                                         <button class="btn btn-raised btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                                                        <button class="btn btn-raised btn-primary btn-xxs" ng-click="addComplexConformanceStatement()" ng-disabled="erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints)">
+                                                        <button class="btn btn-raised btn-primary btn-xxs" ng-click="addComplexConformanceStatement()" ng-disabled="$root.erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint, constraints)">
                                         <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span>
                                     </button>
                                                     </td>
@@ -5532,7 +5532,7 @@
                                                     </td>
                                                     <td class="col-md-2">
                                                         <input ng-disabled="seeOrEdit!=='edit'" class="form-control" ng-model="c.constraintId" ng-change="setChanged();" type="text" />
-                                                        <span style="color:red;" ng-show="isEmptyConstraintID(c)">ID Empty</span>
+                                                        <span style="color:red;" ng-show="$root.isEmptyConstraintID(c)">ID Empty</span>
                                                     </td>
                                                     <td class="col-md-8">
                                                         <input ng-disabled="seeOrEdit!=='edit'" class="form-control" ng-model="c.description" ng-change="setChanged()" type="text" />
@@ -5634,13 +5634,13 @@
                 <div ng-show="contextKey == data.contextKey">
                     <div data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}">
                         <span class="label label-segment label-icon">S</span>
-                        <span style="font-weight:bold;">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::segmentsMap[data.ref.id].name}}</span>
+                        <span style="font-weight:bold;">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::$root.segmentsMap[data.ref.id].name}}</span>
                     </div>
                 </div>
                 <div ng-hide="contextKey == data.contextKey">
                     <div>
                         <span class="label label-segment label-icon">S</span>
-                        <span style="color:#bebebe">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::segmentsMap[data.ref.id].name}}</span>
+                        <span style="color:#bebebe">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::$root.segmentsMap[data.ref.id].name}}</span>
                     </div>
                 </div>
 

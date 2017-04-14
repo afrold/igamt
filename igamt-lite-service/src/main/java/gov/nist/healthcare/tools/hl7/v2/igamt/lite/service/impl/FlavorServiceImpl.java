@@ -92,13 +92,17 @@ public class FlavorServiceImpl implements FlavorService {
           segmentFlavor.setExt(ext + "_" + segRef.getPosition());
           segmentFlavor.setId(ObjectId.get().toString());
           segmentFlavor.setScope(SCOPE.USER);
-          for (SubProfileComponentAttributes attr : attributes) {
-            if (attr.getConformanceStatements() != null
-                && attr.getConformanceStatements().size() > 0) {
-              segmentFlavor.setConformanceStatements(attr.getConformanceStatements());
 
+          if (attributes != null) {
+            for (SubProfileComponentAttributes attr : attributes) {
+              if (attr.getConformanceStatements() != null
+                  && attr.getConformanceStatements().size() > 0) {
+                segmentFlavor.setConformanceStatements(attr.getConformanceStatements());
+
+              }
             }
           }
+
           queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
           segRef.getRef().setId(segmentFlavor.getId());
           segRef.getRef().setExt(segmentFlavor.getExt());
@@ -109,25 +113,28 @@ public class FlavorServiceImpl implements FlavorService {
           e.printStackTrace();
         }
       } else {
-        for (SubProfileComponentAttributes attr : attributes) {
-          if (attr.getConformanceStatements() != null
-              && attr.getConformanceStatements().size() > 0) {
-            Segment originalSeg = queryService.getSegmentsMap().get(segRef.getRef().getId());
-            try {
-              Segment segmentFlavor = originalSeg.clone();
-              segmentFlavor.setExt(ext + "_" + segRef.getPosition());
-              segmentFlavor.setId(ObjectId.get().toString());
-              segmentFlavor.setScope(SCOPE.USER);
-              segmentFlavor.setConformanceStatements(attr.getConformanceStatements());
-              queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
-              segRef.getRef().setId(segmentFlavor.getId());
-              segRef.getRef().setExt(segmentFlavor.getExt());
+        if (attributes != null) {
+          for (SubProfileComponentAttributes attr : attributes) {
+            if (attr.getConformanceStatements() != null
+                && attr.getConformanceStatements().size() > 0) {
+              Segment originalSeg = queryService.getSegmentsMap().get(segRef.getRef().getId());
+              try {
+                Segment segmentFlavor = originalSeg.clone();
+                segmentFlavor.setExt(ext + "_" + segRef.getPosition());
+                segmentFlavor.setId(ObjectId.get().toString());
+                segmentFlavor.setScope(SCOPE.USER);
+                segmentFlavor.setConformanceStatements(attr.getConformanceStatements());
+                queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
+                segRef.getRef().setId(segmentFlavor.getId());
+                segRef.getRef().setExt(segmentFlavor.getExt());
 
 
-            } catch (CloneNotSupportedException e) {
-              // TODO Auto-generated catch block
-              e.printStackTrace();
+              } catch (CloneNotSupportedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
             }
+
           }
 
 

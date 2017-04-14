@@ -20,7 +20,7 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Profile Component: {{profileComponent.name}} </span>
                         <div class="pull-right">
-                            <button ng-disabled="editForm.$invalid ||!editForm.$dirty" title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-click="save()">
+                            <button ng-disabled="!editForm.$dirty" title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-click="save()">
                                                             <span><i class="fa fa-check fa-fw"></i> Save</span>
                                                         </button>
                         </div>
@@ -175,9 +175,15 @@
                                                                     </td>
                                                                     <td ng-class="{'col-md-2 col-fixed-80 select-change':node.attributes.usage,'col-md-2 col-fixed-80':!node.attributes.usage,'emptyCol':node.type==='message'}">
                                                                         <div ng-if="node.usage !== 'C'  || (node.usage === 'C' && !findingPredicates(node))" ng-hide="node.type==='message'">
-                                                                            <select style="width:50px;" ng-init="initUsage(node)" name="usage" ng-change="setDirty();updateUsage(node);" class="form-control input-sm" ng-model="node.usage">
-                                                                                <option ng-repeat="usage in config.usages">{{usage}}</option>
-                                                                            </select>
+
+
+                                                                            <md-select ng-init="initUsage(node)" placeholder="Select Usage" name="usage" id="usage" class="inside-table" ng-change="setDirty();updateUsage(node);" required ng-model="node.usage">
+
+                                                                                <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                                                                    {{usage}}
+
+                                                                                </md-option>
+                                                                            </md-select>
                                                                         </div>
 
                                                                         <span ng-if="findingPredicates(node)" class="badge label-white">
@@ -192,8 +198,13 @@
 
                                                                     <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component'|| node.type==='message'">
                                                                     </td>
-                                                                    <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.min,'col-md-1 col-fixed-100':!node.attributes.min}" ng-if="node.type!=='component' && node.type!=='message'">
-                                                                        <input style="width:50px;" ng-init="initMinCard(node)" ng-change="setDirty();updateMinCard(node);" class="form-control" name="min" ng-pattern="/^\d+$/" ng-model="node.min" ng-minlength="1">
+                                                                    <td ng-class="{'input-change ':node.attributes.min}" ng-if="node.type!=='component' && node.type!=='message'">
+
+                                                                        <div>
+                                                                            <md-input-container flex="50" class="withoutMargin">
+                                                                                <input aria-label="minC" style="width:50px;" name="min" min="0" type="number" ng-init="initMinCard(node)" ng-change="setDirty();updateMinCard(node);" ng-pattern="/^\d+$/"  ng-model="node.min" ng-minlength="1" />
+                                                                            </md-input-container>
+                                                                        </div>
                                                                         <a ng-show="node.attributes.min" ng-click="cancelMinCard(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                                     </td>
 
@@ -201,8 +212,14 @@
                                                                     <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type==='component' || node.type==='message'">
                                                                     </td>
                                                                     <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.max,'col-md-1 col-fixed-100':!node.attributes.max}" ng-if="node.type!=='component' && node.type!=='message'">
-                                                                        <input style="width:50px;" ng-init="initMaxCard(node)" ng-change="setDirty();updateMaxCard(node);" class="form-control" name="max" ng-pattern="/^\d+$|^\*?$/" ng-model="node.max">
+                                                                        <div>
+                                                                            <md-input-container flex="50" class="withoutMargin">
+
+                                                                                <input aria-label="MaxC" style="width:50px;" type="text" name="max" ng-init="initMaxCard(node)"  ng-change="setDirty();updateMaxCard(node);" ng-pattern="/^\d+$|^\*?$/" ng-model="node.max">
+                                                                            </md-input-container>
+                                                                        </div>
                                                                         <a ng-show="node.attributes.max" ng-click="cancelMaxCard(node)"><i class="fa fa-remove fa-fw"></i></a>
+
                                                                     </td>
 
 
@@ -210,7 +227,12 @@
 
                                                                     </td>
                                                                     <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.minLength,'col-md-1 col-fixed-100':!node.attributes.minLength}" ng-if="node.type==='field' || node.type==='component'">
-                                                                        <input style="width:50px;" ng-init="initMinL(node)" ng-change="setDirty();updateMinL(node);" class="form-control" name="minL" ng-model="node.minLength">
+
+                                                                        <div>
+                                                                            <md-input-container flex="50" class="withoutMargin">
+                                                                                <input aria-label="minL" style="width:50px;" name="minLength" type="number" min="0" ng-init="initMinL(node)" ng-change="setDirty();updateMinL(node);" ng-pattern="/^\d+$/" ng-model="node.minLength" ng-minlength="1">
+                                                                            </md-input-container>
+                                                                        </div>
                                                                         <a ng-show="node.attributes.minLength" ng-click="cancelMinL(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                                     </td>
 
@@ -218,7 +240,12 @@
                                                                     <td class="col-md-1 col-fixed-100 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
                                                                     </td>
                                                                     <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.maxLength,'col-md-1 col-fixed-100':!node.attributes.maxLength}" ng-if="node.type==='field' || node.type==='component'">
-                                                                        <input style="width:50px;" ng-init="initMaxL(node)" ng-change="setDirty();updateMaxL(node);" class="form-control" name="maxL" ng-model="node.maxLength">
+
+                                                                        <div>
+                                                                            <md-input-container flex="50" class="withoutMargin">
+                                                                                <input aria-label="maxL" type="text" name="maxLength" style="width:50px;" ng-init="initMaxL(node)" ng-change="setDirty();updateMaxL(node);" ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength">
+                                                                            </md-input-container>
+                                                                        </div>
                                                                         <a ng-show="node.attributes.maxLength" ng-click="cancelMaxL(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                                     </td>
 
@@ -226,7 +253,12 @@
                                                                     <td class="col-md-1 col-fixed-30 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
                                                                     </td>
                                                                     <td ng-show="showConfLength()" ng-class="{'col-md-1 col-fixed-30 input-change ':node.attributes.confLength,'col-md-1 col-fixed-30':!node.attributes.confLength}" ng-if="node.type==='field' || node.type==='component'">
-                                                                        <input style="width:50px;" ng-init="initConfL(node)" ng-change="setDirty();updateConfL(node);" class="form-control" name="confL" ng-model="node.confLength">
+                                                                       
+                                                                        <div>
+                                                                            <md-input-container flex="100" class="withoutMargin">
+                                                                                <input aria-label="conf" name="confLength"style="width:50px;" ng-init="initConfL(node)" ng-change="setDirty();updateConfL(node);" ng-pattern="'\\d*[#=]{0,1}'" ng-model="node.confLength" >
+                                                                            </md-input-container>
+                                                                        </div>
                                                                         <a ng-show="node.attributes.confLength" ng-click="cancelConfL(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                                     </td>
 
@@ -236,7 +268,7 @@
                                                                     </td>
                                                                     <td ng-class="{'col-md-2 col-fixed-350 input-change ':node.attributes.datatype,'col-md-2 col-fixed-350':!node.attributes.datatype}" ng-if="node.type==='field' || node.type==='component'">
 
-                                                                        <ng-form name="innerForm" class="form-inline" ng-controller="DatatypeRowCtrl" ng-init="init(node);initDatatype(node)">
+                                                                        <ng-form name="innerForm" class="form-inline" ng-controller="FormRowCtrl" ng-init="initDatatype(node)">
                                                                             <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                                                                                 <span class="badge label-white" ng-show="editableDT!==node.id">
                                                                                     <display-label of="datatypesMap[node.datatype.id]" desc="false"  ng-click="redirectDT(node.datatype)"></display-label>

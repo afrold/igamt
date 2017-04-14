@@ -39,7 +39,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.CompositeProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -144,6 +143,8 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     for (PathGroup pathGroup : pathGroups) {
       try {
         DataModel dm = queryService.get(dataModel, pathGroup.getPath());
+        System.out.println("+++++");
+        System.out.println(pathGroup.toString());
         DataModel context =
             flavorService.createFlavor(ext, dm, pathGroup.getAttributes(), pathGroup.getChildren());
         browse(ext, context, pathGroup.getChildren());

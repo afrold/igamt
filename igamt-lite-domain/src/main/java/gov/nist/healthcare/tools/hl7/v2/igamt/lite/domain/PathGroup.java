@@ -15,6 +15,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 public class PathGroup {
 
   private String path;
@@ -50,6 +52,11 @@ public class PathGroup {
 
   public void setChildren(List<PathGroup> children) {
     this.children = children;
+  }
+
+  @Override
+  public String toString() {
+    return ReflectionToStringBuilder.toString(this);
   }
 
 

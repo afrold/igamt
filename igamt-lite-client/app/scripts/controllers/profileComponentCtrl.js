@@ -14,15 +14,15 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         isThirdOpen: false,
 
     };
-    $scope.setDirty = function() {
-        $scope.editForm.$dirty = true;
-    };
-    $scope.clearDirty = function() {
-        if ($scope.editForm) {
-            $scope.editForm.$setPristine();
-            $scope.editForm.$dirty = false;
-        }
-    }
+    // $scope.setDirty = function() {
+    //     $scope.editForm.$dirty = true;
+    // };
+    // $scope.clearDirty = function() {
+    //     if ($scope.editForm) {
+    //         $scope.editForm.$setPristine();
+    //         $scope.editForm.$dirty = false;
+    //     }
+    // }
     $scope.redirectVS = function(binding) {
 
         TableService.getOne(binding.tableId).then(function(valueSet) {
