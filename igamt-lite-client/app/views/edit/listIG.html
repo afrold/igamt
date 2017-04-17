@@ -46,10 +46,10 @@
 
                                     <md-content class= "container">
                                             <mdlist flex dnd-list="tmpIgs" class="container" style="padding: 39px; margin-top: 12px;">
-                                                <md-list-item ng-repeat="row in tmpIgs|filter:search" layout="row" dnd-draggable="row"
+                                                <md-list-item ng-repeat="row in tmpIgs |filter:search" layout="row" dnd-draggable="row"
                                                               dnd-moved="tmpIgs.splice($index, 1);orderIgs(tmpIgs)"
                                                               dnd-effect-allowed="move" style="border-bottom: 0.5px solid;padding: 18px; border-bottom: 0.1px solid;
-                                                              padding: 18px;
+                                                              padding: 0px;
                                                               overflow-x: hidden;
                                                               overflow-y: scroll;
 
@@ -58,7 +58,7 @@
 
 
 
-                                                                    <img ng-src="{{row.metaData.coverPicture}}" style="max-height: 150px;" class="md-avatar"/>
+                                                                    <img ng-src="{{row.metaData.coverPicture}}" style="max-height: 150px; cursor:move" class="md-avatar"/>
 
 
                                                     <div flex class="md-list-item-text" layout="column" style="margin-left: 5px; max-width: 100%">
@@ -109,10 +109,10 @@
 
 
                                                         <div flex layout="row" layout-align="start start">
-                                                            <label flex="20" style="color: black;" >Conformance Profiles</label>
-                                                            <div flex="80">
+                                                            <label flex="10" style="color: black; " class="label-list" >Conformance Profiles</label>
+                                                            <div flex="90">
 
-                                                                <label style="color:black; margin-right: 30px; font-size:14px;font-style: italic; font-weight: normal" ng-repeat="cp in row.profile.messages.children">{{cp.name}}</label>
+                                                                <label style="color:black; margin-right: 20px; font-size:13px; font-weight: normal" ng-repeat="cp in row.profile.messages.children">{{cp.name}}</label>
                                                             </div>
 
 

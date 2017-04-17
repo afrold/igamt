@@ -861,13 +861,23 @@ angular.module('igl')
             }
         });
         modalInstance.result.then(function(igdocument) {
+
             $scope.igdocumentToDelete = igdocument;
-            var idxP = _.findIndex($rootScope.igs, function(child) {
-                return child.id === igdocument.id;
-            });
-            $rootScope.igs.splice(idxP, 1);
-            $scope.tmpIgs.splice(idxP, 1);
-            //$scope.tmpIgs = [].concat($rootScope.igs);
+            console.log("DELETING ======");
+            console.log($scope.igdocumentToDelete);
+            for(i=0; i<$rootScope.igs.length;i++){
+                if($rootScope.igs[i].id==$scope.igdocumentToDelete.id){
+                    $rootScope.igs.splice(i, 1);
+                }
+
+            }
+            for(i=0; i<$scope.tmpIgs.length;i++){
+                if($scope.tmpIgs[i].id==$scope.igdocumentToDelete.id){
+                    $scope.tmpIgs.splice(i, 1);
+                }
+
+            }
+
         });
     };
 
@@ -2311,7 +2321,7 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function($scope,
         $scope.loading = true;
         $http.post($rootScope.api('api/igdocuments/' + $scope.igdocumentToDelete.id + '/delete')).then(function(response) {
             var index = $rootScope.igs.indexOf($scope.igdocumentToDelete);
-            if (index > -1) $rootScope.igs.splice(index, 1);
+           // if (index > -1) $rootScope.igs.splice(index, 1);
             $rootScope.backUp = null;
             if ($scope.igdocumentToDelete === $rootScope.igdocument) {
                 $rootScope.closeIGDocument();
@@ -2321,7 +2331,6 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function($scope,
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
             $rootScope.manualHandle = true;
-            $scope.igdocumentToDelete = null;
             $scope.loading = false;
             $modalInstance.close($scope.igdocumentToDelete);
 
