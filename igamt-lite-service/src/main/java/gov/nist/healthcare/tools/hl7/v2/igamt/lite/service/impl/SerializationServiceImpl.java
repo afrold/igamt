@@ -170,13 +170,17 @@ import nu.xom.Document;
                 CompositeProfile compositeProfile = compositeProfileService.buildCompositeProfile(compositeProfileStructure);
                 compositeProfiles.add(compositeProfile);
                 for(SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()){
+                  if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), this.exportConfig.getSegmentORGroupsCompositeProfileExport())){
                     identifyBindedItems(segmentRefOrGroup,compositeProfile);
+                  }
                 }
             }
         }
         for (Message message : igDocument.getProfile().getMessages().getChildren()){
             for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
+              if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), this.exportConfig.getSegmentORGroupsMessageExport())){
                 identifyBindedItems(segmentRefOrGroup);
+              }
             }
         }
         //IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
@@ -589,7 +593,10 @@ import nu.xom.Document;
             }
         } else if(segmentRefOrGroup instanceof Group){
             for(SegmentRefOrGroup children : ((Group) segmentRefOrGroup).getChildren()){
+              if((compositeProfile!=null&&ExportUtil.diplayUsage(children.getUsage(), this.exportConfig.getSegmentORGroupsMessageExport()))
+                  || (compositeProfile==null&&ExportUtil.diplayUsage(children.getUsage(), this.exportConfig.getSegmentORGroupsCompositeProfileExport()))){
                 identifyBindedItems(children, compositeProfile);
+              }
             }
         }
     }
