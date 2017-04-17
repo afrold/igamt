@@ -151,8 +151,10 @@
         </xsl:element>
         <xsl:if test="count(Constraint) &gt; 0">
             <xsl:if test="count(Constraint[@Type='cs']) &gt; 0">
-                <xsl:element name="h4">
-                    <xsl:text>Conformance Statements</xsl:text>
+                 <xsl:element name="p">
+ 				 	<xsl:element name="b">
+	                    <xsl:text>Conformance Statements</xsl:text>
+                    </xsl:element>
                 </xsl:element>
                 <xsl:element name="table">
                     <xsl:attribute name="class">
@@ -178,8 +180,10 @@
                 </xsl:element>
             </xsl:if>
             <xsl:if test="count(Constraint[@Type='pre']) &gt; 0">
-                <xsl:element name="h4">
-                    <xsl:text>Conditional Predicates</xsl:text>
+                <xsl:element name="p">
+   					<xsl:element name="b">
+                    	<xsl:text>Conditional Predicates</xsl:text>
+                   	</xsl:element>
                 </xsl:element>
                 <xsl:element name="table">
                     <xsl:attribute name="class">
