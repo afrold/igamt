@@ -733,11 +733,24 @@
     </div>
     <div class="modal-body">
         <form class="form-horizontal" novalidate>
-            <div layout-gt-xs="row">
-                <md-input-container class="md-block" style="width: 100%">
-                    <input ng-model="title" placeholder="Title">
-                </md-input-container>
-            </div>
+            <!--<md-content>-->
+            <!--<div layout-gt-xs="row">-->
+                <!--<md-input-container class="md-block" style="width: 100%">-->
+                    <!--<input ng-model="title" placeholder="Title">-->
+                <!--</md-input-container>-->
+            <!--<md-content>-->
+            <!--</div>-->
+            <!--</md-content>-->
+
+            <md-input-container layout="row">
+                <label flex="30" class="input-left">Title</label>
+                <input flex="70" type="text"
+                       ng-change="setDirty()"
+                       name="title"
+                       ng-model="title"
+                       required>
+
+            </md-input-container>
         </form>
     </div>
     <div class="modal-footer ">

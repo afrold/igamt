@@ -18,6 +18,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeTableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
+import nu.xom.Attribute;
+import nu.xom.Element;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -178,7 +181,19 @@ import java.util.Map;
               }
             }
             Boolean showConfLength = serializationUtil.isShowConfLength(segment.getHl7Version());
-            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables, coConstraintValueTableMap,showConfLength);
+            DynamicMappingDefinition dynamicMappingDefinition = segment.getDynamicMappingDefinition();
+            Map<String, Datatype> dynamicMappingDatatypeMap = new HashMap<>();
+            if(dynamicMappingDefinition != null){
+              for(DynamicMappingItem dynamicMappingItem : dynamicMappingDefinition.getDynamicMappingItems()){
+                if(dynamicMappingItem != null && dynamicMappingItem.getDatatypeId() != null){
+                  Datatype datatype = datatypeService.findById(dynamicMappingItem.getDatatypeId());
+                  if(datatype != null){
+                    dynamicMappingDatatypeMap.put(dynamicMappingItem.getDatatypeId(), datatype);
+                  }
+                }
+              }
+            }
+            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables, coConstraintValueTableMap, dynamicMappingDatatypeMap, showConfLength);
             serializableSegmentSection.addSection(serializableSegment);
             return serializableSegmentSection;
         }
