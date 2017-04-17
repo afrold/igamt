@@ -202,7 +202,7 @@
 
                                                                         <div>
                                                                             <md-input-container flex="50" class="withoutMargin">
-                                                                                <input aria-label="minC" style="width:50px;" name="min" min="0" type="number" ng-init="initMinCard(node)" ng-change="setDirty();updateMinCard(node);" ng-pattern="/^\d+$/"  ng-model="node.min" ng-minlength="1" />
+                                                                                <input aria-label="minC" style="width:50px;" name="min" min="0" type="number" ng-init="initMinCard(node)" ng-change="setDirty();updateMinCard(node);" ng-pattern="/^\d+$/" ng-model="node.min" ng-minlength="1" />
                                                                             </md-input-container>
                                                                         </div>
                                                                         <a ng-show="node.attributes.min" ng-click="cancelMinCard(node)"><i class="fa fa-remove fa-fw"></i></a>
@@ -215,7 +215,7 @@
                                                                         <div>
                                                                             <md-input-container flex="50" class="withoutMargin">
 
-                                                                                <input aria-label="MaxC" style="width:50px;" type="text" name="max" ng-init="initMaxCard(node)"  ng-change="setDirty();updateMaxCard(node);" ng-pattern="/^\d+$|^\*?$/" ng-model="node.max">
+                                                                                <input aria-label="MaxC" style="width:50px;" type="text" name="max" ng-init="initMaxCard(node)" ng-change="setDirty();updateMaxCard(node);" ng-pattern="/^\d+$|^\*?$/" ng-model="node.max">
                                                                             </md-input-container>
                                                                         </div>
                                                                         <a ng-show="node.attributes.max" ng-click="cancelMaxCard(node)"><i class="fa fa-remove fa-fw"></i></a>
@@ -253,10 +253,10 @@
                                                                     <td class="col-md-1 col-fixed-30 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
                                                                     </td>
                                                                     <td ng-show="showConfLength()" ng-class="{'col-md-1 col-fixed-30 input-change ':node.attributes.confLength,'col-md-1 col-fixed-30':!node.attributes.confLength}" ng-if="node.type==='field' || node.type==='component'">
-                                                                       
+
                                                                         <div>
                                                                             <md-input-container flex="100" class="withoutMargin">
-                                                                                <input aria-label="conf" name="confLength"style="width:50px;" ng-init="initConfL(node)" ng-change="setDirty();updateConfL(node);" ng-pattern="'\\d*[#=]{0,1}'" ng-model="node.confLength" >
+                                                                                <input aria-label="conf" name="confLength" style="width:50px;" ng-init="initConfL(node)" ng-change="setDirty();updateConfL(node);" ng-pattern="'\\d*[#=]{0,1}'" ng-model="node.confLength">
                                                                             </md-input-container>
                                                                         </div>
                                                                         <a ng-show="node.attributes.confLength" ng-click="cancelConfL(node)"><i class="fa fa-remove fa-fw"></i></a>
@@ -277,19 +277,26 @@
                                                                                 </span>
 
                                                                                 <div ng-if="editableDT===node.id">
-                                                                                    <md-select placeholder="Select Data type" ng-model="node.datatype" ng-change="selectDT(node)" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+                                                                                    <md-select placeholder="Select Data type" ng-model="node.datatype" ng-change="selectDT(node)" ng-controller="FormRowCtrl" ng-init="init(node)">
                                                                                         <md-option ng-value="datatype" ng-repeat="datatype in datatypes">
                                                                                             <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
                                                                                         </md-option>
                                                                                     </md-select>
                                                                                 </div>
-
                                                                                 <div align="center">
-                                                                                    <a ng-show="node.attributes.datatype" ng-show="node.datatype||editableDT===node.id" ng-click="editDatatype=false;cancelDatatype(node)" class="point">
+                                                                                    <a ng-show="editableDT===node.id" ng-click="backDT()" class="point">
+                                                                                        <span><i class="glyphicon glyphicon-remove"></i></span>
+                                                                                    </a>
+                                                                                    <a ng-show="node.attributes.datatype" ng-show="node.datatype && editableDT!==node.id" ng-click="editDatatype=false;cancelDatatype(node)" class="point">
                                                                                         <span><i class="glyphicon glyphicon-remove"></i></span>
                                                                                     </a>
 
+                                                                                    <a ng-show="datatypesMap[node.datatype.id].name.toUpperCase() === 'varies'.toUpperCase()" ng-click="showEditDynamicMappingDlg(node)" class="point">
+                                                                                        <span><i class="fa fa-cog" aria-hidden="true"></i></span>
+                                                                                    </a>
                                                                                 </div>
+
+                                                                                
                                                                             </div>
                                                                         </ng-form>
                                                                     </td>

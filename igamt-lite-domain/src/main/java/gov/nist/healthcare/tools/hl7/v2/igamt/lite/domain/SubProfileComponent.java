@@ -38,6 +38,9 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   private List<Comment> comments = new ArrayList<Comment>();
   private List<Predicate> oldPredicates = new ArrayList<Predicate>();
   private List<Predicate> predicates = new ArrayList<Predicate>();
+  private DynamicMappingDefinition oldDynamicMappingDefinition = new DynamicMappingDefinition();
+  private DynamicMappingDefinition dynamicMappingDefinition = new DynamicMappingDefinition();
+
 
   private String from;
 
@@ -179,6 +182,23 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
 
   public void setPredicates(List<Predicate> predicates) {
     this.predicates = predicates;
+  }
+
+
+  public DynamicMappingDefinition getOldDynamicMappingDefinition() {
+    return oldDynamicMappingDefinition;
+  }
+
+  public void setOldDynamicMappingDefinition(DynamicMappingDefinition oldDynamicMappingDefinition) {
+    this.oldDynamicMappingDefinition = oldDynamicMappingDefinition;
+  }
+
+  public DynamicMappingDefinition getDynamicMappingDefinition() {
+    return dynamicMappingDefinition;
+  }
+
+  public void setDynamicMappingDefinition(DynamicMappingDefinition dynamicMappingDefinition) {
+    this.dynamicMappingDefinition = dynamicMappingDefinition;
   }
 
   public String getFrom() {

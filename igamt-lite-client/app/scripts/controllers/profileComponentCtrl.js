@@ -564,12 +564,12 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
 
         }).then(function(results) {
-             $scope.setDirty();
+            $scope.setDirty();
             if ($scope.profileComponentParams) {
                 $scope.profileComponentParams.refresh();
             }
         });
-         
+
     };
     $scope.removePcEntry = function(node) {
         $rootScope.profileComponent.children = orderByFilter($rootScope.profileComponent.children, 'position');
@@ -796,6 +796,10 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         $scope.editableDT = '';
         $scope.setDirty();
     };
+    $scope.backDT = function() {
+        $scope.editableDT = '';
+
+    };
     $scope.cancelDefText = function(field) {
         field.attributes.text = null;
         $scope.setDirty();
@@ -988,6 +992,84 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
 
 
+    $scope.showEditDynamicMappingDlg = function(node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'DynamicMappingCtrl.html',
+            controller: 'DynamicMappingCtrlInPc',
+            windowClass: 'app-modal-window',
+            resolve: {
+                selectedNode: function(
+
+                ) {
+                    return node;
+                }
+            }
+        });
+        modalInstance.result.then(function(node) {
+            $scope.selectedNode = node;
+            $scope.setDirty();
+            $scope.segmentsParams.refresh();
+        }, function() {});
+    };
+
+
+
+});
+angular.module('igl').controller('DynamicMappingCtrlInPc', function($scope, $modalInstance, selectedNode, $rootScope) {
+    $scope.changed = false;
+    $scope.segment = $rootScope.segmentsMap[selectedNode.source.segmentId];
+    var positionArray = selectedNode.path.split(".");
+    position = positionArray[positionArray.length - 1];
+    $scope.selectedNode = angular.copy(selectedNode);
+    $scope.selectedNode.position = position;
+    $scope.selectedMapping = angular.copy(_.find($rootScope.segmentsMap[$scope.selectedNode.source.segmentId].dynamicMapping.mappings, function(mapping) {
+        return mapping.position == $scope.selectedNode.position;
+    }));
+    if (!$scope.selectedMapping) {
+        $scope.selectedMapping = {};
+        $scope.selectedMapping.cases = [];
+        $scope.selectedMapping.position = $scope.selectedNode.position;
+    }
+
+    $scope.deleteCase = function(c) {
+        var index = $scope.selectedMapping.cases.indexOf(c);
+        $scope.selectedMapping.cases.splice(index, 1);
+        $scope.recordChange();
+    };
+
+    $scope.addCase = function() {
+        var newCase = {
+            id: new ObjectId().toString(),
+            type: 'case',
+            value: '',
+            datatype: null
+        };
+
+        $scope.selectedMapping.cases.unshift(newCase);
+        $scope.recordChange();
+    };
+
+    $scope.recordChange = function() {
+        $scope.changed = true;
+        // $scope.editForm.$dirty = true;
+    };
+
+
+    $scope.updateMapping = function() {
+        var oldMapping = _.find($rootScope.segment.dynamicMapping.mappings, function(mapping) {
+            return mapping.position == $scope.selectedNode.position;
+        });
+        var index = $rootScope.segment.dynamicMapping.mappings.indexOf(oldMapping);
+        $rootScope.segment.dynamicMapping.mappings.splice(index, 1);
+        $rootScope.segment.dynamicMapping.mappings.unshift($scope.selectedMapping);
+        $scope.changed = false;
+        $scope.ok();
+    };
+
+    $scope.ok = function() {
+        $modalInstance.close($scope.selectedNode);
+    };
+
 });
 angular.module('igl').controller('addCommentCtrl',
     function($scope, $rootScope, $modalInstance, field, PcService, $http, SegmentLibrarySvc) {
@@ -1128,7 +1210,7 @@ angular.module('igl').controller('applyPcToCtrl',
 
 
 angular.module('igl').controller('addComponentsCtrl',
-    function($scope, $rootScope, $mdDialog, messages, segments, segmentsMap, datatypesMap, currentPc, PcLibraryService, datatypes, ngTreetableParams, $http, SegmentLibrarySvc, PcService,orderByFilter) {
+    function($scope, $rootScope, $mdDialog, messages, segments, segmentsMap, datatypesMap, currentPc, PcLibraryService, datatypes, ngTreetableParams, $http, SegmentLibrarySvc, PcService, orderByFilter) {
         $scope.selectedPC = [];
         console.log("current pc");
         console.log(currentPc);
