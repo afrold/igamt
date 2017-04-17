@@ -25,9 +25,15 @@ angular.module('igl').factory('GVTSvc',
             var httpHeaders = {};
             httpHeaders['Accept'] = 'application/json';
             var auth =  base64.encode(username + ':' + password);
-            httpHeaders['Authorization'] = 'Basic ' + auth;
-            $http.get($rootScope.appInfo.gvtUrl+ 'api/accounts/login', {headers:httpHeaders}).then(function (re) {
-                 delay.resolve(auth);
+            httpHeaders['gvt-auth'] = 'Basic ' + auth;
+            $http.get('api/gvt/login', {headers:httpHeaders}).then(function (res) {
+                console.log("result logging =====> " + res.data);
+                var re = angular.fromJson(res);
+                if(re.data === true) {
+                    delay.resolve(auth);
+                }else{
+                    delay.reject({data:"Invalid Credentials"});
+                }
             }, function(er){
                 delay.reject(er);
             });
