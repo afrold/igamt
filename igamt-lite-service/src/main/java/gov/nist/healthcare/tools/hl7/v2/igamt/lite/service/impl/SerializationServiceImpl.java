@@ -16,8 +16,6 @@ import nu.xom.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.util.*;
 
 /**
