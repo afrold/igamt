@@ -272,6 +272,8 @@ public class Bootstrap implements InitializingBean {
 
 
     // refactorCoConstrint();
+    
+    updateUserExportConfigs();
 
   }
 
@@ -557,6 +559,64 @@ public class Bootstrap implements InitializingBean {
     for (Component c : dt.getComponents()) {
       Datatype childDt = datatypeService.findById(c.getDatatype().getId());
       addDT(childDt, datatypeLibrary, tableLibrary);
+    }
+  }
+  
+  private void updateUserExportConfigs(){
+    List<ExportConfig> exportConfigs = exportConfig.findAll();
+    for(ExportConfig exportConfig : exportConfigs){
+      if(exportConfig!=null && exportConfig.getType() != null){
+        ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(exportConfig.getType());
+        if(exportConfig.getCodesExport()==null){
+          exportConfig.setCodesExport(defaultConfig.getCodesExport());
+        }
+        if(exportConfig.getComponentExport()==null){
+          exportConfig.setComponentExport(defaultConfig.getComponentExport());
+        }
+        if(exportConfig.getCompositeProfileColumn()==null){
+          exportConfig.setCompositeProfileColumn(defaultConfig.getCompositeProfileColumn());
+        }
+        if(exportConfig.getDatatypeColumn()==null){
+          exportConfig.setDatatypeColumn(defaultConfig.getDatatypeColumn());
+        }
+        if(exportConfig.getDatatypesExport()==null){
+          exportConfig.setDatatypesExport(defaultConfig.getDatatypesExport());
+        }
+        if(exportConfig.getFieldsExport()==null){
+          exportConfig.setFieldsExport(defaultConfig.getFieldsExport());
+        }
+        if(exportConfig.getMessageColumn()==null){
+          exportConfig.setMessageColumn(defaultConfig.getMessageColumn());
+        }
+        if(exportConfig.getProfileComponentColumn()==null){
+          exportConfig.setProfileComponentColumn(defaultConfig.getProfileComponentColumn());
+        }
+        if(exportConfig.getProfileComponentItemsExport()==null){
+          exportConfig.setProfileComponentItemsExport(defaultConfig.getProfileComponentItemsExport());
+        }
+        if(exportConfig.getSegmentColumn()==null){
+          exportConfig.setSegmentColumn(defaultConfig.getSegmentColumn());
+        }
+        if(exportConfig.getSegmentORGroupsCompositeProfileExport()==null){
+          exportConfig.setSegmentORGroupsCompositeProfileExport(defaultConfig.getSegmentORGroupsCompositeProfileExport());
+        }
+        if(exportConfig.getSegmentORGroupsMessageExport()==null){
+          exportConfig.setSegmentORGroupsMessageExport(defaultConfig.getSegmentORGroupsMessageExport());
+        }
+        if(exportConfig.getSegmentsExport()==null){
+          exportConfig.setSegmentsExport(defaultConfig.getSegmentsExport());
+        }
+        if(exportConfig.getValueSetColumn()==null){
+          exportConfig.setValueSetColumn(defaultConfig.getValueSetColumn());
+        }
+        if(exportConfig.getValueSetsExport()==null){
+          exportConfig.setValueSetsExport(defaultConfig.getValueSetsExport());
+        }
+        if(exportConfig.getValueSetsMetadata()==null){
+          exportConfig.setValueSetsMetadata(defaultConfig.getValueSetsMetadata());
+        }
+        this.exportConfig.save(exportConfig);
+      }
     }
   }
 

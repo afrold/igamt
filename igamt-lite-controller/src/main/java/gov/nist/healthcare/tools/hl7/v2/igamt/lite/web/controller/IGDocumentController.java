@@ -124,7 +124,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportExcept
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.GVTClient;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.GVTService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
 
 @RestController
@@ -191,8 +191,10 @@ public class IGDocumentController extends CommonController {
   @Autowired
   private MessageService messageService;
 
+
   @Autowired
   private ProfileSerialization profileSerializationService;
+
 
   @Value("${server.email}")
   private String SERVER_EMAIL;
@@ -205,6 +207,8 @@ public class IGDocumentController extends CommonController {
 
   @Value("${gvt.exportEndpoint}")
   private String GVT_EXPORT_ENDPOINT;
+  @Autowired
+  private GVTService gvtService;
 
   @Autowired
   private MailSender mailSender;
@@ -542,6 +546,7 @@ public class IGDocumentController extends CommonController {
           if (dmi.getDatatypeId() != null && datatypeIdChangeMap.containsKey(dmi.getDatatypeId())) {
             dmi.setDatatypeId(datatypeIdChangeMap.get(dmi.getDatatypeId()));
           }
+
         }
       }
 
@@ -581,6 +586,7 @@ public class IGDocumentController extends CommonController {
         }
       }
 
+
       for (Mapping map : s.getDynamicMapping().getMappings()) {
         for (Case c : map.getCases()) {
           if (c.getDatatype() != null && datatypeIdChangeMap.containsKey(c.getDatatype()))
@@ -596,6 +602,7 @@ public class IGDocumentController extends CommonController {
         if (vsb.getTableId() != null && tableIdChangeMap.containsKey(vsb.getTableId())) {
           vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
         }
+
 
       }
       for (Component c : d.getComponents()) {
@@ -618,6 +625,7 @@ public class IGDocumentController extends CommonController {
 
         }
       }
+
       datatypeService.save(d);
     }
 
@@ -626,6 +634,7 @@ public class IGDocumentController extends CommonController {
         if (vsb.getTableId() != null && tableIdChangeMap.containsKey(vsb.getTableId())) {
           vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
         }
+
       }
       for (SegmentRefOrGroup sog : m.getChildren()) {
         this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap, sog);
@@ -1739,11 +1748,11 @@ public class IGDocumentController extends CommonController {
       IGDocument d = findIGDocument(id);
       InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d,
           messageIds.toArray(new String[messageIds.size()]));
-      ResponseEntity<?> rsp =
-          new GVTClient().send(content, GVT_URL + GVT_EXPORT_ENDPOINT, authorization);
+
+      ResponseEntity<?> rsp = gvtService.send(content, authorization);
       Map<String, Object> res = (Map<String, Object>) rsp.getBody();
       return res;
-    } catch (IGDocumentNotFoundException | IOException | CloneNotSupportedException e) {
+    } catch (Exception e) {
       throw new GVTExportException(e);
     }
   }
@@ -1759,11 +1768,11 @@ public class IGDocumentController extends CommonController {
       IGDocument d = findIGDocument(id);
       InputStream content = igDocumentExport.exportAsValidationForSelectedCompositeProfiles(d,
           messageIds.toArray(new String[messageIds.size()]));
-      ResponseEntity<?> rsp =
-          new GVTClient().send(content, GVT_URL + GVT_EXPORT_ENDPOINT, authorization);
+
+      ResponseEntity<?> rsp = gvtService.send(content, authorization);
       Map<String, Object> res = (Map<String, Object>) rsp.getBody();
       return res;
-    } catch (IGDocumentNotFoundException | IOException | CloneNotSupportedException e) {
+    } catch (Exception e) {
       throw new GVTExportException(e);
     }
   }
