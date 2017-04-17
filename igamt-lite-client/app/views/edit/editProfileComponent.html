@@ -277,7 +277,7 @@
                                                                                 </span>
 
                                                                                 <div ng-if="editableDT===node.id">
-                                                                                    <md-select placeholder="Select Data type" ng-model="node.datatype" ng-change="selectDT(node)" ng-controller="DatatypeRowCtrl" ng-init="init(node)">
+                                                                                    <md-select placeholder="Select Data type" ng-model="node.datatype" ng-change="selectDT(node)" ng-controller="FormRowCtrl" ng-init="init(node)">
                                                                                         <md-option ng-value="datatype" ng-repeat="datatype in datatypes">
                                                                                             <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
                                                                                         </md-option>
