@@ -62,6 +62,19 @@ angular.module('igl')
 
     };
 
+    $scope.tabs = [{active: true}, {active: false},{active: false}];
+    $scope.make_active = function(x) {
+
+        for(i=0; i<$scope.tabs.length;i++){
+            if(i==x){
+                $scope.tabs[i].active = true;
+            }else{
+                $scope.tabs[i].active=false;
+            }
+        }
+
+    };
+
     $scope.Dndenabled = function() {
         return $scope.igDocumentConfig.selectedType == 'USER';
     }
@@ -101,9 +114,11 @@ angular.module('igl')
             $scope.accordi.igDetails = true;
         } else {
             $scope.selectIGDocumentType('USER');
+
             $scope.accordi.igList = true;
             $scope.accordi.igDetails = false;
         }
+        $scope.make_active(0);
     };
 
     $scope.segmentsParams = new ngTreetableParams({
@@ -142,6 +157,8 @@ angular.module('igl')
 
         $rootScope.isEditing = false;
         $scope.selectIgTab(0);
+        console.log("clos")
+        // $scope.make_active(0);
         $rootScope.initMaps();
         StorageService.setIgDocument(null);
     };
@@ -358,6 +375,8 @@ angular.module('igl')
                 $scope.loadIGDocuments();
             }
             $scope.selectIgTab(0);
+            $scope.make_active(0);
+            console.log($scope.tabs);
             $rootScope.msg().text = "igClonedSuccess";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
@@ -514,6 +533,7 @@ angular.module('igl')
             $rootScope.accountId = igdocument.accountId;
             $timeout(function() {
                 $scope.selectIgTab(1);
+
                 $rootScope.TreeIgs = [];
                 $rootScope.TreeIgs.push(igdocument);
                 $rootScope.selectedMessagesIDS = [];
@@ -846,7 +866,8 @@ angular.module('igl')
                 return child.id === igdocument.id;
             });
             $rootScope.igs.splice(idxP, 1);
-            $scope.tmpIgs = [].concat($rootScope.igs);
+            $scope.tmpIgs.splice(idxP, 1);
+            //$scope.tmpIgs = [].concat($rootScope.igs);
         });
     };
 
@@ -3952,7 +3973,7 @@ angular.module('igl').controller('createProfileComponentCtrl',
                 $rootScope.profileComponents.push(profileC);
                 $rootScope.profileComponentsMap[profileC.id] = profileC;
                 $scope.Activate(profileC.id);
-                $mdDialog.hide(profileC);
+                $modalInstance.close(profileC);
 
             });
 
@@ -4088,7 +4109,7 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
                     }
 
                     console.log($rootScope.igdocument);
-                    $mdDialog.hide(cpStructure);
+                    $modalInstance.hide(cpStructure);
 
                 });
 
@@ -4213,7 +4234,7 @@ angular.module('igl').controller('createCompositeProfileCtrl',
                     }
                     $rootScope.compositeProfilesStructureMap[cpStructure.id] = cpStructure;
                     console.log($rootScope.igdocument);
-                    $mdDialog.hide(cpStructure);
+                    $modalInstance.hide(cpStructure);
 
                 });
 
@@ -4258,7 +4279,7 @@ angular.module('igl').controller('CustomExportCtrl', function($scope, $modalInst
                 }
             }
         }
-        $mdDialog.hide();
+        $modalInstance.hide();
     };
     $scope.cancel = function() {
         $modalInstance.dismiss('cancel');

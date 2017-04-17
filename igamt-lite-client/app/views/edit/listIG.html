@@ -13,7 +13,7 @@
 </script>
 <div class="row">
     <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab md-active="tabs[0].active" ng-repeat="tt in igDocumentTypes" md-on-select="selectIGDocumentType(tt.type)" >
+        <md-tab  ng-repeat="tt in igDocumentTypes" md-on-select="selectIGDocumentType(tt.type);make_active($index)" md-active="tabs[$index].active">
             <md-tab-label>
                 <i class="fa fa-file-text-o fa-fw"></i> {{::tt.name}}
 
@@ -31,11 +31,10 @@
 
                      <md-menu-bar  flex="20">
                        <md-menu class="pull-right">
-                        <button type="button" ng-controller="HL7VersionsDlgCtrl"
-                    class="white-color"
-                    ng-click="hl7Versions('btn')" >
-                    <i class="fa fa-plus"></i> Create New IG Document
-                    </button>
+                        <button type="button" ng-controller="HL7VersionsDlgCtrl" class="white-color"
+                         ng-click="create('btn')" >
+                         <i class="fa fa-plus"></i> Create New IG Document
+                         </button>
                        </md-menu>
                     </md-menu-bar>
 
