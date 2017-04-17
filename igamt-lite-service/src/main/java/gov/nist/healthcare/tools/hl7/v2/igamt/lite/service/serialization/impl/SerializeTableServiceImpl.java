@@ -59,7 +59,10 @@ public class SerializeTableServiceImpl implements SerializeTableService {
       SerializableTable serializedTable = null;
       if(table!=null) {
           id = table.getId();
-          title = table.getBindingIdentifier() + " - " + table.getDescription();
+          title = table.getBindingIdentifier();
+          if(table.getName()!=null && !table.getName().isEmpty()){
+            title += " - " + table.getName();
+          }
           if (table.getDefPreText() != null && !table.getDefPreText().isEmpty()) {
               defPreText = serializationUtil.cleanRichtext(table.getDefPreText());
           }
