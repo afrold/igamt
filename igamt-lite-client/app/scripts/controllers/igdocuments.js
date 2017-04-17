@@ -4213,7 +4213,7 @@ angular.module('igl').controller('createCompositeProfileCtrl',
                     }
                     $rootScope.compositeProfilesStructureMap[cpStructure.id] = cpStructure;
                     console.log($rootScope.igdocument);
-                    $mdDialog.hide(cpStructure);
+                    $modalInstance.close(cpStructure);
 
                 });
 
