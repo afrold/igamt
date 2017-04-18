@@ -20,13 +20,8 @@
             </md-tab-label>
             <md-tab-body>
                 <div class="container ig-menu-bar"  style="margin-top: 20px;margin-buttom: 20px" layout="row">
+                    <span flex="80"></span>
 
-                    <span class="material-icons" style="font-size: 42px;">search</span>
-                    <md-input-container flex style="margin: 0px !important" layout="row">
-
-                        <input type="search"  flex="100" ng-model="search.metaData.title"  style="border-bottom-color: white;color: white;"/>
-
-                    </md-input-container>
 
 
                      <md-menu-bar  flex="20">
@@ -38,6 +33,14 @@
                        </md-menu>
                     </md-menu-bar>
 
+                </div>
+                <div layout="row" class="container">
+                <span class="material-icons" style="font-size: 42px;">search</span>
+                <md-input-container flex style="margin: 0px !important" layout="row">
+
+                    <input type="search"  flex ng-model="search.metaData.title"  style="border-bottom-color: black;color: black;" placeholder="Search for IG Document"/>
+
+                </md-input-container>
                 </div>
 
                     <div ng-show="error === null">
@@ -103,18 +106,18 @@
                                                                                              <!--aria-hidden="true"></i></span>-->
                                                                                         <!--</md-button>-->
 
-                                                                        <span ng-click="edit(row)" style="color:blue"  ><i class="fa fa-pencil fa-fw igList-icons"></i></span>
+                                                                        <span ng-click="edit(row)" style="color:blue" title="Edit IG document" ><i class="fa fa-pencil fa-fw igList-icons"></i></span>
 
-                                                                        <span  ng-click="view(row)" style="color:grey"><i class="fa fa-eye fa-fw igList-icons"></i></span>
+                                                                        <span  ng-click="view(row)" style="color:black" title="Read IG document"><i class="fa fa-eye fa-fw igList-icons"></i></span>
 
-                                                                        <span ng-click="clone(row);selectIGDocumentType('USER')" style="color:lightblue"><i class="fa fa-plus fa-fw igList-icons"></i></span>
+                                                                        <span ng-click="clone(row);selectIGDocumentType('USER')" title="Clone IG document" style="color:#2d9de7;"><i class="fa fa-plus fa-fw igList-icons"></i></span>
 
-                                                                        <span ng-if="igDocumentConfig.selectedType === 'USER'"  style="color:red"><i class="fa fa-trash-o fa-fw igList-icons"></i></span>
+                                                                        <span ng-if="igDocumentConfig.selectedType === 'USER'" title="Delete Share Document" style="color:red"><i class="fa fa-trash-o fa-fw igList-icons"></i></span>
 
-                                                                    <span  ng-click="confirmShareDocument(row)"  ng-if="row.comment === 'PENDING_APPROVAL'"  style="color:gray"><i class="fa fa-check fa-fw igList-icons"
+                                                                    <span  ng-click="confirmShareDocument(row)"  title="Approve Share Document" ng-if="row.comment === 'PENDING_APPROVAL'"  style="color:gray"><i class="fa fa-check fa-fw igList-icons"
                                                                                              aria-hidden="true"></i></span>
 
-                                                                    <span ng-if="row.comment === 'PENDING_APPROVAL'"  ng-click="rejectShareDocument(row)" style="color:lightgrey"><i class="fa fa-times fa-fw igList-icons"
+                                                                    <span ng-if="row.comment === 'PENDING_APPROVAL'" title="Reject Share Document" ng-click="rejectShareDocument(row)" style="color:lightgrey"><i class="fa fa-times fa-fw igList-icons"
                                                                                              aria-hidden="true"></i></span>
 
                                                                 </div>
