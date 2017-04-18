@@ -60,7 +60,7 @@
                     </span>
                     <span>HL7 Version: {{table.hl7Version}}</span>
                     <span ng-if="table.publicationVersion">Version: {{table.publicationVersion}}</span>
-                </div>
+                 </div>
 
                     <div class="" ng-controller="cmpTableCtrl">
                         <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
@@ -551,7 +551,7 @@
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="table !== null" id="executionPanel">
-                <div class="containerßßßß">
+                <div class="container">
                     <div class="page-header">
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span> <span class="version-badge-label" ng-if="versionAndUseMap[table.id].publicationVersion">v{{versionAndUseMap[table.id].publicationVersion}}</span></span>
 
@@ -582,16 +582,16 @@
                           (Owner: {{table.owner}})
                         </span>
 
-                    <div class="static_info">
-                 <i class="fa fa-calendar" aria-hidden="true"></i>
-					Updated :{{table.dateUpdated | date:dateFormat}}
-                     <span ng-if="table.owner" style="font-style: italic;">
+                        <div class="static_info">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                            Updated :{{table.dateUpdated | date:dateFormat}}
+                            <span ng-if="table.owner" style="font-style: italic;">
                          <i class="fa fa-user" aria-hidden="true"></i> 
                          {{table.owner}}
-                    </span>
-                    <span>HL7 Version: {{table.hl7Version}}</span>
-                    <span ng-if="table.publicationVersion">Version: {{table.publicationVersion}}</span>
-                </div>
+                       </span>
+                            <span>HL7 Version: {{table.hl7Version}}</span>
+                            <span ng-if="table.publicationVersion">Version: {{table.publicationVersion}}</span>
+                        </div>
                     </div>
 
                     <div class="">
@@ -605,7 +605,7 @@
                                     <md-content layout-padding>
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Mapping Identifier</label>
-                                            <input disabled type="text" name="tableIdentifier" ng-model="table.bindingIdentifier"  required ng-change="setDirty()">
+                                            <input disabled type="text" name="tableIdentifier" ng-model="table.bindingIdentifier"  required ng-change="setDirty()" disabled>
                                             <div ng-messages="editForm.tableIdentifier.$error">
                                                 <div ng-message="required">Mapping Identifier is required.</div>
                                             </div>
@@ -676,7 +676,7 @@
 
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Content Definition</label>
-                                            <md-select ng-change="setDirty()" ng-model="table.contentDefinition">
+                                            <md-select ng-change="setDirty()" disabled ng-model="table.contentDefinition">
                                                 <md-option ng-repeat="contentDefinition in config.tableContentDefinitions" value="{{contentDefinition}}">
                                                     {{contentDefinition}}
                                                 </md-option>
@@ -693,7 +693,7 @@
 
                                         <md-input-container class="md-block" flex-gt-sm >
                                             <label class="input-left">Comment</label>
-                                            <textarea rows="3" disabled md-select-on-focus
+                                            <textarea rows="3" disabled md-select-on-focus disabled
                                                       ng-change="setDirty()" name="comment" id="comment" class="form-control" ng-model="table.comment"
                                             />
                                         </md-input-container>

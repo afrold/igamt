@@ -84,6 +84,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentLibraryRepository;
@@ -107,6 +109,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibra
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
@@ -189,12 +192,21 @@ public class IGDocumentController extends CommonController {
   private MessageService messageService;
 
 
+  @Autowired
+  private ProfileSerialization profileSerializationService;
+
+
   @Value("${server.email}")
   private String SERVER_EMAIL;
 
   @Value("${admin.email}")
   private String ADMIN_EMAIL;
 
+  @Value("${gvt.url}")
+  private String GVT_URL;
+
+  @Value("${gvt.exportEndpoint}")
+  private String GVT_EXPORT_ENDPOINT;
   @Autowired
   private GVTService gvtService;
 
@@ -525,11 +537,16 @@ public class IGDocumentController extends CommonController {
     for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
       Segment s = segmentService.findById(sl.getId());
       for (ValueSetOrSingleCodeBinding vsb : s.getValueSetBindings()) {
-        vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+        if (tableIdChangeMap.containsKey(vsb.getTableId())) {
+          vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+        }
       }
       if (s.getDynamicMappingDefinition() != null) {
         for (DynamicMappingItem dmi : s.getDynamicMappingDefinition().getDynamicMappingItems()) {
-          dmi.setDatatypeId(datatypeIdChangeMap.get(dmi.getDatatypeId()));
+          if (dmi.getDatatypeId() != null && datatypeIdChangeMap.containsKey(dmi.getDatatypeId())) {
+            dmi.setDatatypeId(datatypeIdChangeMap.get(dmi.getDatatypeId()));
+          }
+
         }
       }
 
@@ -546,6 +563,30 @@ public class IGDocumentController extends CommonController {
         }
       }
 
+      for (ValueSetOrSingleCodeBinding binding : s.getValueSetBindings()) {
+        if (binding.getTableId() != null && tableIdChangeMap.containsKey(binding.getTableId())) {
+          binding.setTableId(tableIdChangeMap.get(binding.getTableId()));
+        }
+      }
+
+      if (s.getCoConstraintsTable() != null && s.getCoConstraintsTable().getThenMapData() != null) {
+        for (String key : s.getCoConstraintsTable().getThenMapData().keySet()) {
+          List<CoConstraintTHENColumnData> dataList =
+              s.getCoConstraintsTable().getThenMapData().get(key);
+
+          for (CoConstraintTHENColumnData data : dataList) {
+            if (data.getValueSets() != null) {
+              for (ValueSetData vsd : data.getValueSets()) {
+                if (vsd.getTableId() != null && tableIdChangeMap.containsKey(vsd.getTableId())) {
+                  vsd.setTableId(tableIdChangeMap.get(vsd.getTableId()));
+                }
+              }
+            }
+          }
+        }
+      }
+
+
       for (Mapping map : s.getDynamicMapping().getMappings()) {
         for (Case c : map.getCases()) {
           if (c.getDatatype() != null && datatypeIdChangeMap.containsKey(c.getDatatype()))
@@ -558,7 +599,11 @@ public class IGDocumentController extends CommonController {
     for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
       Datatype d = datatypeService.findById(dl.getId());
       for (ValueSetOrSingleCodeBinding vsb : d.getValueSetBindings()) {
-        vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+        if (vsb.getTableId() != null && tableIdChangeMap.containsKey(vsb.getTableId())) {
+          vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+        }
+
+
       }
       for (Component c : d.getComponents()) {
         if (c.getDatatype() != null && c.getDatatype().getId() != null
@@ -572,12 +617,24 @@ public class IGDocumentController extends CommonController {
           }
         }
       }
+      for (ValueSetOrSingleCodeBinding binding : d.getValueSetBindings()) {
+        if (binding.getTableId() != null) {
+          if (binding.getTableId() != null && tableIdChangeMap.containsKey(binding.getTableId())) {
+            binding.setTableId(tableIdChangeMap.get(binding.getTableId()));
+          }
+
+        }
+      }
+
       datatypeService.save(d);
     }
 
     for (Message m : profile.getMessages().getChildren()) {
       for (ValueSetOrSingleCodeBinding vsb : m.getValueSetBindings()) {
-        vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+        if (vsb.getTableId() != null && tableIdChangeMap.containsKey(vsb.getTableId())) {
+          vsb.setTableId(tableIdChangeMap.get(vsb.getTableId()));
+        }
+
       }
       for (SegmentRefOrGroup sog : m.getChildren()) {
         this.udateModifiedSegmentIdAndVisitChild(segmentIdChangeMap, sog);
@@ -1691,6 +1748,7 @@ public class IGDocumentController extends CommonController {
       IGDocument d = findIGDocument(id);
       InputStream content = igDocumentExport.exportAsValidationForSelectedMessages(d,
           messageIds.toArray(new String[messageIds.size()]));
+
       ResponseEntity<?> rsp = gvtService.send(content, authorization);
       Map<String, Object> res = (Map<String, Object>) rsp.getBody();
       return res;
@@ -1710,6 +1768,7 @@ public class IGDocumentController extends CommonController {
       IGDocument d = findIGDocument(id);
       InputStream content = igDocumentExport.exportAsValidationForSelectedCompositeProfiles(d,
           messageIds.toArray(new String[messageIds.size()]));
+
       ResponseEntity<?> rsp = gvtService.send(content, authorization);
       Map<String, Object> res = (Map<String, Object>) rsp.getBody();
       return res;

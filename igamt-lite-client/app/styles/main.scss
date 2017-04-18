@@ -3048,10 +3048,10 @@ md-chips.md-default-theme md-chip, md-chips md-chip {
 }
 
 .buttonForIgList{
-    max-width: 9px !important;
-    min-width: 32px;
-    /* width: 71px !important; */
-    max-height: 16px;
+    min-width: 22px;
+    max-height: 12px;
+    line-height: 23px;
+    vertical-align: middle;
 }
 md-content.md-default-theme, md-content {
     color: rgba(0,0,0,0.87);
@@ -3059,10 +3059,8 @@ md-content.md-default-theme, md-content {
 }
 md-input-container.withoutMargin{
     display: inline-block;
-    position: relative;
-    padding: 2px;
-    margin: 0px 0 !important;
-    vertical-align: middle;
+    margin: -10px 0px 0px 0px;
+    height: 10px
 }
 .ig-title{
     color:#2d9de7;
@@ -3075,6 +3073,7 @@ md-input-container.withoutMargin{
     font-family: "Source Sans Pro",Helvetica,Arial,sans-serif;
     font-style: italic;
     font-weight: bold;
+    font-size: 13px;
 }
 .ig-menu-bar{
     background-color:#2d9de7 !important;
@@ -3109,4 +3108,20 @@ tr.tbl-header {
 
 .table-bordered, .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
     border-color: rgba(153, 153, 153, 0.36);
+}
+.label-list{
+    display: inline-block;
+    margin-bottom: 0px;
+    font-weight: 700;
+    font-size: medium;
+}
+.igList-icons{
+    width: 3.285714em !important;
+    font-size: 21px !important;
+}
+md-select.inside-table{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    margin: 10px 0 0px;
 }
