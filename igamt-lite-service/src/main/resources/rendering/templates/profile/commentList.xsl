@@ -1,8 +1,10 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template match="CommentList">
-        <xsl:element name="h4">
-            <xsl:text>Comments</xsl:text>
+        <xsl:element name="p">
+   			<xsl:element name="b">
+            	<xsl:text>Comments</xsl:text>
+            </xsl:element>
         </xsl:element>
         <xsl:element name="table">
             <xsl:attribute name="class">
