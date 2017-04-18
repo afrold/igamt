@@ -53,8 +53,8 @@
                                                               overflow-x: hidden;
                                                               overflow-y: scroll;
 
-                                                              border-bottom-color: gray;
-                                                              border-bottom-style: dashed">
+                                                              border-bottom-color: #d2d2d2;">
+
 
 
 
@@ -74,34 +74,48 @@
 
 
                                                                 <div flex="60" layout="row" layout-align="end end" style="margin-top:-14px;">
-                                                                                    <md-button ng-if="igDocumentConfig.selectedType === 'USER'" md-colors="{background:'blue'}"
-                                                                                               aria-label="Edit IG Document" type="button"
-                                                                                               ng-click="edit(row)" class="buttonForIgList">
-                                                                                        <span><i class="fa fa-pencil fa-fw"></i></span>
-                                                                                    </md-button>
-                                                                                    <md-button aria-label="View IG Document" type="button" md-colors="{background:'grey'}"
-                                                                                               ng-click="view(row)" class="buttonForIgList">
-                                                                                        <span><i class="fa fa-eye fa-fw"></i></span>
-                                                                                    </md-button>
-                                                                                    <md-button aria-label="Create Copy of IG Document" type="button" md-colors="{background:'light-blue'}"
-                                                                                               ng-click="clone(row);selectIGDocumentType('USER')" class="buttonForIgList">
-                                                                                        <span style="color:white"><i class="fa fa-plus fa-fw"></i></span>
-                                                                                    </md-button>
-                                                                                    <md-button aria-label="Delete IG Document" type="button"
-                                                                                               ng-if="igDocumentConfig.selectedType === 'USER'" md-colors="{background:'red'}"
-                                                                                               ng-click="confirmDelete(row)" class="buttonForIgList">
-                                                                                        <span><i class="fa fa-trash-o fa-fw"></i></span>
-                                                                                    </md-button>
-                                                                                        <md-button  ng-if="row.comment === 'PENDING_APPROVAL'" aria-label="Approve Share Document" type="button"
-                                                                                                   ng-click="confirmShareDocument(row)" md-colors="{background:'blue'}" class="buttonForIgList">
-                                                                                    <span><i class="fa fa-check fa-fw"
+                                                                                    <!--<md-button ng-if="igDocumentConfig.selectedType === 'USER'" md-colors="{background:'blue'}"-->
+                                                                                               <!--aria-label="Edit IG Document" type="button"-->
+                                                                                               <!--ng-click="edit(row)" class="buttonForIgList">-->
+                                                                                        <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
+                                                                                    <!--</md-button>-->
+                                                                                    <!--<md-button aria-label="View IG Document" type="button" md-colors="{background:'grey'}"-->
+                                                                                               <!--ng-click="view(row)" class="buttonForIgList">-->
+                                                                                        <!--<span><i class="fa fa-eye fa-fw"></i></span>-->
+                                                                                    <!--</md-button>-->
+                                                                                    <!--<md-button aria-label="Create Copy of IG Document" type="button" md-colors="{background:'light-blue'}"-->
+                                                                                               <!--ng-click="clone(row);selectIGDocumentType('USER')" class="buttonForIgList">-->
+                                                                                        <!--<span style="color:white"><i class="fa fa-plus fa-fw"></i></span>-->
+                                                                                    <!--</md-button>-->
+                                                                                    <!--<md-button aria-label="Delete IG Document" type="button"-->
+                                                                                               <!--ng-if="igDocumentConfig.selectedType === 'USER'" md-colors="{background:'red'}"-->
+                                                                                               <!--ng-click="confirmDelete(row)" class="buttonForIgList">-->
+                                                                                        <!--<span><i class="fa fa-trash-o fa-fw"></i></span>-->
+                                                                                    <!--</md-button>-->
+                                                                                        <!--<md-button  ng-if="row.comment === 'PENDING_APPROVAL'" aria-label="Approve Share Document" type="button"-->
+                                                                                                   <!--ng-click="confirmShareDocument(row)" md-colors="{background:'blue'}" class="buttonForIgList">-->
+                                                                                    <!--<span><i class="fa fa-check fa-fw"-->
+                                                                                             <!--aria-hidden="true"></i></span>-->
+                                                                                        <!--</md-button>-->
+                                                                                        <!--<md-button ng-if="row.comment === 'PENDING_APPROVAL'"  aria-label="Reject Share Document" type="button" md-colors="{background:'blue-grey'}"-->
+                                                                                                   <!--ng-click="rejectShareDocument(row)" class="buttonForIgList">-->
+                                                                                    <!--<span><i class="fa fa-times fa-fw"-->
+                                                                                             <!--aria-hidden="true"></i></span>-->
+                                                                                        <!--</md-button>-->
+
+                                                                        <span ng-click="edit(row)" style="color:blue"  ><i class="fa fa-pencil fa-fw igList-icons"></i></span>
+
+                                                                        <span  ng-click="view(row)" style="color:grey"><i class="fa fa-eye fa-fw igList-icons"></i></span>
+
+                                                                        <span ng-click="clone(row);selectIGDocumentType('USER')" style="color:lightblue"><i class="fa fa-plus fa-fw igList-icons"></i></span>
+
+                                                                        <span ng-if="igDocumentConfig.selectedType === 'USER'"  style="color:red"><i class="fa fa-trash-o fa-fw igList-icons"></i></span>
+
+                                                                    <span  ng-click="confirmShareDocument(row)"  ng-if="row.comment === 'PENDING_APPROVAL'"  style="color:gray"><i class="fa fa-check fa-fw igList-icons"
                                                                                              aria-hidden="true"></i></span>
-                                                                                        </md-button>
-                                                                                        <md-button ng-if="row.comment === 'PENDING_APPROVAL'"  aria-label="Reject Share Document" type="button" md-colors="{background:'blue-grey'}"
-                                                                                                   ng-click="rejectShareDocument(row)" class="buttonForIgList">
-                                                                                    <span><i class="fa fa-times fa-fw"
+
+                                                                    <span ng-if="row.comment === 'PENDING_APPROVAL'"  ng-click="rejectShareDocument(row)" style="color:lightgrey"><i class="fa fa-times fa-fw igList-icons"
                                                                                              aria-hidden="true"></i></span>
-                                                                                        </md-button>
 
                                                                 </div>
 												             </div>

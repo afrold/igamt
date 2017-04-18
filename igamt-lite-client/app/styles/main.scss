@@ -3059,10 +3059,8 @@ md-content.md-default-theme, md-content {
 }
 md-input-container.withoutMargin{
     display: inline-block;
-    position: relative;
-    padding: 2px;
-    margin: 0px 0 !important;
-    vertical-align: middle;
+    margin: -10px 0px 0px 0px;
+    height: 10px
 }
 .ig-title{
     color:#2d9de7;
@@ -3116,4 +3114,14 @@ tr.tbl-header {
     margin-bottom: 0px;
     font-weight: 700;
     font-size: medium;
+}
+.igList-icons{
+    width: 3.285714em !important;
+    font-size: 21px !important;
+}
+md-select.inside-table{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    margin: 10px 0 0px;
 }

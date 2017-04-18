@@ -865,7 +865,7 @@
                             <!--ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"-->
                             <!--required ng-model="node.usage" ng-options="usage for usage in config.usages"/>-->
                     <!---->
-                             <md-select placeholder="Select Usage" name="usage" id="usage"
+                             <md-select placeholder="Select Usage" name="usage" id="usage" class="inside-table"
                                         ng-change="setUsage(node); openPredicateDialog(node); setCardinalities(node)"
                                         ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
                                         required ng-model="node.usage" >
@@ -886,7 +886,7 @@
         </td>
         <td ng-class="{'has-validation-error':hasCardinalityError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'CARDINALITY')}}">
 
-                <ng-form name="{{formName}}" class="form-inline" layout="row" layout-align="center center" ng-controller="FormRowCtrl" ng-init="init(node)" >
+                <ng-form name="{{formName}}"  layout="row" layout-align="center center" ng-controller="FormRowCtrl" ng-init="init(node)" >
                         <md-input-container flex="50" class="withoutMargin">
                                                 <input
                                                        type="number"
@@ -958,7 +958,7 @@
                     </span>
 
                     <div ng-if="editableDT===node.id">
-                        <md-select placeholder="Select Data type" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="FormRowCtrl" ng-init="init(node)">
+                        <md-select placeholder="Select Data type"  class="inside-table" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="FormRowCtrl" ng-init="init(node)">
                             <md-option ng-value="datatype" ng-repeat="datatype in results">
                                 <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
                             </md-option>
