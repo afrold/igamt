@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc', 'VersionAndUseService', '$q', 'DatatypeLibrarySvc', 'CloneDeleteSvc', 'TableService', 'TableLibrarySvc','$mdDialog', function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc, VersionAndUseService, $q, DatatypeLibrarySvc, CloneDeleteSvc, TableService, TableLibrarySvc,$mdDialog) {
+angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc', 'VersionAndUseService', '$q', 'DatatypeLibrarySvc', 'CloneDeleteSvc', 'TableService', 'TableLibrarySvc', '$mdDialog', function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc, VersionAndUseService, $q, DatatypeLibrarySvc, CloneDeleteSvc, TableService, TableLibrarySvc, $mdDialog) {
     // This line fetches the info from the server if the user is currently
     // logged in.
     // If success, the app is updated according to the role.
@@ -1134,35 +1134,35 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
     };
 
-    $rootScope.upgradeOrDowngrade=function(id,datatype, list){
-        $rootScope.selectedDatatypes=[];
-        $rootScope.TablesIds=[];
-        $rootScope.DTlinksToAdd=[];
+    $rootScope.upgradeOrDowngrade = function(id, datatype, list) {
+        $rootScope.selectedDatatypes = [];
+        $rootScope.TablesIds = [];
+        $rootScope.DTlinksToAdd = [];
 
         DatatypeService.getOne(id).then(function(sourceParent) {
 
             console.log(id);
             $scope.DatatypeToAdd = angular.copy(sourceParent);
-            $scope.DatatypeToAdd.hl7Version=datatype.hl7Version;
+            $scope.DatatypeToAdd.hl7Version = datatype.hl7Version;
 
 
             // $scope.DatatypeToAdd.publicationVersion=0;
 
-            $scope.DatatypeToAdd.valueSetBindings=[];
+            $scope.DatatypeToAdd.valueSetBindings = [];
             DatatypeService.getMergedMaster($scope.DatatypeToAdd).then(function(standard) {
-                $scope.DatatypeToAdd=standard;
-                $scope.DatatypeToAdd.parentVersion=sourceParent.id;
+                $scope.DatatypeToAdd = standard;
+                $scope.DatatypeToAdd.parentVersion = sourceParent.id;
 
 
                 $scope.DatatypeToAdd.participants = [];
-                $scope.DatatypeToAdd.hl7versions=[]
+                $scope.DatatypeToAdd.hl7versions = []
                 $scope.DatatypeToAdd.hl7versions.push($scope.DatatypeToAdd.hl7Version);
                 $scope.DatatypeToAdd.id = new ObjectId().toString();
                 $scope.DatatypeToAdd.libIds = [];
                 $rootScope.selectedDatatypes.push($scope.DatatypeToAdd);
                 $scope.DatatypeToAdd.participants = [];
                 $scope.DatatypeToAdd.libIds = [];
-                if ( $scope.DatatypeToAdd.components != undefined && $scope.DatatypeToAdd.components != null && $scope.DatatypeToAdd.components.length != 0) {
+                if ($scope.DatatypeToAdd.components != undefined && $scope.DatatypeToAdd.components != null && $scope.DatatypeToAdd.components.length != 0) {
                     for (var i = 0; i < $scope.DatatypeToAdd.components.length; i++) {
                         $scope.DatatypeToAdd.components[i].id = new ObjectId().toString();
                     }
@@ -1181,8 +1181,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         conformanceStatement.id = new ObjectId().toString();
                     });
                 }
-                if($scope.DatatypeToAdd.valueSetBindings&&$scope.DatatypeToAdd.valueSetBindings.length!==0) {
-                    angular.forEach($scope.DatatypeToAdd.valueSetBindings, function (binding) {
+                if ($scope.DatatypeToAdd.valueSetBindings && $scope.DatatypeToAdd.valueSetBindings.length !== 0) {
+                    angular.forEach($scope.DatatypeToAdd.valueSetBindings, function(binding) {
                         if (binding.tableId && !$rootScope.tablesMap[binding.tableId]) {
                             var temp = [];
                             temp.push(binding.tableId);
@@ -1192,24 +1192,24 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     })
                 }
 
-                angular.forEach($rootScope.selectedDatatypes, function(dt){
+                angular.forEach($rootScope.selectedDatatypes, function(dt) {
                     $rootScope.processAddedDT(dt);
                 });
 
                 DatatypeService.saves($rootScope.selectedDatatypes).then(function(result) {
 
                     DatatypeLibrarySvc.addChildrenFromDatatypes($rootScope.datatypeLibrary.id, $rootScope.selectedDatatypes).then(function(result) {
-                        angular.forEach(result, function(dtToAdd){
-                            $rootScope.datatypeLibrary.children.push({name:dtToAdd, ext:dtToAdd.ext,id:dtToAdd.id});
-                            if(dtToAdd.parentVersion){
-                                var objectMap=dtToAdd.parentVersion+"VV"+dtToAdd.hl7Version;
-                                $rootScope.usingVersionMap[objectMap]=dtToAdd;
+                        angular.forEach(result, function(dtToAdd) {
+                            $rootScope.datatypeLibrary.children.push({ name: dtToAdd, ext: dtToAdd.ext, id: dtToAdd.id });
+                            if (dtToAdd.parentVersion) {
+                                var objectMap = dtToAdd.parentVersion + "VV" + dtToAdd.hl7Version;
+                                $rootScope.usingVersionMap[objectMap] = dtToAdd;
 
                             }
 
-                            $rootScope.datatypesMap[dtToAdd.id]=dtToAdd;
+                            $rootScope.datatypesMap[dtToAdd.id] = dtToAdd;
                             $rootScope.datatypes.push(dtToAdd);
-                         
+
                             $rootScope.processElement(dtToAdd);
                         });
 
@@ -1218,21 +1218,21 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         });
 
 
-                            TableLibrarySvc.addChildrenByIds($rootScope.tableLibrary.id, $rootScope.TablesIds).then(function(result) {
-                                console.log(result);
-                                angular.forEach(result, function(table){
+                        TableLibrarySvc.addChildrenByIds($rootScope.tableLibrary.id, $rootScope.TablesIds).then(function(result) {
+                            console.log(result);
+                            angular.forEach(result, function(table) {
 
-                                    if(!$rootScope.tablesMap[table.id]){
-                                        $rootScope.tables.push(table);
-                                        $rootScope.tablesMap[table.id]=table;
-                                    }
-                                });
-                                var objectMap=id+"VV"+datatype.hl7Version;
-
-                                $rootScope.replaceElement($rootScope.datatype,$rootScope.usingVersionMap[objectMap], list);
-
-
+                                if (!$rootScope.tablesMap[table.id]) {
+                                    $rootScope.tables.push(table);
+                                    $rootScope.tablesMap[table.id] = table;
+                                }
                             });
+                            var objectMap = id + "VV" + datatype.hl7Version;
+
+                            $rootScope.replaceElement($rootScope.datatype, $rootScope.usingVersionMap[objectMap], list);
+
+
+                        });
                     });
                 });
             });
@@ -1248,17 +1248,17 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
 
-    $rootScope.processAddedDT=function(datatype){
-        if(!$rootScope.datatypesMap[datatype.id]){
+    $rootScope.processAddedDT = function(datatype) {
+        if (!$rootScope.datatypesMap[datatype.id]) {
             $rootScope.DTlinksToAdd.push({
                 id: datatype.id,
                 name: datatype.name,
-                ext:datatype.ext
+                ext: datatype.ext
             });
         }
-        if(datatype.components&&datatype.components.length!=0){
-            angular.forEach(datatype.components, function(component){
-                if(component.datatype){
+        if (datatype.components && datatype.components.length != 0) {
+            angular.forEach(datatype.components, function(component) {
+                if (component.datatype) {
 
                     $rootScope.processAddedDT(component.datatype);
                 }
@@ -1267,12 +1267,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
         console.log("DEBUG");
         console.log(datatype);
-        if(datatype.valueSetBindings&&datatype.valueSetBindings.length>0){
-            angular.forEach(datatype.valueSetBindings,function(binding){
-                if(binding.tableId&&!$rootScope.tablesMap[binding.tableId]){
-                    var temp=[];
+        if (datatype.valueSetBindings && datatype.valueSetBindings.length > 0) {
+            angular.forEach(datatype.valueSetBindings, function(binding) {
+                if (binding.tableId && !$rootScope.tablesMap[binding.tableId]) {
+                    var temp = [];
                     temp.push(binding.tableId);
-                    $rootScope.TablesIds=_.union($rootScope.TablesIds,temp);
+                    $rootScope.TablesIds = _.union($rootScope.TablesIds, temp);
                 }
 
             })
@@ -1280,10 +1280,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     };
 
 
-    $rootScope.processList=function(){
+    $rootScope.processList = function() {
 
 
-        angular.forEach($rootScope.selectedDatatypes, function(dt){
+        angular.forEach($rootScope.selectedDatatypes, function(dt) {
             $rootScope.processAddedDT(dt);
         });
 
@@ -1293,8 +1293,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
             for (var i = 0; i < result.length; i++) {
-                if(!$rootScope.datatypesMap[result[i].id]){
-                    $rootScope.datatypesMap[result[i].id]=result[i];
+                if (!$rootScope.datatypesMap[result[i].id]) {
+                    $rootScope.datatypesMap[result[i].id] = result[i];
                     $rootScope.datatypes.push(result[i]);
                 }
             }
@@ -1306,22 +1306,22 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 });
 
                 DatatypeService.get(usedDtId1).then(function(datatypes) {
-                    angular.forEach(datatypes, function(datatype){
-                        if(!$rootScope.datatypesMap[datatype.id]){
-                            $rootScope.datatypesMap[datatype.id]=datatype;
+                    angular.forEach(datatypes, function(datatype) {
+                        if (!$rootScope.datatypesMap[datatype.id]) {
+                            $rootScope.datatypesMap[datatype.id] = datatype;
                             $rootScope.datatypes.push(datatype);
-                            if(datatype.parentVersion){
-                                $rootScope.datatypesMap[datatype.parentVersion]=datatype;
+                            if (datatype.parentVersion) {
+                                $rootScope.datatypesMap[datatype.parentVersion] = datatype;
                             }
                         }
                     })
                     TableLibrarySvc.addChildrenByIds($rootScope.tableLibrary.id, $rootScope.TablesIds).then(function(result) {
                         console.log(result);
-                        angular.forEach(result, function(table){
+                        angular.forEach(result, function(table) {
 
-                            if(!$rootScope.tablesMap[table.id]){
+                            if (!$rootScope.tablesMap[table.id]) {
                                 $rootScope.tables.push(table);
-                                $rootScope.tablesMap[table.id]=table;
+                                $rootScope.tablesMap[table.id] = table;
 
                             }
 
@@ -1616,7 +1616,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
     };
 
-    $rootScope.updateDynamicMappingInfo = function (){
+    $rootScope.updateDynamicMappingInfo = function() {
         $rootScope.isDynamicMappingSegment = false;
         $rootScope.dynamicMappingTable = null;
 
@@ -1624,14 +1624,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             return item.hl7Version == $rootScope.segment.hl7Version && item.segmentName == $rootScope.segment.name;
         });
 
-        if(mappingStructure){
+        if (mappingStructure) {
             $rootScope.isDynamicMappingSegment = true;
             console.log("=========This is DM segment!!=========");
 
-            if($rootScope.segment.dynamicMappingDefinition && $rootScope.segment.dynamicMappingDefinition.mappingStructure){
+            if ($rootScope.segment.dynamicMappingDefinition && $rootScope.segment.dynamicMappingDefinition.mappingStructure) {
                 console.log("=========Found mapping structure!!=========");
                 mappingStructure = $rootScope.segment.dynamicMappingDefinition.mappingStructure;
-            }else{
+            } else {
                 console.log("=========Not Found mapping structure and Default setting will be used!!=========");
             }
 
@@ -1639,7 +1639,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 return vsb.location == mappingStructure.referenceLocation;
             });
 
-            if(valueSetBinding) {
+            if (valueSetBinding) {
                 TableService.getOne(valueSetBinding.tableId).then(function(tbl) {
                     $rootScope.dynamicMappingTable = tbl;
                 }, function() {
@@ -3237,36 +3237,39 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
         if ($rootScope.isEmptyConstraintVerb(newConstraint)) return true;
         if ($rootScope.isEmptyConstraintPattern(newConstraint)) return true;
-        if (newConstraint.contraintType == 'a literal value' ||
-            newConstraint.contraintType == 'equal to' ||
-            newConstraint.contraintType == 'not-equal to' ||
-            newConstraint.contraintType == 'greater than' ||
-            newConstraint.contraintType == 'equal to or greater than' ||
-            newConstraint.contraintType == 'less than' ||
-            newConstraint.contraintType == 'equal to or less than' ||
-            newConstraint.contraintType == 'one of list values' ||
-            newConstraint.contraintType == 'formatted value') {
-            if ($rootScope.isEmptyConstraintValue(newConstraint)) return true;
-            if (newConstraint.value == 'Regular expression') {
-                if ($rootScope.isEmptyConstraintValue2(newConstraint)) return true;
+        if (newConstraint) {
+            if (newConstraint.contraintType == 'a literal value' ||
+                newConstraint.contraintType == 'equal to' ||
+                newConstraint.contraintType == 'not-equal to' ||
+                newConstraint.contraintType == 'greater than' ||
+                newConstraint.contraintType == 'equal to or greater than' ||
+                newConstraint.contraintType == 'less than' ||
+                newConstraint.contraintType == 'equal to or less than' ||
+                newConstraint.contraintType == 'one of list values' ||
+                newConstraint.contraintType == 'formatted value') {
+                if ($rootScope.isEmptyConstraintValue(newConstraint)) return true;
+                if (newConstraint.value == 'Regular expression') {
+                    if ($rootScope.isEmptyConstraintValue2(newConstraint)) return true;
+                }
+            } else if (newConstraint.contraintType == 'identical to another node' ||
+                newConstraint.contraintType == 'equal to another node' ||
+                newConstraint.contraintType == 'not-equal to another node' ||
+                newConstraint.contraintType == 'greater than another node' ||
+                newConstraint.contraintType == 'equal to or greater than another node' ||
+                newConstraint.contraintType == 'less than another node' ||
+                newConstraint.contraintType == 'equal to or less than another node') {
+                if ($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
+            } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
+                if ($rootScope.isEmptyConstraintValueSet(newConstraint)) return true;
             }
-        } else if (newConstraint.contraintType == 'identical to another node' ||
-            newConstraint.contraintType == 'equal to another node' ||
-            newConstraint.contraintType == 'not-equal to another node' ||
-            newConstraint.contraintType == 'greater than another node' ||
-            newConstraint.contraintType == 'equal to or greater than another node' ||
-            newConstraint.contraintType == 'less than another node' ||
-            newConstraint.contraintType == 'equal to or less than another node') {
-            if ($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
-        } else if (newConstraint.contraintType == 'one of codes in ValueSet') {
-            if ($rootScope.isEmptyConstraintValueSet(newConstraint)) return true;
         }
+
         return false;
     };
 
     $rootScope.isEmptyConstraintID = function(newConstraint) {
-        if (newConstraint.constraintId === null) return true;
-        if (newConstraint.constraintId === '') return true;
+        if (newConstraint && newConstraint.constraintId === null) return true;
+        if (newConstraint && newConstraint.constraintId === '') return true;
 
         return false;
     }
@@ -3285,7 +3288,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
     }
     $rootScope.isDuplicatedConstraintID = function(newConstraint, targetId) {
-        if ($rootScope.conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1 && targetId == newConstraint.constraintId) return true;
+        if (newConstraint && $rootScope.conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1 && targetId == newConstraint.constraintId) return true;
 
         return false;
     }
@@ -3298,36 +3301,36 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     $rootScope.isEmptyConstraintNode = function(newConstraint, type) {
         if (type == 'datatype') {
-            if (newConstraint.component_1 === null) return true;
+            if (newConstraint && newConstraint.component_1 === null) return true;
         } else if (type == 'segment') {
-            if (newConstraint.field_1 === null) return true;
+            if (newConstraint && newConstraint.field_1 === null) return true;
         } else if (type == 'message') {
-            if (newConstraint.position_1 === null) return true;
+            if (newConstraint && newConstraint.position_1 === null) return true;
         }
 
         return false;
     }
 
     $rootScope.isEmptyConstraintVerb = function(newConstraint) {
-        if (newConstraint.verb === null) return true;
+        if (newConstraint && newConstraint.verb === null) return true;
 
         return false;
     }
 
     $rootScope.isEmptyConstraintPattern = function(newConstraint) {
-        if (newConstraint.contraintType === null) return true;
+        if (newConstraint && newConstraint.contraintType === null) return true;
 
         return false;
     }
 
     $rootScope.isEmptyConstraintValue = function(newConstraint) {
-        if (newConstraint.value === null) return true;
+        if (newConstraint && newConstraint.value === null) return true;
 
         return false;
     }
 
     $rootScope.isEmptyConstraintValue2 = function(newConstraint) {
-        if (newConstraint.value2 === null) return true;
+        if (newConstraint && newConstraint.value2 === null) return true;
 
         return false;
     }
@@ -3345,7 +3348,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     }
 
     $rootScope.isEmptyConstraintValueSet = function(newConstraint) {
-        if (newConstraint.valueSetId === null) return true;
+        if (newConstraint && newConstraint.valueSetId === null) return true;
 
         return false;
     }
@@ -3513,8 +3516,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return null;
     };
 
-    $rootScope.getTextAsTruncatedString = function (value, num){
-        if(value.length > num) return value.substring(0, num) + "...";
+    $rootScope.getTextAsTruncatedString = function(value, num) {
+        if (value.length > num) return value.substring(0, num) + "...";
         return value;
     };
 
@@ -3603,7 +3606,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     }
     $rootScope.hasSameVersion = function(element) {
-        if(element)  return element.hl7Version;
+        if (element) return element.hl7Version;
         return null;
     };
 
@@ -3744,7 +3747,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         });
     };
-    $scope.getDatatypeForUpgrade= function(id){
+    $scope.getDatatypeForUpgrade = function(id) {
 
 
 
@@ -3909,7 +3912,7 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance
 
 
 
-angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDialog, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc, DocumentationService, PcService,CompositeProfileService) {
+angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDialog, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc, DocumentationService, PcService, CompositeProfileService) {
     $scope.continue = function() {
         $rootScope.clearChanges();
         $mdDialog.hide();
@@ -4121,7 +4124,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
                         }
                     }
                     $rootScope.compositeProfilesStructureMap[result.id] = result;
-                    
+
                     $scope.continue();
 
                 },
@@ -4318,44 +4321,44 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
         result.push('1');
 
 
-        if(!dtId) return result;
+        if (!dtId) return result;
 
-        if(_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT){
+        if (_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT) {
                 return valueSetAllowedDT == $rootScope.datatypesMap[dtId].name;
-            })){
+            })) {
             var hl7Version = $rootScope.datatypesMap[dtId].hl7Version;
 
             var bls = $rootScope.config.bindingLocationListByHL7Version[hl7Version];
 
-            if(bls && bls.length > 0) return bls;
+            if (bls && bls.length > 0) return bls;
         }
 
         return result;
     };
 
-    $scope.isSelected = function (v){
-        if($scope.data && $scope.data.valueSets) {
+    $scope.isSelected = function(v) {
+        if ($scope.data && $scope.data.valueSets) {
             for (var i = 0; i < $scope.data.valueSets.length; i++) {
-                if($scope.data.valueSets[i].tableId == v.id) return true;
+                if ($scope.data.valueSets[i].tableId == v.id) return true;
             }
         }
         return false;
     };
 
-    $scope.selectValueSet = function (v){
-        if(!$scope.data) $scope.data = {};
-        if(!$scope.data.valueSets) $scope.data.valueSets = [];
-        $scope.data.valueSets.push({ tableId: v.id, bindingStrength: "R"});
+    $scope.selectValueSet = function(v) {
+        if (!$scope.data) $scope.data = {};
+        if (!$scope.data.valueSets) $scope.data.valueSets = [];
+        $scope.data.valueSets.push({ tableId: v.id, bindingStrength: "R" });
     };
 
-    $scope.deleteValueSet = function (index) {
+    $scope.deleteValueSet = function(index) {
         if (index >= 0) {
             $scope.data.valueSets.splice(index, 1);
         }
     };
 
-    $scope.unselectValueSet = function (v){
-        var toBeDelBinding =_.find($scope.data.valueSets, function(binding){
+    $scope.unselectValueSet = function(v) {
+        var toBeDelBinding = _.find($scope.data.valueSets, function(binding) {
             return binding.tableId == v.id;
         });
         var index = $scope.data.valueSets.indexOf(toBeDelBinding);
@@ -4364,31 +4367,31 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
         }
     };
 
-    $scope.columnDefinition = _.find($rootScope.segment.coConstraintsTable.thenColumnDefinitionList, function(columnDefinition){
+    $scope.columnDefinition = _.find($rootScope.segment.coConstraintsTable.thenColumnDefinitionList, function(columnDefinition) {
         return columnDefinition.id == currentId;
     });
 
-    if($scope.columnDefinition){
+    if ($scope.columnDefinition) {
         var dtId = $scope.columnDefinition.dtId;
 
-        if($rootScope.datatypesMap[dtId].name.toLowerCase() == 'varies'){
-            var referenceColumnDefinition = _.find($rootScope.segment.coConstraintsTable.thenColumnDefinitionList, function(columnDefinition){
+        if ($rootScope.datatypesMap[dtId].name.toLowerCase() == 'varies') {
+            var referenceColumnDefinition = _.find($rootScope.segment.coConstraintsTable.thenColumnDefinitionList, function(columnDefinition) {
                 return columnDefinition.dMReference;
             });
 
-            if(referenceColumnDefinition){
-                dtId  = $rootScope.segment.coConstraintsTable.thenMapData[referenceColumnDefinition.id][currentIndex].datatypeId;
+            if (referenceColumnDefinition) {
+                dtId = $rootScope.segment.coConstraintsTable.thenMapData[referenceColumnDefinition.id][currentIndex].datatypeId;
             }
 
-            $scope.listOfBindingLocations =  $scope.findOptions(dtId);
-        }else {
-            if(!$scope.columnDefinition.primitive) {
-                $scope.listOfBindingLocations =  $scope.findOptions(dtId);
-            }else {
+            $scope.listOfBindingLocations = $scope.findOptions(dtId);
+        } else {
+            if (!$scope.columnDefinition.primitive) {
+                $scope.listOfBindingLocations = $scope.findOptions(dtId);
+            } else {
                 $scope.listOfBindingLocations = null;
             }
         }
-    }else {
+    } else {
         $scope.listOfBindingLocations = null;
     }
 
@@ -4455,38 +4458,38 @@ angular.module('igl').controller('ConfirmSingleElementDuplicatedCtrl', function(
 });
 
 angular.module('igl').controller('labelController', function($scope) {
-   $scope.getLabel=function(element) {
+    $scope.getLabel = function(element) {
 
-       if(element.type==='table'){
-           if (!element.ext || element.ext == "") {
-               return element.bindingIdentifier;
-           } else {
-               return element.bindingIdentifier + "_" + element.ext;
-           }
-       }
-       if (!element.ext || element.ext == "") {
-           return element.name;
-       } else {
-           return element.name + "_" + element.ext;
-       }
-   };
-    $scope.hasHl7Version=function(element){
-        if(element.hl7Version){
+        if (element.type === 'table') {
+            if (!element.ext || element.ext == "") {
+                return element.bindingIdentifier;
+            } else {
+                return element.bindingIdentifier + "_" + element.ext;
+            }
+        }
+        if (!element.ext || element.ext == "") {
+            return element.name;
+        } else {
+            return element.name + "_" + element.ext;
+        }
+    };
+    $scope.hasHl7Version = function(element) {
+        if (element.hl7Version) {
             return element.hl7Version;
         }
     };
 
-    $scope.getDescriptionLabel=function (element) {
-        if(element.type==='table') {
+    $scope.getDescriptionLabel = function(element) {
+        if (element.type === 'table') {
 
-            if(element.name&&element.name!==''){
-                return "-"+element.name;
-            }else{
+            if (element.name && element.name !== '') {
+                return "-" + element.name;
+            } else {
                 return "";
             }
 
-        }else{
-            return "-"+element.description;
+        } else {
+            return "-" + element.description;
         }
 
     }
@@ -4497,10 +4500,9 @@ angular.module('igl').controller('labelController', function($scope) {
                 return 'HL7';
             } else if (leaf.scope === 'USER') {
                 return 'USR';
-            }else if(leaf.scope ==='INTERMASTER'){
+            } else if (leaf.scope === 'INTERMASTER') {
                 return 'DRV';
-            }
-            else if (leaf.scope === 'MASTER') {
+            } else if (leaf.scope === 'MASTER') {
                 return 'MAS';
             } else if (leaf.scope === 'PRELOADED') {
                 return 'PRL';

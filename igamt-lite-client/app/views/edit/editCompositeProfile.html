@@ -264,6 +264,8 @@
                                                                     </th>
                                                                     <th class="col-md-1" ng-style="csWidthx" rowspan="2">Conformance Statement
                                                                     </th>
+                                                                     <th class="col-md-1" ng-style="csWidthx" rowspan="2">Dynamic Mapping
+                                                                    </th>
                                                                     <th class="col-md-1 col-fixed-80" rowspan="2">Definition Text
                                                                     </th>
                                                                     <th class="col-md-1" ng-style="commentWidth" rowspan="2">Comment
@@ -486,6 +488,9 @@
         </td>
         <td class="col-md-1">
             <span><i style="font-size:15px;" ng-show="findingConfSt(node)" ng-click="seeConfSt(node,'see')" class="material-icons">visibility</i></span>
+        </td>
+        <td class="col-md-1">
+            <span><i style="font-size:15px;" ng-show="findingDynMap(node)" ng-click="seeDynMap(node,'see')" class="material-icons">visibility</i></span>
         </td>
 
 

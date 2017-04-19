@@ -200,8 +200,7 @@ public class PathGroupServiceImpl implements PathGroupService {
       for (SubProfileComponent subPc : pc.getChildren()) {
         add(pathGroups, subPc.getPath(), subPc.getAttributes());
       }
-      System.out.println("=====");
-      System.out.println(pc.getChildren().get(0).toString());
+
     }
 
     return pathGroups;
@@ -340,8 +339,7 @@ public class PathGroupServiceImpl implements PathGroupService {
     }
     PathGroup grp = new PathGroup();
     createHierarchy(grp, path, attributes);
-    System.out.println("%%%%%%5");
-    System.out.println(grp.toString());
+
     pathGroups.add(grp);
   }
 
