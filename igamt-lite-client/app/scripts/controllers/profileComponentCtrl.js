@@ -1,4 +1,5 @@
 angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $modal, orderByFilter, $rootScope, $q, $interval, PcLibraryService, PcService, ngTreetableParams, $http, StorageService, userInfoService, IgDocumentService, SegmentService, DatatypeService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, $mdDialog) {
+
     $scope.changes = false;
 
     $scope.editProfileComponent = false;
@@ -14,15 +15,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         isThirdOpen: false,
 
     };
-    // $scope.setDirty = function() {
-    //     $scope.editForm.$dirty = true;
-    // };
-    // $scope.clearDirty = function() {
-    //     if ($scope.editForm) {
-    //         $scope.editForm.$setPristine();
-    //         $scope.editForm.$dirty = false;
-    //     }
-    // }
+
     $scope.redirectVS = function(binding) {
 
         TableService.getOne(binding.tableId).then(function(valueSet) {
@@ -395,6 +388,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
         return result;
     };
+
     $scope.editCommentDlg = function(node, comment, disabled, type) {
         var modalInstance = $modal.open({
             templateUrl: 'EditComment.html',
@@ -470,6 +464,45 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         });
 
     };
+    $scope.hasDynamicMapping = function(node) {
+        if (node.type === "segmentRef") {
+            var mappingStructure = _.find($rootScope.config.variesMapItems, function(item) {
+                return item.hl7Version == $rootScope.segmentsMap[node.attributes.ref.id].hl7Version && item.segmentName == $rootScope.segmentsMap[node.attributes.ref.id].name;
+            });
+            if (mappingStructure) {
+                return true;
+            }
+        }
+        return false;
+    };
+    $scope.findDynamicMapping = function(node) {
+        if (node.type === "segmentRef") {
+            if (node.attributes.dynamicMappingDefinition && node.attributes.dynamicMappingDefinition.dynamicMappingItems.length > 0) {
+                return node.attributes.dynamicMappingDefinition;
+            } else {
+                return node.attributes.oldDynamicMappingDefinition;
+            }
+        }
+        return null;
+    };
+    $scope.openAddDynamicMappingDialog = function(node, context) {
+        $mdDialog.show({
+            templateUrl: 'AddDynamicMappingCtrlInPc.html',
+            parent: angular.element(document).find('body'),
+            controller: 'AddDynamicMappingCtrlInPc',
+            locals: {
+                node: node,
+                context: context
+            }
+
+        }).then(function(mapping) {
+            if (mapping) {
+                console.log(mapping);
+                node.attributes.dynamicMappingDefinition = mapping;
+                $scope.setDirty();
+            }
+        });
+    }
     $scope.openAddGlobalConformanceStatementDialog = function(node, context) {
         $mdDialog.show({
             templateUrl: 'GlobalConformanceStatementCtrlInPc.html',
@@ -564,12 +597,12 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
 
         }).then(function(results) {
-             $scope.setDirty();
+            $scope.setDirty();
             if ($scope.profileComponentParams) {
                 $scope.profileComponentParams.refresh();
             }
         });
-         
+
     };
     $scope.removePcEntry = function(node) {
         $rootScope.profileComponent.children = orderByFilter($rootScope.profileComponent.children, 'position');
@@ -651,6 +684,10 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
     $scope.cancelConfSt = function(node) {
         node.attributes.conformanceStatements = [];
+        $scope.setDirty();
+    };
+    $scope.cancelDynMap = function(node) {
+        node.attributes.dynamicMappingDefinition = null;
         $scope.setDirty();
     };
     $scope.initUsage = function(node) {
@@ -795,6 +832,10 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.datatype = field.attributes.oldDatatype;
         $scope.editableDT = '';
         $scope.setDirty();
+    };
+    $scope.backDT = function() {
+        $scope.editableDT = '';
+
     };
     $scope.cancelDefText = function(field) {
         field.attributes.text = null;
@@ -988,6 +1029,130 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
 
 
+    $scope.showEditDynamicMappingDlg = function(node) {
+        var modalInstance = $modal.open({
+            templateUrl: 'DynamicMappingCtrl.html',
+            controller: 'DynamicMappingCtrlInPc',
+            windowClass: 'app-modal-window',
+            resolve: {
+                selectedNode: function(
+
+                ) {
+                    return node;
+                }
+            }
+        });
+        modalInstance.result.then(function(node) {
+            $scope.selectedNode = node;
+            $scope.setDirty();
+            $scope.segmentsParams.refresh();
+        }, function() {});
+    };
+
+
+
+});
+angular.module('igl').controller('AddDynamicMappingCtrlInPc', function($scope, $mdDialog, node, context, $rootScope, TableService) {
+    $scope.node = angular.copy(node);
+    console.log($rootScope.dynamicMappingTable);
+    $scope.changed = false;
+    $scope.setDirty = function() {
+        $scope.changed = true;
+    };
+    $scope.findDynamicMapping = function(node) {
+        if (node.type === "segmentRef") {
+            if (node.attributes.dynamicMappingDefinition && node.attributes.dynamicMappingDefinition.dynamicMappingItems.length > 0) {
+                return node.attributes.dynamicMappingDefinition;
+            } else {
+                return node.attributes.oldDynamicMappingDefinition;
+            }
+        }
+        return null;
+    };
+    $scope.findingBindings = function(node) {
+        if (node.type === "segmentRef") {
+            if (node.valueSetBindings && node.valueSetBindings.length > 0) {
+                return node.valueSetBindings;
+            } else {
+                return node.oldValueSetBindings;
+            }
+        }
+        return null;
+    };
+    $scope.updateDynamicMappingInfo = function() {
+        $scope.isDynamicMappingSegment = false;
+        $scope.dynamicMappingTable = null;
+
+        var mappingStructure = _.find($rootScope.config.variesMapItems, function(item) {
+            return item.hl7Version == $rootScope.segmentsMap[$scope.node.attributes.ref.id].hl7Version && item.segmentName == $rootScope.segmentsMap[$scope.node.attributes.ref.id].name;
+        });
+
+        if (mappingStructure) {
+            $rootScope.isDynamicMappingSegment = true;
+            console.log("=========This is DM segment!!=========");
+
+            if ($scope.findDynamicMapping($scope.node) && $scope.findDynamicMapping($scope.node).mappingStructure) {
+                console.log("=========Found mapping structure!!=========");
+                mappingStructure = $scope.findDynamicMapping($scope.node).mappingStructure;
+            } else {
+                console.log("=========Not Found mapping structure and Default setting will be used!!=========");
+            }
+
+            var valueSetBinding = _.find($scope.findingBindings($scope.node), function(vsb) {
+                return vsb.location == mappingStructure.referenceLocation;
+            });
+
+            if (valueSetBinding) {
+                TableService.getOne(valueSetBinding.tableId).then(function(tbl) {
+                    $scope.dynamicMappingTable = tbl;
+                }, function() {
+
+                });
+            }
+        }
+    };
+    $scope.updateDynamicMappingInfo();
+
+
+
+    $scope.dynamicMappingDefinition = $scope.findDynamicMapping($scope.node);
+    $scope.deleteMappingItem = function(item) {
+        var index = $scope.dynamicMappingDefinition.dynamicMappingItems.indexOf(item);
+        if (index >= 0) {
+            $scope.dynamicMappingDefinition.dynamicMappingItems.splice(index, 1);
+            $scope.setDirty();
+        }
+    };
+
+    $scope.addMappingItem = function() {
+        var newItem = {};
+        newItem.firstReferenceValue = null;
+        newItem.secondReferenceValue = null;
+        newItem.datatypeId = null;
+        $scope.dynamicMappingDefinition.dynamicMappingItems.push(newItem);
+        $scope.setDirty();
+    };
+
+    $scope.getDefaultStatus = function(code) {
+        var item = _.find($scope.dynamicMappingDefinition.dynamicMappingItems, function(item) {
+            return item.firstReferenceValue == code.value;
+        });
+
+        if (!item) return 'full';
+        if (item) {
+            if (item.secondReferenceValue && item.secondReferenceValue != '') return 'partial';
+            return 'empty';
+        }
+    };
+
+    console.log($scope.node);
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    }
+    $scope.saveclose = function() {
+        $mdDialog.hide($scope.dynamicMappingDefinition);
+    }
+
 });
 angular.module('igl').controller('addCommentCtrl',
     function($scope, $rootScope, $modalInstance, field, PcService, $http, SegmentLibrarySvc) {
@@ -1128,7 +1293,7 @@ angular.module('igl').controller('applyPcToCtrl',
 
 
 angular.module('igl').controller('addComponentsCtrl',
-    function($scope, $rootScope, $mdDialog, messages, segments, segmentsMap, datatypesMap, currentPc, PcLibraryService, datatypes, ngTreetableParams, $http, SegmentLibrarySvc, PcService,orderByFilter) {
+    function($scope, $rootScope, $mdDialog, messages, segments, segmentsMap, datatypesMap, currentPc, PcLibraryService, datatypes, ngTreetableParams, $http, SegmentLibrarySvc, PcService, orderByFilter) {
         $scope.selectedPC = [];
         console.log("current pc");
         console.log(currentPc);
@@ -1367,6 +1532,8 @@ angular.module('igl').controller('addComponentsCtrl',
                     itemId: pc.id,
                     parentPredicates: pc.parentPredicates,
                     parentGroupPredicates: pc.parentGroupPredicates,
+
+                    oldValueSetBindings: $rootScope.segmentsMap[pc.ref.id].valueSetBindings,
                     source: pc.source,
                     from: "message",
                     attributes: {
@@ -1384,6 +1551,7 @@ angular.module('igl').controller('addComponentsCtrl',
                             label: $rootScope.segmentsMap[pc.ref.id].label,
 
                         },
+                        oldDynamicMappingDefinition: $rootScope.segmentsMap[pc.ref.id].dynamicMappingDefinition,
                         oldUsage: pc.usage,
                         usage: null,
                         oldMin: pc.min,
@@ -1552,6 +1720,9 @@ angular.module('igl').controller('addComponentsCtrl',
                     pathExp: $rootScope.segmentsMap[pc.id].label,
                     parentPredicates: pc.parentPredicates,
                     parentGroupPredicates: pc.parentGroupPredicates,
+
+                    oldValueSetBindings: pc.valueSetBindings,
+
                     source: pc.source,
                     from: "segment",
                     itemId: pc.id,
@@ -1570,6 +1741,7 @@ angular.module('igl').controller('addComponentsCtrl',
                             label: $rootScope.segmentsMap[pc.id].label,
 
                         },
+                        oldDynamicMappingDefinition: pc.dynamicMappingDefinition,
                         oldConformanceStatements: pc.conformanceStatements,
                         conformanceStatements: [],
                     },
@@ -1594,8 +1766,11 @@ angular.module('igl').controller('addComponentsCtrl',
             };
             console.log("newPc");
             console.log(newPc);
-            newPc.oldValueSetBindings = $scope.findingBindings(newPc);
-            newPc.oldSingleElementValues = $scope.findingSingleElement(newPc);
+            if (newPc.type !== "segmentRef") {
+                newPc.oldValueSetBindings = $scope.findingBindings(newPc);
+            }
+
+            // newPc.oldSingleElementValues = $scope.findingSingleElement(newPc);
             newPc.oldComments = $scope.findingComments(newPc);
             newPc.oldPredicates = $scope.findPredicates(newPc);
             $scope.selectedPC.push(newPc);
