@@ -38,7 +38,7 @@
                 <span class="material-icons" style="font-size: 42px;">search</span>
                 <md-input-container flex style="margin: 0px !important" layout="row">
 
-                    <input type="search"  flex ng-model="search.metaData.title"  style="border-bottom-color: black;color: black;" placeholder="Search for IG Document"/>
+                    <input type="search"  flex ng-model="search.metaData.title"  style="border-bottom-color: black;color: black;"/>
 
                 </md-input-container>
                 </div>
@@ -114,10 +114,10 @@
 
                                                                         <span ng-if="igDocumentConfig.selectedType === 'USER'" title="Delete Share Document" style="color:red"><i class="fa fa-trash-o fa-fw igList-icons"></i></span>
 
-                                                                    <span  ng-click="confirmShareDocument(row)"  title="Approve Share Document" ng-if="row.comment === 'PENDING_APPROVAL'"  style="color:gray"><i class="fa fa-check fa-fw igList-icons"
+                                                                        <span  ng-click="confirmShareDocument(row)"  title="Approve Share Document" ng-if="row.comment === 'PENDING_APPROVAL'"  style="color:gray"><i class="fa fa-check fa-fw igList-icons"
                                                                                              aria-hidden="true"></i></span>
 
-                                                                    <span ng-if="row.comment === 'PENDING_APPROVAL'" title="Reject Share Document" ng-click="rejectShareDocument(row)" style="color:lightgrey"><i class="fa fa-times fa-fw igList-icons"
+                                                                        <span ng-if="row.comment === 'PENDING_APPROVAL'" title="Reject Share Document" ng-click="rejectShareDocument(row)" style="color:lightgrey"><i class="fa fa-times fa-fw igList-icons"
                                                                                              aria-hidden="true"></i></span>
 
                                                                 </div>
