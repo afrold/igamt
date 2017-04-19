@@ -43,9 +43,10 @@ public class SerializableTable extends SerializableSection {
                     "" :
                     this.table.getBindingIdentifier()));
             valueSetDefinitionElement.addAttribute(new Attribute("BindingIdentifier",
-                (this.bindingIdentifier == null) ? "" : this.bindingIdentifier));
-            valueSetDefinitionElement.addAttribute(
-                new Attribute("Name", (this.table.getName() == null) ? "" : this.table.getName()));
+                (this.bindingIdentifier == null) ? "" : table.getBindingIdentifier()));
+            if((this.table.getName() != null && !this.table.getName().isEmpty())){
+              valueSetDefinitionElement.addAttribute(new Attribute("Name", this.table.getName()));
+            }
             valueSetDefinitionElement.addAttribute(new Attribute("Description",
                 (this.table.getDescription() == null) ? "" : this.table.getDescription()));
             valueSetDefinitionElement.addAttribute(new Attribute("Version",

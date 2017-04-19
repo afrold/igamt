@@ -227,6 +227,9 @@ public class SerializationUtil {
         if (i < comparisonVersion.length) {
           comparisonValue = comparisonVersion[i];
         }
+        if(versionToCompare[i].contains("*")){
+          return true;
+        }
         if (Integer.valueOf(versionToCompare[i]) > comparisonValue) {
           return true;
         } else if(Integer.valueOf(versionToCompare[i]) < comparisonValue){
