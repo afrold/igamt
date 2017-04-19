@@ -4118,7 +4118,7 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
                     }
 
                     console.log($rootScope.igdocument);
-                    $modalInstance.hide(cpStructure);
+                    $modalInstance.close(cpStructure);
 
                 });
 
