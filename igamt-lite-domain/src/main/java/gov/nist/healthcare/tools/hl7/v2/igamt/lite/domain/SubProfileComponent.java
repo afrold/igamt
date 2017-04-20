@@ -39,6 +39,8 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   private List<Predicate> oldPredicates = new ArrayList<Predicate>();
   private List<Predicate> predicates = new ArrayList<Predicate>();
 
+
+
   private String from;
 
 
@@ -180,6 +182,8 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   public void setPredicates(List<Predicate> predicates) {
     this.predicates = predicates;
   }
+
+
 
   public String getFrom() {
     return from;

@@ -143,8 +143,7 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     for (PathGroup pathGroup : pathGroups) {
       try {
         DataModel dm = queryService.get(dataModel, pathGroup.getPath());
-        System.out.println("+++++");
-        System.out.println(pathGroup.toString());
+
         DataModel context =
             flavorService.createFlavor(ext, dm, pathGroup.getAttributes(), pathGroup.getChildren());
         browse(ext, context, pathGroup.getChildren());

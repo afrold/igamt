@@ -46,6 +46,8 @@ public class SubProfileComponentAttributes {
   private List<ConformanceStatement> oldConformanceStatements =
       new ArrayList<ConformanceStatement>();
   private List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
+  private DynamicMappingDefinition oldDynamicMappingDefinition = new DynamicMappingDefinition();
+  private DynamicMappingDefinition dynamicMappingDefinition = new DynamicMappingDefinition();
 
 
   public Usage getUsage() {
@@ -231,6 +233,23 @@ public class SubProfileComponentAttributes {
 
   public void setConformanceStatements(List<ConformanceStatement> conformanceStatements) {
     this.conformanceStatements = conformanceStatements;
+  }
+
+
+  public DynamicMappingDefinition getOldDynamicMappingDefinition() {
+    return oldDynamicMappingDefinition;
+  }
+
+  public void setOldDynamicMappingDefinition(DynamicMappingDefinition oldDynamicMappingDefinition) {
+    this.oldDynamicMappingDefinition = oldDynamicMappingDefinition;
+  }
+
+  public DynamicMappingDefinition getDynamicMappingDefinition() {
+    return dynamicMappingDefinition;
+  }
+
+  public void setDynamicMappingDefinition(DynamicMappingDefinition dynamicMappingDefinition) {
+    this.dynamicMappingDefinition = dynamicMappingDefinition;
   }
 
   @Override

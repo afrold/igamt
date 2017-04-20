@@ -7,7 +7,8 @@ angular.module('igl').controller(
 
         $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
 
-        $scope.hl7Versions = function(clickSource) {
+        $scope.create = function(clickSource) {
+            console.log("called");
             $rootScope.clickSource = clickSource;
             if ($rootScope.hasChanges()) {
                 $rootScope.openConfirmLeaveDlg().then(function() {
@@ -36,7 +37,9 @@ angular.module('igl').controller(
                     }
                 }
             }).then(function(igdocument) {
+
                 $rootScope.clearChanges();
+
                 $scope.hl7VersionsInstance();
             }, function() {
                 console.log("Changes discarded.");
@@ -68,13 +71,18 @@ angular.module('igl').controller(
                             }
                         }
                     }
-                }).then(function(igdocument) {
-                    $rootScope
-                        .$emit(
-                            'event:openIGDocumentRequest',
-                            igdocument);
-                    $rootScope.$broadcast('event:IgsPushed',
-                        igdocument);
+                }).then(function(result) {
+                    console.log(result);
+                    if(result){
+                        $rootScope
+                            .$emit(
+                                'event:openIGDocumentRequest',
+                                result);
+                        $rootScope.$broadcast('event:IgsPushed',
+                            result);
+
+                    }
+
                 });
             }, function(response) {
                 $rootScope.msg().text = "Cannot load the versions. Please try again";
