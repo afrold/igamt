@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTLoginException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.GVTService;
 
 @RestController
@@ -24,7 +24,7 @@ public class GVTController extends CommonController {
 
   @RequestMapping(value = "/login", method = RequestMethod.GET, produces = "application/json")
   public boolean validCredentials(@RequestHeader("gvt-auth") String authorization)
-      throws GVTExportException {
+      throws GVTLoginException {
     log.info("Logging to GVT");
     return gvtService.validCredentials(authorization);
   }

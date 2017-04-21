@@ -16,8 +16,9 @@ angular.module('igl').controller('GVTLoginCtrl', ['$scope', '$modalInstance', 'u
         GVTSvc.login($scope.user.username, $scope.user.password).then(function(auth){
             $modalInstance.close(auth);
         }, function(error){
-            $scope.error.text =  error.data != null ? error.data : "Cannot access server.";
-            $scope.error.show =true;
+            $scope.error.text = error.data.text;
+            $scope.error.show = true;
+            $scope.error.type = 'danger';
         });
     };
 }])
