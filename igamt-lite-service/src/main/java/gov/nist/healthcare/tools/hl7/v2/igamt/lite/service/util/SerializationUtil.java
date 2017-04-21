@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -131,12 +133,30 @@ public class SerializationUtil {
           elementTbl.attr("summary", ".");
       }
   }
-
+    for(org.jsoup.nodes.Element elementTd : doc.select("td")){
+      removeEndingBrTag(elementTd);
+    }
+    for(org.jsoup.nodes.Element elementTd : doc.select("th")){
+      removeEndingBrTag(elementTd);
+    }
+    
     //Renaming strong to work as html4 
     doc.select("strong").tagName("b");
     String html = doc.body().html();
     html = html.replace("<br>", "<br />");
     return "<div class=\"fr-view\">" + html + "</div>";
+  }
+
+  private void removeEndingBrTag(Element element) {
+    if(element.childNodeSize()>0){
+      Node node = element.childNodes().get(element.childNodeSize()-1);
+      if(node instanceof Element){
+        Element childElement = (Element) node;
+        if(childElement.tagName().equals("br")){
+          childElement.remove();
+        }
+      }
+    }
   }
 
   private byte[] scale(byte[] fileData, int width, int height) {

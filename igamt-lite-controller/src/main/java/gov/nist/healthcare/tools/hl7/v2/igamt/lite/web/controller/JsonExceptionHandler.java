@@ -140,7 +140,7 @@ public class JsonExceptionHandler implements HandlerExceptionResolver {
         logger.error("ERROR: Failed to export to GVT", ex);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         mapper.writeValue(response.getWriter(),
-            new ResponseMessage(ResponseMessage.Type.danger, "gvtExportFailed"));
+            new ResponseMessage(ResponseMessage.Type.danger, ex.getMessage()));
       } else {
         logger.error("ERROR: " + ex.getMessage(), ex);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
