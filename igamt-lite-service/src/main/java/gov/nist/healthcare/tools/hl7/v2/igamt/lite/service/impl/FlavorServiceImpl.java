@@ -105,6 +105,10 @@ public class FlavorServiceImpl implements FlavorService {
                   && attr.getDynamicMappingDefinition().getDynamicMappingItems().size() > 0) {
                 segmentFlavor.setDynamicMappingDefinition(attr.getDynamicMappingDefinition());
               }
+              if (attr.getCoConstraintsTable() != null
+                  && attr.getCoConstraintsTable().getRowSize() > 0) {
+                segmentFlavor.setCoConstraintsTable(attr.getCoConstraintsTable());
+              }
             }
           }
 
@@ -142,8 +146,7 @@ public class FlavorServiceImpl implements FlavorService {
 
           }
           for (SubProfileComponentAttributes attr : attributes) {
-            System.out.println("----------------");
-            System.out.println(attr.getDynamicMappingDefinition().getDynamicMappingItems().size());
+
             if (attr.getDynamicMappingDefinition() != null
                 && attr.getDynamicMappingDefinition().getDynamicMappingItems().size() > 0) {
               Segment originalSeg = queryService.getSegmentsMap().get(segRef.getRef().getId());
@@ -156,6 +159,27 @@ public class FlavorServiceImpl implements FlavorService {
 
                 // System.out.println(
                 // attr.getDynamicMappingDefinition().getMappingStructure().getSegmentName());
+                queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
+                segRef.getRef().setId(segmentFlavor.getId());
+                segRef.getRef().setExt(segmentFlavor.getExt());
+
+
+              } catch (CloneNotSupportedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+            }
+            if (attr.getCoConstraintsTable() != null
+                && attr.getCoConstraintsTable().getRowSize() > 0) {
+              Segment originalSeg = queryService.getSegmentsMap().get(segRef.getRef().getId());
+              try {
+                Segment segmentFlavor = originalSeg.clone();
+                segmentFlavor.setExt(ext + "_" + segRef.getPosition());
+                segmentFlavor.setId(ObjectId.get().toString());
+                segmentFlavor.setScope(SCOPE.USER);
+                segmentFlavor.setCoConstraintsTable(attr.getCoConstraintsTable());
+
+
                 queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
                 segRef.getRef().setId(segmentFlavor.getId());
                 segRef.getRef().setExt(segmentFlavor.getExt());

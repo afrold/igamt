@@ -122,6 +122,7 @@
                                                                     <th class="col-md-1" ng-style="csWidthx" rowspan="2">Conformance Statement
                                                                     </th>
                                                                     <th rowspan="2">Dynamic Mapping</th>
+                                                                    <th rowspan="2">CoConstraints</th>
                                                                     <th class="col-md-1 col-fixed-80" rowspan="2">Definition Text
                                                                     </th>
                                                                     <th class="col-md-1" ng-style="commentWidth" rowspan="2">Comment
@@ -416,6 +417,17 @@
                                                                                 <i ng-click="openAddDynamicMappingDialog(node,'edit')" class="fa fa-plus fa-fw" ng-show="findDynamicMapping(node)===null || (findDynamicMapping(node) && findDynamicMapping(node).dynamicMappingItems.length===0)"></i>
                                                                                 <i ng-click="openAddDynamicMappingDialog(node,'edit')" class="fa fa-pencil fa-fw" ng-show="findDynamicMapping(node)!==null && findDynamicMapping(node).dynamicMappingItems.length>0"></i>
                                                                                  <i  ng-click="cancelDynMap(node)" ng-show="node.attributes.dynamicMappingDefinition && node.attributes.dynamicMappingDefinition.dynamicMappingItems.length>0" class="fa fa-times fa-fw"></i>
+                                                                            </a>
+                                                                        </span>
+
+
+                                                                    </td>
+                                                                    <td ng-class="{'emptyCol':!hasCoConstraints(node),'input-change':(node.attributes.coConstraintsTable && node.attributes.coConstraintsTable.rowSize>0)}">
+                                                                        <span ng-show="hasCoConstraints(node)">
+                                                                            <a  class="point" >
+                                                                                <i ng-click="openAddCoConstraintsDialog(node,'edit')" class="fa fa-plus fa-fw" ng-show="findCoConstraints(node)===null || (findCoConstraints(node) && findCoConstraints(node).rowSize===0)"></i>
+                                                                                <i ng-click="openAddCoConstraintsDialog(node,'edit')" class="fa fa-pencil fa-fw" ng-show="findCoConstraints(node)!==null && findCoConstraints(node).rowSize>0"></i>
+                                                                                 <i  ng-click="cancelCoCon(node)" ng-show="node.attributes.coConstraintsTable && node.attributes.coConstraintsTable.rowSize>0" class="fa fa-times fa-fw"></i>
                                                                             </a>
                                                                         </span>
 
@@ -1152,6 +1164,491 @@
 
 </script>
 
+<script type="text/ng-template" id="AddCoConstraintCtrlInPc.html">
+    <md-dialog aria-label="CoConstraints" style="width:2000px; max-height:100%">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> CoConstraints of {{node.attributes.ref.name}} </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" style="overflow:scroll;">
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="panel panel-default ">
+                                <div class="panel-heading ">CoConstraint Builder</div>
+                                <div class="panel-body " style="min-height:200px; max-height:500px;overflow-y: scroll; ">
+                                    <div class="table-container">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr class="tbl-header">
+                                                    <th ng-show="!coConstraintsTable.ifColumnDefinition" bgcolor="#1565c0" style="text-align:center;">
+                                                        <span style="color:black" ng-click="coConstraintIFDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add IF Column</span>
+                                                    </th>
+                                                    <th ng-show="coConstraintsTable.ifColumnDefinition" bgcolor="#1565c0" style="text-align:center;border:0;">
+                                                    </th>
+                                                    <th ng-show="!coConstraintsTable.thenColumnDefinitionList || coConstraintsTable.thenColumnDefinitionList.length == 0" bgcolor="#efefef" style="text-align:center;">
+                                                        <span style="color:black" ng-click="coConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add THEN Column</span>
+                                                    </th>
+                                                    <th ng-show="coConstraintsTable.thenColumnDefinitionList && coConstraintsTable.thenColumnDefinitionList.length > 0" colspan="{{coConstraintsTable.thenColumnDefinitionList.length}}" bgcolor="#efefef" style="text-align:center;">
+                                                        <span style="color:black" ng-click="coConstraintTHENDefinition();"><i class="fa fa-plus" aria-hidden="true"></i> Add THEN Column</span>
+                                                    </th>
+                                                    <th ng-show="!coConstraintsTable.userColumnDefinitionList || coConstraintsTable.userColumnDefinitionList.length == 0" bgcolor="#4caf50" style="text-align:center;">
+                                                        <span style="color:black" ng-click="coConstraintUSERDefinitionF();"><i class="fa fa-plus" aria-hidden="true"></i> Add USER Column</span>
+                                                    </th>
+                                                    <th ng-show="coConstraintsTable.userColumnDefinitionList && coConstraintsTable.userColumnDefinitionList.length > 0" colspan="{{coConstraintsTable.userColumnDefinitionList.length}}" bgcolor="#4caf50" style="text-align:center;">
+                                                        <span style="color:black" ng-click="coConstraintUSERDefinitionF();"><i class="fa fa-plus" aria-hidden="true"></i> Add USER Column</span>
+                                                    </th>
+                                                    <th bgcolor="white" style="text-align:center;border:0;">
+                                                    </th>
+                                                </tr>
+                                                <tr class="tbl-header">
+                                                    <th bgcolor="#1565c0" style="text-align:center;" ng-show="coConstraintsTable.ifColumnDefinition">
+                                                        <span ng-show="coConstraintsTable.ifColumnDefinition.type=='field'" class="label label-field label-icon">F</span>
+                                                        <span ng-show="coConstraintsTable.ifColumnDefinition.type=='component'" class="label label-component label-icon">C</span>
+                                                        <span ng-show="coConstraintsTable.ifColumnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
+                                                        <span style="color:black">{{node.attributes.ref.name}}-{{coConstraintsTable.ifColumnDefinition.path}}</span>
+                                                        <span ng-show="coConstraintsTable.ifColumnDefinition.constraintType=='value'" class="label label-icon">Value</span>
+                                                        <span ng-show="coConstraintsTable.ifColumnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
+                                                        <span style="color:black" ng-click="coConstraintIFDefinition(coConstraintsTable.ifColumnDefinition);"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                        <span style="color:red" ng-click="delCoConstraintIFDefinition(coConstraintsTable.ifColumnDefinition);"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                                    </th>
+                                                    <th bgcolor="#1565c0" ng-show="!coConstraintsTable.ifColumnDefinition" style="text-align:center;">
+                                                        <span style="color:black">Need IF Column Definition</span>
+                                                    </th>
+                                                    <th bgcolor="#efefef" style="text-align:center;" ng-repeat="columnDefinition in coConstraintsTable.thenColumnDefinitionList">
+                                                        <span ng-show="columnDefinition.type=='field'" class="label label-field label-icon">F</span>
+                                                        <span ng-show="columnDefinition.type=='component'" class="label label-component label-icon">C</span>
+                                                        <span ng-show="columnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
+                                                        <span style="color:black">{{node.attributes.ref.name}}-{{columnDefinition.path}}</span>
+                                                        <span ng-show="columnDefinition.constraintType=='value'" class="label label-icon">Value</span>
+                                                        <span ng-show="columnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
+                                                        <span style="color:black" ng-click="coConstraintTHENDefinition(columnDefinition);"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                        <span style="color:red" ng-click="delCoConstraintTHENDefinition(columnDefinition);"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                                    </th>
+                                                    <th bgcolor="#efefef" ng-show="!coConstraintsTable.thenColumnDefinitionList || coConstraintsTable.thenColumnDefinitionList.length == 0" style="text-align:center;">
+                                                        <span style="color:black">Need THEN Column Definition</span>
+                                                    </th>
+                                                    <th bgcolor="#4caf50" style="text-align:center;" ng-repeat="columnDefinition in coConstraintsTable.userColumnDefinitionList">
+                                                        <span style="color:black">{{columnDefinition.title}}</span>
+                                                        <span style="color:black" ng-click="coConstraintUSERDefinitionF(columnDefinition);"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                        <span style="color:red" ng-click="delCoConstraintUSERDefinition(columnDefinition);"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                                    </th>
+                                                    <th bgcolor="#4caf50" ng-show="!coConstraintsTable.userColumnDefinitionList || coConstraintsTable.userColumnDefinitionList.length == 0" style="text-align:center;color:black;">
+                                                        <span style="color:black">Need USER Column Definition</span>
+                                                    </th>
+                                                    <th bgcolor="#add8e6" style="text-align:center;">
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-show="coConstraintsTable.rowSize > 0" ng-repeat="n in [].constructor(coConstraintsTable.rowSize) track by $index" ng-init="rowIndex = $index">
+                                                    <td style="text-align:center;" ng-show="coConstraintsTable.ifColumnDefinition">
+                                                        <div layout="row" layout-align="center center">
+
+                                                            <md-input-container class="withoutMargin">
+                                                                <label></label>
+                                                                <input aria-label="if" ng-change="setDirty();" ng-model="coConstraintsTable.ifColumnData[rowIndex].valueData.value" />
+                                                            </md-input-container>
+
+                                                            <md-input-container class="withoutMargin">
+                                                                <label></label>
+                                                                <md-select class="inside-table" style="margin-top:20px;" aria-label="if" ng-show="!coConstraintsTable.ifColumnDefinition.primitive" ng-model='coConstraintsTable.ifColumnData[rowIndex].valueData.bindingLocation' ng-change="setDirty();">
+
+                                                                    <md-option ng-repeat="option in findOptions(coConstraintsTable.ifColumnDefinition.dtId)" ng-value="option">
+                                                                        {{option}}
+                                                                    </md-option>
+                                                                </md-select>
+                                                            </md-input-container>
+                                                        </div>
+                                                    </td>
+
+                                                    <td ng-show="!coConstraintsTable.ifColumnDefinition" style="text-align:center;">
+                                                    </td>
+
+                                                    <td ng-repeat="columnDefinition in coConstraintsTable.thenColumnDefinitionList" style="text-align:center;">
+                                                        <div ng-show="columnDefinition.constraintType == 'value'">
+                                                            <div layout="row" layout-align="center center">
+
+                                                                <md-input-container class="withoutMargin">
+                                                                    <label></label>
+                                                                    <input aria-label="if" style="width:70%" ng-change="setDirty();" ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.value" />
+                                                                </md-input-container>
+
+                                                                <md-input-container class="withoutMargin">
+                                                                    <label></label>
+                                                                    <md-select class="inside-table" style="margin-top:20px;" aria-label="if" ng-show="!columnDefinition.primitive" ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.bindingLocation' ng-change="setDirty();">
+
+                                                                        <md-option ng-repeat="option in findOptions(columnDefinition.dtId)" ng-value="option">
+                                                                            {{option}}
+                                                                        </md-option>
+                                                                    </md-select>
+                                                                </md-input-container>
+                                                            </div>
+                                                        </div>
+                                                        <div ng-show="columnDefinition.constraintType == 'valueset'">
+                                                            <div ng-repeat="vs in coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueSets">
+                                                                <span class="badge label-white">
+                                                                                    <span class="label label-sub-component-icon label-icon">VS</span>
+                                                                <span>{{$root.tablesMap[vs.tableId].bindingIdentifier}}</span>
+                                                                </span>
+                                                            </div>
+                                                            <a class="point">
+                                                                <span ng-click="editValueSetThenMapData(columnDefinition.id, rowIndex)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                                            </a>
+                                                        </div>
+
+
+                                                        <div layout="row" layout-align="center center" ng-show="columnDefinition.constraintType == 'dmr'">
+
+                                                            <md-input-container class="withoutMargin">
+                                                                <label></label>
+                                                                <md-select class="inside-table" aria-label="if" style="margin-top:20px;" ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.value' ng-change="setDirty();">
+                                                                    <md-option ng-value=""><em>DT BaseName</em></md-option>
+                                                                    <md-option ng-repeat="c in dynamicMappingTable.codes" ng-value="c.value">
+                                                                        {{c.value}}
+                                                                    </md-option>
+                                                                </md-select>
+                                                            </md-input-container>
+
+                                                            <!--<select ng-show="coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.value" ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].datatypeId" class="form-control" ng-options="link.id as getDatatypeLabel(datatypesMap[link.id]) for link in igdocument.profile.datatypeLibrary.children | filter: {name: coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.value}">
+                                                                                    <option value="">DT Flavor</option>
+                                                                                </select>-->
+                                                            <md-input-container class="withoutMargin">
+                                                                <label></label>
+                                                                <md-select class="inside-table" aria-label="if" style="margin-top:20px;" ng-show="coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.value" ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].datatypeId" ng-change="setDirty();">
+                                                                    <md-option ng-value=""><em>DT Flavor</em></md-option>
+                                                                    <md-option ng-repeat="link in $root.igdocument.profile.datatypeLibrary.children | filter: {name: coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.value}" ng-value="link.id">
+                                                                        {{$root.getDatatypeLabel($root.datatypesMap[link.id])}}
+                                                                    </md-option>
+                                                                </md-select>
+                                                            </md-input-container>
+                                                        </div>
+                                                    </td>
+
+                                                    <td ng-show="!coConstraintsTable.thenColumnDefinitionList || coConstraintsTable.thenColumnDefinitionList.length == 0" style="text-align:center;">
+                                                    </td>
+
+                                                    <td ng-repeat="columnDefinition in coConstraintsTable.userColumnDefinitionList" style="text-align:center;">
+                                                        <div layout="row" layout-align="center center">
+                                                            <md-input-container class="withoutMargin">
+                                                                <label></label>
+                                                                <input aria-label="if" ng-change="setDirty();" ng-model="coConstraintsTable.userMapData[columnDefinition.id][rowIndex].text" />
+                                                            </md-input-container>
+                                                        </div>
+                                                    </td>
+
+                                                    <td ng-show="!coConstraintsTable.userColumnDefinitionList || coConstraintsTable.userColumnDefinitionList.length == 0">
+                                                    </td>
+
+                                                    <td style="text-align:center;">
+                                                        <span style="color:blue" ng-click="cloneCoConstraintRow(rowIndex);"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                        <span style="color:red" ng-click="delCoConstraintRow(rowIndex);"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td style="text-align:center;border:0;" colspan="100">
+                                                        <button class="btn btn-raised btn-primary btn-sm" ng-click="addCoConstraintRow();">
+                                                                            <span><i class="fa fa-plus fa-fw">&nbsp; </i>Add CoConstraint Row</span>
+                                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="ifAddCoCon">
+                            <div class="panel panel-default ">
+                                <div class="panel-heading ">IF Column for CoConstraintTable</div>
+                                <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                                    <form class="form-horizontal" novalidate>
+                                        <div layout="row" style="margin-top:15px;margin-left:15px;">
+
+
+
+                                            <md-input-container>
+                                                <label>{{seg.name}}</label>
+                                                <md-select aria-label="if" ng-model="selectedFieldPosition" ng-change="updateFieldIF();">
+
+                                                    <md-option ng-repeat="field in seg.fields" ng-value="field.position">
+                                                        {{field.position}}. {{field.name}}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
+
+
+
+                                            <md-input-container>
+                                                <label>Component</label>
+                                                <md-select aria-label="if" ng-show="components" ng-model='selectedComponentPosition' ng-change="updateComponentIF();">
+
+                                                    <md-option ng-repeat="component in components" ng-value="component.position">
+                                                        {{component.position}}. {{component.name}}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
+
+                                            <md-input-container>
+                                                <label>Sub Component</label>
+                                                <md-select aria-label="if" ng-show="subComponents" ng-model='selectedSubComponentPosition' ng-change="updateSubComponentIF();">
+
+                                                    <md-option ng-repeat="component in components" ng-value="component.position">
+                                                        {{component.position}}. {{component.name}}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
+
+                                        </div>
+                                        <div class="row" style="margin-left:15px;">
+
+
+                                            <div class="col-md-9">
+                                                Type:
+                                                <md-radio-group ng-model="coConstraintType">
+                                                    <md-radio-button value="value" class="md-primary">Value</md-radio-button>
+                                                    <md-radio-button value="valueset" ng-disabled="true">Value Set</md-radio-button>
+                                                </md-radio-group>
+                                            </div>
+                                        </div>
+
+                                        <span class="header3" style="margin-left:15px;">
+                                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                            The 'Value Set' is not allowed for IF Statement.
+                                        </span>
+                                        <div class="row" align="center" style="margin-left:15px;">
+                                            <md-button ng-disabled="!selectedFieldPosition" class="md-raised md-primary" ng-click="saveIF()">Save</md-button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="thenAddCoCon">
+                            <div class="panel panel-default ">
+                                <div class="panel-heading ">THEN Column for CoConstraintTable</div>
+                                <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                                    <form class="form-horizontal" novalidate>
+                                        <div class="row" style="margin-top:15px;margin-left:15px;">
+                                            <md-input-container>
+                                                <label>{{seg.name}}</label>
+                                                <md-select aria-label="if" ng-model="selectedFieldPosition" ng-change="updateFieldTHEN();">
+
+                                                    <md-option ng-repeat="field in seg.fields" ng-value="field.position">
+                                                        {{field.position}}. {{field.name}}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
+
+
+
+                                            <md-input-container>
+                                                <label>Component</label>
+                                                <md-select aria-label="if" ng-show="components" ng-model='selectedComponentPosition' ng-change="updateComponentTHEN();">
+
+                                                    <md-option ng-repeat="component in components" ng-value="component.position">
+                                                        {{component.position}}. {{component.name}}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
+
+                                            <md-input-container>
+                                                <label>Sub Component</label>
+                                                <md-select aria-label="if" ng-show="subComponents" ng-model='selectedSubComponentPosition' ng-change="updateSubComponentTHEN();">
+
+                                                    <md-option ng-repeat="component in components" ng-value="component.position">
+                                                        {{component.position}}. {{component.name}}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
+
+                                        </div>
+                                        <div class="row" ng-show="!dMReference" style="margin-left:15px;">
+
+
+                                            <div class="col-md-9">
+                                                Type:
+                                                <md-radio-group ng-model="coConstraintType">
+                                                    <md-radio-button value="value" class="md-primary" ng-disabled="isVariesDT()">Value</md-radio-button>
+                                                    <md-radio-button value="valueset">Value Set</md-radio-button>
+                                                </md-radio-group>
+                                            </div>
+                                        </div>
+
+                                        <span class="header3" ng-show="isVariesDT()" style="margin-left:15px;">
+                                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                            This Datatype is varies, so just 'Value Set' is allowed.
+                                        </span>
+
+                                        <span class="header3" ng-show="dMReference" style="margin-left:15px;">
+                                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                            This is Dynamic Mapping Reference Field. Data cell requires DT base name and Flavor.
+                                        </span>
+                                        <div class="row" align="center" style="margin-left:15px;">
+                                            <md-button ng-disabled="!selectedFieldPosition" class="md-raised md-primary" ng-click="saveTHEN()">Save</md-button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-show="userAddCoCon">
+                            <div class="panel panel-default ">
+                                <div class="panel-heading ">USER column for CoConstraintTable</div>
+                                <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                                    <form class="form-horizontal" novalidate>
+                                        <md-input-container layout="row">
+                                            <label flex="30" class="input-left">Title</label>
+                                            <input flex="70" type="text" ng-change="setDirty()" name="title" ng-model="title" required>
+                                        </md-input-container>
+                                    </form>
+                                    <div class="row" align="center" style="margin-left:15px;">
+                                        <md-button ng-disabled="!title" class="md-raised md-primary" ng-click="saveUSER()">Save</md-button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="thenData">
+                            <div class="panel panel-default ">
+                                <div class="panel-heading ">Edit Value Set bindings for CoConstraint</div>
+                                <div class="panel-body " style="min-height:200px; max-height:400px; ">
+                                    <form class="form-horizontal" novalidate>
+                                        <div class="row " style="min-height:200px; max-height:300px;overflow-y: scroll; ">
+                                            <div class="col-md-12">
+                                                <table class="table table-striped table-condensed table-bordered table-fix-header">
+                                                    <thead>
+                                                        <tr class="tbl-header">
+                                                            <th class="col-md-1" style="text-align:center">#</th>
+                                                            <th class="col-md-3" style="text-align:center">Binding Identifier</th>
+                                                            <th class="col-md-3" style="text-align:center">Description</th>
+                                                            <th class="col-md-2" style="text-align:center">Binding Strength</th>
+                                                            <th class="col-md-2" style="text-align:center">Binding Location</th>
+                                                            <th class="col-md-1" style="text-align:center">
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="vs in data.valueSets">
+                                                            <td class="col-md-1" style="text-align:center">
+                                                                <span>{{$index + 1}}</span>
+                                                            </td>
+                                                            <td class="col-md-3">
+                                                                {{$root.tablesMap[vs.tableId].bindingIdentifier}}
+                                                            </td>
+                                                            <td class="col-md-3">
+                                                                {{$root.tablesMap[vs.tableId].description}}
+                                                            </td>
+                                                            <td class="col-md-2">
+
+                                                                <md-input-container class="withoutMargin">
+                                                                    <label></label>
+                                                                    <md-select class="inside-table" aria-label="if" ng-model='vs.bindingStrength'>
+                                                                        <md-option ng-value="'R'">Required</md-option>
+                                                                        <md-option ng-value="'S'">Suggested</md-option>
+                                                                        <md-option ng-value="'U'">Unspecified</md-option>
+                                                                    </md-select>
+                                                                </md-input-container>
+                                                            </td>
+                                                            <td class="col-md-2">
+                                                               
+                                                                <md-input-container class="withoutMargin">
+                                                                    <label></label>
+                                                                    <md-select class="inside-table"  aria-label="if" ng-show="listOfBindingLocations" ng-model='vs.bindingLocation'>
+
+                                                                        <md-option ng-repeat="bl in listOfBindingLocations" ng-value="bl">
+                                                                            {{bl}}
+                                                                        </md-option>
+                                                                       
+                                                                    </md-select>
+                                                                </md-input-container>
+                                                            </td>
+                                                            <td class="col-md-1" style="text-align:center">
+                                                                <span ng-click="deleteValueSet($index);"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+
+                                                <table st-safe-src="$root.tables" st-table="displayCollection" class="table table-striped table-condensed table-bordered table-fix-header">
+                                                    <thead>
+                                                        <tr class="tbl-header">
+                                                            <th st-sort="scope" class="col-md-1">Scope/Version</th>
+                                                            <th st-sort="bindingIdentifier" class="col-md-3">Binding Identifier</th>
+                                                            <th class="col-md-7">Description</th>
+                                                            <th class="col-md-1">Action</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="5">
+                                                                <input st-search="bindingIdentifier" placeholder="search for BindingIdentifier" class="input-sm form-control" type="search" />
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        <tr ng-repeat="v in displayCollection">
+                                                            <td class="col-md-1">
+                                                                <span class="badge" ng-class="{'label-HL7' : $root.getScopeLabel(v)==='HL7', 'label-USE': $root.getScopeLabel(v)==='USR','label-MASTER':$root.getScopeLabel(v)==='MAS','label-PRL':$root.getScopeLabel(v)==='PRL','label-PVS':$root.getScopeLabel(v)==='PVS'}">{{$root.getScopeLabel(v)}} {{$root.hasSameVersion(v)}}</span>
+                                                            </td>
+                                                            <td class="col-md-3">
+                                                                {{v.bindingIdentifier}}
+                                                            </td>
+                                                            <td class="col-md-7">
+                                                                {{v.description}}
+                                                            </td>
+                                                            <td class="col-md-1" align="center">
+                                                                <a ng-show="!isSelected(v)" ng-click="selectValueSet(v)" class="point">
+                                                                    <i class="icon-size-15 fa-circle-thin fa"></i>
+                                                                </a>
+                                                                <a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">
+                                                                    <i class="icon-size-15 fa-check-circle fa"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tr style="float:center !important;" ng-if="tables.length > 10">
+                                                        <td colspan="5" class="text-center" style="float:center !important;">
+                                                            <div st-pagination="" st-items-by-page="10" st-displayed-pages="10" style="float:center !important;"></div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="row" align="center" style="margin-left:15px;">
+                                        <md-button  class="md-raised md-primary" ng-click="saveValueSet()">Save</md-button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+
+                <md-dialog-actions layout="row">
+                    <md-button class="md-primary md-raised" md-autofocus ng-disabled="!changed" ng-click="saveclose()">
+                        Save
+                    </md-button>
+                </md-dialog-actions>
+            </md-dialog-content>
+        </form>
+    </md-dialog>
+</script>
 
 
 <script type="text/ng-template" id="AddDynamicMappingCtrlInPc.html">
@@ -1159,8 +1656,8 @@
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2 ng-hide="seeOrEdit==='see'">  Dynamic Mapping of {{node.name}} </h2>
-                     <h2 ng-show="seeOrEdit==='see'"> Dynamic Mapping of {{node.ref.label}} </h2>
+                    <h2 ng-hide="seeOrEdit==='see'"> Dynamic Mapping of {{node.name}} </h2>
+                    <h2 ng-show="seeOrEdit==='see'"> Dynamic Mapping of {{node.ref.label}} </h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()">
                         <i class="material-icons">clear</i>
@@ -1186,16 +1683,16 @@
                                                             <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
                                                             Second Reference: {{dynamicMappingDefinition.mappingStructure.segmentName}}-{{dynamicMappingDefinition.mappingStructure.secondRefereceLocation}}
                                                         </span>
-                      
+
                         <br/>
                         <table st-safe-src="dynamicMappingDefinition.dynamicMappingItems" st-table="displayItems" class="table table-striped table-condensed table-bordered">
                             <thead>
                                 <tr class="tbl-header">
                                     <th st-sort="firstReferenceValue" class="col-md-3">Reference Value</th>
-                                    
+
                                     <th class="col-md-5">Datatype</th>
                                     <th ng-hide="seeOrEdit==='see'" class="col-md-1" style="text-align:left">
-                                        <span ng-hide="seeOrEdit==='see'"  ng-click="addMappingItem()"><i class="material-icons" style="color:black;">add</i></span>
+                                        <span ng-hide="seeOrEdit==='see'" ng-click="addMappingItem()"><i class="material-icons" style="color:black;">add</i></span>
                                     </th>
                                 </tr>
                             </thead>
@@ -1208,13 +1705,13 @@
                                                                         </option>
                                                                     </select>
                                     </td>
-                                   
+
                                     <td class="col-md-5">
-                                        <select ng-disabled="seeOrEdit==='see'" ng-model="item.datatypeId" class="form-control" ng-change="setDirty()"  ng-options="link.id as $root.getDatatypeLabel($root.datatypesMap[link.id]) for link in $root.igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}"
+                                        <select ng-disabled="seeOrEdit==='see'" ng-model="item.datatypeId" class="form-control" ng-change="setDirty()" ng-options="link.id as $root.getDatatypeLabel($root.datatypesMap[link.id]) for link in $root.igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}"
                                         />
                                     </td>
                                     <td ng-hide="seeOrEdit==='see'" class="col-md-1" style="text-align:left">
-                                        <span ng-hide="seeOrEdit==='see'"  ng-click="deleteMappingItem(item)"><i class="material-icons" style="color:red;">clear</i></span>
+                                        <span ng-hide="seeOrEdit==='see'" ng-click="deleteMappingItem(item)"><i class="material-icons" style="color:red;">clear</i></span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1224,7 +1721,7 @@
                                 </td>
                             </tr>
                         </table>
-                       
+
                     </div>
                 </div>
 

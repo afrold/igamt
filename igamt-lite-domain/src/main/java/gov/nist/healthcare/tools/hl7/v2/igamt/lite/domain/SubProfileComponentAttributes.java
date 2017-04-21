@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsTable;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 
 public class SubProfileComponentAttributes {
@@ -48,6 +49,9 @@ public class SubProfileComponentAttributes {
   private List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
   private DynamicMappingDefinition oldDynamicMappingDefinition = new DynamicMappingDefinition();
   private DynamicMappingDefinition dynamicMappingDefinition = new DynamicMappingDefinition();
+  private CoConstraintsTable oldCoConstraintsTable = new CoConstraintsTable();
+  private CoConstraintsTable coConstraintsTable = new CoConstraintsTable();
+
 
 
   public Usage getUsage() {
@@ -250,6 +254,23 @@ public class SubProfileComponentAttributes {
 
   public void setDynamicMappingDefinition(DynamicMappingDefinition dynamicMappingDefinition) {
     this.dynamicMappingDefinition = dynamicMappingDefinition;
+  }
+
+
+  public CoConstraintsTable getOldCoConstraintsTable() {
+    return oldCoConstraintsTable;
+  }
+
+  public void setOldCoConstraintsTable(CoConstraintsTable oldCoConstraintsTable) {
+    this.oldCoConstraintsTable = oldCoConstraintsTable;
+  }
+
+  public CoConstraintsTable getCoConstraintsTable() {
+    return coConstraintsTable;
+  }
+
+  public void setCoConstraintsTable(CoConstraintsTable coConstraintsTable) {
+    this.coConstraintsTable = coConstraintsTable;
   }
 
   @Override
