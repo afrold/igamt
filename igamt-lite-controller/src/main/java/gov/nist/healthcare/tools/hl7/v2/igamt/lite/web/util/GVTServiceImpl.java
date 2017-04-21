@@ -30,6 +30,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportException;
@@ -143,15 +144,21 @@ public class GVTServiceImpl implements GVTService {
 
   @Override
   public boolean validCredentials(String authorization) throws GVTLoginException {
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Authorization", authorization);
-    HttpEntity<String> entity = new HttpEntity<String>("", headers);
-    ResponseEntity<String> response =
-        restTemplate.exchange(GVT_URL + GVT_LOGIN_ENDPOINT, HttpMethod.GET, entity, String.class);
-    if (response.getStatusCode() == HttpStatus.OK) {
-      return true;
+    try {
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Authorization", authorization);
+      HttpEntity<String> entity = new HttpEntity<String>("", headers);
+      ResponseEntity<String> response =
+          restTemplate.exchange(GVT_URL + GVT_LOGIN_ENDPOINT, HttpMethod.GET, entity, String.class);
+      if (response.getStatusCode() == HttpStatus.OK) {
+        return true;
+      }
+      throw new GVTLoginException(response.getBody());
+    } catch (HttpClientErrorException e) {
+      throw new GVTLoginException(e.getMessage());
+    } catch (Exception e) {
+      throw new GVTLoginException(e.getMessage());
     }
-    throw new GVTLoginException(response.getBody());
   }
 
 }

@@ -146,7 +146,7 @@ public class JsonExceptionHandler implements HandlerExceptionResolver {
         logger.error("ERROR: Failed to login to GVT", ex);
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         mapper.writeValue(response.getWriter(),
-            new ResponseMessage(ResponseMessage.Type.danger, "Bad credentials"));
+            new ResponseMessage(ResponseMessage.Type.danger, "gvtLoginFailed"));
       } else {
         logger.error("ERROR: " + ex.getMessage(), ex);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
