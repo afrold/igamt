@@ -372,23 +372,18 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     $rootScope.showLoginDialog = function(username, password) {
 
         if ($rootScope.loginDialog && $rootScope.loginDialog != null && $rootScope.loginDialog.opened) {
-            $rootScope.loginDialog.dismiss('cancel');
+            $rootScope.loginDialog.hide();
         }
-
-        $rootScope.loginDialog = $modal.open({
-            backdrop: 'static',
-            keyboard: 'false',
+        console.log("fff");
+        $rootScope.loginDialog = $mdDialog.show({
             controller: 'LoginCtrl',
-            size: 'lg',
+            parent: angular.element(document).find('body'),
             templateUrl: 'views/account/login.html',
-            resolve: {
-                user: function() {
-                    return { username: $scope.username, password: $scope.password };
-                }
+            locals: {
+                user: { username: $scope.username, password: $scope.password },
             }
-        });
 
-        $rootScope.loginDialog.result.then(function(result) {
+        }).then(function(result) {
             if (result) {
                 $scope.username = result.username;
                 $scope.password = result.password;
@@ -396,7 +391,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             } else {
                 $scope.cancel();
             }
-        });
+        });;
+
+
     };
 
     $rootScope.started = false;
@@ -3861,16 +3858,16 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 }]);
 
 
-angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user', function($scope, $modalInstance, user) {
+angular.module('igl').controller('LoginCtrl', ['$scope', '$mdDialog', 'user', function($scope, $mdDialog, user) {
     $scope.user = user;
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.login = function() {
         // ////console.log("logging in...");
-        $modalInstance.close($scope.user);
+        $mdDialog.hide($scope.user);
     };
 }]);
 
