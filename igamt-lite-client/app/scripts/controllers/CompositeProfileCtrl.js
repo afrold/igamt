@@ -6,6 +6,7 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         isSecondOpen: true,
         isThirdOpen: false,
         isFourthOpen: false,
+        isFifthOpen : false,
 
     };
     $scope.redirectVS = function(binding) {
@@ -188,6 +189,28 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
                 return node.ref.dynamicMappingDefinition;
             }
         }
+    };
+    $scope.findingCoCon = function(node) {
+        if (node.type === "segmentRef") {
+            if (node.ref.coConstraintsTable && node.ref.coConstraintsTable.rowSize > 0) {
+                return node.ref.coConstraintsTable;
+            }
+        }
+    };
+    $scope.seeCoCon = function(node, context) {
+        $mdDialog.show({
+            templateUrl: 'AddConstraintsCtrlInCP.html',
+            parent: angular.element(document).find('body'),
+            controller: 'SeeCoConDlgCtl',
+            clickOutsideToClose: true,
+            locals: {
+                node: node,
+                context: context
+            }
+
+        }).then(function() {
+
+        });
     };
     $scope.seeConfSt = function(node, context) {
         $mdDialog.show({
@@ -475,6 +498,11 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
     console.log("$scope.groupsPredicates");
     console.log($scope.groupsPredicates);
 
+    $scope.findingGlobalPredicates = function() {   
+        $scope.msgPredicates = $rootScope.compositeProfile.predicates;  
+    }
+    $scope.findingGlobalPredicates();
+
     $scope.findingPredicates = function(node) {
 
         var result = null;
@@ -604,15 +632,29 @@ angular.module('igl').controller('SeeConfStDlgCtl', function($scope, $rootScope,
 
 });
 
-angular.module('igl').controller('SeeDynMapDlgCtl', function($scope, $rootScope, $mdDialog, node, context,TableService) {
+angular.module('igl').controller('SeeCoConDlgCtl', function($scope, $rootScope, $mdDialog, node, context, TableService) {
+    $scope.node = angular.copy(node);
+    console.log($scope.node);
+    $scope.coConstraintsTable = $scope.node.ref.coConstraintsTable;
+    $scope.seeOrEdit = context;
+
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+
+});
+
+angular.module('igl').controller('SeeDynMapDlgCtl', function($scope, $rootScope, $mdDialog, node, context, TableService) {
     $scope.node = angular.copy(node);
     console.log($scope.node);
     $scope.seeOrEdit = context;
     $scope.findDynamicMapping = function(node) {
         if (node.type === "segmentRef") {
-    
-                return node.ref.dynamicMappingDefinition;
-            
+
+            return node.ref.dynamicMappingDefinition;
+
         }
         return null;
     };
@@ -620,7 +662,7 @@ angular.module('igl').controller('SeeDynMapDlgCtl', function($scope, $rootScope,
         if (node.type === "segmentRef") {
             if (node.ref.valueSetBindings && node.ref.valueSetBindings.length > 0) {
                 return node.ref.valueSetBindings;
-            } 
+            }
         }
         return null;
     };
@@ -633,7 +675,7 @@ angular.module('igl').controller('SeeDynMapDlgCtl', function($scope, $rootScope,
         });
 
         if (mappingStructure) {
-            $rootScope.isDynamicMappingSegment = true;
+            $scope.isDynamicMappingSegment = true;
             console.log("=========This is DM segment!!=========");
 
             if ($scope.findDynamicMapping($scope.node) && $scope.findDynamicMapping($scope.node).mappingStructure) {

@@ -3120,8 +3120,7 @@ tr.tbl-header {
     font-size: 18px !important;
 }
 md-select.inside-table{
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
+
+    display: block !important;
     margin: 10px 0 0px;
 }
