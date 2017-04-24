@@ -76,6 +76,9 @@ public class DatatypeLibraryDocumentController {
   private ExportService exportService;
 
   private static final String DATATYPE_LIBRARY_EXPORT_CONFIG_TYPE = "Datatype Library";
+  
+  private static final String EXPORT_FORMAT_HTML = "html";
+  private static final String EXPORT_FORMAT_DOCX = "docx";
 
   @RequestMapping(method = RequestMethod.GET)
   public List<DatatypeLibraryDocument> getDatatypeLibraries() {
@@ -289,12 +292,12 @@ public class DatatypeLibraryDocumentController {
       HttpServletResponse response) throws Exception {
     DatatypeLibraryDocument datatypeLibraryDocument =
         datatypeLibraryDocumentService.findById(libId);
-    InputStream content = doExport(datatypeLibraryDocument, "html");
+    InputStream content = doExport(datatypeLibraryDocument, EXPORT_FORMAT_HTML);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(datatypeLibraryDocument.getMetaData().getName()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "."+EXPORT_FORMAT_HTML);
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -304,12 +307,12 @@ public class DatatypeLibraryDocumentController {
       HttpServletResponse response) throws Exception {
     DatatypeLibraryDocument datatypeLibraryDocument =
         datatypeLibraryDocumentService.findById(libId);
-    InputStream content = doExport(datatypeLibraryDocument, "docx");
+    InputStream content = doExport(datatypeLibraryDocument, EXPORT_FORMAT_DOCX);
     response
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(datatypeLibraryDocument.getMetaData().getName()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "." +EXPORT_FORMAT_DOCX);
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -336,11 +339,11 @@ public class DatatypeLibraryDocumentController {
     }
     InputStream content = null;
     switch (output) {
-      case "word":
+      case EXPORT_FORMAT_DOCX:
         content = exportService.exportDatatypeLibraryDocumentAsDocx(datatypeLibraryDocument,
             exportConfig, exportFontConfig);
         break;
-      case "html":
+      case EXPORT_FORMAT_HTML:
         content = exportService.exportDatatypeLibraryDocumentAsHtml(datatypeLibraryDocument,
             exportConfig, exportFontConfig);
     }

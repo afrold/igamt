@@ -878,10 +878,10 @@ angular
                         if ($rootScope.hasChanges()) {
 
                             $rootScope.openConfirmLeaveDlg().then(function() {
-                                $scope.hl7Versions('ctx');
+                                $scope.create('ctx');
                             });
                         } else {
-                            $scope.hl7Versions('ctx');
+                            $scope.create('ctx');
                         }
 
                     }],

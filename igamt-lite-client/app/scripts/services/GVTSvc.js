@@ -27,12 +27,7 @@ angular.module('igl').factory('GVTSvc',
             var auth =  base64.encode(username + ':' + password);
             httpHeaders['gvt-auth'] = 'Basic ' + auth;
             $http.get('api/gvt/login', {headers:httpHeaders}).then(function (res) {
-                var re = angular.fromJson(res);
-                if(re.data === true) {
-                    delay.resolve(auth);
-                }else{
-                    delay.reject({data:"Invalid Credentials"});
-                }
+                delay.resolve(auth);
             }, function(er){
                 delay.reject(er);
             });

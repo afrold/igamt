@@ -1059,7 +1059,7 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')"
-            ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:center">
+            ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:left">
             <ng-form name="innerForm" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)">
                 <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                     <span class="badge label-white" ng-show="editableDT!==node.id">
@@ -1078,7 +1078,7 @@
                         <!--</select>-->
 
 
-                        <md-select placeholder="Select Data type" ng-model="node.datatype"
+                        <md-select placeholder="Select Data type" ng-model="node.datatype" class="inside-table"
                                    ng-change="backDT();setDirty()">
                             <md-option ng-value="datatype" ng-repeat="datatype in results">
                                 <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
@@ -1326,7 +1326,7 @@
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0"><span
                     ng-bind="::node.confLength"></span></div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:left">
             <span title="Go to datatype" ng-click="redirectDT(node.datatype)">
                 <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </span>

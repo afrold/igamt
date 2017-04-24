@@ -6,6 +6,7 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         isSecondOpen: true,
         isThirdOpen: false,
         isFourthOpen: false,
+        isFifthOpen : false,
 
     };
     $scope.redirectVS = function(binding) {
@@ -167,6 +168,50 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         });
 
     };
+    $scope.seeDynMap = function(node, context) {
+        $mdDialog.show({
+            templateUrl: 'AddDynamicMappingCtrlInPc.html',
+            parent: angular.element(document).find('body'),
+            controller: 'SeeDynMapDlgCtl',
+            clickOutsideToClose: true,
+            locals: {
+                node: node,
+                context: context
+            }
+
+        }).then(function() {
+
+        });
+    };
+    $scope.findingDynMap = function(node) {
+        if (node.type === "segmentRef") {
+            if (node.ref.dynamicMappingDefinition && node.ref.dynamicMappingDefinition.dynamicMappingItems.length > 0) {
+                return node.ref.dynamicMappingDefinition;
+            }
+        }
+    };
+    $scope.findingCoCon = function(node) {
+        if (node.type === "segmentRef") {
+            if (node.ref.coConstraintsTable && node.ref.coConstraintsTable.rowSize > 0) {
+                return node.ref.coConstraintsTable;
+            }
+        }
+    };
+    $scope.seeCoCon = function(node, context) {
+        $mdDialog.show({
+            templateUrl: 'AddConstraintsCtrlInCP.html',
+            parent: angular.element(document).find('body'),
+            controller: 'SeeCoConDlgCtl',
+            clickOutsideToClose: true,
+            locals: {
+                node: node,
+                context: context
+            }
+
+        }).then(function() {
+
+        });
+    };
     $scope.seeConfSt = function(node, context) {
         $mdDialog.show({
             templateUrl: 'GlobalConformanceStatementCtrlInPc.html',
@@ -188,7 +233,7 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
                 return node.conformanceStatements;
             }
         } else if (node.type === "segmentRef") {
-            if ($rootScope.compositeProfile.segmentsMap[node.ref.id].conformanceStatements && $rootScope.compositeProfile.segmentsMap[node.ref.id].conformanceStatements.length > 0) {
+            if ($rootScope.compositeProfile.segmentsMap[node.ref.id] && $rootScope.compositeProfile.segmentsMap[node.ref.id].conformanceStatements && $rootScope.compositeProfile.segmentsMap[node.ref.id].conformanceStatements.length > 0) {
                 return $rootScope.compositeProfile.segmentsMap[node.ref.id].conformanceStatements;
             }
         }
@@ -453,6 +498,11 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
     console.log("$scope.groupsPredicates");
     console.log($scope.groupsPredicates);
 
+    $scope.findingGlobalPredicates = function() {   
+        $scope.msgPredicates = $rootScope.compositeProfile.predicates;  
+    }
+    $scope.findingGlobalPredicates();
+
     $scope.findingPredicates = function(node) {
 
         var result = null;
@@ -496,9 +546,12 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
                 }
 
                 //var tempPath = node.path.substr(index + 1);
-                result = _.find(parentSeg.predicates, function(binding) {
-                    return binding.constraintTarget == pa.join(".");
-                });
+                if (parentSeg) {
+                    result = _.find(parentSeg.predicates, function(binding) {
+                        return binding.constraintTarget == pa.join(".");
+                    });
+                }
+
                 if (result) {
                     result.from = 'segment';
                     return result;
@@ -518,9 +571,12 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
                 }
 
                 //var tempPath = node.path.substr(index + 1);
-                result = _.find(parentDT.predicates, function(binding) {
-                    return binding.constraintTarget == pa.join(".");
-                });
+                if (parentDT) {
+                    result = _.find(parentDT.predicates, function(binding) {
+                        return binding.constraintTarget == pa.join(".");
+                    });
+                }
+
                 if (result) {
                     result.from = 'field';
                     return result;
@@ -539,9 +595,12 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
                 }
 
                 //var tempPath = node.path.substr(index + 1);
-                result = _.find(parentDT.predicates, function(binding) {
-                    return binding.constraintTarget == pa.join(".");
-                });
+                if (parentDT) {
+                    result = _.find(parentDT.predicates, function(binding) {
+                        return binding.constraintTarget == pa.join(".");
+                    });
+                }
+
                 if (result) {
                     result.from = 'component';
                     return result;
@@ -560,11 +619,92 @@ angular.module('igl').controller('SeeConfStDlgCtl', function($scope, $rootScope,
         $scope.selectedContextNode = node;
 
     } else if (node.type === "segmentRef") {
-            $scope.selectedContextNode = $rootScope.compositeProfile.segmentsMap[node.ref.id];
+        $scope.selectedContextNode = $rootScope.compositeProfile.segmentsMap[node.ref.id];
 
     }
     $scope.seeOrEdit = context;
 
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+
+});
+
+angular.module('igl').controller('SeeCoConDlgCtl', function($scope, $rootScope, $mdDialog, node, context, TableService) {
+    $scope.node = angular.copy(node);
+    console.log($scope.node);
+    $scope.coConstraintsTable = $scope.node.ref.coConstraintsTable;
+    $scope.seeOrEdit = context;
+
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+
+});
+
+angular.module('igl').controller('SeeDynMapDlgCtl', function($scope, $rootScope, $mdDialog, node, context, TableService) {
+    $scope.node = angular.copy(node);
+    console.log($scope.node);
+    $scope.seeOrEdit = context;
+    $scope.findDynamicMapping = function(node) {
+        if (node.type === "segmentRef") {
+
+            return node.ref.dynamicMappingDefinition;
+
+        }
+        return null;
+    };
+    $scope.findingBindings = function(node) {
+        if (node.type === "segmentRef") {
+            if (node.ref.valueSetBindings && node.ref.valueSetBindings.length > 0) {
+                return node.ref.valueSetBindings;
+            }
+        }
+        return null;
+    };
+    $scope.updateDynamicMappingInfo = function() {
+        $scope.isDynamicMappingSegment = false;
+        $scope.dynamicMappingTable = null;
+
+        var mappingStructure = _.find($rootScope.config.variesMapItems, function(item) {
+            return item.hl7Version == $rootScope.compositeProfile.segmentsMap[$scope.node.ref.id].hl7Version && item.segmentName == $rootScope.compositeProfile.segmentsMap[$scope.node.ref.id].name;
+        });
+
+        if (mappingStructure) {
+            $scope.isDynamicMappingSegment = true;
+            console.log("=========This is DM segment!!=========");
+
+            if ($scope.findDynamicMapping($scope.node) && $scope.findDynamicMapping($scope.node).mappingStructure) {
+                console.log("=========Found mapping structure!!=========");
+                mappingStructure = $scope.findDynamicMapping($scope.node).mappingStructure;
+            } else {
+                console.log("=========Not Found mapping structure and Default setting will be used!!=========");
+            }
+
+            var valueSetBinding = _.find($scope.findingBindings($scope.node), function(vsb) {
+                return vsb.location == mappingStructure.referenceLocation;
+            });
+
+            if (valueSetBinding) {
+                TableService.getOne(valueSetBinding.tableId).then(function(tbl) {
+                    $scope.dynamicMappingTable = tbl;
+                }, function() {
+
+                });
+            }
+        }
+    };
+    $scope.updateDynamicMappingInfo();
+
+
+
+    $scope.dynamicMappingDefinition = $scope.findDynamicMapping($scope.node);
+    console.log("+++++");
+    console.log($scope.dynamicMappingDefinition);
 
     $scope.cancel = function() {
         $mdDialog.hide();

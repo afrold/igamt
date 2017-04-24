@@ -30,9 +30,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTLoginException;
 
 /**
  * 
@@ -105,7 +107,6 @@ public class GVTServiceImpl implements GVTService {
     return response;
   }
 
-  @Override
   public File toFile(InputStream io) {
     OutputStream outputStream = null;
     File f = null;
@@ -142,14 +143,22 @@ public class GVTServiceImpl implements GVTService {
   }
 
   @Override
-  public boolean validCredentials(String authorization) throws GVTExportException {
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Authorization", authorization);
-    HttpEntity<String> entity = new HttpEntity<String>("", headers);
-    ResponseEntity<String> response =
-        restTemplate.exchange(GVT_URL + GVT_LOGIN_ENDPOINT, HttpMethod.GET, entity, String.class);
-    boolean result = response.getStatusCode() == HttpStatus.OK;
-    return result;
+  public boolean validCredentials(String authorization) throws GVTLoginException {
+    try {
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Authorization", authorization);
+      HttpEntity<String> entity = new HttpEntity<String>("", headers);
+      ResponseEntity<String> response =
+          restTemplate.exchange(GVT_URL + GVT_LOGIN_ENDPOINT, HttpMethod.GET, entity, String.class);
+      if (response.getStatusCode() == HttpStatus.OK) {
+        return true;
+      }
+      throw new GVTLoginException(response.getBody());
+    } catch (HttpClientErrorException e) {
+      throw new GVTLoginException(e.getMessage());
+    } catch (Exception e) {
+      throw new GVTLoginException(e.getMessage());
+    }
   }
 
 }

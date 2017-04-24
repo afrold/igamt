@@ -83,6 +83,7 @@ public class FlavorServiceImpl implements FlavorService {
             segRef.setUsage(attr.getUsage());
           }
 
+
         }
       }
       if (!pathGroups.isEmpty()) {
@@ -99,6 +100,14 @@ public class FlavorServiceImpl implements FlavorService {
                   && attr.getConformanceStatements().size() > 0) {
                 segmentFlavor.setConformanceStatements(attr.getConformanceStatements());
 
+              }
+              if (attr.getDynamicMappingDefinition() != null
+                  && attr.getDynamicMappingDefinition().getDynamicMappingItems().size() > 0) {
+                segmentFlavor.setDynamicMappingDefinition(attr.getDynamicMappingDefinition());
+              }
+              if (attr.getCoConstraintsTable() != null
+                  && attr.getCoConstraintsTable().getRowSize() > 0) {
+                segmentFlavor.setCoConstraintsTable(attr.getCoConstraintsTable());
               }
             }
           }
@@ -124,6 +133,53 @@ public class FlavorServiceImpl implements FlavorService {
                 segmentFlavor.setId(ObjectId.get().toString());
                 segmentFlavor.setScope(SCOPE.USER);
                 segmentFlavor.setConformanceStatements(attr.getConformanceStatements());
+                queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
+                segRef.getRef().setId(segmentFlavor.getId());
+                segRef.getRef().setExt(segmentFlavor.getExt());
+
+
+              } catch (CloneNotSupportedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+            }
+
+          }
+          for (SubProfileComponentAttributes attr : attributes) {
+
+            if (attr.getDynamicMappingDefinition() != null
+                && attr.getDynamicMappingDefinition().getDynamicMappingItems().size() > 0) {
+              Segment originalSeg = queryService.getSegmentsMap().get(segRef.getRef().getId());
+              try {
+                Segment segmentFlavor = originalSeg.clone();
+                segmentFlavor.setExt(ext + "_" + segRef.getPosition());
+                segmentFlavor.setId(ObjectId.get().toString());
+                segmentFlavor.setScope(SCOPE.USER);
+                segmentFlavor.setDynamicMappingDefinition(attr.getDynamicMappingDefinition());
+
+                // System.out.println(
+                // attr.getDynamicMappingDefinition().getMappingStructure().getSegmentName());
+                queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
+                segRef.getRef().setId(segmentFlavor.getId());
+                segRef.getRef().setExt(segmentFlavor.getExt());
+
+
+              } catch (CloneNotSupportedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+            }
+            if (attr.getCoConstraintsTable() != null
+                && attr.getCoConstraintsTable().getRowSize() > 0) {
+              Segment originalSeg = queryService.getSegmentsMap().get(segRef.getRef().getId());
+              try {
+                Segment segmentFlavor = originalSeg.clone();
+                segmentFlavor.setExt(ext + "_" + segRef.getPosition());
+                segmentFlavor.setId(ObjectId.get().toString());
+                segmentFlavor.setScope(SCOPE.USER);
+                segmentFlavor.setCoConstraintsTable(attr.getCoConstraintsTable());
+
+
                 queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
                 segRef.getRef().setId(segmentFlavor.getId());
                 segRef.getRef().setExt(segmentFlavor.getExt());

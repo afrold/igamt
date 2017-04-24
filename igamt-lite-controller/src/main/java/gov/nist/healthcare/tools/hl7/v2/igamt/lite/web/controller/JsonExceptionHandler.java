@@ -35,6 +35,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTLoginException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentSaveException;
@@ -140,7 +141,12 @@ public class JsonExceptionHandler implements HandlerExceptionResolver {
         logger.error("ERROR: Failed to export to GVT", ex);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         mapper.writeValue(response.getWriter(),
-            new ResponseMessage(ResponseMessage.Type.danger, "gvtExportFailed"));
+            new ResponseMessage(ResponseMessage.Type.danger, ex.getMessage()));
+      } else if (ex instanceof GVTLoginException) {
+        logger.error("ERROR: Failed to login to GVT", ex);
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        mapper.writeValue(response.getWriter(),
+            new ResponseMessage(ResponseMessage.Type.danger, "gvtLoginFailed"));
       } else {
         logger.error("ERROR: " + ex.getMessage(), ex);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

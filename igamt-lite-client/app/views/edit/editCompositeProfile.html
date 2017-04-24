@@ -264,6 +264,10 @@
                                                                     </th>
                                                                     <th class="col-md-1" ng-style="csWidthx" rowspan="2">Conformance Statement
                                                                     </th>
+                                                                    <th class="col-md-1" ng-style="csWidthx" rowspan="2">Dynamic Mapping
+                                                                    </th>
+                                                                    <th class="col-md-1" ng-style="csWidthx" rowspan="2">CoConstraints
+                                                                    </th>
                                                                     <th class="col-md-1 col-fixed-80" rowspan="2">Definition Text
                                                                     </th>
                                                                     <th class="col-md-1" ng-style="commentWidth" rowspan="2">Comment
@@ -301,13 +305,13 @@
                                                 <span style="color:white;">Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFourthOpen, 'fa-chevron-right': !accordStatus.isFourthOpen}"></i>
                                             </accordion-heading>
                                             <div class="panel-body">
-                                                
+
                                                 <div class="col-md-12">
                                                     <span ng-hide="compositeProfile.conformanceStatements && compositeProfile.conformanceStatements.length>0">No Conformance statement</span>
                                                     <div>
                                                         <!--<span ng-show="node.type =='group'">Group : {{node.name}}</span>
                                                         <span ng-show="node.type =='segmentRef'">Segment : {{node.ref.name}}</span>-->
-                                                        <span >Composite Profile : {{compositeProfile.name}}</span>
+                                                        <span>Composite Profile : {{compositeProfile.name}}</span>
                                                         <table st-table="displayed" st-safe-src="compositeProfile.conformanceStatements" class="table table-striped table-bordered">
                                                             <thead>
                                                                 <tr class="tbl-header">
@@ -319,6 +323,59 @@
                                                                 <tr ng-repeat="c in displayed">
                                                                     <td class="col-md-2">{{c.constraintId}}</td>
                                                                     <td class="col-md-10">{{c.description}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div accordion-group class="panel-primary" is-open="accordStatus.isFifthOpen">
+                                            <accordion-heading>
+                                                <span style="color:white;">Conditional Predicates</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
+                                            </accordion-heading>
+                                            <div class="panel-body">
+                                                <div class="col-md-12">
+                                                    <span ng-hide="groupsPredicates.length > 0 || msgPredicates.length>0">No Predicate</span>
+                                                    <div>
+                                                        <span>Message : {{compositeProfiledatatypesMap.name}}</span>
+                                                        <table st-table="displayed" st-safe-src="msgPredicates" class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr class="tbl-header">
+                                                                    <th st-sort="constraintTarget" class="col-md-2">Target</th>
+                                                                    <th class="col-md-8">Description</th>
+                                                                    <th class="col-md-1">True Usage</th>
+                                                                    <th class="col-md-1">False Usage</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="c in displayed">
+                                                                    <td class="col-md-2">{{c.constraintTarget}}</td>
+                                                                    <td class="col-md-8">{{c.description}}</td>
+                                                                    <td class="col-md-1">{{c.trueUsage}}</td>
+                                                                    <td class="col-md-1">{{c.falseUsage}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div ng-repeat="node in groupsPredicates">
+                                                        <span ng-show="node.context.type =='group'">Group : {{node.context.name}}</span>
+                                                        <span ng-show="node.context.type =='message' || node.context===null">Message : {{node.context.name}}</span>
+                                                        <table st-table="displayed" st-safe-src="node" class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr class="tbl-header">
+                                                                    <th st-sort="constraintTarget" class="col-md-2">Target</th>
+                                                                    <th class="col-md-8">Description</th>
+                                                                    <th class="col-md-1">True Usage</th>
+                                                                    <th class="col-md-1">False Usage</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="c in displayed">
+                                                                    <td class="col-md-2">{{c.constraintTarget}}</td>
+                                                                    <td class="col-md-8">{{c.description}}</td>
+                                                                    <td class="col-md-1">{{c.trueUsage}}</td>
+                                                                    <td class="col-md-1">{{c.falseUsage}}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -487,6 +544,12 @@
         <td class="col-md-1">
             <span><i style="font-size:15px;" ng-show="findingConfSt(node)" ng-click="seeConfSt(node,'see')" class="material-icons">visibility</i></span>
         </td>
+        <td class="col-md-1">
+            <span><i style="font-size:15px;" ng-show="findingDynMap(node)" ng-click="seeDynMap(node,'see')" class="material-icons">visibility</i></span>
+        </td>
+        <td class="col-md-1">
+            <span><i style="font-size:15px;" ng-show="findingCoCon(node)" ng-click="seeCoCon(node,'see')" class="material-icons">visibility</i></span>
+        </td>
 
 
 
@@ -518,4 +581,145 @@
 
     </tr>
 
+</script>
+
+
+<script type="text/ng-template" id="AddConstraintsCtrlInCP.html">
+    <md-dialog aria-label="CoConstraints" style="width:2000px; max-height:100%">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> CoConstraints of {{node.ref.name}} </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" style="overflow:scroll;">
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="panel panel-default ">
+                                <div class="panel-heading ">CoConstraints</div>
+                                <div class="panel-body " style="min-height:200px; max-height:500px;overflow-y: scroll; ">
+                                    <div class="table-container">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                               
+                                                <tr class="tbl-header">
+                                                    <th bgcolor="#1565c0" style="text-align:center;" ng-show="coConstraintsTable.ifColumnDefinition">
+                                                        <span ng-show="coConstraintsTable.ifColumnDefinition.type=='field'" class="label label-field label-icon">F</span>
+                                                        <span ng-show="coConstraintsTable.ifColumnDefinition.type=='component'" class="label label-component label-icon">C</span>
+                                                        <span ng-show="coConstraintsTable.ifColumnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
+                                                        <span style="color:black">{{node.ref.name}}-{{coConstraintsTable.ifColumnDefinition.path}}</span>
+                                                        <span ng-show="coConstraintsTable.ifColumnDefinition.constraintType=='value'" class="label label-icon">Value</span>
+                                                        <span ng-show="coConstraintsTable.ifColumnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
+                                                        
+                                                    </th>
+                                                    <th bgcolor="#1565c0" ng-show="!coConstraintsTable.ifColumnDefinition" style="text-align:center;">
+                                                        <span style="color:black">Need IF Column Definition</span>
+                                                    </th>
+                                                    <th bgcolor="#efefef" style="text-align:center;" ng-repeat="columnDefinition in coConstraintsTable.thenColumnDefinitionList">
+                                                        <span ng-show="columnDefinition.type=='field'" class="label label-field label-icon">F</span>
+                                                        <span ng-show="columnDefinition.type=='component'" class="label label-component label-icon">C</span>
+                                                        <span ng-show="columnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
+                                                        <span style="color:black">{{node.ref.name}}-{{columnDefinition.path}}</span>
+                                                        <span ng-show="columnDefinition.constraintType=='value'" class="label label-icon">Value</span>
+                                                        <span ng-show="columnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
+                                                        
+                                                    </th>
+                                                    <th bgcolor="#efefef" ng-show="!coConstraintsTable.thenColumnDefinitionList || coConstraintsTable.thenColumnDefinitionList.length == 0" style="text-align:center;">
+                                                        <span style="color:black">Need THEN Column Definition</span>
+                                                    </th>
+                                                    <th bgcolor="#4caf50" style="text-align:center;" ng-repeat="columnDefinition in coConstraintsTable.userColumnDefinitionList">
+                                                        <span style="color:black">{{columnDefinition.title}}</span>
+                                                        
+                                                    </th>
+                                                    <th bgcolor="#4caf50" ng-show="!coConstraintsTable.userColumnDefinitionList || coConstraintsTable.userColumnDefinitionList.length == 0" style="text-align:center;color:black;">
+                                                        <span style="color:black">Need USER Column Definition</span>
+                                                    </th>
+                                                   
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-show="coConstraintsTable.rowSize > 0" ng-repeat="n in [].constructor(coConstraintsTable.rowSize) track by $index" ng-init="rowIndex = $index">
+                                                    <td style="text-align:center;" ng-show="coConstraintsTable.ifColumnDefinition">
+                                                        <div layout="row" layout-align="center center">
+
+                                                            <span>{{coConstraintsTable.ifColumnData[rowIndex].valueData.value}}</span>
+                                                            <span>{{coConstraintsTable.ifColumnData[rowIndex].valueData.bindingLocation}}</span>
+
+                                                            
+                                                        </div>
+                                                    </td>
+
+                                                    <td ng-show="!coConstraintsTable.ifColumnDefinition" style="text-align:center;">
+                                                    </td>
+
+                                                    <td ng-repeat="columnDefinition in coConstraintsTable.thenColumnDefinitionList" style="text-align:center;">
+                                                        <div ng-show="columnDefinition.constraintType == 'value'">
+                                                            <div layout="row" layout-align="center center">
+                                                                <span>{{coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.value}}</span>
+                                                                <span>{{coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.bindingLocation}}</span>
+
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div ng-show="columnDefinition.constraintType == 'valueset'">
+                                                            <div ng-repeat="vs in coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueSets">
+                                                                <span class="badge label-white">
+                                                                                    <span class="label label-sub-component-icon label-icon">VS</span>
+                                                                <span>{{$root.tablesMap[vs.tableId].bindingIdentifier}}</span>
+                                                                </span>
+                                                            </div>
+                                                           
+                                                        </div>
+
+
+                                                        <div layout="row" layout-align="center center" ng-show="columnDefinition.constraintType == 'dmr'">
+                                                            <span>{{coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.value}}</span>
+                                                            <span>{{coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].datatypeId}}</span>  
+                                                          
+                                                           
+                                                        </div>
+                                                    </td>
+
+                                                    <td ng-show="!coConstraintsTable.thenColumnDefinitionList || coConstraintsTable.thenColumnDefinitionList.length == 0" style="text-align:center;">
+                                                    </td>
+
+                                                    <td ng-repeat="columnDefinition in coConstraintsTable.userColumnDefinitionList" style="text-align:center;">
+                                                        <div layout="row" layout-align="center center">
+                                                            <span>{{coConstraintsTable.userMapData[columnDefinition.id][rowIndex].text}}</span>
+                                                           
+                                                        </div>
+                                                    </td>
+
+                                                    <td ng-show="!coConstraintsTable.userColumnDefinitionList || coConstraintsTable.userColumnDefinitionList.length == 0">
+                                                    </td>
+
+                                                   
+                                                </tr>
+                                            </tbody>
+                                           
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      
+
+
+
+
+
+                    </div>
+                </div>
+
+               
+            </md-dialog-content>
+        </form>
+    </md-dialog>
 </script>
