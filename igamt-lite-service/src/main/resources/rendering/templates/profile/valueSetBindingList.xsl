@@ -56,10 +56,10 @@
                         <xsl:text>Location</xsl:text>
                     </xsl:element>
                     <xsl:element name="th">
-                        <xsl:text>Binding Identifier</xsl:text>
+                        <xsl:text>Value Set ID</xsl:text>
                     </xsl:element>
                     <xsl:element name="th">
-                        <xsl:text>Name</xsl:text>
+                        <xsl:text>Value Set Name</xsl:text>
                     </xsl:element>
                     <xsl:element name="th">
                         <xsl:text>Binding Strength</xsl:text>
