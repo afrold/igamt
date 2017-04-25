@@ -989,7 +989,7 @@ angular.module('igl')
     };
 
 
-    $scope.selectMessagesForExport = function(igdocument) {
+    $scope.selectMessagesForExport = function(igdocument, toGVT) {
         if ($rootScope.hasChanges()) {
             $rootScope.openConfirmLeaveDlg().then(function() {
                 if ($scope.editForm) {
@@ -1000,15 +1000,15 @@ angular.module('igl')
 
                 }
                 $rootScope.clearChanges();
-                $scope.processSelectMessagesForExport(igdocument);
+                $scope.processSelectMessagesForExport(igdocument,toGVT);
 
             });
         } else {
-            $scope.processSelectMessagesForExport(igdocument);
+            $scope.processSelectMessagesForExport(igdocument,toGVT);
         }
     };
 
-    $scope.selectCompositeProfilesForExport = function(igdocument) {
+    $scope.selectCompositeProfilesForExport = function(igdocument,toGVT) {
         if ($rootScope.hasChanges()) {
             $rootScope.openConfirmLeaveDlg().result.then(function() {
                 if ($scope.editForm) {
@@ -1019,15 +1019,15 @@ angular.module('igl')
 
                 }
                 $rootScope.clearChanges();
-                $scope.processSelectCompositeProfilesForExport(igdocument);
+                $scope.processSelectCompositeProfilesForExport(igdocument,toGVT);
 
             });
         } else {
-            $scope.processSelectCompositeProfilesForExport(igdocument);
+            $scope.processSelectCompositeProfilesForExport(igdocument,toGVT);
         }
     };
 
-    $scope.processSelectMessagesForExport = function(igdocument) {
+    $scope.processSelectMessagesForExport = function(igdocument,toGVT) {
         $mdDialog.show({
 
             parent: angular.element(document).find('body'),
@@ -1035,16 +1035,15 @@ angular.module('igl')
             controller: 'SelectMessagesForExportCtrl',
             locals: {
                 igdocumentToSelect: igdocument,
-              
+                toGVT: toGVT
             }
-
         }).then(function() {
 
         });
 
     };
 
-    $scope.processSelectCompositeProfilesForExport = function(igdocument) {
+    $scope.processSelectCompositeProfilesForExport = function(igdocument,toGVT) {
         var modalInstance = $modal.open({
             templateUrl: 'SelectCompositeProfilesForExportCtrl.html',
             controller: 'SelectCompositeProfilesForExportCtrl',
@@ -1052,7 +1051,8 @@ angular.module('igl')
             resolve: {
                 igdocumentToSelect: function() {
                     return igdocument;
-                }
+                },
+                toGVT: toGVT
             }
         });
         modalInstance.result.then(function() {}, function() {});
@@ -2655,8 +2655,10 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
 
 });
 
-angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window, $mdDialog) {
+angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window, $mdDialog,toGVT) {
     $scope.igdocumentToSelect = igdocumentToSelect;
+    $scope.toGVT = toGVT;
+    $scope.exportStep = 0;
     $scope.xmlFormat = 'Validation';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
@@ -2676,6 +2678,14 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     };
 
 
+    $scope.goBack = function(){
+        $scope.exportStep =  $scope.exportStep  != 0 ? $scope.exportStep -1: 0;
+    };
+
+    $scope.goNext = function(){
+        $scope.exportStep =  $scope.exportStep  != 2 ? $scope.exportStep + 1: 2;
+    };
+
     $scope.exportAsZIPforSelectedMessages = function() {
         $scope.loading = true;
         ExportSvc.exportAsXMLByMessageIds($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, $scope.xmlFormat);
@@ -2688,48 +2698,20 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
 
 
     $scope.viewErrors = function(errorDetails) {
-
-        if ($scope.gvtErrorsDialog && $scope.gvtErrorsDialog != null && $scope.gvtErrorsDialog.opened) {
-            $scope.gvtErrorsDialog.dismiss('cancel');
-        }
-        $scope.gvtErrorsDialog = $modal.open({
-            backdrop: 'static',
-            keyboard: 'true',
-            controller: 'GVTErrorsCtrl',
-            windowClass: 'conformance-profiles-modal',
-            templateUrl: 'views/gvt/errorDetails.html',
-            resolve: {
-                errorDetails: function() {
-                    return errorDetails;
-                }
-            }
-        });
-
-
+        $scope.exportStep = 2;
+        $scope.errorDetails = errorDetails;
+        $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
+        $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors) : [];
+        $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
     };
 
     $scope.exportAsZIPToGVT = function() {
         $scope.loading = true;
         $scope.info.text = null;
         $scope.info.show = false;
-        console.log("heeere");
         $scope.info.type = 'danger';
-        if ($scope.gvtLoginDialog && $scope.gvtLoginDialog != null && $scope.gvtLoginDialog.opened) {
-            $scope.gvtLoginDialog.hide();
-        }
-        console.log("shareModalddd");
-
-        $scope.gvtLoginDialog = $mdDialog.show({
-            templateUrl: 'views/gvt/login.html',
-            parent: angular.element(document).find('body'),
-            controller: 'GVTLoginCtrl',
-            skipHide: true,
-            locals: {
-                user: { username: null, password: null },
-
-            }
-
-        }).then(function(auth) {
+        $scope.user = { username: null, password: null };
+        GVTSvc.login($scope.user.username, $scope.user.password).then(function(auth) {
             GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function(map) {
                 var response = angular.fromJson(map.data);
                 if (response.success === false) {
@@ -2755,15 +2737,13 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
                 $scope.info.type = 'danger';
                 $scope.loading = false;
             });
-        }, function() {
-            $scope.info.show = false;
-            $scope.loading = false;
-        });
-
-
-
-    };
-
+            }, function(error) {
+                $scope.info.text = error.data.text;
+                $scope.info.show = true;
+                $scope.info.type = 'danger';
+                $scope.loading = false;
+            });
+        };
 
 });
 
