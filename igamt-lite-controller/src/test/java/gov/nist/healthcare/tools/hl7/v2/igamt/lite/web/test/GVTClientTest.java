@@ -18,8 +18,7 @@ public class GVTClientTest {
   public void testSend() throws GVTExportException, IOException {
     InputStream io = GVTClientTest.class.getResourceAsStream("/exports/IZ-Profiles-1.zip");
     GVTServiceImpl client = new GVTServiceImpl();
-    ResponseEntity<?> response = client.send(io,
-        "http://localhost:8081/gvt/api/gvt/upload/igamtuploadzip", "aGFmZm86MXFheiFRQVo=");
+    ResponseEntity<?> response = client.send(io, "aGFmZm86MXFheiFRQVo=");
     Map<String, Object> map = (Map<String, Object>) response.getBody();
     assertNotNull(map);
     assertNotNull(map.get("token"));

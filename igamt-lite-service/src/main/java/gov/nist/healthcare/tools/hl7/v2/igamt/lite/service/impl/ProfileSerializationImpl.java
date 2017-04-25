@@ -39,7 +39,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +97,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
+import gov.nist.healthcare.tools.hl7.v2.xml.ExportTool;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.NodeFactory;
@@ -2759,7 +2759,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				for (SegmentRefOrGroup seog : m.getChildren()) {
 					this.visit(seog, segmentsMap, datatypesMap, original);
 				}
-
 			}
 		}
 
@@ -2791,8 +2790,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		filteredProfile.setSegmentLibrary(segments);
 		filteredProfile.setMessages(messages);
 		filteredProfile.setTableLibrary(tables);
-
-		return this.serializeProfileToZip(filteredProfile, metadata, dateUpdated, segmentsMap, datatypesMap, tablesMap);
+		
+		return new ExportTool().exportXMLAsValidationFormatForSelectedMessages(filteredProfile, metadata, segmentsMap, datatypesMap, tablesMap);
 	}
 
 	@Override
@@ -2888,6 +2887,42 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					}
 				}				
 			}
+			
+			if (s.getName().equals("OBX") || s.getName().equals("MFA") || s.getName().equals("MFE")) {
+				String reference = null;
+				String referenceTableId = null;
+
+				if (s.getName().equals("OBX")) {
+					reference = "2";
+				}
+
+				if (s.getName().equals("MFA")) {
+					reference = "6";
+				}
+
+				if (s.getName().equals("MFE")) {
+					reference = "5";
+				}
+				
+				referenceTableId = this.findValueSetID(s.getValueSetBindings(), reference);
+
+				if (referenceTableId != null) {
+					Table table = tableService.findById(referenceTableId);
+					if (table != null) {
+						for (Code c : table.getCodes()) {
+							if (c.getValue() != null && table.getHl7Version() != null) {
+								// TODO
+								Datatype d = datatypeService.findByNameAndVesionAndScope(c.getValue(), table.getHl7Version(), "HL7STANDARD");
+
+								 if(d != null){
+								 this.addDatatype(d, datatypesMap);
+								}
+							}
+						}
+					}
+				}
+			}
+			
 
 		} else {
 			Group g = (Group) seog;
