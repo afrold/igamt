@@ -270,49 +270,9 @@ public class Bootstrap implements InitializingBean {
 		// DeleteProfileComponents();
 		// fixValueSetNameAndDescription();
 
-		// refactorCoConstrint();
+		 refactorCoConstrint();
 
 		// updateUserExportConfigs();
-		refoctorCoConstraintValueSetForMessage();
-	}
-
-	private void refoctorCoConstraintValueSetForMessage() throws ProfileException {
-		List<IGDocument> igDoc = documentService.findAll();
-
-		for (IGDocument doc : igDoc) {
-			TableLibrary lib = null;
-			Profile p = doc.getProfile();
-			for (SegmentLink sl : p.getSegmentLibrary().getChildren()) {
-				if(sl.getId() != null){
-					Segment s = segmentService.findById(sl.getId());
-					if (s != null) {
-						if (s.getCoConstraintsTable() != null) {
-							if (s.getCoConstraintsTable().getThenMapData() != null) {
-								for (String key : s.getCoConstraintsTable().getThenMapData().keySet()) {
-									List<CoConstraintTHENColumnData> cdata = s.getCoConstraintsTable().getThenMapData()
-											.get(key);
-
-									for (CoConstraintTHENColumnData data : cdata) {
-										if (data.getValueSets() != null) {
-											for (ValueSetData vsd : data.getValueSets()) {
-												Table t = tableService.findById(vsd.getTableId());
-
-												if (t != null) {
-													if(lib == null) lib = p.getTableLibrary();
-													lib.addTable(t);
-												}
-											}
-										}
-									}
-								}
-							}
-
-						}
-					}					
-				}
-			}
-			if(lib != null)	tableLibraryService.save(lib);
-		}
 	}
 
 	private void refactorCoConstrint() {
