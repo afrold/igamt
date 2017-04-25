@@ -1763,8 +1763,15 @@
 
                             <br/>
 
-                            <h1 ng-show="isSingleValueSetAllowed" class="md-display-1">Select Single Value Set or Single Code</h1>
-                            <h1 ng-show="!isSingleValueSetAllowed" class="md-display-1">Select Single or Multiple Value Sets</h1>
+                            <span ng-show="isSingleValueSetAllowed" class="header3">
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                Allowed to select a Value Set or a Single Code.
+                            </span>
+
+                            <span ng-show="!isSingleValueSetAllowed" class="header3">
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+                                Allowed to select one or more Value Set(s).
+                            </span>
 
                             <md-tabs md-dynamic-height md-border-bottom>
                                 <md-tab label="Value Set">
@@ -1935,8 +1942,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-raised btn-warning btn-sm"><i class="fa fa-times fa-fw">&nbsp; </i>Close</button>
         <button ng-show="changed" type="button" ng-click="saveMapping()" class="btn btn-raised btn-primary btn-sm"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</button>
+        <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-raised btn-warning btn-sm"><i class="fa fa-times fa-fw">&nbsp; </i>Close</button>
         <button ng-show="!changed" class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
     </div>
 </script>
