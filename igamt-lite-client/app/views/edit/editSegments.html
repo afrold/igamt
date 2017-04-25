@@ -1749,7 +1749,18 @@
                                     <tbody>
                                     <tr ng-repeat="b in displayedSelectedValueSetBindings">
                                         <td class="col-md-11">
-                                            <h5 class="md-title">{{::segment.name}}-{{::currentNode.path}} ({{::currentNode.name}}) SHALL contain the constant value '{{b.code.value}}' drawn from the code system '{{b.code.codeSystem}}'.</h5>
+                                            {{::segment.name}}-{{::currentNode.path}} ({{::currentNode.name}})
+                                            SHALL contain the constant value '
+                                            <md-input-container>
+                                                <label>Code</label>
+                                                <input ng-model="b.code.value"/>
+                                            </md-input-container>
+                                            ' drawn from the code system '
+                                            <md-input-container>
+                                                <label>Code System</label>
+                                                <input ng-model="b.code.codeSystem"/>
+                                            </md-input-container>
+                                            '.
                                         </td>
                                         <td class="col-md-1" align="center">
                                             <a ng-click="deleteBinding(b)" class="point">
