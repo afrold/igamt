@@ -512,8 +512,6 @@
 </script>
 
 <script type="text/ng-template" id="SelectMessagesForExportCtrlMd.html">
-
-
     <md-dialog aria-label="exportXml" style="width: 50%">
         <form ng-cloak>
             <md-toolbar>
@@ -740,7 +738,7 @@
                 <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="goBack() "><span><i
                         class="fa fa-arrow-left fa-fw"></i>Back</span>
                 </md-button>
-                <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPforSelectedMessages() "><span><i
+                <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPforSelectedMessages()"><span><i
                         class="fa fa-download fa-fw "></i>Export as Zip</span>
                 </md-button>
                 <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="goNext() "><span><i
@@ -754,8 +752,7 @@
 
     
 </script>
-    <script type="text/ng-template " id="SelectCompositeProfilesForExportCtrlMd.html ">
-
+<script type="text/ng-template " id="SelectCompositeProfilesForExportCtrlMd.html ">
         <md-dialog aria-label="exportXml" style="min-width: 50%">
             <form ng-cloak>
                 <md-toolbar>
@@ -987,16 +984,16 @@
                 </md-dialog-content>
                 <md-dialog-actions layout="row">
 
-                    <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="goBack() "><span><i
+                    <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="goBack()"><span><i
                             class="fa fa-arrow-left fa-fw"></i>Back</span>
                     </md-button>
-                    <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="exportAsZIPforSelectedMessages() "><span><i
+                    <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="exportAsZIPforSelectedCompositeProfiles()"><span><i
                             class="fa fa-download fa-fw "></i>Export as Zip</span>
                     </md-button>
                     <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null ||selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="goNext() "><span><i
                             class="fa fa fa-arrow-right fa-fw "></i>Next</span>
                     </md-button>
-                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'" ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="exportAsZIPToGVT() "><span><i class="fa fa-download fa-fw "></i>Export to GVT</span>
+                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'" ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="exportAsZIPToGVT()"><span><i class="fa fa-download fa-fw "></i>Export to GVT</span>
                     </md-button>
 
 
