@@ -24,16 +24,16 @@ angular.module('igl').controller('GVTLoginCtrl', ['$scope', 'user', 'GVTSvc', '$
     };
 }])
 
-angular.module('igl').controller('GVTErrorsCtrl', ['$scope', '$modalInstance', 'errorDetails', function($scope, $modalInstance, errorDetails) {
-    $scope.errorDetails = errorDetails;
-    $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
-    $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors) : [];
-    $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
-
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-    $scope.close = function() {
-        $modalInstance.close();
-    };
-}]);
+// angular.module('igl').controller('GVTErrorsCtrl', ['$scope', '$modalInstance', 'errorDetails', function($scope, $modalInstance, errorDetails) {
+//     $scope.errorDetails = errorDetails;
+//     $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
+//     $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors) : [];
+//     $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
+//
+//     $scope.cancel = function() {
+//         $modalInstance.dismiss('cancel');
+//     };
+//     $scope.close = function() {
+//         $modalInstance.close();
+//     };
+// }]);

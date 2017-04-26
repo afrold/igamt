@@ -63,12 +63,29 @@
                                         <md-button ng-click="$mdMenu.open()">As XML</md-button>
                                         <md-menu-content>
                                             <md-menu-item>
-                                                <md-button  ng-click="selectMessagesForExport(igdocument)">
+                                                <md-button  ng-click="selectMessagesForExport(igdocument, false)">
                                                     Conformance Profile
                                                 </md-button>
                                             </md-menu-item>
                                             <md-menu-item>
-                                                <md-button ng-click="selectCompositeProfilesForExport(igdocument)" >
+                                                <md-button ng-click="selectCompositeProfilesForExport(igdocument,false)" >
+                                                    Composite Profile
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-menu>
+                                        <md-button ng-click="$mdMenu.open()">To GVT</md-button>
+                                        <md-menu-content>
+                                            <md-menu-item>
+                                                <md-button  ng-click="selectMessagesForExport(igdocument, true)">
+                                                    Conformance Profile
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item>
+                                                <md-button ng-click="selectCompositeProfilesForExport(igdocument,true)" >
                                                     Composite Profile
                                                 </md-button>
                                             </md-menu-item>
