@@ -511,9 +511,7 @@
     </div>
 </script>
 
-<script type="text/ng-template " id="SelectMessagesForExportCtrl.html">
-
-
+<script type="text/ng-template" id="SelectMessagesForExportCtrlMd.html">
     <md-dialog aria-label="exportXml" style="width: 50%">
         <form ng-cloak>
             <md-toolbar>
@@ -539,19 +537,18 @@
                                     <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Validation' " ng-class="{ 'active':xmlFormat==='Validation' } ">
                             NIST
                             Validation Format
-                        </label>
+                             </label>
                                     <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Display' " ng-class="{ 'active':xmlFormat==='Display' } ">
                             NIST
-                            Display Format
-                        </label>
+                            Display Format</label>
                                     <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Gazelle' " ng-class="{ 'active':xmlFormat==='Gazelle' } ">
                             Gazelle
                             Format
-                        </label>
+                                </label>
                                 </div>
                             </div>
-                        <br />
-                                 <div class="alert alert-info" style="width:100%">
+                        <br/>
+                                 <div layout="row" class="alert alert-info" style="width:100%">
                                     <i class="badge badge-default">1</i> Select Conformance Profile(s)
                                 </div>
                                 <div class="table-responsive" style="width:100%">
@@ -755,8 +752,7 @@
 
     
 </script>
-    <script type="text/ng-template " id="SelectCompositeProfilesForExportCtrl.html">
-
+<script type="text/ng-template " id="SelectCompositeProfilesForExportCtrlMd.html ">
         <md-dialog aria-label="exportXml" style="min-width: 50%">
             <form ng-cloak>
                 <md-toolbar>

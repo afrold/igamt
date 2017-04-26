@@ -1031,7 +1031,7 @@ angular.module('igl')
         $mdDialog.show({
 
             parent: angular.element(document).find('body'),
-            templateUrl: 'SelectMessagesForExportCtrl.html',
+            templateUrl: 'SelectMessagesForExportCtrlMd.html',
             controller: 'SelectMessagesForExportCtrl',
             locals: {
                 igdocumentToSelect: igdocument,
@@ -1045,7 +1045,7 @@ angular.module('igl')
 
     $scope.processSelectCompositeProfilesForExport = function(igdocument,toGVT) {
         var modalInstance = $mdDialog.show({
-            templateUrl: 'SelectCompositeProfilesForExportCtrl.html',
+            templateUrl: 'SelectCompositeProfilesForExportCtrlMd.html',
             controller: 'SelectCompositeProfilesForExportCtrl',
 
             locals: {
