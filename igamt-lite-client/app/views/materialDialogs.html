@@ -455,7 +455,7 @@
 
                     <md-tabs md-dynamic-height md-border-bottom
                     ">
-                    <md-tab md-active="tabs[0].active" md-on-select="make_active(0)">
+                    <md-tab md-active="tabs_dlg[0].active" md-on-select="make_active_dlg(0)">
                         <md-tab-label>
                             <i class="fa fa-file-text-o fa-fw"></i> Data Type Library Meta Data
                         </md-tab-label>
@@ -511,7 +511,7 @@
 
                     </md-tab>
 
-                    <md-tab md-active="tabs[1].active" md-on-select="make_active(1)">
+                    <md-tab md-active="tabs_dlg[1].active" md-on-select="make_active_dlg(1)">
                         <md-tab-label>
                             <i class="fa fa-file-text-o fa-fw"></i> Add Data Types
                         </md-tab-label>
@@ -628,11 +628,11 @@
 
                     <md-dialog-actions layout="row">
 
-                        <md-button class="md-primary" ng-click="make_active(1)" ng-if="tabs[0].active">
+                        <md-button class="md-primary" ng-click="make_active_dlg(1)" ng-if="tabs_dlg[0].active">
                             Next
                         </md-button>
 
-                        <md-button class="md-primary" ng-click="make_active(0)" ng-if="tabs[1].active">
+                        <md-button class="md-primary" ng-click="make_active_dlg(0)" ng-if="tabs_dlg[1].active">
                             Back
                         </md-button>
                         <md-button class="md-primary md-raised" ng-click="createLibrary()">
