@@ -3858,7 +3858,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 }]);
 
 
-angular.module('igl').controller('LoginCtrl', ['$scope', '$mdDialog', 'user', function($scope, $mdDialog, user) {
+angular.module('igl').controller('LoginCtrl', [ '$rootScope','$scope', '$mdDialog', 'user', function($rootScope,$scope, $mdDialog, user) {
     $scope.user = user;
 
     $scope.cancel = function() {
