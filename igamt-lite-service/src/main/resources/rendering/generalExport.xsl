@@ -114,6 +114,12 @@
     <xsl:variable name="columnDisplay.valueSet.description" select="$valueSetColumnDescription"/>
     <xsl:param name="valueSetColumnComment" select="'true'"/>
     <xsl:variable name="columnDisplay.valueSet.comment" select="$valueSetColumnComment"/>
+    <xsl:param name="valueSetMetadataStability" select="'true'"/>
+    <xsl:variable name="valueSetMetadata.stability" select="$valueSetMetadataStability"/>
+    <xsl:param name="valueSetMetadataExtensibility" select="'true'"/>
+    <xsl:variable name="valueSetMetadata.extensibility" select="$valueSetMetadataExtensibility"/>
+    <xsl:param name="valueSetMetadataContentDefinition" select="'true'"/>
+    <xsl:variable name="valueSetMetadata.contentDefinition" select="$valueSetMetadataContentDefinition"/>
     
 <!--     <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/loose.dtd"
    doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" />
