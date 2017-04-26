@@ -2556,11 +2556,11 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     $scope.toGVT = toGVT;
     $scope.exportStep = 0;
     $scope.xmlFormat = 'Validation';
-    $scope.selectedMessagesIDs = [];
+    $scope.selectedCompositeProfileIDs = [];
     $scope.loading = false;
     $scope.info = { text: undefined, show: false, type: null, details: null };
     $scope.redirectUrl = null;
-
+    $scope.user = { username: null, password: null };
     $scope.trackSelections = function(bool, id) {
         if (bool) {
             $scope.selectedCompositeProfileIDs.push(id);
@@ -2592,21 +2592,11 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     };
 
     $scope.viewErrors = function(errorDetails) {
-        if ($scope.gvtErrorsDialog && $scope.gvtErrorsDialog != null && $scope.gvtErrorsDialog.opened) {
-            $scope.gvtErrorsDialog.dismiss('cancel');
-        }
-        // $scope.gvtErrorsDialog = $mddal.open({
-        //     backdrop: 'static',
-        //     keyboard: 'true',
-        //     controller: 'GVTErrorsCtrl',
-        //     windowClass: 'conformance-profiles-modal',
-        //     templateUrl: 'views/gvt/errorDetails.html',
-        //     resolve: {
-        //         errorDetails: function() {
-        //             return errorDetails;
-        //         }
-        //     }
-        // });
+        $scope.exportStep = 2;
+        $scope.errorDetails = errorDetails;
+        $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
+        $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors) : [];
+        $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
     };
 
         $scope.exportAsZIPToGVT = function() {
@@ -2614,10 +2604,8 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
             $scope.info.text = null;
             $scope.info.show = false;
             $scope.info.type = 'danger';
-            $scope.user = { username: null, password: null };
             GVTSvc.login($scope.user.username, $scope.user.password).then(function(auth) {
                 GVTSvc.exportToGVTForCompositeProfile($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, auth).then(function(map) {
-
                     var response = angular.fromJson(map.data);
                     if (response.success === false) {
                         $scope.info.text = "gvtExportFailed";
@@ -2662,6 +2650,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     $scope.loading = false;
     $scope.info = { text: undefined, show: false, type: null, details: null };
     $scope.redirectUrl = null;
+    $scope.user = { username: null, password: null };
 
     $scope.trackSelections = function(bool, id) {
         if (bool) {
@@ -2708,7 +2697,6 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
         $scope.info.text = null;
         $scope.info.show = false;
         $scope.info.type = 'danger';
-        $scope.user = { username: null, password: null };
         GVTSvc.login($scope.user.username, $scope.user.password).then(function(auth) {
             GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function(map) {
                 var response = angular.fromJson(map.data);
@@ -2742,99 +2730,6 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
                 $scope.loading = false;
             });
         };
-
-});
-
-
-angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window, $mdDialog,toGVT) {
-    $scope.igdocumentToSelect = igdocumentToSelect;
-    $scope.toGVT = toGVT;
-    $scope.exportStep = 0;
-    $scope.xmlFormat = 'Validation';
-    $scope.selectedMessagesIDs = [];
-    $scope.loading = false;
-    $scope.info = { text: undefined, show: false, type: null, details: null };
-    $scope.redirectUrl = null;
-
-    $scope.trackSelections = function(bool, id) {
-        if (bool) {
-            $scope.selectedMessagesIDs.push(id);
-        } else {
-            for (var i = 0; i < $scope.selectedMessagesIDs.length; i++) {
-                if ($scope.selectedMessagesIDs[i].id == id) {
-                    $scope.selectedMessagesIDs.splice(i, 1);
-                }
-            }
-        }
-    };
-
-
-    $scope.goBack = function(){
-        $scope.exportStep =  $scope.exportStep  != 0 ? $scope.exportStep -1: 0;
-    };
-
-    $scope.goNext = function(){
-        $scope.exportStep =  $scope.exportStep  != 2 ? $scope.exportStep + 1: 2;
-    };
-
-    $scope.exportAsZIPforSelectedMessages = function() {
-        $scope.loading = true;
-        ExportSvc.exportAsXMLByMessageIds($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, $scope.xmlFormat);
-        $scope.loading = false;
-    };
-
-    $scope.cancel = function() {
-        $mdDialog.hide();
-    };
-
-
-    $scope.viewErrors = function(errorDetails) {
-        $scope.exportStep = 2;
-        $scope.errorDetails = errorDetails;
-        $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
-        $scope.tmpConstraintErrors = errorDetails != null ? [].concat($scope.errorDetails.constraintsErrors) : [];
-        $scope.tmpValueSetErrors = errorDetails != null ? [].concat($scope.errorDetails.vsErrors) : [];
-    };
-
-    $scope.exportAsZIPToGVT = function() {
-        $scope.loading = true;
-        $scope.info.text = null;
-        $scope.info.show = false;
-        $scope.info.type = 'danger';
-        $scope.user = { username: null, password: null };
-        GVTSvc.login($scope.user.username, $scope.user.password).then(function(auth) {
-            GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function(map) {
-                var response = angular.fromJson(map.data);
-                if (response.success === false) {
-                    $scope.info.text = "gvtExportFailed";
-                    $scope.info['details'] = response;
-                    $scope.info.show = true;
-                    $scope.info.type = 'danger';
-                    $scope.loading = false;
-                } else {
-                    var token = response.token;
-                    $scope.info.text = 'gvtRedirectInProgress';
-                    $scope.info.show = true;
-                    $scope.info.type = 'info';
-                    $scope.redirectUrl = $rootScope.appInfo.gvtUrl + $rootScope.appInfo.gvtUploadTokenContext + "?x=" + encodeURIComponent(token) + "&y=" + encodeURIComponent(auth);
-                    $timeout(function() {
-                        $scope.loading = false;
-                        $window.open($scope.redirectUrl, "_target", "", false);
-                    }, 3000);
-                }
-            }, function(error) {
-                $scope.info.text = "gvtExportFailed";
-                $scope.info.show = true;
-                $scope.info.type = 'danger';
-                $scope.loading = false;
-            });
-        }, function(error) {
-            $scope.info.text = error.data.text;
-            $scope.info.show = true;
-            $scope.info.type = 'danger';
-            $scope.loading = false;
-        });
-    };
 
 });
 

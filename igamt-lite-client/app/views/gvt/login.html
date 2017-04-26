@@ -37,7 +37,7 @@
 
                     <md-input-container class="withoutMargin">
                         <label>Username</label>
-                        <input type="text" class="form-control focus" autofocus id="username" name="username" ng-model="user.username" ng-minlength="4" required>
+                        <input type="text"  autofocus id="username" name="username" ng-model="user.username" ng-minlength="4" required>
                     </md-input-container>
 
 
@@ -45,7 +45,7 @@
                 <div class="form-group control-group" ng-class="{'has-success has-feedback': gvtLoginForm.password.$valid, 'igl-has-error has-feedback': !gvtLoginForm.password.$valid}">
                     <md-input-container class="withoutMargin">
                         <label>Password</label>
-                        <input type="password" autocomplete="off" class="form-control immediate-help account-input focus" id="password" name="password" ng-model="user.password" ng-minlength="4" required> </md-input-container>
+                        <input type="password" autocomplete="off" id="password" name="password" ng-model="user.password" ng-minlength="4" required> </md-input-container>
 
 
                 </div>
