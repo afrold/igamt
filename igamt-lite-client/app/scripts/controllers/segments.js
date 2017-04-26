@@ -1537,6 +1537,11 @@ angular.module('igl').controller('CoConstraintUSERDefinitionCtrl', function($sco
 
     $scope.close = function() {
         var userColumnDefinition = {};
+        if($scope.coConstraintUSERDefinition) {
+            userColumnDefinition = $scope.coConstraintUSERDefinition;
+        }else {
+            userColumnDefinition = {};
+        }
         userColumnDefinition.title = $scope.title;
 
         $modalInstance.close(userColumnDefinition);
