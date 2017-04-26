@@ -381,29 +381,18 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         $scope.selectList = function() {
 
-            if ($rootScope.hasChanges()) {
-                $rootScope.openConfirmLeaveDlg().then(function() {
                     $scope.getDataTypeLibraryByScope('USER');
                     $scope.make_active(0);
-                });
-            } else {
-                $scope.getDataTypeLibraryByScope('USER');
-                $scope.make_active(0);
-            }
+
         };
 
         $scope.selectMatrix = function() {
 
-            if ($rootScope.hasChanges()) {
-                $rootScope.openConfirmLeaveDlg().then(function() {
+
                     $scope.initMatrix();
                     $scope.make_active(2);
 
-                });
-            } else{
-                $scope.initMatrix();
-                $scope.make_active(2);
-            }
+
         };
 
         // $scope.selectEdit = function() {
