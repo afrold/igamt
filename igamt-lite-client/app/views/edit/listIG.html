@@ -114,7 +114,7 @@
 
                                                                         <span ng-click="clone(row);selectIGDocumentType('USER')" title="Clone IG document" style="color:#2d9de7;"><i class="fa fa-plus fa-fw igList-icons"></i></span>
 
-                                                                        <span ng-if="igDocumentConfig.selectedType === 'USER'" title="Delete Share Document" style="color:red"><i class="fa fa-trash-o fa-fw igList-icons"></i></span>
+                                                                        <span ng-if="igDocumentConfig.selectedType === 'USER'" title="Delete Share Document" style="color:red" ng-click="confirmDelete(row)"><i class="fa fa-trash-o fa-fw igList-icons"></i></span>
 
                                                                         <span  ng-click="confirmShareDocument(row)"  title="Approve Share Document" ng-if="row.comment === 'PENDING_APPROVAL'"  style="color:gray"><i class="fa fa-check fa-fw igList-icons"
                                                                                              aria-hidden="true"></i></span>

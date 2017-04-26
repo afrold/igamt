@@ -1,6 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:import href="/rendering/templates/profile/valueSetContent.xsl"/>
+    <xsl:import href="/rendering/templates/profile/valueSetMetadata.xsl"/>
     <xsl:template match="ValueSetDefinition" mode="toc">
         <xsl:element name="a">
             <xsl:attribute name="href">
@@ -25,31 +26,12 @@
                 </xsl:with-param>
             </xsl:call-template>
         </xsl:if>
-        <xsl:if test="@Stability != ''">
-            <xsl:element name="p">
-                <xsl:text>Stability: </xsl:text>
-                <xsl:value-of select="@Stability"/>
+        <xsl:call-template name="valueSetMetadata"/>
+        <xsl:element name="p">
+            <xsl:element name="b">
+                <xsl:text>Codes</xsl:text>
             </xsl:element>
-        </xsl:if>
-        <xsl:if test="@Extensibility != ''">
-            <xsl:element name="p">
-                <xsl:text>Extensibility: </xsl:text>
-                <xsl:value-of select="@Extensibility"/>
-            </xsl:element>
-        </xsl:if>
-        <xsl:if test="@ContentDefinition != ''">
-            <xsl:element name="p">
-                <xsl:text>Content Definition: </xsl:text>
-                <xsl:value-of select="@ContentDefinition"/>
-            </xsl:element>
-        </xsl:if>
-        <xsl:if test="@Oid != '' and @Oid != 'UNSPECIFIED'">
-            <xsl:element name="p">
-                <xsl:text>OID: </xsl:text>
-                <xsl:value-of select="@Oid"/>
-            </xsl:element>
-        </xsl:if>
-
+        </xsl:element>
         <xsl:element name="table">
             <xsl:attribute name="class">
                 <xsl:text>contentTable</xsl:text>

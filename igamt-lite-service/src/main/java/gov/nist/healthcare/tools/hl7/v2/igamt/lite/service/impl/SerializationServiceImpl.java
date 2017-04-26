@@ -444,10 +444,12 @@ import nu.xom.Document;
     }
     
     private TableLink findTableLinkById(String tableId, List<TableLink> tableLinkList){
-      for(TableLink tableLink : tableLinkList){
-        if(tableLink.getId().equals(tableId)){
-          return tableLink;
-        }
+      if(tableLinkList!=null && !tableLinkList.isEmpty()) {
+          for (TableLink tableLink : tableLinkList) {
+              if (tableLink != null && tableLink.getId() != null && tableLink.getId().equals(tableId)) {
+                  return tableLink;
+              }
+          }
       }
       return null;
     }

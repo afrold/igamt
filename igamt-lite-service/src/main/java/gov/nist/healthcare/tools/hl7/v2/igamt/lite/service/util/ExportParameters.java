@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ public class ExportParameters {
     private List<NameAndPositionAndPresence> segmentsColumns;
     private List<NameAndPositionAndPresence> dataTypeColumns;
     private List<NameAndPositionAndPresence> valueSetColumns;
+    private ValueSetMetadataConfig valueSetMetadataConfig;
     private ExportFontConfig exportFontConfig;
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
@@ -43,7 +45,7 @@ public class ExportParameters {
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
         String documentTitle,String imageLogo) {
-        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,null,null,null);
+        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,null,null,null,null);
     }
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
@@ -53,6 +55,7 @@ public class ExportParameters {
         List<NameAndPositionAndPresence> segmentsColumns,
         List<NameAndPositionAndPresence> dataTypeColumns,
         List<NameAndPositionAndPresence> valueSetColumns,
+        ValueSetMetadataConfig valueSetMetadataConfig,
         ExportFontConfig exportFontConfig) {
         this.inlineConstraints = inlineConstraints;
         this.includeTOC = includeTOC;
@@ -65,6 +68,7 @@ public class ExportParameters {
         this.segmentsColumns = segmentsColumns;
         this.dataTypeColumns = dataTypeColumns;
         this.valueSetColumns = valueSetColumns;
+        this.valueSetMetadataConfig = valueSetMetadataConfig;
         this.exportFontConfig = exportFontConfig;
     }
 
@@ -147,6 +151,11 @@ public class ExportParameters {
             for(NameAndPositionAndPresence currentColumn : segmentsColumns){
                 params.put(segmentsColumn+currentColumn.getName().replace(" ",""),String.valueOf(currentColumn.isPresent()));
             }
+        }
+        if(valueSetMetadataConfig != null){
+            params.put("valueSetMetadataStability",String.valueOf(valueSetMetadataConfig.isStability()));
+            params.put("valueSetMetadataExtensibility",String.valueOf(valueSetMetadataConfig.isExtensibility()));
+            params.put("valueSetMetadataContentDefinition",String.valueOf(valueSetMetadataConfig.isContentDefinition()));
         }
         if(exportFontConfig!=null) {
             params.put("userFontFamily", exportFontConfig.getExportFont().getValue());

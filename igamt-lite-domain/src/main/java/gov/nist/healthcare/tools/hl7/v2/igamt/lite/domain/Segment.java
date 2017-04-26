@@ -432,7 +432,7 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 
 									ifDescription = "If the value of " + this.getName() + "-"
 											+ definitionIF.getConstraintPath() + " (" + definitionIF.getName()
-											+ ") should be '" + ifData.getValueData().getValue() + "',";
+											+ ") is '" + ifData.getValueData().getValue() + "',";
 
 									if (definitionIF.isPrimitive()) {
 										ifAssertion = "<PlainText Path=\"" + definitionIF.getConstraintPath()

@@ -236,11 +236,10 @@ public class ExportUtil {
 
 	public ExportParameters setExportParameters(String documentTitle, boolean includeTOC, boolean inlineConstraints,
 			String targetFormat, ExportConfig exportConfig, ExportFontConfig exportFontConfig) {
-		// TODO Replace messageColumn by compositeProfileColumn
 		return new ExportParameters(inlineConstraints, includeTOC, targetFormat, documentTitle, null,
 				exportConfig.getMessageColumn().getColumns(), exportConfig.getCompositeProfileColumn().getColumns(),
 				exportConfig.getProfileComponentColumn().getColumns(), exportConfig.getSegmentColumn().getColumns(),
-				exportConfig.getDatatypeColumn().getColumns(), exportConfig.getValueSetColumn().getColumns(),
+				exportConfig.getDatatypeColumn().getColumns(), exportConfig.getValueSetColumn().getColumns(),exportConfig.getValueSetsMetadata(),
 				exportFontConfig);
 	}
 

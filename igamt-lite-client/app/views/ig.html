@@ -511,9 +511,7 @@
     </div>
 </script>
 
-<script type="text/ng-template " id="SelectMessagesForExportCtrl.html ">
-
-
+<script type="text/ng-template" id="SelectMessagesForExportCtrlMd.html">
     <md-dialog aria-label="exportXml" style="width: 50%">
         <form ng-cloak>
             <md-toolbar>
@@ -531,8 +529,7 @@
                 <div class="md-dialog-content">
                     <div ng-show="exportStep === 0">
                     <form novalidate ng-cloak>
-                        <div>
-                            <div  ng-show="!toGVT || toGVT === false">
+                             <div  ng-show="!toGVT || toGVT === false">
                                 <h4 class="modal-title ">Select Export Format</h4>
                             </div>
                             <div ng-show="!toGVT || toGVT === false">
@@ -540,19 +537,18 @@
                                     <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Validation' " ng-class="{ 'active':xmlFormat==='Validation' } ">
                             NIST
                             Validation Format
-                        </label>
+                             </label>
                                     <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Display' " ng-class="{ 'active':xmlFormat==='Display' } ">
                             NIST
-                            Display Format
-                        </label>
+                            Display Format</label>
                                     <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Gazelle' " ng-class="{ 'active':xmlFormat==='Gazelle' } ">
                             Gazelle
                             Format
-                        </label>
+                                </label>
                                 </div>
                             </div>
-                            <div>
-                                <div class="alert alert-info" style="width:100%">
+                        <br/>
+                                 <div layout="row" class="alert alert-info" style="width:100%">
                                     <i class="badge badge-default">1</i> Select Conformance Profile(s)
                                 </div>
                                 <div class="table-responsive" style="width:100%">
@@ -577,14 +573,12 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-                        </div>
                     </form>
                     </div>
                     <div ng-show="exportStep === 1">
 
-                        <div ng-class="'alert alert-info'">
-                             <i class="badge badge-default">2</i> Login information of GVT at {{appInfo.gvtUrl}}
+                        <div ng-class="'alert alert-info'" style="font-size:14px;">
+                             <i class="badge badge-default">2</i> Login information of GVT at {{::appInfo.gvtUrl}}
                         </div>
                         <form name="gvtLoginForm" id="gvtLoginForm" novalidate ng-cloak style="padding:20px 0px 20px 0px">
                                     <div  ng-class="{'has-success has-feedback': gvtLoginForm.username.$valid, 'igl-has-error has-feedback': !gvtLoginForm.username.$valid}">
@@ -593,7 +587,6 @@
                                             <label>Username</label>
                                             <input flex="100" type="text"  autofocus id="username" name="username" ng-model="user.username" ng-minlength="4" required>
                                         </md-input-container>
-
 
                                     </div>
                                     <div  ng-class="{'has-success has-feedback': gvtLoginForm.password.$valid, 'igl-has-error has-feedback': !gvtLoginForm.password.$valid}">
@@ -605,6 +598,7 @@
                                 <a ng-href="{{appInfo.gvtUrl}}#/forgotten" target="_blank" style="text-align:center">
                                     <span msg key="gvt.login.forgotPwd"></span>
                                 </a>
+                                <br />
                                 <a ng-href="{{appInfo.gvtUrl}}#/registration" target="_blank" style="text-align:center">
                                     <span msg key="gvt.login.newAccount"></span>
                                 </a>
@@ -654,8 +648,6 @@
                                 </md-tab>
                                 <md-tab label="Constraints Errors">
                                     <md-content class="md-padding">
-
-
                                                 <div ng-show="errorDetails.constraintsErrors.length === 0">
                                                     No error found.
                                                 </div>
@@ -732,7 +724,7 @@
                         <a ng-href="{{redirectUrl}}" target="_blank">Please click here if you are not redirected after 3s</a>
                     </div>
 
-                    <div ng-show="info.type === 'danger'">
+                    <div ng-show="info.type === 'danger'" ng-show="exportStep != 2">
                         <button type="button" class="close" ng-click="info.show=false">×</button>
                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                         <a class="point" ng-click="viewErrors(info.details)">
@@ -746,7 +738,7 @@
                 <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="goBack() "><span><i
                         class="fa fa-arrow-left fa-fw"></i>Back</span>
                 </md-button>
-                <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPforSelectedMessages() "><span><i
+                <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPforSelectedMessages()"><span><i
                         class="fa fa-download fa-fw "></i>Export as Zip</span>
                 </md-button>
                 <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="goNext() "><span><i
@@ -760,8 +752,7 @@
 
     
 </script>
-    <script type="text/ng-template " id="SelectCompositeProfilesForExportCtrl.html ">
-
+<script type="text/ng-template " id="SelectCompositeProfilesForExportCtrlMd.html ">
         <md-dialog aria-label="exportXml" style="min-width: 50%">
             <form ng-cloak>
                 <md-toolbar>
@@ -779,10 +770,10 @@
                     <div class="md-dialog-content">
                         <div ng-show="exportStep === 0">
                             <form novalidate ng-cloak>
-                                <div>
-                                    <div  ng-show="!toGVT || toGVT === false">
+                                     <div  ng-show="!toGVT || toGVT === false">
                                         <h4 class="modal-title ">Select Export Format</h4>
                                     </div>
+                                <br />
                                     <div ng-show="!toGVT || toGVT === false">
                                         <div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">
                                             <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Validation' " ng-class="{ 'active':xmlFormat==='Validation' } ">
@@ -799,8 +790,9 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div class="alert alert-info" style="width: 100%">
+                                <br />
+
+                                         <div class="alert alert-info" style="width: 100%">
                                             <i class="badge badge-default">1</i> Select Composite Profile(s)
                                         </div>
                                         <div class="table-responsive" layout="row" style="width: 100%">
@@ -827,11 +819,9 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div>
-                                </div>
                             </form>
                         </div>
-                        <div ng-show=" exportStep === 1">
+                         <div ng-show=" exportStep === 1">
 
                             <div ng-class="'alert alert-info'">
                                 <i class="badge badge-default">2</i> Login information of GVT at {{appInfo.gvtUrl}}
@@ -855,12 +845,12 @@
                                     <a ng-href="{{appInfo.gvtUrl}}#/forgotten" target="_blank" style="text-align:center">
                                         <span msg key="gvt.login.forgotPwd"></span>
                                     </a>
+                                    <br />
                                     <a ng-href="{{appInfo.gvtUrl}}#/registration" target="_blank" style="text-align:center">
                                         <span msg key="gvt.login.newAccount"></span>
                                     </a>
                                 </p>
                             </form>
-
                         </div>
 
                         <div ng-show="exportStep === 2">
@@ -974,7 +964,8 @@
                             </form>
                         </div>
                     </div>
-                    <div ng-class="'alert alert-'+ info.type" ng-show="info.show" id="ehrloginalert" style="margin-top:5px; text-align:center">
+
+                    <div layout="row" ng-class="'alert alert-'+ info.type" ng-show="info.show" id="ehrloginalert" style="margin-top:5px; text-align:center">
                         <div ng-show="info.type === 'info'">
                             <button type="button" class="close" ng-click="info.show=false">×</button>
                             <i class="fa fa-check" aria-hidden="true"></i>
@@ -982,7 +973,7 @@
                             <a ng-href="{{redirectUrl}}" target="_blank">Please click here if you are not redirected after 3s</a>
                         </div>
 
-                        <div ng-show="info.type === 'danger'">
+                        <div ng-show="info.type === 'danger'"  ng-show="exportStep != 2">
                             <button type="button" class="close" ng-click="info.show=false">×</button>
                             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                             <a class="point" ng-click="viewErrors(info.details)">
@@ -993,18 +984,16 @@
                 </md-dialog-content>
                 <md-dialog-actions layout="row">
 
-
-
-                    <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="goBack() "><span><i
+                    <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="goBack()"><span><i
                             class="fa fa-arrow-left fa-fw"></i>Back</span>
                     </md-button>
-                    <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="exportAsZIPforSelectedMessages() "><span><i
+                    <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="exportAsZIPforSelectedCompositeProfiles()"><span><i
                             class="fa fa-download fa-fw "></i>Export as Zip</span>
                     </md-button>
                     <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null ||selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="goNext() "><span><i
                             class="fa fa fa-arrow-right fa-fw "></i>Next</span>
                     </md-button>
-                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'" ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="exportAsZIPToGVT() "><span><i class="fa fa-download fa-fw "></i>Export to GVT</span>
+                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'" ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="exportAsZIPToGVT()"><span><i class="fa fa-download fa-fw "></i>Export to GVT</span>
                     </md-button>
 
 
