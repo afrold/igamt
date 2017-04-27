@@ -8,6 +8,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
@@ -115,6 +118,8 @@ import nu.xom.Document;
     private Messages igDocumentMessages;
 
     private List<TableLink> tableLibrary;
+    
+    static final Logger logger = LoggerFactory.getLogger(SerializationService.class);
 
 
     @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig) {
@@ -164,19 +169,29 @@ import nu.xom.Document;
         this.tableLibrary = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.compositeProfiles = new ArrayList<>();
-        if(igDocument.getProfile().getCompositeProfiles() != null && !igDocument.getProfile().getCompositeProfiles().getChildren().isEmpty()){
-            for (CompositeProfileStructure compositeProfileStructure : igDocument.getProfile()
-                .getCompositeProfiles().getChildren()) {
-                CompositeProfile compositeProfile = compositeProfileService.buildCompositeProfile(compositeProfileStructure);
-                compositeProfiles.add(compositeProfile);
-                for(SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()){
-                  if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), this.exportConfig.getSegmentORGroupsCompositeProfileExport())){
-                    identifyBindedItems(segmentRefOrGroup,compositeProfile);
-                  } else {
-                    identifyUnbindedValueSets(segmentRefOrGroup, compositeProfile);
-                  }
-                }
+        if (igDocument.getProfile().getCompositeProfiles() != null
+            && !igDocument.getProfile().getCompositeProfiles().getChildren().isEmpty()) {
+          for (CompositeProfileStructure compositeProfileStructure : igDocument.getProfile()
+              .getCompositeProfiles().getChildren()) {
+            CompositeProfile compositeProfile = null;
+            try {
+              compositeProfile =
+                  compositeProfileService.buildCompositeProfile(compositeProfileStructure);
+            } catch (Exception e) {
+              logger.error("Unable to build the composite profile from the structure "+compositeProfileStructure.getName());
             }
+            if (compositeProfile != null) {
+              compositeProfiles.add(compositeProfile);
+              for (SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()) {
+                if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),
+                    this.exportConfig.getSegmentORGroupsCompositeProfileExport())) {
+                  identifyBindedItems(segmentRefOrGroup, compositeProfile);
+                } else {
+                  identifyUnbindedValueSets(segmentRefOrGroup, compositeProfile);
+                }
+              }
+            }
+          }
         }
         for (Message message : igDocument.getProfile().getMessages().getChildren()){
             for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
