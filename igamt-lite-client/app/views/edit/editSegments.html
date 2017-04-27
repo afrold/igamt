@@ -527,31 +527,32 @@
                                                                 <!--<th ng-show="segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation" st-sort="secondReferenceValue" class="col-md-3">Second Reference Value</th>-->
                                                                 <th class="col-md-5">Datatype</th>
                                                                 <th class="col-md-1" style="text-align:left">
-                                                                    <span ng-show="!viewSettings.tableReadonly && segment.scope == 'USER'" ng-click="addMappingItem()"><i class="fa fa-plus fa-fw edit-icon-white"></i></span>
+                                                                    <span style="color:black" ng-show="!viewSettings.tableReadonly && segment.scope == 'USER'" ng-click="addMappingItem()"><i class="fa fa-plus fa-fw"></i></span>
                                                                 </th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
                                                             <tr ng-repeat="item in displayItems">
                                                                 <td class="col-md-3">
-                                                                    <select ng-model='item.firstReferenceValue'
-                                                                            class="form-control"
-                                                                            ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'"
-                                                                            ng-change="setDirty();">
-                                                                        <option ng-repeat="c in dynamicMappingTable.codes" value="{{c.value}}">
+
+                                                                    <md-select ng-model="item.firstReferenceValue" ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'" ng-change="setDirty();">
+                                                                        <md-option ng-repeat="c in dynamicMappingTable.codes" value="{{c.value}}">
                                                                             {{c.value}}({{c.label}})
-                                                                        </option>
-                                                                    </select>
+                                                                        </md-option>
+                                                                    </md-select>
                                                                 </td>
                                                                 <!--<td class="col-md-3" ng-show="segment.dynamicMappingDefinition.mappingStructure.secondRefereceLocation">-->
                                                                     <!--<input type="text" class="form-control" ng-model="item.secondReferenceValue" ng-change="setDirty()" ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'" />-->
                                                                 <!--</td>-->
                                                                 <td class="col-md-5">
-                                                                    <select ng-model="item.datatypeId"
-                                                                            class="form-control"
+                                                                    <md-select ng-model="item.datatypeId"
                                                                             ng-change="setDirty()"
-                                                                            ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'"
-                                                                            ng-options="link.id as getDatatypeLabel(datatypesMap[link.id]) for link in igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}" />
+                                                                            ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'">
+                                                                           <md-option ng-repeat="link in igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}" value="{{link.id}}">
+                                                                               {{getDatatypeLabel(datatypesMap[link.id])}}
+                                                                           </md-option>
+
+                                                                    </md-select>
                                                                 </td>
                                                                 <td class="col-md-1" style="text-align:left">
                                                                     <span ng-show="!viewSettings.tableReadonly && segment.scope == 'USER'" ng-click="deleteMappingItem(item)"><i class="fa fa-times fa-fw edit-icon"></i></span>
