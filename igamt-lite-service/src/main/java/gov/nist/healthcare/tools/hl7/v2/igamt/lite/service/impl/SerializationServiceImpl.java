@@ -274,7 +274,7 @@ import nu.xom.Document;
         }
 
         SerializableSection constraintInformationSection =
-            this.serializeConstraints(profile, messageSection.getSerializableSectionList(), segmentsSection.getSerializableSectionList(),
+            this.serializeConstraints(profile, messageSection.getSerializableSectionList(), compositeProfilesSection.getSerializableSectionList(), segmentsSection.getSerializableSectionList(),
                 datatypeSection.getSerializableSectionList(),currentPosition);
         if(constraintInformationSection!=null) {
             profileSection.addSection(constraintInformationSection);
@@ -716,7 +716,7 @@ import nu.xom.Document;
     }
 
     private SerializableSection serializeConstraints(Profile profile,
-        List<SerializableSection> messages, List<SerializableSection> segments,
+        List<SerializableSection> messages, List<SerializableSection> compositeProfile, List<SerializableSection> segments,
         List<SerializableSection> datatypes, int position) {
 
         String id = UUID.randomUUID().toString();
@@ -758,6 +758,22 @@ import nu.xom.Document;
         headerLevel = String.valueOf(4);
         title = "Conformance profile level";
         SerializableSection profileLevelPredicatesSection =
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
+
+        id = UUID.randomUUID().toString();
+        sectionPosition = String.valueOf(1);
+        prefix = conformanceStatementsSection.getPrefix() + "." + String.valueOf(4);
+        headerLevel = String.valueOf(4);
+        title = "Composite profile level";
+        SerializableSection compositeProfileLevelConformanceStatementsSection =
+            new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
+
+        id = UUID.randomUUID().toString();
+        sectionPosition = String.valueOf(1);
+        prefix = conditionalPredicatesSection.getPrefix() + "." + String.valueOf(4);
+        headerLevel = String.valueOf(4);
+        title = "Composite profile level";
+        SerializableSection compositeProfilePredicatesSection =
             new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
 
         id = UUID.randomUUID().toString();
@@ -827,6 +843,44 @@ import nu.xom.Document;
                         .addSection(serializablePredicate);
                     profileLevelPredicatesSection
                         .addSection(predicatesProfileLevelConformanceStatementsSection);
+                }
+            }
+        }
+
+        for (SerializableSection serializableCompositeProfileSection : compositeProfile) {
+            if (serializableCompositeProfileSection instanceof SerializableCompositeProfile) {
+                SerializableCompositeProfile serializableCompositeProfile =
+                    (SerializableCompositeProfile) serializableCompositeProfileSection;
+                id = UUID.randomUUID().toString();
+                sectionPosition = String.valueOf(
+                    ((SerializableCompositeProfile) serializableCompositeProfileSection).getCompositeProfile().getPosition());
+                prefix = compositeProfileLevelConformanceStatementsSection.getPrefix() + "." + String.valueOf(currentConformanceStatementPosition);
+                headerLevel = String.valueOf(5);
+                title = serializableCompositeProfile.getCompositeProfile().getName();
+                SerializableConstraints serializableConformanceStatement = serializableCompositeProfile.getSerializableConformanceStatements();
+                if(serializableConformanceStatement.getConstraints().size()>0) {
+                    SerializableSection
+                        conformanceStatementsCompositeProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
+                    serializableConformanceStatement.setTitle("");
+                    conformanceStatementsCompositeProfileLevelConformanceStatementsSection
+                        .addSection(serializableConformanceStatement);
+                    compositeProfileLevelConformanceStatementsSection
+                        .addSection(conformanceStatementsCompositeProfileLevelConformanceStatementsSection);
+                    currentConformanceStatementPosition+=1;
+                }
+                id = UUID.randomUUID().toString();
+                sectionPosition = String.valueOf(currentPredicatePosition);
+                prefix = compositeProfilePredicatesSection.getPrefix() + "." + String.valueOf(currentPredicatePosition);
+                headerLevel = String.valueOf(5);
+                title = serializableCompositeProfile.getCompositeProfile().getName();
+                SerializableConstraints serializablePredicate = serializableCompositeProfile.getSerializablePredicates();
+                if(serializablePredicate.getConstraints().size()>0) {
+                    SerializableSection predicatesCompositeProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
+                    serializablePredicate.setTitle("");
+                    predicatesCompositeProfileLevelConformanceStatementsSection
+                        .addSection(serializablePredicate);
+                    compositeProfilePredicatesSection
+                        .addSection(predicatesCompositeProfileLevelConformanceStatementsSection);
                 }
             }
         }
@@ -945,14 +999,30 @@ import nu.xom.Document;
                 }
             }
         }
-
-        conformanceStatementsSection.addSection(profileLevelConformanceStatementsSection);
-        conformanceStatementsSection.addSection(segmentLevelConformanceStatementSection);
-        conformanceStatementsSection.addSection(datatypeLevelConformanceStatementSection);
-        conditionalPredicatesSection.addSection(profileLevelPredicatesSection);
-        conditionalPredicatesSection.addSection(segmentLevelPredicatesSection);
-        conditionalPredicatesSection.addSection(datatypeLevelPredicatesSection);
-
+        if(this.exportConfig.isIncludeMessageTable()) {
+            conformanceStatementsSection.addSection(profileLevelConformanceStatementsSection);
+        }
+        if(this.exportConfig.isIncludeCompositeProfileTable()) {
+            conformanceStatementsSection.addSection(compositeProfileLevelConformanceStatementsSection);
+        }
+        if(this.exportConfig.isIncludeSegmentTable()) {
+            conformanceStatementsSection.addSection(segmentLevelConformanceStatementSection);
+        }
+        if(this.exportConfig.isIncludeDatatypeTable()) {
+            conformanceStatementsSection.addSection(datatypeLevelConformanceStatementSection);
+        }
+        if(this.exportConfig.isIncludeMessageTable()) {
+            conditionalPredicatesSection.addSection(profileLevelPredicatesSection);
+        }
+        if(this.exportConfig.isIncludeCompositeProfileTable()) {
+            conditionalPredicatesSection.addSection(compositeProfilePredicatesSection);
+        }
+        if(this.exportConfig.isIncludeSegmentTable()) {
+            conditionalPredicatesSection.addSection(segmentLevelPredicatesSection);
+        }
+        if(this.exportConfig.isIncludeDatatypeTable()) {
+            conditionalPredicatesSection.addSection(datatypeLevelPredicatesSection);
+        }
         conformanceInformationSection.addSection(conformanceStatementsSection);
         conformanceInformationSection.addSection(conditionalPredicatesSection);
 
