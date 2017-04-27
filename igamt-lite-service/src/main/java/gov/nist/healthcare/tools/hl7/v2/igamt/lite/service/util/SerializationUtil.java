@@ -144,7 +144,8 @@ public class SerializationUtil {
     doc.select("strong").tagName("b");
     String html = doc.body().html();
     html = html.replace("<br>", "<br />");
-    return "<div class=\"fr-view\">" + html + "</div>";
+    return html;
+    //return "<div class=\"fr-view\">" + html + "</div>";
   }
 
   private void removeEndingBrTag(Element element) {
