@@ -854,7 +854,7 @@ import nu.xom.Document;
                 id = UUID.randomUUID().toString();
                 sectionPosition = String.valueOf(
                     ((SerializableCompositeProfile) serializableCompositeProfileSection).getCompositeProfile().getPosition());
-                prefix = profileLevelConformanceStatementsSection.getPrefix() + "." + String.valueOf(currentConformanceStatementPosition);
+                prefix = compositeProfileLevelConformanceStatementsSection.getPrefix() + "." + String.valueOf(currentConformanceStatementPosition);
                 headerLevel = String.valueOf(5);
                 title = serializableCompositeProfile.getCompositeProfile().getName();
                 SerializableConstraints serializableConformanceStatement = serializableCompositeProfile.getSerializableConformanceStatements();
@@ -864,13 +864,13 @@ import nu.xom.Document;
                     serializableConformanceStatement.setTitle("");
                     conformanceStatementsCompositeProfileLevelConformanceStatementsSection
                         .addSection(serializableConformanceStatement);
-                    profileLevelConformanceStatementsSection
+                    compositeProfileLevelConformanceStatementsSection
                         .addSection(conformanceStatementsCompositeProfileLevelConformanceStatementsSection);
                     currentConformanceStatementPosition+=1;
                 }
                 id = UUID.randomUUID().toString();
                 sectionPosition = String.valueOf(currentPredicatePosition);
-                prefix = profileLevelPredicatesSection.getPrefix() + "." + String.valueOf(currentPredicatePosition);
+                prefix = compositeProfilePredicatesSection.getPrefix() + "." + String.valueOf(currentPredicatePosition);
                 headerLevel = String.valueOf(5);
                 title = serializableCompositeProfile.getCompositeProfile().getName();
                 SerializableConstraints serializablePredicate = serializableCompositeProfile.getSerializablePredicates();
@@ -879,7 +879,7 @@ import nu.xom.Document;
                     serializablePredicate.setTitle("");
                     predicatesCompositeProfileLevelConformanceStatementsSection
                         .addSection(serializablePredicate);
-                    profileLevelPredicatesSection
+                    compositeProfilePredicatesSection
                         .addSection(predicatesCompositeProfileLevelConformanceStatementsSection);
                 }
             }
