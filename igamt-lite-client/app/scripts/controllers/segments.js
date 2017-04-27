@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 
-angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService, blockUI, ValidationService) {
+angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout, $q, SegmentService, FieldService, FilteringSvc, MastermapSvc, SegmentLibrarySvc, DatatypeLibrarySvc, MessageService, DatatypeService, TableService, blockUI, ValidationService,$mdDialog) {
     //        $scope.loading = false;
     $scope.accordStatus = {
         isCustomHeaderOpen: false,
@@ -177,17 +177,17 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.openDialogForEditCoConstraintIFDefinition = function(coConstraintIFDefinition){
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'CoConstraintIFDefinition.html',
             controller: 'CoConstraintIFDefinitionCtrl',
-            size: 'md',
-            resolve: {
-                coConstraintIFDefinition: function() {
-                    return coConstraintIFDefinition;
+            scope: $rootScope,        // use parent scope in template
+            preserveScope: true,
+            locals: {
+                coConstraintIFDefinition:coConstraintIFDefinition
                 }
-            }
+
         });
-        modalInstance.result.then(function(ifColumnDefinition) {
+        modalInstance.then(function(ifColumnDefinition) {
             if(ifColumnDefinition){
                 if(!$rootScope.segment.coConstraintsTable) {
                     $rootScope.segment.coConstraintsTable = {};
@@ -208,17 +208,17 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.openDialogForEditCoConstraintTHENDefinition = function(coConstraintTHENDefinition){
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'CoConstraintTHENDefinition.html',
+            scope: $rootScope,
+            preserveScope: true,
             controller: 'CoConstraintTHENDefinitionCtrl',
-            size: 'md',
-            resolve: {
-                coConstraintTHENDefinition: function() {
-                    return coConstraintTHENDefinition;
-                }
+            locals: {
+                coConstraintTHENDefinition: coConstraintTHENDefinition
+
             }
         });
-        modalInstance.result.then(function(thenColumnDefinition) {
+        modalInstance.then(function(thenColumnDefinition) {
             if(thenColumnDefinition){
                 if(!$rootScope.segment.coConstraintsTable) {
                     $rootScope.segment.coConstraintsTable = {};
@@ -251,17 +251,17 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.openDialogForEditCoConstraintUSERDefinition = function (coConstraintUSERDefinition){
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'CoConstraintUSERDefinition.html',
             controller: 'CoConstraintUSERDefinitionCtrl',
-            size: 'md',
-            resolve: {
-                coConstraintUSERDefinition: function() {
-                    return coConstraintUSERDefinition;
+            scope: $rootScope,
+            preserveScope: true,
+            locals: {
+                coConstraintUSERDefinition:  coConstraintUSERDefinition
                 }
-            }
+
         });
-        modalInstance.result.then(function(userColumnDefinition) {
+        modalInstance.then(function(userColumnDefinition) {
             if(userColumnDefinition){
                 if(!$rootScope.segment.coConstraintsTable) {
                     $rootScope.segment.coConstraintsTable = {};
@@ -1523,7 +1523,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 });
 
-angular.module('igl').controller('CoConstraintUSERDefinitionCtrl', function($scope, $modalInstance, coConstraintUSERDefinition, $rootScope) {
+angular.module('igl').controller('CoConstraintUSERDefinitionCtrl', function($scope, $mdDialog, coConstraintUSERDefinition, $rootScope) {
     $scope.coConstraintUSERDefinition = angular.copy(coConstraintUSERDefinition);
     $scope.title = null;
 
@@ -1532,7 +1532,7 @@ angular.module('igl').controller('CoConstraintUSERDefinitionCtrl', function($sco
     }
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
@@ -1544,11 +1544,11 @@ angular.module('igl').controller('CoConstraintUSERDefinitionCtrl', function($sco
         }
         userColumnDefinition.title = $scope.title;
 
-        $modalInstance.close(userColumnDefinition);
+        $mdDialog.hide(userColumnDefinition);
     };
 });
 
-angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($scope, $modalInstance, coConstraintTHENDefinition, $rootScope, TableService) {
+angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($scope, $mdDialog, coConstraintTHENDefinition, $rootScope, TableService) {
     $scope.selectedCoConstraintTHENDefinition = angular.copy(coConstraintTHENDefinition);
 
     $scope.coConstraintType = 'value';
@@ -1692,7 +1692,7 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
@@ -1728,13 +1728,13 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
             }
         }
 
-        $modalInstance.close(thenColumnDefinition);
+        $mdDialog.hide(thenColumnDefinition);
     };
 
 });
 
 
-angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope, $modalInstance, coConstraintIFDefinition, $rootScope) {
+angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope, $mdDialog, coConstraintIFDefinition, $rootScope) {
     $scope.selectedCoConstraintIFDefinition = angular.copy(coConstraintIFDefinition);
 
     $scope.coConstraintType = 'value';
@@ -1832,7 +1832,7 @@ angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
@@ -1860,7 +1860,7 @@ angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope
             }
         }
 
-        $modalInstance.close(ifColumnDefinition);
+        $mdDialog.hide(ifColumnDefinition);
     };
 
 });
