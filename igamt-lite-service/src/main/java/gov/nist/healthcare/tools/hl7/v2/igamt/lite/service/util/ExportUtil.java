@@ -281,7 +281,6 @@ public class ExportUtil {
 		tidy.setQuiet(true); // to hide warning
 		tidy.setMakeClean(true);
 		tidy.setTidyMark(false);
-		tidy.setHideEndTags(false);
 		//tidy.setBreakBeforeBR(true);
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		tidy.parseDOM(html, outputStream);

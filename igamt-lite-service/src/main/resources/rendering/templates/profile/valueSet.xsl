@@ -28,10 +28,10 @@
                 </xsl:call-template>
             </xsl:element>
         </xsl:if>
-        <xsl:element name="p">
+        <xsl:element name="div">
             <xsl:call-template name="valueSetMetadata"/>
         </xsl:element>
-        <xsl:element name="p">
+        <xsl:element name="div">
             <xsl:element name="p">
                 <xsl:element name="b">
                     <xsl:text>Codes</xsl:text>
@@ -137,7 +137,7 @@
                 </xsl:element>
             </xsl:element>
         </xsl:element>
-        <xsl:element name="div">
+        <xsl:element name="p">
             <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
                 <xsl:call-template name="definitionText">
                     <xsl:with-param name="type">

@@ -287,9 +287,12 @@ import nu.xom.Document;
             profileSection.addSection(valueSetsSection);
             currentPosition ++;
         }
-
+        List<SerializableSection> compositeProfileSections = null;
+        if(compositeProfilesSection != null){
+          compositeProfileSections = compositeProfilesSection.getSerializableSectionList();
+        }
         SerializableSection constraintInformationSection =
-            this.serializeConstraints(profile, messageSection.getSerializableSectionList(), compositeProfilesSection.getSerializableSectionList(), segmentsSection.getSerializableSectionList(),
+            this.serializeConstraints(profile, messageSection.getSerializableSectionList(), compositeProfileSections, segmentsSection.getSerializableSectionList(),
                 datatypeSection.getSerializableSectionList(),currentPosition);
         if(constraintInformationSection!=null) {
             profileSection.addSection(constraintInformationSection);
@@ -861,43 +864,44 @@ import nu.xom.Document;
                 }
             }
         }
-
-        for (SerializableSection serializableCompositeProfileSection : compositeProfile) {
-            if (serializableCompositeProfileSection instanceof SerializableCompositeProfile) {
-                SerializableCompositeProfile serializableCompositeProfile =
-                    (SerializableCompositeProfile) serializableCompositeProfileSection;
-                id = UUID.randomUUID().toString();
-                sectionPosition = String.valueOf(
-                    ((SerializableCompositeProfile) serializableCompositeProfileSection).getCompositeProfile().getPosition());
-                prefix = compositeProfileLevelConformanceStatementsSection.getPrefix() + "." + String.valueOf(currentConformanceStatementPosition);
-                headerLevel = String.valueOf(5);
-                title = serializableCompositeProfile.getCompositeProfile().getName();
-                SerializableConstraints serializableConformanceStatement = serializableCompositeProfile.getSerializableConformanceStatements();
-                if(serializableConformanceStatement.getConstraints().size()>0) {
-                    SerializableSection
-                        conformanceStatementsCompositeProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
-                    serializableConformanceStatement.setTitle("");
-                    conformanceStatementsCompositeProfileLevelConformanceStatementsSection
-                        .addSection(serializableConformanceStatement);
-                    compositeProfileLevelConformanceStatementsSection
-                        .addSection(conformanceStatementsCompositeProfileLevelConformanceStatementsSection);
-                    currentConformanceStatementPosition+=1;
-                }
-                id = UUID.randomUUID().toString();
-                sectionPosition = String.valueOf(currentPredicatePosition);
-                prefix = compositeProfilePredicatesSection.getPrefix() + "." + String.valueOf(currentPredicatePosition);
-                headerLevel = String.valueOf(5);
-                title = serializableCompositeProfile.getCompositeProfile().getName();
-                SerializableConstraints serializablePredicate = serializableCompositeProfile.getSerializablePredicates();
-                if(serializablePredicate.getConstraints().size()>0) {
-                    SerializableSection predicatesCompositeProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
-                    serializablePredicate.setTitle("");
-                    predicatesCompositeProfileLevelConformanceStatementsSection
-                        .addSection(serializablePredicate);
-                    compositeProfilePredicatesSection
-                        .addSection(predicatesCompositeProfileLevelConformanceStatementsSection);
-                }
-            }
+        if(compositeProfile != null){
+          for (SerializableSection serializableCompositeProfileSection : compositeProfile) {
+              if (serializableCompositeProfileSection instanceof SerializableCompositeProfile) {
+                  SerializableCompositeProfile serializableCompositeProfile =
+                      (SerializableCompositeProfile) serializableCompositeProfileSection;
+                  id = UUID.randomUUID().toString();
+                  sectionPosition = String.valueOf(
+                      ((SerializableCompositeProfile) serializableCompositeProfileSection).getCompositeProfile().getPosition());
+                  prefix = compositeProfileLevelConformanceStatementsSection.getPrefix() + "." + String.valueOf(currentConformanceStatementPosition);
+                  headerLevel = String.valueOf(5);
+                  title = serializableCompositeProfile.getCompositeProfile().getName();
+                  SerializableConstraints serializableConformanceStatement = serializableCompositeProfile.getSerializableConformanceStatements();
+                  if(serializableConformanceStatement.getConstraints().size()>0) {
+                      SerializableSection
+                          conformanceStatementsCompositeProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
+                      serializableConformanceStatement.setTitle("");
+                      conformanceStatementsCompositeProfileLevelConformanceStatementsSection
+                          .addSection(serializableConformanceStatement);
+                      compositeProfileLevelConformanceStatementsSection
+                          .addSection(conformanceStatementsCompositeProfileLevelConformanceStatementsSection);
+                      currentConformanceStatementPosition+=1;
+                  }
+                  id = UUID.randomUUID().toString();
+                  sectionPosition = String.valueOf(currentPredicatePosition);
+                  prefix = compositeProfilePredicatesSection.getPrefix() + "." + String.valueOf(currentPredicatePosition);
+                  headerLevel = String.valueOf(5);
+                  title = serializableCompositeProfile.getCompositeProfile().getName();
+                  SerializableConstraints serializablePredicate = serializableCompositeProfile.getSerializablePredicates();
+                  if(serializablePredicate.getConstraints().size()>0) {
+                      SerializableSection predicatesCompositeProfileLevelConformanceStatementsSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
+                      serializablePredicate.setTitle("");
+                      predicatesCompositeProfileLevelConformanceStatementsSection
+                          .addSection(serializablePredicate);
+                      compositeProfilePredicatesSection
+                          .addSection(predicatesCompositeProfileLevelConformanceStatementsSection);
+                  }
+              }
+          }
         }
 
         currentConformanceStatementPosition = 1;
