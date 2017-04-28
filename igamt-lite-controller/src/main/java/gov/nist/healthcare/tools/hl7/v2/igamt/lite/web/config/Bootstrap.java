@@ -274,7 +274,7 @@ public class Bootstrap implements InitializingBean {
     // updateUserExportConfigs();
 	  
 	  
-	  hotfix();
+//	  hotfix();
   }
 
   private void hotfix() {

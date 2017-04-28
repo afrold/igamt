@@ -2877,14 +2877,17 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			
 			if(s.getCoConstraintsTable() != null && s.getCoConstraintsTable().getThenMapData() != null){
 				for (String key : s.getCoConstraintsTable().getThenMapData().keySet()) {
-					for (CoConstraintTHENColumnData data : s.getCoConstraintsTable().getThenMapData().get(key)) {
-						if (data.getDatatypeId() != null) {
-							Datatype dt = datatypeService.findById(data.getDatatypeId());
-							if (dt != null) {
-								this.addDatatype(dt, datatypesMap);
+					if(s.getCoConstraintsTable().getThenMapData().get(key) != null){
+						for (CoConstraintTHENColumnData data : s.getCoConstraintsTable().getThenMapData().get(key)) {
+							if (data.getDatatypeId() != null) {
+								Datatype dt = datatypeService.findById(data.getDatatypeId());
+								if (dt != null) {
+									this.addDatatype(dt, datatypesMap);
+								}
 							}
-						}
+						}	
 					}
+					
 				}				
 			}
 			
