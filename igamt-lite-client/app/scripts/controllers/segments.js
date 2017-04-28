@@ -174,6 +174,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
                 }
             }
         }
+
+        $rootScope.initCoConstraintsTable();
     };
 
     $scope.openDialogForEditCoConstraintIFDefinition = function(coConstraintIFDefinition){
@@ -246,6 +248,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
                     }
                 }
             }
+            $rootScope.initCoConstraintsTable();
             $scope.setDirty();
         });
     };
@@ -753,6 +756,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.deleteCoConstraints = function() {
         $rootScope.segment.coConstraintsTable = {};
         $rootScope.segment.coConstraintsTable.rowSize = 0;
+        $rootScope.initCoConstraintsTable();
         $scope.setDirty();
     };
 
