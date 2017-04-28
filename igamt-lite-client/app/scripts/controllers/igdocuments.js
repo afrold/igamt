@@ -1382,8 +1382,8 @@ angular.module('igl')
                             } catch (e) {
 
                             }
-
                             $rootScope.updateDynamicMappingInfo();
+                            $rootScope.initCoConstraintsTable();
 
                             $rootScope.references = [];
                             angular.forEach($rootScope.igdocument.profile.messages.children, function(message) {
