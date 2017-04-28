@@ -272,9 +272,35 @@ public class Bootstrap implements InitializingBean {
     // refactorCoConstrint();
 
     // updateUserExportConfigs();
+	  
+	  
+	  hotfix();
   }
 
-  private void refactorCoConstrint() {
+  private void hotfix() {
+	  List<Segment> segments = segmentService.findAll();
+	  
+	  for (Segment s : segments) {
+		  if(s.getName().equals("PID")){
+			  List<ValueSetOrSingleCodeBinding> vsbList =  s.getValueSetBindings();
+			  
+			  ValueSetOrSingleCodeBinding tobeDel = null;
+			  for(ValueSetOrSingleCodeBinding vsb : vsbList){
+				  if(vsb.getLocation().equals("5")){
+					  tobeDel = vsb;
+				  }
+			  }
+			  
+			  if(tobeDel != null) {
+				  vsbList.remove(tobeDel);
+				  segmentService.save(s);
+			  }
+		  }
+		  
+	  }
+}
+
+private void refactorCoConstrint() {
     List<Segment> segments = segmentService.findAll();
     for (Segment s : segments) {
       if (s.getName().equals("OBX")) {
