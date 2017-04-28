@@ -781,17 +781,19 @@ angular.module('igl')
         };
 
         $scope.managePredicate = function(node) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'PredicateDatatypeCtrl.html',
                 controller: 'PredicateDatatypeCtrl',
                 windowClass: 'app-modal-window',
-                resolve: {
-                    selectedNode: function() {
-                        return node;
+                scope: $rootScope,        // use parent scope in template
+                preserveScope: true,
+
+                locals: {
+                    selectedNode:  node
                     }
-                }
+
             });
-            modalInstance.result.then(function(dt) {
+            modalInstance.then(function(dt) {
                 if (dt) {
                     $rootScope.datatype.predicates = dt.predicates;
                     $scope.setDirty();
@@ -2075,7 +2077,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
 });
 
 
-angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $modalInstance, selectedNode, $rootScope, $q) {
+angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $mdDialog, selectedNode, $rootScope, $q) {
     $scope.selectedNode = selectedNode;
     $scope.constraintType = 'Plain';
     $scope.constraints = [];
@@ -2310,14 +2312,14 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $moda
     };
 
     $scope.ok = function() {
-        $modalInstance.close();
+        $mdDialog.hide();
     };
 
     $scope.saveclose = function() {
         $scope.deletePredicateByTarget();
         $scope.selectedDatatype.predicates.push($scope.existingPredicate);
         $rootScope.recordChanged();
-        $modalInstance.close($scope.selectedDatatype);
+        $mdDialog.hide($scope.selectedDatatype);
     };
 
     $scope.initPredicate();

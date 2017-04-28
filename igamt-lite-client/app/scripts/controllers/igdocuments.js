@@ -1610,6 +1610,7 @@ angular.module('igl')
     $scope.selectPc = function() {
 
         $rootScope.Activate($rootScope.profileComponent.id);
+        $rootScope.currentData=$rootScope.profileComponent;
         $rootScope.subview = "EditProfileComponent.html";
         $scope.loadingSelection = true;
         blockUI.start();
@@ -2140,6 +2141,11 @@ angular.module('igl').controller('DeleteProfileComponentCtrl', function($scope, 
         PcService.delete(pcLibId, $scope.profileComponentToDelete).then(function(profileComponentLib) {
             console.log(profileComponentLib);
             $rootScope.igdocument.profile.profileComponentLibrary = profileComponentLib;
+         for(i=0; i<$rootScope.profileComponents.length;i++){
+             if($scope.profileComponentToDelete.id===$rootScope.profileComponents[i].id){
+                 $rootScope.profileComponents.splice(i,1);
+             }
+            }
             if ($rootScope.profileComponent && $rootScope.profileComponent.id === $scope.profileComponentToDelete.id) {
                 $rootScope.profileComponent = null;
                 $rootScope.subview = null;
