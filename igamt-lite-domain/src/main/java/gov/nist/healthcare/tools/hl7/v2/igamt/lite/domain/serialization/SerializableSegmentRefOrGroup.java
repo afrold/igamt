@@ -28,15 +28,17 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
     private SegmentRefOrGroup segmentRefOrGroup;
     private Segment segment;
     private SegmentRef segmentRef;
+    private boolean isCompositeProfile;
     private List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups;
     private List<SerializableConstraint> groupConstraintList;
     private String comments;
 
     //SegmentRef constructor
-    public SerializableSegmentRefOrGroup(SegmentRef segmentRef,Segment segment) {
+    public SerializableSegmentRefOrGroup(SegmentRef segmentRef,Segment segment, boolean isCompositeProfile) {
         this(segmentRef);
         this.segmentRef = segmentRef;
         this.segment = segment;
+        this.isCompositeProfile = isCompositeProfile;
     }
     //Group constructor
     public SerializableSegmentRefOrGroup(Group group,List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> groupConstraintList) {
@@ -60,8 +62,8 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
     }
 
     private Element serializeGroupDisplay(Group group, int depth) {
-        Element elementGroup = new Element("MessageGroup");
-        Element elementGroupBegin = new Element("MessageSegment");
+        Element elementGroup = createGroupElement();
+        Element elementGroupBegin = createSegmentElement();
         elementGroupBegin.addAttribute(new Attribute("IdGpe", group.getId()));
         elementGroupBegin.addAttribute(new Attribute("Name", group.getName()));
         elementGroupBegin.addAttribute(new Attribute("Description", "BEGIN " + group.getName() + " GROUP"));
@@ -78,7 +80,7 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         for (SerializableSegmentRefOrGroup serializableSegmentRefOrGroup : this.serializableSegmentRefOrGroups) {
             elementGroup.appendChild(serializableSegmentRefOrGroup.serializeElement());
         }
-        Element elementGroupEnd = new Element("MessageSegment");
+        Element elementGroupEnd = createSegmentElement();
         elementGroupEnd.addAttribute(new Attribute("IdGpe", group.getId()));
         elementGroupEnd.addAttribute(new Attribute("Name", "END " + group.getName() + " GROUP"));
         elementGroupEnd.addAttribute(new Attribute("Description", "END " + group.getName() + " GROUP"));
@@ -97,8 +99,18 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
         return elementGroup;
     }
 
+    private Element createGroupElement() {
+      Element elementGroup = this.isCompositeProfile ? new Element("CompositeProfileMessageGroup") : new Element("MessageGroup");
+      return elementGroup;
+    }
+    
+    private Element createSegmentElement() {
+      Element elementSegment = this.isCompositeProfile ? new Element("CompositeProfileMessageSegment") : new Element("MessageSegment");
+      return elementSegment;
+    }
+    
     private Element serializeSegmentRefDisplay(SegmentRef segmentRef, int depth) {
-        Element elementSegment = new Element("MessageSegment");
+        Element elementSegment = createSegmentElement();
         elementSegment.addAttribute(new Attribute("IDRef", segmentRef.getId()));
         elementSegment.addAttribute(new Attribute("IDSeg", segmentRef.getRef().getId()));
         if (this.segment != null && this.segment.getName() != null) {
