@@ -146,7 +146,7 @@ public abstract class SerializeMessageOrCompositeProfile {
             }
         }
         List<SerializableConstraint> groupConstraints = serializeConstraintService.serializeConstraints(group,group.getName());
-        serializableGroup = new SerializableSegmentRefOrGroup(group,serializableSegmentRefOrGroups,groupConstraints);
+        serializableGroup = new SerializableSegmentRefOrGroup(group,serializableSegmentRefOrGroups,groupConstraints, this instanceof SerializeCompositeProfileService);
         return serializableGroup;
     }
 }
