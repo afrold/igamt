@@ -1018,33 +1018,39 @@ import nu.xom.Document;
                 }
             }
         }
-        if(this.exportConfig.isIncludeMessageTable()) {
+        if(this.exportConfig.isIncludeMessageTable() && !profileLevelConformanceStatementsSection.getSerializableSectionList().isEmpty()) {
             conformanceStatementsSection.addSection(profileLevelConformanceStatementsSection);
         }
-        if(this.exportConfig.isIncludeCompositeProfileTable()) {
+        if(this.exportConfig.isIncludeCompositeProfileTable() && !compositeProfileLevelConformanceStatementsSection.getSerializableSectionList().isEmpty()) {
             conformanceStatementsSection.addSection(compositeProfileLevelConformanceStatementsSection);
         }
-        if(this.exportConfig.isIncludeSegmentTable()) {
+        if(this.exportConfig.isIncludeSegmentTable() && !segmentLevelConformanceStatementSection.getSerializableSectionList().isEmpty()) {
             conformanceStatementsSection.addSection(segmentLevelConformanceStatementSection);
         }
-        if(this.exportConfig.isIncludeDatatypeTable()) {
+        if(this.exportConfig.isIncludeDatatypeTable() && !datatypeLevelConformanceStatementSection.getSerializableSectionList().isEmpty()) {
             conformanceStatementsSection.addSection(datatypeLevelConformanceStatementSection);
         }
-        if(this.exportConfig.isIncludeMessageTable()) {
+        if(this.exportConfig.isIncludeMessageTable() && !profileLevelPredicatesSection.getSerializableSectionList().isEmpty()) {
             conditionalPredicatesSection.addSection(profileLevelPredicatesSection);
         }
-        if(this.exportConfig.isIncludeCompositeProfileTable()) {
+        if(this.exportConfig.isIncludeCompositeProfileTable() && !compositeProfilePredicatesSection.getSerializableSectionList().isEmpty()) {
             conditionalPredicatesSection.addSection(compositeProfilePredicatesSection);
         }
-        if(this.exportConfig.isIncludeSegmentTable()) {
+        if(this.exportConfig.isIncludeSegmentTable() && !segmentLevelPredicatesSection.getSerializableSectionList().isEmpty()) {
             conditionalPredicatesSection.addSection(segmentLevelPredicatesSection);
         }
-        if(this.exportConfig.isIncludeDatatypeTable()) {
+        if(this.exportConfig.isIncludeDatatypeTable() && !datatypeLevelPredicatesSection.getSerializableSectionList().isEmpty()) {
             conditionalPredicatesSection.addSection(datatypeLevelPredicatesSection);
         }
-        conformanceInformationSection.addSection(conformanceStatementsSection);
-        conformanceInformationSection.addSection(conditionalPredicatesSection);
-
-        return conformanceInformationSection;
+        if(!conformanceStatementsSection.getSerializableSectionList().isEmpty()){
+          conformanceInformationSection.addSection(conformanceStatementsSection);
+        }
+        if(!conditionalPredicatesSection.getSerializableSectionList().isEmpty()){
+          conformanceInformationSection.addSection(conditionalPredicatesSection);
+        }
+        if(!conformanceInformationSection.getSerializableSectionList().isEmpty()){
+          return conformanceInformationSection;
+        }
+        return null;
     }
 }
