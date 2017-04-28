@@ -40,7 +40,7 @@ public class SerializationUtil {
 
   private static final Integer IMG_MAX_WIDTH = 100;
 
-  public String str(String value) {
+  public String str(String value) { 
     return value != null ? value : "";
   }
 
@@ -140,20 +140,34 @@ public class SerializationUtil {
       removeEndingBrTag(elementTd);
     }
     
+    for(org.jsoup.nodes.Element elementTd : doc.select("p")){
+      removeEndingBrTag(elementTd);
+    }
+    
     //Renaming strong to work as html4 
     doc.select("strong").tagName("b");
     String html = doc.body().html();
     html = html.replace("<br>", "<br />");
-    return "<div class=\"fr-view\">" + html + "</div>";
+    return html;
+    //return "<div class=\"fr-view\">" + html + "</div>";
   }
 
   private void removeEndingBrTag(Element element) {
     if(element.childNodeSize()>0){
-      Node node = element.childNodes().get(element.childNodeSize()-1);
-      if(node instanceof Element){
-        Element childElement = (Element) node;
-        if(childElement.tagName().equals("br")){
-          childElement.remove();
+      boolean isLastElementNotBr = false;
+      int i = 1;
+      while(!isLastElementNotBr && element.childNodeSize() >= i){
+        Node node = element.childNodes().get(element.childNodeSize()-i);
+        i++;
+        if(node instanceof Element){
+          Element childElement = (Element) node;
+          if(childElement.tagName().equals("br")){
+            childElement.remove();
+          } else {
+            isLastElementNotBr = true;
+          }
+        } else {
+          isLastElementNotBr = true;
         }
       }
     }
