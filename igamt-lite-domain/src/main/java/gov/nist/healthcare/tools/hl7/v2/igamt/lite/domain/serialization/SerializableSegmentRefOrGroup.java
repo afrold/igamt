@@ -35,21 +35,21 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
 
     //SegmentRef constructor
     public SerializableSegmentRefOrGroup(SegmentRef segmentRef,Segment segment, boolean isCompositeProfile) {
-        this(segmentRef);
+        this(segmentRef,isCompositeProfile);
         this.segmentRef = segmentRef;
         this.segment = segment;
-        this.isCompositeProfile = isCompositeProfile;
     }
     //Group constructor
-    public SerializableSegmentRefOrGroup(Group group,List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> groupConstraintList) {
-        this(group);
+    public SerializableSegmentRefOrGroup(Group group,List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> groupConstraintList, boolean isCompositeProfile) {
+        this(group,isCompositeProfile);
         this.serializableSegmentRefOrGroups = serializableSegmentRefOrGroups;
         this.groupConstraintList = groupConstraintList;
     }
 
-    private SerializableSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup) {
+    private SerializableSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, boolean isCompositeProfile) {
         super();
         this.segmentRefOrGroup = segmentRefOrGroup;
+        this.isCompositeProfile = isCompositeProfile;
     }
 
     @Override public Element serializeElement() {
