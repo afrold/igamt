@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class DataElement extends DataModel implements java.io.Serializable, Cloneable,
-    Comparable<DataElement> {
+public abstract class DataElement extends DataModel
+    implements java.io.Serializable, Cloneable, Comparable<DataElement> {
 
   private static final long serialVersionUID = 1L;
+  public final static String LENGTH_NA = "NA";
+
 
   // @Id
   // //@Column(name = "ID")
@@ -26,14 +28,14 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
   //
   // @Min(0)
   // //@Column(name = "MIN_LENGTH")
-  protected Integer minLength;
+  protected String minLength = LENGTH_NA;
 
   // //@NotNull
   // //@Column(nullable = false, name = "MAX_LENGTH")
-  protected String maxLength;
+  protected String maxLength = LENGTH_NA;
 
   // //@Column(name = "CONF_LENGTH")
-  protected String confLength;
+  protected String confLength = LENGTH_NA;
 
   // @JsonIgnoreProperties({ "mappingAlternateId", "mappingId", "name",
   // "version", "codesys", "oid", "tableType", "stability",
@@ -43,7 +45,7 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
   // //@JoinColumn(name = "TABLE_ID")
   @Deprecated
   protected TableLink table;
-  
+
   @Deprecated
   protected List<TableLink> tables = new ArrayList<TableLink>();
 
@@ -101,11 +103,11 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
     this.usage = usage;
   }
 
-  public Integer getMinLength() {
+  public String getMinLength() {
     return minLength;
   }
 
-  public void setMinLength(Integer minLength) {
+  public void setMinLength(String minLength) {
     this.minLength = minLength;
   }
 
@@ -125,15 +127,15 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
     this.confLength = confLength;
   }
 
-//  @Deprecated
-//  public TableLink getTable() {
-//    return table;
-//  }
-//
-//  @Deprecated 
-//  public void setTable(TableLink table) {
-//    this.table = table;
-//  }
+  // @Deprecated
+  // public TableLink getTable() {
+  // return table;
+  // }
+  //
+  // @Deprecated
+  // public void setTable(TableLink table) {
+  // this.table = table;
+  // }
 
 
   public Integer getPosition() {
@@ -181,20 +183,20 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 
   @Deprecated
   public List<TableLink> getTables() {
-	return tables;
+    return tables;
   }
 
   @Deprecated
   public void setTables(List<TableLink> tables) {
-	this.tables = tables;
+    this.tables = tables;
   }
 
-@Override
+  @Override
   protected DataElement clone() throws CloneNotSupportedException {
     DataElement de = (DataElement) super.clone();
     List<TableLink> links = new ArrayList<TableLink>();
     de.setTables(links);
-    Collections.copy(links,this.tables);
+    Collections.copy(links, this.tables);
     // de.setDatatype(this.datatype.clone());
     de.setDatatype(this.datatype.clone()); // Changed by Harold
 

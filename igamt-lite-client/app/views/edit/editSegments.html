@@ -913,6 +913,7 @@
         </td>
         <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0" ng-controller="FormRowCtrl" ng-init="init(node)">
+                <div ng-show="node.confLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" layout="row" layout-align="center center">
                     <md-input-container flex="50" class="withoutMargin">
                                                 <input name="minLength"
@@ -931,11 +932,19 @@
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.maxLength" required>
                     </md-input-container>
+                    <i class="fa fa-times fa-fw " ng-click="clearLength(node)"></i></span>
                 </ng-form>
+
+                </div>
+
+                <div ng-show="node.confLength !== 'NA'">
+                    <span>NA</span> <i class="fa fa-pencil fa-fw edit-icon" ng-click="editLength(node)"></i></span>
+                </div>
             </div>
         </td>
         <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasConfError(node.id) && datatypesMap[node.datatype.id].components.length===0}" ng-show="showConfLength()" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.id,'CONFLENGTH')}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0" ng-controller="FormRowCtrl" ng-init="init(node)">
+                <div ng-show="node.confLength !== 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" layout="row" layout-align="center center">
                     <md-input-container flex="100" class="withoutMargin">
                                             <input
@@ -947,7 +956,12 @@
                                                    ng-model="node.confLength"
                                                    ng-model-options="{allowInvalid:true}">
                     </md-input-container>
+                    <i class="fa fa-times fa-fw " ng-click="clearConfLength(node)"></i></span>
                 </ng-form>
+                </div>
+                <div ng-show="node.confLength === 'NA'">
+                    <span>NA</span> <i class="fa fa-pencil fa-fw edit-icon" ng-click="editConfLength(node)"></i></span>
+                </div>
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}">
