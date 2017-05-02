@@ -1043,6 +1043,7 @@
                            ng-class="{ 'has-error has-feedback' : {{formName}}.maxLength.$invalid}"
                            ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required/>
                     </md-input-container>
+                    <span ng-click="clearLength(node)" class="point"><i class="fa fa-times fa-fw edit-icon"></i></span>
 
                 </ng-form>
                 </div>
@@ -1056,11 +1057,18 @@
             ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.id,'CONFLENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.confLength === 'NA'">
-                <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)">
-                    <input style="width:50%" class="form-control" type="text" name="confLength" ng-change="setDirty()"
-                           ng-class="{ 'has-error has-feedback' : {{formName}}.confLength.$invalid}"
-                           ng-pattern="'\\d*[#=]{0,1}'" ng-model-options="{allowInvalid:true}"
-                           ng-model="node.confLength">
+                <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
+                    <md-input-container flex="100" class="withoutMargin">
+                        <input  autofocus
+                                name="confLength"
+                                ng-change="setDirty()"
+                                ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
+                                ng-pattern="'\\d*[#=]{0,1}'"
+                                ng-model-options="{allowInvalid:true}"
+                                ng-model="node.confLength"
+                                ng-model-options="{allowInvalid:true}">
+                    </md-input-container>
+                    <span  ng-click="clearConfLength(node)" class="point" ><i class="fa fa-times fa-fw edit-icon"></i></span>
                 </ng-form>
                 </div>
                 <div ng-show="node.confLength === 'NA'" layout="row">
@@ -1326,14 +1334,14 @@
                 </p>
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.id)}"
+        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id) && node.minLength !== 'NA' && node.maxLength !== 'NA'}"
             data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
-            <div ng-show="datatypesMap[node.datatype.id].components.length == 0">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.minLength !== 'NA' && node.maxLength !== 'NA'">
                 [{{::node.minLength}},{{::node.maxLength}}]
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}" ng-show="showConfLength()">
-            <div ng-show="datatypesMap[node.datatype.id].components.length == 0"><span
+        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.maxLength === 'NA'}" ng-show="showConfLength()">
+            <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.maxLength !== 'NA'"><span
                     ng-bind="::node.confLength"></span></div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:left">
@@ -1668,7 +1676,7 @@
                 <div class="form-group control-group">
                     <label class="col-md-3 control-label col-md-offset-3">Length*</label>
 
-                    <div class="controls" ng-controller="SegmentRowCtrl">
+                    <div class="controls" ng-controller="FormRowCtrl">
                         <span ng-form name="{{formName}}" class="form-inline">
                                                 <input style="width:15%" class="form-control col-md-2"
                                                        placeholder="Min Length"
