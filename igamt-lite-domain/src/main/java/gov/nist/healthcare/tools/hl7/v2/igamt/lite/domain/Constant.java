@@ -52,11 +52,9 @@ public class Constant {
   public final static String DECISION = "decision";
   public final static String FAQ = "FAQ";
   public final static String USERGuide = "userguide";
-  
+
   public final static String SINGLECODE = "singlecode";
   public final static String VALUESET = "valueset";
-  
-  
 
 
 
@@ -83,6 +81,6 @@ public class Constant {
   }
 
   public enum BindingType {
-	  singlecode, valueset
-	}
+    singlecode, valueset
+  }
 }

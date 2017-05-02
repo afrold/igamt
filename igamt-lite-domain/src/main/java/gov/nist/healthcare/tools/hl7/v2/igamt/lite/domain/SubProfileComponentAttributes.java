@@ -24,7 +24,7 @@ public class SubProfileComponentAttributes {
 
   private Usage usage;
   private Usage oldUsage;
-  private Integer minLength;
+  private String minLength;
   private Integer oldMinLength;
   private String maxLength;
   private String oldMaxLength;
@@ -70,11 +70,11 @@ public class SubProfileComponentAttributes {
     this.oldUsage = oldUsage;
   }
 
-  public Integer getMinLength() {
+  public String getMinLength() {
     return minLength;
   }
 
-  public void setMinLength(Integer minLength) {
+  public void setMinLength(String minLength) {
     this.minLength = minLength;
   }
 

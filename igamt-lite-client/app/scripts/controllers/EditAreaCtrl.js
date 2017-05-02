@@ -42,8 +42,7 @@ angular.module('igl')
                 $scope.editForm.$setPristine();
                 $scope.editForm.$dirty = false;
             }
-        }
-
+        };
 
 
         $scope.openRichTextDlg = function (obj, key, title, disabled) {
@@ -79,10 +78,30 @@ angular.module('igl')
             $scope.setDirty();
         };
 
+        $scope.editLength = function(node){
+            node.confLength = "NA";
+            node.minLength = "";
+            node.maxLength = "";
+            $scope.setDirty();
+        };
 
+        $scope.editConfLength = function(node){
+            node.confLength = "";
+            node.minLength = "NA";
+            node.maxLength = "NA";
+            $scope.setDirty();
+        };
 
+        $scope.clearConfLength = function(node){
+            node.confLength = "NA";
+            $scope.setDirty();
+        };
 
-
+        $scope.clearLength = function(node){
+            node.minLength = "NA";
+            node.maxLength = "NA";
+            $scope.setDirty();
+        };
 
 
     });

@@ -263,6 +263,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         // }
     };
 
+
     $scope.path = function() {
         return $location.url();
     };

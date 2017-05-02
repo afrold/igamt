@@ -272,35 +272,122 @@ public class Bootstrap implements InitializingBean {
     // refactorCoConstrint();
 
     // updateUserExportConfigs();
-	  
-	  
-//	  hotfix();
+
+    // hotfix();
   }
 
-  private void hotfix() {
-	  List<Segment> segments = segmentService.findAll();
-	  
-	  for (Segment s : segments) {
-		  if(s.getName().equals("PID")){
-			  List<ValueSetOrSingleCodeBinding> vsbList =  s.getValueSetBindings();
-			  
-			  ValueSetOrSingleCodeBinding tobeDel = null;
-			  for(ValueSetOrSingleCodeBinding vsb : vsbList){
-				  if(vsb.getLocation().equals("5")){
-					  tobeDel = vsb;
-				  }
-			  }
-			  
-			  if(tobeDel != null) {
-				  vsbList.remove(tobeDel);
-				  segmentService.save(s);
-			  }
-		  }
-		  
-	  }
-}
 
-private void refactorCoConstrint() {
+
+  private void hotfix() {
+    List<Segment> segments = segmentService.findAll();
+
+    for (Segment s : segments) {
+      if (s.getName().equals("PID")) {
+        List<ValueSetOrSingleCodeBinding> vsbList = s.getValueSetBindings();
+
+        ValueSetOrSingleCodeBinding tobeDel = null;
+        for (ValueSetOrSingleCodeBinding vsb : vsbList) {
+          if (vsb.getLocation().equals("5")) {
+            tobeDel = vsb;
+          }
+        }
+
+        if (tobeDel != null) {
+          vsbList.remove(tobeDel);
+          segmentService.save(s);
+        }
+      }
+    }
+  }
+
+
+  // private void fixNullLengthAndConfLength() {
+  // List<Segment> segments = segmentService.findAll();
+  // for (Segment s : segments) {
+  // List<Field> fields = s.getFields();
+  // if (fields != null && !fields.isEmpty()) {
+  // for (Field field : fields) {
+  // String maxLength = field.getMaxLength();
+  // String minLength = field.getMaxLength();
+  // String confLength = field.getConfLength();
+  // if (confLength == null || StringUtils.isEmpty(confLength)
+  // || StringUtils.isBlank(confLength)) {
+  // field.setConfLength(DataElement.LENGTH_NA);
+  // }
+  // if (minLength == null || StringUtils.isEmpty(minLength)
+  // || StringUtils.isBlank(minLength)) {
+  // field.setMinLength(DataElement.LENGTH_NA);
+  // }
+  // if (maxLength == null || StringUtils.isEmpty(maxLength)
+  // || StringUtils.isBlank(maxLength)) {
+  // field.setMinLength(DataElement.LENGTH_NA);
+  // }
+  // }
+  // segmentService.save(s);
+  // }
+  // }
+  // }
+
+  // private void fixLengthAndConfLength() {
+  // List<Segment> segments = segmentService.findAll();
+  // for (Segment s : segments) {
+  // List<Field> fields = s.getFields();
+  // if (fields != null && !fields.isEmpty()) {
+  // for (Field field : fields) {
+  // String maxLength = field.getMaxLength();
+  // String minLength = field.getMaxLength();
+  // String confLength = field.getConfLength();
+  // if (maxLength != null && minLength != null && !StringUtils.isEmpty(maxLength)
+  // && !StringUtils.isEmpty(minLength) && !DataElement.LENGTH_NA.equals(maxLength)
+  // && !DataElement.LENGTH_NA.equals(minLength)) {
+  // if (!maxLength.equals("*")
+  // && (Integer.parseInt(maxLength) < Integer.parseInt(minLength))) {
+  // field.setConfLength(DataElement.LENGTH_NA);
+  //
+  // }
+  // } else {
+  // field.setMinLength(DataElement.LENGTH_NA);
+  // field.setMaxLength(DataElement.LENGTH_NA);
+  // if (confLength == null || StringUtils.isEmpty(confLength)) {
+  // field.setConfLength(DataElement.LENGTH_NA);
+  // }
+  // }
+  // }
+  // segmentService.save(s);
+  // }
+  // }
+  //
+  // List<Datatype> datatypes = datatypeService.findAll();
+  // for (Datatype s : datatypes) {
+  // List<Component> components = s.getComponents();
+  // if (components != null && !components.isEmpty()) {
+  // for (Component comp : components) {
+  // String maxLength = comp.getMaxLength();
+  // String minLength = comp.getMaxLength();
+  // String confLength = comp.getConfLength();
+  // if (maxLength != null && minLength != null && !StringUtils.isEmpty(maxLength)
+  // && !StringUtils.isEmpty(minLength) && !DataElement.LENGTH_NA.equals(maxLength)
+  // && !DataElement.LENGTH_NA.equals(minLength)) {
+  // if (maxLength.equals("*")
+  // || (Integer.parseInt(maxLength) >= Integer.parseInt(minLength))) {
+  // comp.setConfLength(DataElement.LENGTH_NA);
+  // }
+  // } else {
+  // comp.setMinLength(DataElement.LENGTH_NA);
+  // comp.setMaxLength(DataElement.LENGTH_NA);
+  // if (confLength == null || StringUtils.isEmpty(confLength)) {
+  // comp.setConfLength(DataElement.LENGTH_NA);
+  // }
+  // }
+  // }
+  // }
+  // }
+  //
+  // }
+
+
+
+  private void refactorCoConstrint() {
     List<Segment> segments = segmentService.findAll();
     for (Segment s : segments) {
       if (s.getName().equals("OBX")) {

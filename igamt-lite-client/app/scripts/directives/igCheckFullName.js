@@ -34,3 +34,4 @@ angular.module('igl').directive('igCheckFullName', [ '$resource',
         };
     }
 ]);
+
