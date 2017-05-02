@@ -28,14 +28,14 @@ public abstract class DataElement extends DataModel
   //
   // @Min(0)
   // //@Column(name = "MIN_LENGTH")
-  protected String minLength = LENGTH_NA;
+  protected String minLength;
 
   // //@NotNull
   // //@Column(nullable = false, name = "MAX_LENGTH")
-  protected String maxLength = LENGTH_NA;
+  protected String maxLength;
 
   // //@Column(name = "CONF_LENGTH")
-  protected String confLength = LENGTH_NA;
+  protected String confLength;
 
   // @JsonIgnoreProperties({ "mappingAlternateId", "mappingId", "name",
   // "version", "codesys", "oid", "tableType", "stability",
@@ -104,7 +104,7 @@ public abstract class DataElement extends DataModel
   }
 
   public String getMinLength() {
-    return minLength;
+    return minLength != null && !"".equals(minLength) ? minLength : LENGTH_NA;
   }
 
   public void setMinLength(String minLength) {
@@ -112,7 +112,24 @@ public abstract class DataElement extends DataModel
   }
 
   public String getMaxLength() {
-    return maxLength;
+    String minLeng = getMinLength();
+    String maxLeng = maxLength != null && !"".equals(maxLength) ? maxLength : LENGTH_NA;
+    if (minLeng.equals(LENGTH_NA) || maxLeng.equals(LENGTH_NA)) {
+      return LENGTH_NA;
+    } else if (maxLeng.equals("*")) {
+      return maxLeng;
+    } else {
+      try {
+        int minInt = Integer.parseInt(minLeng);
+        int maxInt = Integer.parseInt(maxLeng);
+        if (maxInt < minInt) {
+          return LENGTH_NA;
+        }
+      } catch (NumberFormatException e) {
+        return LENGTH_NA;
+      }
+    }
+    return maxLeng;
   }
 
   public void setMaxLength(String maxLength) {
@@ -120,7 +137,7 @@ public abstract class DataElement extends DataModel
   }
 
   public String getConfLength() {
-    return confLength;
+    return confLength != null && !"".equals(confLength) ? confLength : LENGTH_NA;
   }
 
   public void setConfLength(String confLength) {

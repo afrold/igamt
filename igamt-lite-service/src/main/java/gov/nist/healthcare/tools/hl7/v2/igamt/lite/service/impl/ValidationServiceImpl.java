@@ -40,6 +40,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ComponentComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -984,25 +985,43 @@ public class ValidationServiceImpl implements ValidationService {
   }
 
   @Override
-  public String validateLength(int referenceMinLen, String referenceMaxLen, Integer toBeMinLen,
+  public String validateLength(String referenceMinLen, String referenceMaxLen, String toBeMinLen,
       String toBeMaxLen) {
     if (toBeMinLen == null) {
       return "Min Length cannot be empty";
     }
     if (toBeMaxLen == null) {
       return "Max Length cannot be empty";
-
     }
+
+    if ((DataElement.LENGTH_NA.equals(toBeMinLen) && !DataElement.LENGTH_NA.equals(toBeMaxLen))) {
+      return "Max Length cannot be NA where as Min length is numerical";
+    }
+
+    if (!DataElement.LENGTH_NA.equals(toBeMinLen) && DataElement.LENGTH_NA.equals(toBeMaxLen)) {
+      return "Min Length cannot be NA where as Max length is numerical";
+    }
+
     String result = null;
     if (!NumberUtils.isNumber(toBeMaxLen)) {
-      if (!"*".equalsIgnoreCase(toBeMaxLen)) {
+      if (!"*".equalsIgnoreCase(toBeMaxLen) && !DataElement.LENGTH_NA.equals(toBeMaxLen)) {
         result = "Max Length has to be * or a numerical value.";
       }
       return result;
     }
-    int toBeMaxLenT = Integer.valueOf(toBeMaxLen.trim());
 
-    if (toBeMaxLenT < toBeMinLen) {
+    if (!NumberUtils.isNumber(toBeMinLen)) {
+      if (!DataElement.LENGTH_NA.equals(toBeMinLen)) {
+        result = "Min Length has to be NA or a numerical value.";
+      }
+      return result;
+    }
+
+
+    int toBeMaxLenT = Integer.valueOf(toBeMaxLen.trim());
+    int toBeMinLenT = Integer.valueOf(toBeMinLen.trim());
+
+    if (toBeMaxLenT < toBeMinLenT) {
       result = "Max Length cannot be less than Min Length.";
     }
 

@@ -81,14 +81,14 @@ angular.module('igl')
         $scope.editLength = function(node){
             node.confLength = "NA";
             node.minLength = "";
-            node.minLength = "";
+            node.maxLength = "";
             $scope.setDirty();
         };
 
         $scope.editConfLength = function(node){
             node.confLength = "";
             node.minLength = "NA";
-            node.minLength = "NA";
+            node.maxLength = "NA";
             $scope.setDirty();
         };
 
@@ -99,7 +99,7 @@ angular.module('igl')
 
         $scope.clearLength = function(node){
             node.minLength = "NA";
-            node.minLength = "NA";
+            node.maxLength = "NA";
             $scope.setDirty();
         };
 

@@ -127,7 +127,7 @@ public interface ValidationService {
   public String validateUsage(Usage reference, Usage newValueForUsage, Predicate predicate,
       String hl7Version);
 
-  public String validateLength(int referenceMinLen, String referenceMaxLen, Integer toBeMinLen,
+  public String validateLength(String referenceMinLen, String referenceMaxLen, String toBeMinLen,
       String toBeMaxLen);
 
   /**

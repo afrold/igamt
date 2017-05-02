@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.maven.surefire.shade.org.codehaus.plexus.util.StringUtils;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +43,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -275,9 +273,7 @@ public class Bootstrap implements InitializingBean {
 
     // updateUserExportConfigs();
 
-
     // hotfix();
-    fixLengthAndConfLength();
   }
 
 
@@ -301,63 +297,93 @@ public class Bootstrap implements InitializingBean {
           segmentService.save(s);
         }
       }
-
     }
   }
 
-  private void fixLengthAndConfLength() {
-    List<Segment> segments = segmentService.findAll();
-    for (Segment s : segments) {
-      List<Field> fields = s.getFields();
-      if (fields != null && !fields.isEmpty()) {
-        for (Field field : fields) {
-          String maxLength = field.getMaxLength();
-          String minLength = field.getMaxLength();
-          String confLength = field.getConfLength();
-          if (maxLength != null && minLength != null && !StringUtils.isEmpty(maxLength)
-              && !StringUtils.isEmpty(minLength)) {
-            if (maxLength.equals("*")
-                || (Integer.parseInt(maxLength) >= Integer.parseInt(minLength))) {
-              field.setConfLength(DataElement.LENGTH_NA);
-            }
-          } else {
-            field.setMinLength(DataElement.LENGTH_NA);
-            field.setMaxLength(DataElement.LENGTH_NA);
-            if (confLength == null || StringUtils.isEmpty(confLength)) {
-              field.setConfLength(DataElement.LENGTH_NA);
-            }
-          }
-        }
-        segmentService.save(s);
-      }
-    }
 
-    List<Datatype> datatypes = datatypeService.findAll();
-    for (Datatype s : datatypes) {
-      List<Component> components = s.getComponents();
-      if (components != null && !components.isEmpty()) {
-        for (Component comp : components) {
-          String maxLength = comp.getMaxLength();
-          String minLength = comp.getMaxLength();
-          String confLength = comp.getConfLength();
-          if (maxLength != null && minLength != null && !StringUtils.isEmpty(maxLength)
-              && !StringUtils.isEmpty(minLength)) {
-            if (maxLength.equals("*")
-                || (Integer.parseInt(maxLength) >= Integer.parseInt(minLength))) {
-              comp.setConfLength(DataElement.LENGTH_NA);
-            }
-          } else {
-            comp.setMinLength(DataElement.LENGTH_NA);
-            comp.setMaxLength(DataElement.LENGTH_NA);
-            if (confLength == null || StringUtils.isEmpty(confLength)) {
-              comp.setConfLength(DataElement.LENGTH_NA);
-            }
-          }
-        }
-      }
-    }
+  // private void fixNullLengthAndConfLength() {
+  // List<Segment> segments = segmentService.findAll();
+  // for (Segment s : segments) {
+  // List<Field> fields = s.getFields();
+  // if (fields != null && !fields.isEmpty()) {
+  // for (Field field : fields) {
+  // String maxLength = field.getMaxLength();
+  // String minLength = field.getMaxLength();
+  // String confLength = field.getConfLength();
+  // if (confLength == null || StringUtils.isEmpty(confLength)
+  // || StringUtils.isBlank(confLength)) {
+  // field.setConfLength(DataElement.LENGTH_NA);
+  // }
+  // if (minLength == null || StringUtils.isEmpty(minLength)
+  // || StringUtils.isBlank(minLength)) {
+  // field.setMinLength(DataElement.LENGTH_NA);
+  // }
+  // if (maxLength == null || StringUtils.isEmpty(maxLength)
+  // || StringUtils.isBlank(maxLength)) {
+  // field.setMinLength(DataElement.LENGTH_NA);
+  // }
+  // }
+  // segmentService.save(s);
+  // }
+  // }
+  // }
 
-  }
+  // private void fixLengthAndConfLength() {
+  // List<Segment> segments = segmentService.findAll();
+  // for (Segment s : segments) {
+  // List<Field> fields = s.getFields();
+  // if (fields != null && !fields.isEmpty()) {
+  // for (Field field : fields) {
+  // String maxLength = field.getMaxLength();
+  // String minLength = field.getMaxLength();
+  // String confLength = field.getConfLength();
+  // if (maxLength != null && minLength != null && !StringUtils.isEmpty(maxLength)
+  // && !StringUtils.isEmpty(minLength) && !DataElement.LENGTH_NA.equals(maxLength)
+  // && !DataElement.LENGTH_NA.equals(minLength)) {
+  // if (!maxLength.equals("*")
+  // && (Integer.parseInt(maxLength) < Integer.parseInt(minLength))) {
+  // field.setConfLength(DataElement.LENGTH_NA);
+  //
+  // }
+  // } else {
+  // field.setMinLength(DataElement.LENGTH_NA);
+  // field.setMaxLength(DataElement.LENGTH_NA);
+  // if (confLength == null || StringUtils.isEmpty(confLength)) {
+  // field.setConfLength(DataElement.LENGTH_NA);
+  // }
+  // }
+  // }
+  // segmentService.save(s);
+  // }
+  // }
+  //
+  // List<Datatype> datatypes = datatypeService.findAll();
+  // for (Datatype s : datatypes) {
+  // List<Component> components = s.getComponents();
+  // if (components != null && !components.isEmpty()) {
+  // for (Component comp : components) {
+  // String maxLength = comp.getMaxLength();
+  // String minLength = comp.getMaxLength();
+  // String confLength = comp.getConfLength();
+  // if (maxLength != null && minLength != null && !StringUtils.isEmpty(maxLength)
+  // && !StringUtils.isEmpty(minLength) && !DataElement.LENGTH_NA.equals(maxLength)
+  // && !DataElement.LENGTH_NA.equals(minLength)) {
+  // if (maxLength.equals("*")
+  // || (Integer.parseInt(maxLength) >= Integer.parseInt(minLength))) {
+  // comp.setConfLength(DataElement.LENGTH_NA);
+  // }
+  // } else {
+  // comp.setMinLength(DataElement.LENGTH_NA);
+  // comp.setMaxLength(DataElement.LENGTH_NA);
+  // if (confLength == null || StringUtils.isEmpty(confLength)) {
+  // comp.setConfLength(DataElement.LENGTH_NA);
+  // }
+  // }
+  // }
+  // }
+  // }
+  //
+  // }
 
 
 
