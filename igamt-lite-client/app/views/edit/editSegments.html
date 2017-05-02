@@ -350,7 +350,7 @@
                                                                         <span ng-show="segment.coConstraintsTable.ifColumnDefinition.constraintType=='value'" class="label label-icon">Value</span>
                                                                         <span ng-show="segment.coConstraintsTable.ifColumnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
                                                                         <span style="color:black" ng-click="openDialogForEditCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-pencil" aria-hidden="true"></i></span>
-                                                                        <span style="color:red" ng-click="delCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-times" aria-hidden="true"></i></span>
+                                                                        <!--<span style="color:red" ng-click="delCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);" ng-hide="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')"><i class="fa fa-times" aria-hidden="true"></i></span>-->
                                                                     </th>
                                                                     <th bgcolor="#1565c0" ng-show="!segment.coConstraintsTable.ifColumnDefinition" style="text-align:center;">
                                                                         <span style="color:black">Need IF Column Definition</span>
@@ -441,7 +441,7 @@
                                                                         <div ng-show="columnDefinition.constraintType == 'dmr'">
                                                                             <select ng-model='segment.coConstraintsTable.thenMapData[columnDefinition.id][rowIndex].valueData.value' class="form-control">
                                                                                 <option value="">DT BaseName</option>
-                                                                                <option ng-repeat="c in dynamicMappingTable.codes" value="{{c.value}}">
+                                                                                <option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value'" value="{{c.value}}">
                                                                                     {{c.value}}
                                                                                 </option>
                                                                             </select>
@@ -537,7 +537,7 @@
                                                                 <td class="col-md-3">
 
                                                                     <md-select ng-model="item.firstReferenceValue" ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'" ng-change="setDirty();">
-                                                                        <md-option ng-repeat="c in dynamicMappingTable.codes" value="{{c.value}}">
+                                                                        <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value'" value="{{c.value}}">
                                                                             {{c.value}}({{c.label}})
                                                                         </md-option>
                                                                     </md-select>
