@@ -9,7 +9,9 @@ angular.module('igl')
                 console.log("=====> set $dirty to false")
             }
         };
-        
+
+        $scope.confLengthPattern= '[1-9]\\d*[#=]{0,1}';
+
         $rootScope.$on("event:initEditArea", function (event) {
 
             $scope.init();
@@ -102,6 +104,7 @@ angular.module('igl')
             node.maxLength = "NA";
             $scope.setDirty();
         };
+
 
 
     });

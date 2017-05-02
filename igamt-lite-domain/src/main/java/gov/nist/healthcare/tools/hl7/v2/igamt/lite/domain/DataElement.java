@@ -114,10 +114,8 @@ public abstract class DataElement extends DataModel
   public String getMaxLength() {
     String minLeng = getMinLength();
     String maxLeng = maxLength != null && !"".equals(maxLength) ? maxLength : LENGTH_NA;
-    if (minLeng.equals(LENGTH_NA) || maxLeng.equals(LENGTH_NA)) {
+    if (minLeng.equals(LENGTH_NA) || maxLeng.equals(LENGTH_NA) || maxLeng.equals("*")) {
       return LENGTH_NA;
-    } else if (maxLeng.equals("*")) {
-      return maxLeng;
     } else {
       try {
         int minInt = Integer.parseInt(minLeng);
