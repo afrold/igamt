@@ -911,7 +911,7 @@
                 </ng-form>
 
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
+        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id) && node.minLength !== 'NA'&& node.maxLength !== 'NA'}" data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0" ng-controller="FormRowCtrl" ng-init="init(node)">
                 <div ng-hide="node.minLength === 'NA' || node.maxLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" layout="row" layout-align="center center">
@@ -939,7 +939,7 @@
                 </div>
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.confLength === 'NA','has-validation-error':hasConfError(node.id) && datatypesMap[node.datatype.id].components.length===0}" ng-show="showConfLength()" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.id,'CONFLENGTH')}}">
+        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.confLength === 'NA','has-validation-error':hasConfError(node.id) && datatypesMap[node.datatype.id].components.length===0 && node.confLength !== 'NA'}"  ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.id,'CONFLENGTH')}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0" ng-controller="FormRowCtrl" ng-init="init(node)">
                 <div ng-hide="node.confLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" layout="row" layout-align="center center">
