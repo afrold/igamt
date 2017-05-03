@@ -124,6 +124,7 @@ public class Bootstrap implements InitializingBean {
 
 	private final HashMap<String, ArrayList<List<String>>> DatatypeMap = new HashMap<String, ArrayList<List<String>>>();
 	private HashMap<String, Integer> Visited = new HashMap<String, Integer>();
+	private boolean needUpdated;
 
 	@Autowired
 	ExportConfigRepository exportConfig;
@@ -275,12 +276,55 @@ public class Bootstrap implements InitializingBean {
 		// updateUserExportConfigs();
 
 		// hotfix();
-		
-		
-		//Need to run ONE TIME
+
+		// Need to run ONE TIME
 		fixConfLength();
 		fixWrongConstraints();
 		updateSegmentDatatypeDescription();
+		updateGroupName();
+	}
+
+	private void updateGroupName() {
+		List<Message> messages = messageService.findAll();
+
+		for (Message m : messages) {
+			needUpdated = false;
+			for (SegmentRefOrGroup srog : m.getChildren()) {
+				if (srog instanceof Group) {
+					Group g = (Group) srog;
+					visitGroup(g, m);
+				}
+			}
+
+			if (needUpdated) {
+				System.out.println("-------Message Updated----");
+				messageService.save(m);
+			}
+		}
+
+	}
+
+	private void visitGroup(Group g, Message m) {
+		if (g.getName().contains(" ")) {
+			System.out.println("-------FOUND Group Name with Space----");
+			System.out.println(m.getScope());
+			System.out.println(g.getName());
+			System.out.println(g.getStatus());
+			System.out.println(g.getCreatedFrom());
+			System.out.println(g.getHl7Version());
+			String newGroupName = g.getName();
+			newGroupName = newGroupName.replaceAll(" ", "_");
+			g.setName(newGroupName);
+			System.out.println(g.getName());
+			needUpdated = true;
+		}
+
+		for (SegmentRefOrGroup srog : g.getChildren()) {
+			if (srog instanceof Group) {
+				Group child = (Group) srog;
+				visitGroup(child, m);
+			}
+		}
 	}
 
 	private void updateSegmentDatatypeDescription() {

@@ -480,11 +480,10 @@
         </td>
         <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
             <div>
-                <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
+                <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )" ng-controller="FormRowCtrl">
                     <!--<select class="form-control input-sm" name="usage" ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node);" required-->
                             <!--ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>-->
-
-
+                    <ng-form name="{{formName}}" class="form-inline">
                              <md-select placeholder="Select Usage" name="usage" id="usage" class="inside-table"
                                        ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node); "
                                         ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
@@ -495,7 +494,7 @@
 
                                  </md-option>
                              </md-select>
-
+                    </ng-form>
 
                 </span>
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
@@ -618,35 +617,51 @@
         <td context-menu="segOption">
             <span ng-show="hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-exclamation-triangle" style="color:red;"></i></span>
             <span ng-show="!hasError(node.obj.id) && validationResult && isMessageValidated()"><i class="fa fa-check-circle" style="color:green;"></i></span>
-            <!--<a ng-show="editableGrp!==node.obj.id" ng-click="editGrp(node,message)" class="point">
+            <a ng-show="editableGrp!==node.obj.id" ng-click="editGrp(node,message)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
             <a ng-show="editableGrp!==node.obj.id" ng-click="deleteSeg(node)" class="point">
                 <span><i class="glyphicon glyphicon-trash"></i></span>
-            </a>-->
+            </a>
             <ng-form class="form-inline">
                 <span class="label label-success label-icon">G</span>
-                <span ng-show="editableGrp===node.obj.id">
-                    <select ng-show="editableGrp===node.obj.id" ng-model="position" ng-change="selectPos()"  style="width:15%" class="form-control input-sm">
-                        <option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position"> {{child.position}}</option>
-                    </select>
-                    <input style="width:55%" class="form-control"  ng-model="grpName" type="text"/>
+                <span ng-if="editableGrp!==node.obj.id" context-menu="segOption" ng-bind="getGroupNodeName(node.obj)" />
+                <span ng-if="editableGrp===node.obj.id">
+                    <div layout-gt-xs="row">
+                    <md-input-container flex="35">
+                        <md-select placeholder="Select new position"
+                                   ng-change="selectPos()"
+                                   ng-model="position"
+                                    style="margin: 20px 0;">
+                            <md-option ng-repeat="child in $root.segParent.children" ng-value="child.position">
+                                {{child.position}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container flex="55">
+                        <input type="text"
+                               ng-class="{ 'has-error' : !isGroupNameValid(grpName)}"
+                               ng-model="grpName" />
+                    </md-input-container>
+
+                    <md-input-container flex="10">
+                        <a ng-show="isGroupNameValid(grpName)" ng-click="applyGrp(node,grpName,position)" class="point">
+                            <span><i class="glyphicon glyphicon-ok"></i></span>
+                        </a>
+                        <a ng-click="backGrp()" class="point">
+                            <span><i class="glyphicon glyphicon-remove"></i></span>
+                        </a>
+                    </md-input-container>
+                    </div>
+
                  </span>
-                <span ng-show="editableGrp!==node.obj.id" context-menu="segOption" ng-bind="getGroupNodeName(node.obj)" />
-                <div align="center">
-                    <a ng-show="editableGrp===node.obj.id && grpName" ng-click="applyGrp(node,grpName,position)" class="point">
-                        <span><i class="glyphicon glyphicon-ok"></i></span>
-                    </a>
-                    <a ng-show="editableGrp===node.obj.id" ng-click="backGrp()" class="point">
-                        <span><i class="glyphicon glyphicon-remove"></i></span>
-                    </a>
-                </div>
             </ng-form>
         </td>
         <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
             <div>
-                <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )">
-
+                <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )" ng-controller="FormRowCtrl">
+                    <ng-form name="{{formName}}" class="form-inline">
                                 <md-select placeholder="Select Usage" name="usage" id="usage" class="inside-table"
                                            ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node); "
                                            ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
@@ -657,6 +672,7 @@
 
                                  </md-option>
                                </md-select>
+                    </ng-form>
                 </span>
                 <div ng-show="node.obj.usage==='C' && countPredicate(node.path) !==0">
                     <span class="badge label-white">
