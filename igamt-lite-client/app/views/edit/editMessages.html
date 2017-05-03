@@ -625,21 +625,37 @@
             </a>
             <ng-form class="form-inline">
                 <span class="label label-success label-icon">G</span>
-                <span ng-show="editableGrp===node.obj.id">
-                    <select ng-show="editableGrp===node.obj.id" ng-model="position" ng-change="selectPos()"  style="width:15%" class="form-control input-sm">
-                        <option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position"> {{child.position}}</option>
-                    </select>
-                    <input style="width:55%" class="form-control"  ng-model="grpName" type="text" ng-class="{ 'has-error' : !isGroupNameValid(grpName)}" />
-                 </span>
                 <span ng-show="editableGrp!==node.obj.id" context-menu="segOption" ng-bind="getGroupNodeName(node.obj)" />
-                <div align="center">
-                    <a ng-show="editableGrp===node.obj.id && grpName && isGroupNameValid(grpName)" ng-click="applyGrp(node,grpName,position)" class="point">
-                        <span><i class="glyphicon glyphicon-ok"></i></span>
-                    </a>
-                    <a ng-show="editableGrp===node.obj.id" ng-click="backGrp()" class="point">
-                        <span><i class="glyphicon glyphicon-remove"></i></span>
-                    </a>
-                </div>
+                <span ng-show="editableGrp===node.obj.id">
+                    <div layout-gt-xs="row">
+                    <md-input-container flex="35">
+                        <md-select placeholder="Select new position"
+                                   ng-change="selectPos()"
+                                   ng-model="position"
+                                    style="margin: 20px 0;">
+                            <md-option ng-repeat="child in $root.segParent.children" ng-value="child.position">
+                                {{child.position}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container flex="55">
+                        <input type="text"
+                               ng-class="{ 'has-error' : !isGroupNameValid(grpName)}"
+                               ng-model="grpName" />
+                    </md-input-container>
+
+                    <md-input-container flex="10">
+                        <a ng-show="isGroupNameValid(grpName)" ng-click="applyGrp(node,grpName,position)" class="point">
+                            <span><i class="glyphicon glyphicon-ok"></i></span>
+                        </a>
+                        <a ng-click="backGrp()" class="point">
+                            <span><i class="glyphicon glyphicon-remove"></i></span>
+                        </a>
+                    </md-input-container>
+                    </div>
+
+                 </span>
             </ng-form>
         </td>
         <td ng-class="hasUsageError(node.obj.id)" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'USAGE')}}">
