@@ -276,11 +276,139 @@ public class Bootstrap implements InitializingBean {
 
     // hotfix();
     fixConfLength();
+    
+    
+    fixWrongConstraints();
   }
 
 
 
-  private void hotfix() {
+	private void fixWrongConstraints() {
+		List<Datatype> datatypes = datatypeService.findAll();
+		for (Datatype d : datatypes) {
+			for(ConformanceStatement cs :d.getConformanceStatements()){
+				if(cs != null && cs.getAssertion() != null){
+					if(cs.getAssertion().contains("<IFTHEN>")){
+						System.out.println("---------FOUND Wrong CS for DT-------");
+						System.out.println(d.getLabel());
+						
+						String newAssertion = cs.getAssertion().replaceAll("<IFTHEN>", "<IMPLY>");
+						newAssertion = newAssertion.replaceAll("</IFTHEN>", "</IMPLY>");
+						
+						cs.setAssertion(newAssertion);
+						
+						System.out.println(cs.getAssertion());
+						
+						datatypeService.save(d);
+					}	
+				}
+				
+			}
+			
+			for(Predicate p :d.getPredicates()){
+				if(p != null && p.getAssertion() != null){
+					if(p.getAssertion().contains("<IFTHEN>")){
+						System.out.println("---------FOUND Wrong Predicate for DT-------");
+						System.out.println(d.getLabel());
+						
+						String newAssertion = p.getAssertion().replaceAll("<IFTHEN>", "<IMPLY>");
+						newAssertion = newAssertion.replaceAll("</IFTHEN>", "</IMPLY>");
+						
+						p.setAssertion(newAssertion);
+						
+						System.out.println(p.getAssertion());
+						
+						datatypeService.save(d);
+					}					
+				}
+			}
+		}
+		
+		List<Segment> segments = segmentService.findAll();
+		for (Segment s : segments) {
+			for(ConformanceStatement cs :s.getConformanceStatements()){
+				if(cs != null && cs.getAssertion() != null){
+					if(cs.getAssertion().contains("<IFTHEN>")){
+						System.out.println("---------FOUND Wrong CS for Segment-------");
+						System.out.println(s.getLabel());
+						
+						String newAssertion = cs.getAssertion().replaceAll("<IFTHEN>", "<IMPLY>");
+						newAssertion = newAssertion.replaceAll("</IFTHEN>", "</IMPLY>");
+						
+						cs.setAssertion(newAssertion);
+						
+						System.out.println(cs.getAssertion());
+						
+						segmentService.save(s);
+					}	
+				}
+				
+			}
+			
+			for(Predicate p :s.getPredicates()){
+				if(p != null && p.getAssertion() != null){
+					if(p.getAssertion().contains("<IFTHEN>")){
+						System.out.println("---------FOUND Wrong Predicate for Segment-------");
+						System.out.println(s.getLabel());
+						
+						String newAssertion = p.getAssertion().replaceAll("<IFTHEN>", "<IMPLY>");
+						newAssertion = newAssertion.replaceAll("</IFTHEN>", "</IMPLY>");
+						
+						p.setAssertion(newAssertion);
+						
+						System.out.println(p.getAssertion());
+						
+						segmentService.save(s);
+					}					
+				}
+			}
+		}
+		
+		List<Message> messages = messageService.findAll();
+		for (Message m : messages) {
+			for(ConformanceStatement cs :m.getConformanceStatements()){
+				if(cs != null && cs.getAssertion() != null){
+					if(cs.getAssertion().contains("<IFTHEN>")){
+						System.out.println("---------FOUND Wrong CS for MEssage-------");
+						System.out.println(m.getName());
+						
+						String newAssertion = cs.getAssertion().replaceAll("<IFTHEN>", "<IMPLY>");
+						newAssertion = newAssertion.replaceAll("</IFTHEN>", "</IMPLY>");
+						
+						cs.setAssertion(newAssertion);
+						
+						System.out.println(cs.getAssertion());
+						
+						messageService.save(m);
+					}	
+				}
+				
+			}
+			
+			for(Predicate p :m.getPredicates()){
+				if(p != null && p.getAssertion() != null){
+					if(p.getAssertion().contains("<IFTHEN>")){
+						System.out.println("---------FOUND Wrong Predicate for MEssage-------");
+						System.out.println(m.getName());
+						
+						String newAssertion = p.getAssertion().replaceAll("<IFTHEN>", "<IMPLY>");
+						newAssertion = newAssertion.replaceAll("</IFTHEN>", "</IMPLY>");
+						
+						p.setAssertion(newAssertion);
+						
+						System.out.println(p.getAssertion());
+						
+						messageService.save(m);
+					}					
+				}
+			}
+		}
+
+	}
+
+
+
+private void hotfix() {
     List<Segment> segments = segmentService.findAll();
 
     for (Segment s : segments) {
