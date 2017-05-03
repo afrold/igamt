@@ -300,7 +300,7 @@ public class Bootstrap implements InitializingBean {
 	  for (Datatype d : dts) {
 		  if(d.getScope().equals(SCOPE.HL7STANDARD)){
 			  if(d.getDescription() == null || d.getDescription().equals("")){
-				  d.setDescription("NODescription");
+				  d.setDescription("No Description");
 				  datatypeService.save(d);
 			  }
 		  }
