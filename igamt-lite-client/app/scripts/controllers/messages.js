@@ -275,6 +275,13 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     };
     $scope.editableGrp = '';
 
+    $scope.isGroupNameValid = function (gName) {
+        var pattern = new RegExp("\^[A-Z0-9_\.]*$");
+
+        return pattern.test(gName);
+
+    };
+
     $scope.editGrp = function(group, message) {
         $scope.path = group.path.replace(/\[[0-9]+\]/g, '');
         $scope.path = $scope.path.split(".");
@@ -283,6 +290,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
         $scope.editableGrp = group.obj.id;
         $scope.grpName = group.obj.name;
+        $scope.group = group.obj.position;
 
 
     };
