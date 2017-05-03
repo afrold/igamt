@@ -275,12 +275,39 @@ public class Bootstrap implements InitializingBean {
     // updateUserExportConfigs();
 
     // hotfix();
+
     fixConfLength();
+    
+    updateSegmentDatatypeDescription();
   }
 
+  private void updateSegmentDatatypeDescription() {
+	  List<Segment> segments = segmentService.findAll();
+	  
+	  for (Segment s : segments) {
+		  if(s.getScope().equals(SCOPE.HL7STANDARD)){
+			  if(s.getDescription() == null || s.getDescription().equals("")){
+				  if(s.getName().equals("UB1")){
+					  s.setDescription("UB82");
+					  segmentService.save(s);
+				  }
+			  }
+		  }
+	  }
+	
+	  List<Datatype> dts = datatypeService.findAll();
+	  
+	  for (Datatype d : dts) {
+		  if(d.getScope().equals(SCOPE.HL7STANDARD)){
+			  if(d.getDescription() == null || d.getDescription().equals("")){
+				  d.setDescription("No Description");
+				  datatypeService.save(d);
+			  }
+		  }
+	  }
+}
 
-
-  private void hotfix() {
+private void hotfix() {
     List<Segment> segments = segmentService.findAll();
 
     for (Segment s : segments) {
