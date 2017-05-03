@@ -625,8 +625,8 @@
             </a>
             <ng-form class="form-inline">
                 <span class="label label-success label-icon">G</span>
-                <span ng-show="editableGrp!==node.obj.id" context-menu="segOption" ng-bind="getGroupNodeName(node.obj)" />
-                <span ng-show="editableGrp===node.obj.id">
+                <span ng-if="editableGrp!==node.obj.id" context-menu="segOption" ng-bind="getGroupNodeName(node.obj)" />
+                <span ng-if="editableGrp===node.obj.id">
                     <div layout-gt-xs="row">
                     <md-input-container flex="35">
                         <md-select placeholder="Select new position"
