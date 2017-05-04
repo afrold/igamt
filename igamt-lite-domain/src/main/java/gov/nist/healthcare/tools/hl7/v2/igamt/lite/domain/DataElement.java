@@ -104,7 +104,7 @@ public abstract class DataElement extends DataModel
   }
 
   public String getMinLength() {
-    return minLength != null && !"".equals(minLength) ? minLength : LENGTH_NA;
+    return getFixedLength(minLength);
   }
 
   public void setMinLength(String minLength) {
@@ -112,22 +112,7 @@ public abstract class DataElement extends DataModel
   }
 
   public String getMaxLength() {
-    String minLeng = getMinLength();
-    String maxLeng = maxLength != null && !"".equals(maxLength) ? maxLength : LENGTH_NA;
-    if (minLeng.equals(LENGTH_NA) || maxLeng.equals(LENGTH_NA) || maxLeng.equals("*")) {
-      return LENGTH_NA;
-    } else {
-      try {
-        int minInt = Integer.parseInt(minLeng);
-        int maxInt = Integer.parseInt(maxLeng);
-        if (maxInt < minInt) {
-          return LENGTH_NA;
-        }
-      } catch (NumberFormatException e) {
-        return LENGTH_NA;
-      }
-    }
-    return maxLeng;
+    return getFixedMaxLength(getMinLength(), maxLength);
   }
 
   public void setMaxLength(String maxLength) {
@@ -135,7 +120,7 @@ public abstract class DataElement extends DataModel
   }
 
   public String getConfLength() {
-    return confLength != null && !"".equals(confLength) ? confLength : LENGTH_NA;
+    return getFixedLength(confLength);
   }
 
   public void setConfLength(String confLength) {
@@ -223,4 +208,27 @@ public abstract class DataElement extends DataModel
     return this.getPosition() - o.getPosition();
   }
 
+
+  public static String getFixedMaxLength(String minLength, String maxLength) {
+    String minLeng = minLength;
+    String maxLeng = maxLength != null && !"".equals(maxLength) ? maxLength : LENGTH_NA;
+    if (minLeng.equals(LENGTH_NA) || maxLeng.equals(LENGTH_NA) || maxLeng.equals("*")) {
+      return LENGTH_NA;
+    } else {
+      try {
+        int minInt = Integer.parseInt(minLeng);
+        int maxInt = Integer.parseInt(maxLeng);
+        if (maxInt < minInt) {
+          return LENGTH_NA;
+        }
+      } catch (NumberFormatException e) {
+        return LENGTH_NA;
+      }
+    }
+    return maxLeng;
+  }
+
+  public static String getFixedLength(String length) {
+    return length != null && !"".equals(length) ? length : LENGTH_NA;
+  }
 }

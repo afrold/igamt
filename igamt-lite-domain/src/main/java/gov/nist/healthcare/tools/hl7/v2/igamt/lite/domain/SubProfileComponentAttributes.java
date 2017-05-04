@@ -25,7 +25,7 @@ public class SubProfileComponentAttributes {
   private Usage usage;
   private Usage oldUsage;
   private String minLength;
-  private Integer oldMinLength;
+  private String oldMinLength;
   private String maxLength;
   private String oldMaxLength;
   private String confLength;
@@ -78,11 +78,11 @@ public class SubProfileComponentAttributes {
     this.minLength = minLength;
   }
 
-  public Integer getOldMinLength() {
-    return oldMinLength;
+  public String getOldMinLength() {
+    return DataElement.getFixedLength(oldMinLength);
   }
 
-  public void setOldMinLength(Integer oldMinLength) {
+  public void setOldMinLength(String oldMinLength) {
     this.oldMinLength = oldMinLength;
   }
 
@@ -95,7 +95,7 @@ public class SubProfileComponentAttributes {
   }
 
   public String getOldMaxLength() {
-    return oldMaxLength;
+    return DataElement.getFixedMaxLength(getOldMinLength(), oldMaxLength);
   }
 
   public void setOldMaxLength(String oldMaxLength) {
@@ -104,6 +104,7 @@ public class SubProfileComponentAttributes {
 
   public String getConfLength() {
     return confLength;
+
   }
 
   public void setConfLength(String confLength) {
@@ -111,7 +112,7 @@ public class SubProfileComponentAttributes {
   }
 
   public String getOldConfLength() {
-    return oldConfLength;
+    return DataElement.getFixedLength(oldConfLength);
   }
 
   public void setOldConfLength(String oldConfLength) {
