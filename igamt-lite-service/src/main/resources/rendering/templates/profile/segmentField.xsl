@@ -49,9 +49,16 @@
             <xsl:if test="$columnDisplay.segment.conformanceLength = 'true'">
                 <xsl:if test="$showConfLength='true'">
                     <xsl:element name="td">
-                        <xsl:if test="(normalize-space(@ConfLength)!='') and (normalize-space(@ConfLength)!='0')">
-                            <xsl:value-of select="@ConfLength"/>
-                        </xsl:if>
+                        <xsl:choose>
+                        	<xsl:when test="@ConfLength!='NA'">
+                        		<xsl:if test="(normalize-space(@ConfLength)!='') and (normalize-space(@ConfLength)!='0')">
+		                            <xsl:value-of select="@ConfLength"/>
+		                        </xsl:if>
+                        	</xsl:when>
+                        	<xsl:otherwise>
+                        		<xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
+                        	</xsl:otherwise>
+                        </xsl:choose>
                     </xsl:element>
                 </xsl:if>
             </xsl:if>
