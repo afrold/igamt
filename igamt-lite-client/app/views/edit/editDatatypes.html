@@ -1032,14 +1032,16 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.minLength === 'NA' || node.maxLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
-                    <md-input-container flex="50" class="withoutMargin">
+                    <md-input-container flex="45" class="withoutMargin">
                     <input  name="minLength" ng-change="setDirty()" type="text"
+                            style="width:25px"
                            ng-pattern="/^\d+$/"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.minLength.$invalid}"
                            ng-model="node.minLength" required ng-minlength="1"/>
                     </md-input-container>
-                    <md-input-container flex="50" class="withoutMargin">
+                    <md-input-container flex="45" class="withoutMargin">
                     <input  type="text" name="maxLength" ng-change="setDirty()"
+                            style="width:25px"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.maxLength.$invalid}"
                            ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required/>
                     </md-input-container>
@@ -1058,9 +1060,10 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.confLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
-                    <md-input-container flex="100" class="withoutMargin">
+                    <md-input-container flex="90" class="withoutMargin">
                         <input  autofocus
                                 name="confLength"
+                                style="width:50px"
                                 ng-change="setDirty()"
                                 ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                 ng-pattern="confLengthPattern"
