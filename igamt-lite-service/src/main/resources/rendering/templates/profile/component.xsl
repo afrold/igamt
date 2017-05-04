@@ -19,7 +19,7 @@
                 <xsl:if test="$showConfLength='true'">
                     <xsl:element name="td">
                     	<xsl:choose>
-	                    	<xsl:when test="@complex = 'true' or @ConfLength='NA'">
+	                    	<xsl:when test="@complex = 'true' or @ConfLength='NA' or @Usage = 'X'">
 	                    		<xsl:attribute name="class">
 	                                <xsl:text>greyCell</xsl:text>
 	                            </xsl:attribute>
@@ -46,7 +46,7 @@
             <xsl:if test="$columnDisplay.dataType.length = 'true'">
                 <xsl:element name="td">
                     <xsl:choose>
-                        <xsl:when test="@complex = 'true'">
+                        <xsl:when test="@complex = 'true' or @Usage = 'X'">
                             <xsl:attribute name="class">
                                 <xsl:text>greyCell</xsl:text>
                             </xsl:attribute>
