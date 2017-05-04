@@ -5,6 +5,8 @@ import org.springframework.core.convert.converter.Converter;
 
 import com.mongodb.DBObject;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataElement;
+
 public abstract class AbstractReadConverter<S, T> implements Converter<S, T> {
 
   public final static String TABLES = "tables";
@@ -99,7 +101,7 @@ public abstract class AbstractReadConverter<S, T> implements Converter<S, T> {
 
   protected String readString(DBObject source, String tag) {
     if (source.get(tag) != null) {
-      return String.valueOf((String) source.get(tag));
+      return String.valueOf(source.get(tag));
     }
     return "";
   }
@@ -117,11 +119,13 @@ public abstract class AbstractReadConverter<S, T> implements Converter<S, T> {
     return Long.valueOf(0);
   }
 
-  protected Integer getMinLength(DBObject source) {
-    return ((Integer) source.get("minLength") == -1 ? 0 : ((Integer) source.get("minLength")));
+  protected String getMinLength(DBObject source) {
+    return (((String) source.get("minLength")).equals("-1") ? DataElement.LENGTH_NA
+        : ((String) source.get("minLength")));
   }
 
   protected String getConfLength(DBObject source) {
-    return "-1".equals((String) source.get("confLength")) ? "" : (String) source.get("confLength");
+    return "-1".equals(source.get("confLength")) ? DataElement.LENGTH_NA
+        : (String) source.get("confLength");
   }
 }

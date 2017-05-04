@@ -725,148 +725,182 @@
 </script>
 
 <script type="text/ng-template" id="CoConstraintUSERDefinition.html">
-    <div class="modal-header">
-        <h3>Define USER column for CoConstraintTable</h3>
-    </div>
-    <div class="modal-body">
+
+    <md-dialog aria-label="Define USER column for CoConstraintTable" style="width:70%;">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h3>Define USER column for CoConstraintTable</h3>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+
         <form class="form-horizontal" novalidate>
-            <!--<md-content>-->
-            <!--<div layout-gt-xs="row">-->
-                <!--<md-input-container class="md-block" style="width: 100%">-->
-                    <!--<input ng-model="title" placeholder="Title">-->
-                <!--</md-input-container>-->
-            <!--<md-content>-->
-            <!--</div>-->
-            <!--</md-content>-->
 
             <md-input-container layout="row">
-                <label flex="30" class="input-left">Title</label>
-                <input flex="70" type="text"
+                <label class="input-left">Title</label>
+                <input flex="100" type="text"
                        ng-change="setDirty()"
                        name="title"
                        ng-model="title"
                        required>
 
             </md-input-container>
+
         </form>
-    </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
-            &nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+
+                    </div>
+                <md-dialog-actions layout="row" layout-align="end end">
+
+                    <md-button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
             &nbsp; </i>Save</span>
-        </button>
-    </div>
+                    </md-button>
+                </md-dialog-actions>
+            </md-dialog-content>
+        </form>
+    </md-dialog>
 </script>
 
 <script type="text/ng-template" id="CoConstraintTHENDefinition.html">
-    <div class="modal-header">
-        <h3>Define THEN Column for CoConstraintTable</h3>
-    </div>
-    <div class="modal-body">
-        <form class="form-horizontal" novalidate>
-            <div class="row">
-                <div class="col-md-3">
-                    {{segment.name}}
-                </div>
-                <div class="col-md-3">
-                    <select class="form-control" ng-model='selectedFieldPosition' ng-change="updateField();">
-                        <option ng-repeat="field in segment.fields" value="{{field.position}}">
-                            {{field.position}}. {{field.name}}
-                        </option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-control" ng-show="components" ng-model='selectedComponentPosition' ng-change="updateComponent();">
-                        <option ng-repeat="component in components" value="{{component.position}}">
-                            {{component.position}}. {{component.name}}
-                        </option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select class="form-control" ng-show="subComponents" ng-model='selectedSubComponentPosition' ng-change="updateSubComponent();">
-                        <option ng-repeat="component in subComponents" value="{{component.position}}">
-                            {{component.position}}. {{component.name}}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="row" ng-show="!dMReference">
-                <div class="col-md-3">
-                    Type:
-                </div>
 
-                <div class="col-md-9">
-                    <md-radio-group ng-model="coConstraintType">
-                        <md-radio-button value="value" class="md-primary" ng-disabled="isVariesDT()">Value</md-radio-button>
-                        <md-radio-button value="valueset">Value Set</md-radio-button>
-                    </md-radio-group>
+    <md-dialog aria-label="Define THEN Column for CoConstraintTable" style="width:70%;">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h3>Define THEN Column for CoConstraintTable</h3>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
-            </div>
+            </md-toolbar>
 
-            <span class="header3" ng-show="isVariesDT()">
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <form  novalidate>
+                        <div layout="row">
+                            <div flex style="margin-right: 5px; color:black; font-weight: bold;">
+                                {{segment.name}}
+                            </div>
+                            <div flex style="margin-right: 5px;">
+                                <md-select  ng-model='selectedFieldPosition' ng-change="updateField();">
+                                    <md-option ng-repeat="field in segment.fields" ng-value="{{field.position}}">
+                                        {{field.position}}. {{field.name}}
+                                    </md-option>
+                                </md-select>
+                            </div>
+                            <div flex style="margin-right: 5px;">
+                                <md-select  ng-show="components" ng-model='selectedComponentPosition' ng-change="updateComponent();">
+                                    <md-option ng-repeat="component in components" ng-value="{{component.position}}">
+                                        {{component.position}}. {{component.name}}
+                                    </md-option>
+                                </md-select>
+                            </div>
+                            <div flex style="margin-right: 5px;">
+                                <md-select  ng-show="subComponents" ng-model='selectedSubComponentPosition' ng-change="updateSubComponent();">
+                                    <md-option ng-repeat="component in subComponents" ng-value="{{component.position}}">
+                                        {{component.position}}. {{component.name}}
+                                    </md-option>
+                                </md-select>
+                            </div>
+                        </div>
+                        <div layout="row" ng-show="!dMReference">
+                            <div flex="40" >
+                                <span style="color:black; font-weight: bold">Type:</span>
+                            </div>
+
+                            <div flex="60">
+                                <md-radio-group ng-model="coConstraintType">
+                                    <md-radio-button value="value" class="md-primary" ng-disabled="isVariesDT()">Value</md-radio-button>
+                                    <md-radio-button value="valueset">Value Set</md-radio-button>
+                                </md-radio-group>
+                            </div>
+                        </div>
+
+                        <span class="header3" ng-show="isVariesDT()">
                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
                 This Datatype is varies, so just 'Value Set' is allowed.
             </span>
 
-            <span class="header3" ng-show="dMReference">
+                        <span class="header3" ng-show="dMReference">
                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
                 This is Dynamic Mapping Reference Field. Data cell requires DT base name and Flavor.
             </span>
-        </form>
-    </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
-            &nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+                    </form>
+                </div>
+
+                <md-dialog-actions layout="row" layout-align="end end">
+
+                    <md-button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
             &nbsp; </i>Save</span>
-        </button>
-    </div>
+                    </md-button>
+                </md-dialog-actions>
+            </md-dialog-content>
+        </form>
+    </md-dialog>
 </script>
 
 <script type="text/ng-template" id="CoConstraintIFDefinition.html">
-    <div class="modal-header">
-        <h3>Define IF Column for CoConstraintTable</h3>
-    </div>
-    <div class="modal-body">
-        <form class="form-horizontal" novalidate>
-            <div class="row">
-                <div class="col-md-3">
+
+    <md-dialog aria-label="Define IF Column for CoConstraintTable" style="width:70%;">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h3>Define IF Column for CoConstraintTable</h3>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+        <form  novalidate>
+            <div layout="row">
+                <div flex style="margin-right: 5px; color:black; font-weight: bold;">
                     {{segment.name}}
                 </div>
-                <div class="col-md-3">
-                    <select class="form-control" ng-model='selectedFieldPosition' ng-change="updateField();">
-                        <option ng-repeat="field in segment.fields" value="{{field.position}}">
+                <div flex style="margin-right: 5px;">
+                    <md-select  ng-model='selectedFieldPosition' ng-change="updateField();">
+                        <md-option ng-repeat="field in segment.fields" ng-value="{{field.position}}">
                             {{field.position}}. {{field.name}}
-                        </option>
-                    </select>
+                        </md-option>
+                    </md-select>
                 </div>
-                <div class="col-md-3">
-                    <select class="form-control" ng-show="components" ng-model='selectedComponentPosition' ng-change="updateComponent();">
-                        <option ng-repeat="component in components" value="{{component.position}}">
+                <div flex style="margin-right: 5px;">
+                    <md-select  ng-show="components" ng-model='selectedComponentPosition' ng-change="updateComponent();">
+                        <md-option ng-repeat="component in components" ng-value="{{component.position}}">
                             {{component.position}}. {{component.name}}
-                        </option>
-                    </select>
+                        </md-option>
+                    </md-select>
                 </div>
-                <div class="col-md-3">
-                    <select class="form-control" ng-show="subComponents" ng-model='selectedSubComponentPosition' ng-change="updateSubComponent();">
-                        <option ng-repeat="component in subComponents" value="{{component.position}}">
+                <div flex style="margin-right: 5px;">
+                    <md-select  ng-show="subComponents" ng-model='selectedSubComponentPosition' ng-change="updateSubComponent();">
+                        <md-option ng-repeat="component in subComponents" ng-value="{{component.position}}">
                             {{component.position}}. {{component.name}}
-                        </option>
-                    </select>
+                        </md-option>
+                    </md-select>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-3">
-                    Type:
+            <div layout="row">
+                <div flex="40" >
+                    <span style="color:black; font-weight: bold">Type:</span>
                 </div>
 
-                <div class="col-md-9">
+                <div flex="60">
                     <md-radio-group ng-model="coConstraintType">
                         <md-radio-button value="value" class="md-primary">Value</md-radio-button>
-                        <md-radio-button value="valueset" ng-disabled="true">Value Set</md-radio-button>
+                        <md-radio-button value="valueset" ng-disabled="true" class="md-primary">Value Set</md-radio-button>
                     </md-radio-group>
                 </div>
             </div>
@@ -876,15 +910,19 @@
                 The 'Value Set' is not allowed for IF Statement.
             </span>
         </form>
-    </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
-            &nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+                </div>
+
+                <md-dialog-actions layout="row" layout-align="end end">
+
+                <md-button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
             &nbsp; </i>Save</span>
-        </button>
-    </div>
+            </md-button>
+                </md-dialog-actions>
+            </md-dialog-content>
+        </form>
+    </md-dialog>
+
+
 </script>
 
 
@@ -3505,14 +3543,24 @@
     </div>
 </script>
 <script type="text/ng-template" id="PredicateDatatypeCtrl.html">
-    <div class="modal-header">
-        <h3 class="header4">Predicate for {{::datatype.name}}-{{::selectedNode.position}}</h3>
-    </div>
-    <div class="modal-body">
-        <form role="form">
+
+    <md-dialog aria-label="Datatype Predicate ">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h3 class="header4">Predicate for {{::datatype.name}}-{{::selectedNode.position}}</h3>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="ok()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <form role="form">
             <div class="col-md-3">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Datatype Tree</div>
+                    <div class="panel-heading">Data Type Tree</div>
                     <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
                         <table class="table table-striped">
                             <tbody ng-repeat="data in treeDataForContext" ng-include="'datatype_tree_Predicate.html'">
@@ -3550,11 +3598,13 @@
                             <tbody>
                                 <tr>
                                     <td class="col-md-10">
-                                        <input class="form-control" ng-model="newConstraint.freeText" type="text" />
+                                        <md-input-container style="width:100%">
+                                        <input  ng-model="newConstraint.freeText" type="text" aria-label="label" style="width:100%"/>
+                                        </md-input-container>
                                     </td>
                                     <td class="col-md-2" align="center">
-                                        <button class="btn btn-raised btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                                        <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                        <md-button class="btn btn-raised btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></md-button>
+                                        <md-button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></md-button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -3604,12 +3654,20 @@
                                         </div>
                                     </td>
                                     <td class="col-md-2">
-                                        <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" ng-options="conditionalConstraintVerb for conditionalConstraintVerb in config.conditionalConstraintVerbs | orderBy:'toString()'"
-                                        />
+                                        <md-select  ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" ng-model="newConstraint.verb" >
+                                            <md-option ng-repeat=" conditionalConstraintVerb in config.conditionalConstraintVerbs | orderBy:'toString()'" ng-value="conditionalConstraintVerb">
+                                                {{conditionalConstraintVerb}}
+
+                                            </md-option>
+                                        </md-select>
                                         <span style="color:red;" ng-show="isEmptyConstraintVerb(newConstraint)">Empty verb</span>
                                     </td>
                                     <td class="col-md-2">
-                                        <select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
+                                        <md-select  ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" ng-model="newConstraint.contraintType" >
+
+                                            <md-option ng-repeat="contraintType in config.constraintTypes | orderBy:'toString()'" ng-value="contraintType">{{contraintType}}</md-option>
+
+                                        </md-select>
                                         <span style="color:red;" ng-show="isEmptyConstraintPattern(newConstraint)">Empty contraint pattern</span>
                                     </td>
                                     <td class="col-md-2" ng-hide="newConstraint.contraintType == 'identical to another node' ||
@@ -3848,14 +3906,35 @@
                     </div>
                 </div>
             </div>
+                    </form>
+                    <md-dialog-actions layout="row" layout-align ="end end">
+                        <md-button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ng-click="saveclose()"><span><i class="fa fa-check fa-fw"> &nbsp; </i>Save</span></md-button>
+                    </md-dialog-actions>
 
-    </div>
-    </form>
-    </div>
-    <div class="modal-footer" style="padding-top:5px">
-        <button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
-        <button class="btn btn-raised btn-success btn-sm" ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ng-click="saveclose()"><span><i class="fa fa-check fa-fw"> &nbsp; </i>Save</span></button>
-    </div>
+                                </div>
+
+
+            </md-dialog-content>
+        </form>
+    </md-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--<div class="modal-footer" style="padding-top:5px">-->
+        <!--<button class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>-->
+    <!--</div>-->
 </script>
 <script type="text/ng-template" id="ConfirmIGDocumentUnshareCtrl.html">
     <div class="modal-header">
@@ -3871,7 +3950,7 @@
                 <span ng-bind="error" style="color: red;"></span>
             </div>
         </div>
-    </div>
+    </di
     </div>
     <div class="modal-footer">
         <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i

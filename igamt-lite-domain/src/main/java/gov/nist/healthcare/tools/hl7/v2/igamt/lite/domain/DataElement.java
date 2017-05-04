@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class DataElement extends DataModel implements java.io.Serializable, Cloneable,
-    Comparable<DataElement> {
+public abstract class DataElement extends DataModel
+    implements java.io.Serializable, Cloneable, Comparable<DataElement> {
 
   private static final long serialVersionUID = 1L;
+  public final static String LENGTH_NA = "NA";
+
 
   // @Id
   // //@Column(name = "ID")
@@ -26,7 +28,7 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
   //
   // @Min(0)
   // //@Column(name = "MIN_LENGTH")
-  protected Integer minLength;
+  protected String minLength;
 
   // //@NotNull
   // //@Column(nullable = false, name = "MAX_LENGTH")
@@ -43,7 +45,7 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
   // //@JoinColumn(name = "TABLE_ID")
   @Deprecated
   protected TableLink table;
-  
+
   @Deprecated
   protected List<TableLink> tables = new ArrayList<TableLink>();
 
@@ -101,16 +103,31 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
     this.usage = usage;
   }
 
-  public Integer getMinLength() {
-    return minLength;
+  public String getMinLength() {
+    return minLength != null && !"".equals(minLength) ? minLength : LENGTH_NA;
   }
 
-  public void setMinLength(Integer minLength) {
+  public void setMinLength(String minLength) {
     this.minLength = minLength;
   }
 
   public String getMaxLength() {
-    return maxLength;
+    String minLeng = getMinLength();
+    String maxLeng = maxLength != null && !"".equals(maxLength) ? maxLength : LENGTH_NA;
+    if (minLeng.equals(LENGTH_NA) || maxLeng.equals(LENGTH_NA) || maxLeng.equals("*")) {
+      return LENGTH_NA;
+    } else {
+      try {
+        int minInt = Integer.parseInt(minLeng);
+        int maxInt = Integer.parseInt(maxLeng);
+        if (maxInt < minInt) {
+          return LENGTH_NA;
+        }
+      } catch (NumberFormatException e) {
+        return LENGTH_NA;
+      }
+    }
+    return maxLeng;
   }
 
   public void setMaxLength(String maxLength) {
@@ -118,22 +135,22 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
   }
 
   public String getConfLength() {
-    return confLength;
+    return confLength != null && !"".equals(confLength) ? confLength : LENGTH_NA;
   }
 
   public void setConfLength(String confLength) {
     this.confLength = confLength;
   }
 
-//  @Deprecated
-//  public TableLink getTable() {
-//    return table;
-//  }
-//
-//  @Deprecated 
-//  public void setTable(TableLink table) {
-//    this.table = table;
-//  }
+  // @Deprecated
+  // public TableLink getTable() {
+  // return table;
+  // }
+  //
+  // @Deprecated
+  // public void setTable(TableLink table) {
+  // this.table = table;
+  // }
 
 
   public Integer getPosition() {
@@ -181,20 +198,20 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 
   @Deprecated
   public List<TableLink> getTables() {
-	return tables;
+    return tables;
   }
 
   @Deprecated
   public void setTables(List<TableLink> tables) {
-	this.tables = tables;
+    this.tables = tables;
   }
 
-@Override
+  @Override
   protected DataElement clone() throws CloneNotSupportedException {
     DataElement de = (DataElement) super.clone();
     List<TableLink> links = new ArrayList<TableLink>();
     de.setTables(links);
-    Collections.copy(links,this.tables);
+    Collections.copy(links, this.tables);
     // de.setDatatype(this.datatype.clone());
     de.setDatatype(this.datatype.clone()); // Changed by Harold
 

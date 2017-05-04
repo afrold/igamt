@@ -121,7 +121,7 @@ public class compositeProfileControllerTest {
   }
 
   public Field createField(String name, String id, Usage usage, Integer min, String max,
-      Integer minLength, String maxLength, Datatype dt) {
+      String minLength, String maxLength, Datatype dt) {
     Field f = new Field();
     f.setName(name);
     f.setId(id);
@@ -171,7 +171,7 @@ public class compositeProfileControllerTest {
   }
 
   public SubProfileComponentAttributes createPcAttributesForField(Usage usage, Integer min,
-      String max, Integer minLength, String maxLength) {
+      String max, String minLength, String maxLength) {
     SubProfileComponentAttributes subAttr = new SubProfileComponentAttributes();
     subAttr.setUsage(usage);
     subAttr.setMin(min);
@@ -222,7 +222,7 @@ public class compositeProfileControllerTest {
     dtIds.add(dt2.getId());
     dts.add(dt2);
     List<Field> fields = new ArrayList<>();
-    fields.add(createField("field1", "field1", Usage.R, 0, "0", 0, "0", dt1));
+    fields.add(createField("field1", "field1", Usage.R, 0, "0", "0", "0", dt1));
     Segment seg1 = createSegment("seg1", "seg1", fields);
     List<Segment> segs = new ArrayList<Segment>();
     Set<String> segIds = new HashSet<>();
@@ -234,7 +234,7 @@ public class compositeProfileControllerTest {
     Message core = createMessage("core1", "core1", children);
 
     SubProfileComponent subPc1 =
-        createSubProfileComponent("field1", createPcAttributesForField(Usage.RE, 1, "2", 1, "2"));
+        createSubProfileComponent("field1", createPcAttributesForField(Usage.RE, 1, "2", "1", "2"));
 
     SubProfileComponent subPc2 =
         createSubProfileComponent("segRef1", createPcAttributesForSegmentRef(Usage.RE, 1, "2"));

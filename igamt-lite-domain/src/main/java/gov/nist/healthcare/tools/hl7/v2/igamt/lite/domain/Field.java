@@ -1,8 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -27,9 +24,7 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
   }
 
   private String itemNo;
-
   private Integer min;
-
   private String max;
   private String added;
 
@@ -90,8 +85,8 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
 
   }
 
-  public Field clone()
-      throws CloneNotSupportedException {
+  @Override
+  public Field clone() throws CloneNotSupportedException {
     Field clonedField = new Field();
     clonedField.setId(ObjectId.get().toString());
     clonedField.setConfLength(confLength);

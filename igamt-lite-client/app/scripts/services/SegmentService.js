@@ -356,6 +356,8 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                 });
             }
             $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
+
+            $rootScope.initCoConstraintsTable();
         },
 
         updateTableBinding: function(segmentUpdateParameterList) {

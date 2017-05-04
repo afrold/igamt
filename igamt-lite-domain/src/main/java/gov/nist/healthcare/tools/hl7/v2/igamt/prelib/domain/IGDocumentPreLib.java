@@ -1,5 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.prelib.domain;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
@@ -9,13 +16,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 
 
@@ -160,7 +160,7 @@ public class IGDocumentPreLib extends DataModel implements java.io.Serializable,
         }
 
         if (f.getMinLength().equals(-1)) {
-          f.setMinLength(0);
+          f.setMinLength("0");
         }
       }
     }
@@ -175,7 +175,7 @@ public class IGDocumentPreLib extends DataModel implements java.io.Serializable,
         }
 
         if (c.getMinLength().equals(-1)) {
-          c.setMinLength(0);
+          c.setMinLength("0");
         }
       }
     }

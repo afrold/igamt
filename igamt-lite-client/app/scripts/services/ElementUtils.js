@@ -26,6 +26,13 @@ angular.module('igl').factory('ElementUtils',
                     if (node.usage === "O") {
                         node.min = 0;
                     }
+                    if (node.usage === "X") {
+                        node.min = 0;
+                        node.max = 0;
+                        node.minLength = "NA";
+                        node.maxLength = "NA";
+                        node.confLength = "NA";
+                    }
                 }
             },
             getNewTableLink: function (obj) {

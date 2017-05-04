@@ -155,7 +155,7 @@ if (self === top) {
 
 <div class="" ng-controller="DatatypeLibraryCtl">
     <div class="" ng-if="isAuthenticated()">
-        <form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form  ng-controller="EditAreaCtrl" ng-init="init">>
+        <form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form  ng-controller="EditAreaCtrl" ng-init="init">
 
                 <md-tabs md-dynamic-height md-border-bottom ng-init="getDataTypeLibraryByScope('USER');">
                 <md-tab md-active="tabs[0].active" md-on-select="selectList()">
@@ -248,7 +248,7 @@ if (self === top) {
                                     </div>
                                 </md-tab-body>
                             </md-tab>
-                            <md-tab md-active="ttype==='MASTER'" md-on-select="getDataTypeLibraryByScope('MASTER');" ng-init="getDataTypeLibraryByScope('MASTER')">
+                            <md-tab md-active="ttype==='MASTER'" md-on-select="getDataTypeLibraryByScope('MASTER');">
                                 <md-tab-label>
                                     Master Data Type Libraries
                                 </md-tab-label>
@@ -448,7 +448,7 @@ if (self === top) {
                     </md-tab-body>
 
                 </md-tab>
-            <md-tab  md-active="tabs[2].active" md-on-select="selectMatrix()">
+            <md-tab  md-active="tabs[2].active" md-on-select="initMatrix();make_active(2)">
             <md-tab-label>
                 Data Types Evolution
             </md-tab-label>

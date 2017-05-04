@@ -7,6 +7,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeCompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeConstraintService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeSegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
@@ -118,7 +119,7 @@ public abstract class SerializeMessageOrCompositeProfile {
                 segment.setFields(filteredFieldList);
             }
             serializableSegmentRefOrGroup =
-                new SerializableSegmentRefOrGroup(segmentRef, segment);
+                new SerializableSegmentRefOrGroup(segmentRef, segment, this instanceof SerializeCompositeProfileService);
             return serializableSegmentRefOrGroup;
         }
         return null;
@@ -145,7 +146,7 @@ public abstract class SerializeMessageOrCompositeProfile {
             }
         }
         List<SerializableConstraint> groupConstraints = serializeConstraintService.serializeConstraints(group,group.getName());
-        serializableGroup = new SerializableSegmentRefOrGroup(group,serializableSegmentRefOrGroups,groupConstraints);
+        serializableGroup = new SerializableSegmentRefOrGroup(group,serializableSegmentRefOrGroups,groupConstraints, this instanceof SerializeCompositeProfileService);
         return serializableGroup;
     }
 }
