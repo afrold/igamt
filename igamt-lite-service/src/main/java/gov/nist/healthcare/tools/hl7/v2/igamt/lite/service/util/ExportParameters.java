@@ -1,13 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.NameAndPositionAndPresence;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -37,15 +36,16 @@ public class ExportParameters {
     private List<NameAndPositionAndPresence> valueSetColumns;
     private ValueSetMetadataConfig valueSetMetadataConfig;
     private ExportFontConfig exportFontConfig;
+    private String appVersion;
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
-        String documentTitle) {
-        this(inlineConstraints,includeTOC,targetFormat,documentTitle,null);
+        String documentTitle, String appVersion) {
+        this(inlineConstraints,includeTOC,targetFormat,documentTitle,null, appVersion);
     }
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
-        String documentTitle,String imageLogo) {
-        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,null,null,null,null);
+        String documentTitle,String imageLogo, String appVersion) {
+        this(inlineConstraints,includeTOC,targetFormat,documentTitle,imageLogo,null,null,null,null,null,null,null,null, appVersion);
     }
 
     public ExportParameters(boolean inlineConstraints, boolean includeTOC, String targetFormat,
@@ -56,7 +56,7 @@ public class ExportParameters {
         List<NameAndPositionAndPresence> dataTypeColumns,
         List<NameAndPositionAndPresence> valueSetColumns,
         ValueSetMetadataConfig valueSetMetadataConfig,
-        ExportFontConfig exportFontConfig) {
+        ExportFontConfig exportFontConfig, String appVersion) {
         this.inlineConstraints = inlineConstraints;
         this.includeTOC = includeTOC;
         this.targetFormat = targetFormat;
@@ -70,6 +70,7 @@ public class ExportParameters {
         this.valueSetColumns = valueSetColumns;
         this.valueSetMetadataConfig = valueSetMetadataConfig;
         this.exportFontConfig = exportFontConfig;
+        this.appVersion = appVersion;
     }
 
     public ExportParameters() {
@@ -161,6 +162,7 @@ public class ExportParameters {
             params.put("userFontFamily", exportFontConfig.getExportFont().getValue());
             params.put("userFontSize", String.valueOf(exportFontConfig.getFontSize()));
         }
+        params.put("appCurrentVersion", this.appVersion);
         return params;
     }
 

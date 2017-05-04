@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.xml.bind.JAXBElement;
@@ -25,13 +27,17 @@ import org.docx4j.openpackaging.contenttype.CTOverride;
 import org.docx4j.openpackaging.contenttype.ContentTypeManager;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.Part;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.openpackaging.parts.WordprocessingML.DocumentSettingsPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
+import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.Br;
 import org.docx4j.wml.CTRel;
 import org.docx4j.wml.CTSettings;
+import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.Drawing;
 import org.docx4j.wml.FldChar;
 import org.docx4j.wml.Jc;
@@ -266,4 +272,43 @@ public class DocxExportUtil {
 			paragraph.setPPr(pprop);
 		}
 	}
+	
+	public static List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
+      List<Object> result = new ArrayList<Object>();
+      if (obj instanceof JAXBElement)
+          obj = ((JAXBElement<?>) obj).getValue();
+
+      if (obj.getClass().equals(toSearch))
+          result.add(obj);
+      else if (obj instanceof ContentAccessor) {
+          List<?> children = ((ContentAccessor) obj).getContent();
+          for (Object child : children) {
+              result.addAll(getAllElementFromObject(child, toSearch));
+          }
+      }
+      return result;
+    }
+
+  public void replaceVersionInFooter(WordprocessingMLPackage wordMLPackage, String version) {
+    RelationshipsPart rp = wordMLPackage.getMainDocumentPart().getRelationshipsPart();
+    List<Relationship> rels = rp.getRelationshipsByType(Namespaces.FOOTER);
+    for(Relationship rel : rels){
+      Part p = rp.getPart(rel);
+      if(p instanceof FooterPart){
+        FooterPart footerPart = (FooterPart) p;
+        //footerPart.getJaxbElement().getContent()
+        List<Object> textNodes = getAllElementFromObject(footerPart, Text.class);
+        for(Object node:textNodes){
+          if(node instanceof Text){
+            Text text = (Text) node;
+            if(text.getValue().contains("[IG_VERSION]")){
+              text.setValue(text.getValue().replace("[IG_VERSION]", version));
+            }
+          }
+        }
+        p.getContentLengthAsLoaded();
+      }
+    }
+    
+  }
 }
