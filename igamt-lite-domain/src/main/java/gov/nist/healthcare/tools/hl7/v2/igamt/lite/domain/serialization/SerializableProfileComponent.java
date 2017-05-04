@@ -26,16 +26,18 @@ import java.util.Map;
 public class SerializableProfileComponent extends SerializableSection {
 
     private ProfileComponent profileComponent;
-    Map<SubProfileComponentAttributes,String> definitionTexts;
-    String defPreText, defPostText;
+    private Map<SubProfileComponentAttributes,String> definitionTexts;
+    private String defPreText, defPostText;
+    private Map<String,Table> tableidTableMap;
 
     public SerializableProfileComponent(String id, String prefix, String position,
-        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText) {
+        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText, Map<String,Table> tableidTableMap) {
         super(id, prefix, position, headerLevel, title);
         this.profileComponent = profileComponent;
         this.definitionTexts = definitionTexts;
         this.defPreText = defPreText;
         this.defPostText = defPostText;
+        this.tableidTableMap = tableidTableMap;
     }
 
     @Override public Element serializeElement() {
@@ -99,8 +101,11 @@ public class SerializableProfileComponent extends SerializableSection {
                     if(subProfileComponent.getValueSetBindings()!=null && !subProfileComponent.getValueSetBindings().isEmpty()){
                         ArrayList<String> valueSets = new ArrayList<>();
                         for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : subProfileComponent.getValueSetBindings()){
+                            Table table = tableidTableMap.get(valueSetOrSingleCodeBinding.getTableId());  
                             if(valueSetOrSingleCodeBinding instanceof ValueSetBinding){
-                                valueSets.add(((ValueSetBinding) valueSetOrSingleCodeBinding).getBindingLocation());
+                                if(table!=null){
+                                  valueSets.add(table.getBindingIdentifier());
+                                }
                             } else if(valueSetOrSingleCodeBinding instanceof SingleCodeBinding){
                                 valueSets.add(
                                     ((SingleCodeBinding) valueSetOrSingleCodeBinding).getCode().getCodeSystem());
