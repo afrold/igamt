@@ -2,6 +2,9 @@
 
     <xsl:template name="valueSetMetadata">
         <xsl:element name="p">
+        	<xsl:attribute name="class">
+	     		<xsl:text>contentHeader</xsl:text>
+	     	</xsl:attribute>
             <xsl:element name="b">
                 <xsl:text>Metadata</xsl:text>
             </xsl:element>
@@ -65,6 +68,7 @@
                 </xsl:element>
             </xsl:element>
         </xsl:element>
+        <xsl:element name="p"/>
     </xsl:template>
 
 </xsl:stylesheet>

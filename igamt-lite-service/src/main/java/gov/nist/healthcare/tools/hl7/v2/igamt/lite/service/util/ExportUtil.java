@@ -36,6 +36,7 @@ import org.docx4j.wml.BooleanDefaultTrue;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.Drawing;
 import org.docx4j.wml.ObjectFactory;
+import org.docx4j.wml.P;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tr;
 import org.slf4j.Logger;
@@ -158,6 +159,13 @@ public class ExportUtil {
 					}
 				}
 			}
+			
+			/*nodes = getAllElementFromObject(wordMLPackage.getMainDocumentPart(), org.docx4j.wml.P.class);
+            for (Object node : nodes) {
+                if (node instanceof P) {
+                    P p = (P) node;
+                }
+            }*/
 
 			docxExportUtil.loadTemplateForDocx4j(wordMLPackage); // Repeats the
 																	// lines

@@ -28,10 +28,11 @@
                 </xsl:call-template>
             </xsl:element>
         </xsl:if>
-        <xsl:element name="div">
-            <xsl:call-template name="valueSetMetadata"/>
-        </xsl:element>
-        <xsl:element name="div">
+        <xsl:call-template name="valueSetMetadata"/>
+        <xsl:element name="p">
+        	<xsl:attribute name="class">
+        		<xsl:text>contentDiv</xsl:text>
+        	</xsl:attribute>
             <xsl:element name="p">
                 <xsl:element name="b">
                     <xsl:text>Codes</xsl:text>
