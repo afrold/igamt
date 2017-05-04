@@ -170,14 +170,13 @@
                             <xsl:if test="$columnDisplay.profileComponent.cardinality = 'true'">
                                 <xsl:element name="td">
                                     <xsl:choose>
-                                        <xsl:when
-                                                test="(normalize-space(@Min)!='') or (normalize-space(@Max)!='')">
-                                            <xsl:value-of select="concat('[',@Min,'..',@Max,']')"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
+                                        <xsl:when test="((normalize-space(@Min) = '') and (normalize-space(@Max) = '')) or @Usage = 'X'">
                                             <xsl:attribute name="class">
                                                 <xsl:text>greyCell</xsl:text>
                                             </xsl:attribute>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                        	<xsl:value-of select="concat('[',@Min,'..',@Max,']')"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:element>
@@ -185,14 +184,12 @@
                             <xsl:if test="$columnDisplay.profileComponent.length = 'true'">
                                 <xsl:element name="td">
                                     <xsl:choose>
-                                        <xsl:when
-                                                test="(normalize-space(@MinLength)!='') or (normalize-space(@MaxLength)!='')">
-                                            <xsl:value-of
-                                                    select="concat('[',@MinLength,'..',@MaxLength,']')"/>
+                                        <xsl:when test="((normalize-space(@MinLength)='') and (normalize-space(@MaxLength)='')) or @Usage = 'X'">
+                                            <xsl:text>greyCell</xsl:text>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:attribute name="class">
-                                                <xsl:text>greyCell</xsl:text>
+                                            	<xsl:value-of select="concat('[',@MinLength,'..',@MaxLength,']')"/>
                                             </xsl:attribute>
                                         </xsl:otherwise>
                                     </xsl:choose>
@@ -201,13 +198,12 @@
                             <xsl:if test="$columnDisplay.profileComponent.conformanceLength = 'true'">
                                 <xsl:element name="td">
                                     <xsl:choose>
-                                        <xsl:when
-                                                test="(normalize-space(@ConfLength)!='') and (normalize-space(@ConfLength)!='0')">
-                                            <xsl:value-of select="@ConfLength"/>
+                                        <xsl:when test="(normalize-space(@ConfLength)='') or (normalize-space(@ConfLength)='0') or @Usage = 'X'">
+                                            <xsl:text>greyCell</xsl:text>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:attribute name="class">
-                                                <xsl:text>greyCell</xsl:text>
+                                            	<xsl:value-of select="@ConfLength"/>
                                             </xsl:attribute>
                                         </xsl:otherwise>
                                     </xsl:choose>

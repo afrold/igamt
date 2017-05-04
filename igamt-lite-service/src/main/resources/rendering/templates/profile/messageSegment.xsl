@@ -20,33 +20,40 @@
 					<xsl:value-of select="@Description" />
 				</xsl:element>
 			</xsl:if>
-
-			<xsl:if test="@Ref!=']'">
-				<xsl:if test="$columnDisplay.message.cardinality = 'true'">
-					<xsl:element name="td">
-						<xsl:if
-							test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='') and (normalize-space(@Min)!='0' or normalize-space(@Max)!='0')">
-							<xsl:value-of select="concat('[', @Min, '..', @Max, ']')"></xsl:value-of>
-						</xsl:if>
-					</xsl:element>
-				</xsl:if>
-				<xsl:if test="$columnDisplay.message.usage = 'true'">
-					<xsl:element name="td">
-						<xsl:if test="(normalize-space(@Usage)!='')">
-							<xsl:value-of select="@Usage" />
-						</xsl:if>
-					</xsl:element>
-				</xsl:if>
-			</xsl:if>
-			<xsl:if test="@Ref=']'">
-				<!-- Do not display cardinality and usage for the end of a segment -->
-				<xsl:if test="$columnDisplay.message.cardinality = 'true'">
-					<xsl:element name="td"><xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute></xsl:element>
-				</xsl:if>
-				<xsl:if test="$columnDisplay.message.usage = 'true'">
-					<xsl:element name="td"><xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute></xsl:element>
-				</xsl:if>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="@Ref!=']'">
+					<xsl:if test="$columnDisplay.message.cardinality = 'true'">
+						<xsl:element name="td">
+							<xsl:choose>
+		                		<xsl:when test="@Usage = 'X'">
+		                			<xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
+		                		</xsl:when>
+		                		<xsl:otherwise>
+		                			<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='') and ((normalize-space(@Min)!='0') or (normalize-space(@Max)!='0'))">
+				                        <xsl:value-of select="concat('[',@Min,'..',@Max,']')"/>
+				                    </xsl:if>
+		                		</xsl:otherwise>
+		                	</xsl:choose>
+						</xsl:element>
+					</xsl:if>
+					<xsl:if test="$columnDisplay.message.usage = 'true'">
+						<xsl:element name="td">
+							<xsl:if test="(normalize-space(@Usage)!='')">
+								<xsl:value-of select="@Usage" />
+							</xsl:if>
+						</xsl:element>
+					</xsl:if>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- Do not display cardinality and usage for the end of a segment -->
+					<xsl:if test="$columnDisplay.message.cardinality = 'true'">
+						<xsl:element name="td"><xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute></xsl:element>
+					</xsl:if>
+					<xsl:if test="$columnDisplay.message.usage = 'true'">
+						<xsl:element name="td"><xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute></xsl:element>
+					</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:if test="$columnDisplay.message.comment = 'true'">
 				<xsl:element name="td">
 					<xsl:value-of select="@Comment" />

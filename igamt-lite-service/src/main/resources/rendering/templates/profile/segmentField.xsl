@@ -27,15 +27,22 @@
             </xsl:if>
             <xsl:if test="$columnDisplay.segment.cardinality = 'true'">
                 <xsl:element name="td">
-                    <xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='') and ((normalize-space(@Min)!='0') or (normalize-space(@Max)!='0'))">
-                        <xsl:value-of select="concat('[',@Min,'..',@Max,']')"/>
-                    </xsl:if>
+                	<xsl:choose>
+                		<xsl:when test="@Usage = 'X'">
+                			<xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
+                		</xsl:when>
+                		<xsl:otherwise>
+                			<xsl:if test="(normalize-space(@Min)!='') and (normalize-space(@Max)!='') and ((normalize-space(@Min)!='0') or (normalize-space(@Max)!='0'))">
+		                        <xsl:value-of select="concat('[',@Min,'..',@Max,']')"/>
+		                    </xsl:if>
+                		</xsl:otherwise>
+                	</xsl:choose>
                 </xsl:element>
             </xsl:if>
             <xsl:if test="$columnDisplay.segment.length = 'true'">
                 <xsl:element name="td">
                     <xsl:choose>
-                        <xsl:when test="@complex='true'">
+                        <xsl:when test="@complex='true' or @Usage = 'X'">
                             <xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
                         </xsl:when>
                         <xsl:otherwise>
@@ -50,13 +57,13 @@
                 <xsl:if test="$showConfLength='true'">
                     <xsl:element name="td">
                         <xsl:choose>
-                        	<xsl:when test="@ConfLength!='NA'">
+                        	<xsl:when test="@ConfLength = 'NA' or @Usage = 'X'">
+                        		<xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
+                        	</xsl:when>
+                        	<xsl:otherwise>
                         		<xsl:if test="(normalize-space(@ConfLength)!='') and (normalize-space(@ConfLength)!='0')">
 		                            <xsl:value-of select="@ConfLength"/>
 		                        </xsl:if>
-                        	</xsl:when>
-                        	<xsl:otherwise>
-                        		<xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
                         	</xsl:otherwise>
                         </xsl:choose>
                     </xsl:element>
