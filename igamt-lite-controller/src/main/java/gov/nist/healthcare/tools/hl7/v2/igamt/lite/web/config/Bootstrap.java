@@ -259,6 +259,8 @@ public class Bootstrap implements InitializingBean {
     // CreateCollectionOfUnchanged(); // group datatype by sets of versions
     // Colorate(); // genenerates the datatypes evolution matrix.
     // //
+    // To RUN on Production
+
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
     // fixDatatypeRecursion();
@@ -272,20 +274,18 @@ public class Bootstrap implements InitializingBean {
     // updateProfileForMissingDTs();
     // DeleteProfileComponents();
     // fixValueSetNameAndDescription();
-    //
     // refactorCoConstrint();
-
     // updateUserExportConfigs();
-
     // hotfix();
-
     // Need to run ONE TIME
-    fixConfLength();
-    fixWrongConstraints();
-    updateSegmentDatatypeDescription();
-    fixProfielComponentConfLength();
-    
-    
+
+
+    // fixConfLength();
+    // fixWrongConstraints();
+    // updateSegmentDatatypeDescription();
+    // updateGroupName();
+    // fixProfielComponentConfLength();
+
     /*
      * Updated at 05/04/2017
      * To change whiteSpace to underscore 
@@ -293,6 +293,8 @@ public class Bootstrap implements InitializingBean {
      */
     updateGroupName(); 
   }
+
+
 
   private void fixProfielComponentConfLength() {
     List<ProfileComponent> profileComponents = profileComponentService.findAll();

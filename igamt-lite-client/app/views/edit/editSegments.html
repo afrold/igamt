@@ -189,11 +189,11 @@
                                                                     <button type="button" ng-show="(segment.scope === 'USER') && !viewSettings.tableReadonly && (segment.fields.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(segment)">O to X
                                                                     </button>
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" style="text-align:left">Cardinality
+                                                                <th  style="text-align:left">Cardinality
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" style="text-align:left">Length
+                                                                <th style="text-align:left">Length
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-80" ng-show="showConfLength()" style="text-align:left">Conformance Length
+                                                                <th class="col-md-1 col-fixed-80" ng-show="showConfLength()" style="text-align:left">Conf. Length
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:left">Data Type
                                                                 </th>
@@ -717,7 +717,7 @@
                                                             <th class="col-md-1" rowspan="2" style="width:2%">Usage</th>
                                                             <th class="col-md-1" colspan="2" style="width:4%">Cardinality</th>
                                                             <th class="col-md-1" colspan="2" style="width:4%">Length</th>
-                                                            <th class="col-md-1" rowspan="2" style="width:2%">Conformance Length</th>
+                                                            <th class="col-md-1" rowspan="2" style="width:2%">Conf. Length</th>
                                                             <th class="col-md-1" rowspan="2" style="width:21%">Data Type</th>
                                                             <th class="col-md-1" rowspan="2" style="width:16%">Value Set</th>
                                                         </tr>
@@ -911,20 +911,22 @@
                 </ng-form>
 
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id) && node.minLength !== 'NA'&& node.maxLength !== 'NA'}" data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
+        <td  ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id) && node.minLength !== 'NA'&& node.maxLength !== 'NA'}" data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0" ng-controller="FormRowCtrl" ng-init="init(node)">
                 <div ng-hide="node.minLength === 'NA' || node.maxLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" layout="row" layout-align="center center">
-                    <md-input-container flex="50" class="withoutMargin">
+                    <md-input-container flex="45" class="withoutMargin">
                                                 <input name="minLength"
+                                                       style="width:25px"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
                                                        ng-model="node.minLength" required ng-minlength="1">
                     </md-input-container>
-                    <md-input-container flex="50" class="withoutMargin">
+                    <md-input-container flex="45" class="withoutMargin">
                                                 <input type="text"
                                                        name="maxLength"
+                                                       style="width:25px"
                                                        ng-change="setDirty()"
                                                        ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
@@ -943,9 +945,10 @@
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0" ng-controller="FormRowCtrl" ng-init="init(node)">
                 <div ng-hide="node.confLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" layout="row" layout-align="center center">
-                    <md-input-container flex="100" class="withoutMargin">
+                    <md-input-container flex="90" class="withoutMargin">
                                             <input
                                                    name="confLength"
+                                                   style="width:50px"
                                                    ng-change="setDirty()"
                                                    ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                                    ng-pattern="confLengthPattern"
