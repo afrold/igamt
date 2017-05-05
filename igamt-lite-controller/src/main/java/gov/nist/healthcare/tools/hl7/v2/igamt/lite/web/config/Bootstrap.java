@@ -283,8 +283,15 @@ public class Bootstrap implements InitializingBean {
     fixConfLength();
     fixWrongConstraints();
     updateSegmentDatatypeDescription();
-    updateGroupName();
     fixProfielComponentConfLength();
+    
+    
+    /*
+     * Updated at 05/04/2017
+     * To change whiteSpace to underscore 
+     * To remove message structure in GroupName
+     */
+    updateGroupName(); 
   }
 
   private void fixProfielComponentConfLength() {
