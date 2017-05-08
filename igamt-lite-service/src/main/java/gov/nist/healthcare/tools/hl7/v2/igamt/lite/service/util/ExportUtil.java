@@ -32,11 +32,18 @@ import org.docx4j.jaxb.Context;
 import org.docx4j.model.fields.FieldUpdater;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.Part;
+import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
+import org.docx4j.openpackaging.parts.relationships.Namespaces;
+import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
+import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.BooleanDefaultTrue;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.Drawing;
 import org.docx4j.wml.ObjectFactory;
+import org.docx4j.wml.P;
 import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +54,7 @@ import org.w3c.tidy.Tidy;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
@@ -83,6 +91,9 @@ public class ExportUtil {
 
 	@Autowired
 	private DocxExportUtil docxExportUtil;
+	
+	@Autowired
+	private AppInfo appInfo;
 
 	private static final int MAX_IMAGE_WIDTH_EMU = 6000000;
 
@@ -129,11 +140,11 @@ public class ExportUtil {
 			 * wordMLPackage.getContentTypeManager().addDefaultContentType(
 			 * "html", "text/html");
 			 */
-
+			docxExportUtil.replaceVersionInFooter(wordMLPackage,appInfo.getVersion());
 			html = cleanHtml(IOUtils.toInputStream(html)).toString();
 			XHTMLImporterImpl xHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
 			wordMLPackage.getMainDocumentPart().getContent().addAll(xHTMLImporter.convert(html, null));
-			List<Object> nodes = getAllElementFromObject(wordMLPackage.getMainDocumentPart(), org.docx4j.wml.Tbl.class);
+			List<Object> nodes = DocxExportUtil.getAllElementFromObject(wordMLPackage.getMainDocumentPart(), org.docx4j.wml.Tbl.class);
 			BooleanDefaultTrue bdt = Context.getWmlObjectFactory().createBooleanDefaultTrue();
 			for (Object node : nodes) {
 				if (node instanceof Tbl) {
@@ -145,7 +156,7 @@ public class ExportUtil {
 					}
 				}
 			}
-			nodes = getAllElementFromObject(wordMLPackage.getMainDocumentPart(), org.docx4j.wml.Drawing.class);
+			nodes = DocxExportUtil.getAllElementFromObject(wordMLPackage.getMainDocumentPart(), org.docx4j.wml.Drawing.class);
 			for (Object node : nodes) {
 				if (node instanceof Drawing) {
 					Drawing drawing = (Drawing) node;
@@ -158,7 +169,6 @@ public class ExportUtil {
 					}
 				}
 			}
-
 			docxExportUtil.loadTemplateForDocx4j(wordMLPackage); // Repeats the
 																	// lines
 																	// above but
@@ -185,22 +195,6 @@ public class ExportUtil {
 			e.printStackTrace();
 			return new NullInputStream(1L);
 		}
-	}
-
-	public static List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
-		List<Object> result = new ArrayList<Object>();
-		if (obj instanceof JAXBElement)
-			obj = ((JAXBElement<?>) obj).getValue();
-
-		if (obj.getClass().equals(toSearch))
-			result.add(obj);
-		else if (obj instanceof ContentAccessor) {
-			List<?> children = ((ContentAccessor) obj).getContent();
-			for (Object child : children) {
-				result.addAll(getAllElementFromObject(child, toSearch));
-			}
-		}
-		return result;
 	}
 
 	public InputStream exportAsHtmlFromXsl(String xmlString, String xslPath, ExportParameters exportParameters,
@@ -240,7 +234,7 @@ public class ExportUtil {
 				exportConfig.getMessageColumn().getColumns(), exportConfig.getCompositeProfileColumn().getColumns(),
 				exportConfig.getProfileComponentColumn().getColumns(), exportConfig.getSegmentColumn().getColumns(),
 				exportConfig.getDatatypeColumn().getColumns(), exportConfig.getValueSetColumn().getColumns(),exportConfig.getValueSetsMetadata(),
-				exportFontConfig);
+				exportFontConfig,appInfo.getVersion());
 	}
 
 	// Private methods, alphabetically ordered

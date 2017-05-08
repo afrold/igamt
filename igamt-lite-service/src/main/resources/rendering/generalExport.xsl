@@ -22,7 +22,9 @@
     <xsl:variable name="fontFamily" select="$userFontFamily"/>
     <xsl:param name="userFontSize"/>
     <xsl:variable name="fontSize" select="$userFontSize"/>
-
+	
+	<xsl:param name="appCurrentVersion"/>
+    <xsl:variable name="appVersion" select="$appCurrentVersion"/>
     <!-- Parameters for the column filter -->
     <!-- Messages -->
     <xsl:param name="messageColumnName" select="'true'"/>
