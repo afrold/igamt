@@ -278,11 +278,20 @@ public class Bootstrap implements InitializingBean {
     // updateUserExportConfigs();
     // hotfix();
     // Need to run ONE TIME
+
+
     // fixConfLength();
     // fixWrongConstraints();
     // updateSegmentDatatypeDescription();
     // updateGroupName();
     // fixProfielComponentConfLength();
+
+    /*
+     * Updated at 05/04/2017
+     * To change whiteSpace to underscore 
+     * To remove message structure in GroupName
+     */
+    updateGroupName(); 
   }
 
 
@@ -332,7 +341,7 @@ public class Bootstrap implements InitializingBean {
   }
 
   private void visitGroup(Group g, Message m) {
-    if (g.getName().contains(" ")) {
+    if (g.getName().contains(" ") || g.getName().contains(".")) {
       System.out.println("-------FOUND Group Name with Space----");
       System.out.println(m.getScope());
       System.out.println(g.getName());
@@ -341,6 +350,8 @@ public class Bootstrap implements InitializingBean {
       System.out.println(g.getHl7Version());
       String newGroupName = g.getName();
       newGroupName = newGroupName.replaceAll(" ", "_");
+      String[] groupNameSplit = newGroupName.split("\\.");
+      newGroupName = groupNameSplit[groupNameSplit.length - 1];
       g.setName(newGroupName);
       System.out.println(g.getName());
       needUpdated = true;
