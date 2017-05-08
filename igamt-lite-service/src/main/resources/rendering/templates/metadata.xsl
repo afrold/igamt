@@ -77,6 +77,7 @@
            			</xsl:attribute>
            			<xsl:text>IGAMT</xsl:text>
         		</xsl:element>
+        		<xsl:value-of select="concat(' version ',$appVersion)"/>
             </xsl:element>
         </xsl:element>
     </xsl:template>

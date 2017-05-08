@@ -18,14 +18,18 @@
             <xsl:if test="$columnDisplay.dataType.conformanceLength = 'true'">
                 <xsl:if test="$showConfLength='true'">
                     <xsl:element name="td">
-                        <xsl:if test="@complex = 'true'">
-                            <xsl:attribute name="class">
-                                <xsl:text>greyCell</xsl:text>
-                            </xsl:attribute>
-                        </xsl:if>
-                        <xsl:if test="@ConfLength!='' and @ConfLength!='0' and @complex = 'false'">
-                            <xsl:value-of select="@ConfLength" />
-                        </xsl:if>
+                    	<xsl:choose>
+	                    	<xsl:when test="@complex = 'true' or @ConfLength='NA' or @Usage = 'X'">
+	                    		<xsl:attribute name="class">
+	                                <xsl:text>greyCell</xsl:text>
+	                            </xsl:attribute>
+	                    	</xsl:when>
+	                    	<xsl:otherwise>
+		                    	<xsl:if test="normalize-space(@ConfLength)!='' and normalize-space(@ConfLength)!='0' and @complex = 'false'">
+		                            <xsl:value-of select="@ConfLength" />
+		                        </xsl:if>
+	                    	</xsl:otherwise>
+                    	</xsl:choose>
                     </xsl:element>
                 </xsl:if>
             </xsl:if>
@@ -42,7 +46,7 @@
             <xsl:if test="$columnDisplay.dataType.length = 'true'">
                 <xsl:element name="td">
                     <xsl:choose>
-                        <xsl:when test="@complex = 'true'">
+                        <xsl:when test="@complex = 'true' or @Usage = 'X'">
                             <xsl:attribute name="class">
                                 <xsl:text>greyCell</xsl:text>
                             </xsl:attribute>

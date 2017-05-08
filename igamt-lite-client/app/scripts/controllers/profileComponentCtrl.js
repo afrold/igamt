@@ -12,9 +12,40 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         isCustomHeaderOpen: false,
         isFirstOpen: false,
         isSecondOpen: true,
-        isThirdOpen: false,
+        isThirdOpen: false
 
     };
+
+    $scope.editL = function(node){
+        node.attributes.minLength = null;
+        node.attributes.maxLength = null;
+        node.minLength =  node.attributes.oldMinLength != 'NA' ? node.attributes.oldMinLength: '';
+        node.maxLength =  node.attributes.oldMaxLength != 'NA' ? node.attributes.oldMaxLength: '';
+        $scope.setDirty();
+    };
+
+    $scope.editConfL = function(node){
+        node.confLength =  node.attributes.oldConfLength != 'NA' ? node.attributes.oldConfLength : '';
+        node.attributes.confLength =  null;
+        $scope.setDirty();
+    };
+
+    $scope.clearConfL = function(node){
+        node.confLength = "NA";
+        node.attributes.confLength = "NA";
+        $scope.setDirty();
+    };
+
+    $scope.clearL = function(node){
+        node.minLength = "NA";
+        node.maxLength = "NA";
+        node.attributes.minLength = "NA";
+        node.attributes.maxLength = "NA";
+        $scope.setDirty();
+    };
+
+    $scope.confLengthPattern= '[1-9]\\d*[#=]{0,1}';
+
 
     $scope.redirectVS = function(binding) {
 
@@ -769,6 +800,15 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.min = field.attributes.oldMin;
         $scope.setDirty();
     };
+
+    $scope.cancelCard = function(field) {
+        field.attributes.min = null;
+        field.min = field.attributes.oldMin;
+        field.attributes.max = null;
+        field.max = field.attributes.oldMax;
+        $scope.setDirty();
+    };
+
     $scope.initMaxCard = function(node) {
         if (node.attributes.max) {
             node.max = node.attributes.max;
@@ -792,20 +832,47 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         $scope.setDirty();
     };
     $scope.initMinL = function(node) {
+         if (node.attributes.minLength) {
+            node.minLength = node.attributes.minLength;
+        } else {
+            node.minLength = node.attributes.oldMinLength;
+        }
+        console.log("initMinL, node.minLength=" + node.minLength + ", node.attributes.minLength=" + node.attributes.minLength + ", node.attributes.oldMinLength="+ node.attributes.oldMinLength);
+
+    };
+
+    $scope.initL = function(node) {
         if (node.attributes.minLength) {
             node.minLength = node.attributes.minLength;
         } else {
             node.minLength = node.attributes.oldMinLength;
         }
-    };
-    $scope.updateMinL = function(node) {
-        if (parseInt(node.minLength) === node.attributes.oldMinLength) {
-            node.attributes.minLength = null;
+        if (node.attributes.maxLength) {
+            node.maxLength = node.attributes.maxLength;
         } else {
-            node.attributes.minLength = parseInt(node.minLength);
+            node.maxLength = node.attributes.oldMaxLength;
         }
     };
 
+    $scope.updateMinL = function(node) {
+        if (node.minLength === node.attributes.oldMinLength) {
+            node.attributes.minLength = null;
+        } else {
+            node.attributes.minLength = node.minLength;
+        }
+        // node.attributes.confLength = "NA";
+        // node.confLength = node.attributes.confLength;
+    };
+
+    $scope.cancelL = function(field) {
+        field.attributes.minLength = null;
+        field.minLength = field.attributes.oldMinLength;
+        field.attributes.maxLength = null;
+        field.maxLength = field.attributes.oldMaxLength;
+        // field.attributes.confLength = null;
+        // field.confLength = field.attributes.oldConfLength;
+        $scope.setDirty();
+    };
 
     $scope.cancelMinL = function(field) {
         field.attributes.minLength = null;
@@ -814,11 +881,14 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         $scope.setDirty();
     };
     $scope.initMaxL = function(node) {
+        console.log("initMaxL is called ");
         if (node.attributes.maxLength) {
             node.maxLength = node.attributes.maxLength;
         } else {
             node.maxLength = node.attributes.oldMaxLength;
         }
+        console.log("initMaxL, node.maxLength=" + node.maxLength + ",  node.attributes.maxLength=" +   node.attributes.maxLength + "node.attributes.oldMaxLength="+ node.attributes.oldMaxLength);
+
     };
     $scope.updateMaxL = function(node) {
         if (node.maxLength === node.attributes.oldMaxLength) {
@@ -826,6 +896,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         } else {
             node.attributes.maxLength = node.maxLength;
         }
+        // node.attributes.confLength = "NA";
+        // node.confLength = field.attributes.confLength;
     };
     $scope.cancelMaxL = function(field) {
         field.attributes.maxLength = null;
@@ -839,16 +911,27 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         } else {
             node.confLength = node.attributes.oldConfLength;
         }
+        console.log("initMinL, node.confLength=" + node.confLength + ",   node.attributes.confLength=" + node.attributes.confLength + "node.attributes.oldConfLength="+ node.attributes.oldConfLength);
+
     };
     $scope.updateConfL = function(node) {
+        console.log("updateConfL called");
         if (node.confLength === node.attributes.oldConfLength) {
             node.attributes.confLength = null;
         } else {
             node.attributes.confLength = node.confLength;
         }
+        // node.attributes.minLength = "NA";
+        // node.minLength = node.attributes.minLength;
+        // node.attributes.maxLength = "NA";
+        // node.maxLength = node.attributes.maxLength;
     };
 
     $scope.cancelConfL = function(field) {
+        // field.attributes.minLength = null;
+        // field.minLength = field.attributes.oldMinLength;
+        // field.attributes.maxLength = null;
+        // field.maxLength = field.attributes.oldMaxLength;
         field.attributes.confLength = null;
         field.confLength = field.attributes.oldConfLength;
         $scope.setDirty();
