@@ -50,7 +50,10 @@ public class SerializationUtil {
     if(richtext.contains("<pre>")){
       richtext = richtext.replace("\n", "<br />");
     }
-    richtext = richtext.replace("<p style=\"\"><br></p>", "<p></p>");
+    richtext = richtext.replace("<p style=\"\"><br></p>", "");
+    richtext = richtext.replace("<p ","<span ");
+    richtext = richtext.replace("<p>","<span>");
+    richtext = richtext.replace("</p>","<br></span>");
     richtext = richtext.replace("&lsquo;","&#39;");
     richtext = richtext.replaceAll("[^\\p{Print}]", "?");
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);

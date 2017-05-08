@@ -20,20 +20,20 @@
 
     <xsl:template match="ValueSetDefinition">
         <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
-            <xsl:element name="p">
-                <xsl:call-template name="definitionText">
-                    <xsl:with-param name="type">
-                        <xsl:text>pre</xsl:text>
-                    </xsl:with-param>
-                </xsl:call-template>
-            </xsl:element>
+            <xsl:call-template name="definitionText">
+                <xsl:with-param name="type">
+                    <xsl:text>pre</xsl:text>
+                </xsl:with-param>
+            </xsl:call-template>
         </xsl:if>
+        <xsl:element name="br"/>
         <xsl:call-template name="valueSetMetadata"/>
-        <xsl:element name="p">
+        <xsl:element name="br"/>
+        <xsl:element name="span">
         	<xsl:attribute name="class">
         		<xsl:text>contentDiv</xsl:text>
         	</xsl:attribute>
-            <xsl:element name="p">
+            <xsl:element name="span">
                 <xsl:element name="b">
                     <xsl:text>Codes</xsl:text>
                 </xsl:element>
