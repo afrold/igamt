@@ -7,8 +7,12 @@
         <xsl:param name="type"/>
         <xsl:param name="constraintMode"/>
         <xsl:param name="headerLevel"/>
-        <xsl:element name="{$headerLevel}">
-            <xsl:value-of select="$title"/>
+        <xsl:element name="span">
+            <xsl:element name="span">
+                <xsl:element name="b">
+                    <xsl:value-of disable-output-escaping="yes" select="$title"/>
+                </xsl:element>
+            </xsl:element>
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>

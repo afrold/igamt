@@ -148,35 +148,40 @@
                 </xsl:element>
             </xsl:element>
             <xsl:if test="count(./Constraint) &gt; 0">
-                <xsl:element name="br"/>
-                <xsl:call-template name="Constraint">
-                    <xsl:with-param name="title">
-                        <xsl:text>Conformance Statements</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="constraintMode">
-                        <xsl:text>standalone</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="type">
-                        <xsl:text>cs</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="headerLevel">
-                        <xsl:text>h4</xsl:text>
-                    </xsl:with-param>
-                </xsl:call-template>
-                <xsl:call-template name="Constraint">
-                    <xsl:with-param name="title">
-                        <xsl:text>Conditional Predicates</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="constraintMode">
-                        <xsl:text>standalone</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="type">
-                        <xsl:text>pre</xsl:text>
-                    </xsl:with-param>
-                    <xsl:with-param name="headerLevel">
-                        <xsl:text>h4</xsl:text>
-                    </xsl:with-param>
-                </xsl:call-template>
+                <xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
+                    <xsl:element name="br"/>
+                            <xsl:call-template name="Constraint">
+                        <xsl:with-param name="title">
+                            <xsl:text>Conformance Statements</xsl:text>
+                        </xsl:with-param>
+                        <xsl:with-param name="constraintMode">
+                            <xsl:text>standalone</xsl:text>
+                        </xsl:with-param>
+                        <xsl:with-param name="type">
+                            <xsl:text>cs</xsl:text>
+                        </xsl:with-param>
+                        <xsl:with-param name="headerLevel">
+                            <xsl:text>h4</xsl:text>
+                        </xsl:with-param>
+                    </xsl:call-template>
+                </xsl:if>
+                <xsl:if test="count(./Constraint[@Type='pre'])  &gt; 0">
+                    <xsl:element name="br"/>
+                    <xsl:call-template name="Constraint">
+                        <xsl:with-param name="title">
+                            <xsl:text>Conditional Predicates</xsl:text>
+                        </xsl:with-param>
+                        <xsl:with-param name="constraintMode">
+                            <xsl:text>standalone</xsl:text>
+                        </xsl:with-param>
+                        <xsl:with-param name="type">
+                            <xsl:text>pre</xsl:text>
+                        </xsl:with-param>
+                        <xsl:with-param name="headerLevel">
+                            <xsl:text>h4</xsl:text>
+                        </xsl:with-param>
+                    </xsl:call-template>
+                </xsl:if>
             </xsl:if>
             <xsl:apply-templates select="./ValueSetBindingList"/>
             <xsl:if test="count(./Component/Text[@Type='Text']) &gt; 0">

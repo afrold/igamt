@@ -25,8 +25,8 @@
                     <xsl:text>pre</xsl:text>
                 </xsl:with-param>
             </xsl:call-template>
+            <xsl:element name="br"/>
         </xsl:if>
-        <xsl:element name="br"/>
         <xsl:call-template name="valueSetMetadata"/>
         <xsl:element name="br"/>
         <xsl:element name="span">
