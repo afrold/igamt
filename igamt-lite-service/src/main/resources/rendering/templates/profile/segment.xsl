@@ -23,8 +23,14 @@
                     <xsl:text>pre</xsl:text>
                 </xsl:with-param>
             </xsl:call-template>
+            <xsl:element name="br"/>
         </xsl:if>
-        <xsl:element name="p">
+        <xsl:element name="span">
+            <xsl:element name="span">
+                <xsl:element name="b">
+                    <xsl:text>Segment Definition</xsl:text>
+                </xsl:element>
+            </xsl:element>
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
@@ -150,66 +156,42 @@
             </xsl:element>
         </xsl:element>
         <xsl:if test="count(Constraint) &gt; 0">
-            <xsl:if test="count(Constraint[@Type='cs']) &gt; 0">
-                 <xsl:element name="p">
- 				 	<xsl:element name="b">
-	                    <xsl:text>Conformance Statements</xsl:text>
-                    </xsl:element>
-                </xsl:element>
-                <xsl:element name="table">
-                    <xsl:attribute name="class">
-                        <xsl:text>contentTable</xsl:text>
-                    </xsl:attribute>
-                    <xsl:call-template name="conformanceStatementHeader"/>
-                    <xsl:element name="tbody">
-                        <xsl:for-each select="./Constraint[@Type='cs']">
-                            <xsl:sort select="@Position" data-type="number"></xsl:sort>
-                            <xsl:call-template name="ConstraintContent">
-                                <xsl:with-param name="mode">
-                                    <xsl:text>standalone</xsl:text>
-                                </xsl:with-param>
-                                <xsl:with-param name="type">
-                                    <xsl:text>cs</xsl:text>
-                                </xsl:with-param>
-                                <xsl:with-param name="displayPeriod">
-                                    <xsl:text>false</xsl:text>
-                                </xsl:with-param>
-                            </xsl:call-template>
-                        </xsl:for-each>
-                    </xsl:element>
-                </xsl:element>
+            <xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
+                <xsl:element name="br"/>
+                <xsl:call-template name="Constraint">
+                    <xsl:with-param name="title">
+                        <xsl:text>Conformance Statements</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="constraintMode">
+                        <xsl:text>standalone</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="type">
+                        <xsl:text>cs</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="headerLevel">
+                        <xsl:text>h4</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
             </xsl:if>
-            <xsl:if test="count(Constraint[@Type='pre']) &gt; 0">
-                <xsl:element name="p">
-   					<xsl:element name="b">
-                    	<xsl:text>Conditional Predicates</xsl:text>
-                   	</xsl:element>
-                </xsl:element>
-                <xsl:element name="table">
-                    <xsl:attribute name="class">
-                        <xsl:text>contentTable</xsl:text>
-                    </xsl:attribute>
-                    <xsl:call-template name="predicateHeader"/>
-                    <xsl:element name="tbody">
-                        <xsl:for-each select="./Constraint[@Type='pre']">
-                            <xsl:sort select="@Position" data-type="number"></xsl:sort>
-                            <xsl:call-template name="ConstraintContent">
-                                <xsl:with-param name="mode">
-                                    <xsl:text>standalone</xsl:text>
-                                </xsl:with-param>
-                                <xsl:with-param name="type">
-                                    <xsl:text>pre</xsl:text>
-                                </xsl:with-param>
-                                <xsl:with-param name="displayPeriod">
-                                    <xsl:text>false</xsl:text>
-                                </xsl:with-param>
-                            </xsl:call-template>
-                        </xsl:for-each>
-                    </xsl:element>
-                </xsl:element>
+            <xsl:if test="count(./Constraint[@Type='pre'])  &gt; 0">
+                <xsl:element name="br"/>
+                <xsl:call-template name="Constraint">
+                    <xsl:with-param name="title">
+                        <xsl:text>Conditional Predicates</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="constraintMode">
+                        <xsl:text>standalone</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="type">
+                        <xsl:text>pre</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="headerLevel">
+                        <xsl:text>h4</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
             </xsl:if>
         </xsl:if>
-        
+
         <xsl:apply-templates select="./coconstraints"/>
         <xsl:apply-templates select="./ValueSetBindingList"/>
         <xsl:apply-templates select="./DynamicMapping"/>
