@@ -16,6 +16,7 @@
         <xsl:if test="@Description!=''">
             <xsl:element name="span">
                 <xsl:value-of select="@Description"/>
+                <xsl:element name="br"/>
             </xsl:element>
             <xsl:element name="br"/>
         </xsl:if>
