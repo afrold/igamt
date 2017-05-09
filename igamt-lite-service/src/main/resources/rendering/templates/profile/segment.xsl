@@ -198,7 +198,8 @@
         <xsl:apply-templates select="./CommentList"/>
 
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
-            <xsl:element name="p">
+        	<xsl:element name="br"/>
+            <xsl:element name="span">
                 <xsl:call-template name="definitionText">
                     <xsl:with-param name="type">
                         <xsl:text>post</xsl:text>
@@ -210,7 +211,8 @@
         <xsl:for-each select="Field">
             <xsl:sort select="@Position" data-type="number"></xsl:sort>
             <xsl:if test="count(Text) &gt; 0">
-	            <xsl:element name="p">
+            	<xsl:element name="br"/>
+	            <xsl:element name="span">
                     <xsl:element name="b">
                         <xsl:value-of select="concat(../@Name,'-',./@Position,' : ',./@Name,' (',./@Datatype,')')" />
                     </xsl:element>
@@ -222,7 +224,8 @@
     </xsl:template>
 
     <xsl:template match="coconstraints">
-        <xsl:element name="p">
+    	<xsl:element name="br"/>
+        <xsl:element name="span">
    			<xsl:element name="b">
             	<xsl:text>Co-Constraints</xsl:text>
         	</xsl:element>

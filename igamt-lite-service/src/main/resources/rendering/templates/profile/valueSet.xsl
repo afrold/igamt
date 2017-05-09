@@ -138,15 +138,16 @@
                 </xsl:element>
             </xsl:element>
         </xsl:element>
-        <xsl:element name="p">
-            <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
-                <xsl:call-template name="definitionText">
-                    <xsl:with-param name="type">
-                        <xsl:text>post</xsl:text>
-                    </xsl:with-param>
-                </xsl:call-template>
-            </xsl:if>
-        </xsl:element>
+        <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+        	<xsl:element name="br"/>
+        	<xsl:element name="span">
+	            <xsl:call-template name="definitionText">
+	                <xsl:with-param name="type">
+	                    <xsl:text>post</xsl:text>
+	                </xsl:with-param>
+	            </xsl:call-template>
+            </xsl:element>
+        </xsl:if>
 
     </xsl:template>
 
