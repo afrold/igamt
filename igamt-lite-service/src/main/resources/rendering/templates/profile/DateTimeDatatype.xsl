@@ -1,7 +1,12 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template match="DateTimeDatatype">
-        <xsl:element name="p">
+        <xsl:element name="span">
+            <xsl:element name="span">
+                <xsl:element name="b">
+                    <xsl:text>Data Type Definition</xsl:text>
+                </xsl:element>
+            </xsl:element>
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
