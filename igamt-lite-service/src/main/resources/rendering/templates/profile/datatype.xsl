@@ -150,7 +150,7 @@
             <xsl:if test="count(./Constraint) &gt; 0">
                 <xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
                     <xsl:element name="br"/>
-                            <xsl:call-template name="Constraint">
+                    <xsl:call-template name="Constraint">
                         <xsl:with-param name="title">
                             <xsl:text>Conformance Statements</xsl:text>
                         </xsl:with-param>
