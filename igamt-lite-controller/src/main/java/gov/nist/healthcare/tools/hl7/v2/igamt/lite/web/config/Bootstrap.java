@@ -259,8 +259,9 @@ public class Bootstrap implements InitializingBean {
     // CreateCollectionOfUnchanged(); // group datatype by sets of versions
     // Colorate(); // genenerates the datatypes evolution matrix.
     // //
-    // To RUN on Production
 
+
+    // To RUN on Production for 2.0.0-rc
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
     // fixDatatypeRecursion();
@@ -283,6 +284,53 @@ public class Bootstrap implements InitializingBean {
     // updateSegmentDatatypeDescription();
     // updateGroupName();
     // fixProfielComponentConfLength();
+    // updateGroupName();
+  }
+
+
+  private void updateGroupName() {
+    List<Message> messages = messageService.findAll();
+
+    for (Message m : messages) {
+      needUpdated = false;
+      for (SegmentRefOrGroup srog : m.getChildren()) {
+        if (srog instanceof Group) {
+          Group g = (Group) srog;
+          visitGroup(g, m);
+        }
+      }
+
+      if (needUpdated) {
+        System.out.println("-------Message Updated----");
+        messageService.save(m);
+      }
+    }
+
+  }
+
+  private void visitGroup(Group g, Message m) {
+    if (g.getName().contains(" ") || g.getName().contains(".")) {
+      System.out.println("-------FOUND Group Name with Space----");
+      System.out.println(m.getScope());
+      System.out.println(g.getName());
+      System.out.println(g.getStatus());
+      System.out.println(g.getCreatedFrom());
+      System.out.println(g.getHl7Version());
+      String newGroupName = g.getName();
+      newGroupName = newGroupName.replaceAll(" ", "_");
+      String[] groupNameSplit = newGroupName.split("\\.");
+      newGroupName = groupNameSplit[groupNameSplit.length - 1];
+      g.setName(newGroupName);
+      System.out.println(g.getName());
+      needUpdated = true;
+    }
+
+    for (SegmentRefOrGroup srog : g.getChildren()) {
+      if (srog instanceof Group) {
+        Group child = (Group) srog;
+        visitGroup(child, m);
+      }
+    }
   }
 
 
@@ -311,48 +359,7 @@ public class Bootstrap implements InitializingBean {
 
   }
 
-  private void updateGroupName() {
-    List<Message> messages = messageService.findAll();
 
-    for (Message m : messages) {
-      needUpdated = false;
-      for (SegmentRefOrGroup srog : m.getChildren()) {
-        if (srog instanceof Group) {
-          Group g = (Group) srog;
-          visitGroup(g, m);
-        }
-      }
-
-      if (needUpdated) {
-        System.out.println("-------Message Updated----");
-        messageService.save(m);
-      }
-    }
-
-  }
-
-  private void visitGroup(Group g, Message m) {
-    if (g.getName().contains(" ")) {
-      System.out.println("-------FOUND Group Name with Space----");
-      System.out.println(m.getScope());
-      System.out.println(g.getName());
-      System.out.println(g.getStatus());
-      System.out.println(g.getCreatedFrom());
-      System.out.println(g.getHl7Version());
-      String newGroupName = g.getName();
-      newGroupName = newGroupName.replaceAll(" ", "_");
-      g.setName(newGroupName);
-      System.out.println(g.getName());
-      needUpdated = true;
-    }
-
-    for (SegmentRefOrGroup srog : g.getChildren()) {
-      if (srog instanceof Group) {
-        Group child = (Group) srog;
-        visitGroup(child, m);
-      }
-    }
-  }
 
   private void updateSegmentDatatypeDescription() {
     List<Segment> segments = segmentService.findAll();
