@@ -47,4 +47,12 @@ public class DTMPredicate {
   public void setValue(String value) {
     this.value = value;
   }
+  
+  public String getPredicateDescription(){
+    if(this.value == null){
+      return "If " + this.targetName + " " + this.verb + "."; 
+    }else {
+      return "If " + this.targetName + " " + this.verb + " '" + this.value+ "'."; 
+    }
+  }
 }
