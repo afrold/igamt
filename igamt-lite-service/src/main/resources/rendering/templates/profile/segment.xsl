@@ -16,7 +16,7 @@
 
     <xsl:template match="Segment">
         <xsl:param name="inlineConstraint"/>
-        <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
+        <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0  and ./Text[@Type='DefPreText']!='' ">
             <xsl:call-template name="definitionText">
                 <xsl:with-param name="type">
                     <xsl:text>pre</xsl:text>
@@ -196,7 +196,8 @@
         <xsl:apply-templates select="./DynamicMapping"/>
         <xsl:apply-templates select="./CommentList"/>
 
-        <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+        <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0 and ./Text[@Type='DefPostText']!='' ">
+        	<xsl:element name="br"/>
             <xsl:element name="span">
                 <xsl:call-template name="definitionText">
                     <xsl:with-param name="type">
@@ -208,10 +209,11 @@
 
         <xsl:for-each select="Field">
             <xsl:sort select="@Position" data-type="number"></xsl:sort>
-            <xsl:if test="count(Text) &gt; 0">
+            <xsl:if test="count(./Text[@Type='Text']) &gt; 0">
+            	<xsl:element name="br"/>
 	            <xsl:element name="span">
                     <xsl:element name="b">
-                        <xsl:value-of select="concat(../@Name,'-',./@Position,' : ',./@Name,' (',./@Datatype,')')" />
+                        <xsl:value-of select="concat(../@Name,'-',./@Position,': ',./@Name,' (',./@Datatype,')')" />
                     </xsl:element>
                     <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
                 </xsl:element>

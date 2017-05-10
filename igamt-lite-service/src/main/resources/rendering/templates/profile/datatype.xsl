@@ -210,6 +210,7 @@
             </xsl:if>
         </xsl:if>
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+            <xsl:element name="br"/>
             <xsl:call-template name="definitionText">
                 <xsl:with-param name="type">
                     <xsl:text>post</xsl:text>
@@ -217,6 +218,7 @@
             </xsl:call-template>
         </xsl:if>
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
+            <xsl:element name="br"/>
             <xsl:element name="span">
                 <xsl:element name="b">
                     <xsl:text>Usage note: </xsl:text>

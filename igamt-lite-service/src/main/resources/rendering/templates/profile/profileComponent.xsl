@@ -16,8 +16,8 @@
         <xsl:if test="@Description!=''">
             <xsl:element name="span">
                 <xsl:value-of select="@Description"/>
-                <xsl:element name="br"/>
             </xsl:element>
+            <xsl:element name="br"/>
         </xsl:if>
         <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
             <xsl:call-template name="definitionText">
@@ -25,6 +25,7 @@
                     <xsl:text>pre</xsl:text>
                 </xsl:with-param>
             </xsl:call-template>
+            <xsl:element name="br"/>
         </xsl:if>
         <xsl:element name="span">
             <xsl:element name="b">
@@ -318,6 +319,7 @@
             </xsl:element>
         </xsl:if>
 		<xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+            <xsl:element name="br"/>
 			<xsl:call-template name="definitionText">
 				<xsl:with-param name="type">
 					<xsl:text>post</xsl:text>

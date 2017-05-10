@@ -137,15 +137,15 @@ public class SerializationUtil {
           elementTbl.attr("summary", ".");
       }
   }
-    for(org.jsoup.nodes.Element elementTd : doc.select("td")){
-      removeEndingBrTag(elementTd);
+    for(org.jsoup.nodes.Element element : doc.select("td")){
+      removeEndingBrTag(element);
     }
-    for(org.jsoup.nodes.Element elementTd : doc.select("th")){
-      removeEndingBrTag(elementTd);
+    for(org.jsoup.nodes.Element element : doc.select("th")){
+      removeEndingBrTag(element);
     }
     
-    for(org.jsoup.nodes.Element elementTd : doc.select("p")){
-      removeEndingBrTag(elementTd);
+    for(org.jsoup.nodes.Element element : doc.select("span")){
+      removeEndingBrTag(element);
     }
     
     //Renaming strong to work as html4 
