@@ -75,6 +75,94 @@ public class Datatype extends DataModelWithConstraints
   protected DTMConstraints dtmConstraints;
 
   public DTMConstraints getDtmConstraints() {
+    if (this.name.equals("DTM") && dtmConstraints == null) {
+      this.dtmConstraints = new DTMConstraints();
+      DTMComponentDefinition year = new DTMComponentDefinition();
+      year.setName("YYYY");
+      year.setPosition(1);
+      year.setUsage(Usage.R);
+      dtmConstraints.getDtmComponentDefinitions().add(year);
+
+      DTMComponentDefinition month = new DTMComponentDefinition();
+      month.setName("MM");
+      month.setPosition(2);
+      month.setUsage(Usage.O);
+      dtmConstraints.getDtmComponentDefinitions().add(month);
+
+      DTMComponentDefinition day = new DTMComponentDefinition();
+      day.setName("DD");
+      day.setPosition(3);
+      day.setUsage(Usage.C);
+      DTMPredicate dayPredicate = new DTMPredicate();
+      dayPredicate.setTrueUsage(Usage.O);
+      dayPredicate.setFalseUsage(Usage.X);
+      dayPredicate.setTargetName("MM");
+      dayPredicate.setVerb("is valued");
+      day.setDtmPredicate(dayPredicate);
+      dtmConstraints.getDtmComponentDefinitions().add(day);
+
+      DTMComponentDefinition hour = new DTMComponentDefinition();
+      hour.setName("hh");
+      hour.setPosition(4);
+      hour.setUsage(Usage.C);
+      DTMPredicate hourPredicate = new DTMPredicate();
+      hourPredicate.setTrueUsage(Usage.O);
+      hourPredicate.setFalseUsage(Usage.X);
+      hourPredicate.setTargetName("DD");
+      hourPredicate.setVerb("is valued");
+      hour.setDtmPredicate(hourPredicate);
+      dtmConstraints.getDtmComponentDefinitions().add(hour);
+
+      DTMComponentDefinition minute = new DTMComponentDefinition();
+      minute.setName("mm");
+      minute.setPosition(5);
+      minute.setUsage(Usage.C);
+      DTMPredicate minutePredicate = new DTMPredicate();
+      minutePredicate.setTrueUsage(Usage.O);
+      minutePredicate.setFalseUsage(Usage.X);
+      minutePredicate.setTargetName("hh");
+      minutePredicate.setVerb("is valued");
+      minute.setDtmPredicate(minutePredicate);
+      dtmConstraints.getDtmComponentDefinitions().add(minute);
+
+      DTMComponentDefinition second = new DTMComponentDefinition();
+      second.setName("ss");
+      second.setPosition(6);
+      second.setUsage(Usage.C);
+      DTMPredicate secondPredicate = new DTMPredicate();
+      secondPredicate.setTrueUsage(Usage.O);
+      secondPredicate.setFalseUsage(Usage.X);
+      secondPredicate.setTargetName("mm");
+      secondPredicate.setVerb("is valued");
+      second.setDtmPredicate(minutePredicate);
+      dtmConstraints.getDtmComponentDefinitions().add(second);
+
+      DTMComponentDefinition miliSecond = new DTMComponentDefinition();
+      miliSecond.setName("ssss");
+      miliSecond.setPosition(7);
+      miliSecond.setUsage(Usage.O);
+      DTMPredicate miliSecondPredicate = new DTMPredicate();
+      miliSecondPredicate.setTrueUsage(Usage.O);
+      miliSecondPredicate.setFalseUsage(Usage.X);
+      miliSecondPredicate.setTargetName("ss");
+      miliSecondPredicate.setVerb("is valued");
+      miliSecond.setDtmPredicate(minutePredicate);
+      dtmConstraints.getDtmComponentDefinitions().add(miliSecond);
+
+      DTMComponentDefinition timeZone = new DTMComponentDefinition();
+      timeZone.setName("ZZZZ");
+      timeZone.setPosition(8);
+      timeZone.setUsage(Usage.C);
+      DTMPredicate timeZonePredicate = new DTMPredicate();
+      timeZonePredicate.setTrueUsage(Usage.O);
+      timeZonePredicate.setFalseUsage(Usage.X);
+      timeZonePredicate.setTargetName("ss");
+      timeZonePredicate.setVerb("is valued");
+      timeZone.setDtmPredicate(timeZonePredicate);
+      dtmConstraints.getDtmComponentDefinitions().add(timeZone);
+    }
+
+
     return dtmConstraints;
   }
 

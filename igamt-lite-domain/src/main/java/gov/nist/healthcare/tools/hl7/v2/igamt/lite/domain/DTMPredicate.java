@@ -47,6 +47,4 @@ public class DTMPredicate {
   public void setValue(String value) {
     this.value = value;
   }
-
-
 }
