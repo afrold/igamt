@@ -22,26 +22,55 @@ import java.util.Map;
  */
 public class SerializableDateTimeDatatype extends SerializableDatatype {
 
-    private Map<String,String> dateValues;
+    private Datatype datatype;
 
     public SerializableDateTimeDatatype(String id, String prefix, String position,
         String headerLevel, String title, Datatype datatype, String defPreText, String defPostText,
         String usageNote, List<SerializableConstraint> constraints,
         Map<Component, Datatype> componentDatatypeMap,
-        Map<Component, List<ValueSetOrSingleCodeBinding>> componentValueSetBindingsMap, List<Table> tables, Map<Component, String> componentTextMap, Boolean showConfLength,
-        Map<String, String> dateValues) {
+        Map<Component, List<ValueSetOrSingleCodeBinding>> componentValueSetBindingsMap, List<Table> tables, Map<Component, String> componentTextMap, Boolean showConfLength) {
         super(id, prefix, position, headerLevel, title, datatype, defPreText, defPostText,
             usageNote, constraints, componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap,showConfLength);
-        this.dateValues = dateValues;
+        this.datatype = datatype;
     }
 
     @Override
     public Element serializeElement() {
         Element element = super.serializeElement();
         Element dtmElement = new Element("DateTimeDatatype");
-        for(String dateElement : dateValues.keySet()){
-            Attribute dateValue = new Attribute(dateElement,dateValues.get(dateElement));
-            dtmElement.addAttribute(dateValue);
+        DTMConstraints dtmConstraints = datatype.getDtmConstraints();
+        if(dtmConstraints!=null){
+            for(DTMComponentDefinition dtmComponentDefinition : dtmConstraints.getDtmComponentDefinitions()){
+                if(dtmComponentDefinition!=null){
+                    Element dtmDefinitionElement = new Element("DateTimeDatatypeDefinition");
+                    if(dtmComponentDefinition.getName()!=null && !dtmComponentDefinition.getName().isEmpty()){
+                        dtmDefinitionElement.addAttribute(new Attribute("name",dtmComponentDefinition.getName()));
+                    }
+                    if(dtmComponentDefinition.getPosition()!=null){
+                        dtmDefinitionElement.addAttribute(new Attribute("position",String.valueOf(
+                            dtmComponentDefinition.getPosition())));
+                    }
+                    if(dtmComponentDefinition.getUsage()!=null && !dtmComponentDefinition.getUsage().value().isEmpty()){
+                        String usage = dtmComponentDefinition.getUsage().value();
+                        if(usage.equals(Usage.C.value())){
+                            if(dtmComponentDefinition.getDtmPredicate()!=null) {
+                                String trueUsage,falseUsage;
+                                if (dtmComponentDefinition.getDtmPredicate().getTrueUsage() != null && !dtmComponentDefinition.getDtmPredicate().getTrueUsage().value()
+                                    .isEmpty() && dtmComponentDefinition.getDtmPredicate().getFalseUsage() != null && !dtmComponentDefinition.getDtmPredicate().getFalseUsage().value().isEmpty()) {
+                                    trueUsage = dtmComponentDefinition.getDtmPredicate().getTrueUsage().value();
+                                    falseUsage = dtmComponentDefinition.getDtmPredicate().getFalseUsage().value();
+                                    usage = usage.concat("("+trueUsage+"/"+falseUsage+")");
+                                }
+                                if (dtmComponentDefinition.getDtmPredicate().getPredicateDescription() != null && !dtmComponentDefinition.getDtmPredicate().getPredicateDescription().isEmpty()) {
+                                    dtmDefinitionElement.addAttribute(new Attribute("predicate", dtmComponentDefinition.getDtmPredicate().getPredicateDescription()));
+                                }
+                            }
+                        }
+                        dtmDefinitionElement.addAttribute(new Attribute("usage",usage));
+                    }
+                    dtmElement.appendChild(dtmDefinitionElement);
+                }
+            }
         }
         element.getFirstChildElement("Datatype").appendChild(dtmElement);
         return element;
