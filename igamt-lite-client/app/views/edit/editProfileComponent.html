@@ -195,7 +195,7 @@
                                                                     </td>
 
 
-                                                                    <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol': node.usage == 'X' || node.type==='component'|| node.type==='message, 'input-change ':node.usage != 'X' && (node.attributes.min || node.attributes.max)}">
+                                                                    <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol': node.usage == 'X' || node.type==='component'|| node.type==='message', 'input-change':node.usage != 'X' && (node.attributes.min || node.attributes.max)}">
                                                                         <div ng-show="node.usage != 'X' && node.type!=='component' && node.type!=='message'" class="form-inline" layout="row" layout-align="center center">
                                                                              <md-input-container flex="50" class="withoutMargin">
                                                                                 <input aria-label="minC" style="width:50px;" name="min" min="0" type="number" ng-init="initMinCard(node)" ng-change="setDirty();updateMinCard(node);" ng-pattern="/^\d+$/" ng-model="node.min" ng-minlength="1" />
