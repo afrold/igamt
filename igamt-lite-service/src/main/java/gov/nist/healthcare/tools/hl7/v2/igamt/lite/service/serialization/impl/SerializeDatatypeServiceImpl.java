@@ -136,13 +136,11 @@ import java.util.Map;
             Boolean showConfLength = serializationUtil.isShowConfLength(datatype.getHl7Version());
             SerializableDatatype serializedDatatype = null;
             if (datatype.getName().equals("DTM")) {
-                Map<String, String> dateValues =
-                    getDtmDateValues(datatype.getPrecisionOfDTM(), datatype.isTimeZoneOfDTM());
                 serializedDatatype =
                     new SerializableDateTimeDatatype(id, prefix, String.valueOf(position),
                         headerLevel, title, datatype, defPreText, defPostText, usageNote,
                         constraintsList, componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap,
-                        showConfLength, dateValues);
+                        showConfLength);
             } else {
                 serializedDatatype =
                     new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,
