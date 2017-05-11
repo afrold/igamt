@@ -1,36 +1,37 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
-import com.mongodb.gridfs.GridFSDBFile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
-import nu.xom.Attribute;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.parser.Tag;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.imageio.ImageIO;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.html.CSS;
-import javax.swing.text.html.StyleSheet;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.*;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.mongodb.gridfs.GridFSDBFile;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
+import nu.xom.Attribute;
 
 @Service
 public class SerializationUtil {
@@ -50,7 +51,10 @@ public class SerializationUtil {
     if(richtext.contains("<pre>")){
       richtext = richtext.replace("\n", "<br />");
     }
-    richtext = richtext.replace("<p style=\"\"><br></p>", "<p></p>");
+    richtext = richtext.replace("<p style=\"\"><br></p>", "");
+    richtext = richtext.replace("<p ","<span ");
+    richtext = richtext.replace("<p>","<span>");
+    richtext = richtext.replace("</p>","<br></span>");
     richtext = richtext.replace("&lsquo;","&#39;");
     richtext = richtext.replaceAll("[^\\p{Print}]", "?");
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
@@ -133,23 +137,22 @@ public class SerializationUtil {
           elementTbl.attr("summary", ".");
       }
   }
-    for(org.jsoup.nodes.Element elementTd : doc.select("td")){
-      removeEndingBrTag(elementTd);
+    for(org.jsoup.nodes.Element element : doc.select("td")){
+      removeEndingBrTag(element);
     }
-    for(org.jsoup.nodes.Element elementTd : doc.select("th")){
-      removeEndingBrTag(elementTd);
+    for(org.jsoup.nodes.Element element : doc.select("th")){
+      removeEndingBrTag(element);
     }
     
-    for(org.jsoup.nodes.Element elementTd : doc.select("p")){
-      removeEndingBrTag(elementTd);
+    for(org.jsoup.nodes.Element element : doc.select("span")){
+      removeEndingBrTag(element);
     }
     
     //Renaming strong to work as html4 
     doc.select("strong").tagName("b");
     String html = doc.body().html();
     html = html.replace("<br>", "<br />");
-    return html;
-    //return "<div class=\"fr-view\">" + html + "</div>";
+    return "<div class=\"fr-view\">" + html + "</div>";
   }
 
   private void removeEndingBrTag(Element element) {

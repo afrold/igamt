@@ -7,8 +7,12 @@
         <xsl:param name="type"/>
         <xsl:param name="constraintMode"/>
         <xsl:param name="headerLevel"/>
-        <xsl:element name="{$headerLevel}">
-            <xsl:value-of select="$title"/>
+        <xsl:element name="span">
+            <xsl:element name="span">
+                <xsl:element name="b">
+                    <xsl:value-of disable-output-escaping="yes" select="$title"/>
+                </xsl:element>
+            </xsl:element>
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
@@ -21,7 +25,7 @@
                         <xsl:call-template name="conformanceStatementHeader"/>
                         <xsl:element name="tbody">
                             <xsl:for-each select="./Constraint[@Type='cs']">
-                                <xsl:sort select="@Position" data-type="number"></xsl:sort>
+                                <xsl:sort select="@Location" data-type="number" order="ascending" />
                                 <xsl:call-template name="ConstraintContent">
                                     <xsl:with-param name="mode" select="$constraintMode"/>
                                     <xsl:with-param name="type" select="$type"/>
@@ -36,7 +40,7 @@
                         <xsl:call-template name="predicateHeader"/>
                         <xsl:element name="tbody">
                             <xsl:for-each select="./Constraint[@Type='pre']">
-                                <xsl:sort select="@Position" data-type="number"></xsl:sort>
+                                <xsl:sort select="@Location" data-type="number" order="ascending" />
                                 <xsl:call-template name="ConstraintContent">
                                     <xsl:with-param name="mode" select="$constraintMode"/>
                                     <xsl:with-param name="type" select="$type"/>

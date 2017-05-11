@@ -1,7 +1,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template match="CommentList">
-        <xsl:element name="p">
+        <xsl:element name="br"/>
+        <xsl:element name="span">
    			<xsl:element name="b">
             	<xsl:text>Comments</xsl:text>
             </xsl:element>
@@ -43,6 +44,7 @@
             </xsl:element>
             <xsl:element name="tbody">
                 <xsl:for-each select="Comment">
+                    <xsl:sort select="@Location" data-type="number" order="ascending" />
                     <xsl:element name="tr">
                         <xsl:attribute name="class">
                             <xsl:text>contentTr</xsl:text>
