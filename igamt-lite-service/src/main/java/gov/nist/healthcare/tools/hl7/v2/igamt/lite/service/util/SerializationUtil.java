@@ -143,6 +143,9 @@ public class SerializationUtil {
     for(org.jsoup.nodes.Element element : doc.select("th")){
       removeEndingBrTag(element);
     }
+    for(org.jsoup.nodes.Element element : doc.select("span")){
+      removeDoubleBrTag(element);
+    }
     Node bodyNode = doc.childNode(0).childNode(1);
     Node lastNode = bodyNode.childNode(bodyNode.childNodeSize() - 1);
     if(lastNode instanceof Element) {
@@ -153,6 +156,18 @@ public class SerializationUtil {
     String html = doc.body().html();
     html = html.replace("<br>", "<br />");
     return "<div class=\"fr-view\">" + html + "</div>";
+  }
+
+  private void removeDoubleBrTag(Element element) {
+    if(element.children().size()==2){
+      Element firstChild = element.children().get(0);
+      if(firstChild.tag().getName().equals("br")){
+        Element secondChild = element.children().get(1);
+        if(secondChild.tag().getName().equals("br")){
+          element.children().get(1).remove();
+        }
+      }
+    }
   }
 
   private void removeEndingBrTag(Element element) {
