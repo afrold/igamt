@@ -54,7 +54,7 @@ public class SerializationUtil {
     richtext = richtext.replace("<p style=\"\"><br></p>", "");
     richtext = richtext.replace("<p ","<span ");
     richtext = richtext.replace("<p>","<span>");
-    richtext = richtext.replace("</p>","<br></span>");
+    richtext = richtext.replace("</p>","<br/></span>");
     richtext = richtext.replace("&lsquo;","&#39;");
     richtext = richtext.replaceAll("[^\\p{Print}]", "?");
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
@@ -143,11 +143,11 @@ public class SerializationUtil {
     for(org.jsoup.nodes.Element element : doc.select("th")){
       removeEndingBrTag(element);
     }
-    
-    for(org.jsoup.nodes.Element element : doc.select("span")){
-      removeEndingBrTag(element);
+    Node bodyNode = doc.childNode(0).childNode(1);
+    Node lastNode = bodyNode.childNode(bodyNode.childNodeSize() - 1);
+    if(lastNode instanceof Element) {
+      removeEndingBrTag((Element) lastNode);
     }
-    
     //Renaming strong to work as html4 
     doc.select("strong").tagName("b");
     String html = doc.body().html();
