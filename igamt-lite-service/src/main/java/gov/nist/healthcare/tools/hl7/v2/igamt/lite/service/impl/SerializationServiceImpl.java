@@ -227,7 +227,8 @@ import nu.xom.Document;
         SerializableSection profileSection =
             new SerializableSection(id, prefix, position, headerLevel, title);
         if (profile.getSectionContents() != null && !profile.getSectionContents().isEmpty()) {
-            profileSection.addSectionContent(profile.getSectionContents());
+            profileSection.addSectionContent(serializationUtil.cleanRichtext(
+                profile.getSectionContents()));
         }
         if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
             nu.xom.Element textElement = new nu.xom.Element("Text");
@@ -327,8 +328,7 @@ import nu.xom.Document;
             SerializableSection profileComponentSection =
                 new SerializableSection(id, prefix, position, headerLevel, title);
             if (profileComponentLibrary.getSectionContents() != null && !profileComponentLibrary.getSectionContents().isEmpty()) {
-                profileComponentSection.addSectionContent(
-                    "<div class=\"fr-view\">" + profileComponentLibrary.getSectionContents() + "</div>");
+                profileComponentSection.addSectionContent(serializationUtil.cleanRichtext(profileComponentLibrary.getSectionContents()));
             }
             int currentPosition = 1;
             for(ProfileComponentLink profileComponentLink : profileComponentLibrary.getChildren()){
@@ -425,9 +425,7 @@ import nu.xom.Document;
             new SerializableSection(id, prefix, position, headerLevel, title);
         if (tableLibrary.getSectionContents() != null && !tableLibrary
             .getSectionContents().isEmpty()) {
-            valueSetsSection.addSectionContent(
-                "<div class=\"fr-view\">" + tableLibrary.getSectionContents()
-                    + "</div>");
+            valueSetsSection.addSectionContent(serializationUtil.cleanRichtext(tableLibrary.getSectionContents()));
         }
         List<TableLink> tableLinkList = new ArrayList<>(tableLibrary.getChildren());
         Collections.sort(tableLinkList);
@@ -490,8 +488,7 @@ import nu.xom.Document;
         SerializableSection datatypeSection =
             new SerializableSection(id, prefix, position, headerLevel, title);
         if (datatypeLibrary.getSectionContents() != null && !datatypeLibrary.getSectionContents().isEmpty()) {
-            datatypeSection.addSectionContent(
-                "<div class=\"fr-view\">" + datatypeLibrary.getSectionContents() + "</div>");
+            datatypeSection.addSectionContent(serializationUtil.cleanRichtext(datatypeLibrary.getSectionContents()));
         }
         List<DatatypeLink> datatypeLinkList =
             new ArrayList<>(datatypeLibrary.getChildren());
@@ -538,8 +535,7 @@ import nu.xom.Document;
             new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
         if (profile.getMessages().getSectionContents() != null && !profile.getMessages()
             .getSectionContents().isEmpty()) {
-            messageSection.addSectionContent(
-                "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
+            messageSection.addSectionContent(serializationUtil.cleanRichtext(profile.getMessages().getSectionContents()));
         }
         for (Message message : this.igDocumentMessages.getChildren()) {
             SerializableMessage serializableMessage =
@@ -564,9 +560,7 @@ import nu.xom.Document;
             SerializableSection compositeProfileSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
             if (profile.getCompositeProfiles().getSectionContents() != null && !profile
                 .getCompositeProfiles().getSectionContents().isEmpty()) {
-                compositeProfileSection.addSectionContent(
-                    "<div class=\"fr-view\">" + profile.getCompositeProfiles().getSectionContents() +
-                    "</div>");
+                compositeProfileSection.addSectionContent(serializationUtil.cleanRichtext(profile.getCompositeProfiles().getSectionContents()));
             }
             for (CompositeProfile compositeProfile : this.compositeProfiles) {
                 SerializableCompositeProfile serializableCompositeProfile =
@@ -676,9 +670,7 @@ import nu.xom.Document;
             new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
         if (profile.getSegmentLibrary().getSectionContents() != null && !profile.getSegmentLibrary()
             .getSectionContents().isEmpty()) {
-            segmentsSection.addSectionContent(
-                "<div class=\"fr-view\">" + profile.getSegmentLibrary().getSectionContents()
-                    + "</div>");
+            segmentsSection.addSectionContent(serializationUtil.cleanRichtext(profile.getSegmentLibrary().getSectionContents()));
         }
         for (SegmentLink segmentLink : this.bindedSegments) {
             if (segmentLink.getId() != null) {
