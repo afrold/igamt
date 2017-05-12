@@ -40,7 +40,7 @@
                             <xsl:text>#</xsl:text>
                         </xsl:element>
                         <xsl:element name="th">
-                            <xsl:text>Component Name</xsl:text>
+                            <xsl:text>Value</xsl:text>
                         </xsl:element>
                         <xsl:element name="th">
                             <xsl:text>Usage</xsl:text>
