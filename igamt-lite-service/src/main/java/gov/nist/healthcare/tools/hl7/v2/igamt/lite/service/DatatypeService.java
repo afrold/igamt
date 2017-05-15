@@ -26,6 +26,8 @@ public interface DatatypeService {
   public Datatype save(Datatype datatype);
 
   public List<Datatype> findAll();
+  
+  public List<Datatype> findAllHL7();
 
   public List<Datatype> findByIds(Set<String> ids);
 
@@ -40,8 +42,6 @@ public interface DatatypeService {
   public void delete(List<Datatype> datatypes);
 
   public Set<Datatype> collectDatatypes(Datatype datatype);
-
-  public List<Datatype> findByScope(String scope);
 
   public List<Datatype> findShared(Long accountId);
 
