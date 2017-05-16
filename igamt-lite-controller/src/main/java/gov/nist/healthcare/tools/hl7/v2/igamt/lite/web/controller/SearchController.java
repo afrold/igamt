@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -30,12 +31,12 @@ public class SearchController extends CommonController {
 	
 	@RequestMapping(value = "/datatypes", method = RequestMethod.GET, produces = "application/json")
 	public List<Datatype> getDatatypes() throws DataNotFoundException {
-		return datatypeService.findAllHL7();
+		return datatypeService.findByScope(SCOPE.MASTER.name());
 	}
 	
 	@RequestMapping(value = "/segments", method = RequestMethod.GET, produces = "application/json")
 	public List<Segment> getSegments() throws DataNotFoundException {
-		return segmentService.findAll();
+		return segmentService.findByScope(SCOPE.MASTER.name());
 	}
 	
 }

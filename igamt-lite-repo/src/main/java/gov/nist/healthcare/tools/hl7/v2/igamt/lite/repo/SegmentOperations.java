@@ -37,6 +37,8 @@ public interface SegmentOperations {
   public Date updateDate(String id, Date date);
 
   void updateStatus(String id, STATUS status);
+  
+  List<Segment> findByScope(String scope);
 
 
 }

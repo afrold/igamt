@@ -41,7 +41,7 @@ public interface DatatypeOperations {
 
   public List<Datatype> findUserDatatypesByIds(Set<String> ids);
 
-  public List<Datatype> findByScope(SCOPE master);
+  public List<Datatype> findByScope(String scope);
 
   public List<Datatype> findShared(Long accountId);
 

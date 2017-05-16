@@ -108,6 +108,12 @@ public class DatatypeServiceImpl implements DatatypeService {
   }
 
   @Override
+  public List<Datatype> findByScope(String scope) {
+    // TODO Auto-generated method stub
+    return datatypeRepository.findByScope(scope);
+  }
+
+  @Override
   public List<Datatype> findShared(Long accountId) {
     // TODO Auto-generated method stub
     List<Datatype> datatypes = datatypeRepository.findShared(accountId);
@@ -229,11 +235,4 @@ public class DatatypeServiceImpl implements DatatypeService {
       String id) {
     return datatypeRepository.findByScopeAndVersionAndParentVersion(scope, hl7Version, id);
   }
-
-	@Override
-	public List<Datatype> findAllHL7() {
-		List<Datatype> datatypes = datatypeRepository.findByScope(SCOPE.MASTER);
-		log.info("DataypeServiceImpl.findByScopesAndVersion=" + datatypes.size());
-		return datatypes;
-	}
 }
