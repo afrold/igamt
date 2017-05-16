@@ -31,22 +31,35 @@ public class SearchController extends CommonController {
 
 	
 	@RequestMapping(value = "/datatypes", method = RequestMethod.GET, produces = "application/json")
-	public List<Datatype> getDatatypes() throws DataNotFoundException {
+	public List<Datatype> getDatatypes(@RequestParam(value="name", required=false) String name) throws DataNotFoundException {
+		if(name != null && !name.isEmpty()){
+			return datatypeService.findByNameAndScope(name, SCOPE.HL7STANDARD.name());
+		}
 		return datatypeService.findByScope(SCOPE.HL7STANDARD.name());
 	}
 	
 	@RequestMapping(value = "/datatype", method = RequestMethod.GET, produces = "application/json")
-	public Datatype getDatatypes(@RequestParam(value="name") String name,@RequestParam(value="hl7Version") String hl7Version) throws DataNotFoundException {
+	public Datatype getDatatype(@RequestParam(value="name") String name,@RequestParam(value="hl7Version") String hl7Version) throws DataNotFoundException {
 		if(name != null && !name.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
 			return datatypeService.findByNameAndVesionAndScope(name, hl7Version, SCOPE.HL7STANDARD.name());
 		}
 		return null;
 	}
 	
-	
 	@RequestMapping(value = "/segments", method = RequestMethod.GET, produces = "application/json")
-	public List<Segment> getSegments() throws DataNotFoundException {
+	public List<Segment> getSegments(@RequestParam(value="name", required=false) String name) throws DataNotFoundException {
+		if(name != null && !name.isEmpty()){
+			return segmentService.findByNameAndScope(name, SCOPE.HL7STANDARD.name());
+		}
 		return segmentService.findByScope(SCOPE.HL7STANDARD.name());
+	}
+	
+	@RequestMapping(value = "/segment", method = RequestMethod.GET, produces = "application/json")
+	public Segment getSegment(@RequestParam(value="name") String name,@RequestParam(value="hl7Version") String hl7Version) throws DataNotFoundException {
+		if(name != null && !name.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
+			return segmentService.findByNameAndVersionAndScope(name, hl7Version, SCOPE.HL7STANDARD.name());
+		}
+		return null;
 	}
 	
 }

@@ -120,6 +120,12 @@ public List<Segment> findByScope(String scope) {
 	return null;
 }
 
+@Override
+public List<Segment> findByNameAndScope(String name, String scope) {
+	
+	return segmentRepository.findByNameAndScope(name, scope);
+}
+
 
 
 }
