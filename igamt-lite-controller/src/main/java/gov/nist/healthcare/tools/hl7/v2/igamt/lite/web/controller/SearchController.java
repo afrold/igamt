@@ -15,9 +15,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 
 @RestController
@@ -33,6 +35,9 @@ public class SearchController extends CommonController {
 	
 	@Autowired
 	private MessageService messageService;
+	
+	@Autowired
+	private TableService tableService;
 	
 	@RequestMapping(value = "/datatypes", method = RequestMethod.GET, produces = "application/json")
 	public List<Datatype> getDatatypes(@RequestParam(value="name", required=false) String name) throws DataNotFoundException {
@@ -78,6 +83,31 @@ public class SearchController extends CommonController {
 	public Message getMessage(@RequestParam(value="name") String name,@RequestParam(value="hl7Version") String hl7Version) throws DataNotFoundException {
 		if(name != null && !name.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
 			return messageService.findByNameAndVersionAndScope(name, hl7Version, SCOPE.HL7STANDARD.name());
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "/valueSets", method = RequestMethod.GET, produces = "application/json")
+	public List<Table> getValueSets(@RequestParam("scope") String scope, @RequestParam(value="bindingIdentifier", required=false) String bindingIdentifier) throws DataNotFoundException {
+		if(scope.equals(SCOPE.HL7STANDARD.name()) || scope.equals(SCOPE.PHINVADS.name())){
+			if(bindingIdentifier != null && !bindingIdentifier.isEmpty()){
+				return tableService.findByBindingIdentifierAndScope(bindingIdentifier, scope);
+			}
+			return tableService.findByScope(scope);
+		}
+		return tableService.findByScope(SCOPE.HL7STANDARD.name());
+	}
+	
+	@RequestMapping(value = "/valueSet", method = RequestMethod.GET, produces = "application/json")
+	public Table getValueSet(@RequestParam("scope") String scope, @RequestParam(value="bindingIdentifier") String bindingIdentifier,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
+		if(bindingIdentifier != null && !bindingIdentifier.isEmpty()){
+			if(SCOPE.PHINVADS.name().equals(scope)){
+				return tableService.findOneByScopeAndBindingIdentifier(scope,bindingIdentifier);
+			} else if(SCOPE.HL7STANDARD.name().equals(scope)){
+				if(hl7Version != null && !hl7Version.isEmpty()){
+					return tableService.findByScopeAndVersionAndBindingIdentifier(SCOPE.HL7STANDARD, hl7Version, bindingIdentifier);
+				}
+			}
 		}
 		return null;
 	}

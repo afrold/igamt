@@ -46,5 +46,10 @@ public interface TableOperations {
 
   Table findOneShortById(String id);
 
+  List<Table> findByScope(String scope);
+  
+  public List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope);
+  
+  public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier);
 
 }
