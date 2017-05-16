@@ -45,4 +45,10 @@ public interface MessageService {
 	public Date updateDate(String id, Date date);
 
 	Message save(Message message, Date dateUpdated);
+
+	List<Message> findByNameAndScope(String name, String scope);
+
+	List<Message> findByScope(String scope);
+
+	Message findByNameAndVersionAndScope(String name, String hl7Version, String scope);
 }

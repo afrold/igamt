@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 
@@ -28,7 +30,9 @@ public class SearchController extends CommonController {
 	
 	@Autowired
 	private SegmentService segmentService;
-
+	
+	@Autowired
+	private MessageService messageService;
 	
 	@RequestMapping(value = "/datatypes", method = RequestMethod.GET, produces = "application/json")
 	public List<Datatype> getDatatypes(@RequestParam(value="name", required=false) String name) throws DataNotFoundException {
@@ -58,6 +62,22 @@ public class SearchController extends CommonController {
 	public Segment getSegment(@RequestParam(value="name") String name,@RequestParam(value="hl7Version") String hl7Version) throws DataNotFoundException {
 		if(name != null && !name.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
 			return segmentService.findByNameAndVersionAndScope(name, hl7Version, SCOPE.HL7STANDARD.name());
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "/messages", method = RequestMethod.GET, produces = "application/json")
+	public List<Message> getMessages(@RequestParam(value="name", required=false) String name) throws DataNotFoundException {
+		if(name != null && !name.isEmpty()){
+			return messageService.findByNameAndScope(name, SCOPE.HL7STANDARD.name());
+		}
+		return messageService.findByScope(SCOPE.HL7STANDARD.name());
+	}
+	
+	@RequestMapping(value = "/message", method = RequestMethod.GET, produces = "application/json")
+	public Message getMessage(@RequestParam(value="name") String name,@RequestParam(value="hl7Version") String hl7Version) throws DataNotFoundException {
+		if(name != null && !name.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
+			return messageService.findByNameAndVersionAndScope(name, hl7Version, SCOPE.HL7STANDARD.name());
 		}
 		return null;
 	}
