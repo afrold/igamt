@@ -114,6 +114,18 @@ public class SegmentServiceImpl implements SegmentService {
     segmentRepository.delete(segments);
   }
 
+@Override
+public List<Segment> findByScope(String scope) {
+	segmentRepository.findByScope(scope);
+	return null;
+}
+
+@Override
+public List<Segment> findByNameAndScope(String name, String scope) {
+	
+	return segmentRepository.findByNameAndScope(name, scope);
+}
+
 
 
 }

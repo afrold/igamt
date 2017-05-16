@@ -55,4 +55,10 @@ public interface TableService {
 
   Table findOneShortById(String id);
 
+  List<Table> findByScope(String name);
+
+  List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope);
+
+  Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier);
+
 }

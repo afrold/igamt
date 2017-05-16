@@ -20,10 +20,17 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @Configuration
-@EnableWebMvc
 @ComponentScan({ "gov.nist.healthcare.tools.hl7.v2.igamt.lite",
 		"gov.nist.healthcare.nht.acmgt" })
+@EnableSwagger2
+@EnableWebMvc
 @Import({ MongoConfig.class, AccountConfig.class })
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
@@ -31,6 +38,12 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	public void configureDefaultServletHandling(
 			DefaultServletHandlerConfigurer configurer) {
 		configurer.enable();
+	}
+	
+	@Bean
+	public Docket api() {
+		return new Docket(DocumentationType.SWAGGER_2).pathMapping("/api").select().apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.ant("/search/*")).build();
 	}
 
 	// @Override

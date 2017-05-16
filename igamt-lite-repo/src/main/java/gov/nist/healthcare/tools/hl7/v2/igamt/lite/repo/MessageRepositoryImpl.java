@@ -64,4 +64,30 @@ public class MessageRepositoryImpl implements MessageOperations {
     mongo.updateFirst(query, update, Message.class);
     return date;
   }
+
+@Override
+public List<Message> findByNameAndScope(String name, String scope) {
+	Criteria where = Criteria.where("name").is(name);
+    where.andOperator(Criteria.where("scope").is(scope));
+    Query qry = Query.query(where);
+    List<Message> result = mongo.find(qry, Message.class);
+    return result;
+}
+
+@Override
+public Message findByNameAndVersionAndScope(String name, String hl7Version, String scope) {
+	Criteria where = Criteria.where("name").is(name);
+    where.andOperator(Criteria.where("hl7Version").is(hl7Version),Criteria.where("scope").is(scope));
+    Query qry = Query.query(where);
+    Message result = mongo.findOne(qry, Message.class);
+    return result;
+}
+
+@Override
+public List<Message> findByScope(String scope) {
+	Criteria where = Criteria.where("scope").is(scope);
+    Query qry = Query.query(where);
+    List<Message> result = mongo.find(qry, Message.class);
+    return result;
+}
 }

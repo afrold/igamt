@@ -26,13 +26,19 @@
 	<sec:http pattern="/fonts/**" security="none" />
 	<sec:http pattern="/lib/**" security="none" />
 	<sec:http pattern="/docs/**" security="none" />
- 	
+	<sec:http pattern="/swagger-ui.html" security="none" />
+	<sec:http pattern="/webjars/**" security="none" />
+	<sec:http pattern="/swagger-resources/**" security="none" />
+	<sec:http pattern="/v2/api-docs/**" security="none" />
+	 	
 	<sec:http pattern="/api/igdocuments/config" security="none" />
 	<sec:http pattern="/api/datatype-library/config" security="none" />
  
 	<sec:http pattern="/api/appInfo" security="none" />
 	<sec:http pattern="/api/uploaded_files/file" security="none" />
 	<sec:http pattern="/api/documentations/findAll" security="none" />
+
+	<sec:http pattern="/api/search/**" security="none" />
 
 	<sec:http create-session="ifRequired" use-expressions="true">
 		<sec:http-basic entry-point-ref="restAuthenticationEntryPoint" />
