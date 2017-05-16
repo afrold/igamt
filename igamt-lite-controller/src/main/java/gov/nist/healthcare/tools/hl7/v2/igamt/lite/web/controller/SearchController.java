@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -31,12 +32,21 @@ public class SearchController extends CommonController {
 	
 	@RequestMapping(value = "/datatypes", method = RequestMethod.GET, produces = "application/json")
 	public List<Datatype> getDatatypes() throws DataNotFoundException {
-		return datatypeService.findByScope(SCOPE.MASTER.name());
+		return datatypeService.findByScope(SCOPE.HL7STANDARD.name());
 	}
+	
+	@RequestMapping(value = "/datatype", method = RequestMethod.GET, produces = "application/json")
+	public Datatype getDatatypes(@RequestParam(value="name") String name,@RequestParam(value="hl7Version") String hl7Version) throws DataNotFoundException {
+		if(name != null && !name.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
+			return datatypeService.findByNameAndVesionAndScope(name, hl7Version, SCOPE.HL7STANDARD.name());
+		}
+		return null;
+	}
+	
 	
 	@RequestMapping(value = "/segments", method = RequestMethod.GET, produces = "application/json")
 	public List<Segment> getSegments() throws DataNotFoundException {
-		return segmentService.findByScope(SCOPE.MASTER.name());
+		return segmentService.findByScope(SCOPE.HL7STANDARD.name());
 	}
 	
 }
