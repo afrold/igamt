@@ -2112,7 +2112,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
     };
 });
 
-angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segmentsMap, config, tables, selectedMessage, $rootScope, $q, $timeout,$mdDialog, selectedNode) {
+angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segmentsMap, config, tables, selectedMessage, $rootScope, $q, $mdDialog, selectedNode) {
     $scope.dialogStep = 0;
     $scope.segmentsMap = segmentsMap;
     $scope.config = config;
@@ -2525,7 +2525,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
 
 });
 
-angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, segmentsMap, config, tables, selectedMessage, $rootScope, $q, $timeout,$mdDialog) {
+angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, segmentsMap, config, tables, selectedMessage, $rootScope, $q, $mdDialog) {
     $scope.dialogStep = 0;
     $scope.segmentsMap = segmentsMap;
     $scope.config = config;

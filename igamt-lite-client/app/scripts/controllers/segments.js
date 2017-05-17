@@ -879,18 +879,20 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.manageConformanceStatement = function() {
-        var modalInstance = $modal.open({
+        $mdDialog.show({
+            parent: angular.element(document).find('body'),
             templateUrl: 'ConformanceStatementSegmentCtrl.html',
             controller: 'ConformanceStatementSegmentCtrl',
-            windowClass: 'app-modal-window',
-            resolve: {}
-        });
-        modalInstance.result.then(function(segment) {
+            locals: {
+                selectedSegment : $rootScope.segment,
+                config : $rootScope.config,
+                tables : $rootScope.tables
+            }
+        }).then(function(segment) {
             if (segment) {
+                $rootScope.segment = segment;
                 $scope.setDirty();
             }
-        }, function() {
-
         });
     };
 
@@ -1526,8 +1528,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         }
     };
 });
-
-angular.module('igl').controller('CoConstraintUSERDefinitionCtrl', function($scope, $mdDialog, coConstraintUSERDefinition, $rootScope) {
+angular.module('igl').controller('CoConstraintUSERDefinitionCtrl', function($scope, $mdDialog, coConstraintUSERDefinition) {
     $scope.coConstraintUSERDefinition = angular.copy(coConstraintUSERDefinition);
     $scope.title = null;
 
@@ -1551,7 +1552,6 @@ angular.module('igl').controller('CoConstraintUSERDefinitionCtrl', function($sco
         $mdDialog.hide(userColumnDefinition);
     };
 });
-
 angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($scope, $mdDialog, coConstraintTHENDefinition, $rootScope, TableService) {
     $scope.selectedCoConstraintTHENDefinition = angular.copy(coConstraintTHENDefinition);
 
@@ -1736,8 +1736,6 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
     };
 
 });
-
-
 angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope, $mdDialog, coConstraintIFDefinition, $rootScope) {
     $scope.selectedCoConstraintIFDefinition = angular.copy(coConstraintIFDefinition);
 
@@ -1868,7 +1866,6 @@ angular.module('igl').controller('CoConstraintIFDefinitionCtrl', function($scope
     };
 
 });
-
 angular.module('igl').controller('SegmentRowCtrl', function($scope, $filter) {
     $scope.formName = "form_" + new Date().getTime();
 });
@@ -1959,7 +1956,6 @@ angular.module('igl').controller('EditDMSecondReferenceCtrl', function($scope, $
         $modalInstance.close($scope.currentMappingStructure);
     };
 });
-
 angular.module('igl').controller('DynamicMappingCtrl', function($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.changed = false;
     $scope.selectedNode = selectedNode;
@@ -2012,7 +2008,6 @@ angular.module('igl').controller('DynamicMappingCtrl', function($scope, $modalIn
     };
 
 });
-
 angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope, $q) {
     $scope.selectedNode = selectedNode;
     $scope.constraintType = 'Plain';
@@ -2267,8 +2262,10 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
     $scope.existingPredicate = $scope.findExistingPredicate();
 
 });
-
-angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, $modalInstance, $rootScope, $q) {
+angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, config, tables, selectedSegment, $rootScope, $q, $mdDialog) {
+    $scope.selectedSegment = angular.copy(selectedSegment);
+    $scope.config = config;
+    $scope.tables = tables;
     $scope.constraintType = 'Plain';
     $scope.constraints = [];
     $scope.firstConstraint = null;
@@ -2280,11 +2277,9 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
     $scope.changed = false;
-    $scope.tempComformanceStatements = [];
-    angular.copy($rootScope.segment.conformanceStatements, $scope.tempComformanceStatements);
 
     $scope.treeDataForContext = [];
-    $scope.treeDataForContext.push(angular.copy($rootScope.segment));
+    $scope.treeDataForContext.push($scope.selectedSegment);
     $scope.treeDataForContext[0].pathInfoSet = [];
     $scope.generatePathInfo = function(current, positionNumber, locationName, instanceNumber, isInstanceNumberEditable, nodeName) {
         var pathInfo = {};
@@ -2466,14 +2461,12 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $scope.initConformanceStatement();
     };
 
-    $scope.ok = function() {
-        $modalInstance.close();
+    $scope.cancel = function() {
+        $mdDialog.hide();
     };
 
-    $scope.saveclose = function() {
-        angular.copy($scope.tempComformanceStatements, $rootScope.segment.conformanceStatements);
-        $rootScope.recordChanged($rootScope.segment);
-        $modalInstance.close();
+    $scope.save = function() {
+        $mdDialog.hide($scope.selectedSegment);
     };
 });
 angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
@@ -3204,7 +3197,6 @@ angular.module('igl').controller('AddBindingForSegment', function($scope, $modal
         $modalInstance.dismiss('cancel');
     };
 });
-
 angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     $scope.currentNode = currentNode;
