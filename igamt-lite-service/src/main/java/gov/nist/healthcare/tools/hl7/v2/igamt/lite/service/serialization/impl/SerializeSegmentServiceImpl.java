@@ -1,14 +1,30 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintColumnDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
@@ -18,16 +34,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeTableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
-import nu.xom.Attribute;
-import nu.xom.Element;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -61,30 +67,30 @@ import java.util.Map;
     @Override
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig) {
         Segment segment = segmentService.findById(segmentLink.getId());
-        return this.serializeSegment(segment,segmentLink,prefix,position,headerLevel,segmentUsageConfig,null,null);
+        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,null,null);
     }
 
     @Override public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig,
         Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables) {
         Segment segment = compositeProfileSegments.get(segmentLink.getId());
-        return this.serializeSegment(segment,segmentLink,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables);
+        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables);
     }
 
-    private SerializableSection serializeSegment(Segment segment, SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables) {
+    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables) {
         if (segment != null) {
             //Create section node
             String id = segment.getId();
             String segmentPosition = String.valueOf(position);
             String sectionHeaderLevel = String.valueOf(headerLevel);
-            String title = segmentLink.getLabel() + " - " + segment.getDescription();
+            String title = segment.getLabel() + " - " + segment.getDescription();
             SerializableSection serializableSegmentSection = new SerializableSection(id,prefix,segmentPosition,sectionHeaderLevel,title);
             //create segment node
             id = segment.getId();
-            String name = segmentLink.getName();
-            String label = segmentLink.getExt() == null || segmentLink.getExt().isEmpty() ?
-                segmentLink.getName() :
-                segmentLink.getLabel();
+            String name = segment.getName();
+            String label = segment.getExt() == null || segment.getExt().isEmpty() ?
+        		segment.getName() :
+    			segment.getLabel();
             segmentPosition = "";
             sectionHeaderLevel = String.valueOf(headerLevel+1);
             title = segment.getName();
@@ -204,5 +210,11 @@ import java.util.Map;
         Map<String, Datatype> compositeProfileDatatypes) {
         return compositeProfileDatatypes.get(id);
     }
+
+	@Override
+	public SerializableSection serializeSegment(Segment segment) {
+		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig("table");
+		return serializeSegment(segment, String.valueOf(1), 1, 1, defaultConfig.getFieldsExport(), null, null);
+	}
 
 }

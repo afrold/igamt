@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
@@ -67,6 +68,24 @@ public class ExportController extends CommonController{
 		Table table = tableService.findById(id);
 		if(table!=null && table.getScope().equals(SCOPE.HL7STANDARD)){
 			return exportService.exportDataModelAsHtml(table,table.getName());
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "/segment/{id}/json", method = RequestMethod.GET, produces = "application/json")
+	public Segment getSegmentAsJson(@PathVariable(value="id") String id) throws DataNotFoundException {
+		Segment segment = segmentService.findById(id);
+		if(segment!=null && segment.getScope().equals(SCOPE.HL7STANDARD)){
+			return segment;
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "/segment/{id}/html", method = RequestMethod.GET, produces = "text/html")
+	public String getSegmentAsHtml(@PathVariable(value="id") String id) throws DataNotFoundException {
+		Segment segment = segmentService.findById(id);
+		if(segment!=null && segment.getScope().equals(SCOPE.HL7STANDARD)){
+			return exportService.exportDataModelAsHtml(segment,segment.getName());
 		}
 		return null;
 	}

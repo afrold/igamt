@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -1055,6 +1057,8 @@ import nu.xom.Document;
 			serializableElement = serializeDatatypeService.serializeDatatype((Datatype)dataModel);
 		} else if(dataModel instanceof Table){
 			serializableElement = serializeTableService.serializeTable((Table)dataModel);
+		} else if(dataModel instanceof Segment){
+			serializableElement = serializeSegmentService.serializeSegment((Segment)dataModel);
 		}
 		if(serializableElement != null){
 			serializableStructure.addSerializableElement(serializableElement);
