@@ -5,11 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
@@ -1051,9 +1050,14 @@ import nu.xom.Document;
 	@Override
 	public Document serializeDataModel(DataModel dataModel) {
 		SerializableStructure serializableStructure = new SerializableStructure();
+		SerializableElement serializableElement = null;
 		if(dataModel instanceof Datatype){
-			SerializableDatatype serializableDatatype = serializeDatatypeService.serializeDatatype((Datatype)dataModel);
-			serializableStructure.addSerializableElement(serializableDatatype);
+			serializableElement = serializeDatatypeService.serializeDatatype((Datatype)dataModel);
+		} else if(dataModel instanceof Table){
+			serializableElement = serializeTableService.serializeTable((Table)dataModel);
+		}
+		if(serializableElement != null){
+			serializableStructure.addSerializableElement(serializableElement);
 		}
 		return serializableStructure.serializeStructure();
 	}
