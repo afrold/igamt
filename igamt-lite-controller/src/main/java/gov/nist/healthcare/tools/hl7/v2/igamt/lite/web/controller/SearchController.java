@@ -24,7 +24,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundExc
 @RestController
 @RequestMapping("/search")
 public class SearchController extends CommonController {
-	Logger log = LoggerFactory.getLogger(ProfileComponentController.class);
+	Logger log = LoggerFactory.getLogger(SearchController.class);
 	
 	@Autowired
 	private DatatypeService datatypeService;

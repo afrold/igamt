@@ -10,6 +10,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocumen
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 
 /**
@@ -32,7 +33,6 @@ public interface ExportService {
     InputStream exportIGDocumentAsHtml(IGDocument igDocument, SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig) throws IOException;
     InputStream exportDatatypeLibraryDocumentAsHtml(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig);
     InputStream exportDatatypeLibraryDocumentAsDocx(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig);
-	String exportDataModelAsHtml(DataModel dataModel, String title);
-
+	String exportDataModelAsHtml(Object dataModel, String title);
 
 }

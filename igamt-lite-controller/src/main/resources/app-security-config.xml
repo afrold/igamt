@@ -14,7 +14,7 @@
 
 	<context:property-placeholder
 		location="classpath:app-web-config.properties, classpath:app-auth-config.properties" />
-
+	
 	<sec:http pattern="/index.html" security="none" />
 	<sec:http pattern="/404.html" security="none" />
 	<sec:http pattern="/bower_components/**" security="none" />
