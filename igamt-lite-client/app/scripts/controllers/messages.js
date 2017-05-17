@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 
-angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI, ViewSettings, ValidationService) {
+angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, $q, CloneDeleteSvc, MastermapSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, TableLibrarySvc, TableService, DatatypeService, blockUI, ViewSettings, ValidationService, $mdDialog) {
 
     $scope.viewSettings = ViewSettings;
 
@@ -705,24 +705,24 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     };
 
     $scope.openAddGlobalConformanceStatementDialog = function(message) {
-        var modalInstance = $modal.open({
+        $mdDialog.show({
+            parent: angular.element(document).find('body'),
             templateUrl: 'GlobalConformanceStatementCtrl.html',
             controller: 'GlobalConformanceStatementCtrl',
-            windowClass: 'app-modal-window',
-            keyboard: false,
-            resolve: {
-                selectedMessage: function() {
-                    return message;
-                },
+            locals: {
+                selectedMessage: message,
+                segmentsMap: $rootScope.segmentsMap,
+                config : $rootScope.config,
+                tables : $rootScope.tables
             }
-        });
-        modalInstance.result.then(function(message) {
+        }).then(function(message) {
             if (message) {
                 $rootScope.message = message;
                 $scope.findAllGlobalConstraints();
                 $scope.setDirty();
             }
-        }, function() {});
+        });
+
     };
 
     $scope.openAddGlobalPredicateDialog = function(node, message) {
@@ -812,7 +812,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         if(node && node.obj){
             var currentDT = $rootScope.datatypesMap[node.obj.datatype.id];
             if(_.find($rootScope.config.valueSetAllowedDTs, function(valueSetAllowedDT){
-                    return valueSetAllowedDT == currentDT.name;
+                    return valueSetAllowedDT === currentDT.name;
                 })) return true;
         }
 
@@ -820,7 +820,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             var parentDT = $rootScope.datatypesMap[node.fieldDT];
             var pathSplit = node.segmentPath.split(".");
             if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
-                    return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[1];
+                    return valueSetAllowedComponent.dtName === parentDT.name && valueSetAllowedComponent.location == pathSplit[1];
                 })) return true;
         }
 
@@ -828,7 +828,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             var parentDT = $rootScope.datatypesMap[node.componentDT];
             var pathSplit = node.segmentPath.split(".");
             if(_.find($rootScope.config.valueSetAllowedComponents, function(valueSetAllowedComponent){
-                    return valueSetAllowedComponent.dtName == parentDT.name && valueSetAllowedComponent.location == pathSplit[2];
+                    return valueSetAllowedComponent.dtName === parentDT.name && valueSetAllowedComponent.location == pathSplit[2];
                 })) return true;
         }
 
@@ -839,7 +839,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         var result = [];
         if(node && $rootScope.message){
             result = _.filter($rootScope.message.valueSetBindings, function(binding){
-                return binding.location == $rootScope.refinePath(node.path);
+                return binding.location === $rootScope.refinePath(node.path);
             });
             for (var i = 0; i < result.length; i++) {
                 result[i].bindingFrom = 'message';
@@ -852,7 +852,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             if(node.segment) {
                 var parentSeg = $rootScope.segmentsMap[node.segment];
                 result = _.filter(parentSeg.valueSetBindings, function(binding){
-                    return binding.location == node.segmentPath;
+                    return binding.location === node.segmentPath;
                 });
                 for (var i = 0; i < result.length; i++) {
                     result[i].bindingFrom = 'segment';
@@ -867,7 +867,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
                 var parentDT = $rootScope.datatypesMap[node.fieldDT];
                 var subPath = node.segmentPath.substr(node.segmentPath.indexOf('.') + 1);
                 result = _.filter(parentDT.valueSetBindings, function(binding){
-                    return binding.location == subPath;
+                    return binding.location === subPath;
                 });
                 for (var i = 0; i < result.length; i++) {
                     result[i].bindingFrom = 'field';
@@ -882,7 +882,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
                 var parentDT = $rootScope.datatypesMap[node.componentDT];
                 var subPath = node.segmentPath.substr(node.segmentPath.split('.', 2).join('.').length + 1);
                 result = _.filter(parentDT.valueSetBindings, function(binding){
-                    return binding.location == subPath;
+                    return binding.location === subPath;
                 });
                 for (var i = 0; i < result.length; i++) {
                     result[i].bindingFrom = 'component';
@@ -897,7 +897,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         var result = [];
         if(node && $rootScope.message){
             result = _.filter($rootScope.message.comments, function(comment){
-                return comment.location == $rootScope.refinePath(node.path);
+                return comment.location === $rootScope.refinePath(node.path);
             });
             for (var i = 0; i < result.length; i++) {
                 result[i].from = 'message';
@@ -907,7 +907,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             if(node.segment) {
                 var parentSeg = $rootScope.segmentsMap[node.segment];
                 var subResult = _.filter(parentSeg.comments, function(comment){
-                    return comment.location == node.segmentPath;
+                    return comment.location === node.segmentPath;
                 });
                 for (var i = 0; i < subResult.length; i++) {
                     subResult[i].from = 'segment';
@@ -920,7 +920,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
                 var parentDT = $rootScope.datatypesMap[node.fieldDT];
                 var subPath = node.segmentPath.substr(node.segmentPath.indexOf('.') + 1);
                 var subSubResult = _.filter(parentDT.comments, function(comment){
-                    return comment.location == subPath;
+                    return comment.location === subPath;
                 });
                 for (var i = 0; i < subSubResult.length; i++) {
                     subSubResult[i].from = 'field';
@@ -933,7 +933,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
                 var parentDT = $rootScope.datatypesMap[node.componentDT];
                 var subPath = node.segmentPath.substr(node.segmentPath.split('.', 2).join('.').length + 1);
                 var subSubSubResult = _.filter(parentDT.comments, function(comment){
-                    return comment.location == subPath;
+                    return comment.location === subPath;
                 });
                 for (var i = 0; i < subSubSubResult.length; i++) {
                     subSubSubResult[i].from = 'component';
@@ -1102,7 +1102,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
 });
 
-angular.module('igl').controller('MessageRowCtrl', function($scope, $filter) {
+angular.module('igl').controller('MessageRowCtrl', function($scope) {
     $scope.formName = "form_" + new Date().getTime();
 
 
@@ -2487,7 +2487,11 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, $modalI
 
 });
 
-angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, $modalInstance, selectedMessage, $rootScope, $q) {
+angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, segmentsMap, config, tables, selectedMessage, $rootScope, $q, $timeout,$mdDialog) {
+    $scope.dialogStep = 0;
+    $scope.segmentsMap = segmentsMap;
+    $scope.config = config;
+    $scope.tables = tables;
     $scope.selectedMessage = angular.copy(selectedMessage);
     $scope.constraints = [];
     $scope.firstConstraint = null;
@@ -2497,6 +2501,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.newComplexConstraintId = null;
     $scope.selectedContextNode = null;
     $scope.treeDataForMessage = [];
+    $scope.treeDataForContext = [];
     $scope.constraintType = 'Plain';
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
@@ -2505,6 +2510,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.treeDataForMessage.push($scope.selectedMessage);
     $scope.draggingStatus = null;
     $scope.contextKey = null;
+    $scope.oldConformanceStatements = [];
 
     $scope.setChanged = function() {
         $scope.changed = true;
@@ -2512,7 +2518,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
 
     $scope.toggleChildren = function(data) {
         data.childrenVisible = !data.childrenVisible;
-        data.folderClass = data.childrenVisible ? "fa-minus" : "fa-plus";
+        data.folderClass = data.childrenVisible ? "fa-caret-down" : "fa-caret-right";
     };
 
     $scope.beforeNodeDrop = function() {
@@ -2525,10 +2531,49 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         return deferred.promise;
     };
 
-    $scope.afterNodeDrop = function() {
+    $scope.isEmptyConstraintID = function(newConstraint) {
+        if (newConstraint && newConstraint.constraintId === null) return true;
+        if (newConstraint && newConstraint.constraintId === '') return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintVerb = function(newConstraint) {
+        if (newConstraint && newConstraint.verb === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintPattern = function(newConstraint) {
+        if (newConstraint && newConstraint.contraintType === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintValue = function(newConstraint) {
+        if (newConstraint && newConstraint.value === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintValue2 = function(newConstraint) {
+        if (newConstraint && newConstraint.value2 === null) return true;
+
+        return false;
+    };
+
+    $scope.getUpdatedBindingIdentifier = function(table) {
+        if (table.hl7Version && table.hl7Version !== '') {
+            return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
+        }
+        return table.bindingIdentifier;
+    };
+
+    $scope.afterFirstNodeDrop = function() {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
         $scope.generateFirstPositionAndLocationPath();
+
     };
 
     $scope.afterSecondNodeDrop = function() {
@@ -2545,12 +2590,21 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.selectContext = function(selectedContextNode) {
         $scope.contextKey = new ObjectId().toString();
         $scope.selectedContextNode = selectedContextNode;
+        $scope.oldConformanceStatements = angular.copy(selectedContextNode);
         $scope.selectedContextNode.pathInfoSet = [];
         $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null, $scope.contextKey);
         $scope.initConformanceStatement();
+        $scope.treeDataForContext = [];
+        $scope.treeDataForContext.push($scope.selectedContextNode);
     };
 
+    $scope.goNext = function() {
+        $scope.dialogStep = $scope.dialogStep + 1;
+    };
 
+    $scope.goBack = function () {
+        $scope.dialogStep = $scope.dialogStep - 1;
+    };
 
     $scope.generateFirstPositionAndLocationPath = function() {
         if ($scope.newConstraint.pathInfoSet_1) {
@@ -2729,12 +2783,12 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss();
+        $mdDialog.hide();
     };
 
-    $scope.saveclose = function() {
+    $scope.save = function() {
         $rootScope.recordChanged();
-        $modalInstance.close($scope.selectedMessage);
+        $mdDialog.hide($scope.selectedMessage);
     };
 
     $scope.initConformanceStatement();
