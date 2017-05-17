@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -119,8 +117,6 @@ import nu.xom.Document;
     private List<TableLink> unbindedTables;
 
     private Messages igDocumentMessages;
-
-    private List<TableLink> tableLibrary;
     
     static final Logger logger = LoggerFactory.getLogger(SerializationService.class);
 
@@ -169,7 +165,6 @@ import nu.xom.Document;
         this.bindedDatatypes = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
         this.bindedSegments = new ArrayList<>();
-        this.tableLibrary = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.compositeProfiles = new ArrayList<>();
         if (igDocument.getProfile().getCompositeProfiles() != null
@@ -1059,6 +1054,8 @@ import nu.xom.Document;
 			serializableElement = serializeTableService.serializeTable((Table)dataModel);
 		} else if(dataModel instanceof Segment){
 			serializableElement = serializeSegmentService.serializeSegment((Segment)dataModel);
+		} else if(dataModel instanceof Message){
+			serializableElement = serializeMessageService.serializeMessage((Message)dataModel);
 		}
 		if(serializableElement != null){
 			serializableStructure.addSerializableElement(serializableElement);
