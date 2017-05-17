@@ -45,16 +45,15 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
         ProfileComponentLink profileComponentLink, Integer position) {
         if(profileComponentLink!=null){
             ProfileComponent profileComponent = profileComponentService.findById(profileComponentLink.getId());
-            return serializeProfileComponent(profileComponent,position);
+            return serializeProfileComponent(profileComponent,position,String.valueOf(3));
         }
         return null;
     }
 
-	private SerializableSection serializeProfileComponent(ProfileComponent profileComponent, Integer position) {
+	private SerializableSection serializeProfileComponent(ProfileComponent profileComponent, Integer position, String sectionHeaderLevel) {
 		if(profileComponent!=null){
             String id = profileComponent.getId();
             String segmentPosition = String.valueOf(position);
-            String sectionHeaderLevel = String.valueOf(3);
             String title = profileComponent.getName();
             SerializableSection serializableSection = new SerializableSection(id,profileComponent.getName(),segmentPosition,sectionHeaderLevel,title);
             Map<SubProfileComponentAttributes,String> definitionTexts = new HashMap<>();
@@ -94,6 +93,6 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 
 	@Override
 	public SerializableElement serializeProfileComponent(ProfileComponent profileComponent) {
-		return serializeProfileComponent(profileComponent,1);
+		return serializeProfileComponent(profileComponent,1,String.valueOf(1));
 	}
 }
