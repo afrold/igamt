@@ -1052,7 +1052,8 @@ import nu.xom.Document;
 	public Document serializeDataModel(DataModel dataModel) {
 		SerializableStructure serializableStructure = new SerializableStructure();
 		if(dataModel instanceof Datatype){
-			serializeDatatypeService.serializeDatatype((Datatype)dataModel);
+			SerializableDatatype serializableDatatype = serializeDatatypeService.serializeDatatype((Datatype)dataModel);
+			serializableStructure.addSerializableElement(serializableDatatype);
 		}
 		return serializableStructure.serializeStructure();
 	}

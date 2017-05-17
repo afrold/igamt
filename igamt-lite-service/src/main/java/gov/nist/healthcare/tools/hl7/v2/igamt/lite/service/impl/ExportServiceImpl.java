@@ -109,11 +109,11 @@ public class ExportServiceImpl implements ExportService {
     }
 
 	@Override
-	public String exportDataModelAsHtml(DataModel dataModel) {
+	public String exportDataModelAsHtml(DataModel dataModel, String title) {
 		nu.xom.Document document = serializationService.serializeDataModel(dataModel);
 		try {
 			ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
-			ExportParameters exportParameters = exportUtil.setExportParameters("data", false, false, EXPORT_FORMAT_HTML, ExportConfig.getBasicExportConfig("table"), exportFontConfig);
+			ExportParameters exportParameters = exportUtil.setExportParameters(title, false, false, EXPORT_FORMAT_HTML, ExportConfig.getBasicExportConfig("table"), exportFontConfig);
 			return IOUtils.toString(exportUtil.exportAsHtmlFromXsl(document.toXML(), GLOBAL_STYLESHEET, exportParameters, null));
 		} catch (Exception e) {
 			e.printStackTrace();

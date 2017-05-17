@@ -35,7 +35,7 @@ public class ExportController extends CommonController{
 	public String getDatatypeAsHtml(@PathVariable(value="id") String id) throws DataNotFoundException {
 		Datatype datatype = datatypeService.findById(id);
 		if(datatype!=null && datatype.getScope().equals(SCOPE.HL7STANDARD)){
-			return exportService.exportDataModelAsHtml(datatype);
+			return exportService.exportDataModelAsHtml(datatype,datatype.getName());
 		}
 		return null;
 	}
