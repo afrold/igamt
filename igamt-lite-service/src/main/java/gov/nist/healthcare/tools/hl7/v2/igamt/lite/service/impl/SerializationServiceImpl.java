@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -1045,4 +1047,13 @@ import nu.xom.Document;
         }
         return null;
     }
+
+	@Override
+	public Document serializeDataModel(DataModel dataModel) {
+		SerializableStructure serializableStructure = new SerializableStructure();
+		if(dataModel instanceof Datatype){
+			serializeDatatypeService.serializeDatatype((Datatype)dataModel);
+		}
+		return serializableStructure.serializeStructure();
+	}
 }

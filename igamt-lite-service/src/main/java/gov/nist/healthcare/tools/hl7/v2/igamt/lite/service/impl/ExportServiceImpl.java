@@ -1,6 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportParameters;
@@ -105,4 +107,17 @@ public class ExportServiceImpl implements ExportService {
             return new NullInputStream(1L);
         }
     }
+
+	@Override
+	public String exportDataModelAsHtml(DataModel dataModel) {
+		nu.xom.Document document = serializationService.serializeDataModel(dataModel);
+		try {
+			ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+			ExportParameters exportParameters = exportUtil.setExportParameters("data", false, false, EXPORT_FORMAT_HTML, ExportConfig.getBasicExportConfig("table"), exportFontConfig);
+			return IOUtils.toString(exportUtil.exportAsHtmlFromXsl(document.toXML(), GLOBAL_STYLESHEET, exportParameters, null));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

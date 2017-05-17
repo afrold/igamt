@@ -51,7 +51,8 @@ import java.util.Map;
         Integer position, UsageConfig datatypeUsageConfig) {
         if(datatypeLink!=null && datatypeLink.getId()!=null) {
             Datatype datatype = datatypeService.findById(datatypeLink.getId());
-            return serializeDatatype(datatype,datatypeLink,prefix,position,datatypeUsageConfig);
+            String headerLevel = String.valueOf(3);
+            return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig);
         }
         return null;
     }
@@ -62,20 +63,16 @@ import java.util.Map;
         Map<String, Datatype> componentProfileDatatypes) {
         if(datatypeLink!=null && datatypeLink.getId()!=null) {
             Datatype datatype = componentProfileDatatypes.get(datatypeLink.getId());
-            return serializeDatatype(datatype,datatypeLink,prefix,position,datatypeUsageConfig);
+            String headerLevel = String.valueOf(3);
+            return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig);
         }
         return null;
     }
 
-    private SerializableDatatype serializeDatatype(Datatype datatype, DatatypeLink datatypeLink, String prefix, Integer position, UsageConfig datatypeUsageConfig){
-        if (datatypeLink != null && datatypeLink.getId() != null && datatype !=null) {
-            String id = datatypeLink.getId();
-            String title = "ID not found: " + datatypeLink.getId();
-            String headerLevel = String.valueOf(3);
-            if (datatype != null) {
-                id = datatype.getId();
-                title = datatype.getLabel() + " - " + datatype.getDescription();
-            }
+    private SerializableDatatype serializeDatatype(Datatype datatype, String headerLevel, String prefix, Integer position, UsageConfig datatypeUsageConfig){
+        if (datatype !=null && datatype.getId() !=null) {
+            String id = datatype.getId();
+            String title = datatype.getLabel() + " - " + datatype.getDescription();
             List<ConformanceStatement> generatedConformanceStatements = datatype.retrieveAllConformanceStatements();
             datatype.setConformanceStatements(generatedConformanceStatements);
             List<SerializableConstraint> constraintsList =
@@ -184,4 +181,9 @@ import java.util.Map;
         dateValue.put("timeZone", timeZoneOfDTM ? this.REQUIRED : this.OPTIONAL);
         return dateValue;
     }
+
+	@Override
+	public SerializableDatatype serializeDatatype(Datatype datatype) {
+		return serializeDatatype(datatype,String.valueOf(1), "1", 1, ExportConfig.getBasicExportConfig("table").getDatatypesExport());
+	}
 }
