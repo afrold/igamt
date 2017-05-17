@@ -23,7 +23,7 @@ public class ExportController extends CommonController{
 	private ExportService exportService;
 	
 	@RequestMapping(value = "/datatype/{id}/json", method = RequestMethod.GET, produces = "application/json")
-	public Datatype getDatatypeAsJson(@PathVariable(value="id") String id,@PathVariable(value="format") String format) throws DataNotFoundException {
+	public Datatype getDatatypeAsJson(@PathVariable(value="id") String id) throws DataNotFoundException {
 		Datatype datatype = datatypeService.findById(id);
 		if(datatype!=null && datatype.getScope().equals(SCOPE.HL7STANDARD)){
 			return datatype;
@@ -32,7 +32,7 @@ public class ExportController extends CommonController{
 	}
 	
 	@RequestMapping(value = "/datatype/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getDatatypeAsHtml(@PathVariable(value="id") String id,@PathVariable(value="format") String format) throws DataNotFoundException {
+	public String getDatatypeAsHtml(@PathVariable(value="id") String id) throws DataNotFoundException {
 		Datatype datatype = datatypeService.findById(id);
 		if(datatype!=null && datatype.getScope().equals(SCOPE.HL7STANDARD)){
 			return exportService.exportDataModelAsHtml(datatype);

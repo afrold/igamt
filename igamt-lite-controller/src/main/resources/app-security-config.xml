@@ -39,6 +39,7 @@
 	<sec:http pattern="/api/documentations/findAll" security="none" />
 
 	<sec:http pattern="/api/search/**" security="none" />
+	<sec:http pattern="/api/export/**" security="none" />
 
 	<sec:http create-session="ifRequired" use-expressions="true">
 		<sec:http-basic entry-point-ref="restAuthenticationEntryPoint" />
