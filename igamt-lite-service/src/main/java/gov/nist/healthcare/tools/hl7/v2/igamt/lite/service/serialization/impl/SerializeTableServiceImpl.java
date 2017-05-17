@@ -52,22 +52,21 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix,
         Integer position, CodeUsageConfig valueSetCodesUsageConfig,
         ValueSetMetadataConfig valueSetMetadataConfig) {
-      return serializeTable(table, prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig);
+      return serializeTable(table, String.valueOf(3),prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig);
     }
 
 	@Override
 	public SerializableTable serializeTable(Table table) {
 		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig("table");
-		return serializeTable(table,"1",1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata());
+		return serializeTable(table,String.valueOf(1),String.valueOf(1),1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata());
 	}
 	
-	private SerializableTable serializeTable(Table table, String prefix,
+	private SerializableTable serializeTable(Table table, String headerLevel, String prefix,
 	        Integer position, CodeUsageConfig valueSetCodesUsageConfig,
 	        ValueSetMetadataConfig valueSetMetadataConfig){
 		if (table != null) {
 			String id = table.getId();
 			String title = "ID not found: " + table.getId();
-			String headerLevel = String.valueOf(3);
 			String defPreText, defPostText;
 			defPreText = defPostText = "";
 			SerializableTable serializedTable = null;
