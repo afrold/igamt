@@ -2510,7 +2510,6 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.treeDataForMessage.push($scope.selectedMessage);
     $scope.draggingStatus = null;
     $scope.contextKey = null;
-    $scope.oldConformanceStatements = [];
 
     $scope.setChanged = function() {
         $scope.changed = true;
@@ -2590,9 +2589,9 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.selectContext = function(selectedContextNode) {
         $scope.contextKey = new ObjectId().toString();
         $scope.selectedContextNode = selectedContextNode;
-        $scope.oldConformanceStatements = angular.copy(selectedContextNode);
+        $scope.selectedContextNode.contextKey = $scope.contextKey;
         $scope.selectedContextNode.pathInfoSet = [];
-        $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null, $scope.contextKey);
+        $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
         $scope.initConformanceStatement();
         $scope.treeDataForContext = [];
         $scope.treeDataForContext.push($scope.selectedContextNode);
@@ -2652,14 +2651,13 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         $scope.draggingStatus = 'MessageTreeNodeDragging';
     };
 
-    $scope.generatePathInfo = function(current, positionNumber, locationName, instanceNumber, isInstanceNumberEditable, nodeName, key) {
+    $scope.generatePathInfo = function(current, positionNumber, locationName, instanceNumber, isInstanceNumberEditable, nodeName) {
         var pathInfo = {};
         pathInfo.positionNumber = positionNumber;
         pathInfo.locationName = locationName;
         pathInfo.nodeName = nodeName;
         pathInfo.instanceNumber = instanceNumber;
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
-        current.contextKey = key;
         current.pathInfoSet.push(pathInfo);
 
         if (current.type == 'message' || current.type == 'group') {
@@ -2685,7 +2683,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
                     childNodeName = s.name;
                     segGroup.segment = s;
                 }
-                $scope.generatePathInfo(segGroup, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName, key);
+                $scope.generatePathInfo(segGroup, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
         } else if (current.type == 'segmentRef') {
             var seg = current.segment;
@@ -2705,7 +2703,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
                 var child = angular.copy($rootScope.datatypesMap[f.datatype.id]);
                 child.id = new ObjectId().toString();
                 f.child = child;
-                $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName, key);
+                $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
         } else if (current.type == 'field' || current.type == 'component') {
             var dt = current.child;
@@ -2720,7 +2718,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
                 var child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
                 child.id = new ObjectId().toString();
                 c.child = child;
-                $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName, key);
+                $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
         }
     };
