@@ -3062,6 +3062,13 @@ md-input-container.withoutMargin{
     margin: -10px 0px 0px 0px;
     height: 10px
 }
+
+md-input-container.normal{
+    display: inline-block;
+    margin-top: 0px;
+    margin-bottom: -20px;
+}
+
 .ig-title{
     color:#2d9de7;
     font-family: "Source Sans Pro",Helvetica,Arial,sans-serif;
