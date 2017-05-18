@@ -1,6 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
 
 /**
@@ -19,4 +21,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
 public interface SerializeProfileComponentService {
 
     public SerializableSection serializeProfileComponent(ProfileComponentLink profileComponentLink, Integer position);
+
+	public SerializableElement serializeProfileComponent(ProfileComponent profileComponent);
 }

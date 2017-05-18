@@ -112,4 +112,19 @@ public class MessageServiceImpl implements MessageService {
   public Date updateDate(String id, Date date) {
     return messageRepository.updateDate(id, date);
   }
+
+@Override
+public List<Message> findByNameAndScope(String name, String scope) {
+	return messageRepository.findByNameAndScope(name, scope);
+}
+
+@Override
+public List<Message> findByScope(String scope) {
+	return messageRepository.findByScope(scope);
+}
+
+@Override
+public Message findByNameAndVersionAndScope(String name, String hl7Version, String scope) {
+	return messageRepository.findByNameAndVersionAndScope(name, hl7Version, scope);
+}
 }

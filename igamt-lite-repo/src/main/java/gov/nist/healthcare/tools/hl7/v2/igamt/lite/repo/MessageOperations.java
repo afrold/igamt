@@ -29,5 +29,11 @@ public interface MessageOperations {
 	Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version);
 
 	public Date updateDate(String id, Date date);
+	
+	List<Message> findByNameAndScope(String name, String scope);
+	
+	Message findByNameAndVersionAndScope(String name, String hl7Version, String scope);
+	
+	List<Message> findByScope(String scope);
 
 }

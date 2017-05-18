@@ -235,4 +235,9 @@ public class DatatypeServiceImpl implements DatatypeService {
       String id) {
     return datatypeRepository.findByScopeAndVersionAndParentVersion(scope, hl7Version, id);
   }
+
+@Override
+public List<Datatype> findByNameAndScope(String name, String scope) {
+	return datatypeRepository.findByNameAndScope(name, scope);
+}
 }

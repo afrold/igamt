@@ -1,10 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportParameters;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.slf4j.Logger;
@@ -12,8 +10,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.InputStream;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportParameters;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -105,4 +113,20 @@ public class ExportServiceImpl implements ExportService {
             return new NullInputStream(1L);
         }
     }
+
+	@Override
+	public String exportDataModelAsHtml(Object dataModel, String title) {
+		nu.xom.Document document = serializationService.serializeDataModel(dataModel);
+		if(document!=null){
+			try {
+				ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
+				ExportParameters exportParameters = exportUtil.setExportParameters(title, false, false, EXPORT_FORMAT_HTML, ExportConfig.getBasicExportConfig("table"), exportFontConfig);
+				return IOUtils.toString(exportUtil.exportAsHtmlFromXsl(document.toXML(), GLOBAL_STYLESHEET, exportParameters, null));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
 }

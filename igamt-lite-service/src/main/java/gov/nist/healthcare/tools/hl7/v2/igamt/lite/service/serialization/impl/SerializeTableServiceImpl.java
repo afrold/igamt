@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
@@ -51,33 +52,48 @@ public class SerializeTableServiceImpl implements SerializeTableService {
     public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix,
         Integer position, CodeUsageConfig valueSetCodesUsageConfig,
         ValueSetMetadataConfig valueSetMetadataConfig) {
-      String id = tableLink.getId();
-      String title = "ID not found: "+tableLink.getId();
-      String headerLevel = String.valueOf(3);
-      String defPreText,defPostText;
-      defPreText = defPostText = "";
-      SerializableTable serializedTable = null;
-      if(table!=null) {
-          id = table.getId();
-          title = table.getBindingIdentifier();
-          if(table.getName()!=null && !table.getName().isEmpty()){
-            title += " - " + table.getName();
-          }
-          if (table.getDefPreText() != null && !table.getDefPreText().isEmpty()) {
-              defPreText = serializationUtil.cleanRichtext(table.getDefPreText());
-          }
-          if (table.getDefPostText() != null && !table.getDefPostText().isEmpty()) {
-              defPostText = serializationUtil.cleanRichtext(table.getDefPostText());
-          }
-          List<Code> toBeExportedCodes = new ArrayList<>();
-          for(Code code : table.getCodes()){
-              if(ExportUtil.diplayCodeUsage(code.getCodeUsage(),valueSetCodesUsageConfig)){
-                  toBeExportedCodes.add(code);
-              }
-          }
-          table.setCodes(toBeExportedCodes);
-          serializedTable = new SerializableTable(id,prefix,String.valueOf(position),headerLevel,title,table,tableLink.getBindingIdentifier(),defPreText,defPostText, valueSetMetadataConfig);
-      }
-      return serializedTable;
+      return serializeTable(table, String.valueOf(3),prefix, position, valueSetCodesUsageConfig, valueSetMetadataConfig);
     }
+
+	@Override
+	public SerializableTable serializeTable(Table table) {
+		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig("table");
+		return serializeTable(table,String.valueOf(1),String.valueOf(1),1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata());
+	}
+	
+	private SerializableTable serializeTable(Table table, String headerLevel, String prefix,
+	        Integer position, CodeUsageConfig valueSetCodesUsageConfig,
+	        ValueSetMetadataConfig valueSetMetadataConfig){
+		if (table != null) {
+			String id = table.getId();
+			String title = "ID not found: " + table.getId();
+			String defPreText, defPostText;
+			defPreText = defPostText = "";
+			SerializableTable serializedTable = null;
+			if (table != null) {
+				id = table.getId();
+				title = table.getBindingIdentifier();
+				if (table.getName() != null && !table.getName().isEmpty()) {
+					title += " - " + table.getName();
+				}
+				if (table.getDefPreText() != null && !table.getDefPreText().isEmpty()) {
+					defPreText = serializationUtil.cleanRichtext(table.getDefPreText());
+				}
+				if (table.getDefPostText() != null && !table.getDefPostText().isEmpty()) {
+					defPostText = serializationUtil.cleanRichtext(table.getDefPostText());
+				}
+				List<Code> toBeExportedCodes = new ArrayList<>();
+				for (Code code : table.getCodes()) {
+					if (ExportUtil.diplayCodeUsage(code.getCodeUsage(), valueSetCodesUsageConfig)) {
+						toBeExportedCodes.add(code);
+					}
+				}
+				table.setCodes(toBeExportedCodes);
+				serializedTable = new SerializableTable(id, prefix, String.valueOf(position), headerLevel, title, table,
+						table.getBindingIdentifier(), defPreText, defPostText, valueSetMetadataConfig);
+			}
+			return serializedTable;
+		}
+		return null;
+	}
 }

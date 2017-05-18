@@ -5,15 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -24,6 +24,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
@@ -116,8 +117,6 @@ import nu.xom.Document;
     private List<TableLink> unbindedTables;
 
     private Messages igDocumentMessages;
-
-    private List<TableLink> tableLibrary;
     
     static final Logger logger = LoggerFactory.getLogger(SerializationService.class);
 
@@ -166,7 +165,6 @@ import nu.xom.Document;
         this.bindedDatatypes = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
         this.bindedSegments = new ArrayList<>();
-        this.tableLibrary = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.compositeProfiles = new ArrayList<>();
         if (igDocument.getProfile().getCompositeProfiles() != null
@@ -1045,4 +1043,25 @@ import nu.xom.Document;
         }
         return null;
     }
+
+	@Override
+	public Document serializeDataModel(Object dataModel) {
+		SerializableStructure serializableStructure = new SerializableStructure();
+		SerializableElement serializableElement = null;
+		if(dataModel instanceof Datatype){
+			serializableElement = serializeDatatypeService.serializeDatatype((Datatype)dataModel);
+		} else if(dataModel instanceof Table){
+			serializableElement = serializeTableService.serializeTable((Table)dataModel);
+		} else if(dataModel instanceof Segment){
+			serializableElement = serializeSegmentService.serializeSegment((Segment)dataModel);
+		} else if(dataModel instanceof Message){
+			serializableElement = serializeMessageService.serializeMessage((Message)dataModel);
+		} else if(dataModel instanceof ProfileComponent){
+			serializableElement = serializeProfileComponentService.serializeProfileComponent((ProfileComponent) dataModel);
+		}
+		if(serializableElement != null){
+			serializableStructure.addSerializableElement(serializableElement);
+		}
+		return serializableStructure.serializeStructure();
+	}
 }
