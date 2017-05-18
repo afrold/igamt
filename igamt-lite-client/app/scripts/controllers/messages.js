@@ -165,7 +165,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     $scope.collapseAll = function() {
         $scope.expanded = !$scope.expanded;
         $('#messageTable').treetable('collapseAll');
-    }
+    };
 
     $scope.copy = function(message) {
         CloneDeleteSvc.copyMessage(message);
