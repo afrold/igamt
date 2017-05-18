@@ -781,24 +781,22 @@ angular.module('igl')
         };
 
         $scope.managePredicate = function(node) {
-            var modalInstance = $mdDialog.show({
+            $mdDialog.show({
+                parent: angular.element(document).find('body'),
                 templateUrl: 'PredicateDatatypeCtrl.html',
                 controller: 'PredicateDatatypeCtrl',
-                windowClass: 'app-modal-window',
-                scope: $rootScope,        // use parent scope in template
-                preserveScope: true,
-
                 locals: {
-                    selectedNode:  node
-                    }
-
-            });
-            modalInstance.then(function(dt) {
-                if (dt) {
-                    $rootScope.datatype.predicates = dt.predicates;
+                    selectedDatatype: $rootScope.datatype,
+                    selectedNode: node,
+                    config : $rootScope.config,
+                    tables : $rootScope.tables
+                }
+            }).then(function(datatype) {
+                if (datatype) {
+                    $rootScope.datatype = datatype;
                     $scope.setDirty();
                 }
-            }, function() {});
+            });
         };
 
         $scope.manageConformanceStatement = function() {
@@ -1463,7 +1461,6 @@ angular.module('igl')
         }
     });
 
-
 angular.module('igl').controller('FormRowCtrl', function($scope, $filter) {
         $scope.init = function(node) {
             $scope.node = node;
@@ -2114,7 +2111,11 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     };
 });
 
-angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $mdDialog, selectedNode, $rootScope, $q) {
+angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, config, tables, selectedDatatype, selectedNode, $rootScope, $q, $mdDialog){
+    $scope.dialogStep = 0;
+    $scope.config = config;
+    $scope.tables = tables;
+    $scope.selectedDatatype = angular.copy(selectedDatatype);
     $scope.selectedNode = selectedNode;
     $scope.constraintType = 'Plain';
     $scope.constraints = [];
@@ -2125,7 +2126,6 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $mdDi
     $scope.changed = false;
     $scope.existingPredicate = null;
     $scope.tempPredicates = [];
-    $scope.selectedDatatype = angular.copy($rootScope.datatype);
     $scope.predicateData = null;
 
     $scope.treeDataForContext = [];
@@ -2176,9 +2176,71 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $mdDi
 
     $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
 
+    $scope.getDialogStyle = function(){
+        if ($scope.dialogStep === 0) return "width: 70%";
+        if ($scope.dialogStep === 1) return "width: 90%";
+        if ($scope.dialogStep === 2) return "width: 50%";
+        return "width: 90%";
+    };
+
+    $scope.isEmptyConstraintID = function(newConstraint) {
+        if (newConstraint && newConstraint.constraintId === null) return true;
+        if (newConstraint && newConstraint.constraintId === '') return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintVerb = function(newConstraint) {
+        if (newConstraint && newConstraint.verb === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintPattern = function(newConstraint) {
+        if (newConstraint && newConstraint.contraintType === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintValue = function(newConstraint) {
+        if (newConstraint && newConstraint.value === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintValue2 = function(newConstraint) {
+        if (newConstraint && newConstraint.value2 === null) return true;
+
+        return false;
+    };
+
+    $scope.getUpdatedBindingIdentifier = function(table) {
+        if (table.hl7Version && table.hl7Version !== '') {
+            return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
+        }
+        return table.bindingIdentifier;
+    };
+
+    $scope.goNext = function() {
+        $scope.dialogStep = $scope.dialogStep + 1;
+    };
+
+    $scope.goBack = function () {
+        $scope.dialogStep = $scope.dialogStep - 1;
+    };
+
+    $scope.selectPredicate = function (c){
+        angular.forEach($scope.tempPredicates, function(p) {
+            p.selected = false;
+        });
+        c.selected = true;
+        $scope.existingPredicate = c;
+        $scope.existingPredicate.constraintTarget = $scope.selectedNode.position + '[1]';
+    };
+
     $scope.toggleChildren = function(data) {
         data.childrenVisible = !data.childrenVisible;
-        data.folderClass = data.childrenVisible ? "fa-minus" : "fa-plus";
+        data.folderClass = data.childrenVisible ? "fa-caret-down" : "fa-caret-right";
     };
 
     $scope.beforeNodeDrop = function() {
@@ -2210,14 +2272,6 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $mdDi
         }
         return deferred.promise;
     };
-
-    $scope.afterPredicateDrop = function() {
-        $scope.draggingStatus = null;
-        $scope.existingPredicate = $scope.predicateData;
-        $scope.existingPredicate.constraintTarget = $scope.selectedNode.position + '[1]';
-    };
-
-
 
     $scope.draggingPredicate = function(event, ui, nodeData) {
         $scope.draggingStatus = 'PredicateDragging';
@@ -2348,14 +2402,13 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $mdDi
         $scope.initPredicate();
     };
 
-    $scope.ok = function() {
+    $scope.cancel = function() {
         $mdDialog.hide();
     };
 
-    $scope.saveclose = function() {
+    $scope.save = function() {
         $scope.deletePredicateByTarget();
         $scope.selectedDatatype.predicates.push($scope.existingPredicate);
-        $rootScope.recordChanged();
         $mdDialog.hide($scope.selectedDatatype);
     };
 

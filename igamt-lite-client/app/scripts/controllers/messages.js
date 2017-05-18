@@ -177,6 +177,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         blockUI.start();
         MessageService.reset();
         $rootScope.processMessageTree($rootScope.message);
+        $scope.findAllGlobalConstraints();
         cleanState();
         blockUI.stop();
     };
