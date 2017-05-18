@@ -1781,9 +1781,6 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
 
 });
 
-
-
-
 angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, message, $rootScope, blockUI) {
     console.log(message);
     $scope.message = message;
@@ -2241,7 +2238,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
         $scope.treeDataForContext.push($scope.selectedContextNode);
     };
 
-    $scope.afterNodeDrop = function() {
+    $scope.afterFirstNodeDrop = function() {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
         $scope.generateFirstPositionAndLocationPath();

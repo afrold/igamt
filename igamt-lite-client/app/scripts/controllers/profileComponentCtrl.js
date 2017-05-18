@@ -3112,7 +3112,7 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
         $scope.tempPredicates = [];
     };
 
-    $scope.afterNodeDrop = function() {
+    $scope.afterFirstNodeDrop = function() {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
         $scope.generateFirstPositionAndLocationPath();
@@ -3537,7 +3537,7 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
         return deferred.promise;
     };
 
-    $scope.afterNodeDrop = function() {
+    $scope.afterFirstNodeDrop = function() {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
         $scope.generateFirstPositionAndLocationPath();
@@ -3767,7 +3767,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function(
         return deferred.promise;
     };
 
-    $scope.afterNodeDrop = function() {
+    $scope.afterFirstNodeDrop = function() {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
         $scope.generateFirstPositionAndLocationPath();
@@ -4147,7 +4147,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrlInPc', function
         return deferred.promise;
     };
 
-    $scope.afterNodeDrop = function() {
+    $scope.afterFirstNodeDrop = function() {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
         $scope.generateFirstPositionAndLocationPath();

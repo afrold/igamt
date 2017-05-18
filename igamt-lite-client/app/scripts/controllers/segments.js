@@ -2085,7 +2085,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
         return deferred.promise;
     };
 
-    $scope.afterNodeDrop = function() {
+    $scope.afterFirstNodeDrop = function() {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
         $scope.generateFirstPositionAndLocationPath();
@@ -2277,7 +2277,6 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
     $scope.changed = false;
-
     $scope.treeDataForContext = [];
     $scope.treeDataForContext.push($scope.selectedSegment);
     $scope.treeDataForContext[0].pathInfoSet = [];
@@ -2289,38 +2288,44 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         pathInfo.instanceNumber = instanceNumber;
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
         current.pathInfoSet.push(pathInfo);
+        var childPositionNumber;
+        var childLocationName;
+        var childNodeName;
+        var childInstanceNumber;
+        var childisInstanceNumberEditable;
+        var child;
 
-        if (current.type == 'segment') {
+        if (current.type === 'segment') {
             var seg = current;
             for (var i in seg.fields) {
                 var f = seg.fields[i];
                 f.pathInfoSet = angular.copy(current.pathInfoSet);
 
-                var childPositionNumber = f.position;
-                var childLocationName = f.position;
-                var childNodeName = f.name;
-                var childInstanceNumber = "1";
-                var childisInstanceNumberEditable = false;
-                if (f.max != '1') {
+                childPositionNumber = f.position;
+                childLocationName = f.position;
+                childNodeName = f.name;
+                childInstanceNumber = "1";
+                childisInstanceNumberEditable = false;
+                if (f.max !== '1') {
                     childInstanceNumber = '*';
                     childisInstanceNumberEditable = true;
                 }
-                var child = angular.copy($rootScope.datatypesMap[f.datatype.id]);
+                child = angular.copy($rootScope.datatypesMap[f.datatype.id]);
                 child.id = new ObjectId().toString();
                 f.child = child;
                 $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
-        } else if (current.type == 'field' || current.type == 'component') {
+        } else if (current.type === 'field' || current.type === 'component') {
             var dt = current.child;
             for (var i in dt.components) {
                 var c = dt.components[i];
                 c.pathInfoSet = angular.copy(current.pathInfoSet);
-                var childPositionNumber = c.position;
-                var childLocationName = c.position;
-                var childNodeName = c.name;
-                var childInstanceNumber = "1";
-                var childisInstanceNumberEditable = false;
-                var child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
+                childPositionNumber = c.position;
+                childLocationName = c.position;
+                childNodeName = c.name;
+                childInstanceNumber = "1";
+                childisInstanceNumberEditable = false;
+                child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
                 child.id = new ObjectId().toString();
                 c.child = child;
                 $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
@@ -2330,6 +2335,43 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
 
     $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
 
+    $scope.isEmptyConstraintID = function(newConstraint) {
+        if (newConstraint && newConstraint.constraintId === null) return true;
+        if (newConstraint && newConstraint.constraintId === '') return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintVerb = function(newConstraint) {
+        if (newConstraint && newConstraint.verb === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintPattern = function(newConstraint) {
+        if (newConstraint && newConstraint.contraintType === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintValue = function(newConstraint) {
+        if (newConstraint && newConstraint.value === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintValue2 = function(newConstraint) {
+        if (newConstraint && newConstraint.value2 === null) return true;
+
+        return false;
+    };
+
+    $scope.getUpdatedBindingIdentifier = function(table) {
+        if (table.hl7Version && table.hl7Version !== '') {
+            return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
+        }
+        return table.bindingIdentifier;
+    };
 
     $scope.setChanged = function() {
         $scope.changed = true;
@@ -2337,7 +2379,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
 
     $scope.toggleChildren = function(data) {
         data.childrenVisible = !data.childrenVisible;
-        data.folderClass = data.childrenVisible ? "fa-minus" : "fa-plus";
+        data.folderClass = data.childrenVisible ? "fa-caret-down" : "fa-caret-right";
     };
 
     $scope.beforeNodeDrop = function() {
@@ -2346,7 +2388,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         return deferred.promise;
     };
 
-    $scope.afterNodeDrop = function() {
+    $scope.afterFirstNodeDrop = function() {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
         $scope.generateFirstPositionAndLocationPath();
@@ -2403,7 +2445,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
                     positionPath = positionPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
                     locationPath = locationPath + "." + pathInfo.locationName + "[" + pathInfo.instanceNumber + "]";
 
-                    if (i == $scope.newConstraint.pathInfoSet_1.length - 1) {
+                    if (i === $scope.newConstraint.pathInfoSet_1.length - 1) {
                         locationPath = locationPath + " (" + pathInfo.nodeName + ")";
                     }
                 }
@@ -2424,7 +2466,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
                     positionPath = positionPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
                     locationPath = locationPath + "." + pathInfo.locationName + "[" + pathInfo.instanceNumber + "]";
 
-                    if (i == $scope.newConstraint.pathInfoSet_2.length - 1) {
+                    if (i === $scope.newConstraint.pathInfoSet_2.length - 1) {
                         locationPath = locationPath + " (" + pathInfo.nodeName + ")";
                     }
                 }
@@ -2436,27 +2478,27 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     };
 
     $scope.deleteConformanceStatement = function(conformanceStatement) {
-        $scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
+        $scope.selectedSegment.conformanceStatements.splice($scope.selectedSegment.conformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };
 
     $scope.addComplexConformanceStatement = function() {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
-        $scope.tempComformanceStatements.push($scope.complexConstraint);
+        $scope.selectedSegment.conformanceStatements.push($scope.complexConstraint);
         $scope.initComplexStatement();
         $scope.changed = true;
     };
 
     $scope.addFreeTextConformanceStatement = function() {
         var cs = $rootScope.generateFreeTextConformanceStatement($scope.newConstraint);
-        $scope.tempComformanceStatements.push(cs);
+        $scope.selectedSegment.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
 
     $scope.addConformanceStatement = function() {
         var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
-        $scope.tempComformanceStatements.push(cs);
+        $scope.selectedSegment.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
@@ -2469,7 +2511,8 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $mdDialog.hide($scope.selectedSegment);
     };
 });
-angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
+
+angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
 

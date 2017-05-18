@@ -1952,7 +1952,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         return deferred.promise;
     };
 
-    $scope.afterNodeDrop = function() {
+    $scope.afterFirstNodeDrop = function() {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
         $scope.generateFirstPositionAndLocationPath();
@@ -2150,7 +2150,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $mdDi
         return deferred.promise;
     };
 
-    $scope.afterNodeDrop = function() {
+    $scope.afterFirstNodeDrop = function() {
         $scope.draggingStatus = null;
         $scope.newConstraint.pathInfoSet_1 = $scope.firstNodeData.pathInfoSet;
         $scope.generateFirstPositionAndLocationPath();
