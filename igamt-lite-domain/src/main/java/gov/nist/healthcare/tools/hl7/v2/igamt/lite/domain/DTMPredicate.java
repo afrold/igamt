@@ -4,7 +4,7 @@ public class DTMPredicate {
 
   private Usage trueUsage;
   private Usage falseUsage;
-  private String targetName;
+  private DTMComponentDefinition target;
   private String verb;
   private String value;
 
@@ -22,14 +22,6 @@ public class DTMPredicate {
 
   public void setFalseUsage(Usage falseUsage) {
     this.falseUsage = falseUsage;
-  }
-
-  public String getTargetName() {
-    return targetName;
-  }
-
-  public void setTargetName(String targetName) {
-    this.targetName = targetName;
   }
 
   public String getVerb() {
@@ -50,9 +42,17 @@ public class DTMPredicate {
   
   public String getPredicateDescription(){
     if(this.value == null){
-      return "If " + this.targetName + " " + this.verb + "."; 
+      return "If " + this.target.getName() + "(" + this.target.getDescription()+ ")" + " " + this.verb + "."; 
     }else {
-      return "If " + this.targetName + " " + this.verb + " '" + this.value+ "'."; 
+      return "If " + this.target.getDescription() + "(" + this.target.getDescription()+ ")" + " " + this.verb + " '" + this.value+ "'."; 
     }
+  }
+  
+  public DTMComponentDefinition getTarget() {
+    return target;
+  }
+
+  public void setTarget(DTMComponentDefinition target) {
+    this.target = target;
   }
 }

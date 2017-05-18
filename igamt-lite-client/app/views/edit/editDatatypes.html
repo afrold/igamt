@@ -376,7 +376,8 @@
                                                             <thead>
                                                             <tr class="tbl-header">
                                                                 <th class="col-md-1" align="center">#</th>
-                                                                <th class="col-md-3" align="center">Component Name</th>
+                                                                <th class="col-md-1" align="center">Component Name</th>
+                                                                <th class="col-md-2" align="center">Component Desc</th>
                                                                 <th class="col-md-1" align="center">Usage</th>
                                                                 <th class="col-md-1" align="center">True Usage</th>
                                                                 <th class="col-md-1" align="center">False Usage</th>
@@ -388,8 +389,11 @@
                                                                 <td class="col-md-1" align="center">
                                                                     <span ng-bind="::dtmComponentDefinition.position"/>
                                                                 </td>
-                                                                <td class="col-md-3" align="center">
+                                                                <td class="col-md-1" align="center">
                                                                     <span ng-bind="::dtmComponentDefinition.name"/>
+                                                                </td>
+                                                                <td class="col-md-2" align="center">
+                                                                    <span ng-bind="::dtmComponentDefinition.description"/>
                                                                 </td>
                                                                 <td class="col-md-1" align="center">
                                                                     <md-select placeholder="Select Usage" ng-change="updateDTMConstraints(dtmComponentDefinition); setDirty();" class="inside-table" required ng-model="dtmComponentDefinition.usage" >
@@ -421,45 +425,46 @@
 
                                                                 <td class="col-md-5" align="center">
                                                                     <div ng-if="dtmComponentDefinition.usage === 'C'">
-                                                                        If {{dtmComponentDefinition.dtmPredicate.targetName}} {{dtmComponentDefinition.dtmPredicate.verb}} <span ng-if="dtmComponentDefinition.dtmPredicate.value">'{{dtmComponentDefinition.dtmPredicate.value}}'</span>
+                                                                        If {{dtmComponentDefinition.dtmPredicate.target.name}}({{dtmComponentDefinition.dtmPredicate.target.description}}) {{dtmComponentDefinition.dtmPredicate.verb}} <span ng-if="dtmComponentDefinition.dtmPredicate.value">'{{dtmComponentDefinition.dtmPredicate.value}}'</span>
 
                                                                         <span title="Edit predicate" ng-click="dtmComponentDefinition.dtmPredicate.editable = true;"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
                                                                     </div>
 
                                                                     <div ng-if="dtmComponentDefinition.usage === 'C' && dtmComponentDefinition.dtmPredicate.editable">
-                                                                        <br/><br/>
-                                                                        <md-input-container flex="30" style="margin:0px;">
-                                                                            <label>Target</label>
-                                                                            <md-select placeholder="Select Target" ng-change="setDirty()" required ng-model="dtmComponentDefinition.dtmPredicate.targetName" >
-                                                                                <md-option ng-repeat="def in datatype.dtmConstraints.dtmComponentDefinitions" ng-value="def.name">
-                                                                                    {{def.name}}
-                                                                                </md-option>
-                                                                            </md-select>
-                                                                        </md-input-container>
+                                                                        <div layout="row">
+                                                                            <md-input-container flex="30" style="margin:0px;">
+                                                                                <label>Target</label>
+                                                                                <md-select placeholder="Select Target" ng-change="setDirty()" required ng-model="dtmComponentDefinition.dtmPredicate.target" >
+                                                                                    <md-option ng-repeat="def in datatype.dtmConstraints.dtmComponentDefinitions" ng-value="def">
+                                                                                        {{def.name}}({{def.description}})
+                                                                                    </md-option>
+                                                                                </md-select>
+                                                                            </md-input-container>
 
-                                                                        <md-input-container flex="30" style="margin:0px;">
-                                                                            <label>Verb</label>
-                                                                            <md-select placeholder="Select Verb" ng-change="setDirty()" required ng-model="dtmComponentDefinition.dtmPredicate.verb" >
-                                                                                <md-option value="is valued">
-                                                                                    is valued
-                                                                                </md-option>
-                                                                                <md-option value="is not valued">
-                                                                                    is not valued
-                                                                                </md-option>
-                                                                                <md-option value="is literal value">
-                                                                                    is literal value:
-                                                                                </md-option>
-                                                                                <md-option value="is not literal value:">
-                                                                                    is not literal value:
-                                                                                </md-option>
-                                                                            </md-select>
-                                                                        </md-input-container>
+                                                                            <md-input-container flex="30" style="margin:0px;">
+                                                                                <label>Verb</label>
+                                                                                <md-select placeholder="Select Verb" ng-change="setDirty()" required ng-model="dtmComponentDefinition.dtmPredicate.verb" >
+                                                                                    <md-option value="is valued">
+                                                                                        is valued
+                                                                                    </md-option>
+                                                                                    <md-option value="is not valued">
+                                                                                        is not valued
+                                                                                    </md-option>
+                                                                                    <md-option value="is literal value">
+                                                                                        is literal value:
+                                                                                    </md-option>
+                                                                                    <md-option value="is not literal value:">
+                                                                                        is not literal value:
+                                                                                    </md-option>
+                                                                                </md-select>
+                                                                            </md-input-container>
 
-                                                                        <md-input-container flex="40" style="margin:0px;" ng-if="dtmComponentDefinition.dtmPredicate.verb === 'is literal value' || dtmComponentDefinition.dtmPredicate.verb === 'is not literal value'">
-                                                                            <label>Value</label>
-                                                                            <input  ng-change="setDirty()" type="text"
-                                                                                    ng-model="dtmComponentDefinition.dtmPredicate.value" required/>
-                                                                        </md-input-container>
+                                                                            <md-input-container flex="40" style="margin:0px;" ng-if="dtmComponentDefinition.dtmPredicate.verb === 'is literal value' || dtmComponentDefinition.dtmPredicate.verb === 'is not literal value'">
+                                                                                <label>Value</label>
+                                                                                <input  ng-change="setDirty()" type="text"
+                                                                                        ng-model="dtmComponentDefinition.dtmPredicate.value" required/>
+                                                                            </md-input-container>
+                                                                        </div>
                                                                     </div>
                                                                 </td>
                                                             </tr>

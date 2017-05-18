@@ -76,9 +76,7 @@ angular.module('igl')
                 dtmComponentDefinition.dtmPredicate = null;
             }
 
-            if($rootScope.datatype.dtmConstraints.dtmComponentDefinitions.length == dtmComponentDefinition.position){
-
-            }else {
+            if($rootScope.datatype.dtmConstraints.dtmComponentDefinitions.length !== dtmComponentDefinition.position){
                 if(dtmComponentDefinition.usage === 'R'){
                     for (var i = 0, len = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions.length - 1; i < len; i++) {
                         var item = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i];
@@ -103,7 +101,7 @@ angular.module('igl')
                             item.dtmPredicate = {};
                             item.dtmPredicate.trueUsage = "O";
                             item.dtmPredicate.falseUsage = "X";
-                            item.dtmPredicate.targetName = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i-1].name;
+                            item.dtmPredicate.target = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i-1];
                             item.dtmPredicate.verb = "is valued";
                         }
                         if(item.position < dtmComponentDefinition.position){
@@ -119,7 +117,7 @@ angular.module('igl')
                             item.dtmPredicate = {};
                             item.dtmPredicate.trueUsage = "O";
                             item.dtmPredicate.falseUsage = "X";
-                            item.dtmPredicate.targetName = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i-1].name;
+                            item.dtmPredicate.target = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i-1];
                             item.dtmPredicate.verb = "is valued";
                         }
                         if(item.position < dtmComponentDefinition.position){
@@ -135,31 +133,12 @@ angular.module('igl')
                             item.dtmPredicate = {};
                             item.dtmPredicate.trueUsage = "O";
                             item.dtmPredicate.falseUsage = "X";
-                            item.dtmPredicate.targetName = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i-1].name;
+                            item.dtmPredicate.target = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i-1];
                             item.dtmPredicate.verb = "is valued";
                         }
                         if(item.position < dtmComponentDefinition.position){
                             item.usage = 'R';
                             item.dtmPredicate = null;
-                        }
-                    }
-                }
-
-                var hhItem = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[3];
-
-                if(hhItem.usage !== 'R'){
-                    var item = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[$rootScope.datatype.dtmConstraints.dtmComponentDefinitions.length - 1];
-                    if(hhItem.usage === 'X'){
-                        item.usage = 'X';
-                        item.dtmPredicate = null;
-                    }else {
-                        if(item !== 'C'){
-                            item.usage = 'C';
-                            item.dtmPredicate = {};
-                            item.dtmPredicate.trueUsage = "O";
-                            item.dtmPredicate.falseUsage = "X";
-                            item.dtmPredicate.targetName = hhItem.name;
-                            item.dtmPredicate.verb = "is valued";
                         }
                     }
                 }

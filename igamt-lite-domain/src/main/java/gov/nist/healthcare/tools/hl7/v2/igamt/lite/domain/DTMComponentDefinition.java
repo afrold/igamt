@@ -4,6 +4,7 @@ public class DTMComponentDefinition {
 
   private Integer position;
   private String name;
+  private String description;
   private Usage usage;
   private DTMPredicate dtmPredicate;
 
@@ -37,6 +38,14 @@ public class DTMComponentDefinition {
 
   public void setDtmPredicate(DTMPredicate dtmPredicate) {
     this.dtmPredicate = dtmPredicate;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
 
