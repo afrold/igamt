@@ -802,17 +802,21 @@ angular.module('igl')
         };
 
         $scope.manageConformanceStatement = function() {
-            var modalInstance = $modal.open({
+            $mdDialog.show({
+                parent: angular.element(document).find('body'),
                 templateUrl: 'ConformanceStatementDatatypeCtrl.html',
                 controller: 'ConformanceStatementDatatypeCtrl',
-                windowClass: 'app-modal-window',
-                resolve: {}
-            });
-            modalInstance.result.then(function(dt) {
-                if (dt) {
+                locals: {
+                    selectedDatatype : $rootScope.datatype,
+                    config : $rootScope.config,
+                    tables : $rootScope.tables
+                }
+            }).then(function(datatype) {
+                if (datatype) {
+                    $rootScope.datatype = datatype;
                     $scope.setDirty();
                 }
-            }, function() {});
+            });
         };
 
         $scope.isSubDT = function(component) {
@@ -1468,7 +1472,6 @@ angular.module('igl').controller('FormRowCtrl', function($scope, $filter) {
         $scope.formName = "form_" + new Date().getTime();
     });
 
-
 angular.module('igl').controller('SelectDatatypeFlavorCtrl', function($scope, $filter, $modalInstance, $rootScope, $http, currentDatatype, DatatypeService, $rootScope, hl7Version, ngTreetableParams, ViewSettings, DatatypeLibrarySvc, $q, datatypeLibrary, TableService) {
         $scope.resultsError = null;
         $scope.viewSettings = ViewSettings;
@@ -1703,7 +1706,6 @@ angular.module('igl').controller('SelectDatatypeFlavorCtrl', function($scope, $f
 
     });
 
-
 angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function($scope, $modalInstance, dtToDelete, $rootScope, DatatypeLibrarySvc, DatatypeService, MastermapSvc, CloneDeleteSvc) {
     $scope.dtToDelete = dtToDelete;
     $scope.loading = false;
@@ -1860,8 +1862,10 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
 
 });
 
-
-angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($scope, $modalInstance, $rootScope, $q) {
+angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($scope, config, tables, selectedDatatype, $rootScope, $q, $mdDialog) {
+    $scope.selectedDatatype = angular.copy(selectedDatatype);
+    $scope.config = config;
+    $scope.tables = tables;
     $scope.constraintType = 'Plain';
     $scope.constraints = [];
     $scope.firstConstraint = null;
@@ -1875,8 +1879,6 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
     $scope.changed = false;
-    $scope.tempComformanceStatements = [];
-    angular.copy($rootScope.datatype.conformanceStatements, $scope.tempComformanceStatements);
 
     $scope.treeDataForContext = [];
     $scope.treeDataForContext.push(angular.copy($rootScope.datatype));
@@ -1926,13 +1928,51 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
 
     $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
 
+    $scope.isEmptyConstraintID = function(newConstraint) {
+        if (newConstraint && newConstraint.constraintId === null) return true;
+        if (newConstraint && newConstraint.constraintId === '') return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintVerb = function(newConstraint) {
+        if (newConstraint && newConstraint.verb === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintPattern = function(newConstraint) {
+        if (newConstraint && newConstraint.contraintType === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintValue = function(newConstraint) {
+        if (newConstraint && newConstraint.value === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintValue2 = function(newConstraint) {
+        if (newConstraint && newConstraint.value2 === null) return true;
+
+        return false;
+    };
+
+    $scope.getUpdatedBindingIdentifier = function(table) {
+        if (table.hl7Version && table.hl7Version !== '') {
+            return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
+        }
+        return table.bindingIdentifier;
+    };
+
     $scope.setChanged = function() {
         $scope.changed = true;
     };
 
     $scope.toggleChildren = function(data) {
         data.childrenVisible = !data.childrenVisible;
-        data.folderClass = data.childrenVisible ? "fa-minus" : "fa-plus";
+        data.folderClass = data.childrenVisible ? "fa-caret-down" : "fa-caret-right";
     };
 
     $scope.beforeComponentDrop = function() {
@@ -2040,42 +2080,39 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     };
 
     $scope.deleteConformanceStatement = function(conformanceStatement) {
-        $scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
+        $scope.selectedDatatype.conformanceStatements.splice($scope.selectedDatatype.conformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };
 
     $scope.addComplexConformanceStatement = function() {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
-        $scope.tempComformanceStatements.push($scope.complexConstraint);
+        $scope.selectedDatatype.conformanceStatements.push($scope.complexConstraint);
         $scope.initComplexStatement();
         $scope.changed = true;
     };
 
     $scope.addFreeTextConformanceStatement = function() {
         var cs = $rootScope.generateFreeTextConformanceStatement($scope.newConstraint);
-        $scope.tempComformanceStatements.push(cs);
+        $scope.selectedDatatype.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
 
     $scope.addConformanceStatement = function() {
         var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
-        $scope.tempComformanceStatements.push(cs);
+        $scope.selectedDatatype.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
     };
 
-    $scope.ok = function() {
-        $modalInstance.close();
+    $scope.cancel = function() {
+        $mdDialog.hide();
     };
 
-    $scope.saveclose = function() {
-        angular.copy($scope.tempComformanceStatements, $rootScope.datatype.conformanceStatements);
-        $rootScope.recordChanged();
-        $modalInstance.close($rootScope.datatype);
+    $scope.save = function() {
+        $mdDialog.hide($scope.selectedDatatype);
     };
 });
-
 
 angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, $mdDialog, selectedNode, $rootScope, $q) {
     $scope.selectedNode = selectedNode;
@@ -2769,7 +2806,6 @@ angular.module('igl').controller('DeleteDatatypePredicateCtrl', function($scope,
     };
 });
 
-
 angular.module('igl').controller('AddBindingForDatatype', function($scope, $modalInstance, $rootScope, datatype) {
     $scope.datatype = datatype;
     $scope.selectedSegmentForBinding = null;
@@ -2948,6 +2984,7 @@ angular.module('igl').controller('ShareDatatypeCtrl', function($scope, $modalIns
 
 
 });
+
 angular.module('igl').controller('ConfirmDatatypePublishCtl', function($scope, $rootScope, $http, $modalInstance, datatypeToPublish) {
 
     $scope.datatypeToPublish = datatypeToPublish;
