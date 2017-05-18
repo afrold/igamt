@@ -860,22 +860,22 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.managePredicate = function(node) {
-        var modalInstance = $modal.open({
+        $mdDialog.show({
+            parent: angular.element(document).find('body'),
             templateUrl: 'PredicateSegmentCtrl.html',
             controller: 'PredicateSegmentCtrl',
-            windowClass: 'app-modal-window',
-            resolve: {
-                selectedNode: function() {
-                    return node;
-                }
+            locals: {
+                selectedSegment: $rootScope.segment,
+                selectedNode: node,
+                config : $rootScope.config,
+                tables : $rootScope.tables
             }
-        });
-        modalInstance.result.then(function(segment) {
+        }).then(function(segment) {
             if (segment) {
-                $rootScope.segment.predicates = segment.predicates;
+                $rootScope.segment = segment;
                 $scope.setDirty();
             }
-        }, function() {});
+        });
     };
 
     $scope.manageConformanceStatement = function() {
@@ -2008,7 +2008,11 @@ angular.module('igl').controller('DynamicMappingCtrl', function($scope, $modalIn
     };
 
 });
-angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modalInstance, selectedNode, $rootScope, $q) {
+angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config, tables, selectedSegment, selectedNode, $rootScope, $q, $mdDialog){
+    $scope.dialogStep = 0;
+    $scope.config = config;
+    $scope.tables = tables;
+    $scope.selectedSegment = angular.copy(selectedSegment);
     $scope.selectedNode = selectedNode;
     $scope.constraintType = 'Plain';
     $scope.constraints = [];
@@ -2019,7 +2023,6 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
     $scope.changed = false;
     $scope.existingPredicate = null;
     $scope.tempPredicates = [];
-    $scope.selectedSegment = angular.copy($rootScope.segment);
     $scope.predicateData = null;
 
     $scope.treeDataForContext = [];
@@ -2034,7 +2037,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
         current.pathInfoSet.push(pathInfo);
 
-        if (current.type == 'segment') {
+        if (current.type === 'segment') {
             var seg = current;
             for (var i in seg.fields) {
                 var f = seg.fields[i];
@@ -2054,7 +2057,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
                 f.child = child;
                 $scope.generatePathInfo(f, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
-        } else if (current.type == 'field' || current.type == 'component') {
+        } else if (current.type === 'field' || current.type === 'component') {
             var dt = current.child;
             for (var i in dt.components) {
                 var c = dt.components[i];
@@ -2074,9 +2077,71 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
 
     $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
 
+    $scope.getDialogStyle = function(){
+        if ($scope.dialogStep === 0) return "width: 70%";
+        if ($scope.dialogStep === 1) return "width: 90%";
+        if ($scope.dialogStep === 2) return "width: 50%";
+        return "width: 90%";
+    };
+
+    $scope.isEmptyConstraintID = function(newConstraint) {
+        if (newConstraint && newConstraint.constraintId === null) return true;
+        if (newConstraint && newConstraint.constraintId === '') return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintVerb = function(newConstraint) {
+        if (newConstraint && newConstraint.verb === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintPattern = function(newConstraint) {
+        if (newConstraint && newConstraint.contraintType === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintValue = function(newConstraint) {
+        if (newConstraint && newConstraint.value === null) return true;
+
+        return false;
+    };
+
+    $scope.isEmptyConstraintValue2 = function(newConstraint) {
+        if (newConstraint && newConstraint.value2 === null) return true;
+
+        return false;
+    };
+
+    $scope.getUpdatedBindingIdentifier = function(table) {
+        if (table.hl7Version && table.hl7Version !== '') {
+            return table.bindingIdentifier + "_" + table.hl7Version.split(".").join("-");
+        }
+        return table.bindingIdentifier;
+    };
+
+    $scope.goNext = function() {
+        $scope.dialogStep = $scope.dialogStep + 1;
+    };
+
+    $scope.goBack = function () {
+        $scope.dialogStep = $scope.dialogStep - 1;
+    };
+
+    $scope.selectPredicate = function (c){
+        angular.forEach($scope.tempPredicates, function(p) {
+            p.selected = false;
+        });
+        c.selected = true;
+        $scope.existingPredicate = c;
+        $scope.existingPredicate.constraintTarget = $scope.selectedNode.position + '[1]';
+    };
+
     $scope.toggleChildren = function(data) {
         data.childrenVisible = !data.childrenVisible;
-        data.folderClass = data.childrenVisible ? "fa-minus" : "fa-plus";
+        data.folderClass = data.childrenVisible ? "fa-caret-down" : "fa-caret-right";
     };
 
     $scope.beforeNodeDrop = function() {
@@ -2108,14 +2173,6 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
         }
         return deferred.promise;
     };
-
-    $scope.afterPredicateDrop = function() {
-        $scope.draggingStatus = null;
-        $scope.existingPredicate = $scope.predicateData;
-        $scope.existingPredicate.constraintTarget = $scope.selectedNode.position + '[1]';
-    };
-
-
 
     $scope.draggingPredicate = function(event, ui, nodeData) {
         $scope.draggingStatus = 'PredicateDragging';
@@ -2166,7 +2223,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
                     positionPath = positionPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
                     locationPath = locationPath + "." + pathInfo.locationName + "[" + pathInfo.instanceNumber + "]";
 
-                    if (i == $scope.newConstraint.pathInfoSet_1.length - 1) {
+                    if (i === $scope.newConstraint.pathInfoSet_1.length - 1) {
                         locationPath = locationPath + " (" + pathInfo.nodeName + ")";
                     }
                 }
@@ -2187,7 +2244,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
                     positionPath = positionPath + "." + pathInfo.positionNumber + "[" + pathInfo.instanceNumber + "]";
                     locationPath = locationPath + "." + pathInfo.locationName + "[" + pathInfo.instanceNumber + "]";
 
-                    if (i == $scope.newConstraint.pathInfoSet_2.length - 1) {
+                    if (i === $scope.newConstraint.pathInfoSet_2.length - 1) {
                         locationPath = locationPath + " (" + pathInfo.nodeName + ")";
                     }
                 }
@@ -2246,15 +2303,14 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, $modal
         $scope.initPredicate();
     };
 
-    $scope.ok = function() {
-        $modalInstance.close();
+    $scope.cancel = function() {
+        $mdDialog.hide();
     };
 
-    $scope.saveclose = function() {
+    $scope.save = function() {
         $scope.deletePredicateByTarget();
         $scope.selectedSegment.predicates.push($scope.existingPredicate);
-        $rootScope.recordChanged();
-        $modalInstance.close($scope.selectedSegment);
+        $mdDialog.hide($scope.selectedSegment);
     };
 
     $scope.initPredicate();
@@ -2511,7 +2567,6 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $mdDialog.hide($scope.selectedSegment);
     };
 });
-
 angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
