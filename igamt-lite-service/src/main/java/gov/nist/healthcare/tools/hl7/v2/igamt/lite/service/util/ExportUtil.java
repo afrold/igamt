@@ -202,7 +202,7 @@ public class ExportUtil {
 
 		try {
 			// generate cover picture
-			if (metaData.getCoverPicture() != null && !metaData.getCoverPicture().isEmpty()) {
+			if (metaData != null && metaData.getCoverPicture() != null && !metaData.getCoverPicture().isEmpty()) {
 				InputStream imgis;
 				byte[] bytes = null;
 				String filename = docxExportUtil.parseFileName(metaData.getCoverPicture());

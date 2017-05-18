@@ -10,6 +10,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +21,17 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.google.common.base.Predicate;
+
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import static com.google.common.base.Predicates.*;
+import static springfox.documentation.builders.PathSelectors.*;
+
 
 @Configuration
 @ComponentScan({ "gov.nist.healthcare.tools.hl7.v2.igamt.lite",
@@ -40,10 +47,17 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		configurer.enable();
 	}
 	
+	private Predicate<String> swaggerPaths() {
+        return or(
+                regex("/search.*"),
+                regex("/export.*")
+        );
+    }
+	
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).pathMapping("/api").select().apis(RequestHandlerSelectors.any())
-				.paths(PathSelectors.ant("/search/*")).build();
+				.paths(swaggerPaths()).build();
 	}
 
 	// @Override

@@ -2,7 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableMessage;
 
 /**
@@ -22,5 +22,7 @@ public interface SerializeMessageService {
 
     public SerializableMessage serializeMessage(Message message, String prefix,
         SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig);
+
+	public SerializableElement serializeMessage(Message message);
 
 }

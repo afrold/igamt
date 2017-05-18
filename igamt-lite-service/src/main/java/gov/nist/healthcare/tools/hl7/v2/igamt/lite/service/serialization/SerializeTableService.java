@@ -26,4 +26,6 @@ public interface SerializeTableService {
     
     public SerializableTable serializeTable(TableLink tableLink, Table table, String prefix, Integer position,
         CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig);
+
+	public SerializableTable serializeTable(Table dataModel);
 }
