@@ -1,7 +1,10 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template name="valueSetMetadata">
-        <xsl:element name="p">
+        <xsl:element name="span">
+        	<xsl:attribute name="class">
+	     		<xsl:text>contentHeader</xsl:text>
+	     	</xsl:attribute>
             <xsl:element name="b">
                 <xsl:text>Metadata</xsl:text>
             </xsl:element>
@@ -65,6 +68,7 @@
                 </xsl:element>
             </xsl:element>
         </xsl:element>
+        <xsl:element name="p"/>
     </xsl:template>
 
 </xsl:stylesheet>

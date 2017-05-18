@@ -1,11 +1,17 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -27,6 +33,6 @@ public interface ExportService {
     InputStream exportIGDocumentAsHtml(IGDocument igDocument, SerializationLayout serializationLayout, ExportConfig exportConfig, ExportFontConfig exportFontConfig) throws IOException;
     InputStream exportDatatypeLibraryDocumentAsHtml(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig);
     InputStream exportDatatypeLibraryDocumentAsDocx(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig, ExportFontConfig exportFontConfig);
-
+	String exportDataModelAsHtml(Object dataModel, String title);
 
 }

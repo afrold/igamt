@@ -28,4 +28,5 @@ public interface SerializeDatatypeService {
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
         Integer position, UsageConfig datatypeUsageConfig, Map<String,Datatype> componentProfileDatatypes);
 
+    public SerializableDatatype serializeDatatype(Datatype datatype);
 }

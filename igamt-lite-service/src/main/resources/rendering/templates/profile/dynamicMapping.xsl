@@ -2,7 +2,8 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:template match="DynamicMapping">
-		<xsl:element name="p">
+		<xsl:element name="br"/>
+		<xsl:element name="span">
    			<xsl:element name="b">
 				<xsl:text>Dynamic Mapping List</xsl:text>
 			</xsl:element>

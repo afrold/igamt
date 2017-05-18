@@ -16,15 +16,20 @@
 
     <xsl:template match="Segment">
         <xsl:param name="inlineConstraint"/>
-        <!--xsl:value-of select="@Comment"/-->
-        <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
+        <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0  and ./Text[@Type='DefPreText']!='' ">
             <xsl:call-template name="definitionText">
                 <xsl:with-param name="type">
                     <xsl:text>pre</xsl:text>
                 </xsl:with-param>
             </xsl:call-template>
+            <xsl:element name="br"/>
         </xsl:if>
-        <xsl:element name="p">
+        <xsl:element name="span">
+            <xsl:element name="span">
+                <xsl:element name="b">
+                    <xsl:text>Segment Definition</xsl:text>
+                </xsl:element>
+            </xsl:element>
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
@@ -150,73 +155,50 @@
             </xsl:element>
         </xsl:element>
         <xsl:if test="count(Constraint) &gt; 0">
-            <xsl:if test="count(Constraint[@Type='cs']) &gt; 0">
-                 <xsl:element name="p">
- 				 	<xsl:element name="b">
-	                    <xsl:text>Conformance Statements</xsl:text>
-                    </xsl:element>
-                </xsl:element>
-                <xsl:element name="table">
-                    <xsl:attribute name="class">
-                        <xsl:text>contentTable</xsl:text>
-                    </xsl:attribute>
-                    <xsl:call-template name="conformanceStatementHeader"/>
-                    <xsl:element name="tbody">
-                        <xsl:for-each select="./Constraint[@Type='cs']">
-                            <xsl:sort select="@Position" data-type="number"></xsl:sort>
-                            <xsl:call-template name="ConstraintContent">
-                                <xsl:with-param name="mode">
-                                    <xsl:text>standalone</xsl:text>
-                                </xsl:with-param>
-                                <xsl:with-param name="type">
-                                    <xsl:text>cs</xsl:text>
-                                </xsl:with-param>
-                                <xsl:with-param name="displayPeriod">
-                                    <xsl:text>false</xsl:text>
-                                </xsl:with-param>
-                            </xsl:call-template>
-                        </xsl:for-each>
-                    </xsl:element>
-                </xsl:element>
+            <xsl:if test="count(./Constraint[@Type='cs']) &gt; 0">
+                <xsl:element name="br"/>
+                <xsl:call-template name="Constraint">
+                    <xsl:with-param name="title">
+                        <xsl:text>Conformance Statements</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="constraintMode">
+                        <xsl:text>standalone</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="type">
+                        <xsl:text>cs</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="headerLevel">
+                        <xsl:text>h4</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
             </xsl:if>
-            <xsl:if test="count(Constraint[@Type='pre']) &gt; 0">
-                <xsl:element name="p">
-   					<xsl:element name="b">
-                    	<xsl:text>Conditional Predicates</xsl:text>
-                   	</xsl:element>
-                </xsl:element>
-                <xsl:element name="table">
-                    <xsl:attribute name="class">
-                        <xsl:text>contentTable</xsl:text>
-                    </xsl:attribute>
-                    <xsl:call-template name="predicateHeader"/>
-                    <xsl:element name="tbody">
-                        <xsl:for-each select="./Constraint[@Type='pre']">
-                            <xsl:sort select="@Position" data-type="number"></xsl:sort>
-                            <xsl:call-template name="ConstraintContent">
-                                <xsl:with-param name="mode">
-                                    <xsl:text>standalone</xsl:text>
-                                </xsl:with-param>
-                                <xsl:with-param name="type">
-                                    <xsl:text>pre</xsl:text>
-                                </xsl:with-param>
-                                <xsl:with-param name="displayPeriod">
-                                    <xsl:text>false</xsl:text>
-                                </xsl:with-param>
-                            </xsl:call-template>
-                        </xsl:for-each>
-                    </xsl:element>
-                </xsl:element>
+            <xsl:if test="count(./Constraint[@Type='pre'])  &gt; 0">
+                <xsl:element name="br"/>
+                <xsl:call-template name="Constraint">
+                    <xsl:with-param name="title">
+                        <xsl:text>Conditional Predicates</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="constraintMode">
+                        <xsl:text>standalone</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="type">
+                        <xsl:text>pre</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="headerLevel">
+                        <xsl:text>h4</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
             </xsl:if>
         </xsl:if>
-        
+
         <xsl:apply-templates select="./coconstraints"/>
         <xsl:apply-templates select="./ValueSetBindingList"/>
         <xsl:apply-templates select="./DynamicMapping"/>
         <xsl:apply-templates select="./CommentList"/>
 
-        <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
-            <xsl:element name="p">
+        <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0 and ./Text[@Type='DefPostText']!='' ">
+        	<xsl:element name="br"/>
+            <xsl:element name="span">
                 <xsl:call-template name="definitionText">
                     <xsl:with-param name="type">
                         <xsl:text>post</xsl:text>
@@ -227,10 +209,11 @@
 
         <xsl:for-each select="Field">
             <xsl:sort select="@Position" data-type="number"></xsl:sort>
-            <xsl:if test="count(Text) &gt; 0">
-	            <xsl:element name="p">
+            <xsl:if test="count(./Text[@Type='Text']) &gt; 0">
+            	<xsl:element name="br"/>
+	            <xsl:element name="span">
                     <xsl:element name="b">
-                        <xsl:value-of select="concat(../@Name,'-',./@Position,' : ',./@Name,' (',./@Datatype,')')" />
+                        <xsl:value-of select="concat(../@Name,'-',./@Position,': ',./@Name,' (',./@Datatype,')')" />
                     </xsl:element>
                     <xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
                 </xsl:element>
@@ -240,7 +223,8 @@
     </xsl:template>
 
     <xsl:template match="coconstraints">
-        <xsl:element name="p">
+    	<xsl:element name="br"/>
+        <xsl:element name="span">
    			<xsl:element name="b">
             	<xsl:text>Co-Constraints</xsl:text>
         	</xsl:element>

@@ -808,11 +808,11 @@
         <td ng-class="{'has-validation-error':hasCardinalityError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CARDINALITY')}}">
             <span>[{{::node.obj.min}},{{::node.obj.max}}]</span>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
-            <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
+        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0 || node.obj.minLength === 'NA' || node.obj.maxLength === 'NA','has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
+            <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0 && node.obj.minLength !== 'NA' && node.obj.maxLength !== 'NA'">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
-            <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">{{::node.obj.confLength}}</span>
+        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0 || node.obj.confLength === 'NA' ,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
+            <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0 && node.obj.confLength !== 'NA' ">{{::node.obj.confLength}}</span>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:center">
             <span class="point" ng-click="redirectDT(node.obj.datatype)">
@@ -924,13 +924,13 @@
         </td>
         <td class="emptyCol">
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
-            <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0">
+        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0 || node.obj.minLength === 'NA' || node.obj.maxLength === 'NA','has-validation-error':hasLengthError(node.obj.id)}" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'LENGTH')}}">
+            <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0 && node.obj.minLength !== 'NA' && node.obj.maxLength !== 'NA'">
                 [{{::node.obj.minLength}},{{::node.obj.maxLength}}]
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
-            <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0" ng-bind="::node.obj.confLength">
+        <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0 || node.obj.confLength === 'NA','has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
+            <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0 && node.obj.confLength !== 'NA'" ng-bind="::node.obj.confLength">
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:center">

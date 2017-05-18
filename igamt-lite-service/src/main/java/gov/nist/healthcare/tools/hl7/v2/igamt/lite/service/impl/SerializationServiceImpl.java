@@ -5,15 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
@@ -24,6 +24,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
@@ -116,8 +117,6 @@ import nu.xom.Document;
     private List<TableLink> unbindedTables;
 
     private Messages igDocumentMessages;
-
-    private List<TableLink> tableLibrary;
     
     static final Logger logger = LoggerFactory.getLogger(SerializationService.class);
 
@@ -166,7 +165,6 @@ import nu.xom.Document;
         this.bindedDatatypes = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
         this.bindedSegments = new ArrayList<>();
-        this.tableLibrary = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
         this.compositeProfiles = new ArrayList<>();
         if (igDocument.getProfile().getCompositeProfiles() != null
@@ -227,7 +225,8 @@ import nu.xom.Document;
         SerializableSection profileSection =
             new SerializableSection(id, prefix, position, headerLevel, title);
         if (profile.getSectionContents() != null && !profile.getSectionContents().isEmpty()) {
-            profileSection.addSectionContent(profile.getSectionContents());
+            profileSection.addSectionContent(serializationUtil.cleanRichtext(
+                profile.getSectionContents()));
         }
         if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
             nu.xom.Element textElement = new nu.xom.Element("Text");
@@ -327,8 +326,7 @@ import nu.xom.Document;
             SerializableSection profileComponentSection =
                 new SerializableSection(id, prefix, position, headerLevel, title);
             if (profileComponentLibrary.getSectionContents() != null && !profileComponentLibrary.getSectionContents().isEmpty()) {
-                profileComponentSection.addSectionContent(
-                    "<div class=\"fr-view\">" + profileComponentLibrary.getSectionContents() + "</div>");
+                profileComponentSection.addSectionContent(serializationUtil.cleanRichtext(profileComponentLibrary.getSectionContents()));
             }
             int currentPosition = 1;
             for(ProfileComponentLink profileComponentLink : profileComponentLibrary.getChildren()){
@@ -425,9 +423,7 @@ import nu.xom.Document;
             new SerializableSection(id, prefix, position, headerLevel, title);
         if (tableLibrary.getSectionContents() != null && !tableLibrary
             .getSectionContents().isEmpty()) {
-            valueSetsSection.addSectionContent(
-                "<div class=\"fr-view\">" + tableLibrary.getSectionContents()
-                    + "</div>");
+            valueSetsSection.addSectionContent(serializationUtil.cleanRichtext(tableLibrary.getSectionContents()));
         }
         List<TableLink> tableLinkList = new ArrayList<>(tableLibrary.getChildren());
         Collections.sort(tableLinkList);
@@ -490,8 +486,7 @@ import nu.xom.Document;
         SerializableSection datatypeSection =
             new SerializableSection(id, prefix, position, headerLevel, title);
         if (datatypeLibrary.getSectionContents() != null && !datatypeLibrary.getSectionContents().isEmpty()) {
-            datatypeSection.addSectionContent(
-                "<div class=\"fr-view\">" + datatypeLibrary.getSectionContents() + "</div>");
+            datatypeSection.addSectionContent(serializationUtil.cleanRichtext(datatypeLibrary.getSectionContents()));
         }
         List<DatatypeLink> datatypeLinkList =
             new ArrayList<>(datatypeLibrary.getChildren());
@@ -538,8 +533,7 @@ import nu.xom.Document;
             new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
         if (profile.getMessages().getSectionContents() != null && !profile.getMessages()
             .getSectionContents().isEmpty()) {
-            messageSection.addSectionContent(
-                "<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>");
+            messageSection.addSectionContent(serializationUtil.cleanRichtext(profile.getMessages().getSectionContents()));
         }
         for (Message message : this.igDocumentMessages.getChildren()) {
             SerializableMessage serializableMessage =
@@ -564,9 +558,7 @@ import nu.xom.Document;
             SerializableSection compositeProfileSection = new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
             if (profile.getCompositeProfiles().getSectionContents() != null && !profile
                 .getCompositeProfiles().getSectionContents().isEmpty()) {
-                compositeProfileSection.addSectionContent(
-                    "<div class=\"fr-view\">" + profile.getCompositeProfiles().getSectionContents() +
-                    "</div>");
+                compositeProfileSection.addSectionContent(serializationUtil.cleanRichtext(profile.getCompositeProfiles().getSectionContents()));
             }
             for (CompositeProfile compositeProfile : this.compositeProfiles) {
                 SerializableCompositeProfile serializableCompositeProfile =
@@ -676,9 +668,7 @@ import nu.xom.Document;
             new SerializableSection(id, prefix, sectionPosition, headerLevel, title);
         if (profile.getSegmentLibrary().getSectionContents() != null && !profile.getSegmentLibrary()
             .getSectionContents().isEmpty()) {
-            segmentsSection.addSectionContent(
-                "<div class=\"fr-view\">" + profile.getSegmentLibrary().getSectionContents()
-                    + "</div>");
+            segmentsSection.addSectionContent(serializationUtil.cleanRichtext(profile.getSegmentLibrary().getSectionContents()));
         }
         for (SegmentLink segmentLink : this.bindedSegments) {
             if (segmentLink.getId() != null) {
@@ -1053,4 +1043,25 @@ import nu.xom.Document;
         }
         return null;
     }
+
+	@Override
+	public Document serializeDataModel(Object dataModel) {
+		SerializableStructure serializableStructure = new SerializableStructure();
+		SerializableElement serializableElement = null;
+		if(dataModel instanceof Datatype){
+			serializableElement = serializeDatatypeService.serializeDatatype((Datatype)dataModel);
+		} else if(dataModel instanceof Table){
+			serializableElement = serializeTableService.serializeTable((Table)dataModel);
+		} else if(dataModel instanceof Segment){
+			serializableElement = serializeSegmentService.serializeSegment((Segment)dataModel);
+		} else if(dataModel instanceof Message){
+			serializableElement = serializeMessageService.serializeMessage((Message)dataModel);
+		} else if(dataModel instanceof ProfileComponent){
+			serializableElement = serializeProfileComponentService.serializeProfileComponent((ProfileComponent) dataModel);
+		}
+		if(serializableElement != null){
+			serializableStructure.addSerializableElement(serializableElement);
+		}
+		return serializableStructure.serializeStructure();
+	}
 }

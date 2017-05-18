@@ -12,12 +12,12 @@
         </xsl:element>
     </xsl:template>
 
-
     <xsl:template match="ProfileComponent">
         <xsl:if test="@Description!=''">
-            <xsl:element name="p">
+            <xsl:element name="span">
                 <xsl:value-of select="@Description"/>
             </xsl:element>
+            <xsl:element name="br"/>
         </xsl:if>
         <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
             <xsl:call-template name="definitionText">
@@ -25,7 +25,13 @@
                     <xsl:text>pre</xsl:text>
                 </xsl:with-param>
             </xsl:call-template>
+            <xsl:element name="br"/>
         </xsl:if>
+        <xsl:element name="span">
+            <xsl:element name="b">
+                <xsl:text>Profile Component Definition</xsl:text>
+            </xsl:element>
+        </xsl:element>
         <xsl:element name="table">
             <xsl:attribute name="class">
                 <xsl:text>contentTable</xsl:text>
@@ -283,8 +289,11 @@
             </xsl:element>
         </xsl:element>
     	<xsl:if test="count(Constraints/Constraint[@Type='pre']) &gt; 0">
-            <xsl:element name="h4">
-                <xsl:text>Conditional Predicates</xsl:text>
+            <xsl:element name="br"/>
+            <xsl:element name="span">
+                <xsl:element name="b">
+                    <xsl:text>Conditional Predicates</xsl:text>
+                </xsl:element>
             </xsl:element>
             <xsl:element name="table">
                 <xsl:attribute name="class">
@@ -310,6 +319,7 @@
             </xsl:element>
         </xsl:if>
 		<xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+            <xsl:element name="br"/>
 			<xsl:call-template name="definitionText">
 				<xsl:with-param name="type">
 					<xsl:text>post</xsl:text>

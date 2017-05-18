@@ -170,4 +170,19 @@ public class TableServiceImpl implements TableService {
 	public void delete(List<Table> tables) {
 		tableRepository.delete(tables);
 	}
+
+	@Override
+	public List<Table> findByScope(String scope) {
+		return tableRepository.findByScope(scope);
+	}
+
+	@Override
+	public List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope) {
+		return tableRepository.findByBindingIdentifierAndScope(bindingIdentifier, scope);
+	}
+
+	@Override
+	public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier) {
+		return tableRepository.findOneByScopeAndBindingIdentifier(scope, bindingIdentifier);
+	}
 }

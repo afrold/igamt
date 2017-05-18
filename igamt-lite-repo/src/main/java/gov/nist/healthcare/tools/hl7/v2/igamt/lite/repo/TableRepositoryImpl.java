@@ -136,6 +136,32 @@ public class TableRepositoryImpl implements TableOperations {
     return mongo.findOne(qry, Table.class);
   }
 
+@Override
+public List<Table> findByScope(String scope) {
+	Criteria where = Criteria.where("scope").is(scope);
+    Query qry = Query.query(where);
+    List<Table> tables = mongo.find(qry, Table.class);
+    return tables;
+}
+
+@Override
+public List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope) {
+	Criteria where = Criteria.where("bindingIdentifier").is(bindingIdentifier).andOperator(
+	        Criteria.where("scope").is(scope.toString()));
+    Query qry = Query.query(where);
+    List<Table> tables = mongo.find(qry, Table.class);
+    return tables;
+}
+
+@Override
+public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier) {
+	Criteria where = Criteria.where("bindingIdentifier").is(bindingIdentifier).andOperator(
+	        Criteria.where("scope").is(scope));
+    Query qry = Query.query(where);
+    Table table = mongo.findOne(qry, Table.class);
+    return table;
+}
+
   // Query set4Brevis(Query qry) {
   // qry.fields().include("_id");
   // qry.fields().include("name");
