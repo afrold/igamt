@@ -46,6 +46,8 @@ public interface DatatypeOperations {
   public List<Datatype> findShared(Long accountId);
 
   public List<Datatype> findByNameAndVersionAndScope(String name, String version, String scope);
+  
+  public Datatype findOneByNameAndVersionAndScope(String name, String version, String scope);
 
   public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope);
 
@@ -64,5 +66,7 @@ public interface DatatypeOperations {
   public void updateStatus(String id, STATUS status);
 
   List<Datatype> findByScopeAndVersionAndParentVersion(SCOPE scope, String hl7Version, String id);
+  
+  List<Datatype> findByScopeAndVersion(String scope, String hl7Version);
 
 }

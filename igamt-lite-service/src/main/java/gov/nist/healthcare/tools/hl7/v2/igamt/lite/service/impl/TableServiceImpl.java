@@ -185,4 +185,9 @@ public class TableServiceImpl implements TableService {
 	public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier) {
 		return tableRepository.findOneByScopeAndBindingIdentifier(scope, bindingIdentifier);
 	}
+
+	@Override
+	public List<Table> findByScopeAndVersion(String scope, String hl7Version) {
+		return tableRepository.findByScopeAndVersion(scope, hl7Version);
+	}
 }

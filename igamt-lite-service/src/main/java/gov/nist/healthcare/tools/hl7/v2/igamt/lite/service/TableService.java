@@ -61,4 +61,6 @@ public interface TableService {
 
   Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier);
 
+  List<Table> findByScopeAndVersion(String scope, String hl7Version);
+
 }

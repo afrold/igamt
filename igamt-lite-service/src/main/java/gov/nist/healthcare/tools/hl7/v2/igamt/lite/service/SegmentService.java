@@ -51,4 +51,6 @@ public interface SegmentService {
 
   void updateStatus(String id, STATUS unpublished);
 
+  List<Segment> findByScopeAndVersion(String name, String hl7Version);
+
 }

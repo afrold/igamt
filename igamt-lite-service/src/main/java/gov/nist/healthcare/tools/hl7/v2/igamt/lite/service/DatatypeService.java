@@ -51,7 +51,7 @@ public interface DatatypeService {
   
   public List<Datatype> findByNameAndScope(String name, String scope);
 
-  public Datatype findByNameAndVesionAndScope(String name, String version, String scope);
+  public Datatype findOneByNameAndVersionAndScope(String name, String version, String scope);
 
   public Datatype findByCompatibleVersion(String name, String version, String scope)
       throws Exception;
@@ -74,6 +74,8 @@ public interface DatatypeService {
 
   public List<Datatype> findByScopeAndVersionAndParentVersion(SCOPE scope, String hl7Version,
       String id);
+
+public List<Datatype> findByScopeAndVersion(String name, String hl7Version);
 
 
 }

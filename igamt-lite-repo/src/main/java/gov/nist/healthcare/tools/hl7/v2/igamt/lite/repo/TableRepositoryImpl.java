@@ -162,6 +162,15 @@ public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIden
     return table;
 }
 
+@Override
+public List<Table> findByScopeAndVersion(String scope, String hl7Version) {
+	Criteria where = Criteria.where("hl7Version").is(hl7Version).andOperator(
+	        Criteria.where("scope").is(scope.toString()));
+    Query qry = Query.query(where);
+    List<Table> tables = mongo.find(qry, Table.class);
+    return tables;
+}
+
   // Query set4Brevis(Query qry) {
   // qry.fields().include("_id");
   // qry.fields().include("name");

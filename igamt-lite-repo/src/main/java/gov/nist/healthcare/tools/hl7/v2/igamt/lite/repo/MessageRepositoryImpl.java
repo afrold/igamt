@@ -90,4 +90,12 @@ public List<Message> findByScope(String scope) {
     List<Message> result = mongo.find(qry, Message.class);
     return result;
 }
+
+@Override
+public List<Message> findByScopeAndVersion(String scope, String hl7Version) {
+	Criteria where = Criteria.where("hl7Version").is(hl7Version);
+    where.andOperator(Criteria.where("scope").is(scope));
+    Query qry = Query.query(where);
+    return mongo.find(qry, Message.class);
+}
 }

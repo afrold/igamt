@@ -42,4 +42,6 @@ public interface SegmentOperations {
   
   List<Segment> findByNameAndScope(String name, String scope);
 
+  public List<Segment> findByScopeAndVersion(String scope, String version);
+
 }
