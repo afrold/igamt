@@ -87,7 +87,7 @@ public class DTMConstraints {
     miliSecond1.setName("s");
     miliSecond1.setDescription("1/10 second");
     miliSecond1.setPosition(7);
-    miliSecond1.setUsage(Usage.O);
+    miliSecond1.setUsage(Usage.C);
     DTMPredicate miliSecondPredicate1 = new DTMPredicate();
     miliSecondPredicate1.setTrueUsage(Usage.O);
     miliSecondPredicate1.setFalseUsage(Usage.X);
@@ -100,7 +100,7 @@ public class DTMConstraints {
     miliSecond2.setName("s");
     miliSecond2.setDescription("1/100 second");
     miliSecond2.setPosition(8);
-    miliSecond2.setUsage(Usage.O);
+    miliSecond2.setUsage(Usage.C);
     DTMPredicate miliSecondPredicate2 = new DTMPredicate();
     miliSecondPredicate2.setTrueUsage(Usage.O);
     miliSecondPredicate2.setFalseUsage(Usage.X);
@@ -113,7 +113,7 @@ public class DTMConstraints {
     miliSecond3.setName("s");
     miliSecond3.setDescription("1/1000 second");
     miliSecond3.setPosition(9);
-    miliSecond3.setUsage(Usage.O);
+    miliSecond3.setUsage(Usage.C);
     DTMPredicate miliSecondPredicate3 = new DTMPredicate();
     miliSecondPredicate3.setTrueUsage(Usage.O);
     miliSecondPredicate3.setFalseUsage(Usage.X);
@@ -126,7 +126,7 @@ public class DTMConstraints {
     miliSecond4.setName("s");
     miliSecond4.setPosition(10);
     miliSecond4.setDescription("1/10000 second");
-    miliSecond4.setUsage(Usage.O);
+    miliSecond4.setUsage(Usage.C);
     DTMPredicate miliSecondPredicate4 = new DTMPredicate();
     miliSecondPredicate4.setTrueUsage(Usage.O);
     miliSecondPredicate4.setFalseUsage(Usage.X);

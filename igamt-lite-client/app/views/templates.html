@@ -1214,10 +1214,10 @@
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2 ng-if="dialogStep === 0">(1/4) Existing Predicate</h2>
-                    <h2 ng-if="dialogStep === 1">(2/4) Select CONTEXT</h2>
-                    <h2 ng-if="dialogStep === 2">(3/4) Make Constraints</h2>
-                    <h2 ng-if="dialogStep === 3">(4/4) Select Predicate and Set True/False Usage</h2>
+                    <h2 ng-if="dialogStep === 0">Predicate Summary</h2>
+                    <h2 ng-if="dialogStep === 1">(1/3) Select CONTEXT</h2>
+                    <h2 ng-if="dialogStep === 2">(2/3) Make Constraints</h2>
+                    <h2 ng-if="dialogStep === 3">(3/3) Select Predicate and Set True/False Usage</h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()">
                         <i class="material-icons">clear</i>
@@ -1296,7 +1296,7 @@
                                             </div>
                                             <div layout="row" layout-sm="column" layout-align="end center" layout-wrap ng-show="existingPredicate">
                                                 <md-button class="md-fab md-mini" aria-label="Delete Predicate" ng-click="deletePredicate()">
-                                                    <i class="fa fa-trash fa-fw"/>
+                                                    <i class="fa fa-trash fa-fw"/> Delete Predicate
                                                 </md-button>
                                             </div>
                                         </div>
@@ -1430,10 +1430,7 @@
                                             <tbody>
                                             <tr>
                                                 <td class="col-md-2">If</td>
-                                                <td class="col-md-2 " data-drop="true " data-jqyoui-options ng-model="firstNodeData " jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'} ">
-                                                    <div ng-show="draggingStatus=='ContextTreeNodeDragging' ">
-                                                        <span style="color:red; " class="blink_me ">You can drop here!!</span>
-                                                    </div>
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true " data-jqyoui-options ng-model="firstNodeData " jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'} ">
                                                     <div ng-show="newConstraint.location_1 ">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_1 ">
@@ -1447,7 +1444,6 @@
                                                     </div>
                                                     <div ng-show="!newConstraint.location_1">
                                                         <span style="color:red;">Drop the node!</span>
-                                                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
@@ -1566,7 +1562,7 @@
                                                     </span>
                                                 </td>
 
-                                                <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
                                                     ng-show="newConstraint.contraintType == 'identical to another node' ||
                                                              newConstraint.contraintType == 'equal to another node' ||
                                                              newConstraint.contraintType == 'not-equal to another node' ||
@@ -1574,9 +1570,6 @@
                                                              newConstraint.contraintType == 'equal to or greater than another node' ||
                                                              newConstraint.contraintType == 'less than another node' ||
                                                              newConstraint.contraintType == 'equal to or less than another node'">
-                                                    <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
-                                                        <span style="color:red;" class="blink_me">You can drop Here!!</span>
-                                                    </div>
                                                     <div ng-show="newConstraint.location_2">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_2">
@@ -1590,7 +1583,6 @@
                                                     </div>
                                                     <div ng-show="!newConstraint.location_2">
                                                         <span style="color:red;">Drop the node!</span>
-                                                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2" align="center">
@@ -1635,12 +1627,12 @@
                                                     <span ng-show="compositeType == 'FORALL'">FORALL</span>
                                                     <span ng-show="compositeType == 'EXIST'">EXIST</span>
                                                 </td>
-                                                <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-7" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
+                                                <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-7 drop-zone" align="center" style="vertical-align:middle" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
                                                     <span style="color:red;" ng-show="constraints.length < 2">Drop two more constraints here!</span>
                                                     <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
                                                 </td>
-                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
-                                                    <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!<i class="fa fa-cog fa-spin fa-3x fa-fw"></i></span>
+                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+                                                    <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
                                                     <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
                                                 </td>
                                                 <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" align="center">
@@ -1649,8 +1641,8 @@
                                                     <span ng-show="compositeType == 'XOR'">XOR</span>
                                                     <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                                                 </td>
-                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
-                                                    <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!<i class="fa fa-cog fa-spin fa-3x fa-fw"></i></span>
+                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                                                    <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
                                                     <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                                                 </td>
                                                 <td class="col-md-1" align="center">
@@ -1669,7 +1661,6 @@
                         <form novalidate ng-cloak>
                             <div class="col-md-12">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">1. Select a constraint for Predicate</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
@@ -1681,15 +1672,33 @@
                                             <tbody>
                                             <tr ng-repeat="c in displayed">
                                                 <td class="col-md-1" align="center">
-                                                    <div ng-click="selectPredicate(c);">
-                                                        <i ng-show="c.selected" class="fa fa-check-circle-o fa-3x" aria-hidden="true"></i>
-                                                        <i ng-show="!c.selected" class="fa fa-circle-o fa-3x" aria-hidden="true"></i>
-                                                    </div>
+                                                    <md-checkbox ng-checked="c.selected"  ng-click="selectPredicate(c);" aria-label="Select Constraint for Predicate" style="margin: 10px;"/>
                                                 </td>
                                                 <td class="col-md-11">
-                                                    <div layout="row">
+                                                    <div layout="row" ng-if="!c.selected">
                                                         <md-input-container flex="100" class="normal">
                                                             <input ng-model="c.description" type="text" disabled/>
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div layout="row" ng-if="c.selected">
+                                                        <md-input-container flex="50" class="normal">
+                                                            <input ng-model="c.description" type="text" disabled/>
+                                                        </md-input-container>
+                                                        <md-input-container flex="25" class="normal" style="margin: 18px;">
+                                                            <label>True Usage</label>
+                                                            <md-select placeholder="Select TRUE Usage" ng-model="existingPredicate.trueUsage" ng-change="setChanged()">
+                                                                <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
+                                                                    {{usage}}
+                                                                </md-option>
+                                                            </md-select>
+                                                        </md-input-container>
+                                                        <md-input-container flex="25" class="normal" style="margin: 18px;">
+                                                            <label>False Usage</label>
+                                                            <md-select placeholder="Select FALSE Usage" ng-model="existingPredicate.falseUsage" ng-change="setChanged()">
+                                                                <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
+                                                                    {{usage}}
+                                                                </md-option>
+                                                            </md-select>
                                                         </md-input-container>
                                                     </div>
                                                     <div layout="row">
@@ -1704,31 +1713,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div ng-if="existingPredicate" class="col-md-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">2. Set True/False Usage</div>
-                                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
-                                        <div layout="row" layout-align="center center" style="margin-top: 10px">
-                                            <md-input-container flex="30">
-                                                <label>True Usage</label>
-                                                <md-select placeholder="Select TRUE Usage" ng-model="existingPredicate.trueUsage" ng-change="setChanged()">
-                                                    <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
-                                                        {{usage}}
-                                                    </md-option>
-                                                </md-select>
-                                            </md-input-container>
-                                            <md-input-container flex="30">
-                                                <label>False Usage</label>
-                                                <md-select placeholder="Select FALSE Usage" ng-model="existingPredicate.falseUsage" ng-change="setChanged()">
-                                                    <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
-                                                        {{usage}}
-                                                    </md-option>
-                                                </md-select>
-                                            </md-input-container>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -1736,8 +1720,9 @@
 
             <md-dialog-actions layout="row">
                 <md-button ng-show="dialogStep === 1 || dialogStep === 2 || dialogStep === 3" class="btn btn-raised btn-primary btn-sm" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
-                <md-button ng-show="dialogStep === 0 || dialogStep === 1 || dialogStep === 2" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="(dialogStep === 1 && contextKey === null) || (dialogStep === 2 && tempPredicates.length === 0)"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
-                <md-button ng-show="dialogStep === 3 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="save()"   ng-disabled="!changed || !existingPredicate" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
+                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Edit</span></md-button>
+                <md-button ng-show="dialogStep === 1 || dialogStep === 2" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="(dialogStep === 1 && contextKey === null) || (dialogStep === 2 && tempPredicates.length === 0)"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
+                <md-button ng-show="dialogStep === 3 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="save()"   ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>
@@ -1749,7 +1734,7 @@
                 <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
             </div>
             <div ng-if="data.type !== 'message' && data.type !== 'group'">
-                &nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </td>
         <td ng-if="!data.folderClass">
@@ -1757,23 +1742,14 @@
                 <i class="fa fa-caret-right" ng-click="toggleChildren(data)"></i>
             </div>
             <div ng-if="data.type !== 'message' && data.type !== 'group'">
-                &nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </td>
         <td>
             <div ng-if="data.type === 'message'">
-                <div ng-click="selectContext(data);">
-                    <div ng-show="data.contextKey === contextKey">
-                        <span class="label label-success label-icon">M</span>
-                        <span style="font-weight:bold;color:blue;background-color:#ddd;">&nbsp;{{::data.name}}</span>
-                        <i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i>
-                    </div>
-                    <div ng-show="data.contextKey !== contextKey">
-                        <span class="label label-success label-icon">M</span>
-                        <span style="font-weight:bold;color:blue;">&nbsp;{{::data.name}}</span>
-                        <i class="fa fa-circle-o fa-lg" aria-hidden="true"></i>
-                    </div>
-                </div>
+                <input type="checkbox" ng-checked="data.contextKey === contextKey" ng-click="selectContext(data);" />
+                <span class="label label-success label-icon">M</span>
+                <span style="font-weight:bold;color:blue;">&nbsp;{{::data.name}}</span>
                 <div id="expanded-data" ng-if="data.childrenVisible">
                     <table class="table table-striped" id="nested-table">
                         <div ng-repeat="data in data.children" ng-include="'message_tree_Predicate_item.html'"></div>
@@ -1782,18 +1758,12 @@
             </div>
             <div ng-if="data.type === 'group'">
                 <div ng-if="selectedNode.path.startsWith(data.positionPath)" ng-click="selectContext(data);">
-                    <div ng-show="contextKey === data.contextKey">
-                        <span class="label label-success label-icon">G</span>
-                        <span style="font-weight:bold;color:blue;background-color:#ddd;">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::data.name}}</span>
-                        <i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i>
-                    </div>
-                    <div ng-show="contextKey !== data.contextKey">
-                        <span class="label label-success label-icon">G</span>
-                        <span style="font-weight:bold;color:blue;">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::data.name}}</span>
-                        <i class="fa fa-circle-o fa-lg" aria-hidden="true"></i>
-                    </div>
+                    <input type="checkbox" ng-checked="data.contextKey === contextKey" ng-click="selectContext(data);" />
+                    <span class="label label-success label-icon">G</span>
+                    <span style="font-weight:bold;color:blue;">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::data.name}}</span>
                 </div>
                 <div ng-if="!selectedNode.path.startsWith(data.positionPath)">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
                     <span class="label label-success label-icon">G</span>
                     <span>&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::data.name}}</span>
                 </div>
@@ -2037,10 +2007,7 @@
                                                     </div>
                                                     <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
                                                 </td>
-                                                <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'}">
-                                                    <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
-                                                        <span style="color:red;" class="blink_me">You can drop here!!</span>
-                                                    </div>
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'}">
                                                     <div ng-show="newConstraint.location_1">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_1">
@@ -2064,7 +2031,6 @@
                                                     </div>
                                                     <div ng-show="!newConstraint.location_1">
                                                         <span style="color:red;">Drop the node!</span>
-                                                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
@@ -2183,7 +2149,7 @@
                                                     </span>
                                                 </td>
 
-                                                <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
                                                     ng-show="newConstraint.contraintType == 'identical to another node' ||
                                                             newConstraint.contraintType == 'equal to another node' ||
                                                             newConstraint.contraintType == 'not-equal to another node' ||
@@ -2191,9 +2157,6 @@
                                                             newConstraint.contraintType == 'equal to or greater than another node' ||
                                                             newConstraint.contraintType == 'less than another node' ||
                                                             newConstraint.contraintType == 'equal to or less than another node'">
-                                                    <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
-                                                        <span style="color:red;" class="blink_me">You can drop Here!!</span>
-                                                    </div>
                                                     <div ng-show="newConstraint.location_2">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_2">
@@ -2217,7 +2180,6 @@
                                                     </div>
                                                     <div ng-show="!newConstraint.location_2">
                                                         <span style="color:red;">Drop the node!</span>
-                                                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2" align="center">
@@ -2267,14 +2229,12 @@
                                                     <span ng-show="compositeType == 'FORALL'">FORALL</span>
                                                     <span ng-show="compositeType == 'EXIST'">EXIST</span>
                                                 </td>
-                                                <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
+                                                <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5 drop-zone" align="center" style="vertical-align:middle" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
                                                     <span style="color:red;" ng-show="constraints.length < 2">Drop two more constraints here!</span>
-                                                    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
                                                 </td>
-                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
                                                     <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
-                                                    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
                                                 </td>
                                                 <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" align="center" style="width: 4.1667%">
@@ -2283,9 +2243,8 @@
                                                     <span ng-show="compositeType == 'XOR'">XOR</span>
                                                     <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                                                 </td>
-                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2  drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
                                                     <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
-                                                    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                                                 </td>
                                                 <td class="col-md-1" align="center">
@@ -2321,7 +2280,7 @@
                 <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
             </div>
             <div ng-if="data.type !== 'message' && data.type !== 'group'">
-                &nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </td>
         <td ng-if="!data.folderClass">
@@ -2329,23 +2288,14 @@
                 <i class="fa fa-caret-right" ng-click="toggleChildren(data)"></i>
             </div>
             <div ng-if="data.type !== 'message' && data.type !== 'group'">
-                &nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </td>
         <td>
             <div ng-if="data.type === 'message'">
-                <div ng-click="selectContext(data);">
-                    <div ng-show="data.contextKey === contextKey">
-                        <span class="label label-success label-icon">M</span>
-                        <span style="font-weight:bold;color:blue;background-color:#ddd;">&nbsp;{{::data.name}}</span>
-                        <i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i>
-                    </div>
-                    <div ng-show="data.contextKey !== contextKey">
-                        <span class="label label-success label-icon">M</span>
-                        <span style="font-weight:bold;color:blue;">&nbsp;{{::data.name}}</span>
-                        <i class="fa fa-circle-o fa-lg" aria-hidden="true"></i>
-                    </div>
-                </div>
+                <input type="checkbox" ng-checked="data.contextKey === contextKey" ng-click="selectContext(data);" />
+                <span class="label label-success label-icon">M</span>
+                <span style="font-weight:bold;color:blue;">&nbsp;{{::data.name}}</span>
                 <div id="expanded-data" ng-if="data.childrenVisible">
                     <table class="table table-striped" id="nested-table">
                         <div ng-repeat="data in data.children" ng-include="'message_tree_item.html'"></div>
@@ -2353,18 +2303,9 @@
                 </div>
             </div>
             <div ng-if="data.type === 'group'">
-                <div ng-click="selectContext(data);">
-                    <div ng-show="data.contextKey === contextKey">
-                        <span class="label label-success label-icon">G</span>
-                        <span style="font-weight:bold;color:blue;background-color:#ddd;">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::data.name}}</span>
-                        <i class="fa fa-check-circle-o fa-lg" aria-hidden="true"></i>
-                    </div>
-                    <div ng-show="data.contextKey !== contextKey">
-                        <span class="label label-success label-icon">G</span>
-                        <span style="font-weight:bold;color:blue;">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::data.name}}</span>
-                        <i class="fa fa-circle-o fa-lg" aria-hidden="true"></i>
-                    </div>
-                </div>
+                <input type="checkbox" ng-checked="data.contextKey === contextKey" ng-click="selectContext(data);" />
+                <span class="label label-success label-icon">G</span>
+                <span style="font-weight:bold;color:blue;">&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::data.name}}</span>
                 <div id="expanded-data" ng-if="data.childrenVisible">
                     <table class="table table-striped" id="nested-table">
                         <div ng-repeat="data in data.children" ng-include="'message_tree_item.html'"></div>
@@ -2636,10 +2577,7 @@
                                                 </div>
                                                 <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
                                             </td>
-                                            <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'}">
-                                                <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
-                                                    <span style="color:red;" class="blink_me">You can drop here!!</span>
-                                                </div>
+                                            <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'}">
                                                 <div ng-show="newConstraint.location_1">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_1">
@@ -2663,7 +2601,6 @@
                                                 </div>
                                                 <div ng-show="!newConstraint.location_1">
                                                     <span style="color:red;">Drop the node!</span>
-                                                    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -2782,7 +2719,7 @@
                                                     </span>
                                             </td>
 
-                                            <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
+                                            <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
                                                 ng-show="newConstraint.contraintType == 'identical to another node' ||
                                                             newConstraint.contraintType == 'equal to another node' ||
                                                             newConstraint.contraintType == 'not-equal to another node' ||
@@ -2790,9 +2727,6 @@
                                                             newConstraint.contraintType == 'equal to or greater than another node' ||
                                                             newConstraint.contraintType == 'less than another node' ||
                                                             newConstraint.contraintType == 'equal to or less than another node'">
-                                                <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
-                                                    <span style="color:red;" class="blink_me">You can drop Here!!</span>
-                                                </div>
                                                 <div ng-show="newConstraint.location_2">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_2">
@@ -2816,7 +2750,6 @@
                                                 </div>
                                                 <div ng-show="!newConstraint.location_2">
                                                     <span style="color:red;">Drop the node!</span>
-                                                    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                 </div>
                                             </td>
                                             <td class="col-md-2" align="center">
@@ -2866,14 +2799,12 @@
                                                 <span ng-show="compositeType == 'FORALL'">FORALL</span>
                                                 <span ng-show="compositeType == 'EXIST'">EXIST</span>
                                             </td>
-                                            <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
+                                            <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5 drop-zone" align="center" style="vertical-align:middle" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
                                                 <span style="color:red;" ng-show="constraints.length < 2">Drop two more constraints here!</span>
-                                                <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                 <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
                                             </td>
-                                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+                                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
                                                 <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
-                                                <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                 <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
                                             </td>
                                             <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" align="center" style="width: 4.1667%">
@@ -2882,9 +2813,8 @@
                                                 <span ng-show="compositeType == 'XOR'">XOR</span>
                                                 <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                                             </td>
-                                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
                                                 <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
-                                                <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                 <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                                             </td>
                                             <td class="col-md-1" align="center">
@@ -2913,9 +2843,9 @@
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2 ng-if="dialogStep === 0">(1/3) Existing Predicate</h2>
-                    <h2 ng-if="dialogStep === 1">(2/3) Make Constraints</h2>
-                    <h2 ng-if="dialogStep === 2">(3/3) Select Predicate and Set True/False Usage</h2>
+                    <h2 ng-if="dialogStep === 0">Predicate Summary</h2>
+                    <h2 ng-if="dialogStep === 1">(1/2) Make Constraints</h2>
+                    <h2 ng-if="dialogStep === 2">(2/2) Select Predicate and Set True/False Usage</h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()">
                         <i class="material-icons">clear</i>
@@ -2990,7 +2920,7 @@
                                             </div>
                                             <div layout="row" layout-sm="column" layout-align="end center" layout-wrap ng-show="existingPredicate">
                                                 <md-button class="md-fab md-mini" aria-label="Delete Predicate" ng-click="deletePredicate()">
-                                                    <i class="fa fa-trash fa-fw"/>
+                                                    <i class="fa fa-trash fa-fw"/> Delete Predicate
                                                 </md-button>
                                             </div>
                                         </div>
@@ -3106,10 +3036,7 @@
                                             <tbody>
                                             <tr>
                                                 <td class="col-md-2">If</td>
-                                                <td class="col-md-2 " data-drop="true " data-jqyoui-options ng-model="firstNodeData " jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'} ">
-                                                    <div ng-show="draggingStatus=='ContextTreeNodeDragging' ">
-                                                        <span style="color:red; " class="blink_me ">You can drop here!!</span>
-                                                    </div>
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true " data-jqyoui-options ng-model="firstNodeData " jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'} ">
                                                     <div ng-show="newConstraint.location_1 ">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_1 ">
@@ -3123,7 +3050,6 @@
                                                     </div>
                                                     <div ng-show="!newConstraint.location_1">
                                                         <span style="color:red;">Drop the node!</span>
-                                                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
@@ -3242,7 +3168,7 @@
                                                     </span>
                                                 </td>
 
-                                                <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
                                                     ng-show="newConstraint.contraintType == 'identical to another node' ||
                                                              newConstraint.contraintType == 'equal to another node' ||
                                                              newConstraint.contraintType == 'not-equal to another node' ||
@@ -3250,9 +3176,6 @@
                                                              newConstraint.contraintType == 'equal to or greater than another node' ||
                                                              newConstraint.contraintType == 'less than another node' ||
                                                              newConstraint.contraintType == 'equal to or less than another node'">
-                                                    <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
-                                                        <span style="color:red;" class="blink_me">You can drop Here!!</span>
-                                                    </div>
                                                     <div ng-show="newConstraint.location_2">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_2">
@@ -3266,7 +3189,6 @@
                                                     </div>
                                                     <div ng-show="!newConstraint.location_2">
                                                         <span style="color:red;">Drop the node!</span>
-                                                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2" align="center">
@@ -3311,12 +3233,12 @@
                                                     <span ng-show="compositeType == 'FORALL'">FORALL</span>
                                                     <span ng-show="compositeType == 'EXIST'">EXIST</span>
                                                 </td>
-                                                <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-7" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
+                                                <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-7 drop-zone" align="center" style="vertical-align:middle" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
                                                     <span style="color:red;" ng-show="constraints.length < 2">Drop two more constraints here!</span>
                                                     <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
                                                 </td>
-                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
-                                                    <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!<i class="fa fa-cog fa-spin fa-3x fa-fw"></i></span>
+                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+                                                    <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
                                                     <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
                                                 </td>
                                                 <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" align="center">
@@ -3325,8 +3247,8 @@
                                                     <span ng-show="compositeType == 'XOR'">XOR</span>
                                                     <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                                                 </td>
-                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
-                                                    <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!<i class="fa fa-cog fa-spin fa-3x fa-fw"></i></span>
+                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                                                    <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
                                                     <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                                                 </td>
                                                 <td class="col-md-1" align="center">
@@ -3345,7 +3267,6 @@
                         <form novalidate ng-cloak>
                             <div class="col-md-12">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">1. Select a constraint for Predicate</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
@@ -3357,15 +3278,33 @@
                                             <tbody>
                                             <tr ng-repeat="c in displayed">
                                                 <td class="col-md-1" align="center">
-                                                    <div ng-click="selectPredicate(c);">
-                                                        <i ng-show="c.selected" class="fa fa-check-circle-o fa-3x" aria-hidden="true"></i>
-                                                        <i ng-show="!c.selected" class="fa fa-circle-o fa-3x" aria-hidden="true"></i>
-                                                    </div>
+                                                    <md-checkbox ng-checked="c.selected"  ng-click="selectPredicate(c);" aria-label="Select Constraint for Predicate" style="margin: 10px;"/>
                                                 </td>
                                                 <td class="col-md-11">
-                                                    <div layout="row">
+                                                    <div layout="row" ng-if="!c.selected">
                                                         <md-input-container flex="100" class="normal">
                                                             <input ng-model="c.description" type="text" disabled/>
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div layout="row" ng-if="c.selected">
+                                                        <md-input-container flex="50" class="normal">
+                                                            <input ng-model="c.description" type="text" disabled/>
+                                                        </md-input-container>
+                                                        <md-input-container flex="25" class="normal" style="margin: 18px;">
+                                                            <label>True Usage</label>
+                                                            <md-select placeholder="Select TRUE Usage" ng-model="existingPredicate.trueUsage" ng-change="setChanged()">
+                                                                <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
+                                                                    {{usage}}
+                                                                </md-option>
+                                                            </md-select>
+                                                        </md-input-container>
+                                                        <md-input-container flex="25" class="normal" style="margin: 18px;">
+                                                            <label>False Usage</label>
+                                                            <md-select placeholder="Select FALSE Usage" ng-model="existingPredicate.falseUsage" ng-change="setChanged()">
+                                                                <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
+                                                                    {{usage}}
+                                                                </md-option>
+                                                            </md-select>
                                                         </md-input-container>
                                                     </div>
                                                     <div layout="row">
@@ -3380,41 +3319,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div ng-if="existingPredicate" class="col-md-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">2. Set True/False Usage</div>
-                                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
-                                        <div layout="row" layout-align="center center" style="margin-top: 10px">
-                                            <md-input-container flex="30">
-                                                <label>True Usage</label>
-                                                <md-select placeholder="Select TRUE Usage" ng-model="existingPredicate.trueUsage" ng-change="setChanged()">
-                                                    <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
-                                                        {{usage}}
-                                                    </md-option>
-                                                </md-select>
-                                            </md-input-container>
-                                            <md-input-container flex="30">
-                                                <label>False Usage</label>
-                                                <md-select placeholder="Select FALSE Usage" ng-model="existingPredicate.falseUsage" ng-change="setChanged()">
-                                                    <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
-                                                        {{usage}}
-                                                    </md-option>
-                                                </md-select>
-                                            </md-input-container>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </form>
                     </div>
                 </div>
             </md-dialog-content>
-
-            <md-dialog-actions layout="row">
-                <md-button ng-show="dialogStep === 1 || dialogStep === 2" class="btn btn-raised btn-primary btn-sm" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
-                <md-button ng-show="dialogStep === 0 || dialogStep === 1" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="dialogStep === 1 && tempPredicates.length === 0"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
-                <md-button ng-show="dialogStep === 2 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="save()"   ng-disabled="!changed || !existingPredicate" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
-            </md-dialog-actions>
+            <md-button ng-show="dialogStep === 1 || dialogStep === 2" class="btn btn-raised btn-primary btn-sm" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
+            <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Edit</span></md-button>
+            <md-button ng-show="dialogStep === 1" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="!tempPredicates || tempPredicates.length === 0"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
+            <md-button ng-show="dialogStep === 2 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="save()"   ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
         </form>
     </md-dialog>
 </script>
@@ -3649,10 +3561,7 @@
                                                 </div>
                                                 <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
                                             </td>
-                                            <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'}">
-                                                <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
-                                                    <span style="color:red;" class="blink_me">You can drop here!!</span>
-                                                </div>
+                                            <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'}">
                                                 <div ng-show="newConstraint.location_1">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_1">
@@ -3676,7 +3585,6 @@
                                                 </div>
                                                 <div ng-show="!newConstraint.location_1">
                                                     <span style="color:red;">Drop the node!</span>
-                                                    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                 </div>
                                             </td>
                                             <td class="col-md-2">
@@ -3795,7 +3703,7 @@
                                                     </span>
                                             </td>
 
-                                            <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
+                                            <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
                                                 ng-show="newConstraint.contraintType == 'identical to another node' ||
                                                             newConstraint.contraintType == 'equal to another node' ||
                                                             newConstraint.contraintType == 'not-equal to another node' ||
@@ -3803,9 +3711,6 @@
                                                             newConstraint.contraintType == 'equal to or greater than another node' ||
                                                             newConstraint.contraintType == 'less than another node' ||
                                                             newConstraint.contraintType == 'equal to or less than another node'">
-                                                <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
-                                                    <span style="color:red;" class="blink_me">You can drop Here!!</span>
-                                                </div>
                                                 <div ng-show="newConstraint.location_2">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_2">
@@ -3829,7 +3734,6 @@
                                                 </div>
                                                 <div ng-show="!newConstraint.location_2">
                                                     <span style="color:red;">Drop the node!</span>
-                                                    <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                 </div>
                                             </td>
                                             <td class="col-md-2" align="center">
@@ -3879,14 +3783,12 @@
                                                 <span ng-show="compositeType == 'FORALL'">FORALL</span>
                                                 <span ng-show="compositeType == 'EXIST'">EXIST</span>
                                             </td>
-                                            <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
+                                            <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5 drop-zone" align="center" style="vertical-align:middle" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
                                                 <span style="color:red;" ng-show="constraints.length < 2">Drop two more constraints here!</span>
-                                                <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                 <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
                                             </td>
-                                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+                                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
                                                 <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
-                                                <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                 <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
                                             </td>
                                             <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" align="center" style="width: 4.1667%">
@@ -3895,9 +3797,8 @@
                                                 <span ng-show="compositeType == 'XOR'">XOR</span>
                                                 <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                                             </td>
-                                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                                            <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
                                                 <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
-                                                <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                 <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                                             </td>
                                             <td class="col-md-1" align="center">
@@ -3926,9 +3827,9 @@
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2 ng-if="dialogStep === 0">(1/3) Existing Predicate</h2>
-                    <h2 ng-if="dialogStep === 1">(2/3) Make Constraints</h2>
-                    <h2 ng-if="dialogStep === 2">(3/3) Select Predicate and Set True/False Usage</h2>
+                    <h2 ng-if="dialogStep === 0">Predicate Summary</h2>
+                    <h2 ng-if="dialogStep === 1">(1/2) Make Constraints</h2>
+                    <h2 ng-if="dialogStep === 2">(2/2) Select Predicate and Set True/False Usage</h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()">
                         <i class="material-icons">clear</i>
@@ -4002,8 +3903,8 @@
                                                 </md-input-container>
                                             </div>
                                             <div layout="row" layout-sm="column" layout-align="end center" layout-wrap ng-show="existingPredicate">
-                                                <md-button class="md-fab md-mini" aria-label="Delete Predicate" ng-click="deletePredicate()">
-                                                    <i class="fa fa-trash fa-fw"/>
+                                                <md-button class="md-raised md-warn" aria-label="Delete Predicate" ng-click="deletePredicate()">
+                                                    <i class="fa fa-trash fa-fw"/> Delete Predicate
                                                 </md-button>
                                             </div>
                                         </div>
@@ -4119,10 +4020,7 @@
                                             <tbody>
                                             <tr>
                                                 <td class="col-md-2">If</td>
-                                                <td class="col-md-2 " data-drop="true " data-jqyoui-options ng-model="firstNodeData " jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'} ">
-                                                    <div ng-show="draggingStatus=='ContextTreeNodeDragging' ">
-                                                        <span style="color:red; " class="blink_me ">You can drop here!!</span>
-                                                    </div>
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstNodeData " jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'} ">
                                                     <div ng-show="newConstraint.location_1 ">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_1 ">
@@ -4136,7 +4034,6 @@
                                                     </div>
                                                     <div ng-show="!newConstraint.location_1">
                                                         <span style="color:red;">Drop the node!</span>
-                                                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2">
@@ -4255,7 +4152,7 @@
                                                     </span>
                                                 </td>
 
-                                                <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterSecondNodeDrop'}"
                                                     ng-show="newConstraint.contraintType == 'identical to another node' ||
                                                              newConstraint.contraintType == 'equal to another node' ||
                                                              newConstraint.contraintType == 'not-equal to another node' ||
@@ -4263,9 +4160,6 @@
                                                              newConstraint.contraintType == 'equal to or greater than another node' ||
                                                              newConstraint.contraintType == 'less than another node' ||
                                                              newConstraint.contraintType == 'equal to or less than another node'">
-                                                    <div ng-show="draggingStatus == 'ContextTreeNodeDragging'">
-                                                        <span style="color:red;" class="blink_me">You can drop Here!!</span>
-                                                    </div>
                                                     <div ng-show="newConstraint.location_2">
                                                         <span>
                                                             <span ng-repeat="info in newConstraint.pathInfoSet_2">
@@ -4279,7 +4173,6 @@
                                                     </div>
                                                     <div ng-show="!newConstraint.location_2">
                                                         <span style="color:red;">Drop the node!</span>
-                                                        <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2" align="center">
@@ -4324,12 +4217,12 @@
                                                     <span ng-show="compositeType == 'FORALL'">FORALL</span>
                                                     <span ng-show="compositeType == 'EXIST'">EXIST</span>
                                                 </td>
-                                                <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-7" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
+                                                <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-7 drop-zone" align="center" style="vertical-align:middle" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
                                                     <span style="color:red;" ng-show="constraints.length < 2">Drop two more constraints here!</span>
                                                     <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
                                                 </td>
-                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
-                                                    <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!<i class="fa fa-cog fa-spin fa-3x fa-fw"></i></span>
+                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+                                                    <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
                                                     <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
                                                 </td>
                                                 <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-1" align="center">
@@ -4338,8 +4231,8 @@
                                                     <span ng-show="compositeType == 'XOR'">XOR</span>
                                                     <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                                                 </td>
-                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
-                                                    <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!<i class="fa fa-cog fa-spin fa-3x fa-fw"></i></span>
+                                                <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-3 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                                                    <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
                                                     <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                                                 </td>
                                                 <td class="col-md-1" align="center">
@@ -4358,7 +4251,6 @@
                         <form novalidate ng-cloak>
                             <div class="col-md-12">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">1. Select a constraint for Predicate</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
@@ -4370,15 +4262,33 @@
                                             <tbody>
                                             <tr ng-repeat="c in displayed">
                                                 <td class="col-md-1" align="center">
-                                                    <div ng-click="selectPredicate(c);">
-                                                        <i ng-show="c.selected" class="fa fa-check-circle-o fa-3x" aria-hidden="true"></i>
-                                                        <i ng-show="!c.selected" class="fa fa-circle-o fa-3x" aria-hidden="true"></i>
-                                                    </div>
+                                                    <md-checkbox ng-checked="c.selected"  ng-click="selectPredicate(c);" aria-label="Select Constraint for Predicate" style="margin: 10px;"/>
                                                 </td>
                                                 <td class="col-md-11">
-                                                    <div layout="row">
+                                                    <div layout="row" ng-if="!c.selected">
                                                         <md-input-container flex="100" class="normal">
                                                             <input ng-model="c.description" type="text" disabled/>
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div layout="row" ng-if="c.selected">
+                                                        <md-input-container flex="50" class="normal">
+                                                            <input ng-model="c.description" type="text" disabled/>
+                                                        </md-input-container>
+                                                        <md-input-container flex="25" class="normal" style="margin: 18px;">
+                                                            <label>True Usage</label>
+                                                            <md-select placeholder="Select TRUE Usage" ng-model="existingPredicate.trueUsage" ng-change="setChanged()">
+                                                                <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
+                                                                    {{usage}}
+                                                                </md-option>
+                                                            </md-select>
+                                                        </md-input-container>
+                                                        <md-input-container flex="25" class="normal" style="margin: 18px;">
+                                                            <label>False Usage</label>
+                                                            <md-select placeholder="Select FALSE Usage" ng-model="existingPredicate.falseUsage" ng-change="setChanged()">
+                                                                <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
+                                                                    {{usage}}
+                                                                </md-option>
+                                                            </md-select>
                                                         </md-input-container>
                                                     </div>
                                                     <div layout="row">
@@ -4393,31 +4303,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div ng-if="existingPredicate" class="col-md-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">2. Set True/False Usage</div>
-                                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
-                                        <div layout="row" layout-align="center center" style="margin-top: 10px">
-                                            <md-input-container flex="30">
-                                                <label>True Usage</label>
-                                                <md-select placeholder="Select TRUE Usage" ng-model="existingPredicate.trueUsage" ng-change="setChanged()">
-                                                    <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
-                                                        {{usage}}
-                                                    </md-option>
-                                                </md-select>
-                                            </md-input-container>
-                                            <md-input-container flex="30">
-                                                <label>False Usage</label>
-                                                <md-select placeholder="Select FALSE Usage" ng-model="existingPredicate.falseUsage" ng-change="setChanged()">
-                                                    <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
-                                                        {{usage}}
-                                                    </md-option>
-                                                </md-select>
-                                            </md-input-container>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -4425,8 +4310,9 @@
 
             <md-dialog-actions layout="row">
                 <md-button ng-show="dialogStep === 1 || dialogStep === 2" class="btn btn-raised btn-primary btn-sm" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
-                <md-button ng-show="dialogStep === 0 || dialogStep === 1" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="dialogStep === 1 && tempPredicates.length === 0"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
-                <md-button ng-show="dialogStep === 2 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="save()"   ng-disabled="!changed || !existingPredicate" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
+                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Edit</span></md-button>
+                <md-button ng-show="dialogStep === 1" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="!tempPredicates || tempPredicates.length === 0"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
+                <md-button ng-show="dialogStep === 2 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="save()"   ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>
@@ -5939,11 +5825,11 @@
                                                         <span ng-show="compositeType == 'FORALL'">FORALL</span>
                                                         <span ng-show="compositeType == 'EXIST'">EXIST</span>
                                                     </td>
-                                                    <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
+                                                    <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5 drop-zone" align="center" style="vertical-align:middle" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
                                                         <span style="color:red;" ng-show="constraints.length < 2">Drop two more constraints here!</span>
                                                         <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
                                                     </td>
-                                                    <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+                                                    <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
                                                         <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
                                                         <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
                                                     </td>
@@ -5953,7 +5839,7 @@
                                                         <span ng-show="compositeType == 'XOR'">XOR</span>
                                                         <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                                                     </td>
-                                                    <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                                                    <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
                                                         <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
                                                         <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                                                     </td>
@@ -6406,11 +6292,11 @@
                                                         <span ng-show="compositeType == 'FORALL'">FORALL</span>
                                                         <span ng-show="compositeType == 'EXIST'">EXIST</span>
                                                     </td>
-                                                    <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
+                                                    <td ng-show="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-5 drop-zone" align="center" style="vertical-align:middle" data-drop="true" ng-model='constraints' jqyoui-droppable="{multiple:true}" data-jqyoui-options>
                                                         <span style="color:red;" ng-show="constraints.length < 2">Drop two more constraints here!</span>
                                                         <li ng-repeat="c in constraints" ng-show="constraints.length > 0" data-drag="true" data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" ng-model="constraints" jqyoui-draggable="{animate:true}">{{c.description}}</li>
                                                     </td>
-                                                    <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
+                                                    <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
                                                         <span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
                                                         <span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
                                                     </td>
@@ -6420,7 +6306,7 @@
                                                         <span ng-show="compositeType == 'XOR'">XOR</span>
                                                         <span ng-show="compositeType == 'IFTHEN'">THEN</span>
                                                     </td>
-                                                    <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
+                                                    <td ng-hide="compositeType == 'FORALL' || compositeType == 'EXIST'" class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
                                                         <span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
                                                         <span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
                                                     </td>

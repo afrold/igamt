@@ -3127,7 +3127,14 @@ tr.tbl-header {
     font-size: 18px !important;
 }
 md-select.inside-table{
-
     display: block !important;
     margin: 10px 0 0px;
+}
+
+.drop-zone {
+    font-size: 1.25rem !important;
+    background-color: #c8dadf !important;
+    position: relative !important;
+    outline: 2px dashed #92b0b3 !important;
+    outline-offset: -10px !important;
 }
