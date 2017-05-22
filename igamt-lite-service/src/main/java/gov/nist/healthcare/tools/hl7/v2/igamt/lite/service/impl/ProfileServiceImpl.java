@@ -199,7 +199,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifyMessages(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifyMessages(p, base, id, type));
+			return (new VerificationServiceImpl().verifyMessages(p, base, id, type));
 		}
 		return null;
 	}
@@ -208,7 +208,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifyMessage(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifyMessage(p, base, id, type));
+			return (new VerificationServiceImpl().verifyMessage(p, base, id, type));
 		}
 		return null;
 	}
@@ -217,7 +217,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifySegmentRefOrGroup(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifySegmentOrGroup(p, base, id, type));
+			return (new VerificationServiceImpl().verifySegmentOrGroup(p, base, id, type));
 		}
 		return null;
 	}
@@ -226,7 +226,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifySegments(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifySegments(p, base, id, type));
+			return (new VerificationServiceImpl().verifySegments(p, base, id, type));
 		}
 		return null;
 	}
@@ -235,7 +235,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifySegment(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifySegment(p, base, id, type));
+			return (new VerificationServiceImpl().verifySegment(p, base, id, type));
 		}
 		return null;
 	}
@@ -244,7 +244,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifyField(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifyField(p, base, id, type));
+			return (new VerificationServiceImpl().verifyField(p, base, id, type));
 		}
 		return null;
 	}
@@ -253,7 +253,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifyDatatypes(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifyDatatypes(p, base, id, type));
+			return (new VerificationServiceImpl().verifyDatatypes(p, base, id, type));
 		}
 		return null;
 	}
@@ -262,7 +262,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifyDatatype(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifyDatatype(p, base, id, type));
+			return (new VerificationServiceImpl().verifyDatatype(p, base, id, type));
 		}
 		return null;
 	}
@@ -271,7 +271,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifyComponent(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifyComponent(p, base, id, type));
+			return (new VerificationServiceImpl().verifyComponent(p, base, id, type));
 		}
 		return null;
 	}
@@ -280,7 +280,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifyValueSetLibrary(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifyValueSetLibrary(p, base, id, type));
+			return (new VerificationServiceImpl().verifyValueSetLibrary(p, base, id, type));
 		}
 		return null;
 	}
@@ -289,7 +289,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifyValueSet(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifyValueSet(p, base, id, type));
+			return (new VerificationServiceImpl().verifyValueSet(p, base, id, type));
 		}
 		return null;
 	}
@@ -298,19 +298,19 @@ public class ProfileServiceImpl implements ProfileService {
 	public ElementVerification verifyUsage(Profile p, String id, String type, String eltName, String eltValue) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
-			return (new VerificationService().verifyUsage(p, base, id, type, eltName, eltValue));
+			return (new VerificationServiceImpl().verifyUsage(p, base, id, type, eltName, eltValue));
 		}
 		return null;
 	}
 
 	@Override
 	public ElementVerification verifyCardinality(Profile p, String id, String type, String eltName, String eltValue) {
-		return (new VerificationService().verifyCardinality(p, id, type, eltName, eltValue));
+		return (new VerificationServiceImpl().verifyCardinality(p, id, type, eltName, eltValue));
 	}
 
 	@Override
 	public ElementVerification verifyLength(Profile p, String id, String type, String eltName, String eltValue) {
-		return (new VerificationService().verifyLength(p, id, type, eltName, eltValue));
+		return (new VerificationServiceImpl().verifyLength(p, id, type, eltName, eltValue));
 	}
 
 	public ProfileRepository getProfileRepository() {
