@@ -51,6 +51,7 @@ public interface DatatypeService {
   
   public List<Datatype> findByNameAndScope(String name, String scope);
 
+  public Datatype findByNameAndVesionAndScope(String name, String version, String scope);
   public Datatype findOneByNameAndVersionAndScope(String name, String version, String scope);
 
   public Datatype findByCompatibleVersion(String name, String version, String scope)

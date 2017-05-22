@@ -185,6 +185,22 @@ public class DatatypeServiceImpl implements DatatypeService {
    * findByCompatibleVersion( java.lang.String, java.lang.String, java.lang.String)
    */
   @Override
+  public Datatype findByNameAndVesionAndScope(String name, String version, String scope) {
+    List<Datatype> datatypes = datatypeRepository.findByNameAndScope(name, scope);
+    for (Datatype dt : datatypes) {
+      for (String s : dt.getHl7versions()) {
+        if (version.equals(s)) {
+          return dt;
+        }
+      }
+    }
+
+    if (datatypes != null && datatypes.size() > 0)
+      return datatypes.get(0);
+
+    return null;
+  }
+  
   public Datatype findOneByNameAndVersionAndScope(String name, String version, String scope) {
     return datatypeRepository.findOneByNameAndVersionAndScope(name, version, scope);
   }
