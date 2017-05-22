@@ -157,11 +157,13 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     };
 
     $scope.expanded = true;
+
     $scope.expandAll = function() {
         $scope.expanded = !$scope.expanded;
 
         $('#messageTable').treetable('expandAll');
     };
+
     $scope.collapseAll = function() {
         $scope.expanded = !$scope.expanded;
         $('#messageTable').treetable('collapseAll');
@@ -171,7 +173,6 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         CloneDeleteSvc.copyMessage(message);
         $rootScope.$broadcast('event:SetToC');
     };
-
 
     $scope.reset = function() {
         blockUI.start();

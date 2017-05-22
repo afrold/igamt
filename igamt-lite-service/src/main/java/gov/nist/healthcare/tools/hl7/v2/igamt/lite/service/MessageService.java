@@ -51,4 +51,6 @@ public interface MessageService {
 	List<Message> findByScope(String scope);
 
 	Message findByNameAndVersionAndScope(String name, String hl7Version, String scope);
+
+	List<Message> findByScopeAndVersion(String name, String hl7Version);
 }

@@ -26,6 +26,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 public interface TableOperations {
 
   List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+  
+  List<Table> findByScopeAndVersion(String scope, String hl7Version);
 
   List<Table> findBindingIdentifiers(List<String> tableIds);
 

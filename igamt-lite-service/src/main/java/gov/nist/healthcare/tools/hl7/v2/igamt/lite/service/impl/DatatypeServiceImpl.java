@@ -200,6 +200,10 @@ public class DatatypeServiceImpl implements DatatypeService {
 
     return null;
   }
+  
+  public Datatype findOneByNameAndVersionAndScope(String name, String version, String scope) {
+    return datatypeRepository.findOneByNameAndVersionAndScope(name, version, scope);
+  }
 
   @Override
   public Datatype findByCompatibleVersion(String name, String version, String scope)
@@ -239,5 +243,10 @@ public class DatatypeServiceImpl implements DatatypeService {
 @Override
 public List<Datatype> findByNameAndScope(String name, String scope) {
 	return datatypeRepository.findByNameAndScope(name, scope);
+}
+
+@Override
+public List<Datatype> findByScopeAndVersion(String scope, String hl7Version) {
+	return datatypeRepository.findByScopeAndVersion(scope, hl7Version);
 }
 }
