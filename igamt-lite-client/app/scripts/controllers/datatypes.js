@@ -71,7 +71,79 @@ angular.module('igl')
         };
 
 
+        $scope.updateDTMConstraints = function (dtmComponentDefinition){
+            if(dtmComponentDefinition.usage !== 'C') {
+                dtmComponentDefinition.dtmPredicate = null;
+            }
 
+            if($rootScope.datatype.dtmConstraints.dtmComponentDefinitions.length !== dtmComponentDefinition.position){
+                if(dtmComponentDefinition.usage === 'R'){
+                    for (var i = 0, len = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions.length - 1; i < len; i++) {
+                        var item = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i];
+                        if(item.position < dtmComponentDefinition.position){
+                            item.usage = 'R';
+                            item.dtmPredicate = null;
+                        }
+                    }
+                }else if (dtmComponentDefinition.usage === 'X'){
+                    for (var i = 0, len = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions.length - 1; i < len; i++) {
+                        var item = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i];
+                        if(item.position > dtmComponentDefinition.position){
+                            item.usage = 'X';
+                            item.dtmPredicate = null;
+                        }
+                    }
+                }else if (dtmComponentDefinition.usage === 'C'){
+                    for (var i = 0, len = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions.length - 1; i < len; i++) {
+                        var item = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i];
+                        if(item.position > dtmComponentDefinition.position && item.usage !== 'X'){
+                            item.usage = 'C';
+                            item.dtmPredicate = {};
+                            item.dtmPredicate.trueUsage = "O";
+                            item.dtmPredicate.falseUsage = "X";
+                            item.dtmPredicate.target = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i-1];
+                            item.dtmPredicate.verb = "is valued";
+                        }
+                        if(item.position < dtmComponentDefinition.position){
+                            item.usage = 'R';
+                            item.dtmPredicate = null;
+                        }
+                    }
+                }else if (dtmComponentDefinition.usage === 'RE'){
+                    for (var i = 0, len = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions.length - 1; i < len; i++) {
+                        var item = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i];
+                        if(item.position > dtmComponentDefinition.position && item.usage !== 'X'){
+                            item.usage = 'C';
+                            item.dtmPredicate = {};
+                            item.dtmPredicate.trueUsage = "O";
+                            item.dtmPredicate.falseUsage = "X";
+                            item.dtmPredicate.target = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i-1];
+                            item.dtmPredicate.verb = "is valued";
+                        }
+                        if(item.position < dtmComponentDefinition.position){
+                            item.usage = 'R';
+                            item.dtmPredicate = null;
+                        }
+                    }
+                }else if (dtmComponentDefinition.usage === 'O'){
+                    for (var i = 0, len = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions.length - 1; i < len; i++) {
+                        var item = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i];
+                        if(item.position > dtmComponentDefinition.position && item.usage !== 'X'){
+                            item.usage = 'C';
+                            item.dtmPredicate = {};
+                            item.dtmPredicate.trueUsage = "O";
+                            item.dtmPredicate.falseUsage = "X";
+                            item.dtmPredicate.target = $rootScope.datatype.dtmConstraints.dtmComponentDefinitions[i-1];
+                            item.dtmPredicate.verb = "is valued";
+                        }
+                        if(item.position < dtmComponentDefinition.position){
+                            item.usage = 'R';
+                            item.dtmPredicate = null;
+                        }
+                    }
+                }
+            }
+        };
 
         $scope.changeDatatypeLink = function(datatypeLink) {
             datatypeLink.isChanged = true;
