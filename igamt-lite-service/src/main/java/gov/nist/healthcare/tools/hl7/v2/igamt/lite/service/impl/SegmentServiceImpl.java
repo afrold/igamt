@@ -126,6 +126,11 @@ public List<Segment> findByNameAndScope(String name, String scope) {
 	return segmentRepository.findByNameAndScope(name, scope);
 }
 
+@Override
+public List<Segment> findByScopeAndVersion(String name, String hl7Version) {
+	return segmentRepository.findByScopeAndVersion(name,hl7Version);
+}
+
 
 
 }

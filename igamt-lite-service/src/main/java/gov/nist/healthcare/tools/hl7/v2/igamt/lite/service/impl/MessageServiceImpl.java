@@ -127,4 +127,9 @@ public List<Message> findByScope(String scope) {
 public Message findByNameAndVersionAndScope(String name, String hl7Version, String scope) {
 	return messageRepository.findByNameAndVersionAndScope(name, hl7Version, scope);
 }
+
+@Override
+public List<Message> findByScopeAndVersion(String scope, String hl7Version) {
+	return messageRepository.findByScopeAndVersion(scope,hl7Version);
+}
 }
