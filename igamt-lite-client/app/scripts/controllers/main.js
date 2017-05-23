@@ -1778,6 +1778,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 mappingStructure = $rootScope.segment.dynamicMappingDefinition.mappingStructure;
             } else {
                 console.log("=========Not Found mapping structure and Default setting will be used!!=========");
+                $rootScope.segment.dynamicMappingDefinition = {};
+                $rootScope.segment.dynamicMappingDefinition.mappingStructure = mappingStructure;
             }
 
             var valueSetBinding = _.find($rootScope.segment.valueSetBindings, function(vsb) {

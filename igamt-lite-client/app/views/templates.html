@@ -847,18 +847,24 @@
                                     {{tablesMap[vs.tableId].description}}
                                 </td>
                                 <td class="col-md-2">
-                                    <select ng-model='vs.bindingStrength' class="form-control">
-                                    <option value="R">Required</option>
-                                    <option value="S">Suggested</option>
-                                    <option value="U">Unspecified</option>
-                                </select>
+                                    <md-input-container flex="100">
+                                        <md-select placeholder="Select BindingStrength"
+                                                   ng-model='vs.bindingStrength'>
+                                            <md-option value="R">Required</md-option>
+                                            <md-option value="S">Suggested</md-option>
+                                            <md-option value="U">Unspecified</md-option>
+                                        </md-select>
+                                    </md-input-container>
                                 </td>
                                 <td class="col-md-2">
-                                    <select ng-show="listOfBindingLocations" ng-model='vs.bindingLocation' class="form-control">
-                                    <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">
-                                        {{bl}}
-                                    </option>
-                                </select>
+                                    <md-input-container flex="100" ng-show="listOfBindingLocations">
+                                        <md-select placeholder="Select BindingLocation"
+                                                   ng-model='vs.bindingLocation'>
+                                            <md-option ng-repeat="bl in listOfBindingLocations" ng-value="bl">
+                                                {{bl}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
                                 </td>
                                 <td class="col-md-1" style="text-align:center">
                                     <span ng-click="deleteValueSet($index);"><i class="fa fa-times" aria-hidden="true"></i></span>
@@ -1295,7 +1301,7 @@
                                                 </md-input-container>
                                             </div>
                                             <div layout="row" layout-sm="column" layout-align="end center" layout-wrap ng-show="existingPredicate">
-                                                <md-button class="md-fab md-mini" aria-label="Delete Predicate" ng-click="deletePredicate()">
+                                                <md-button class="md-raised md-warn" ng-click="deletePredicate()">
                                                     <i class="fa fa-trash fa-fw"/> Delete Predicate
                                                 </md-button>
                                             </div>
@@ -2919,7 +2925,7 @@
                                                 </md-input-container>
                                             </div>
                                             <div layout="row" layout-sm="column" layout-align="end center" layout-wrap ng-show="existingPredicate">
-                                                <md-button class="md-fab md-mini" aria-label="Delete Predicate" ng-click="deletePredicate()">
+                                                <md-button class="md-raised md-warn" ng-click="deletePredicate()">
                                                     <i class="fa fa-trash fa-fw"/> Delete Predicate
                                                 </md-button>
                                             </div>
@@ -3323,10 +3329,12 @@
                     </div>
                 </div>
             </md-dialog-content>
-            <md-button ng-show="dialogStep === 1 || dialogStep === 2" class="btn btn-raised btn-primary btn-sm" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
-            <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Edit</span></md-button>
-            <md-button ng-show="dialogStep === 1" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="!tempPredicates || tempPredicates.length === 0"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
-            <md-button ng-show="dialogStep === 2 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="save()"   ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
+            <md-dialog-actions layout="row">
+                <md-button ng-show="dialogStep === 1 || dialogStep === 2" class="btn btn-raised btn-primary btn-sm" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
+                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()"><span><i class="fa fa fa-pencil fa-fw"></i>Edit</span></md-button>
+                <md-button ng-show="dialogStep === 1" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="!tempPredicates || tempPredicates.length === 0"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
+                <md-button ng-show="dialogStep === 2 || dialogStep === 0" class="btn btn-raised btn-success btn-sm" ng-click="save()"   ng-disabled="!changed || !existingPredicate || !existingPredicate.trueUsage || !existingPredicate.falseUsage" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
+            </md-dialog-actions>
         </form>
     </md-dialog>
 </script>
@@ -3903,7 +3911,7 @@
                                                 </md-input-container>
                                             </div>
                                             <div layout="row" layout-sm="column" layout-align="end center" layout-wrap ng-show="existingPredicate">
-                                                <md-button class="md-raised md-warn" aria-label="Delete Predicate" ng-click="deletePredicate()">
+                                                <md-button class="md-raised md-warn" ng-click="deletePredicate()">
                                                     <i class="fa fa-trash fa-fw"/> Delete Predicate
                                                 </md-button>
                                             </div>
