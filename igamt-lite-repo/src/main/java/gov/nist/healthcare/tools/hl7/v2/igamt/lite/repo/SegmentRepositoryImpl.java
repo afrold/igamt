@@ -102,4 +102,30 @@ public class SegmentRepositoryImpl implements SegmentOperations {
     mongo.updateFirst(query, update, Segment.class);
   }
 
+  @Override
+  public List<Segment> findByScope(String scope) {
+    Criteria where = Criteria.where("scope").is(SCOPE.USER.toString());
+    Query qry = Query.query(where);
+    List<Segment> segments = mongo.find(qry, Segment.class);
+    return segments;
+  }
+
+  @Override
+  public List<Segment> findByNameAndScope(String name, String scope) {
+    Criteria where = Criteria.where("scope").is(SCOPE.USER.toString());
+    where.andOperator(Criteria.where("name").is(name));
+    Query qry = Query.query(where);
+    List<Segment> segments = mongo.find(qry, Segment.class);
+    return segments;
+  }
+
+  @Override
+  public List<Segment> findByScopeAndVersion(String scope, String version) {
+    Criteria where = Criteria.where("scope").is(SCOPE.USER.toString());
+    where.andOperator(Criteria.where("hl7Version").is(version));
+    Query qry = Query.query(where);
+    List<Segment> segments = mongo.find(qry, Segment.class);
+    return segments;
+  }
+
 }
