@@ -862,8 +862,8 @@
                                                         {{::ref.usage}}
                                                     </td>
                                                     <td st-ratio="20">
-                                                    <span ng-show="ref.target.status !== 'PUBLISHED'">
-                                                             <a ng-click="redirectDT(ref.datatype)">
+                                                    <span ng-show="ref.target.status !== 'PUBLISHED'" style="text-align:left">
+                                                             <a ng-click="redirectDT(ref.datatype)" class="point">
 
                                                                    <display-label of="datatypesMap[ref.datatype.id]"
                                                                                   desc="true"></display-label>
@@ -1128,7 +1128,7 @@
             ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:left">
             <ng-form name="innerForm" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)">
                 <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
-                    <span class="badge label-white" ng-show="editableDT!==node.id">
+                    <span class="badge label-white" ng-show="editableDT!==node.id" style="text-align:left">
                         <span title="{{datatypesMap[node.datatype.id].hl7Version}}"
                               ng-click="redirectDT(node.datatype)">
                             <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label></span>
@@ -1136,7 +1136,7 @@
                                 class="fa fa-pencil fa-fw edit-icon"></i></span>
                     </span>
 
-                    <div ng-if="editableDT===node.id">
+                    <div ng-if="editableDT===node.id" style="text-align:left">
                         <!--<select ng-model="datatype" ng-change="selectDT(node,datatype)" class="form-control input-sm" ng-controller="FormRowCtrl" ng-init="init(node)">-->
                         <!--<option ng-repeat="datatype in results" value="{{datatype}}"-->
                         <!--ng-selected="node.datatype.ext===datatype.ext"> {{getDatatypeLabel(datatypesMap[datatype.id])}} {{datatypesMap[datatype.id].hl7Version}} {{getVersionToSelect(datatypesMap[datatype.id])}}-->
@@ -1295,8 +1295,8 @@
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.confLength !== 'NA'"><span
                     ng-bind="::node.confLength"></span></div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('datatype')">
-            <a ng-click="redirectDT(node.datatype)">
+        <td ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:left">
+            <a ng-click="redirectDT(node.datatype)" class="point">
                 <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </a>
         </td>
@@ -1508,7 +1508,7 @@
                     ng-bind="::node.confLength"></span></div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')"
-            ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}">
+            ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0}" style="text-align:left">
             <a ng-click="redirectDT(node.datatype)" class="point">
                 <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </a>
