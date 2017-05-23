@@ -933,7 +933,7 @@
             <div ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0 && node.obj.confLength !== 'NA'" ng-bind="::node.obj.confLength">
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:center">
+        <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:left">
             <span class="point" ng-click="redirectDT(node.obj.datatype)">
                  <display-label of="datatypesMap[node.obj.datatype.id]" desc="false"></display-label>
             </span>

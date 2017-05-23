@@ -965,16 +965,16 @@
                 </div>
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}">
+        <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.datatype.id)}" style="text-align:left">
             <ng-form name="innerForm" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)">
                 <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
-                    <span class="badge label-white" ng-show="editableDT!==node.id">
+                    <span class="badge label-white" ng-show="editableDT!==node.id" style="text-align:left">
                          <display-label of="datatypesMap[node.datatype.id]" desc="false"  ng-click="redirectDT(node.datatype)"></display-label>
                             <span title="Change Datatype" ng-click="editDT(node)">
                             <i class="fa fa-pencil fa-fw edit-icon"></i></span>
                     </span>
 
-                    <div ng-if="editableDT===node.id">
+                    <div ng-if="editableDT===node.id" style="text-align:left">
                         <md-select placeholder="Select Data type"  class="inside-table" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="FormRowCtrl" ng-init="init(node)">
                             <md-option ng-value="datatype" ng-repeat="datatype in results">
                                 <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
@@ -1291,7 +1291,7 @@
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.confLength !== 'NA'" ng-bind="node.confLength">
             </div>
         </td>
-        <td ng-show="viewSettings.isVisibleColumn('datatype')">
+        <td ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:left">
             <span ng-click="redirectDT(node.datatype)">
             <display-label of="datatypesMap[node.datatype.id]" desc="false"></display-label>
             </span>
