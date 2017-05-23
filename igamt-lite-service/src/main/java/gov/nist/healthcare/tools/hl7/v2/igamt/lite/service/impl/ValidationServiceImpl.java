@@ -1117,7 +1117,7 @@ public class ValidationServiceImpl implements ValidationService {
     if (igHl7Version.compareTo("2.5.1") > 0) {
       if (confLength == null) {
         return "Conf. Length cannot be empty";
-      } else {
+      } else if (!DataElement.LENGTH_NA.equals(confLength)) {
         Pattern pattern = Pattern.compile("\\d*[#=]{0,1}");
         Matcher m = pattern.matcher(confLength);
         if (!m.matches()) {

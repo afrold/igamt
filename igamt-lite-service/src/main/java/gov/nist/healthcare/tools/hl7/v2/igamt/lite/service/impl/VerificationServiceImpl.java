@@ -23,9 +23,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerificationResult;
@@ -37,23 +35,20 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.VerificationService;
 
 
 @Service
-public class VerificationService {
+public class VerificationServiceImpl implements VerificationService {
 
   @Autowired
   private SegmentRepository segmentRepository;
-
-  @Autowired
-  private TableRepository tableRepository;
-
-  public VerificationService() {
+ 
+  public VerificationServiceImpl() {
     super();
   }
 
@@ -82,15 +77,13 @@ public class VerificationService {
         new ElementVerificationResult("usage", srog.getUsage().value(), result);
     evsrog.addElementVerifications(evsrogRst);
 
-    result =
-        this.validateChangeCardinality(String.valueOf(srog.getMin()), srog.getMax(),
-            srog.getUsage());
+    result = this.validateChangeCardinality(String.valueOf(srog.getMin()), srog.getMax(),
+        srog.getUsage());
     evsrogRst = new ElementVerificationResult("min", String.valueOf(srog.getMin()), result);
     evsrog.addElementVerifications(evsrogRst);
 
-    result =
-        this.validateChangeCardinality(String.valueOf(srog.getMin()), srog.getMax(),
-            srog.getUsage());
+    result = this.validateChangeCardinality(String.valueOf(srog.getMin()), srog.getMax(),
+        srog.getUsage());
     evsrogRst = new ElementVerificationResult("max", String.valueOf(srog.getMax()), result);
     evsrog.addElementVerifications(evsrogRst);
 
@@ -109,7 +102,8 @@ public class VerificationService {
     return evsrog;
   }
 
-  public ElementVerification verifySegmentOrGroup(Profile p, Profile baseP, String id, String type) {
+  public ElementVerification verifySegmentOrGroup(Profile p, Profile baseP, String id,
+      String type) {
     SegmentRefOrGroup srog = p.getMessages().findOneSegmentRefOrGroup(id);
     ElementVerification evSrog = verifySegmentRef(srog); // verify usage, min and max for segref and
                                                          // group
@@ -349,7 +343,8 @@ public class VerificationService {
     return evc;
   }
 
-  public ElementVerification verifyValueSetLibrary(Profile p, Profile baseP, String id, String type) {
+  public ElementVerification verifyValueSetLibrary(Profile p, Profile baseP, String id,
+      String type) {
     // Type is ValueSet (or Table)
     ElementVerification evTLib = new ElementVerification(id, type);
     // for (Table t : p.getTableLibrary().getChildren()){
@@ -645,15 +640,14 @@ public class VerificationService {
     return set2;
   }
 
-  private InputStream generateOneJsonResult(String id, String type, String eltName,
-      String eltValue, String result) {
+  private InputStream generateOneJsonResult(String id, String type, String eltName, String eltValue,
+      String result) {
 
     try {
       // Create temporary file
       // File tmpJsonFile = File.createTempFile("resultTmp", ".json"); FIXME
-      File tmpJsonFile =
-          new File(
-              "/Users/marieros/git/igamt_github4/igamt-lite-service/src/test/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/service/test/resultTmp.json");
+      File tmpJsonFile = new File(
+          "/Users/marieros/git/igamt_github4/igamt-lite-service/src/test/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/service/test/resultTmp.json");
 
       // Generate json file
       JsonFactory factory = new JsonFactory();
@@ -729,7 +723,8 @@ public class VerificationService {
 
 
 
-  private String validateChangeCardinality(String currentMin, String currentMax, Usage currentUsage) {
+  private String validateChangeCardinality(String currentMin, String currentMax,
+      Usage currentUsage) {
     String message = "";
     message = this.isValidCardinality(currentMin, currentMax);
     if (message.isEmpty())
@@ -834,8 +829,8 @@ public class VerificationService {
     try {
       if (!this.validUsages(hl7Version).contains(currentUsage.value())) {
         return "Invalid usage value.";
-      } else if (!this.allowedChangesUsage(hl7Version, referenceUsage.value()).contains(
-          currentUsage.value())) {
+      } else if (!this.allowedChangesUsage(hl7Version, referenceUsage.value())
+          .contains(currentUsage.value())) {
         return "Selected usage of " + currentUsage.value() + " is non-compatible with base usage "
             + referenceUsage.value();
       }
@@ -889,7 +884,7 @@ public class VerificationService {
   }
 
   public static void main(String[] args) throws IOException {
-    VerificationService ev = new VerificationService();
+    VerificationServiceImpl ev = new VerificationServiceImpl();
     // System.out.println(ev.allowedChangesUsage("2.7.1", "RE").contains("R"));
     System.out.println(ev.allowedChangesUsage("2.7.1", "RE").toString());
 
