@@ -2567,6 +2567,8 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     $scope.info = { text: undefined, show: false, type: null, details: null };
     $scope.redirectUrl = null;
     $scope.user = { username: null, password: null };
+    $scope.appInfo = $rootScope.appInfo;
+
     $scope.trackSelections = function(bool, id) {
         if (bool) {
             $scope.selectedCompositeProfileIDs.push(id);
@@ -2657,6 +2659,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     $scope.info = { text: undefined, show: false, type: null, details: null };
     $scope.redirectUrl = null;
     $scope.user = { username: null, password: null };
+    $scope.appInfo = $rootScope.appInfo;
 
     $scope.trackSelections = function(bool, id) {
         if (bool) {
