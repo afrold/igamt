@@ -230,16 +230,16 @@
                                                     <div class="pull-left">
                                                         <ul class="list-group">
                                                             <li class="list-group-item">
-                                                                <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span> From Composite Profile
+                                                                <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span> Context is the composite profile
                                                             </li>
                                                             <li class="list-group-item">
-                                                                <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span> From Segment
+                                                                <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span> Context is the segment
                                                             </li>
                                                             <li class="list-group-item">
-                                                                <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span> From Field's Data Type
+                                                                <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span> Context is the field's data type
                                                             </li>
                                                             <li class="list-group-item">
-                                                                <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span> From Component's Data Type
+                                                                <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span> Context is the component's data type
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -459,11 +459,10 @@
          </td>
 
 
-        <td class="col-md-2 col-fixed-35 " ng-if="node.type==='field' || node.type==='component'">
-            <a>
+        <td class="col-md-2 col-fixed-35 ">
+            <a ng-if="node.type==='field' || node.type==='component'">
                 <display-label of="compositeProfile.datatypesMap[node.datatype.id]" desc="false"></display-label>
             </a>
-
         </td>
 
 

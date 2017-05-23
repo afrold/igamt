@@ -283,12 +283,12 @@
                                                             <li class="list-group-item">
                                                                 <span class="label-component-icon"><i
                                                                         class="fa fa-circle fa-fw"/></span>
-                                                                From This Data Type
+                                                                Context is the current data type
                                                             </li>
                                                             <li class="list-group-item">
                                                                 <span class="label-sub-component-icon"><i
                                                                         class="fa fa-circle fa-fw"/></span>
-                                                                From Component's Data Type
+                                                                Context is the component's data type
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -1072,7 +1072,7 @@
 
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id) && node.minLength !== 'NA' && node.maxLength !== 'NA'}"
+        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id)}"
             data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.minLength === 'NA' || node.maxLength === 'NA'">
@@ -1100,7 +1100,7 @@
             </div>
 
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.confLength === 'NA','has-validation-error':hasConfError(node.id) && datatypesMap[node.datatype.id].components.length===0 && node.confLength !== 'NA'}"
+        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.confLength === 'NA','has-validation-error':hasConfError(node.id) && datatypesMap[node.datatype.id].components.length===0}"
             ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.id,'CONFLENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.confLength === 'NA'">
@@ -1108,7 +1108,7 @@
                     <md-input-container flex="90" class="withoutMargin">
                         <input  autofocus
                                 name="confLength"
-                                style="width:50px"
+                                style="width:50px; margin-top:-5px"
                                 ng-change="setDirty()"
                                 ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                 ng-pattern="confLengthPattern"
@@ -1382,7 +1382,7 @@
                 </p>
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id) && node.minLength !== 'NA' && node.maxLength !== 'NA'}"
+        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id)}"
             data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.minLength !== 'NA' && node.maxLength !== 'NA'">
                 [{{::node.minLength}},{{::node.maxLength}}]
