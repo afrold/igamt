@@ -2498,6 +2498,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
                 if (positionPath == $scope.selectedNode.path) {
                     $scope.existingPredicate = current.predicates[i];
                     $scope.existingContext = current;
+                    $scope.selectContext(current);
                 }
             }
         }
