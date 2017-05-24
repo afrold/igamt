@@ -1222,7 +1222,7 @@
                 <div class="md-toolbar-tools">
                     <h2 ng-if="dialogStep === 0">Predicate Summary</h2>
                     <h2 ng-if="dialogStep === 1">(1/3) Select CONTEXT</h2>
-                    <h2 ng-if="dialogStep === 2">(2/3) Make Constraints</h2>
+                    <h2 ng-if="dialogStep === 2">(2/3) Create Constraints</h2>
                     <h2 ng-if="dialogStep === 3">(3/3) Select Predicate and Set True/False Usage</h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()">
@@ -1672,7 +1672,7 @@
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1"></th>
-                                                <th class="col-md-11">Description (<input type="checkbox" ng-model="viewAssertion"/> view assertion )</th>
+                                                <th class="col-md-11">Description</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -1681,14 +1681,10 @@
                                                     <md-checkbox ng-checked="c.selected"  ng-click="selectPredicate(c);" aria-label="Select Constraint for Predicate" style="margin: 10px;"/>
                                                 </td>
                                                 <td class="col-md-11">
-                                                    <div layout="row" ng-if="!c.selected">
-                                                        <md-input-container flex="100" class="normal">
-                                                            <input ng-model="c.description" type="text" disabled/>
-                                                        </md-input-container>
-                                                    </div>
+                                                    <p ng-bind="::c.description" ng-if="!c.selected" />
                                                     <div layout="row" ng-if="c.selected">
                                                         <md-input-container flex="50" class="normal">
-                                                            <input ng-model="c.description" type="text" disabled/>
+                                                            <p ng-bind="::c.description" />
                                                         </md-input-container>
                                                         <md-input-container flex="25" class="normal" style="margin: 18px;">
                                                             <label>True Usage</label>
@@ -1705,11 +1701,6 @@
                                                                     {{usage}}
                                                                 </md-option>
                                                             </md-select>
-                                                        </md-input-container>
-                                                    </div>
-                                                    <div layout="row">
-                                                        <md-input-container flex="100" class="normal" ng-show="viewAssertion">
-                                                            <input ng-model="c.assertion" type="text" disabled/>
                                                         </md-input-container>
                                                     </div>
                                                 </td>
@@ -2850,7 +2841,7 @@
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2 ng-if="dialogStep === 0">Predicate Summary</h2>
-                    <h2 ng-if="dialogStep === 1">(1/2) Make Constraints</h2>
+                    <h2 ng-if="dialogStep === 1">(1/2) Create Constraints</h2>
                     <h2 ng-if="dialogStep === 2">(2/2) Select Predicate and Set True/False Usage</h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()">
@@ -3278,7 +3269,7 @@
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1"></th>
-                                                <th class="col-md-11">Description (<input type="checkbox" ng-model="viewAssertion"/> view assertion )</th>
+                                                <th class="col-md-11">Description</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -3287,14 +3278,10 @@
                                                     <md-checkbox ng-checked="c.selected"  ng-click="selectPredicate(c);" aria-label="Select Constraint for Predicate" style="margin: 10px;"/>
                                                 </td>
                                                 <td class="col-md-11">
-                                                    <div layout="row" ng-if="!c.selected">
-                                                        <md-input-container flex="100" class="normal">
-                                                            <input ng-model="c.description" type="text" disabled/>
-                                                        </md-input-container>
-                                                    </div>
+                                                    <p ng-bind="::c.description" ng-if="!c.selected" />
                                                     <div layout="row" ng-if="c.selected">
                                                         <md-input-container flex="50" class="normal">
-                                                            <input ng-model="c.description" type="text" disabled/>
+                                                            <p ng-bind="::c.description" />
                                                         </md-input-container>
                                                         <md-input-container flex="25" class="normal" style="margin: 18px;">
                                                             <label>True Usage</label>
@@ -3311,11 +3298,6 @@
                                                                     {{usage}}
                                                                 </md-option>
                                                             </md-select>
-                                                        </md-input-container>
-                                                    </div>
-                                                    <div layout="row">
-                                                        <md-input-container flex="100" class="normal" ng-show="viewAssertion">
-                                                            <input ng-model="c.assertion" type="text" disabled/>
                                                         </md-input-container>
                                                     </div>
                                                 </td>
@@ -3836,7 +3818,7 @@
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2 ng-if="dialogStep === 0">Predicate Summary</h2>
-                    <h2 ng-if="dialogStep === 1">(1/2) Make Constraints</h2>
+                    <h2 ng-if="dialogStep === 1">(1/2) Create Constraints</h2>
                     <h2 ng-if="dialogStep === 2">(2/2) Select Predicate and Set True/False Usage</h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()">
@@ -4264,7 +4246,7 @@
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1"></th>
-                                                <th class="col-md-11">Description (<input type="checkbox" ng-model="viewAssertion"/> view assertion )</th>
+                                                <th class="col-md-11">Description</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -4273,14 +4255,10 @@
                                                     <md-checkbox ng-checked="c.selected"  ng-click="selectPredicate(c);" aria-label="Select Constraint for Predicate" style="margin: 10px;"/>
                                                 </td>
                                                 <td class="col-md-11">
-                                                    <div layout="row" ng-if="!c.selected">
-                                                        <md-input-container flex="100" class="normal">
-                                                            <input ng-model="c.description" type="text" disabled/>
-                                                        </md-input-container>
-                                                    </div>
+                                                    <p ng-bind="::c.description" ng-if="!c.selected" />
                                                     <div layout="row" ng-if="c.selected">
                                                         <md-input-container flex="50" class="normal">
-                                                            <input ng-model="c.description" type="text" disabled/>
+                                                            <p ng-bind="::c.description" />
                                                         </md-input-container>
                                                         <md-input-container flex="25" class="normal" style="margin: 18px;">
                                                             <label>True Usage</label>
@@ -4297,11 +4275,6 @@
                                                                     {{usage}}
                                                                 </md-option>
                                                             </md-select>
-                                                        </md-input-container>
-                                                    </div>
-                                                    <div layout="row">
-                                                        <md-input-container flex="100" class="normal" ng-show="viewAssertion">
-                                                            <input ng-model="c.assertion" type="text" disabled/>
                                                         </md-input-container>
                                                     </div>
                                                 </td>
