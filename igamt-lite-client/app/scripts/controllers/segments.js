@@ -3305,6 +3305,10 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mo
     $scope.mCode = null;
     $scope.mCodeSystem = null;
 
+    $scope.setChanged = function(){
+        $scope.changed = true;
+    };
+
     $scope.singleCodeInit = function (){
         $scope.valueSetSelectedForSingleCode = null;
         $scope.mCode = null;

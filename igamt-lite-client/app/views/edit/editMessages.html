@@ -1381,14 +1381,14 @@
                                             {{tablesMap[b.tableId].description}}
                                         </td>
                                         <td class="col-md-2">
-                                            <select ng-model='b.bindingStrength' class="form-control" ng-change="changed = true;">
+                                            <select ng-model='b.bindingStrength' class="form-control" ng-change="setChanged()">
                                                 <option value="R">Required</option>
                                                 <option value="S">Suggested</option>
                                                 <option value="U">Unspecified</option>
                                             </select>
                                         </td>
                                         <td class="col-md-2">
-                                            <select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' class="form-control" ng-change="changed = true;">
+                                            <select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' class="form-control" ng-change="setChanged()">
                                                 <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">
                                                     {{bl}}
                                                 </option>
