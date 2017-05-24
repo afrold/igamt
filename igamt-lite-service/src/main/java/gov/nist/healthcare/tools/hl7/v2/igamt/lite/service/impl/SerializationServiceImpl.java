@@ -1045,11 +1045,11 @@ import nu.xom.Document;
     }
 
 	@Override
-	public Document serializeDataModel(Object dataModel) {
+	public Document serializeDataModel(Object dataModel, String host) {
 		SerializableStructure serializableStructure = new SerializableStructure();
 		SerializableElement serializableElement = null;
 		if(dataModel instanceof Datatype){
-			serializableElement = serializeDatatypeService.serializeDatatype((Datatype)dataModel);
+			serializableElement = serializeDatatypeService.serializeDatatype((Datatype)dataModel, host);
 		} else if(dataModel instanceof Table){
 			serializableElement = serializeTableService.serializeTable((Table)dataModel);
 		} else if(dataModel instanceof Segment){

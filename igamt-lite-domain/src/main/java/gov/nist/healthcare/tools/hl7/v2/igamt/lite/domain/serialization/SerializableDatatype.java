@@ -34,7 +34,9 @@ public class SerializableDatatype extends SerializableSection {
     private String defPreText, defPostText, usageNote;
     private Map<Component,String> componentTextMap;
     private Boolean showConfLength;
+    private Boolean showInnerLinks;
     private List<Table> tables;
+    private String host;
 
     public List<SerializableConstraint> getConstraints() {
         return constraints;
@@ -44,7 +46,7 @@ public class SerializableDatatype extends SerializableSection {
         String title, Datatype datatype, String defPreText, String defPostText, String usageNote,
         List<SerializableConstraint> constraints, Map<Component, Datatype> componentDatatypeMap,
         Map<Component, List<ValueSetOrSingleCodeBinding>> componentValueSetBindingsMap, List<Table> tables,
-        Map<Component, String> componentTextMap, Boolean showConfLength) {
+        Map<Component, String> componentTextMap, Boolean showConfLength, Boolean showInnerLinks, String host) {
         super(id, prefix, position, headerLevel, title);
         this.datatype = datatype;
         this.defPreText = defPreText;
@@ -56,6 +58,8 @@ public class SerializableDatatype extends SerializableSection {
         this.tables = tables;
         this.componentTextMap = componentTextMap;
         this.showConfLength = showConfLength;
+        this.showInnerLinks = showInnerLinks;
+        this.host = host;
     }
 
     @Override public Element serializeElement() {
@@ -100,6 +104,12 @@ public class SerializableDatatype extends SerializableSection {
                         if(datatype!=null) {
                             componentElement.addAttribute(new Attribute("Datatype",
                                 datatype.getLabel()));
+                            if(this.showInnerLinks){
+                              String link = this.generateInnerLink(datatype,host);
+                              if(!"".equals(link)){
+                                componentElement.addAttribute(new Attribute("InnerLink",link));
+                              }
+                            }
                         }
                     } else {
                         componentElement.addAttribute(new Attribute("Datatype",

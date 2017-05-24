@@ -6,6 +6,8 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -208,5 +210,17 @@ public class SerializableSection extends SerializableElement {
             }
         }
         return StringUtils.join(elementComments, ", ");
+    }
+    
+    protected String generateInnerLink(DataModel dataModel, String host){
+      StringBuilder url = new StringBuilder();
+      url.append(host);
+      url.append("/api/export/");
+      if(dataModel instanceof Datatype){
+        url.append("datatype/");
+        url.append(((Datatype) dataModel).getId());        
+      }
+      url.append("/html");
+      return url.toString();
     }
 }

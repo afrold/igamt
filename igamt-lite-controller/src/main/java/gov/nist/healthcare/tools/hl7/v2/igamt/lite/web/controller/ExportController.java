@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,10 +67,10 @@ public class ExportController extends CommonController{
 	}
 	
 	@RequestMapping(value = "/datatype/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getDatatypeAsHtml(@PathVariable(value="id") String id) throws DataNotFoundException {
+	public String getDatatypeAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
 		Datatype datatype = datatypeService.findById(id);
 		if(datatype!=null && datatype.getScope().equals(SCOPE.HL7STANDARD)){
-			return exportService.exportDataModelAsHtml(datatype,datatype.getName());
+			return exportService.exportDataModelAsHtml(datatype,datatype.getName(),generateHost(request));
 		}
 		return null;
 	}
@@ -80,10 +82,10 @@ public class ExportController extends CommonController{
 	}
 	
 	@RequestMapping(value = "/valueSet/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getValueSetAsHtml(@PathVariable(value="id") String id) throws DataNotFoundException {
+	public String getValueSetAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
 		Table table = tableService.findById(id);
 		if(table!=null && (table.getScope().equals(SCOPE.HL7STANDARD) || table.getScope().equals(SCOPE.PHINVADS))){
-			return exportService.exportDataModelAsHtml(table,table.getName());
+			return exportService.exportDataModelAsHtml(table,table.getName(),generateHost(request));
 		}
 		return null;
 	}
@@ -95,10 +97,10 @@ public class ExportController extends CommonController{
 	}
 	
 	@RequestMapping(value = "/segment/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getSegmentAsHtml(@PathVariable(value="id") String id) throws DataNotFoundException {
+	public String getSegmentAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
 		Segment segment = segmentService.findById(id);
 		if(segment!=null && segment.getScope().equals(SCOPE.HL7STANDARD)){
-			return exportService.exportDataModelAsHtml(segment,segment.getName());
+			return exportService.exportDataModelAsHtml(segment,segment.getName(),generateHost(request));
 		}
 		return null;
 	}
@@ -110,9 +112,9 @@ public class ExportController extends CommonController{
 	}
 	
 	@RequestMapping(value = "/message/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getMessageAsHtml(@PathVariable(value="id") String id) throws DataNotFoundException {
+	public String getMessageAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
 		Message message = messageService.findById(id);
-		return exportService.exportDataModelAsHtml(message,message.getName());
+		return exportService.exportDataModelAsHtml(message,message.getName(),generateHost(request));
 	}
 	
 	@RequestMapping(value = "/igDocument/{id}/json", method = RequestMethod.GET, produces = "application/json")
@@ -145,11 +147,20 @@ public class ExportController extends CommonController{
 	}
 	
 	@RequestMapping(value = "/profileComponent/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getProfileComponentAsHtml(@PathVariable(value="id") String id) throws DataNotFoundException {
+	public String getProfileComponentAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
 		ProfileComponent profileComponent = profileComponentService.findById(id);
 		if(profileComponent!=null){
-			return exportService.exportDataModelAsHtml(profileComponent,profileComponent.getName());
+		    
+			return exportService.exportDataModelAsHtml(profileComponent,profileComponent.getName(),generateHost(request));
 		}
 		return null;
+	}
+	
+	private String generateHost(HttpServletRequest request){
+	  String requestUrl = request.getRequestURL().toString();
+	  String servletPath = request.getServletPath();
+	  String host = requestUrl.substring(0,requestUrl.indexOf(servletPath));
+	  return host;
+	  //return request.getScheme() + "://" + request.getHeader("Host");
 	}
 }
