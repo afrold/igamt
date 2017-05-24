@@ -1456,7 +1456,7 @@
                                                     <md-select placeholder="Select verb" class="inside-table"
                                                                ng-class="{'form-control-invalid' : isEmptyConstraintVerb(newConstraint)}"
                                                                ng-model="newConstraint.verb">
-                                                        <md-option ng-repeat="constraintVerb in config.constraintVerbs | orderBy:'toString()'" ng-value="constraintVerb">
+                                                        <md-option ng-repeat="constraintVerb in config.conditionalConstraintVerbs | orderBy:'toString()'" ng-value="constraintVerb">
                                                             {{constraintVerb}}
                                                         </md-option>
                                                     </md-select>
@@ -1620,7 +1620,7 @@
                                                                 <md-option value="AND">AND</md-option>
                                                                 <md-option value="OR">OR</md-option>
                                                                 <md-option value="XOR">XOR</md-option>
-                                                                <md-option value="IFTHEN">IFTHEN(IMPLY)</md-option>
+                                                                <!--<md-option value="IFTHEN">IFTHEN(IMPLY)</md-option>-->
                                                                 <md-option value="FORALL">FORALL(True, if all assertions are true)</md-option>
                                                                 <md-option value="EXIST">EXIST(True, if one of assertions is true)</md-option>
                                                             </md-select>
@@ -3053,7 +3053,7 @@
                                                     <md-select placeholder="Select verb" class="inside-table"
                                                                ng-class="{'form-control-invalid' : isEmptyConstraintVerb(newConstraint)}"
                                                                ng-model="newConstraint.verb">
-                                                        <md-option ng-repeat="constraintVerb in config.constraintVerbs | orderBy:'toString()'" ng-value="constraintVerb">
+                                                        <md-option ng-repeat="constraintVerb in config.conditionalConstraintVerbs | orderBy:'toString()'" ng-value="constraintVerb">
                                                             {{constraintVerb}}
                                                         </md-option>
                                                     </md-select>
@@ -3217,7 +3217,7 @@
                                                                 <md-option value="AND">AND</md-option>
                                                                 <md-option value="OR">OR</md-option>
                                                                 <md-option value="XOR">XOR</md-option>
-                                                                <md-option value="IFTHEN">IFTHEN(IMPLY)</md-option>
+                                                                <!--<md-option value="IFTHEN">IFTHEN(IMPLY)</md-option>-->
                                                                 <md-option value="FORALL">FORALL(True, if all assertions are true)</md-option>
                                                                 <md-option value="EXIST">EXIST(True, if one of assertions is true)</md-option>
                                                             </md-select>
@@ -4030,7 +4030,7 @@
                                                     <md-select placeholder="Select verb" class="inside-table"
                                                                ng-class="{'form-control-invalid' : isEmptyConstraintVerb(newConstraint)}"
                                                                ng-model="newConstraint.verb">
-                                                        <md-option ng-repeat="constraintVerb in config.constraintVerbs | orderBy:'toString()'" ng-value="constraintVerb">
+                                                        <md-option ng-repeat="constraintVerb in config.conditionalConstraintVerbs | orderBy:'toString()'" ng-value="constraintVerb">
                                                             {{constraintVerb}}
                                                         </md-option>
                                                     </md-select>
@@ -4194,7 +4194,7 @@
                                                                 <md-option value="AND">AND</md-option>
                                                                 <md-option value="OR">OR</md-option>
                                                                 <md-option value="XOR">XOR</md-option>
-                                                                <md-option value="IFTHEN">IFTHEN(IMPLY)</md-option>
+                                                                <!--<md-option value="IFTHEN">IFTHEN(IMPLY)</md-option>-->
                                                                 <md-option value="FORALL">FORALL(True, if all assertions are true)</md-option>
                                                                 <md-option value="EXIST">EXIST(True, if one of assertions is true)</md-option>
                                                             </md-select>

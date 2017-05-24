@@ -2781,10 +2781,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             var secondConstraintAssertion = secondConstraint.assertion.replace("<Assertion>", "");
             secondConstraintAssertion = secondConstraintAssertion.replace("</Assertion>", "");
 
+            var modifiedFirstDescription = firstConstraint.description.replace("should not be", "is not").replace("SHALL NOT be", "is not").replace("may not be", "is not").replace("SHALL be", "is").replace("should be", "is").replace("may be", "is");
+
             cs = {
                 id: new ObjectId().toString(),
                 constraintId: compositeType + '(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                description: 'IF [' + firstConstraint.description + '] THEN [' + secondConstraint.description + ']',
+                description: 'IF [' + modifiedFirstDescription + '] THEN [' + secondConstraint.description + ']',
                 assertion: '<Assertion><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Assertion>'
             };
         } else if (compositeType === 'FORALL' || compositeType === 'EXIST') {
