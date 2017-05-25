@@ -219,6 +219,9 @@ public class SerializableSection extends SerializableElement {
       if(dataModel instanceof Datatype){
         url.append("datatype/");
         url.append(((Datatype) dataModel).getId());        
+      } else if(dataModel instanceof Table){
+        url.append("valueSet/");
+        url.append(((Table) dataModel).getId());
       }
       url.append("/html");
       return url.toString();

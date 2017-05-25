@@ -76,7 +76,7 @@
             </xsl:if>
             <xsl:if test="$columnDisplay.dataType.valueSet = 'true'">
                 <xsl:element name="td">
-                    <xsl:value-of select="@BindingIdentifier" />
+                    <xsl:value-of disable-output-escaping="yes" select="@BindingIdentifier" />
                 </xsl:element>
             </xsl:if>
             <xsl:if test="$columnDisplay.dataType.comment = 'true'">

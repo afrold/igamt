@@ -145,7 +145,13 @@ public class SerializableDatatype extends SerializableSection {
                                 if(valueSetOrSingleCodeBinding!=null && valueSetOrSingleCodeBinding.getTableId()!=null&&!valueSetOrSingleCodeBinding.getTableId().isEmpty()) {
                                     Table table = super.findTable(tables, valueSetOrSingleCodeBinding.getTableId());
                                     if(table != null) {
+                                      String link = this.generateInnerLink(table,host);
+                                      if(this.showInnerLinks && !"".equals(link)){
+                                        String wrappedLink = this.wrapLink(link,table.getBindingIdentifier());
+                                        bindingIdentifierList.add(wrappedLink);
+                                      } else {
                                         bindingIdentifierList.add(table.getBindingIdentifier());
+                                      }
                                     }
                                 }
                             }
@@ -197,6 +203,10 @@ public class SerializableDatatype extends SerializableSection {
         Element sectionElement = super.getSectionElement();
         sectionElement.appendChild(datatypeElement);
         return sectionElement;
+    }
+
+    private String wrapLink(String link, String bindingIdentifier) {
+      return "<a href=\""+link+"\" target=\"_blank\">"+bindingIdentifier+"</a>";
     }
 
     private String getFullUsage(Datatype datatype, int i) {
