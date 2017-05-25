@@ -40,7 +40,7 @@ public class SearchController extends CommonController {
 	private TableService tableService;
 	
 	@RequestMapping(value = "/datatypes", method = RequestMethod.GET, produces = "application/json")
-	public List<Datatype> getDatatypes(@RequestParam(value="name", required=false) String name,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
+	public List<Datatype> getDatatypes(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
 		if((name != null && !name.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
 			if(name != null && !name.isEmpty()){
 				if(hl7Version != null && !hl7Version.isEmpty()){
@@ -55,19 +55,11 @@ public class SearchController extends CommonController {
 				return datatypeService.findByScopeAndVersion(SCOPE.HL7STANDARD.name(), hl7Version);
 			}
 		}
-		return datatypeService.findByScope(SCOPE.HL7STANDARD.name());
-	}
-	
-	@RequestMapping(value = "/datatype", method = RequestMethod.GET, produces = "application/json")
-	public Datatype getDatatype(@RequestParam(value="name") String name,@RequestParam(value="hl7Version") String hl7Version) throws DataNotFoundException {
-		if(name != null && !name.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
-			return datatypeService.findOneByNameAndVersionAndScope(name, hl7Version, SCOPE.HL7STANDARD.name());
-		}
 		return null;
 	}
 	
 	@RequestMapping(value = "/segments", method = RequestMethod.GET, produces = "application/json")
-	public List<Segment> getSegments(@RequestParam(value="name", required=false) String name,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
+	public List<Segment> getSegments(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
 		if((name != null && !name.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
 			if(name != null && !name.isEmpty()){
 				if(hl7Version != null && !hl7Version.isEmpty()){
@@ -78,23 +70,13 @@ public class SearchController extends CommonController {
 				}else {
 					return segmentService.findByNameAndScope(name, SCOPE.HL7STANDARD.name());
 				}
-			} else {
-				return segmentService.findByScopeAndVersion(SCOPE.HL7STANDARD.name(), hl7Version);
 			}
-		}
-		return segmentService.findByScope(SCOPE.HL7STANDARD.name());
-	}
-	
-	@RequestMapping(value = "/segment", method = RequestMethod.GET, produces = "application/json")
-	public Segment getSegment(@RequestParam(value="name") String name,@RequestParam(value="hl7Version") String hl7Version) throws DataNotFoundException {
-		if(name != null && !name.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
-			return segmentService.findByNameAndVersionAndScope(name, hl7Version, SCOPE.HL7STANDARD.name());
 		}
 		return null;
 	}
 	
 	@RequestMapping(value = "/messages", method = RequestMethod.GET, produces = "application/json")
-	public List<Message> getMessages(@RequestParam(value="name", required=false) String name,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
+	public List<Message> getMessages(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
 		if((name != null && !name.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
 			if(name != null && !name.isEmpty()){
 				if(hl7Version != null && !hl7Version.isEmpty()){
@@ -105,25 +87,14 @@ public class SearchController extends CommonController {
 				}else {
 					return messageService.findByNameAndScope(name, SCOPE.HL7STANDARD.name());
 				}
-			} else {
-				return messageService.findByScopeAndVersion(SCOPE.HL7STANDARD.name(), hl7Version);
 			}
-			
-		}
-		return messageService.findByScope(SCOPE.HL7STANDARD.name());
-	}
-	
-	@RequestMapping(value = "/message", method = RequestMethod.GET, produces = "application/json")
-	public Message getMessage(@RequestParam(value="name") String name,@RequestParam(value="hl7Version") String hl7Version) throws DataNotFoundException {
-		if(name != null && !name.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
-			return messageService.findByNameAndVersionAndScope(name, hl7Version, SCOPE.HL7STANDARD.name());
 		}
 		return null;
 	}
 	
 	@RequestMapping(value = "/valueSets", method = RequestMethod.GET, produces = "application/json")
-	public List<Table> getValueSets(@RequestParam("scope") String scope, @RequestParam(value="bindingIdentifier", required=false) String bindingIdentifier,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
-		if(scope.equals(SCOPE.HL7STANDARD.name()) || scope.equals(SCOPE.PHINVADS.name())){
+	public List<Table> getValueSets(@RequestParam("scope") String scope, @RequestParam(value="bindingIdentifier", required=true) String bindingIdentifier,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
+	  if(scope.equals(SCOPE.HL7STANDARD.name()) || scope.equals(SCOPE.PHINVADS.name())){
 			if((bindingIdentifier != null && !bindingIdentifier.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
 				if(bindingIdentifier != null && !bindingIdentifier.isEmpty()){
 					if(hl7Version != null && !hl7Version.isEmpty()){
@@ -134,31 +105,9 @@ public class SearchController extends CommonController {
 					}else {
 						return tableService.findByBindingIdentifierAndScope(bindingIdentifier, scope);
 					}
-				} else {
-					if(scope.equals(SCOPE.HL7STANDARD.name()) && hl7Version != null && !hl7Version.isEmpty()){
-						return tableService.findByScopeAndVersion(scope, hl7Version);
-					}
 				}
 			}
 			return tableService.findByScope(scope);
-		}
-		return null;
-	}
-	
-	@RequestMapping(value = "/valueSet", method = RequestMethod.GET, produces = "application/json")
-	public Table getValueSet(@RequestParam(value="scope", required=false) String scope, @RequestParam(value="bindingIdentifier") String bindingIdentifier,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
-		//By default, we use HL7STANDARD scope
-		if(scope==null){
-			scope = SCOPE.HL7STANDARD.name();
-		}
-		if(bindingIdentifier != null && !bindingIdentifier.isEmpty()){
-			if(SCOPE.PHINVADS.name().equals(scope)){
-				return tableService.findOneByScopeAndBindingIdentifier(scope,bindingIdentifier);
-			} else if(SCOPE.HL7STANDARD.name().equals(scope)){
-				if(hl7Version != null && !hl7Version.isEmpty()){
-					return tableService.findByScopeAndVersionAndBindingIdentifier(SCOPE.HL7STANDARD, hl7Version, bindingIdentifier);
-				}
-			}
 		}
 		return null;
 	}

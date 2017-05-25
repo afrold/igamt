@@ -1084,7 +1084,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         }
 
         if(node.segment) {
-            var foundSev = _.find($rootScope.segmentsMap[node.segment].singleElementValues, function(sev){ return sev.location  ==  node.segmentPath; });
+            var foundSev = _.find($rootScope.segmentsMap[node.segment].singleElementValues, function(sev){ return sev.location  == node.segmentPath; });
             if(foundSev) {
                 foundSev.from = 'segment';
                 node.sev = foundSev;
@@ -2140,6 +2140,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
     $scope.tempPredicates = [];
     $scope.contextKey = null;
 
+
     $scope.getDialogStyle = function(){
         if ($scope.dialogStep === 0) return "width: 70%";
         if ($scope.dialogStep === 1) return "width: 30%";
@@ -2877,6 +2878,10 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $mo
     $scope.valueSetSelectedForSingleCode = null;
     $scope.mCode = null;
     $scope.mCodeSystem = null;
+
+    $scope.setChanged = function(){
+        $scope.changed = true;
+    };
 
     $scope.singleCodeInit = function (){
         $scope.valueSetSelectedForSingleCode = null;

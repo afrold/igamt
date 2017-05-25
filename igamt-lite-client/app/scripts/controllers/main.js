@@ -1415,7 +1415,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     var f = {};
                     f.obj = element;
                     f.path = parent.path + "." + element.position + "[1]";
-                    f.segmentPath = element.position;
+                    f.segmentPath = '' + element.position;
                     f.segment = parent.obj.ref.id;
                     f.locationPath = parent.locationPath + "." + element.position + "[1]";
 
