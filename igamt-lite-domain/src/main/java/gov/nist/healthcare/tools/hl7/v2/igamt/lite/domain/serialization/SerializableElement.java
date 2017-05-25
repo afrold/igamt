@@ -7,6 +7,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
  * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
@@ -50,5 +56,30 @@ public abstract class SerializableElement {
         textElement.addAttribute(new Attribute("Type", type));
         textElement.appendChild(content);
         return textElement;
+    }
+    
+    protected String generateInnerLink(Object dataModel, String host){
+      StringBuilder url = new StringBuilder();
+      url.append(host);
+      url.append("/api/export/");
+      if(dataModel instanceof Datatype){
+        url.append("datatype/");
+        url.append(((Datatype) dataModel).getId());        
+      } else if(dataModel instanceof DatatypeLink){
+        url.append("datatype/");
+        url.append(((DatatypeLink) dataModel).getId());
+      } else if(dataModel instanceof Table){
+        url.append("valueSet/");
+        url.append(((Table) dataModel).getId());
+      } else if(dataModel instanceof Segment){
+        url.append("segment/");
+        url.append(((Segment) dataModel).getId());
+      }
+      url.append("/html");
+      return url.toString();
+    }
+    
+    protected String wrapLink(String link, String bindingIdentifier) {
+      return "<a href=\""+link+"\" target=\"_blank\">"+bindingIdentifier+"</a>";
     }
 }

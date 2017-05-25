@@ -32,12 +32,16 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
     private List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups;
     private List<SerializableConstraint> groupConstraintList;
     private String comments;
+    private Boolean showInnerLinks;
+    private String host;
 
     //SegmentRef constructor
-    public SerializableSegmentRefOrGroup(SegmentRef segmentRef,Segment segment, boolean isCompositeProfile) {
+    public SerializableSegmentRefOrGroup(SegmentRef segmentRef,Segment segment, boolean isCompositeProfile, Boolean showInnerLinks, String host) {
         this(segmentRef,isCompositeProfile);
         this.segmentRef = segmentRef;
         this.segment = segment;
+        this.showInnerLinks = showInnerLinks;
+        this.host = host;
     }
     //Group constructor
     public SerializableSegmentRefOrGroup(Group group,List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups, List<SerializableConstraint> groupConstraintList, boolean isCompositeProfile) {
@@ -121,6 +125,9 @@ public class SerializableSegmentRefOrGroup extends SerializableElement{
             elementSegment.addAttribute(new Attribute("Label", label));
             if(this.segment.getDescription()!=null) {
                 elementSegment.addAttribute(new Attribute("Description", this.segment.getDescription()));
+            }
+            if(this.showInnerLinks){
+              elementSegment.addAttribute(new Attribute("InnerLink", this.generateInnerLink(this.segment, host)));
             }
         }
         elementSegment.addAttribute(new Attribute("Depth", String.valueOf(depth)));

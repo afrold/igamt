@@ -75,19 +75,11 @@ public class SearchController extends CommonController {
 		return null;
 	}
 	
-	@RequestMapping(value = "/messages", method = RequestMethod.GET, produces = "application/json")
-	public List<Message> getMessages(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
-		if((name != null && !name.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
-			if(name != null && !name.isEmpty()){
-				if(hl7Version != null && !hl7Version.isEmpty()){
-					Message message = messageService.findByNameAndVersionAndScope(name, hl7Version, SCOPE.HL7STANDARD.name());
-					ArrayList<Message> result = new ArrayList<>();
-					result.add(message);
-					return result;
-				}else {
-					return messageService.findByNameAndScope(name, SCOPE.HL7STANDARD.name());
-				}
-			}
+	@RequestMapping(value = "/message", method = RequestMethod.GET, produces = "application/json")
+	public Message getMessage(@RequestParam(value="messageType", required=true) String messageType,@RequestParam(value="event", required=true) String event,@RequestParam(value="hl7Version", required=true) String hl7Version) throws DataNotFoundException {
+		if(messageType != null && !messageType.isEmpty() && event !=null && !event.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
+		    Message message = messageService.findByMessageTypeAndEventAndVersionAndScope(messageType, event, hl7Version, SCOPE.HL7STANDARD.name());
+		    return message;
 		}
 		return null;
 	}

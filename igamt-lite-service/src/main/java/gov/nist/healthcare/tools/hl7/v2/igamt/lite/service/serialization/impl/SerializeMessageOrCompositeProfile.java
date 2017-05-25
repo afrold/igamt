@@ -88,18 +88,22 @@ public abstract class SerializeMessageOrCompositeProfile {
     }
 
     protected SerializableSegmentRefOrGroup serializeSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments){
+      return this.serializeSegmentRefOrGroup(segmentRefOrGroup, segmentUsageConfig, fieldUsageConfig, compositeProfileSegments,false, null);
+    }
+      
+    protected SerializableSegmentRefOrGroup serializeSegmentRefOrGroup(SegmentRefOrGroup segmentRefOrGroup, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host){
         if(segmentRefOrGroup instanceof SegmentRef){
-            SegmentRef segmentRef = (SegmentRef) segmentRefOrGroup;
-            if(ExportUtil.diplayUsage(segmentRef.getUsage(), segmentUsageConfig)) {
-                return serializeSegmentRef(segmentRef, fieldUsageConfig,compositeProfileSegments);
-            }
-        } else if (segmentRefOrGroup instanceof Group){
-            return serializeGroup((Group) segmentRefOrGroup,segmentUsageConfig,fieldUsageConfig,compositeProfileSegments);
-        }
-        return null;
+          SegmentRef segmentRef = (SegmentRef) segmentRefOrGroup;
+          if(ExportUtil.diplayUsage(segmentRef.getUsage(), segmentUsageConfig)) {
+              return serializeSegmentRef(segmentRef, fieldUsageConfig,compositeProfileSegments, showInnerLinks, host);
+          }
+      } else if (segmentRefOrGroup instanceof Group){
+          return serializeGroup((Group) segmentRefOrGroup,segmentUsageConfig,fieldUsageConfig,compositeProfileSegments, showInnerLinks, host);
+      }
+      return null;
     }
 
-    private SerializableSegmentRefOrGroup serializeSegmentRef(SegmentRef segmentRef, UsageConfig usageConfig,Map<String,Segment> compositeProfileSegments){
+    private SerializableSegmentRefOrGroup serializeSegmentRef(SegmentRef segmentRef, UsageConfig usageConfig,Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host){
         SerializableSegmentRefOrGroup serializableSegmentRefOrGroup;
         SegmentLink segmentLink = segmentRef.getRef();
         if(segmentLink != null) {
@@ -119,7 +123,7 @@ public abstract class SerializeMessageOrCompositeProfile {
                 segment.setFields(filteredFieldList);
             }
             serializableSegmentRefOrGroup =
-                new SerializableSegmentRefOrGroup(segmentRef, segment, this instanceof SerializeCompositeProfileService);
+                new SerializableSegmentRefOrGroup(segmentRef, segment, this instanceof SerializeCompositeProfileService, showInnerLinks, host);
             return serializableSegmentRefOrGroup;
         }
         return null;
@@ -135,12 +139,12 @@ public abstract class SerializeMessageOrCompositeProfile {
         return null;
     }
 
-    private SerializableSegmentRefOrGroup serializeGroup(Group group, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments){
+    private SerializableSegmentRefOrGroup serializeGroup(Group group, UsageConfig segmentUsageConfig, UsageConfig fieldUsageConfig, Map<String,Segment> compositeProfileSegments, Boolean showInnerLinks, String host){
         SerializableSegmentRefOrGroup serializableGroup;
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
             SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(
-                segmentRefOrGroup, segmentUsageConfig, fieldUsageConfig, compositeProfileSegments);
+                segmentRefOrGroup, segmentUsageConfig, fieldUsageConfig, compositeProfileSegments, showInnerLinks, host);
             if(serializableSegmentRefOrGroup!=null) {
                 serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             }

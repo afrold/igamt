@@ -115,8 +115,8 @@ public class ExportServiceImpl implements ExportService {
     }
 
 	@Override
-	public String exportDataModelAsHtml(Object dataModel, String title) {
-		nu.xom.Document document = serializationService.serializeDataModel(dataModel);
+	public String exportDataModelAsHtml(Object dataModel, String title, String host) {
+		nu.xom.Document document = serializationService.serializeDataModel(dataModel, host);
 		if(document!=null){
 			try {
 				ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();

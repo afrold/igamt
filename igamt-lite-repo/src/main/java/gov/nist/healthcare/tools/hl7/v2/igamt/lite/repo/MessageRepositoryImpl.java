@@ -65,37 +65,52 @@ public class MessageRepositoryImpl implements MessageOperations {
     return date;
   }
 
-@Override
-public List<Message> findByNameAndScope(String name, String scope) {
-	Criteria where = Criteria.where("name").is(name);
-    where.andOperator(Criteria.where("scope").is(scope));
-    Query qry = Query.query(where);
-    List<Message> result = mongo.find(qry, Message.class);
-    return result;
-}
+  @Override
+  public List<Message> findByNameAndScope(String name, String scope) {
+  	Criteria where = Criteria.where("name").is(name);
+      where.andOperator(Criteria.where("scope").is(scope));
+      Query qry = Query.query(where);
+      List<Message> result = mongo.find(qry, Message.class);
+      return result;
+  }
+  
+  @Override
+  public Message findByNameAndVersionAndScope(String name, String hl7Version, String scope) {
+  	Criteria where = Criteria.where("name").is(name);
+      where.andOperator(Criteria.where("hl7Version").is(hl7Version),Criteria.where("scope").is(scope));
+      Query qry = Query.query(where);
+      Message result = mongo.findOne(qry, Message.class);
+      return result;
+  }
+  
+  @Override
+  public List<Message> findByScope(String scope) {
+  	Criteria where = Criteria.where("scope").is(scope);
+      Query qry = Query.query(where);
+      List<Message> result = mongo.find(qry, Message.class);
+      return result;
+  }
+  
+  @Override
+  public List<Message> findByScopeAndVersion(String scope, String hl7Version) {
+  	Criteria where = Criteria.where("hl7Version").is(hl7Version);
+      where.andOperator(Criteria.where("scope").is(scope));
+      Query qry = Query.query(where);
+      return mongo.find(qry, Message.class);
+  }
 
-@Override
-public Message findByNameAndVersionAndScope(String name, String hl7Version, String scope) {
-	Criteria where = Criteria.where("name").is(name);
-    where.andOperator(Criteria.where("hl7Version").is(hl7Version),Criteria.where("scope").is(scope));
+  @Override
+  public Message findByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
+      String hl7Version, String scope) {
+    Criteria where = Criteria.where("messageType").is(messageType);
+    where.andOperator(Criteria.where("event").is(event),
+        Criteria.where("hl7Version").is(hl7Version),
+        Criteria.where("scope").is(scope));
     Query qry = Query.query(where);
-    Message result = mongo.findOne(qry, Message.class);
-    return result;
-}
-
-@Override
-public List<Message> findByScope(String scope) {
-	Criteria where = Criteria.where("scope").is(scope);
-    Query qry = Query.query(where);
-    List<Message> result = mongo.find(qry, Message.class);
-    return result;
-}
-
-@Override
-public List<Message> findByScopeAndVersion(String scope, String hl7Version) {
-	Criteria where = Criteria.where("hl7Version").is(hl7Version);
-    where.andOperator(Criteria.where("scope").is(scope));
-    Query qry = Query.query(where);
-    return mongo.find(qry, Message.class);
-}
+    if (!mongo.find(qry, Message.class).isEmpty()) {
+      return mongo.find(qry, Message.class).get(0);
+    } else {
+      return null;
+    }
+  }
 }

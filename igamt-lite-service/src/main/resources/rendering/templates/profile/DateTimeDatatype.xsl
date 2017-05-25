@@ -2,116 +2,83 @@
 
     <xsl:template match="DateTimeDatatype">
         <xsl:element name="span">
-            <xsl:element name="span">
-                <xsl:element name="b">
-                    <xsl:text>Data Type Definition</xsl:text>
-                </xsl:element>
+            <xsl:element name="b">
+                Data Type Definition
             </xsl:element>
+        </xsl:element>
+        <xsl:element name="span">
             <xsl:element name="table">
                 <xsl:attribute name="class">
                     <xsl:text>contentTable</xsl:text>
                 </xsl:attribute>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>5%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>15%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>15%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
+                <xsl:element name="col">
+                    <xsl:attribute name="width">
+                        <xsl:text>65%</xsl:text>
+                    </xsl:attribute>
+                </xsl:element>
                 <xsl:element name="thead">
                     <xsl:attribute name="class">
                         <xsl:text>contentThead</xsl:text>
                     </xsl:attribute>
                     <xsl:element name="tr">
                         <xsl:element name="th">
-                            <xsl:text>YYYY</xsl:text>
+                            <xsl:text>#</xsl:text>
                         </xsl:element>
                         <xsl:element name="th">
-                            <xsl:text>MM</xsl:text>
+                            <xsl:text>Value</xsl:text>
                         </xsl:element>
                         <xsl:element name="th">
-                            <xsl:text>DD</xsl:text>
+                            <xsl:text>Usage</xsl:text>
                         </xsl:element>
                         <xsl:element name="th">
-                            <xsl:text>hh</xsl:text>
-                        </xsl:element>
-                        <xsl:element name="th">
-                            <xsl:text>mm</xsl:text>
-                        </xsl:element>
-                        <xsl:element name="th">
-                            <xsl:text>ss</xsl:text>
-                        </xsl:element>
-                        <xsl:element name="th">
-                            <xsl:text>.ssss</xsl:text>
-                        </xsl:element>
-                        <xsl:element name="th">
-                            <xsl:text>+/-ZZZZ</xsl:text>
+                            <xsl:text>Predicate</xsl:text>
                         </xsl:element>
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="tbody">
-                    <xsl:element name="tr">
-                        <xsl:element name="td">
-                            <xsl:if test="@YYYY='Required'">
-                                <xsl:attribute name="class">
-                                    <xsl:text>requiredDTM</xsl:text>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="@YYYY"/>
+                    <xsl:for-each select="DateTimeDatatypeDefinition">
+                        <xsl:sort select="@Position" data-type="number"></xsl:sort>
+                        <xsl:element name="tr">
+                            <xsl:element name="td">
+                                <xsl:value-of select="@Position"/>
+                            </xsl:element>
+                            <xsl:element name="td">
+                                <xsl:value-of select="@Name"/>
+                            </xsl:element>
+                            <xsl:element name="td">
+                                <xsl:value-of select="@Usage"/>
+                            </xsl:element>
+                            <xsl:element name="td">
+                                <xsl:choose>
+                                    <xsl:when test="@Predicate != ''">
+                                        <xsl:value-of select="@Predicate"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:attribute name="class">
+                                            <xsl:text>greyCell</xsl:text>
+                                        </xsl:attribute>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:element>
                         </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:if test="@MM='Required'">
-                                <xsl:attribute name="class">
-                                    <xsl:text>requiredDTM</xsl:text>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="@MM"/>
-                        </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:if test="@DD='Required'">
-                                <xsl:attribute name="class">
-                                    <xsl:text>requiredDTM</xsl:text>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="@DD"/>
-                        </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:if test="@hh='Required'">
-                                <xsl:attribute name="class">
-                                    <xsl:text>requiredDTM</xsl:text>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="@hh"/>
-                        </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:if test="@mm='Required'">
-                                <xsl:attribute name="class">
-                                    <xsl:text>requiredDTM</xsl:text>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="@mm"/>
-                        </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:if test="@ss='Required'">
-                                <xsl:attribute name="class">
-                                    <xsl:text>requiredDTM</xsl:text>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="@ss"/>
-                        </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:if test="@ssss='Required'">
-                                <xsl:attribute name="class">
-                                    <xsl:text>requiredDTM</xsl:text>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="@ssss"/>
-                        </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:if test="@timeZone='Required'">
-                                <xsl:attribute name="class">
-                                    <xsl:text>requiredDTM</xsl:text>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="@timeZone"/>
-                        </xsl:element>
-                    </xsl:element>
+                    </xsl:for-each>
                 </xsl:element>
             </xsl:element>
         </xsl:element>
     </xsl:template>
-
 </xsl:stylesheet>

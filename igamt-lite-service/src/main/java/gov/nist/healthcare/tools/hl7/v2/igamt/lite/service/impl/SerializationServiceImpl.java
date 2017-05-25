@@ -537,7 +537,7 @@ import nu.xom.Document;
         }
         for (Message message : this.igDocumentMessages.getChildren()) {
             SerializableMessage serializableMessage =
-                serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
+                serializeMessageService.serializeMessage(message, prefix, String.valueOf(3),serializationLayout,hl7Version, this.exportConfig);
             messageSection.addSection(serializableMessage);
         }
         return messageSection;
@@ -1045,19 +1045,19 @@ import nu.xom.Document;
     }
 
 	@Override
-	public Document serializeDataModel(Object dataModel) {
+	public Document serializeDataModel(Object dataModel, String host) {
 		SerializableStructure serializableStructure = new SerializableStructure();
 		SerializableElement serializableElement = null;
 		if(dataModel instanceof Datatype){
-			serializableElement = serializeDatatypeService.serializeDatatype((Datatype)dataModel);
+			serializableElement = serializeDatatypeService.serializeDatatype((Datatype)dataModel, host);
 		} else if(dataModel instanceof Table){
 			serializableElement = serializeTableService.serializeTable((Table)dataModel);
 		} else if(dataModel instanceof Segment){
-			serializableElement = serializeSegmentService.serializeSegment((Segment)dataModel);
+			serializableElement = serializeSegmentService.serializeSegment((Segment)dataModel, host);
 		} else if(dataModel instanceof Message){
-			serializableElement = serializeMessageService.serializeMessage((Message)dataModel);
+			serializableElement = serializeMessageService.serializeMessage((Message)dataModel, host);
 		} else if(dataModel instanceof ProfileComponent){
-			serializableElement = serializeProfileComponentService.serializeProfileComponent((ProfileComponent) dataModel);
+			serializableElement = serializeProfileComponentService.serializeProfileComponent((ProfileComponent) dataModel,host);
 		}
 		if(serializableElement != null){
 			serializableStructure.addSerializableElement(serializableElement);
