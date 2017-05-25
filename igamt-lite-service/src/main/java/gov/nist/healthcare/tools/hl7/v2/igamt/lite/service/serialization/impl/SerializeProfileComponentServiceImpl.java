@@ -45,12 +45,12 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
         ProfileComponentLink profileComponentLink, Integer position) {
         if(profileComponentLink!=null){
             ProfileComponent profileComponent = profileComponentService.findById(profileComponentLink.getId());
-            return serializeProfileComponent(profileComponent,position,String.valueOf(3));
+            return serializeProfileComponent(profileComponent,position,String.valueOf(3), false, null);
         }
         return null;
     }
 
-	private SerializableSection serializeProfileComponent(ProfileComponent profileComponent, Integer position, String sectionHeaderLevel) {
+	private SerializableSection serializeProfileComponent(ProfileComponent profileComponent, Integer position, String sectionHeaderLevel, Boolean showInnerLinks, String host) {
 		if(profileComponent!=null){
             String id = profileComponent.getId();
             String segmentPosition = String.valueOf(position);
@@ -82,7 +82,7 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
             if(profileComponent.getDefPostText()!=null&&!profileComponent.getDefPostText().isEmpty()){
                 defPostText = serializationUtil.cleanRichtext(profileComponent.getDefPostText());
             }
-            SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponent.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent,definitionTexts, defPreText,defPostText,tableidTableMap);
+            SerializableProfileComponent serializableProfileComponent = new SerializableProfileComponent(id, profileComponent.getName(),segmentPosition,sectionHeaderLevel,title,profileComponent,definitionTexts, defPreText,defPostText,tableidTableMap, showInnerLinks, host);
             if(serializableProfileComponent != null) {
                 serializableSection.addSection(serializableProfileComponent);
                 return serializableSection;
@@ -92,7 +92,7 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 	}
 
 	@Override
-	public SerializableElement serializeProfileComponent(ProfileComponent profileComponent) {
-		return serializeProfileComponent(profileComponent,1,String.valueOf(1));
+	public SerializableElement serializeProfileComponent(ProfileComponent profileComponent, String host) {
+		return serializeProfileComponent(profileComponent,1,String.valueOf(1), true, host);
 	}
 }

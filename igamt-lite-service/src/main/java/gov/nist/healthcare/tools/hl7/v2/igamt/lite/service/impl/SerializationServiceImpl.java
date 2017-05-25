@@ -1057,7 +1057,7 @@ import nu.xom.Document;
 		} else if(dataModel instanceof Message){
 			serializableElement = serializeMessageService.serializeMessage((Message)dataModel, host);
 		} else if(dataModel instanceof ProfileComponent){
-			serializableElement = serializeProfileComponentService.serializeProfileComponent((ProfileComponent) dataModel);
+			serializableElement = serializeProfileComponentService.serializeProfileComponent((ProfileComponent) dataModel,host);
 		}
 		if(serializableElement != null){
 			serializableStructure.addSerializableElement(serializableElement);

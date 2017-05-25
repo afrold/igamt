@@ -9,6 +9,7 @@ import java.util.Date;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
@@ -57,13 +58,16 @@ public abstract class SerializableElement {
         return textElement;
     }
     
-    protected String generateInnerLink(DataModel dataModel, String host){
+    protected String generateInnerLink(Object dataModel, String host){
       StringBuilder url = new StringBuilder();
       url.append(host);
       url.append("/api/export/");
       if(dataModel instanceof Datatype){
         url.append("datatype/");
         url.append(((Datatype) dataModel).getId());        
+      } else if(dataModel instanceof DatatypeLink){
+        url.append("datatype/");
+        url.append(((DatatypeLink) dataModel).getId());
       } else if(dataModel instanceof Table){
         url.append("valueSet/");
         url.append(((Table) dataModel).getId());

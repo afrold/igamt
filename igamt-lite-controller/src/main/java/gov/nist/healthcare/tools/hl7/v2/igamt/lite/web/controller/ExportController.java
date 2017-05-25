@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -69,7 +68,7 @@ public class ExportController extends CommonController{
 	@RequestMapping(value = "/datatype/{id}/html", method = RequestMethod.GET, produces = "text/html")
 	public String getDatatypeAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
 		Datatype datatype = datatypeService.findById(id);
-		if(datatype!=null && datatype.getScope().equals(SCOPE.HL7STANDARD)){
+		if(datatype!=null){
 			return exportService.exportDataModelAsHtml(datatype,datatype.getName(),generateHost(request));
 		}
 		return null;
@@ -84,7 +83,7 @@ public class ExportController extends CommonController{
 	@RequestMapping(value = "/valueSet/{id}/html", method = RequestMethod.GET, produces = "text/html")
 	public String getValueSetAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
 		Table table = tableService.findById(id);
-		if(table!=null && (table.getScope().equals(SCOPE.HL7STANDARD) || table.getScope().equals(SCOPE.PHINVADS))){
+		if(table!=null){
 			return exportService.exportDataModelAsHtml(table,table.getName(),generateHost(request));
 		}
 		return null;
@@ -99,7 +98,7 @@ public class ExportController extends CommonController{
 	@RequestMapping(value = "/segment/{id}/html", method = RequestMethod.GET, produces = "text/html")
 	public String getSegmentAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
 		Segment segment = segmentService.findById(id);
-		if(segment!=null && segment.getScope().equals(SCOPE.HL7STANDARD)){
+		if(segment!=null){
 			return exportService.exportDataModelAsHtml(segment,segment.getName(),generateHost(request));
 		}
 		return null;
@@ -114,16 +113,16 @@ public class ExportController extends CommonController{
 	@RequestMapping(value = "/message/{id}/html", method = RequestMethod.GET, produces = "text/html")
 	public String getMessageAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
 		Message message = messageService.findById(id);
-		return exportService.exportDataModelAsHtml(message,message.getName(),generateHost(request));
+		if(message != null){
+		  return exportService.exportDataModelAsHtml(message,message.getName(),generateHost(request));
+		}
+		return null;
 	}
 	
 	@RequestMapping(value = "/igDocument/{id}/json", method = RequestMethod.GET, produces = "application/json")
 	public IGDocument getIgDocumentAsJson(@PathVariable(value="id") String id) throws DataNotFoundException {
 		IGDocument igDocument = igDocumentService.findById(id);
-		if(igDocument!=null){
-			return igDocument;
-		}
-		return null;
+		return igDocument;
 	}
 	
 	@RequestMapping(value = "/igDocument/{id}/html", method = RequestMethod.GET, produces = "text/html")
@@ -133,7 +132,6 @@ public class ExportController extends CommonController{
 			try {
 				return IOUtils.toString(exportService.exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig("table"), exportFontConfigService.getDefaultExportFontConfig()));
 			} catch (Exception e) {
-				
 				e.printStackTrace();
 			}
 		}
@@ -150,7 +148,6 @@ public class ExportController extends CommonController{
 	public String getProfileComponentAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
 		ProfileComponent profileComponent = profileComponentService.findById(id);
 		if(profileComponent!=null){
-		    
 			return exportService.exportDataModelAsHtml(profileComponent,profileComponent.getName(),generateHost(request));
 		}
 		return null;
@@ -161,6 +158,5 @@ public class ExportController extends CommonController{
 	  String servletPath = request.getServletPath();
 	  String host = requestUrl.substring(0,requestUrl.indexOf(servletPath));
 	  return host;
-	  //return request.getScheme() + "://" + request.getHeader("Host");
 	}
 }
