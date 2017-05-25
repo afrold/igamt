@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
@@ -131,5 +132,11 @@ public Message findByNameAndVersionAndScope(String name, String hl7Version, Stri
 @Override
 public List<Message> findByScopeAndVersion(String scope, String hl7Version) {
 	return messageRepository.findByScopeAndVersion(scope,hl7Version);
+}
+
+@Override
+public Message findByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
+    String hl7Version, String scope) {
+  return messageRepository.findByMessageTypeAndEventAndVersionAndScope(messageType, event, hl7Version, scope);
 }
 }

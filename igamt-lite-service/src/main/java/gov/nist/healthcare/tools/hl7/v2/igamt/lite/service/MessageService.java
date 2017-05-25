@@ -39,7 +39,7 @@ public interface MessageService {
 	List<Message> findByNamesScopeAndVersion(String name, String structId, String scope, String hl7Version);
 
 	Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version);
-
+	
 	List<Message> findAll();
 
 	public Date updateDate(String id, Date date);
@@ -53,4 +53,7 @@ public interface MessageService {
 	Message findByNameAndVersionAndScope(String name, String hl7Version, String scope);
 
 	List<Message> findByScopeAndVersion(String name, String hl7Version);
+
+  Message findByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
+      String hl7Version, String scope);
 }

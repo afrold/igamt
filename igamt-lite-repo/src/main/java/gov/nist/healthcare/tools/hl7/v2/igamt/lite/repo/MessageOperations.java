@@ -37,5 +37,8 @@ public interface MessageOperations {
 	List<Message> findByScope(String scope);
 	
 	List<Message> findByScopeAndVersion(String scope,String hl7Version);
+	
+	public Message findByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
+	    String hl7Version, String scope);
 
 }
