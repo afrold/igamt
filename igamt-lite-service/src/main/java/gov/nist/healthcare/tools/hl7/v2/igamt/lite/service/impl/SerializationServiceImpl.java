@@ -537,7 +537,7 @@ import nu.xom.Document;
         }
         for (Message message : this.igDocumentMessages.getChildren()) {
             SerializableMessage serializableMessage =
-                serializeMessageService.serializeMessage(message, prefix, serializationLayout,hl7Version, this.exportConfig);
+                serializeMessageService.serializeMessage(message, prefix, String.valueOf(3),serializationLayout,hl7Version, this.exportConfig);
             messageSection.addSection(serializableMessage);
         }
         return messageSection;
@@ -1055,7 +1055,7 @@ import nu.xom.Document;
 		} else if(dataModel instanceof Segment){
 			serializableElement = serializeSegmentService.serializeSegment((Segment)dataModel, host);
 		} else if(dataModel instanceof Message){
-			serializableElement = serializeMessageService.serializeMessage((Message)dataModel);
+			serializableElement = serializeMessageService.serializeMessage((Message)dataModel, host);
 		} else if(dataModel instanceof ProfileComponent){
 			serializableElement = serializeProfileComponentService.serializeProfileComponent((ProfileComponent) dataModel);
 		}

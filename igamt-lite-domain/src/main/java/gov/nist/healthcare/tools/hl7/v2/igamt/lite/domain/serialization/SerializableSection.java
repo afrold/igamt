@@ -212,22 +212,4 @@ public class SerializableSection extends SerializableElement {
         return StringUtils.join(elementComments, ", ");
     }
     
-    protected String generateInnerLink(DataModel dataModel, String host){
-      StringBuilder url = new StringBuilder();
-      url.append(host);
-      url.append("/api/export/");
-      if(dataModel instanceof Datatype){
-        url.append("datatype/");
-        url.append(((Datatype) dataModel).getId());        
-      } else if(dataModel instanceof Table){
-        url.append("valueSet/");
-        url.append(((Table) dataModel).getId());
-      }
-      url.append("/html");
-      return url.toString();
-    }
-    
-    protected String wrapLink(String link, String bindingIdentifier) {
-      return "<a href=\""+link+"\" target=\"_blank\">"+bindingIdentifier+"</a>";
-    }
 }

@@ -33,13 +33,14 @@ public class SerializableMessage extends SerializableSection {
     private String defPostText;
     private List<Table> tables;
     private boolean showConfLength;
-    public SerializableMessage(Message message, String prefix, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups,
+    
+    public SerializableMessage(Message message, String prefix, String headerLevel, List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups,
         SerializableConstraints serializableConformanceStatements, SerializableConstraints serializablePredicates, String usageNote,
         String defPreText, String defPostText, List<Table> tables, Boolean showConfLength) {
         super(message.getId(),
             prefix + "." + String.valueOf(message.getPosition()),
             String.valueOf(message.getPosition() + 1),
-            String.valueOf("3"),
+            headerLevel,
             message.getName() != null ?
                 message.getName() + " - " + message.getIdentifier() + " - " + message.getDescription()
                 : message.getMessageType() + "^" + message.getEvent() + "^" + message.getStructID() + " - " + message.getIdentifier() + " - " + message.getDescription()
