@@ -555,7 +555,9 @@
                                     <table class="table table-striped table-bordered table-condensed ">
                                         <thead>
                                             <tr  class="tbl-header" layout="row">
-                                                <th flex="10">&nbsp;</th>
+                                                <th flex="10">
+                                                    <md-checkbox type="checkbox" ng-model="bool"  arial-label="message" ng-change="selectionAll(bool)"></md-checkbox>
+                                                </th>
                                                 <th flex="20">ID</th>
                                                 <th flex="30">Name</th>
                                                 <th flex="40">Description</th>
@@ -564,7 +566,7 @@
                                         <tbody style="display:block; overflow-y: scroll;max-height: 400px;">
                                             <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id " layout="row">
                                                 <td flex="10">
-                                                    <md-checkbox type="checkbox" ng-model="bool"  arial-label="message.id" ng-change="trackSelections(bool, message.id) "></md-checkbox>
+                                                    <md-checkbox type="checkbox" ng-model="message.selected"  arial-label="message.id" ng-change="trackSelections() "></md-checkbox>
                                                 </td>
                                                 <td flex="20">{{message.identifier}}</td>
                                                 <td flex="30">{{message.name}}</td>
@@ -734,18 +736,10 @@
                 </div>
             </md-dialog-content>
             <md-dialog-actions layout="row">
-
-                <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="goBack() "><span><i
-                        class="fa fa-arrow-left fa-fw"></i>Back</span>
-                </md-button>
-                <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPforSelectedMessages()"><span><i
-                        class="fa fa-download fa-fw "></i>Export as Zip</span>
-                </md-button>
-                <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="goNext() "><span><i
-                        class="fa fa fa-arrow-right fa-fw "></i>Next</span>
-                </md-button>
-                <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'" ng-disabled="xmlFormat==='' || xmlFormat===null || selectedMessagesIDs===null || selectedMessagesIDs.length===0 " ng-click="exportAsZIPToGVT() "><span><i class="fa fa-download fa-fw "></i>Export to GVT</span>
-                </md-button>
+                <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goBack() "><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
+                <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw "></i>Export as Zip</span></md-button>
+                <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goNext() "><span><i class="fa fa fa-arrow-right fa-fw "></i>Next</span></md-button>
+                <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'" ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="exportAsZIPToGVT() "><span><i class="fa fa-download fa-fw "></i>Export to GVT</span></md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>
@@ -799,8 +793,9 @@
                                             <table class="table table-striped table-bordered table-condensed ">
                                                 <thead>
                                                 <tr  class="tbl-header" layout="row">
-                                                    <td flex="10">
-                                                    </td>
+                                                    <th flex="10">
+                                                        <md-checkbox type="checkbox" ng-model="bool"  arial-label="message" ng-change="selectionAll(bool)"></md-checkbox>
+                                                    </th>
                                                     <th flex="30">Name</th>
                                                     <th flex="20">Extension</th>
                                                     <th flex="40">Description</th>
@@ -809,7 +804,7 @@
                                                 <tbody style="display:block; overflow-y: scroll;max-height: 400px;">
                                                 <tr ng-repeat="child in igdocumentToSelect.profile.compositeProfiles.children track by child.id  " layout="row">
                                                     <td flex="10">
-                                                        <md-checkbox type="checkbox" ng-model="bool"  arial-label="child.id" ng-change="trackSelections(bool, child.id) "></md-checkbox>
+                                                        <md-checkbox type="checkbox" ng-model="child.selected"  arial-label="child.id" ng-change="trackSelections()"></md-checkbox>
                                                     </td>
                                                     <td flex="30">{{child.name}}</td>
                                                     <td flex="20">{{child.ext}}</td>
@@ -983,20 +978,10 @@
                     </div>
                 </md-dialog-content>
                 <md-dialog-actions layout="row">
-
-                    <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="goBack()"><span><i
-                            class="fa fa-arrow-left fa-fw"></i>Back</span>
-                    </md-button>
-                    <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="exportAsZIPforSelectedCompositeProfiles()"><span><i
-                            class="fa fa-download fa-fw "></i>Export as Zip</span>
-                    </md-button>
-                    <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null ||selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="goNext() "><span><i
-                            class="fa fa fa-arrow-right fa-fw "></i>Next</span>
-                    </md-button>
-                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'" ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 " ng-click="exportAsZIPToGVT()"><span><i class="fa fa-download fa-fw "></i>Export to GVT</span>
-                    </md-button>
-
-
+                    <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
+                    <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="exportAsZIPforSelectedCompositeProfiles()"><span><i class="fa fa-download fa-fw "></i>Export as Zip</span></md-button>
+                    <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm " ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goNext() "><span><i class="fa fa fa-arrow-right fa-fw "></i>Next</span></md-button>
+                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'" ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="exportAsZIPToGVT()"><span><i class="fa fa-download fa-fw "></i>Export to GVT</span></md-button>
                 </md-dialog-actions>
             </form>
         </md-dialog>

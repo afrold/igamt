@@ -2273,7 +2273,7 @@ angular.module('igl').controller('CantDeletePcCtrl', function($scope, $modalInst
 });
 
 
-angular.module('igl').controller('CantDeleteMsgCtrl', function($scope, ngTreetableParams, $modalInstance, msg, $rootScope, $http, PcService) {
+angular.module('igl').controller('CantDeleteMsgCtrl', function($scope, ngTreetableParams, $modalInstance, msg, $rootScope) {
     $scope.msg = msg;
     $scope.loading = false;
     var getAppliedProfileComponentsById = function(cp) {
@@ -2568,18 +2568,52 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     $scope.redirectUrl = null;
     $scope.user = { username: null, password: null };
     $scope.appInfo = $rootScope.appInfo;
+    $scope.selected = false;
 
-    $scope.trackSelections = function(bool, id) {
-        if (bool) {
-            $scope.selectedCompositeProfileIDs.push(id);
-        } else {
-            for (var i = 0; i < $scope.selectedCompositeProfileIDs.length; i++) {
-                if ($scope.selectedCompositeProfileIDs[i].id == id) {
-                    $scope.selectedCompositeProfileIDs.splice(i, 1);
-                }
+    $scope.trackSelections = function () {
+        $scope.selected = false;
+        for(var i in $scope.igdocumentToSelect.profile.compositeProfiles.children){
+            var message = $scope.igdocumentToSelect.profile.compositeProfiles.children[i];
+            if(message.selected) $scope.selected = true;
+        }
+    };
+
+    $scope.selectionAll = function (bool) {
+        for(var i in $scope.igdocumentToSelect.profile.compositeProfiles.children){
+            var message = $scope.igdocumentToSelect.profile.compositeProfiles.children[i];
+            message.selected = bool;
+        }
+
+        $scope.selected = bool;
+    };
+
+    $scope.generatedSelectedMessagesIDs = function () {
+        $scope.selectedMessagesIDs = [];
+        for(var i in $scope.igdocumentToSelect.profile.compositeProfiles.children){
+            var message = $scope.igdocumentToSelect.profile.compositeProfiles.children[i];
+            if(message.selected){
+                $scope.selectedMessagesIDs.push(message.id);
             }
         }
     };
+
+    $scope.selectionAll = function (bool) {
+        for(var i in igdocumentToSelect.profile.messages.children){
+            var message = igdocumentToSelect.profile.messages.children[i];
+            message.selected = bool;
+        }
+    };
+
+    $scope.generatedSelectedMessagesIDs = function () {
+        $scope.selectedMessagesIDs = [];
+        for(var i in igdocumentToSelect.profile.messages.children){
+            var message = igdocumentToSelect.profile.messages.children[i];
+            if(message.selected){
+                $scope.selectedMessagesIDs.push(message.id);
+            }
+        }
+    };
+
 
     $scope.goBack = function(){
         $scope.exportStep =  $scope.exportStep  != 0 ? $scope.exportStep -1: 0;
@@ -2591,6 +2625,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
 
     $scope.exportAsZIPforSelectedCompositeProfiles = function() {
         $scope.loading = true;
+        $scope.generatedSelectedMessagesIDs();
         ExportSvc.exportAsXMLByCompositeProfileIds($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, $scope.xmlFormat);
         $scope.loading = false;
     };
@@ -2612,6 +2647,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
             $scope.info.text = null;
             $scope.info.show = false;
             $scope.info.type = 'danger';
+            $scope.generatedSelectedMessagesIDs();
             GVTSvc.login($scope.user.username, $scope.user.password).then(function(auth) {
                 GVTSvc.exportToGVTForCompositeProfile($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, auth).then(function(map) {
                     var response = angular.fromJson(map.data);
@@ -2660,15 +2696,31 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     $scope.redirectUrl = null;
     $scope.user = { username: null, password: null };
     $scope.appInfo = $rootScope.appInfo;
+    $scope.selected = false;
 
-    $scope.trackSelections = function(bool, id) {
-        if (bool) {
-            $scope.selectedMessagesIDs.push(id);
-        } else {
-            for (var i = 0; i < $scope.selectedMessagesIDs.length; i++) {
-                if ($scope.selectedMessagesIDs[i].id == id) {
-                    $scope.selectedMessagesIDs.splice(i, 1);
-                }
+    $scope.trackSelections = function () {
+        $scope.selected = false;
+        for(var i in $scope.igdocumentToSelect.profile.messages.children){
+            var message = $scope.igdocumentToSelect.profile.messages.children[i];
+            if(message.selected) $scope.selected = true;
+        }
+    };
+
+    $scope.selectionAll = function (bool) {
+        for(var i in $scope.igdocumentToSelect.profile.messages.children){
+            var message = $scope.igdocumentToSelect.profile.messages.children[i];
+            message.selected = bool;
+        }
+
+        $scope.selected = bool;
+    };
+
+    $scope.generatedSelectedMessagesIDs = function () {
+        $scope.selectedMessagesIDs = [];
+        for(var i in $scope.igdocumentToSelect.profile.messages.children){
+            var message = $scope.igdocumentToSelect.profile.messages.children[i];
+            if(message.selected){
+                $scope.selectedMessagesIDs.push(message.id);
             }
         }
     };
@@ -2684,6 +2736,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
 
     $scope.exportAsZIPforSelectedMessages = function() {
         $scope.loading = true;
+        $scope.generatedSelectedMessagesIDs();
         ExportSvc.exportAsXMLByMessageIds($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, $scope.xmlFormat);
         $scope.loading = false;
     };
@@ -2706,6 +2759,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
         $scope.info.text = null;
         $scope.info.show = false;
         $scope.info.type = 'danger';
+        $scope.generatedSelectedMessagesIDs();
         GVTSvc.login($scope.user.username, $scope.user.password).then(function(auth) {
             GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function(map) {
                 var response = angular.fromJson(map.data);
