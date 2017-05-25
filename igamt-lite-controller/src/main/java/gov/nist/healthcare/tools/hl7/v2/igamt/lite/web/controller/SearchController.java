@@ -21,6 +21,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/search")
@@ -39,6 +42,11 @@ public class SearchController extends CommonController {
 	@Autowired
 	private TableService tableService;
 	
+	@ApiOperation(value = "Search data types", notes = "Search by name (required) and HL7 version (not required). Send back a list of data types.")
+	@ApiResponses({
+      @ApiResponse(code = 200, message = "Success"),
+      @ApiResponse(code = 400, message = "Bad request")
+    })
 	@RequestMapping(value = "/datatypes", method = RequestMethod.GET, produces = "application/json")
 	public List<Datatype> getDatatypes(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
 		if((name != null && !name.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
@@ -58,6 +66,11 @@ public class SearchController extends CommonController {
 		return null;
 	}
 	
+	@ApiOperation(value = "Search segments", notes = "Search by name (required) and HL7 version (not required). Send back a list of segments.")
+    @ApiResponses({
+      @ApiResponse(code = 200, message = "Success"),
+      @ApiResponse(code = 400, message = "Bad request")
+    })
 	@RequestMapping(value = "/segments", method = RequestMethod.GET, produces = "application/json")
 	public List<Segment> getSegments(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
 		if((name != null && !name.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
@@ -75,6 +88,11 @@ public class SearchController extends CommonController {
 		return null;
 	}
 	
+	@ApiOperation(value = "Search message", notes = "Search by message type (required), event (required) and HL7 version (required). Send back a single message.")
+    @ApiResponses({
+      @ApiResponse(code = 200, message = "Success"),
+      @ApiResponse(code = 400, message = "Bad request")
+    })
 	@RequestMapping(value = "/message", method = RequestMethod.GET, produces = "application/json")
 	public Message getMessage(@RequestParam(value="messageType", required=true) String messageType,@RequestParam(value="event", required=true) String event,@RequestParam(value="hl7Version", required=true) String hl7Version) throws DataNotFoundException {
 		if(messageType != null && !messageType.isEmpty() && event !=null && !event.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
@@ -84,6 +102,11 @@ public class SearchController extends CommonController {
 		return null;
 	}
 	
+    @ApiOperation(value = "Search value sets", notes = "Search by scope (required, HL7STANDARD or PHINVADS), binding identifier (required) and HL7 version when scope is HL7STANDARD (not required). Send back a list of value sets.")
+    @ApiResponses({
+      @ApiResponse(code = 200, message = "Success"),
+      @ApiResponse(code = 400, message = "Bad request")
+    })
 	@RequestMapping(value = "/valueSets", method = RequestMethod.GET, produces = "application/json")
 	public List<Table> getValueSets(@RequestParam("scope") String scope, @RequestParam(value="bindingIdentifier", required=true) String bindingIdentifier,@RequestParam(value="hl7Version", required=false) String hl7Version) throws DataNotFoundException {
 	  if(scope.equals(SCOPE.HL7STANDARD.name()) || scope.equals(SCOPE.PHINVADS.name())){
