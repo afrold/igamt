@@ -6,6 +6,8 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -209,4 +211,5 @@ public class SerializableSection extends SerializableElement {
         }
         return StringUtils.join(elementComments, ", ");
     }
+    
 }

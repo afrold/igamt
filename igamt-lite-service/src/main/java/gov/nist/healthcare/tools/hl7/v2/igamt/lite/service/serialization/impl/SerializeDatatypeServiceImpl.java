@@ -1,7 +1,20 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
-import gov.cdc.vocab.service.bean.ValueSet;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableDatatype;
@@ -12,13 +25,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.Seriali
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeDatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -43,16 +49,13 @@ import java.util.Map;
 
     @Autowired SerializeConstraintService serializeConstraintService;
 
-    private static final String REQUIRED = "Required";
-    private static final String OPTIONAL = "Optional";
-
     @Override
     public SerializableDatatype serializeDatatype(DatatypeLink datatypeLink, String prefix,
         Integer position, UsageConfig datatypeUsageConfig) {
         if(datatypeLink!=null && datatypeLink.getId()!=null) {
             Datatype datatype = datatypeService.findById(datatypeLink.getId());
             String headerLevel = String.valueOf(3);
-            return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig);
+            return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig, false,null);
         }
         return null;
     }
@@ -64,12 +67,12 @@ import java.util.Map;
         if(datatypeLink!=null && datatypeLink.getId()!=null) {
             Datatype datatype = componentProfileDatatypes.get(datatypeLink.getId());
             String headerLevel = String.valueOf(3);
-            return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig);
+            return serializeDatatype(datatype,headerLevel,prefix,position,datatypeUsageConfig, false,null);
         }
         return null;
     }
 
-    private SerializableDatatype serializeDatatype(Datatype datatype, String headerLevel, String prefix, Integer position, UsageConfig datatypeUsageConfig){
+    private SerializableDatatype serializeDatatype(Datatype datatype, String headerLevel, String prefix, Integer position, UsageConfig datatypeUsageConfig, Boolean showInnerLinks, String host){
         if (datatype !=null && datatype.getId() !=null) {
             String id = datatype.getId();
             String title = datatype.getLabel() + " - " + datatype.getDescription();
@@ -137,12 +140,12 @@ import java.util.Map;
                     new SerializableDateTimeDatatype(id, prefix, String.valueOf(position),
                         headerLevel, title, datatype, defPreText, defPostText, usageNote,
                         constraintsList, componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap,
-                        showConfLength);
+                        showConfLength, showInnerLinks, host);
             } else {
                 serializedDatatype =
                     new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,
                         title, datatype, defPreText, defPostText, usageNote, constraintsList,
-                        componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap, showConfLength);
+                        componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap, showConfLength, showInnerLinks,host);
             }
             return serializedDatatype;
         }
@@ -167,21 +170,8 @@ import java.util.Map;
         return false;
     }
 
-    private Map<String, String> getDtmDateValues(int precisionOfDTM, boolean timeZoneOfDTM) {
-        HashMap<String, String> dateValue = new HashMap<>();
-        dateValue.put("YYYY", precisionOfDTM >= 1 ? this.REQUIRED : this.OPTIONAL);
-        dateValue.put("MM", precisionOfDTM >= 2 ? this.REQUIRED : this.OPTIONAL);
-        dateValue.put("DD", precisionOfDTM >= 3 ? this.REQUIRED : this.OPTIONAL);
-        dateValue.put("hh", precisionOfDTM >= 4 ? this.REQUIRED : this.OPTIONAL);
-        dateValue.put("mm", precisionOfDTM >= 5 ? this.REQUIRED : this.OPTIONAL);
-        dateValue.put("ss", precisionOfDTM >= 6 ? this.REQUIRED : this.OPTIONAL);
-        dateValue.put("ssss", precisionOfDTM >= 7 ? this.REQUIRED : this.OPTIONAL);
-        dateValue.put("timeZone", timeZoneOfDTM ? this.REQUIRED : this.OPTIONAL);
-        return dateValue;
-    }
-
 	@Override
-	public SerializableDatatype serializeDatatype(Datatype datatype) {
-		return serializeDatatype(datatype,String.valueOf(1), "1", 1, ExportConfig.getBasicExportConfig("table").getDatatypesExport());
+	public SerializableDatatype serializeDatatype(Datatype datatype, String host) {
+		return serializeDatatype(datatype,String.valueOf(1), "1", 1, ExportConfig.getBasicExportConfig("table").getDatatypesExport(), true, host);
 	}
 }

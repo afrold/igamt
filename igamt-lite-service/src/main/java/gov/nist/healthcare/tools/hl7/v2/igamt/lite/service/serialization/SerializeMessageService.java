@@ -20,9 +20,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
  */
 public interface SerializeMessageService {
 
-    public SerializableMessage serializeMessage(Message message, String prefix,
+    public SerializableMessage serializeMessage(Message message, String prefix, String headerLevel,
         SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig);
 
-	public SerializableElement serializeMessage(Message message);
+	public SerializableElement serializeMessage(Message message, String host);
 
 }

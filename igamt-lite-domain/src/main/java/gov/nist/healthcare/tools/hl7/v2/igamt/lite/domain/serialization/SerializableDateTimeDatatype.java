@@ -28,9 +28,9 @@ public class SerializableDateTimeDatatype extends SerializableDatatype {
         String headerLevel, String title, Datatype datatype, String defPreText, String defPostText,
         String usageNote, List<SerializableConstraint> constraints,
         Map<Component, Datatype> componentDatatypeMap,
-        Map<Component, List<ValueSetOrSingleCodeBinding>> componentValueSetBindingsMap, List<Table> tables, Map<Component, String> componentTextMap, Boolean showConfLength) {
+        Map<Component, List<ValueSetOrSingleCodeBinding>> componentValueSetBindingsMap, List<Table> tables, Map<Component, String> componentTextMap, Boolean showConfLength, Boolean showInnerLink, String host) {
         super(id, prefix, position, headerLevel, title, datatype, defPreText, defPostText,
-            usageNote, constraints, componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap,showConfLength);
+            usageNote, constraints, componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap,showConfLength, showInnerLink, host);
         this.datatype = datatype;
     }
 

@@ -44,7 +44,12 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
 
     @Autowired TableService tableService;
 
-    @Override public SerializableMessage serializeMessage(Message message, String prefix, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig) {
+    @Override public SerializableMessage serializeMessage(Message message, String prefix, String headerLevel, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig) {
+      return serializeMessage(message, prefix, headerLevel, serializationLayout, hl7Version, exportConfig, false, null);
+    }
+
+    
+    private SerializableMessage serializeMessage(Message message, String prefix, String headerLevel, SerializationLayout serializationLayout, String hl7Version, ExportConfig exportConfig, Boolean showInnerLinks, String host) {
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups = new ArrayList<>();
         String type = "ConformanceStatement";
         List<ConformanceStatement> generatedConformanceStatements = message.retrieveAllConformanceStatements();
@@ -75,7 +80,7 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
                 }
             }
         }
-        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,showConfLength);
+        SerializableMessage serializableMessage = new SerializableMessage(message,prefix,headerLevel,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,showConfLength);
         SerializableSection messageSegments = new SerializableSection(message.getId()+"_segments",prefix+"."+String.valueOf(message.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
         this.messageSegmentsNameList = new ArrayList<>();
         this.segmentPosition = 1;
@@ -83,7 +88,7 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
         UsageConfig segmentUsageConfig = exportConfig.getSegmentsExport();
         UsageConfig segmentOrGroupUsageConfig = exportConfig.getSegmentORGroupsMessageExport();
         for(SegmentRefOrGroup segmentRefOrGroup : message.getChildren()){
-            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig, null);
+            SerializableSegmentRefOrGroup serializableSegmentRefOrGroup = serializeSegmentRefOrGroup(segmentRefOrGroup,segmentOrGroupUsageConfig,fieldsUsageConfig, null, showInnerLinks, host);
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             if(serializationLayout.equals(SerializationLayout.PROFILE)){
                 serializeSegment(segmentRefOrGroup,
@@ -97,8 +102,8 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
     }
 
 	@Override
-	public SerializableElement serializeMessage(Message message) {
-		return serializeMessage(message, String.valueOf(1), SerializationLayout.IGDOCUMENT, message.getHl7Version(), ExportConfig.getBasicExportConfig("table"));
+	public SerializableElement serializeMessage(Message message, String host) {
+		return serializeMessage(message, String.valueOf(1), String.valueOf(1),SerializationLayout.IGDOCUMENT, message.getHl7Version(), ExportConfig.getBasicExportConfig("table"), true, host);
 	}
 
 }

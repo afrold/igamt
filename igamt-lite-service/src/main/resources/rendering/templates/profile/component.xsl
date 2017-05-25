@@ -35,7 +35,22 @@
             </xsl:if>
             <xsl:if test="$columnDisplay.dataType.dataType = 'true'">
                 <xsl:element name="td">
-                    <xsl:value-of select="@Datatype" />
+                    <xsl:choose>
+                    	<xsl:when test="@InnerLink!=''">
+                    		<xsl:element name="a">
+                    			<xsl:attribute name="href">
+                    				<xsl:value-of select="@InnerLink"/>
+                    			</xsl:attribute>
+                    			<xsl:attribute name="target">
+                    				<xsl:text>_blank</xsl:text>
+                    			</xsl:attribute>
+                    			<xsl:value-of select="@Datatype" />
+                    		</xsl:element>
+                    	</xsl:when>
+                    	<xsl:otherwise>
+                    		<xsl:value-of select="@Datatype" />
+                    	</xsl:otherwise>
+                    </xsl:choose>
                 </xsl:element>
             </xsl:if>
             <xsl:if test="$columnDisplay.dataType.usage = 'true'">
@@ -61,7 +76,7 @@
             </xsl:if>
             <xsl:if test="$columnDisplay.dataType.valueSet = 'true'">
                 <xsl:element name="td">
-                    <xsl:value-of select="@BindingIdentifier" />
+                    <xsl:value-of disable-output-escaping="yes" select="@BindingIdentifier" />
                 </xsl:element>
             </xsl:if>
             <xsl:if test="$columnDisplay.dataType.comment = 'true'">

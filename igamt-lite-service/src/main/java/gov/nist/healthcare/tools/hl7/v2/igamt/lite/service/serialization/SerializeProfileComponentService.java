@@ -22,5 +22,5 @@ public interface SerializeProfileComponentService {
 
     public SerializableSection serializeProfileComponent(ProfileComponentLink profileComponentLink, Integer position);
 
-	public SerializableElement serializeProfileComponent(ProfileComponent profileComponent);
+	public SerializableElement serializeProfileComponent(ProfileComponent profileComponent, String host);
 }

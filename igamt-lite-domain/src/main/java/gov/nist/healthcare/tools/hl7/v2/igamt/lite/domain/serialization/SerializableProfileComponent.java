@@ -29,15 +29,19 @@ public class SerializableProfileComponent extends SerializableSection {
     private Map<SubProfileComponentAttributes,String> definitionTexts;
     private String defPreText, defPostText;
     private Map<String,Table> tableidTableMap;
+    private Boolean showInnerLinks;
+    private String host;
 
     public SerializableProfileComponent(String id, String prefix, String position,
-        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText, Map<String,Table> tableidTableMap) {
+        String headerLevel, String title, ProfileComponent profileComponent, Map<SubProfileComponentAttributes,String> definitionTexts, String defPreText, String defPostText, Map<String,Table> tableidTableMap, Boolean showInnerLinks, String host) {
         super(id, prefix, position, headerLevel, title);
         this.profileComponent = profileComponent;
         this.definitionTexts = definitionTexts;
         this.defPreText = defPreText;
         this.defPostText = defPostText;
         this.tableidTableMap = tableidTableMap;
+        this.showInnerLinks = showInnerLinks;
+        this.host = host;
     }
 
     @Override public Element serializeElement() {
@@ -104,7 +108,13 @@ public class SerializableProfileComponent extends SerializableSection {
                             Table table = tableidTableMap.get(valueSetOrSingleCodeBinding.getTableId());  
                             if(valueSetOrSingleCodeBinding instanceof ValueSetBinding){
                                 if(table!=null){
-                                  valueSets.add(table.getBindingIdentifier());
+                                  String link = this.generateInnerLink(table,host);
+                                  if(this.showInnerLinks && !"".equals(link)){
+                                    String wrappedLink = this.wrapLink(link,table.getBindingIdentifier());
+                                    valueSets.add(wrappedLink);
+                                  } else {
+                                    valueSets.add(table.getBindingIdentifier());
+                                  }
                                 }
                             } else if(valueSetOrSingleCodeBinding instanceof SingleCodeBinding){
                                 valueSets.add(
@@ -141,6 +151,12 @@ public class SerializableProfileComponent extends SerializableSection {
                     }
                     if(subProfileComponentAttributes.getDatatype()!=null){
                         subProfileComponentElement.addAttribute(new Attribute("Datatype",subProfileComponentAttributes.getDatatype().getLabel()));
+                        if(this.showInnerLinks){
+                          String link = this.generateInnerLink(subProfileComponentAttributes.getDatatype(),host);
+                          if(!"".equals(link)){
+                            subProfileComponentElement.addAttribute(new Attribute("InnerLink",link));
+                          }
+                        }
                     }
                     if(definitionTexts!=null && definitionTexts.containsKey(subProfileComponentAttributes)){
                         subProfileComponentElement

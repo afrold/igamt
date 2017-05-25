@@ -24,5 +24,5 @@ public interface SerializationService {
         SerializationLayout serializationLayout, ExportConfig exportConfig);
     public nu.xom.Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig);
     public nu.xom.Document serializeElement(SerializableElement element);
-	public nu.xom.Document serializeDataModel(Object dataModel);
+	public nu.xom.Document serializeDataModel(Object dataModel, String host);
 }

@@ -28,5 +28,5 @@ public interface SerializeSegmentService {
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig);
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables);
-	public SerializableSection serializeSegment(Segment segment);
+	public SerializableSection serializeSegment(Segment segment, String host);
 }
