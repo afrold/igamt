@@ -140,7 +140,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
                     new SerializableDateTimeDatatype(id, prefix, String.valueOf(position),
                         headerLevel, title, datatype, defPreText, defPostText, usageNote,
                         constraintsList, componentDatatypeMap, componentValueSetBindingsMap, tables, componentTextMap,
-                        showConfLength);
+                        showConfLength, showInnerLinks, host);
             } else {
                 serializedDatatype =
                     new SerializableDatatype(id, prefix, String.valueOf(position), headerLevel,

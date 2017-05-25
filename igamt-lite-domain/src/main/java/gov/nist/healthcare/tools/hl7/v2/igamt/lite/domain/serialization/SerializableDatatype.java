@@ -205,10 +205,6 @@ public class SerializableDatatype extends SerializableSection {
         return sectionElement;
     }
 
-    private String wrapLink(String link, String bindingIdentifier) {
-      return "<a href=\""+link+"\" target=\"_blank\">"+bindingIdentifier+"</a>";
-    }
-
     private String getFullUsage(Datatype datatype, int i) {
         List<Predicate> predicates = super.findPredicate(i + 1, datatype.getPredicates());
         if (predicates == null || predicates.isEmpty()) {

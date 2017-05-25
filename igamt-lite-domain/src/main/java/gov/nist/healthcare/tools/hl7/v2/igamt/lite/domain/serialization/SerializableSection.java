@@ -226,4 +226,8 @@ public class SerializableSection extends SerializableElement {
       url.append("/html");
       return url.toString();
     }
+    
+    protected String wrapLink(String link, String bindingIdentifier) {
+      return "<a href=\""+link+"\" target=\"_blank\">"+bindingIdentifier+"</a>";
+    }
 }

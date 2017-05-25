@@ -34,6 +34,8 @@ public class SerializableSegment extends SerializableSection {
   private Map<String, Table> coConstraintValueTableMap;
   private Boolean showConfLength;
   private Map<String, Datatype> dynamicMappingDatatypeMap;
+  private Boolean showInnerLinks;
+  private String host;
 
 
   public SerializableSegment(String id, String prefix, String position, String headerLevel,
@@ -41,7 +43,7 @@ public class SerializableSegment extends SerializableSection {
       String defPreText, String defPostText, List<SerializableConstraint> constraints,
       Map<Field, Datatype> fieldDatatypeMap,
       Map<Field, List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap, List<Table> tables,
-      Map<String, Table> coConstraintValueTableMap, Map<String, Datatype> dynamicMappingDatatypeMap, Boolean showConfLength) {
+      Map<String, Table> coConstraintValueTableMap, Map<String, Datatype> dynamicMappingDatatypeMap, Boolean showConfLength, Boolean showInnerLinks, String host) {
     super(id, prefix, position, headerLevel, title);
     this.segment = segment;
     this.name = name;
@@ -57,6 +59,8 @@ public class SerializableSegment extends SerializableSection {
     this.coConstraintValueTableMap = coConstraintValueTableMap;
     this.dynamicMappingDatatypeMap = dynamicMappingDatatypeMap;
     this.showConfLength = showConfLength;
+    this.showInnerLinks = showInnerLinks;
+    this.host = host;
   }
 
 
@@ -108,6 +112,12 @@ public class SerializableSegment extends SerializableSection {
         Datatype datatype = fieldDatatypeMap.get(field);
         if (field.getDatatype() != null && datatype != null) {
           fieldElement.addAttribute(new Attribute("Datatype", datatype.getLabel()));
+          if(this.showInnerLinks){
+            String link = this.generateInnerLink(datatype,host);
+            if(!"".equals(link)){
+              fieldElement.addAttribute(new Attribute("InnerLink",link));
+            }
+          }
           if (datatype.getComponents().size() > 0) {
             isComplex = true;
             fieldElement.addAttribute(new Attribute("ConfLength", ""));
@@ -133,7 +143,15 @@ public class SerializableSegment extends SerializableSection {
                   && valueSetOrSingleCodeBinding.getTableId() != null
                   && !valueSetOrSingleCodeBinding.getTableId().isEmpty()) {
                 Table table = super.findTable(tables, valueSetOrSingleCodeBinding.getTableId());
-                bindingIdentifierList.add(table.getBindingIdentifier());
+                if(table != null){
+                  String link = this.generateInnerLink(table,host);
+                  if(this.showInnerLinks && !"".equals(link)){
+                    String wrappedLink = this.wrapLink(link,table.getBindingIdentifier());
+                    bindingIdentifierList.add(wrappedLink);
+                  } else {
+                    bindingIdentifierList.add(table.getBindingIdentifier());
+                  }
+                }
               }
             }
             String bindingIdentifier = StringUtils.join(bindingIdentifierList, ",");

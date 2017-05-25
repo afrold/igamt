@@ -67,17 +67,17 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
     @Override
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig) {
         Segment segment = segmentService.findById(segmentLink.getId());
-        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,null,null);
+        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,null,null, false, null);
     }
 
     @Override public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig,
         Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables) {
         Segment segment = compositeProfileSegments.get(segmentLink.getId());
-        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables);
+        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables, false, null);
     }
 
-    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables) {
+    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean showInnerLinks, String host) {
         if (segment != null) {
             //Create section node
             String id = segment.getId();
@@ -199,7 +199,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
                 }
               }
             }
-            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables, coConstraintValueTableMap, dynamicMappingDatatypeMap, showConfLength);
+            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables, coConstraintValueTableMap, dynamicMappingDatatypeMap, showConfLength, showInnerLinks, host);
             serializableSegmentSection.addSection(serializableSegment);
             return serializableSegmentSection;
         }
@@ -212,9 +212,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
     }
 
 	@Override
-	public SerializableSection serializeSegment(Segment segment) {
+	public SerializableSection serializeSegment(Segment segment, String host) {
 		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig("table");
-		return serializeSegment(segment, String.valueOf(1), 1, 1, defaultConfig.getFieldsExport(), null, null);
+		return serializeSegment(segment, String.valueOf(1), 1, 1, defaultConfig.getFieldsExport(), null, null, true, host);
 	}
 
 }

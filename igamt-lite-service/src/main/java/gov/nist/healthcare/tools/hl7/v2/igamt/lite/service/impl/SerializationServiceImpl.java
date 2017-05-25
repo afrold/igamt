@@ -1053,7 +1053,7 @@ import nu.xom.Document;
 		} else if(dataModel instanceof Table){
 			serializableElement = serializeTableService.serializeTable((Table)dataModel);
 		} else if(dataModel instanceof Segment){
-			serializableElement = serializeSegmentService.serializeSegment((Segment)dataModel);
+			serializableElement = serializeSegmentService.serializeSegment((Segment)dataModel, host);
 		} else if(dataModel instanceof Message){
 			serializableElement = serializeMessageService.serializeMessage((Message)dataModel);
 		} else if(dataModel instanceof ProfileComponent){
