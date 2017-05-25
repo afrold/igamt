@@ -533,9 +533,6 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 												+ ") should be one of codes in ";
 										for (ValueSetData vs : thenData.getValueSets()) {
 											Table t = tablesMap.get(vs.getTableId());
-											System.out.println("------------------");
-											System.out.println(t.getBindingIdentifier());
-											System.out.println(t.getHl7Version());
 											if(t.getHl7Version() == null){
 												thenDescription = "'" + thenDescription + t.getBindingIdentifier() + "' ";
 											}else {

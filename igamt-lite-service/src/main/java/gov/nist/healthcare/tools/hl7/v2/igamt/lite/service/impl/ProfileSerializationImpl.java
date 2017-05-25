@@ -89,6 +89,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.xml.serialization.XMLExportTool;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ConstraintsSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -97,7 +98,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUtil;
-import gov.nist.healthcare.tools.hl7.v2.xml.ExportTool;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.NodeFactory;
@@ -2750,6 +2750,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
     HashMap<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
+    HashMap<String, Table> tablesMap = new HashMap<String, Table>();
 
     filteredProfile.setBaseId(original.getBaseId());
     filteredProfile.setChanges(original.getChanges());
@@ -2765,12 +2766,42 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setUsageNote(original.getUsageNote());
     filteredProfile.setMetaData(original.getMetaData());
 
+
+    for (SegmentLink sl : original.getSegmentLibrary().getChildren()) {
+      if (sl != null) {
+        Segment s = segmentService.findById(sl.getId());
+        if (s != null) {
+          segmentsMap.put(s.getId(), s);
+        }
+      }
+    }
+
+    for (DatatypeLink dl : original.getDatatypeLibrary().getChildren()) {
+      if (dl != null) {
+        Datatype d = datatypeService.findById(dl.getId());
+        if (d != null) {
+          datatypesMap.put(d.getId(), d);
+        }
+      }
+    }
+
+    for (TableLink tl : original.getTableLibrary().getChildren()) {
+      if (tl != null) {
+        Table t = tableService.findById(tl.getId());
+        if (t != null) {
+          tablesMap.put(t.getId(), t);
+        }
+      }
+    }
+
+
+
     Messages messages = new Messages();
     for (Message m : original.getMessages().getChildren()) {
       if (Arrays.asList(ids).contains(m.getId())) {
         messages.addMessage(m);
         for (SegmentRefOrGroup seog : m.getChildren()) {
-          this.visit(seog, segmentsMap, datatypesMap, original);
+          this.visit(seog, segmentsMap, datatypesMap, tablesMap);
         }
 
       }
@@ -2778,7 +2809,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
     SegmentLibrary segments = new SegmentLibrary();
     for (String key : segmentsMap.keySet()) {
-
       segments.addSegment(segmentsMap.get(key));
     }
 
@@ -2905,14 +2935,20 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setUsageNote(original.getUsageNote());
     filteredProfile.setMetaData(original.getMetaData());
 
-    Messages messages = new Messages();
-    for (Message m : original.getMessages().getChildren()) {
-      if (Arrays.asList(ids).contains(m.getId())) {
-        if (m.getMessageID() == null)
-          m.setMessageID(UUID.randomUUID().toString());
-        messages.addMessage(m);
-        for (SegmentRefOrGroup seog : m.getChildren()) {
-          this.visit(seog, segmentsMap, datatypesMap, original);
+    for (SegmentLink sl : original.getSegmentLibrary().getChildren()) {
+      if (sl != null) {
+        Segment s = segmentService.findById(sl.getId());
+        if (s != null) {
+          segmentsMap.put(s.getId(), s);
+        }
+      }
+    }
+
+    for (DatatypeLink dl : original.getDatatypeLibrary().getChildren()) {
+      if (dl != null) {
+        Datatype d = datatypeService.findById(dl.getId());
+        if (d != null) {
+          datatypesMap.put(d.getId(), d);
         }
       }
     }
@@ -2922,6 +2958,18 @@ public class ProfileSerializationImpl implements ProfileSerialization {
         Table t = tableService.findById(tl.getId());
         if (t != null) {
           tablesMap.put(t.getId(), t);
+        }
+      }
+    }
+
+    Messages messages = new Messages();
+    for (Message m : original.getMessages().getChildren()) {
+      if (Arrays.asList(ids).contains(m.getId())) {
+        if (m.getMessageID() == null)
+          m.setMessageID(UUID.randomUUID().toString());
+        messages.addMessage(m);
+        for (SegmentRefOrGroup seog : m.getChildren()) {
+          this.visit(seog, segmentsMap, datatypesMap, tablesMap);
         }
       }
     }
@@ -2946,8 +2994,92 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     filteredProfile.setMessages(messages);
     filteredProfile.setTableLibrary(tables);
 
-    return new ExportTool().exportXMLAsValidationFormatForSelectedMessages(filteredProfile,
+    return new XMLExportTool().exportXMLAsValidationFormatForSelectedMessages(filteredProfile,
         metadata, segmentsMap, datatypesMap, tablesMap);
+  }
+
+  private void visit(SegmentRefOrGroup seog, Map<String, Segment> segmentsMap,
+      Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
+    if (seog instanceof SegmentRef) {
+      SegmentRef sr = (SegmentRef) seog;
+      Segment s = segmentsMap.get(sr.getRef().getId());
+
+      if (s.getName().equals("OBX") || s.getName().equals("MFA") || s.getName().equals("MFE")) {
+        String reference = null;
+        String referenceTableId = null;
+
+        if (s.getName().equals("OBX")) {
+          reference = "2";
+        }
+
+        if (s.getName().equals("MFA")) {
+          reference = "6";
+        }
+
+        if (s.getName().equals("MFE")) {
+          reference = "5";
+        }
+
+        referenceTableId = this.findValueSetID(s.getValueSetBindings(), reference);
+
+        System.out.println("--------- DM Start---------");
+        System.out.println(s.getLabel());
+        System.out.println(referenceTableId);
+        System.out.println(reference);
+        System.out.println(tablesMap.get(referenceTableId).getBindingIdentifier());
+        System.out.println(tablesMap.get(referenceTableId).getHl7Version());
+
+        if (referenceTableId != null) {
+          Table table = tablesMap.get(referenceTableId);
+          if (table != null) {
+            if (table.getHl7Version() == null)
+              table.setHl7Version(s.getHl7Version());
+            for (Code c : table.getCodes()) {
+              System.out.println("Code : " + c);
+              if (c.getValue() != null && table.getHl7Version() != null) {
+                Datatype d = this.findDatatypeByNameAndVesionAndScope(c.getValue(),
+                    table.getHl7Version(), "HL7STANDARD", datatypesMap);
+                if (d == null) {
+                  d = datatypeService.findByNameAndVesionAndScope(c.getValue(),
+                      table.getHl7Version(), "HL7STANDARD");
+                  if (d != null) {
+                    this.addDatatypeForDM(d, datatypesMap);
+                  } else {
+                    System.out.println("--------NOT FOUND---------");
+                    System.out.println(c.getValue());
+                    System.out.println(table.getHl7Version());
+                  }
+                } else {
+                  System.out.println("--------FOUND---------");
+                  System.out.println(c.getValue());
+                  System.out.println(table.getHl7Version());
+                }
+              }
+            }
+          }
+        }
+
+        System.out.println("--------- DM END---------");
+      }
+    } else {
+      Group g = (Group) seog;
+      for (SegmentRefOrGroup child : g.getChildren()) {
+        this.visit(child, segmentsMap, datatypesMap, tablesMap);
+      }
+    }
+  }
+
+  private Datatype findDatatypeByNameAndVesionAndScope(String name, String hl7Version, String scope,
+      Map<String, Datatype> datatypesMap) {
+    for (String key : datatypesMap.keySet()) {
+      Datatype d = datatypesMap.get(key);
+      if (d != null) {
+        if (d.getName().equals(name) && d.getHl7Version().equals(hl7Version)
+            && d.getScope().toString().equals(scope))
+          return d;
+      }
+    }
+    return null;
   }
 
   @Override
@@ -2961,6 +3093,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
       HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
       HashMap<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
+      HashMap<String, Table> tablesMap = new HashMap<String, Table>();
 
       filteredProfile.setBaseId(original.getBaseId());
       filteredProfile.setChanges(original.getChanges());
@@ -2976,13 +3109,40 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       filteredProfile.setUsageNote(original.getUsageNote());
       filteredProfile.setMetaData(original.getMetaData().clone());
 
+      for (SegmentLink sl : original.getSegmentLibrary().getChildren()) {
+        if (sl != null) {
+          Segment s = segmentService.findById(sl.getId());
+          if (s != null) {
+            segmentsMap.put(s.getId(), s);
+          }
+        }
+      }
+
+      for (DatatypeLink dl : original.getDatatypeLibrary().getChildren()) {
+        if (dl != null) {
+          Datatype d = datatypeService.findById(dl.getId());
+          if (d != null) {
+            datatypesMap.put(d.getId(), d);
+          }
+        }
+      }
+
+      for (TableLink tl : original.getTableLibrary().getChildren()) {
+        if (tl != null) {
+          Table t = tableService.findById(tl.getId());
+          if (t != null) {
+            tablesMap.put(t.getId(), t);
+          }
+        }
+      }
+
       Messages messages = new Messages();
       for (Message m : original.getMessages().getChildren()) {
         if (id.equals(m.getId())) {
           filteredProfile.getMetaData().setProfileID(m.getMessageID());
           messages.addMessage(m);
           for (SegmentRefOrGroup seog : m.getChildren()) {
-            this.visit(seog, segmentsMap, datatypesMap, original);
+            this.visit(seog, segmentsMap, datatypesMap, tablesMap);
           }
         }
       }
@@ -3008,97 +3168,25 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     return this.serializeProfileDisplayToZip(filteredProfiles, metadata, dateUpdated);
   }
 
-  private void visit(SegmentRefOrGroup seog, HashMap<String, Segment> segmentsMap,
-      HashMap<String, Datatype> datatypesMap, Profile original) {
-    if (seog instanceof SegmentRef) {
-      SegmentRef sr = (SegmentRef) seog;
-
-      Segment s = segmentService.findById(sr.getRef().getId());
-      segmentsMap.put(s.getId(), s);
-
-      for (Field f : s.getFields()) {
-        this.addDatatype(datatypeService.findById(f.getDatatype().getId()), datatypesMap);
-      }
-
-      if (s.getDynamicMappingDefinition() != null) {
-        for (DynamicMappingItem item : s.getDynamicMappingDefinition().getDynamicMappingItems()) {
-          if (item != null && item.getDatatypeId() != null) {
-            Datatype dt = datatypeService.findById(item.getDatatypeId());
-            if (dt != null) {
-              this.addDatatype(dt, datatypesMap);
-            }
-          }
-        }
-      }
-
-      if (s.getCoConstraintsTable() != null && s.getCoConstraintsTable().getThenMapData() != null) {
-        for (String key : s.getCoConstraintsTable().getThenMapData().keySet()) {
-          if (s.getCoConstraintsTable().getThenMapData().get(key) != null) {
-            for (CoConstraintTHENColumnData data : s.getCoConstraintsTable().getThenMapData()
-                .get(key)) {
-              if (data.getDatatypeId() != null) {
-                Datatype dt = datatypeService.findById(data.getDatatypeId());
-                if (dt != null) {
-                  this.addDatatype(dt, datatypesMap);
-                }
-              }
-            }
-          }
-
-        }
-      }
-
-      if (s.getName().equals("OBX") || s.getName().equals("MFA") || s.getName().equals("MFE")) {
-        String reference = null;
-        String referenceTableId = null;
-
-        if (s.getName().equals("OBX")) {
-          reference = "2";
-        }
-
-        if (s.getName().equals("MFA")) {
-          reference = "6";
-        }
-
-        if (s.getName().equals("MFE")) {
-          reference = "5";
-        }
-
-        referenceTableId = this.findValueSetID(s.getValueSetBindings(), reference);
-
-        if (referenceTableId != null) {
-          Table table = tableService.findById(referenceTableId);
-          if (table != null) {
-            for (Code c : table.getCodes()) {
-              if (c.getValue() != null && table.getHl7Version() != null) {
-                // TODO
-                Datatype d = datatypeService.findByNameAndVesionAndScope(c.getValue(),
-                    table.getHl7Version(), "HL7STANDARD");
-
-                if (d != null) {
-                  this.addDatatype(d, datatypesMap);
-                }
-              }
-            }
-          }
-        }
-      }
-
-
-    } else {
-      Group g = (Group) seog;
-      for (SegmentRefOrGroup child : g.getChildren()) {
-        this.visit(child, segmentsMap, datatypesMap, original);
-      }
-    }
-
-  }
 
   private void addDatatype(Datatype d, Map<String, Datatype> datatypesMap) {
     if (d != null) {
       datatypesMap.put(d.getId(), d);
       for (Component c : d.getComponents()) {
         this.addDatatype(datatypeService.findById(c.getDatatype().getId()), datatypesMap);
+      }
+    } else {
+      log.error("datatypelink is missing!");
+    }
+  }
+
+  private void addDatatypeForDM(Datatype d, Map<String, Datatype> datatypesMap) {
+    if (d != null) {
+      int randumNum = new SecureRandom().nextInt(100000);
+      d.setExt("ForDM" + randumNum);
+      datatypesMap.put(d.getId(), d);
+      for (Component c : d.getComponents()) {
+        this.addDatatypeForDM(datatypeService.findById(c.getDatatype().getId()), datatypesMap);
       }
     } else {
       log.error("datatypelink is missing!");
