@@ -69,7 +69,9 @@ public class Datatype extends DataModelWithConstraints
 
   protected String defPostText = "";
 
+  @Deprecated
   protected int precisionOfDTM = 3;
+  @Deprecated
   protected boolean timeZoneOfDTM = false;
 
   protected DTMConstraints dtmConstraints;
@@ -334,18 +336,22 @@ public class Datatype extends DataModelWithConstraints
       return this.getName() + "_" + this.getExt();
   }
 
+  @Deprecated
   public int getPrecisionOfDTM() {
     return precisionOfDTM;
   }
 
+  @Deprecated
   public void setPrecisionOfDTM(int precisionOfDTM) {
     this.precisionOfDTM = precisionOfDTM;
   }
 
+  @Deprecated
   public boolean isTimeZoneOfDTM() {
     return timeZoneOfDTM;
   }
 
+  @Deprecated
   public void setTimeZoneOfDTM(boolean timeZoneOfDTM) {
     this.timeZoneOfDTM = timeZoneOfDTM;
   }
