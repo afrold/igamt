@@ -40,7 +40,12 @@ public class IGDocumentConfiguration {
 	private Set<String> codedElementDTs = new HashSet<String>();
 	private HashMap<String, Set<String>> bindingLocationListByHL7Version = new HashMap<String, Set<String>>();
 	private Set<VariesMapItem> variesMapItems = new HashSet<VariesMapItem>();
-
+	private HashMap<Integer, String> dtmRUsageRegexCodes = new HashMap<Integer, String>();
+	private HashMap<Integer, String> dtmXUsageRegexCodes = new HashMap<Integer, String>();
+	private HashMap<Integer, String> dtmCUsageIsValuedRegexCodes = new HashMap<Integer, String>();
+	private HashMap<Integer, String> dtmCUsageIsNOTValuedRegexCodes = new HashMap<Integer, String>();
+	private HashMap<Integer, String> dtmCUsageIsLiteralValueRegexCodes = new HashMap<Integer, String>();
+	
 	public Set<String> getUsages() {
 		return usages;
 	}
@@ -201,4 +206,43 @@ public class IGDocumentConfiguration {
 		this.singleValueSetDTs = singleValueSetDTs;
 	}
 
+  public HashMap<Integer, String> getDtmRUsageRegexCodes() {
+    return dtmRUsageRegexCodes;
+  }
+
+  public void setDtmRUsageRegexCodes(HashMap<Integer, String> dtmRUsageRegexCodes) {
+    this.dtmRUsageRegexCodes = dtmRUsageRegexCodes;
+  }
+
+  public HashMap<Integer, String> getDtmXUsageRegexCodes() {
+    return dtmXUsageRegexCodes;
+  }
+
+  public void setDtmXUsageRegexCodes(HashMap<Integer, String> dtmXUsageRegexCodes) {
+    this.dtmXUsageRegexCodes = dtmXUsageRegexCodes;
+  }
+
+  public HashMap<Integer, String> getDtmCUsageIsValuedRegexCodes() {
+    return dtmCUsageIsValuedRegexCodes;
+  }
+
+  public void setDtmCUsageIsValuedRegexCodes(HashMap<Integer, String> dtmCUsageIsValuedRegexCodes) {
+    this.dtmCUsageIsValuedRegexCodes = dtmCUsageIsValuedRegexCodes;
+  }
+
+  public HashMap<Integer, String> getDtmCUsageIsNOTValuedRegexCodes() {
+    return dtmCUsageIsNOTValuedRegexCodes;
+  }
+
+  public void setDtmCUsageIsNOTValuedRegexCodes(HashMap<Integer, String> dtmCUsageIsNOTValuedRegexCodes) {
+    this.dtmCUsageIsNOTValuedRegexCodes = dtmCUsageIsNOTValuedRegexCodes;
+  }
+
+  public HashMap<Integer, String> getDtmCUsageIsLiteralValueRegexCodes() {
+    return dtmCUsageIsLiteralValueRegexCodes;
+  }
+
+  public void setDtmCUsageIsLiteralValueRegexCodes(HashMap<Integer, String> dtmCUsageIsLiteralValueRegexCodes) {
+    this.dtmCUsageIsLiteralValueRegexCodes = dtmCUsageIsLiteralValueRegexCodes;
+  }
 }
