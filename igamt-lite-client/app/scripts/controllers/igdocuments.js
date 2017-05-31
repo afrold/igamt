@@ -2588,32 +2588,14 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     };
 
     $scope.generatedSelectedMessagesIDs = function () {
-        $scope.selectedMessagesIDs = [];
+        $scope.selectedCompositeProfileIDs = [];
         for(var i in $scope.igdocumentToSelect.profile.compositeProfiles.children){
             var message = $scope.igdocumentToSelect.profile.compositeProfiles.children[i];
             if(message.selected){
-                $scope.selectedMessagesIDs.push(message.id);
+                $scope.selectedCompositeProfileIDs.push(message.id);
             }
         }
     };
-
-    $scope.selectionAll = function (bool) {
-        for(var i in igdocumentToSelect.profile.messages.children){
-            var message = igdocumentToSelect.profile.messages.children[i];
-            message.selected = bool;
-        }
-    };
-
-    $scope.generatedSelectedMessagesIDs = function () {
-        $scope.selectedMessagesIDs = [];
-        for(var i in igdocumentToSelect.profile.messages.children){
-            var message = igdocumentToSelect.profile.messages.children[i];
-            if(message.selected){
-                $scope.selectedMessagesIDs.push(message.id);
-            }
-        }
-    };
-
 
     $scope.goBack = function(){
         $scope.exportStep =  $scope.exportStep  != 0 ? $scope.exportStep -1: 0;
