@@ -191,7 +191,9 @@
                                 <xsl:element name="td">
                                     <xsl:choose>
                                         <xsl:when test="((normalize-space(@MinLength)='') and (normalize-space(@MaxLength)='')) or @Usage = 'X'">
-                                            <xsl:text>greyCell</xsl:text>
+                                            <xsl:attribute name="class">
+                                                <xsl:text>greyCell</xsl:text>
+                                            </xsl:attribute>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:attribute name="class">
@@ -205,7 +207,9 @@
                                 <xsl:element name="td">
                                     <xsl:choose>
                                         <xsl:when test="(normalize-space(@ConfLength)='') or (normalize-space(@ConfLength)='0') or @Usage = 'X'">
-                                            <xsl:text>greyCell</xsl:text>
+                                            <xsl:attribute name="class">
+                                                <xsl:text>greyCell</xsl:text>
+                                            </xsl:attribute>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:attribute name="class">
