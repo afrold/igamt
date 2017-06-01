@@ -407,4 +407,8 @@ $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, 
         return [200, response, {}];
     });
 
+    $httpBackend.whenGET('api/search/datatypes').respond(function (method, url, data, headers, params) {
+            return [200, getDatatypes(), {}];
+        });
+
 });
