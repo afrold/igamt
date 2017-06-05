@@ -11,7 +11,7 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                 },
                 {
                     name:'HL7 Version',
-                    param:'hl7version',
+                    param:'hl7Version',
                     required:false
                 }
             ]
@@ -33,7 +33,7 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                 },
                 {
                     name:'HL7 Version',
-                    param:'hl7version',
+                    param:'hl7Version',
                     required:false
                 }
             ]
@@ -49,7 +49,7 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                 },
                 {
                     name:'HL7 Version',
-                    param:'hl7version',
+                    param:'hl7Version',
                     required:false
                 }
             ]
@@ -69,8 +69,8 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                 },
                 {
                     name:'HL7 Version',
-                    param:'hl7version',
-                    required:false
+                    param:'hl7Version',
+                    required:true
                 }
             ]
         }
