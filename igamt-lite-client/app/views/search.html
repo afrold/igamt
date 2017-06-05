@@ -1,35 +1,34 @@
-<div ng-controller="SearchController" class="md-padding" ng-cloak>
-    <div>
+<md-content ng-controller="SearchController">
+    <div >
         <h1 class="md-title">Search HL7 entities</h1>
         <div layout="row">
-            <md-input-container style="margin-right: 10px;">
+            <md-input-container>
                 <label>Type</label>
                 <md-select ng-model="searchParameters">
                     <md-option ng-repeat="type in types" ng-value="type">{{type.name}}</md-option>
                 </md-select>
             </md-input-container>
-
             <md-input-container ng-repeat="field in searchParameters.fields">
-                <ng-switch>
-                    <div ng-switch-when="field.values.length > 0">
-                        <label>{{field.name}}</label>
-                        <md-select ng-model="field.value">
-                            <md-option ng-repeat="value in field.values" value="{{value}}">{{value}}</md-option>
-                        </md-select>
-                    </div>
-                    <div ng-switch-default>
-                        <label>{{field.name}}</label>
-                        <input ng-model="field.value"/>
-                    </div>
-                </ng-switch>
+                <div ng-if="field.values.length > 0">
+                    <label>{{field.name}}</label>
+                    <md-select ng-model="field.value">
+                        <md-option ng-repeat="value in field.values" value="{{value}}">{{value}}</md-option>
+                    </md-select>
+                </div>
+                <div ng-if="field.values == undefined || field.values.length <= 0">
+                    <label>{{field.name}}</label>
+                    <input ng-model="field.value"/>
+                </div>
             </md-input-container>
             <md-button class="md-primary" ng-click="doSearch()">Search</md-button>
         </div>
-        <pre>{{searchParameters | json }}</pre>
-        <div ng-if="data">
-            <pre>
-                {{data | json}}
-            </pre>
+        <div ng-if="data" style="max-height:500px; overflow-y: scroll;">
+            <span ng-repeat="entity in data">
+                <md-button ng-click="showAdvanced(entity)">
+                    {{entity.name}} - {{entity.hl7Version}}
+                </md-button>
+            </span>
         </div>
+        <pre>{{data | json}}</pre>
     </div>
-</div>
+</md-content>

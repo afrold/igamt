@@ -12,6 +12,21 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         return fixProperties(datatypes);
     };
 
+    function getHTMLDatatype() {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatypes/datatype.html', false);
+        request.send(null);
+        return request.response;
+    };
+
+    function getMessage() {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/messages/OMB_027_HL7STANDARD-2.7.json', false);
+        request.send(null);
+        var message = angular.fromJson(request.response);
+        return [message];
+    };
+
     function getSegments() {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/segments/segments-USER-2.5.1.json', false);
@@ -408,7 +423,22 @@ $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, 
     });
 
     $httpBackend.whenGET('api/search/datatypes').respond(function (method, url, data, headers, params) {
-            return [200, getDatatypes(), {}];
-        });
+        return [200, getDatatypes(), {}];
+    });
 
+    $httpBackend.whenGET('api/search/message').respond(function (method, url, data, headers, params) {
+        return [200, getMessage(), {}];
+    });
+
+    $httpBackend.whenGET('api/search/valueSets').respond(function (method, url, data, headers, params) {
+        return [200, getTables(), {}];
+    });
+
+    $httpBackend.whenGET('api/search/segments').respond(function (method, url, data, headers, params) {
+        return [200, getSegments(), {}];
+    });
+
+    $httpBackend.whenRoute('GET','api/export/datatypes/:id/html',undefined,undefined,['id']).respond(function (method, url, data, headers, params) {
+        return [200, getHTMLDatatype(), {}];
+    });
 });

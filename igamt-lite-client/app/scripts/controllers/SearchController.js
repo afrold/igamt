@@ -1,4 +1,4 @@
-angular.module('igl').controller('SearchController', function ($scope, SearchService) {
+angular.module('igl').controller('SearchController', function ($scope, SearchService, $mdDialog) {
     $scope.types = [
         {
             name:'Dataypes',
@@ -82,5 +82,34 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
 
     $scope.doSearch = function(){
         return SearchService.search($scope.searchParameters,$scope.updateResult);
+    }
+
+    $scope.showAdvanced = function(entity) {
+        //alert("Display "+entity.name);
+        $scope.selectedEntity = entity;
+        $mdDialog.show({
+          controller: SearchContentDialogController,
+          templateUrl: 'views/searchContentDialog.html',
+          parent: angular.element(document.body),
+          clickOutsideToClose:true,
+          locals : {
+              entity : entity
+          }
+        });
+      };
+
+    function SearchContentDialogController($scope, $mdDialog, entity) {
+        $scope.populate = function (data){
+            $scope.entityContent = data;
+        };
+
+        SearchService.getContent(entity,$scope.populate);
+
+        $scope.hide = function() {
+            $mdDialog.hide();
+        };
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
     }
 });
