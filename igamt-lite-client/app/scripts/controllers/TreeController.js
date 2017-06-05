@@ -1797,31 +1797,27 @@ angular
                     }
                 };
                 $rootScope.addCSVTables = function(selectedTableLibary) {
-                    var modalInstance = $modal.open({
-                        templateUrl: 'AddCSVTableOpenCtrl.html',
+                    var modalInstance = $mdDialog.show({
+                        templateUrl: 'AddCSVTableOpenCtrlMd.html',
                         controller: 'AddCSVTableOpenCtrl',
-                        windowClass: 'conformance-profiles-modal',
-                        resolve: {
-                            selectedTableLibary: function() {
-                                return selectedTableLibary;
-                            }
+                        locals: {
+                            selectedTableLibary: selectedTableLibary
+
                         }
                     });
-                    modalInstance.result.then(function() {}, function() {});
+                    modalInstance.then(function() {}, function() {});
                 };
 
                 $rootScope.addPHINVADSTables = function(selectedTableLibary) {
-                    var modalInstance = $modal.open({
-                        templateUrl: 'AddPHINVADSTableOpenCtrl.html',
+                    var modalInstance = $mdDialog.show({
+                        templateUrl: 'AddPHINVADSTableOpenCtrlMd.html',
                         controller: 'AddPHINVADSTableOpenCtrl',
-                        windowClass: 'conformance-profiles-modal',
-                        resolve: {
-                            selectedTableLibary: function() {
-                                return selectedTableLibary;
+                        locals: {
+                            selectedTableLibary: selectedTableLibary
                             }
-                        }
+
                     });
-                    modalInstance.result.then(function() {}, function() {});
+                    modalInstance.then(function() {}, function() {});
                 };
 
                 $rootScope.getLabelOfData = function(name, ext) {

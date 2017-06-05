@@ -1075,20 +1075,16 @@ angular.module('igl')
 
 
     $rootScope.addHL7Table = function(selectedTableLibary, hl7Version) {
-        var modalInstance = $modal.open({
-            templateUrl: 'AddHL7TableOpenCtrl.html',
+        var modalInstance = $mdDialog.show({
+            templateUrl: 'AddHL7TableOpenCtrlMd.html',
             controller: 'AddHL7TableOpenCtrl',
-            windowClass: 'conformance-profiles-modal',
-            resolve: {
-                selectedTableLibary: function() {
-                    return selectedTableLibary;
-                },
-                hl7Version: function() {
-                    return hl7Version;
-                }
+            locals: {
+                selectedTableLibary:selectedTableLibary,
+                hl7Version: hl7Version
+
             }
         });
-        modalInstance.result.then(function() {}, function() {});
+        modalInstance.then(function() {}, function() {});
     };
 
     $scope.addDatatypes = function(hl7Version) {
@@ -2779,7 +2775,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
 });
 
 
-angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, hl7Version, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
+angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $mdDialog, selectedTableLibary, hl7Version, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
     $scope.loading = false;
     $scope.selectedTableLibary = selectedTableLibary;
     $scope.selectedHL7Version = hl7Version;
@@ -2789,7 +2785,7 @@ angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalI
     $scope.selectedTables = [];
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.listHL7Versions = function() {
@@ -2862,6 +2858,8 @@ angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalI
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
 
+            $mdDialog.hide();
+
         }, function(error) {
             $scope.saving = false;
             $rootScope.msg().text = error.data.text;
@@ -2870,7 +2868,6 @@ angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalI
         });
 
 
-        $modalInstance.dismiss('cancel');
     };
 
     function positionElements(chidren) {
@@ -2887,7 +2884,7 @@ angular.module('igl').controller('AddHL7TableOpenCtrl', function($scope, $modalI
     $scope.loadTablesByVersion($scope.selectedHL7Version);
 });
 
-angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService, IgDocumentService) {
+angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $mdDialog, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService, IgDocumentService) {
     $scope.loading = false;
     $scope.selectedTableLibary = selectedTableLibary;
     $scope.importedTable = null;
@@ -2992,7 +2989,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 
@@ -3020,6 +3017,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
                     $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
                 }
                 $rootScope.$broadcast('event:openTable', newTable);
+                $mdDialog.hide();
             }, function(error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = error.data.type;
@@ -3032,7 +3030,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
             $rootScope.msg().show = true;
         });
 
-        $modalInstance.dismiss('cancel');
+
     };
 
     function positionElements(chidren) {
@@ -3045,7 +3043,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function($scope, $modalI
     }
 });
 
-angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $modalInstance, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
+angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $mdDialog, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
     $scope.loading = false;
     $scope.selectedTableLibary = selectedTableLibary;
     $scope.searchText = '';
@@ -3059,13 +3057,13 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
         return $http.get('api/igdocuments/PHINVADS/tables', {
             timeout: 600000
         }).then(function(response) {
-            $scope.preloadedPhinvadsTables = response.data;
+            $scope.phinvadsTables = response.data;
             $scope.loading = false;
         });
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.searchPhinvads = function(searchText) {
@@ -3126,6 +3124,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
                 $scope.editForm.$dirty = false;
             }
             $rootScope.clearChanges();
+            $mdDialog.hide();
             $rootScope.msg().text = "tableSaved";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
@@ -3138,7 +3137,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function($scope, $m
         });
 
 
-        $modalInstance.dismiss('cancel');
+
     };
 
 
