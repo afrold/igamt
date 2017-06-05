@@ -84,6 +84,20 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
         return SearchService.search($scope.searchParameters,$scope.updateResult);
     }
 
+    $scope.isFormValid = function(){
+        if($scope.searchParameters){
+            if($scope.searchParameters.fields){
+                $scope.searchParameters.fields.forEach(function(field){
+                    if(field.required && (field.value === '' || typeof field.value === 'undefined')){
+                        return false;
+                    }
+                });
+                return true;
+            }
+        }
+        return false;
+    }
+
     $scope.showAdvanced = function(entity) {
         //alert("Display "+entity.name);
         $scope.selectedEntity = entity;

@@ -4,23 +4,23 @@
         <div layout="row">
             <md-input-container>
                 <label>Type</label>
-                <md-select ng-model="searchParameters">
+                <md-select ng-model="searchParameters" required>
                     <md-option ng-repeat="type in types" ng-value="type">{{type.name}}</md-option>
                 </md-select>
             </md-input-container>
             <md-input-container ng-repeat="field in searchParameters.fields">
-                <div ng-if="field.values.length > 0">
+                <span ng-if="field.values.length > 0">
                     <label>{{field.name}}</label>
-                    <md-select ng-model="field.value">
+                    <md-select ng-model="field.value" ng-required="field.required">
                         <md-option ng-repeat="value in field.values" value="{{value}}">{{value}}</md-option>
                     </md-select>
-                </div>
-                <div ng-if="field.values == undefined || field.values.length <= 0">
+                </span>
+                <span ng-if="field.values == undefined || field.values.length <= 0">
                     <label>{{field.name}}</label>
-                    <input ng-model="field.value"/>
-                </div>
+                    <input ng-model="field.value" ng-required="field.required"/>
+                </span>
             </md-input-container>
-            <md-button class="md-primary" ng-click="doSearch()">Search</md-button>
+            <md-button class="md-primary" ng-click="doSearch()"  ng-disabled="!isFormValid()">Search</md-button>
         </div>
         <div ng-if="data" style="max-height:500px; overflow-y: scroll;">
             <span ng-repeat="entity in data">
@@ -29,6 +29,6 @@
                 </md-button>
             </span>
         </div>
-        <pre>{{data | json}}</pre>
+        <pre>{{searchParameters | json}}</pre>
     </div>
 </md-content>
