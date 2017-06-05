@@ -1143,17 +1143,17 @@ angular.module('igl')
     };
     $scope.createProfileComponent = function() {
 
-        var createPCInstance = $modal.open({
+        var createPCInstance = $mdDialog.show({
             templateUrl: 'createProfileComponent.html',
             controller: 'createProfileComponentCtrl',
 
-            resolve: {
+            locals: {
                 // PcLibrary: function() {
                 //     return $rootScope.igdocument.profile.profileComponentLibrary;
                 // }
 
             }
-        }).result.then(function(results) {
+        }).then(function(results) {
 
             $rootScope.editPC(results)
             if ($scope.profileComponentParams)
@@ -1164,17 +1164,17 @@ angular.module('igl')
 
     };
     $scope.createCompositeProfile = function() {
-        var createCMInstance = $modal.open({
+        var createCMInstance = $mdDialog.show({
             templateUrl: 'createCompositeProfile.html',
             controller: 'createCompositeProfileCtrl',
             windowClass: 'app-modal-window',
 
             // windowClass: 'composite-profiles-modal',
-            resolve: {
+            locals: {
 
 
             }
-        }).result.then(function(results) {
+        }).then(function(results) {
             console.log("results");
             console.log(results);
             $rootScope.editCM(results);
@@ -3977,7 +3977,7 @@ angular.module('igl').controller('UnShareIGDocumentCtrl', function($scope, $moda
 });
 
 angular.module('igl').controller('createProfileComponentCtrl',
-    function($scope, $rootScope, $modalInstance, $http, PcService, IgDocumentService) {
+    function($scope, $rootScope, $mdDialog, $http, PcService, IgDocumentService) {
         $scope.create = function() {
             var newPC = {
                 name: $scope.name,
@@ -3997,8 +3997,8 @@ angular.module('igl').controller('createProfileComponentCtrl',
                 $rootScope.igdocument.profile.profileComponentLibrary.children.push(profileC);
                 $rootScope.profileComponents.push(profileC);
                 $rootScope.profileComponentsMap[profileC.id] = profileC;
-                $scope.Activate(profileC.id);
-                $modalInstance.close(profileC);
+                $rootScope.Activate(profileC.id);
+                $mdDialog.hide(profileC);
 
             });
 
@@ -4011,7 +4011,7 @@ angular.module('igl').controller('createProfileComponentCtrl',
         };
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $mdDialog.hide();
         };
     });
 
@@ -4151,7 +4151,7 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
 
 
 angular.module('igl').controller('createCompositeProfileCtrl',
-    function($scope, $rootScope, $modalInstance, $http, $filter, PcService, IgDocumentService, CompositeProfileService) {
+    function($scope, $rootScope, $mdDialog, $http, $filter, PcService, IgDocumentService, CompositeProfileService) {
         $scope.compositeMetaData = true;
         $scope.tabStatus = {
             active: 0
@@ -4260,7 +4260,7 @@ angular.module('igl').controller('createCompositeProfileCtrl',
                     $rootScope.compositeProfilesStructureMap[cpStructure.id] = cpStructure;
                     console.log($rootScope.igdocument);
 
-                    $modalInstance.close(cpStructure);
+                    $mdDialog.hide(cpStructure);
 
 
                 });
@@ -4270,7 +4270,7 @@ angular.module('igl').controller('createCompositeProfileCtrl',
         };
 
         $scope.cancel = function() {
-            $modalInstance.dismiss('cancel');
+            $mdDialog.hide();
         };
 
 
