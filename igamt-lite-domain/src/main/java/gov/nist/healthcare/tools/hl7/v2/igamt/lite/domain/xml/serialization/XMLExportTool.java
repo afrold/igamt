@@ -1091,7 +1091,7 @@ public class XMLExportTool {
 
             if (componentDatatype != null && componentDatatype.getComponents() != null
                 && componentDatatype.getComponents().size() > 0) {
-              if (bindingLocation != null) {
+              if (bindingLocation != null && !bindingLocation.equals("")) {
                 bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
                 elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
               } else {
@@ -1296,7 +1296,7 @@ public class XMLExportTool {
             elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
 
           if (d != null && d.getComponents() != null && d.getComponents().size() > 0) {
-            if (bindingLocation != null) {
+            if (bindingLocation != null && !bindingLocation.equals("")) {
               bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
               elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
             } else {
