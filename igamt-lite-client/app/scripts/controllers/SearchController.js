@@ -1,4 +1,4 @@
-angular.module('igl').controller('SearchController', function ($scope, SearchService, $mdDialog) {
+angular.module('igl').controller('SearchController', function ($scope, SearchService, $mdDialog,$sce) {
     $scope.types = [
         {
             name:'Dataypes',
@@ -88,8 +88,10 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
         if($scope.searchParameters){
             if($scope.searchParameters.fields){
                 $scope.searchParameters.fields.forEach(function(field){
-                    if(field.required && (field.value === '' || typeof field.value === 'undefined')){
-                        return false;
+                    if(field.required){
+                        if(!field.value || field.value === ''){
+                            return false;
+                        }
                     }
                 });
                 return true;
@@ -114,7 +116,7 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
 
     function SearchContentDialogController($scope, $mdDialog, entity) {
         $scope.populate = function (data){
-            $scope.entityContent = data;
+            $scope.entityContent = $sce.trustAsHtml(data);
         };
 
         SearchService.getContent(entity,$scope.populate);
