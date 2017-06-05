@@ -54,8 +54,8 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                 }
             ]
         },        {
-            name:'Message',
-            value:'message',
+            name:'Messages',
+            value:'messages',
             fields:[
                 {
                     name:'Type',
