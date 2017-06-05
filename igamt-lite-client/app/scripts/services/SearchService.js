@@ -2,13 +2,13 @@ angular.module('igl').factory('SearchService',function($http, $q) {
     var SearchService={
 
         generateParameters:function(fields){
-            var getParameters = '';
+            var getParameters = '?';
             var isFirst = true;
             if(fields != undefined){
                 fields.forEach(function(field){
                     if(field != undefined && field.value != undefined){
                         if(!isFirst){
-                            getParameters += ',';
+                            getParameters += '&';
                         } else {
                             isFirst = false;
                         }
@@ -16,16 +16,18 @@ angular.module('igl').factory('SearchService',function($http, $q) {
                     }
                 });
             }
-            console.log('params: '+getParameters);
+            if(getParameters == '?'){
+                return '';
+            }
             return getParameters;
         },
 
         search:function(searchParameters,callback){
             var getParameters = this.generateParameters(searchParameters.fields);
+            console.log('params: '+getParameters);
             $http({
                 method: 'GET',
-                url: 'api/search/'+searchParameters.value,
-                params: getParameters
+                url: 'api/search/'+searchParameters.value+getParameters
             }).success(function(data){
                 callback(data);
             });
