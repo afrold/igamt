@@ -37,16 +37,16 @@ angular.module('igl').factory('SearchService',function($http, $q) {
             var url = "api/export/";
             switch(entity.type){
                 case 'datatype':
-                    url+="datatypes";
+                    url+="datatype";
                     break;
                 case 'message':
-                    url+="messages";
+                    url+="message";
                     break;
                 case 'segment':
-                    url+="segments";
+                    url+="segment";
                     break;
                 case 'table':
-                    url+="valueSets";
+                    url+="valueSet";
                     break;
             }
             url += "/"+entity.id+"/html";
