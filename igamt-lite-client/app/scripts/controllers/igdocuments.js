@@ -12,7 +12,6 @@ angular.module('igl')
     $rootScope.igs = [];
     $rootScope.currentData = null;
     $rootScope.editForm = $scope.editForm;
-    $scope.tmpIgs = [].concat($rootScope.igs);
     $scope.error = null;
     $rootScope.chipsReadOnly = true;
     $scope.loadingTree = false;
@@ -77,7 +76,7 @@ angular.module('igl')
 
     $scope.Dndenabled = function() {
         return $scope.igDocumentConfig.selectedType == 'USER';
-    }
+    };
     $scope.showIgErrorNotification = false;
     $rootScope.showMsgErrorNotification = false;
     $rootScope.showSegErrorNotification = false;
@@ -178,11 +177,13 @@ angular.module('igl')
      * init the controller
      */
     $scope.initIGDocuments = function() {
-        $scope.loadIGDocuments();
+        //$scope.loadIGDocuments();
         $scope.getScrollbarWidth();
         /**
          * On 'event:loginConfirmed', resend all the 401 requests.
          */
+
+        /*
         $scope.$on('event:loginConfirmed', function(event) {
             $scope.loadIGDocuments();
         });
@@ -249,15 +250,7 @@ angular.module('igl')
                 });
                 if (idx > -1) {
                     $timeout(function() {
-                        //                            _.each($rootScope.igs, function (igd) {
-                        //                                console.log("b msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
-                        //                            });
                         $rootScope.igs.splice(idx, 1);
-                        $scope.tmpIgs = [].concat($rootScope.igs);
-                        //                            _.each($scope.tmpIgs, function (igd) {
-                        //                                console.log("a msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
-                        //                                console.log("msgs=" + igd.metaData.title + " len=" + igd.profile.messages.children.length);
-                        //                            });
                     }, 100);
                     $rootScope.igs.push(igdocument);
                 } else {
@@ -283,7 +276,12 @@ angular.module('igl')
                 $rootScope.$emit('event:execLogout');
             }
         });
+
+        */
     };
+
+
+
     $scope.getTemplateRow = function(row) {
         $rootScope.row = row;
         return 'templateRow.html';
@@ -306,7 +304,6 @@ angular.module('igl')
             $rootScope.msg().show = true;
 
         }, function(error) {
-            $scope.tmpIgs = angular.copy($scope.IgsCopy);
             $rootScope.msg().text = "OrderChangedFaild";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
@@ -333,23 +330,18 @@ angular.module('igl')
         $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType() : 'USER';
         $scope.error = null;
         $rootScope.igs = [];
-        $scope.tmpIgs = [].concat($rootScope.igs);
         if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
             $scope.loading = true;
             StorageService.setSelectedIgDocumentType($scope.igDocumentConfig.selectedType);
 
             $http.get('api/igdocuments', { params: { "type": $scope.igDocumentConfig.selectedType } }).then(function(response) {
-                console.log(response);
                 $rootScope.igs = angular.fromJson(response.data);
-                $scope.tmpIgs = [].concat($rootScope.igs);
-
-                console.log($scope.tmpIgs);
-                for (i = 0; i < $scope.tmpIgs.length; i++) {
-                    if (!$scope.tmpIgs[i].position || $scope.tmpIgs[i].position == 'undefined' || $scope.tmpIgs[i].position == 'null') {
-                        $scope.tmpIgs[i].position = i + 1;
+                console.log($rootScope.igs);
+                for (i = 0; i < $rootScope.igs.length; i++) {
+                    if (!$rootScope.igs[i].position || $rootScope.igs[i].position == 'undefined' || $rootScope.igs[i].position == 'null') {
+                        $rootScope.igs[i].position = i + 1;
                     }
                 }
-                $scope.IgsCopy = angular.copy($scope.tmpIgs);
                 $scope.loading = false;
                 delay.resolve(true);
             }, function(error) {
@@ -870,13 +862,6 @@ angular.module('igl')
                 }
 
             }
-            for (i = 0; i < $scope.tmpIgs.length; i++) {
-                if ($scope.tmpIgs[i].id == $scope.igdocumentToDelete.id) {
-                    $scope.tmpIgs.splice(i, 1);
-                }
-
-            }
-
         });
     };
 
