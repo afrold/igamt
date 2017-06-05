@@ -88,16 +88,17 @@ public class SearchController extends CommonController {
 		return null;
 	}
 	
-	@ApiOperation(value = "Search message", notes = "Search by message type (required), event (required) and HL7 version (required). Send back a single message.")
+	@ApiOperation(value = "Search messages", notes = "Search by message type (required), event (required) and HL7 version (required). Send back a list of messages.")
     @ApiResponses({
       @ApiResponse(code = 200, message = "Success"),
       @ApiResponse(code = 400, message = "Bad request")
     })
-	@RequestMapping(value = "/message", method = RequestMethod.GET, produces = "application/json")
-	public Message getMessage(@RequestParam(value="messageType", required=true) String messageType,@RequestParam(value="event", required=true) String event,@RequestParam(value="hl7Version", required=true) String hl7Version) throws DataNotFoundException {
+	@RequestMapping(value = "/messages", method = RequestMethod.GET, produces = "application/json")
+	public List<Message> getMessage(@RequestParam(value="messageType", required=true) String messageType,@RequestParam(value="event", required=true) String event,@RequestParam(value="hl7Version", required=true) String hl7Version) throws DataNotFoundException {
 		if(messageType != null && !messageType.isEmpty() && event !=null && !event.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
-		    Message message = messageService.findByMessageTypeAndEventAndVersionAndScope(messageType, event, hl7Version, SCOPE.HL7STANDARD.name());
-		    return message;
+				List<Message> messages = messageService.findAllByMessageTypeAndEventAndVersionAndScope(
+						messageType, event, hl7Version, SCOPE.HL7STANDARD.name());
+		    return messages;
 		}
 		return null;
 	}

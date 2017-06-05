@@ -422,23 +422,23 @@ $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, 
         return [200, response, {}];
     });
 
-    $httpBackend.whenGET('api/search/datatypes').respond(function (method, url, data, headers, params) {
+    $httpBackend.whenRoute('GET','api/search/datatypes').respond(function (method, url, data, headers, params) {
         return [200, getDatatypes(), {}];
     });
 
-    $httpBackend.whenGET('api/search/message').respond(function (method, url, data, headers, params) {
+    $httpBackend.whenRoute('GET','api/search/message').respond(function (method, url, data, headers, params) {
         return [200, getMessage(), {}];
     });
 
-    $httpBackend.whenGET('api/search/valueSets').respond(function (method, url, data, headers, params) {
+    $httpBackend.whenRoute('GET','api/search/valueSets').respond(function (method, url, data, headers, params) {
         return [200, getTables(), {}];
     });
 
-    $httpBackend.whenGET('api/search/segments').respond(function (method, url, data, headers, params) {
+    $httpBackend.whenRoute('GET','api/search/segments').respond(function (method, url, data, headers, params) {
         return [200, getSegments(), {}];
     });
 
-    $httpBackend.whenRoute('GET','api/export/datatypes/:id/html',undefined,undefined,['id']).respond(function (method, url, data, headers, params) {
+    $httpBackend.whenRoute('GET','api/export/datatype/:id/html',undefined,undefined,['id']).respond(function (method, url, data, headers, params) {
         return [200, getHTMLDatatype(), {}];
     });
 });

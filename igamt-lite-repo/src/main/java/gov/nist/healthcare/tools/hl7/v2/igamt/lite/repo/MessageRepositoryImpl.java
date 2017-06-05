@@ -113,4 +113,15 @@ public class MessageRepositoryImpl implements MessageOperations {
       return null;
     }
   }
+
+    @Override
+    public List<Message> findAllByMessageTypeAndEventAndVersionAndScope(String messageType,
+        String event, String hl7Version, String scope) {
+        Criteria where = Criteria.where("messageType").is(messageType);
+        where.andOperator(Criteria.where("event").is(event),
+            Criteria.where("hl7Version").is(hl7Version),
+            Criteria.where("scope").is(scope));
+        Query qry = Query.query(where);
+        return mongo.find(qry, Message.class);
+    }
 }

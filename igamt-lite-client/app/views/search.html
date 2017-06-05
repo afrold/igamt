@@ -22,6 +22,9 @@
             </md-input-container>
             <md-button class="md-primary" ng-click="doSearch()"  ng-disabled="!isFormValid()">Search</md-button>
         </div>
+        <div ng-show="showErrorMessage">
+            Unable to find an entity matching your request.
+        </div>
         <div ng-if="data" style="max-height:500px; overflow-y: scroll;">
             <span ng-repeat="entity in data">
                 <md-button ng-click="showAdvanced(entity)">
@@ -29,6 +32,5 @@
                 </md-button>
             </span>
         </div>
-        <pre>{{searchParameters | json}}</pre>
     </div>
 </md-content>

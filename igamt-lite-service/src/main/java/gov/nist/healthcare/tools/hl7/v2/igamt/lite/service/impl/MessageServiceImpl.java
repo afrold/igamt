@@ -137,6 +137,13 @@ public List<Message> findByScopeAndVersion(String scope, String hl7Version) {
 @Override
 public Message findByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
     String hl7Version, String scope) {
-  return messageRepository.findByMessageTypeAndEventAndVersionAndScope(messageType, event, hl7Version, scope);
+  return messageRepository.findByMessageTypeAndEventAndVersionAndScope(messageType, event,
+      hl7Version, scope);
 }
+
+  @Override public List<Message> findAllByMessageTypeAndEventAndVersionAndScope(String messageType,
+      String event, String hl7Version, String scope) {
+    return messageRepository.findAllByMessageTypeAndEventAndVersionAndScope(messageType, event,
+        hl7Version, scope);
+  }
 }

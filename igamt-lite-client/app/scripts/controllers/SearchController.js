@@ -77,11 +77,15 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
     ];
 
     $scope.updateResult = function(data){
-        $scope.data = data;
+        if(data.length >0){
+            $scope.data = data;
+        } else {
+            $scope.showErrorMessage = true;
+        }
     }
 
     $scope.doSearch = function(){
-        return SearchService.search($scope.searchParameters,$scope.updateResult);
+        return SearchService.search($scope.searchParameters,$scope.updateResult,$scope.searchError);
     }
 
     $scope.isFormValid = function(){
