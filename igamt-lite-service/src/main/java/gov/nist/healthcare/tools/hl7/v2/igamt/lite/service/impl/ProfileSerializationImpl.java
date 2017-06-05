@@ -2998,6 +2998,92 @@ public class ProfileSerializationImpl implements ProfileSerialization {
         metadata, segmentsMap, datatypesMap, tablesMap);
   }
 
+  @Override
+  public InputStream serializeProfileDisplayToZip(Profile original, String[] ids,
+      DocumentMetaData metadata, Date dateUpdated) throws IOException, CloneNotSupportedException {
+
+    Profile filteredProfile = new Profile();
+
+    HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
+    HashMap<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
+    HashMap<String, Table> tablesMap = new HashMap<String, Table>();
+
+    filteredProfile.setBaseId(original.getBaseId());
+    filteredProfile.setChanges(original.getChanges());
+    filteredProfile.setComment(original.getComment());
+    filteredProfile.setConstraintId(original.getConstraintId());
+    filteredProfile.setScope(original.getScope());
+    filteredProfile.setSectionContents(original.getSectionContents());
+    filteredProfile.setSectionDescription(original.getSectionDescription());
+    filteredProfile.setSectionPosition(original.getSectionPosition());
+    filteredProfile.setSectionTitle(original.getSectionTitle());
+    filteredProfile.setSourceId(original.getSourceId());
+    filteredProfile.setType(original.getType());
+    filteredProfile.setUsageNote(original.getUsageNote());
+    filteredProfile.setMetaData(original.getMetaData());
+
+    for (SegmentLink sl : original.getSegmentLibrary().getChildren()) {
+      if (sl != null) {
+        Segment s = segmentService.findById(sl.getId());
+        if (s != null) {
+          segmentsMap.put(s.getId(), s);
+        }
+      }
+    }
+
+    for (DatatypeLink dl : original.getDatatypeLibrary().getChildren()) {
+      if (dl != null) {
+        Datatype d = datatypeService.findById(dl.getId());
+        if (d != null) {
+          datatypesMap.put(d.getId(), d);
+        }
+      }
+    }
+
+    for (TableLink tl : original.getTableLibrary().getChildren()) {
+      if (tl != null) {
+        Table t = tableService.findById(tl.getId());
+        if (t != null) {
+          tablesMap.put(t.getId(), t);
+        }
+      }
+    }
+
+    Messages messages = new Messages();
+    for (Message m : original.getMessages().getChildren()) {
+      if (Arrays.asList(ids).contains(m.getId())) {
+        if (m.getMessageID() == null)
+          m.setMessageID(UUID.randomUUID().toString());
+        messages.addMessage(m);
+        for (SegmentRefOrGroup seog : m.getChildren()) {
+          this.visit(seog, segmentsMap, datatypesMap, tablesMap);
+        }
+      }
+    }
+
+    SegmentLibrary segments = new SegmentLibrary();
+    for (String key : segmentsMap.keySet()) {
+      segments.addSegment(segmentsMap.get(key));
+    }
+
+    DatatypeLibrary datatypes = new DatatypeLibrary();
+    for (String key : datatypesMap.keySet()) {
+      datatypes.addDatatype(datatypesMap.get(key));
+    }
+
+    TableLibrary tables = new TableLibrary();
+    for (String key : tablesMap.keySet()) {
+      tables.addTable(tablesMap.get(key));
+    }
+
+    filteredProfile.setDatatypeLibrary(datatypes);
+    filteredProfile.setSegmentLibrary(segments);
+    filteredProfile.setMessages(messages);
+    filteredProfile.setTableLibrary(tables);
+
+    return new XMLExportTool().exportXMLAsDisplayFormatForSelectedMessages(filteredProfile, metadata, segmentsMap, datatypesMap, tablesMap);
+  }
+  
   private void visit(SegmentRefOrGroup seog, Map<String, Segment> segmentsMap,
       Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
     if (seog instanceof SegmentRef) {
@@ -3081,93 +3167,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     }
     return null;
   }
-
-  @Override
-  public InputStream serializeProfileDisplayToZip(Profile original, String[] ids,
-      DocumentMetaData metadata, Date dateUpdated) throws IOException, CloneNotSupportedException {
-
-    List<Profile> filteredProfiles = new ArrayList<Profile>();
-
-    for (String id : ids) {
-      Profile filteredProfile = new Profile();
-
-      HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
-      HashMap<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
-      HashMap<String, Table> tablesMap = new HashMap<String, Table>();
-
-      filteredProfile.setBaseId(original.getBaseId());
-      filteredProfile.setChanges(original.getChanges());
-      filteredProfile.setComment(original.getComment());
-      filteredProfile.setConstraintId(original.getConstraintId());
-      filteredProfile.setScope(original.getScope());
-      filteredProfile.setSectionContents(original.getSectionContents());
-      filteredProfile.setSectionDescription(original.getSectionDescription());
-      filteredProfile.setSectionPosition(original.getSectionPosition());
-      filteredProfile.setSectionTitle(original.getSectionTitle());
-      filteredProfile.setSourceId(original.getSourceId());
-      filteredProfile.setType(original.getType());
-      filteredProfile.setUsageNote(original.getUsageNote());
-      filteredProfile.setMetaData(original.getMetaData().clone());
-
-      for (SegmentLink sl : original.getSegmentLibrary().getChildren()) {
-        if (sl != null) {
-          Segment s = segmentService.findById(sl.getId());
-          if (s != null) {
-            segmentsMap.put(s.getId(), s);
-          }
-        }
-      }
-
-      for (DatatypeLink dl : original.getDatatypeLibrary().getChildren()) {
-        if (dl != null) {
-          Datatype d = datatypeService.findById(dl.getId());
-          if (d != null) {
-            datatypesMap.put(d.getId(), d);
-          }
-        }
-      }
-
-      for (TableLink tl : original.getTableLibrary().getChildren()) {
-        if (tl != null) {
-          Table t = tableService.findById(tl.getId());
-          if (t != null) {
-            tablesMap.put(t.getId(), t);
-          }
-        }
-      }
-
-      Messages messages = new Messages();
-      for (Message m : original.getMessages().getChildren()) {
-        if (id.equals(m.getId())) {
-          filteredProfile.getMetaData().setProfileID(m.getMessageID());
-          messages.addMessage(m);
-          for (SegmentRefOrGroup seog : m.getChildren()) {
-            this.visit(seog, segmentsMap, datatypesMap, tablesMap);
-          }
-        }
-      }
-
-      SegmentLibrary segments = new SegmentLibrary();
-      for (String key : segmentsMap.keySet()) {
-        segments.addSegment(segmentsMap.get(key));
-      }
-
-      DatatypeLibrary datatypes = new DatatypeLibrary();
-      for (String key : datatypesMap.keySet()) {
-        datatypes.addDatatype(datatypesMap.get(key));
-      }
-
-      filteredProfile.setDatatypeLibrary(datatypes);
-      filteredProfile.setSegmentLibrary(segments);
-      filteredProfile.setMessages(messages);
-      filteredProfile.setTableLibrary(original.getTableLibrary());
-
-      filteredProfiles.add(filteredProfile);
-    }
-
-    return this.serializeProfileDisplayToZip(filteredProfiles, metadata, dateUpdated);
-  }
-
 
   private void addDatatype(Datatype d, Map<String, Datatype> datatypesMap) {
     if (d != null) {

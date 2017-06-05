@@ -8,14 +8,7 @@ angular.module('igl').factory(
 
         svc.exportAsXMLByMessageIds = function (id, mids, xmlFormat) {
             var form = document.createElement("form");
-
-            if (xmlFormat === 'Validation') {
-                form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/' + mids);
-            } else if (xmlFormat === 'Display') {
-                form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/' + mids);
-            } else if (xmlFormat === 'Gazelle') {
-                form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/' + mids);
-            }
+            form.action = $rootScope.api('api/igdocuments/' + id + '/export/' + xmlFormat + '/' + mids);
             form.method = "POST";
             form.target = "_target";
             var csrfInput = document.createElement("input");
@@ -29,14 +22,7 @@ angular.module('igl').factory(
 
         svc.exportAsXMLByCompositeProfileIds = function (id, mids, xmlFormat) {
             var form = document.createElement("form");
-
-            if (xmlFormat === 'Validation') {
-                form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/Composite/' + mids);
-            } else if (xmlFormat === 'Display') {
-                form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/Composite/' + mids);
-            } else if (xmlFormat === 'Gazelle') {
-                form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/Composite/' + mids);
-            }
+            form.action = $rootScope.api('api/igdocuments/' + id + '/export/' + xmlFormat + '/Composite/' + mids);
             form.method = "POST";
             form.target = "_target";
             var csrfInput = document.createElement("input");

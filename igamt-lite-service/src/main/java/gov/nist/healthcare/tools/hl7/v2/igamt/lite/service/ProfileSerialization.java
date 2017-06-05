@@ -27,13 +27,13 @@ public interface ProfileSerialization {
 
 	Profile deserializeXMLToProfile(Document docProfile, Document docValueSet, Document docConstraints);
 
-	InputStream serializeCompositeProfileToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException;
-
 	InputStream serializeProfileToZip(Profile profile, String[] ids, DocumentMetaData metadata, Date dateUpdated) throws IOException, CloneNotSupportedException;
 
 	InputStream serializeProfileDisplayToZip(Profile profile, String[] ids, DocumentMetaData metadata, Date dateUpdated) throws IOException, CloneNotSupportedException;
 
 	InputStream serializeProfileGazelleToZip(Profile profile, String[] ids) throws IOException, CloneNotSupportedException;
+	
+	InputStream serializeCompositeProfileToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException;
 
 	InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException;
 
