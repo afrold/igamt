@@ -86,6 +86,7 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
 
     $scope.doSearch = function(){
         delete $scope.data;
+        $scope.showErrorMessage = false;
         return SearchService.search($scope.searchParameters,$scope.updateResult,$scope.searchError);
     }
 
