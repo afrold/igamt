@@ -28,14 +28,16 @@ public interface IGDocumentExportService {
   InputStream exportAsPdf(IGDocument d) throws IOException;
 
   InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
-
-  InputStream exportAsValidationForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException;
   
-  InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids) throws IOException,
-      CloneNotSupportedException;
+  InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
 
-  InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids) throws IOException,
-      CloneNotSupportedException;
+  InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
+  
+  InputStream exportAsDisplayForSelectedCompositeProfiles(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
+  
+  InputStream exportAsValidationForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException;
+
+  InputStream exportAsGazelleForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException;
 
   InputStream exportAsXlsx(IGDocument d) throws IOException;
 
