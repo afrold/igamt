@@ -50,9 +50,9 @@
                                 <div class="" style="min-height: 800px;">
 
                                     <md-content class= "container">
-                                            <mdlist flex dnd-list="igs" class="container" style="padding: 39px; margin-top: 12px;">
-                                                <md-list-item ng-repeat="row in igs |filter:search" layout="row" dnd-draggable="row"
-                                                              dnd-moved="tmpIgs.splice($index, 1);orderIgs(igs)"
+                                            <mdlist flex dnd-list="tmpIgs" class="container" style="padding: 39px; margin-top: 12px;">
+                                                <md-list-item ng-repeat="row in tmpIgs |filter:search" layout="row" dnd-draggable="row"
+                                                              dnd-moved="tmpIgs.splice($index, 1);orderIgs(tmpIgs)"
                                                               dnd-effect-allowed="move" style="border-bottom: 0.5px solid;padding: 18px; border-bottom: 0.1px solid;
                                                               padding: 0px;
                                                               overflow-x: hidden;
@@ -79,6 +79,35 @@
 
 
                                                                 <div flex="60" layout="row" layout-align="end end" style="margin-top:-14px;">
+                                                                                    <!--<md-button ng-if="igDocumentConfig.selectedType === 'USER'" md-colors="{background:'blue'}"-->
+                                                                                               <!--aria-label="Edit IG Document" type="button"-->
+                                                                                               <!--ng-click="edit(row)" class="buttonForIgList">-->
+                                                                                        <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
+                                                                                    <!--</md-button>-->
+                                                                                    <!--<md-button aria-label="View IG Document" type="button" md-colors="{background:'grey'}"-->
+                                                                                               <!--ng-click="view(row)" class="buttonForIgList">-->
+                                                                                        <!--<span><i class="fa fa-eye fa-fw"></i></span>-->
+                                                                                    <!--</md-button>-->
+                                                                                    <!--<md-button aria-label="Create Copy of IG Document" type="button" md-colors="{background:'light-blue'}"-->
+                                                                                               <!--ng-click="clone(row);selectIGDocumentType('USER')" class="buttonForIgList">-->
+                                                                                        <!--<span style="color:white"><i class="fa fa-plus fa-fw"></i></span>-->
+                                                                                    <!--</md-button>-->
+                                                                                    <!--<md-button aria-label="Delete IG Document" type="button"-->
+                                                                                               <!--ng-if="igDocumentConfig.selectedType === 'USER'" md-colors="{background:'red'}"-->
+                                                                                               <!--ng-click="confirmDelete(row)" class="buttonForIgList">-->
+                                                                                        <!--<span><i class="fa fa-trash-o fa-fw"></i></span>-->
+                                                                                    <!--</md-button>-->
+                                                                                        <!--<md-button  ng-if="row.comment === 'PENDING_APPROVAL'" aria-label="Approve Share Document" type="button"-->
+                                                                                                   <!--ng-click="confirmShareDocument(row)" md-colors="{background:'blue'}" class="buttonForIgList">-->
+                                                                                    <!--<span><i class="fa fa-check fa-fw"-->
+                                                                                             <!--aria-hidden="true"></i></span>-->
+                                                                                        <!--</md-button>-->
+                                                                                        <!--<md-button ng-if="row.comment === 'PENDING_APPROVAL'"  aria-label="Reject Share Document" type="button" md-colors="{background:'blue-grey'}"-->
+                                                                                                   <!--ng-click="rejectShareDocument(row)" class="buttonForIgList">-->
+                                                                                    <!--<span><i class="fa fa-times fa-fw"-->
+                                                                                             <!--aria-hidden="true"></i></span>-->
+                                                                                        <!--</md-button>-->
+
                                                                         <span ng-click="edit(row)" style="color:blue" title="Edit IG document" ><i class="fa fa-pencil fa-fw igList-icons"></i></span>
 
                                                                         <span  ng-click="view(row)" style="color:black" title="Read IG document"><i class="fa fa-eye fa-fw igList-icons"></i></span>
