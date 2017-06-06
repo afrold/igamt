@@ -3,10 +3,11 @@
         <div class="md-title">Search HL7 entities</div>
         <div layout="row">
             <md-input-container>
-                <label>Type</label>
+                <span><label>Type</label>
                 <md-select ng-model="searchParameters" required>
                     <md-option ng-repeat="type in types" ng-value="type">{{type.name}}</md-option>
                 </md-select>
+                </span>
             </md-input-container>
             <md-input-container ng-repeat="field in searchParameters.fields">
                 <span ng-if="field.values.length > 0">
