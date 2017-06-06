@@ -753,31 +753,26 @@
                     <div class="md-dialog-content">
                         <div ng-show="exportStep === 0">
                             <form novalidate ng-cloak>
-                                     <div  ng-show="!toGVT || toGVT === false">
-                                        <h4 class="modal-title ">Select Export Format</h4>
+                                <div  ng-show="!toGVT || toGVT === false">
+                                    <h4 class="modal-title ">Select Export Format</h4>
+                                </div>
+                                <div ng-show="!toGVT || toGVT === false">
+                                    <div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">
+                                        <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Validation' " ng-class="{ 'active':xmlFormat==='Validation' } ">
+                                            NIST Validation Format
+                                        </label>
+                                        <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Display' " ng-class="{ 'active':xmlFormat==='Display' } ">
+                                            NIST Display Format
+                                        </label>
+                                        <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Gazelle' " ng-class="{ 'active':xmlFormat==='Gazelle' } ">
+                                            Gazelle Format
+                                        </label>
                                     </div>
-                                <br />
-                                    <div ng-show="!toGVT || toGVT === false">
-                                        <div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">
-                                            <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Validation' " ng-class="{ 'active':xmlFormat==='Validation' } ">
-                                                NIST
-                                                Validation Format
-                                            </label>
-                                            <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Display' " ng-class="{ 'active':xmlFormat==='Display' } ">
-                                                NIST
-                                                Display Format
-                                            </label>
-                                            <label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Gazelle' " ng-class="{ 'active':xmlFormat==='Gazelle' } ">
-                                                Gazelle
-                                                Format
-                                            </label>
-                                        </div>
-                                    </div>
-                                <br />
-
-                                         <div class="alert alert-info" style="width: 100%">
-                                            <i class="badge badge-default">1</i> Select Composite Profile(s)
-                                        </div>
+                                </div>
+                                <br/>
+                                <div layout="row" class="alert alert-info" style="width:100%">
+                                    <i class="badge badge-default">1</i> Select Conformance Profile(s)
+                                </div>
                                         <div class="table-responsive" layout="row" style="width: 100%">
                                             <table class="table table-striped table-bordered table-condensed ">
                                                 <thead>
