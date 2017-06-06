@@ -891,16 +891,12 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/export/Validation/Composite/{cIds}", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
-	public void exportValidationXMLByCompositeProfile(@PathVariable("id") String id,
-			@PathVariable("cIds") String[] compositeProfileIds, HttpServletRequest request,
-			HttpServletResponse response) throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
-		log.info("Exporting as xml file profile with id=" + id + " for selected Composite Profiles="
-				+ Arrays.toString(compositeProfileIds));
+	public void exportValidationXMLByCompositeProfile(@PathVariable("id") String id, @PathVariable("cIds") String[] compositeProfileIds, 
+	      HttpServletRequest request, HttpServletResponse response) throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
 		IGDocument d = findIGDocument(id);
 		InputStream content = igDocumentExport.exportAsValidationForSelectedCompositeProfiles(d, compositeProfileIds);
 		response.setContentType("application/zip");
-		response.setHeader("Content-disposition", "attachment;filename=" + updateFileName(d.getMetaData().getTitle())
-				+ "-CompositeProfile_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+		response.setHeader("Content-disposition", "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-CompositeProfile_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -914,6 +910,17 @@ public class IGDocumentController extends CommonController {
 		response.setHeader("Content-disposition", "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
+	
+	@RequestMapping(value = "/{id}/export/Display/Composite/{cIds}", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
+    public void exportDisplayXMLByCompositeProfile(@PathVariable("id") String id, @PathVariable("cIds") String[] compositeProfileIds,
+            HttpServletRequest request, HttpServletResponse response)
+            throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+        IGDocument d = findIGDocument(id);
+        InputStream content = igDocumentExport.exportAsDisplayForSelectedCompositeProfiles(d, compositeProfileIds);
+        response.setContentType("application/zip");
+        response.setHeader("Content-disposition", "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+        FileCopyUtils.copy(content, response.getOutputStream());
+    }
 	
 	@RequestMapping(value = "/{id}/export/Display/{mIds}", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
     public void exportDisplayXMLByMessages(@PathVariable("id") String id, @PathVariable("mIds") String[] messageIds,

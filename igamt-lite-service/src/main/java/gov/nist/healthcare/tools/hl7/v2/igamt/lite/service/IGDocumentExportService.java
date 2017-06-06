@@ -33,6 +33,8 @@ public interface IGDocumentExportService {
 
   InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
   
+  InputStream exportAsDisplayForSelectedCompositeProfiles(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
+  
   InputStream exportAsValidationForSelectedCompositeProfiles(IGDocument d, String[] cids) throws IOException, CloneNotSupportedException;
 
   InputStream exportAsXlsx(IGDocument d) throws IOException;

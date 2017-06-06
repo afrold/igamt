@@ -209,7 +209,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       throws IOException, CloneNotSupportedException {
     if (d != null) {
       return profileSerializationService.serializeProfileToZip(d.getProfile(), mids,
-          d.getMetaData(), d.getDateUpdated());
+          d.getMetaData());
     } else {
       return new NullInputStream(1L);
     }
@@ -230,7 +230,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       throws IOException, CloneNotSupportedException {
     if (d != null) {
       return profileSerializationService.serializeProfileDisplayToZip(d.getProfile(), mids,
-          d.getMetaData(), d.getDateUpdated());
+          d.getMetaData());
     } else {
       return new NullInputStream(1L);
     }
@@ -241,6 +241,16 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       throws IOException, CloneNotSupportedException {
     if (d != null) {
       return profileSerializationService.serializeCompositeProfileToZip(d, cids);
+    } else {
+      return new NullInputStream(1L);
+    }
+  }
+  
+  @Override
+  public InputStream exportAsDisplayForSelectedCompositeProfiles(IGDocument d, String[] cids)
+      throws IOException, CloneNotSupportedException {
+    if (d != null) {
+      return profileSerializationService.serializeCompositeProfileDisplayToZip(d, cids);
     } else {
       return new NullInputStream(1L);
     }

@@ -200,10 +200,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
         docConstraints.toXML());
   }
 
-  private String serializeProfileDisplayToXML(Profile profile, DocumentMetaData metadata,
-      Date dateUpdated) {
-    return this.serializeProfileDisplayToDoc(profile, metadata).toXML();
-  }
 
   private String serializeProfileGazelleToXML(Profile profile) {
     return this.serializeProfileGazelleToDoc(profile).toXML();
@@ -237,19 +233,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
     nu.xom.Document doc = new nu.xom.Document(e);
 
-    return doc;
-  }
-
-  private nu.xom.Document serializeProfileDisplayToDoc(Profile profile, DocumentMetaData metadata) {
-    nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
-    this.serializeProfileMetaData(e, profile, metadata);
-
-    for (Message m : profile.getMessages().getChildren()) {
-      e.appendChild(this.serializeDisplayMessage(m, profile));
-    }
-    e.appendChild(tableSerializationService.serializeTableLibraryToElement(profile, metadata,
-        profile.getDateUpdated()));
-    nu.xom.Document doc = new nu.xom.Document(e);
     return doc;
   }
 
@@ -632,37 +615,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     return elmMessage;
   }
 
-  private nu.xom.Element serializeDisplayMessage(Message m, Profile profile) {
-    nu.xom.Element elmMessage = new nu.xom.Element("Message");
-    if (m.getName() != null && !m.getName().equals(""))
-      elmMessage.addAttribute(new Attribute("Name", serializationUtil.str(m.getName())));
-    elmMessage.addAttribute(new Attribute("Type", serializationUtil.str(m.getMessageType())));
-    elmMessage.addAttribute(new Attribute("Event", serializationUtil.str(m.getEvent())));
-    elmMessage.addAttribute(new Attribute("StructID", serializationUtil.str(m.getStructID())));
-    if (m.getDescription() != null && !m.getDescription().equals(""))
-      elmMessage
-          .addAttribute(new Attribute("Description", serializationUtil.str(m.getDescription())));
-
-    Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
-    for (SegmentRefOrGroup segmentRefOrGroup : m.getChildren()) {
-      segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
-    }
-
-    for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
-
-      String path = i + "[1]";
-
-      SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
-      if (segmentRefOrGroup instanceof SegmentRef) {
-        elmMessage
-            .appendChild(serializeDisplaySegment((SegmentRef) segmentRefOrGroup, profile, m, path));
-      } else if (segmentRefOrGroup instanceof Group) {
-        elmMessage.appendChild(serializeDisplayGroup((Group) segmentRefOrGroup, profile, m, path));
-      }
-    }
-    return elmMessage;
-  }
-
   private nu.xom.Element serializeGroup(Group group, Map<String, Segment> segmentsMap) {
     nu.xom.Element elmGroup = new nu.xom.Element("Group");
     elmGroup.addAttribute(new Attribute("ID", serializationUtil.str(group.getName())));
@@ -753,80 +705,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     }
 
     return elmSegGroup;
-  }
-
-  private nu.xom.Element serializeDisplayGroup(Group group, Profile profile, Message message,
-      String path) {
-    nu.xom.Element elmGroup = new nu.xom.Element("Group");
-    elmGroup.addAttribute(new Attribute("ID", serializationUtil.str(group.getName())));
-    elmGroup.addAttribute(new Attribute("Name", serializationUtil.str(group.getName())));
-    elmGroup.addAttribute(new Attribute("Usage", serializationUtil.str(group.getUsage().value())));
-    elmGroup.addAttribute(new Attribute("Min", serializationUtil.str(group.getMin() + "")));
-    elmGroup.addAttribute(new Attribute("Max", serializationUtil.str(group.getMax())));
-
-    Predicate groupPredicate = this.findPredicate(null, null, message.getPredicates(), path);
-    if (groupPredicate != null) {
-      nu.xom.Element elmPredicate = new nu.xom.Element("Predicate");
-      elmPredicate.addAttribute(new Attribute("TrueUsage", "" + groupPredicate.getTrueUsage()));
-      elmPredicate.addAttribute(new Attribute("FalseUsage", "" + groupPredicate.getFalseUsage()));
-
-      nu.xom.Element elmDescription = new nu.xom.Element("Description");
-      elmDescription.appendChild(groupPredicate.getDescription());
-      elmPredicate.appendChild(elmDescription);
-
-      nu.xom.Node n = this.innerXMLHandler(groupPredicate.getAssertion());
-      if (n != null)
-        elmPredicate.appendChild(n);
-
-      elmGroup.appendChild(elmPredicate);
-    }
-
-    List<ConformanceStatement> groupConformanceStatements =
-        this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
-
-    if (groupConformanceStatements.size() > 0) {
-      nu.xom.Element elmConformanceStatements = new nu.xom.Element("ConformanceStatements");
-
-      for (ConformanceStatement c : groupConformanceStatements) {
-        nu.xom.Element elmConformanceStatement = new nu.xom.Element("ConformanceStatement");
-        elmConformanceStatement.addAttribute(new Attribute("ID", "" + c.getConstraintId()));
-        nu.xom.Element elmDescription = new nu.xom.Element("Description");
-        elmDescription.appendChild(c.getDescription());
-        elmConformanceStatement.appendChild(elmDescription);
-
-        nu.xom.Node n = this.innerXMLHandler(c.getAssertion());
-        if (n != null)
-          elmConformanceStatement.appendChild(n);
-
-        elmConformanceStatements.appendChild(elmConformanceStatement);
-      }
-
-      elmGroup.appendChild(elmConformanceStatements);
-    }
-
-    Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
-
-    for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
-      segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
-    }
-
-    nu.xom.Element elmStructure = new nu.xom.Element("Structure");
-
-    for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
-      String childPath = path + "." + i + "[1]";
-      SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
-      if (segmentRefOrGroup instanceof SegmentRef) {
-        elmStructure.appendChild(
-            serializeDisplaySegment((SegmentRef) segmentRefOrGroup, profile, message, childPath));
-      } else if (segmentRefOrGroup instanceof Group) {
-        elmStructure.appendChild(
-            serializeDisplayGroup((Group) segmentRefOrGroup, profile, message, childPath));
-      }
-    }
-
-    elmGroup.appendChild(elmStructure);
-
-    return elmGroup;
   }
 
   private nu.xom.Element serializeSegmentRef(SegmentRef segmentRef,
@@ -942,96 +820,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     return elmSegment;
   }
 
-  private nu.xom.Element serializeDisplaySegment(SegmentRef segmentRef, Profile profile,
-      Message message, String path) {
-    nu.xom.Element elmSegment = new nu.xom.Element("Segment");
-
-    Segment segment = segmentService.findById(segmentRef.getRef().getId());
-
-    elmSegment.addAttribute(new Attribute("ID", serializationUtil.str(segment.getLabel())));
-    elmSegment
-        .addAttribute(new Attribute("Usage", serializationUtil.str(segmentRef.getUsage().value())));
-    elmSegment.addAttribute(new Attribute("Min", serializationUtil.str(segmentRef.getMin() + "")));
-    elmSegment.addAttribute(new Attribute("Max", serializationUtil.str(segmentRef.getMax())));
-    elmSegment.addAttribute(new Attribute("Name", serializationUtil.str(segment.getName())));
-    elmSegment.addAttribute(
-        new Attribute("Description", serializationUtil.str(segment.getDescription())));
-
-    Predicate segmentPredicate = this.findPredicate(null, null, message.getPredicates(), path);
-    if (segmentPredicate != null) {
-      nu.xom.Element elmPredicate = new nu.xom.Element("Predicate");
-      elmPredicate.addAttribute(new Attribute("TrueUsage", "" + segmentPredicate.getTrueUsage()));
-      elmPredicate.addAttribute(new Attribute("FalseUsage", "" + segmentPredicate.getFalseUsage()));
-
-      nu.xom.Element elmDescription = new nu.xom.Element("Description");
-      elmDescription.appendChild(segmentPredicate.getDescription());
-      elmPredicate.appendChild(elmDescription);
-
-      nu.xom.Node n = this.innerXMLHandler(segmentPredicate.getAssertion());
-      if (n != null)
-        elmPredicate.appendChild(n);
-
-      elmSegment.appendChild(elmPredicate);
-    }
-
-    List<ConformanceStatement> segmentConformanceStatements =
-        this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
-
-    if (segmentConformanceStatements.size() > 0) {
-      nu.xom.Element elmConformanceStatements = new nu.xom.Element("ConformanceStatements");
-
-      for (ConformanceStatement c : segmentConformanceStatements) {
-        nu.xom.Element elmConformanceStatement = new nu.xom.Element("ConformanceStatement");
-        elmConformanceStatement.addAttribute(new Attribute("ID", "" + c.getConstraintId()));
-        nu.xom.Element elmDescription = new nu.xom.Element("Description");
-        elmDescription.appendChild(c.getDescription());
-        elmConformanceStatement.appendChild(elmDescription);
-
-        nu.xom.Node n = this.innerXMLHandler(c.getAssertion());
-        if (n != null)
-          elmConformanceStatement.appendChild(n);
-
-        elmConformanceStatements.appendChild(elmConformanceStatement);
-      }
-      elmSegment.appendChild(elmConformanceStatements);
-    }
-
-    nu.xom.Element elmSegmentStructure = new nu.xom.Element("Structure");
-
-    Map<Integer, Field> fields = new HashMap<Integer, Field>();
-    for (Field f : segment.getFields()) {
-      fields.put(f.getPosition(), f);
-    }
-
-    if (fields.size() > 0) {
-      elmSegment.appendChild(elmSegmentStructure);
-    }
-
-    for (int i = 1; i < fields.size() + 1; i++) {
-      String fieldPath = path + "." + i + "[1]";
-      Field f = fields.get(i);
-      Mapping mapping = this.findMapping(segment.getDynamicMapping().getMappings(), i);
-      if (mapping == null) {
-        this.serializeDisplayField(f, datatypeService.findById(f.getDatatype().getId()),
-            elmSegmentStructure, profile, message, segment, fieldPath);
-      } else {
-        nu.xom.Element elmDynamicField = new nu.xom.Element("DynamicField");
-
-        elmDynamicField.addAttribute(new Attribute("Name", serializationUtil.str(f.getName())));
-        elmDynamicField.addAttribute(new Attribute("Reference", mapping.getReference() + ""));
-
-        for (Case ca : mapping.getCases()) {
-          nu.xom.Element elmCase = new nu.xom.Element("Case");
-          elmCase.addAttribute(new Attribute("Value", serializationUtil.str(ca.getValue())));
-          this.serializeDisplayField(f, datatypeService.findById(ca.getDatatype()), elmCase,
-              profile, message, segment, fieldPath);
-          elmDynamicField.appendChild(elmCase);
-        }
-        elmSegmentStructure.appendChild(elmDynamicField);
-      }
-    }
-    return elmSegment;
-  }
+  
 
   private void serializeGazelleField(Field f, Datatype fieldDatatype, nu.xom.Element elmParent,
       Profile profile, Message message, Segment segment, String fieldPath) {
@@ -1119,119 +908,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     }
   }
 
-  private void serializeDisplayField(Field f, Datatype fieldDatatype, nu.xom.Element elmParent,
-      Profile profile, Message message, Segment segment, String fieldPath) {
-    nu.xom.Element elmField = new nu.xom.Element("Field");
-    elmParent.appendChild(elmField);
-
-    elmField.addAttribute(new Attribute("Name", serializationUtil.str(f.getName())));
-    elmField.addAttribute(new Attribute("Usage", serializationUtil.str(f.getUsage().toString())));
-    elmField
-        .addAttribute(new Attribute("Datatype", serializationUtil.str(fieldDatatype.getName())));
-    elmField.addAttribute(new Attribute("Flavor", serializationUtil.str(fieldDatatype.getLabel())));
-    elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
-    if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-      elmField.addAttribute(new Attribute("MaxLength", serializationUtil.str(f.getMaxLength())));
-    if (f.getConfLength() != null && !f.getConfLength().equals(""))
-      elmField.addAttribute(new Attribute("ConfLength", serializationUtil.str(f.getConfLength())));
-
-    if (f.getTables() != null) {
-      if (f.getTables().size() > 0) {
-        String bindingString = "";
-        String bindingStrength = "";
-        String bindingLocation = "";
-        for (TableLink tl : f.getTables()) {
-          Table table = tableService.findById(tl.getId());
-          if (table != null && table.getBindingIdentifier() != null
-              && !table.getBindingIdentifier().equals(""))
-            bindingString = bindingString + table.getBindingIdentifier() + ":";
-        }
-
-        if (!bindingString.equals(""))
-          elmField.addAttribute(
-              new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
-        if (!bindingStrength.equals("")) {
-          elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
-        }
-
-        if (!bindingLocation.equals("")) {
-          elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
-        } else {
-          Datatype d = datatypeService.findById(f.getDatatype().getId());
-          if (d != null && d.getComponents() != null && d.getComponents().size() > 0) {
-            elmField.addAttribute(new Attribute("BindingLocation", "1"));
-          }
-        }
-
-      }
-    }
-
-    elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
-    elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
-    if (f.getItemNo() != null && !f.getItemNo().equals(""))
-      elmField.addAttribute(new Attribute("ItemNo", serializationUtil.str(f.getItemNo())));
-
-    Predicate fieldPredicate = this.findPredicate(segment.getPredicates(), f.getPosition() + "[1]",
-        message.getPredicates(), fieldPath);
-    if (fieldPredicate != null) {
-      nu.xom.Element elmPredicate = new nu.xom.Element("Predicate");
-      elmPredicate.addAttribute(new Attribute("TrueUsage", "" + fieldPredicate.getTrueUsage()));
-      elmPredicate.addAttribute(new Attribute("FalseUsage", "" + fieldPredicate.getFalseUsage()));
-
-      nu.xom.Element elmDescription = new nu.xom.Element("Description");
-      elmDescription.appendChild(fieldPredicate.getDescription());
-      elmPredicate.appendChild(elmDescription);
-
-      nu.xom.Node n = this.innerXMLHandler(fieldPredicate.getAssertion());
-      if (n != null)
-        elmPredicate.appendChild(n);
-
-      elmField.appendChild(elmPredicate);
-    }
-
-    List<ConformanceStatement> fieldConformanceStatements =
-        this.findConformanceStatements(segment.getConformanceStatements(), f.getPosition() + "[1]",
-            message.getConformanceStatements(), fieldPath);
-
-    if (fieldConformanceStatements.size() > 0) {
-      nu.xom.Element elmConformanceStatements = new nu.xom.Element("ConformanceStatements");
-
-      for (ConformanceStatement c : fieldConformanceStatements) {
-        nu.xom.Element elmConformanceStatement = new nu.xom.Element("ConformanceStatement");
-        elmConformanceStatement.addAttribute(new Attribute("ID", "" + c.getConstraintId()));
-        nu.xom.Element elmDescription = new nu.xom.Element("Description");
-        elmDescription.appendChild(c.getDescription());
-        elmConformanceStatement.appendChild(elmDescription);
-
-        nu.xom.Node n = this.innerXMLHandler(c.getAssertion());
-        if (n != null)
-          elmConformanceStatement.appendChild(n);
-
-        elmConformanceStatements.appendChild(elmConformanceStatement);
-      }
-
-      elmField.appendChild(elmConformanceStatements);
-    }
-
-    nu.xom.Element elmFieldStructure = new nu.xom.Element("Structure");
-    Map<Integer, Component> components = new HashMap<Integer, Component>();
-
-    for (Component c : fieldDatatype.getComponents()) {
-      components.put(c.getPosition(), c);
-    }
-
-    if (components.size() > 0) {
-      elmField.appendChild(elmFieldStructure);
-    }
-
-    for (int j = 1; j < components.size() + 1; j++) {
-      String componentPath = fieldPath + "." + j + "[1]";
-      Component c = components.get(j);
-      this.serializeDisplayComponent(c, datatypeService.findById(c.getDatatype().getId()),
-          elmFieldStructure, profile, message, fieldDatatype, componentPath);
-    }
-  }
-
+  
   private void serializeGazelleComponent(Component c, Datatype componentDatatype,
       nu.xom.Element elmParent, Profile profile, Message message, Datatype fieldDatatype,
       String componentPath) {
@@ -1309,117 +986,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     elmParent.appendChild(elmComponent);
   }
 
-  private void serializeDisplayComponent(Component c, Datatype componentDatatype,
-      nu.xom.Element elmParent, Profile profile, Message message, Datatype fieldDatatype,
-      String componentPath) {
-    nu.xom.Element elmComponent = new nu.xom.Element("Component");
-    elmComponent.addAttribute(new Attribute("Name", serializationUtil.str(c.getName())));
-    elmComponent
-        .addAttribute(new Attribute("Usage", serializationUtil.str(c.getUsage().toString())));
-    elmComponent.addAttribute(
-        new Attribute("Datatype", serializationUtil.str(componentDatatype.getName())));
-    elmComponent
-        .addAttribute(new Attribute("Flavor", serializationUtil.str(componentDatatype.getLabel())));
-    elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
-    if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
-      elmComponent
-          .addAttribute(new Attribute("MaxLength", serializationUtil.str(c.getMaxLength())));
-    if (c.getConfLength() != null && !c.getConfLength().equals(""))
-      elmComponent
-          .addAttribute(new Attribute("ConfLength", serializationUtil.str(c.getConfLength())));
-    if (c.getTables() != null) {
-      if (c.getTables().size() > 0) {
-        String bindingString = "";
-        String bindingStrength = "";
-        String bindingLocation = "";
-        for (TableLink tl : c.getTables()) {
-          Table table = tableService.findById(tl.getId());
-          if (table != null && table.getBindingIdentifier() != null
-              && !table.getBindingIdentifier().equals(""))
-            bindingString = bindingString + table.getBindingIdentifier() + ":";
-        }
-
-        if (!bindingString.equals(""))
-          elmComponent.addAttribute(
-              new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
-        if (!bindingStrength.equals("")) {
-          elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
-        }
-
-        if (!bindingLocation.equals("")) {
-          elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
-        } else {
-          Datatype d = datatypeService.findById(c.getDatatype().getId());
-          if (d != null && d.getComponents() != null && d.getComponents().size() > 0) {
-            elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
-          }
-        }
-
-      }
-    }
-    Predicate componentPredicate = this.findPredicate(fieldDatatype.getPredicates(),
-        c.getPosition() + "[1]", message.getPredicates(), componentPath);
-    if (componentPredicate != null) {
-      nu.xom.Element elmPredicate = new nu.xom.Element("Predicate");
-      elmPredicate.addAttribute(new Attribute("TrueUsage", "" + componentPredicate.getTrueUsage()));
-      elmPredicate
-          .addAttribute(new Attribute("FalseUsage", "" + componentPredicate.getFalseUsage()));
-
-      nu.xom.Element elmDescription = new nu.xom.Element("Description");
-      elmDescription.appendChild(componentPredicate.getDescription());
-      elmPredicate.appendChild(elmDescription);
-
-      nu.xom.Node n = this.innerXMLHandler(componentPredicate.getAssertion());
-      if (n != null)
-        elmPredicate.appendChild(n);
-
-      elmComponent.appendChild(elmPredicate);
-    }
-
-    List<ConformanceStatement> componentConformanceStatements =
-        this.findConformanceStatements(fieldDatatype.getConformanceStatements(),
-            c.getPosition() + "[1]", message.getConformanceStatements(), componentPath);
-
-    if (componentConformanceStatements.size() > 0) {
-      nu.xom.Element elmConformanceStatements = new nu.xom.Element("ConformanceStatements");
-
-      for (ConformanceStatement cs : componentConformanceStatements) {
-        nu.xom.Element elmConformanceStatement = new nu.xom.Element("ConformanceStatement");
-        elmConformanceStatement.addAttribute(new Attribute("ID", "" + cs.getConstraintId()));
-        nu.xom.Element elmDescription = new nu.xom.Element("Description");
-        elmDescription.appendChild(cs.getDescription());
-        elmConformanceStatement.appendChild(elmDescription);
-
-        nu.xom.Node n = this.innerXMLHandler(cs.getAssertion());
-        if (n != null)
-          elmConformanceStatement.appendChild(n);
-
-        elmConformanceStatements.appendChild(elmConformanceStatement);
-      }
-
-      elmComponent.appendChild(elmConformanceStatements);
-    }
-
-    nu.xom.Element elmComponentStructure = new nu.xom.Element("Structure");
-    Map<Integer, Component> subComponents = new HashMap<Integer, Component>();
-
-    for (Component sc : componentDatatype.getComponents()) {
-      subComponents.put(sc.getPosition(), sc);
-    }
-
-    if (subComponents.size() > 0) {
-      elmComponent.appendChild(elmComponentStructure);
-    }
-
-    for (int k = 1; k < subComponents.size() + 1; k++) {
-      String subComponentPath = componentPath + "." + k + "[1]";
-      Component sc = subComponents.get(k);
-      this.serializeDisplaySubComponent(sc, datatypeService.findById(sc.getDatatype().getId()),
-          elmComponentStructure, profile, message, componentDatatype, subComponentPath);
-    }
-    elmParent.appendChild(elmComponent);
-  }
-
   private void serializeGazelleSubComponent(Component sc, Datatype subComponentDatatype,
       nu.xom.Element elmParent, Profile profile, Message message, Datatype componentDatatype,
       String subComponentPath) {
@@ -1483,102 +1049,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
       elmSubComponent.appendChild(elmPredicate);
     }
 
-    elmParent.appendChild(elmSubComponent);
-  }
-
-  private void serializeDisplaySubComponent(Component sc, Datatype subComponentDatatype,
-      nu.xom.Element elmParent, Profile profile, Message message, Datatype componentDatatype,
-      String subComponentPath) {
-    nu.xom.Element elmSubComponent = new nu.xom.Element("SubComponent");
-    elmSubComponent.addAttribute(new Attribute("Name", serializationUtil.str(sc.getName())));
-    elmSubComponent
-        .addAttribute(new Attribute("Usage", serializationUtil.str(sc.getUsage().toString())));
-    elmSubComponent.addAttribute(
-        new Attribute("Datatype", serializationUtil.str(subComponentDatatype.getName())));
-    elmSubComponent.addAttribute(
-        new Attribute("Flavor", serializationUtil.str(subComponentDatatype.getLabel())));
-    elmSubComponent.addAttribute(new Attribute("MinLength", "" + sc.getMinLength()));
-    if (sc.getMaxLength() != null && !sc.getMaxLength().equals(""))
-      elmSubComponent
-          .addAttribute(new Attribute("MaxLength", serializationUtil.str(sc.getMaxLength())));
-    if (sc.getConfLength() != null && !sc.getConfLength().equals(""))
-      elmSubComponent
-          .addAttribute(new Attribute("ConfLength", serializationUtil.str(sc.getConfLength())));
-
-    if (sc.getTables() != null) {
-      if (sc.getTables().size() > 0) {
-        String bindingString = "";
-        String bindingStrength = "";
-        String bindingLocation = "";
-        for (TableLink tl : sc.getTables()) {
-          Table table = tableService.findById(tl.getId());
-          if (table != null && table.getBindingIdentifier() != null
-              && !table.getBindingIdentifier().equals(""))
-            bindingString = bindingString + table.getBindingIdentifier() + ":";
-        }
-
-        if (!bindingString.equals(""))
-          elmSubComponent.addAttribute(
-              new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
-        if (!bindingStrength.equals("")) {
-          elmSubComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
-        }
-
-        if (!bindingLocation.equals("")) {
-          elmSubComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
-        } else {
-          Datatype d = datatypeService.findById(sc.getDatatype().getId());
-          if (d != null && d.getComponents() != null && d.getComponents().size() > 0) {
-            elmSubComponent.addAttribute(new Attribute("BindingLocation", "1"));
-          }
-        }
-
-      }
-    }
-
-    Predicate subComponentPredicate = this.findPredicate(componentDatatype.getPredicates(),
-        sc.getPosition() + "[1]", message.getPredicates(), subComponentPath);
-    if (subComponentPredicate != null) {
-      nu.xom.Element elmPredicate = new nu.xom.Element("Predicate");
-      elmPredicate
-          .addAttribute(new Attribute("TrueUsage", "" + subComponentPredicate.getTrueUsage()));
-      elmPredicate
-          .addAttribute(new Attribute("FalseUsage", "" + subComponentPredicate.getFalseUsage()));
-
-      nu.xom.Element elmDescription = new nu.xom.Element("Description");
-      elmDescription.appendChild(subComponentPredicate.getDescription());
-      elmPredicate.appendChild(elmDescription);
-
-      nu.xom.Node n = this.innerXMLHandler(subComponentPredicate.getAssertion());
-      if (n != null)
-        elmPredicate.appendChild(n);
-
-      elmSubComponent.appendChild(elmPredicate);
-    }
-
-    List<ConformanceStatement> subComponentConformanceStatements =
-        this.findConformanceStatements(componentDatatype.getConformanceStatements(),
-            sc.getPosition() + "[1]", message.getConformanceStatements(), subComponentPath);
-
-    if (subComponentConformanceStatements.size() > 0) {
-      nu.xom.Element elmConformanceStatements = new nu.xom.Element("ConformanceStatements");
-
-      for (ConformanceStatement cs : subComponentConformanceStatements) {
-        nu.xom.Element elmConformanceStatement = new nu.xom.Element("ConformanceStatement");
-        elmConformanceStatement.addAttribute(new Attribute("ID", "" + cs.getConstraintId()));
-        nu.xom.Element elmDescription = new nu.xom.Element("Description");
-        elmDescription.appendChild(cs.getDescription());
-        elmConformanceStatement.appendChild(elmDescription);
-
-        nu.xom.Node n = this.innerXMLHandler(cs.getAssertion());
-        if (n != null)
-          elmConformanceStatement.appendChild(n);
-
-        elmConformanceStatements.appendChild(elmConformanceStatement);
-      }
-
-      elmSubComponent.appendChild(elmConformanceStatements);
-    }
     elmParent.appendChild(elmSubComponent);
   }
 
@@ -2573,25 +2043,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     return new ByteArrayInputStream(bytes);
   }
 
-  private InputStream serializeProfileDisplayToZip(List<Profile> profiles,
-      DocumentMetaData metadata, Date dateUpdated) throws IOException {
-    ByteArrayOutputStream outputStream = null;
-    byte[] bytes;
-    outputStream = new ByteArrayOutputStream();
-    ZipOutputStream out = new ZipOutputStream(outputStream);
-
-    for (Profile p : profiles) {
-      Message m = p.getMessages().getChildren().iterator().next();
-      String folderName = m.getIdentifier() + "(" + m.getName() + ")";
-      this.generateDisplayProfileIS(out,
-          this.serializeProfileDisplayToXML(p, metadata, dateUpdated), folderName);
-    }
-
-    out.close();
-    bytes = outputStream.toByteArray();
-    return new ByteArrayInputStream(bytes);
-  }
-
   @Override
   public InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException {
     ByteArrayOutputStream outputStream = null;
@@ -2632,83 +2083,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     inProfile.close();
   }
 
-  private void generateProfileError(ZipOutputStream out, Exception e) throws IOException {
-    byte[] buf = new byte[1024];
-    out.putNextEntry(new ZipEntry("ProfileValidation.txt"));
-    InputStream inProfile = null;
-    if (e == null) {
-      inProfile = IOUtils.toInputStream("No error found!");
-    } else {
-      inProfile = IOUtils.toInputStream(e.getMessage() + System.getProperty("line.separator")
-          + ProfileSerializationImpl.getStackTrace(e));
-    }
-    int lenTP;
-    while ((lenTP = inProfile.read(buf)) > 0) {
-      out.write(buf, 0, lenTP);
-    }
-    out.closeEntry();
-    inProfile.close();
-  }
-
-  private void generateValueSetError(ZipOutputStream out, Exception e) throws IOException {
-    byte[] buf = new byte[1024];
-    out.putNextEntry(new ZipEntry("ValueSetValidation.txt"));
-    InputStream inProfile = null;
-    if (e == null) {
-      inProfile = IOUtils.toInputStream("No error found!");
-    } else {
-      inProfile = IOUtils.toInputStream(e.getMessage() + System.getProperty("line.separator")
-          + ProfileSerializationImpl.getStackTrace(e));
-    }
-    int lenTP;
-    while ((lenTP = inProfile.read(buf)) > 0) {
-      out.write(buf, 0, lenTP);
-    }
-    out.closeEntry();
-    inProfile.close();
-  }
-
-  private void generateConstraintsError(ZipOutputStream out, Exception e) throws IOException {
-    byte[] buf = new byte[1024];
-    out.putNextEntry(new ZipEntry("ConstraintsValidation.txt"));
-    InputStream inProfile = null;
-    if (e == null) {
-      inProfile = IOUtils.toInputStream("No error found!");
-    } else {
-      inProfile = IOUtils.toInputStream(e.getMessage() + System.getProperty("line.separator")
-          + ProfileSerializationImpl.getStackTrace(e));
-    }
-    int lenTP;
-    while ((lenTP = inProfile.read(buf)) > 0) {
-      out.write(buf, 0, lenTP);
-    }
-    out.closeEntry();
-    inProfile.close();
-  }
-
-  private static String getStackTrace(final Throwable throwable) {
-    final StringWriter sw = new StringWriter();
-    final PrintWriter pw = new PrintWriter(sw, true);
-    throwable.printStackTrace(pw);
-    return sw.getBuffer().toString();
-  }
-
   private void generateGazelleProfileIS(ZipOutputStream out, String profileXML) throws IOException {
     byte[] buf = new byte[1024];
     out.putNextEntry(new ZipEntry("Gazelle_Profile.xml"));
-    InputStream inProfile = IOUtils.toInputStream(profileXML);
-    int lenTP;
-    while ((lenTP = inProfile.read(buf)) > 0) {
-      out.write(buf, 0, lenTP);
-    }
-    out.closeEntry();
-    inProfile.close();
-  }
-
-  private void generateDisplayProfileIS(ZipOutputStream out, String profileXML, String name)
-      throws IOException {
-    byte[] buf = new byte[1024];
-    out.putNextEntry(new ZipEntry(name + File.separator + "NIST_DisplayProfile.xml"));
     InputStream inProfile = IOUtils.toInputStream(profileXML);
     int lenTP;
     while ((lenTP = inProfile.read(buf)) > 0) {
@@ -2825,8 +2202,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
     return this.serializeProfileGazelleToZip(filteredProfile);
   }
 
-
-  // TODO
   @Override
   public InputStream serializeCompositeProfileToZip(IGDocument doc, String[] ids)
       throws IOException, CloneNotSupportedException {
@@ -2913,8 +2288,92 @@ public class ProfileSerializationImpl implements ProfileSerialization {
   }
 
   @Override
+  public InputStream serializeCompositeProfileDisplayToZip(IGDocument doc, String[] ids)
+      throws IOException, CloneNotSupportedException {
+    Map<String, Segment> segmentsMap = new HashMap<String, Segment>();
+    Map<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
+    Map<String, Table> tablesMap = new HashMap<String, Table>();
+
+    for (SegmentLink sl : doc.getProfile().getSegmentLibrary().getChildren()) {
+      if (sl != null) {
+        Segment s = segmentService.findById(sl.getId());
+        if (s != null) {
+          segmentsMap.put(s.getId(), s);
+        }
+      }
+    }
+
+    for (DatatypeLink dl : doc.getProfile().getDatatypeLibrary().getChildren()) {
+      if (dl != null) {
+        Datatype d = datatypeService.findById(dl.getId());
+        if (d != null) {
+          datatypesMap.put(d.getId(), d);
+        }
+      }
+    }
+
+    for (TableLink tl : doc.getProfile().getTableLibrary().getChildren()) {
+      if (tl != null) {
+        Table t = tableService.findById(tl.getId());
+        if (t != null) {
+          tablesMap.put(t.getId(), t);
+        }
+      }
+    }
+
+
+
+    Profile filteredProfile = new Profile();
+    filteredProfile.setBaseId(doc.getProfile().getBaseId());
+    filteredProfile.setChanges(doc.getProfile().getChanges());
+    filteredProfile.setComment(doc.getProfile().getComment());
+    filteredProfile.setConstraintId(doc.getProfile().getConstraintId());
+    filteredProfile.setScope(doc.getProfile().getScope());
+    filteredProfile.setSectionContents(doc.getProfile().getSectionContents());
+    filteredProfile.setSectionDescription(doc.getProfile().getSectionDescription());
+    filteredProfile.setSectionPosition(doc.getProfile().getSectionPosition());
+    filteredProfile.setSectionTitle(doc.getProfile().getSectionTitle());
+    filteredProfile.setSourceId(doc.getProfile().getSourceId());
+    filteredProfile.setType(doc.getProfile().getType());
+    filteredProfile.setUsageNote(doc.getProfile().getUsageNote());
+    filteredProfile.setMetaData(doc.getProfile().getMetaData());
+
+    Messages messages = new Messages();
+    for (CompositeProfileStructure cps : doc.getProfile().getCompositeProfiles().getChildren()) {
+      if (Arrays.asList(ids).contains(cps.getId())) {
+        CompositeProfile cp = compositeProfileService.buildCompositeProfile(cps);
+        segmentsMap.putAll(cp.getSegmentsMap());
+        datatypesMap.putAll(cp.getDatatypesMap());
+        messages.addMessage(cp.convertMessage());
+      }
+    }
+
+    SegmentLibrary segments = new SegmentLibrary();
+    for (String key : segmentsMap.keySet()) {
+      segments.addSegment(segmentsMap.get(key));
+    }
+
+    DatatypeLibrary datatypes = new DatatypeLibrary();
+    for (String key : datatypesMap.keySet()) {
+      datatypes.addDatatype(datatypesMap.get(key));
+    }
+
+    TableLibrary tables = new TableLibrary();
+    for (String key : tablesMap.keySet()) {
+      tables.addTable(tablesMap.get(key));
+    }
+
+    filteredProfile.setDatatypeLibrary(datatypes);
+    filteredProfile.setSegmentLibrary(segments);
+    filteredProfile.setMessages(messages);
+    filteredProfile.setTableLibrary(tables);
+
+    return new XMLExportTool().exportXMLAsDisplayFormatForSelectedMessages(filteredProfile, doc.getMetaData(), segmentsMap, datatypesMap, tablesMap);
+  }
+  
+  @Override
   public InputStream serializeProfileToZip(Profile original, String[] ids,
-      DocumentMetaData metadata, Date dateUpdated) throws IOException, CloneNotSupportedException {
+      DocumentMetaData metadata) throws IOException, CloneNotSupportedException {
     Profile filteredProfile = new Profile();
 
     HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
@@ -3000,7 +2459,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
   @Override
   public InputStream serializeProfileDisplayToZip(Profile original, String[] ids,
-      DocumentMetaData metadata, Date dateUpdated) throws IOException, CloneNotSupportedException {
+      DocumentMetaData metadata) throws IOException, CloneNotSupportedException {
 
     Profile filteredProfile = new Profile();
 
@@ -3107,13 +2566,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
         }
 
         referenceTableId = this.findValueSetID(s.getValueSetBindings(), reference);
-
-        System.out.println("--------- DM Start---------");
-        System.out.println(s.getLabel());
-        System.out.println(referenceTableId);
-        System.out.println(reference);
-        System.out.println(tablesMap.get(referenceTableId).getBindingIdentifier());
-        System.out.println(tablesMap.get(referenceTableId).getHl7Version());
 
         if (referenceTableId != null) {
           Table table = tablesMap.get(referenceTableId);
