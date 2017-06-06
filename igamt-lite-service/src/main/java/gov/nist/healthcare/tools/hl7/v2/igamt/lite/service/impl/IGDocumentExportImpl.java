@@ -196,14 +196,6 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
 
   static String inlineConstraints = "false";
 
-  public InputStream exportAsZip(DatatypeLibrary d) throws IOException {
-    if (d != null) {
-      return profileSerializationService.serializeDatatypeToZip(d);
-    } else {
-      return new NullInputStream(1L);
-    }
-  }
-
   @Override
   public InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids)
       throws IOException, CloneNotSupportedException {
@@ -219,7 +211,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   public InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids)
       throws IOException, CloneNotSupportedException {
     if (d != null) {
-      return profileSerializationService.serializeProfileGazelleToZip(d.getProfile(), mids);
+      return profileSerializationService.serializeProfileGazelleToZip(d.getProfile(), mids, d.getMetaData());
     } else {
       return new NullInputStream(1L);
     }
@@ -241,6 +233,16 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       throws IOException, CloneNotSupportedException {
     if (d != null) {
       return profileSerializationService.serializeCompositeProfileToZip(d, cids);
+    } else {
+      return new NullInputStream(1L);
+    }
+  }
+  
+  @Override
+  public InputStream exportAsGazelleForSelectedCompositeProfiles(IGDocument d, String[] cids)
+      throws IOException, CloneNotSupportedException {
+    if (d != null) {
+      return profileSerializationService.serializeCompositeProfileGazelleToZip(d, cids);
     } else {
       return new NullInputStream(1L);
     }

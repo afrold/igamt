@@ -14,9 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -31,16 +29,12 @@ public interface ProfileSerialization {
 
 	InputStream serializeProfileDisplayToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException;
 
-	InputStream serializeProfileGazelleToZip(Profile profile, String[] ids) throws IOException, CloneNotSupportedException;
+	InputStream serializeProfileGazelleToZip(Profile profile, String[] ids, DocumentMetaData metadata) throws IOException, CloneNotSupportedException;
 	
 	InputStream serializeCompositeProfileToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException;
 	
+	InputStream serializeCompositeProfileGazelleToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException;
+   
 	InputStream serializeCompositeProfileDisplayToZip(IGDocument doc, String[] ids) throws IOException, CloneNotSupportedException;
-
-	InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException;
-
-	String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary);
-
-	Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary);
-
+	
 }

@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -943,6 +942,17 @@ public class IGDocumentController extends CommonController {
 		response.setHeader("Content-disposition", "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
+	
+	@RequestMapping(value = "/{id}/export/Gazelle/Composite/{cIds}", method = RequestMethod.POST, produces = "application/zip", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
+    public void exportGazelleXMLByCompositeProfiles(@PathVariable("id") String id, @PathVariable("cIds") String[] compositeProfileIds,
+            HttpServletRequest request, HttpServletResponse response)
+            throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+        IGDocument d = findIGDocument(id);
+        InputStream content = igDocumentExport.exportAsGazelleForSelectedCompositeProfiles(d, compositeProfileIds);
+        response.setContentType("application/zip");
+        response.setHeader("Content-disposition", "attachment;filename=" + updateFileName(d.getMetaData().getTitle()) + "-" + id + "_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".zip");
+        FileCopyUtils.copy(content, response.getOutputStream());
+    }
 
 	@RequestMapping(value = "/{id}/export/pdf", method = RequestMethod.POST, produces = "application/pdf", consumes = "application/x-www-form-urlencoded; charset=UTF-8")
 	public void exportPdfFromXsl(@PathVariable("id") String id, HttpServletRequest request,
