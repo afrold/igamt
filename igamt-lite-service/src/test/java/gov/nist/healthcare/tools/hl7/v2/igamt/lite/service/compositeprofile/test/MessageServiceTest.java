@@ -155,4 +155,35 @@ public class MessageServiceTest implements MessageService {
     return null;
   }
 
+  @Override
+  public List<Message> findByNameAndScope(String name, String scope) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<Message> findByScope(String scope) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Message findByNameAndVersionAndScope(String name, String hl7Version, String scope) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<Message> findByScopeAndVersion(String name, String hl7Version) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Message findByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
+      String hl7Version, String scope) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }
