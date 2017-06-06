@@ -1832,58 +1832,71 @@
 
 
 <script type="text/ng-template" id="createProfileComponent.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Create Profile Component</h3>
-    </div>
-    <form role="form">
-        <div class="modal-body">
+
+    <md-dialog aria-label="create profile component" style="width: 50%">
+        <form ng-cloak role="form" name="creatingForm" id="creatingForm">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Create Profile Component </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+
+                  <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                        <md-content layout-padding>
 
 
-            <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label class="input-left">Name</label>
+                                <input type="text" name="name" ng-model="name" required>
 
-                <md-content layout-padding>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label class="input-left">Description</label>
+                                <input type="text" name="description" ng-model="description">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label class="input-left">Comment</label>
+                                <textarea rows="3" name="comment" id="comment" ng-model="comment" />
+                            </md-input-container>
+                        </md-content>
 
-
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label class="input-left">Name</label>
-                        <input type="text" name="name" ng-model="name" required>
-
-                    </md-input-container>
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label class="input-left">Description</label>
-                        <input type="text" name="description" ng-model="description">
-                    </md-input-container>
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label class="input-left">Comment</label>
-                        <textarea rows="3" name="comment" id="comment" ng-model="comment" />
-                    </md-input-container>
-                </md-content>
-
-
-            </div>
-
-
-        </div>
-
-        <div class="modal-footer">
-            <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Cancel</span>
-            </button>
-            <button type="submit" ng-disabled="!name" class="btn btn-raised btn-info btn-sm" ng-click="create()">
-                <span><i class="fa fa-check fa-fw">&nbsp; </i>Create</span>
-            </button>
-        </div>
-    </form>
+                  </div>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button  class="md-primary md-raised" md-autofocus ng-click="create()" ng-disabled="creatingForm.$invalid">
+                    Create
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 
 
 <script type="text/ng-template" id="createCompositeProfile.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Create Composite Profile</h3>
-    </div>
-    <form role="form" name="newForm">
-        <div class="modal-body" style="height:500px;overflow-y:scroll;">
-            <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+
+    <md-dialog aria-label="create profile component" style="width: 50%">
+        <form ng-cloak role="form" name="newForm">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Create Composite Profile </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" style="height:500px;overflow-y:scroll;">
+                    <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
                 <md-tab ng-disabled="true">
                     <md-tab-label>
                         <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
@@ -2097,23 +2110,25 @@
 
         </div>
 
+            </md-dialog-content>
+                <md-dialog-actions layout="row" layout-align="end end">
+                    <md-button ng-show="compositeMetaData" class="btn btn-raised btn-primary btn-sm" ng-click="compositeMetaData=!compositeMetaData;next()"><span>Next</span>
+                    </md-button>
+                    <md-button ng-show="!compositeMetaData" class="btn btn-raised btn-primary btn-sm" ng-click="compositeMetaData=!compositeMetaData;back()"><span>Back</span>
+                    </md-button>
 
-        <div class="modal-footer">
-
-            <button ng-show="compositeMetaData" class="btn btn-raised btn-primary btn-sm" ng-click="compositeMetaData=!compositeMetaData;next()"><span>Next</span>
-                    </button>
-            <button ng-show="!compositeMetaData" class="btn btn-raised btn-primary btn-sm" ng-click="compositeMetaData=!compositeMetaData;back()"><span>Back</span>
-                    </button>
-
-            <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-                        &nbsp; </i>Cancel</span>
-                    </button>
-            <button class="btn btn-raised btn-info btn-sm" ng-disabled="pcList.length<1 || !baseP || newForm.$invalid ||!newForm.$dirty" ng-click="create()">
+                    <!--<md-button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">-->
+                        <!--&nbsp; </i>Cancel</span>-->
+                    <!--</md-button>-->
+                    <md-button class="btn btn-raised btn-info btn-sm" ng-disabled="pcList.length<1 || !baseP || newForm.$invalid ||!newForm.$dirty" ng-click="create()">
                         <span><i class="fa fa-check fa-fw">&nbsp; </i>Create</span>
-                    </button>
+                    </md-button>
 
-        </div>
-    </form>
+                </md-dialog-actions>
+
+        </form>
+    </md-dialog>
+
 </script>
 
 
