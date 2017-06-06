@@ -26,7 +26,7 @@
             <div ng-show="datatype !== null" id="executionPanel">
                 <div class="container">
                     <div class="page-header" style="margin-bottom: 20px">
-                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}} 
+                        <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}
                         <span class="pull-right" ng-if="!typeOfSharing">
 
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
@@ -50,13 +50,13 @@
 
 
                     <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                            ng-disabled="!editForm.$dirty||editForm.$invalid|| datatype.status === 'PUBLISHED'"
+                            ng-disabled="!editForm.$dirty||datatype.status === 'PUBLISHED'"
                             ng-hide="viewSettings.tableReadonly||datatype.status==='PUBLISHED'"
                             ng-click="saveDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
                     </button>
                     <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                            ng-disabled="!editForm.$dirty||editForm.$invalid"
+                            ng-disabled="!editForm.$dirty"
                             ng-show="datatype.status==='PUBLISHED'&& editForm.$dirty"
                             ng-click="saveBindingForDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
