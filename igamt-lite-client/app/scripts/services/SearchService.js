@@ -27,10 +27,25 @@ angular.module('igl').factory('SearchService',function($http, $q) {
             console.log('params: '+getParameters);
             $http({
                 method: 'GET',
-                url: 'api/search/'+searchParameters.value+getParameters
+                url: 'api/export/'+searchParameters.value+'/html'+getParameters
             }).success(function(data){
                 callback(data);
             });
+        },
+
+        listHL7Versions : function(callback) {
+            var hl7Versions = [];
+            $http.get('api/igdocuments/hl7/findVersions', {
+                timeout: 60000
+            }).then(
+                function(response) {
+                    var len = response.data.length;
+                    for (var i = 0; i < len; i++) {
+                        hl7Versions.push(response.data[i]);
+                    }
+                    callback(hl7Versions);
+                }
+            );
         },
 
         getContent:function(entity, callback){

@@ -3138,3 +3138,13 @@ md-select.inside-table{
     outline: 2px dashed #92b0b3 !important;
     outline-offset: -10px !important;
 }
+
+.searchBar {
+  width:100%;
+}
+
+.searchBarComponent {
+  min-width:15%;
+  margin-left: 5px;
+  margin-right: 5px;
+}

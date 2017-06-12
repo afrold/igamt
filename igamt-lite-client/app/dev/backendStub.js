@@ -441,4 +441,13 @@ $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, 
     $httpBackend.whenRoute('GET','api/export/datatype/:id/html',undefined,undefined,['id']).respond(function (method, url, data, headers, params) {
         return [200, getHTMLDatatype(), {}];
     });
+
+    $httpBackend.whenRoute('GET','api/export/datatype/html').respond(function (method, url, data, headers, params) {
+        return [200, getHTMLDatatype(), {}];
+    });
+
+    $httpBackend.whenRoute('GET','api/igdocuments/hl7/findVersions').respond(function (method, url, data, headers, params) {
+        return [200, ['2.5','2.8','2.8.1','2.7'], {}];
+    });
+
 });

@@ -1,8 +1,8 @@
 angular.module('igl').controller('SearchController', function ($scope, SearchService, $mdDialog,$sce) {
     $scope.types = [
         {
-            name:'Dataypes',
-            value:'datatypes',
+            name:'Dataype',
+            value:'datatype',
             fields:[
                 {
                     name:'Name',
@@ -12,13 +12,13 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                 {
                     name:'HL7 Version',
                     param:'hl7Version',
-                    required:false
+                    required:true
                 }
             ]
         },
         {
-            name:'Value Sets',
-            value:'valueSets',
+            name:'Value Set',
+            value:'valueSet',
             fields:[
                 {
                     name:'Scope',
@@ -39,8 +39,8 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
             ]
         },
         {
-            name:'Segments',
-            value:'segments',
+            name:'Segment',
+            value:'segment',
             fields:[
                 {
                     name:'Name',
@@ -50,12 +50,12 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                 {
                     name:'HL7 Version',
                     param:'hl7Version',
-                    required:false
+                    required:true
                 }
             ]
         },        {
-            name:'Messages',
-            value:'messages',
+            name:'Message',
+            value:'message',
             fields:[
                 {
                     name:'Type',
@@ -76,9 +76,23 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
         }
     ];
 
+    $scope.init = function () {
+        SearchService.listHL7Versions($scope.setHl7Versions);
+    }
+
+    $scope.setHl7Versions = function(hl7Versions){
+        $scope.types.forEach(function(type){
+            type.fields.forEach(function(field){
+                if(field.param==='hl7Version'){
+                    field.values = hl7Versions;
+                }
+            });
+        });
+    }
+
     $scope.updateResult = function(data){
-        if(data.length >0){
-            $scope.data = data;
+        if(data.length > 0){
+            $scope.data = $sce.trustAsHtml(data);
         } else {
             $scope.showErrorMessage = true;
         }
@@ -93,14 +107,15 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
     $scope.isFormValid = function(){
         if($scope.searchParameters){
             if($scope.searchParameters.fields){
+                var isValid = true;
                 $scope.searchParameters.fields.forEach(function(field){
                     if(field.required){
                         if(!field.value || field.value === ''){
-                            return false;
+                            isValid = false;
                         }
                     }
                 });
-                return true;
+                return isValid;
             }
         }
         return false;
@@ -134,4 +149,6 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
             $mdDialog.cancel();
         };
     }
+
+    $scope.init();
 });

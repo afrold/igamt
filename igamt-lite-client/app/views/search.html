@@ -1,37 +1,33 @@
 <md-content ng-controller="SearchController">
-    <div >
+    <div>
         <div class="md-title">Search HL7 entities</div>
-        <div layout="row">
-            <md-input-container>
-                <span><label>Type</label>
-                <md-select ng-model="searchParameters" required>
-                    <md-option ng-repeat="type in types" ng-value="type">{{type.name}}</md-option>
-                </md-select>
-                </span>
-            </md-input-container>
-            <md-input-container ng-repeat="field in searchParameters.fields">
-                <span ng-if="field.values.length > 0">
-                    <label>{{field.name}}</label>
-                    <md-select ng-model="field.value" ng-required="field.required">
-                        <md-option ng-repeat="value in field.values" value="{{value}}">{{value}}</md-option>
+        <div class="searchBar">
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                <md-input-container class="searchBarComponent">
+                    <span><label>Type</label>
+                    <md-select ng-model="searchParameters" required>
+                        <md-option ng-repeat="type in types" ng-value="type">{{type.name}}</md-option>
                     </md-select>
-                </span>
-                <span ng-if="field.values == undefined || field.values.length <= 0">
-                    <label>{{field.name}}</label>
-                    <input ng-model="field.value" ng-required="field.required"/>
-                </span>
-            </md-input-container>
-            <md-button class="md-primary" ng-click="doSearch()"  ng-disabled="!isFormValid()">Search</md-button>
+                    </span>
+                </md-input-container>
+                <md-input-container class="searchBarComponent" ng-repeat="field in searchParameters.fields">
+                    <span ng-if="field.values.length > 0">
+                        <label>{{field.name}}</label>
+                        <md-select ng-model="field.value" ng-required="field.required">
+                            <md-option ng-repeat="value in field.values | orderBy" value="{{value}}">{{value}}</md-option>
+                        </md-select>
+                    </span>
+                    <span ng-if="field.values == undefined || field.values.length <= 0">
+                        <label>{{field.name}}</label>
+                        <input ng-model="field.value" ng-required="field.required"/>
+                    </span>
+                </md-input-container>
+                <md-button class="searchBarComponent md-raised md-primary" ng-click="doSearch()"  ng-disabled="!isFormValid()">Search</md-button>
+            </section>
         </div>
         <div ng-show="showErrorMessage">
             Unable to find an entity matching your request.
         </div>
-        <div ng-if="data" style="max-height:500px; overflow-y: scroll;">
-            <span ng-repeat="entity in data">
-                <md-button ng-click="showAdvanced(entity)">
-                    {{entity.label}} - {{entity.hl7Version}}
-                </md-button>
-            </span>
-        </div>
+        <div style="margin:10px;" ng-bind-html="data" />
     </div>
 </md-content>
