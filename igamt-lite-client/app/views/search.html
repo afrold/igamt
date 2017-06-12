@@ -29,7 +29,7 @@
         <div ng-if="data" style="max-height:500px; overflow-y: scroll;">
             <span ng-repeat="entity in data">
                 <md-button ng-click="showAdvanced(entity)">
-                    {{entity.name}} - {{entity.hl7Version}}
+                    {{entity.label}} - {{entity.hl7Version}}
                 </md-button>
             </span>
         </div>
