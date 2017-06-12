@@ -1,7 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,215 +16,184 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import javax.servlet.http.HttpServletRequest;
 
-@RestController
-@RequestMapping("/export")
-public class ExportController extends CommonController{
-	
-	Logger log = LoggerFactory.getLogger(ExportController.class);
-	
-	@Autowired
-	private DatatypeService datatypeService;
-	
-	@Autowired
-	private SegmentService segmentService;
-	
-	@Autowired
-	private MessageService messageService;
-	
-	@Autowired
-	private TableService tableService;
-	
-	@Autowired
-	private IGDocumentService igDocumentService;
-	
-	@Autowired
-	private ProfileComponentService profileComponentService;
+@RestController @RequestMapping("/export") public class ExportController extends CommonController {
 
-	@Autowired
-	private ExportFontConfigService exportFontConfigService;
-	
-	@Autowired
-	private ExportService exportService;
-	
-	@ApiOperation(value = "Export a data type as JSON", notes = "Search a data type by ID and export it in JSON.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/datatype/{id}/json", method = RequestMethod.GET, produces = "application/json")
-	public Datatype getDatatypeAsJson(@PathVariable(value="id") String id) throws DataNotFoundException {
-		Datatype datatype = datatypeService.findById(id);
-		return datatype;
-	}
-	
-	@ApiOperation(value = "Export a data type as HTML", notes = "Search a data type by ID and export it in HTML.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/datatype/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getDatatypeAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
-		Datatype datatype = datatypeService.findById(id);
-		if(datatype!=null){
-			return exportService.exportDataModelAsHtml(datatype,datatype.getName(),generateHost(request));
-		}
-		return null;
-	}
-	
-	@ApiOperation(value = "Export a value set as JSON", notes = "Search a value set by ID and export it in JSON.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/valueSet/{id}/json", method = RequestMethod.GET, produces = "application/json")
-	public Table getValueSetAsJson(@PathVariable(value="id") String id) throws DataNotFoundException {
-		Table table = tableService.findById(id);
-		return table;
-	}
-	
-	@ApiOperation(value = "Export a value set as HTML", notes = "Search a value set by ID and export it in HTML.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/valueSet/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getValueSetAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
-		Table table = tableService.findById(id);
-		if(table!=null){
-			return exportService.exportDataModelAsHtml(table,table.getName(),generateHost(request));
-		}
-		return null;
-	}
-	
-	@ApiOperation(value = "Export a segment as JSON", notes = "Search a segment by ID and export it in JSON.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/segment/{id}/json", method = RequestMethod.GET, produces = "application/json")
-	public Segment getSegmentAsJson(@PathVariable(value="id") String id) throws DataNotFoundException {
-		Segment segment = segmentService.findById(id);
-		return segment;
-	}
-	
-	@ApiOperation(value = "Export a segment as HTML", notes = "Search a segment by ID and export it in HTML.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/segment/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getSegmentAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
-		Segment segment = segmentService.findById(id);
-		if(segment!=null){
-			return exportService.exportDataModelAsHtml(segment,segment.getName(),generateHost(request));
-		}
-		return null;
-	}
-	
-	@ApiOperation(value = "Export a message as JSON", notes = "Search a message by ID and export it in JSON.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/message/{id}/json", method = RequestMethod.GET, produces = "application/json")
-	public Message getMessageAsJson(@PathVariable(value="id") String id) throws DataNotFoundException {
-		Message message = messageService.findById(id);
-		return message;
-	}
-	
-	@ApiOperation(value = "Export a message as HTML", notes = "Search a message by ID and export it in HTML.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/message/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getMessageAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
-		Message message = messageService.findById(id);
-		if(message != null){
-		  return exportService.exportDataModelAsHtml(message,message.getName(),generateHost(request));
-		}
-		return null;
-	}
-	
-	@ApiOperation(value = "Export an IG Document as JSON", notes = "Search an IG Document by ID and export it in JSON.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/igDocument/{id}/json", method = RequestMethod.GET, produces = "application/json")
-	public IGDocument getIgDocumentAsJson(@PathVariable(value="id") String id) throws DataNotFoundException {
-		IGDocument igDocument = igDocumentService.findById(id);
-		return igDocument;
-	}
-	
-	@ApiOperation(value = "Export an IG Document as HTML", notes = "Search an IG Document by ID and export it in HTML.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/igDocument/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getIgDocumentAsHtml(@PathVariable(value="id") String id) throws DataNotFoundException {
-		IGDocument igDocument = igDocumentService.findById(id);
-		if(igDocument!=null){
-			try {
-				return IOUtils.toString(exportService.exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT, ExportConfig.getBasicExportConfig("table"), exportFontConfigService.getDefaultExportFontConfig()));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-	
-	@ApiOperation(value = "Export a profile component as JSON", notes = "Search a profile component by ID and export it in JSON.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/profileComponent/{id}/json", method = RequestMethod.GET, produces = "application/json")
-	public ProfileComponent getProfileComponentAsJson(@PathVariable(value="id") String id) throws DataNotFoundException {
-		ProfileComponent profileComponent = profileComponentService.findById(id);
-		return profileComponent;
-	}
-	
-	@ApiOperation(value = "Export a profile component as HTML", notes = "Search a profile component by ID and export it in HTML.")
-    @ApiResponses({
-      @ApiResponse(code = 200, message = "Success"),
-      @ApiResponse(code = 400, message = "Bad request")
-    })
-	@RequestMapping(value = "/profileComponent/{id}/html", method = RequestMethod.GET, produces = "text/html")
-	public String getProfileComponentAsHtml(@PathVariable(value="id") String id, HttpServletRequest request) throws DataNotFoundException {
-		ProfileComponent profileComponent = profileComponentService.findById(id);
-		if(profileComponent!=null){
-			return exportService.exportDataModelAsHtml(profileComponent,profileComponent.getName(),generateHost(request));
-		}
-		return null;
-	}
-	
-	private String generateHost(HttpServletRequest request){
-	  String requestUrl = request.getRequestURL().toString();
-	  String servletPath = request.getServletPath();
-	  String host = requestUrl.substring(0,requestUrl.indexOf(servletPath));
-	  return host;
-	}
+    Logger log = LoggerFactory.getLogger(ExportController.class);
+
+    @Autowired private DatatypeService datatypeService;
+
+    @Autowired private SegmentService segmentService;
+
+    @Autowired private MessageService messageService;
+
+    @Autowired private TableService tableService;
+
+    @Autowired private IGDocumentService igDocumentService;
+
+    @Autowired private ProfileComponentService profileComponentService;
+
+    @Autowired private ExportFontConfigService exportFontConfigService;
+
+    @Autowired private ExportService exportService;
+
+    @ApiOperation(value = "Export a data type as JSON", notes = "Search a data type by ID and export it in JSON.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/datatype/{id}/json", method = RequestMethod.GET, produces = "application/json")
+    public Datatype getDatatypeAsJson(@PathVariable(value = "id") String id)
+        throws DataNotFoundException {
+        Datatype datatype = datatypeService.findById(id);
+        return datatype;
+    }
+
+
+
+    @ApiOperation(value = "Export a data type as HTML", notes = "Search a data type by ID and export it in HTML.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/datatype/{id}/html", method = RequestMethod.GET, produces = "text/html")
+    public String getDatatypeAsHtml(@PathVariable(value = "id") String id,
+        HttpServletRequest request) throws DataNotFoundException {
+        Datatype datatype = datatypeService.findById(id);
+        if (datatype != null) {
+            return exportService
+                .exportDataModelAsHtml(datatype, datatype.getName(), generateHost(request));
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "Export a value set as JSON", notes = "Search a value set by ID and export it in JSON.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/valueSet/{id}/json", method = RequestMethod.GET, produces = "application/json")
+    public Table getValueSetAsJson(@PathVariable(value = "id") String id)
+        throws DataNotFoundException {
+        Table table = tableService.findById(id);
+        return table;
+    }
+
+    @ApiOperation(value = "Export a value set as HTML", notes = "Search a value set by ID and export it in HTML.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/valueSet/{id}/html", method = RequestMethod.GET, produces = "text/html")
+    public String getValueSetAsHtml(@PathVariable(value = "id") String id,
+        HttpServletRequest request) throws DataNotFoundException {
+        Table table = tableService.findById(id);
+        if (table != null) {
+            return exportService
+                .exportDataModelAsHtml(table, table.getName(), generateHost(request));
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "Export a segment as JSON", notes = "Search a segment by ID and export it in JSON.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/segment/{id}/json", method = RequestMethod.GET, produces = "application/json")
+    public Segment getSegmentAsJson(@PathVariable(value = "id") String id)
+        throws DataNotFoundException {
+        Segment segment = segmentService.findById(id);
+        return segment;
+    }
+
+    @ApiOperation(value = "Export a segment as HTML", notes = "Search a segment by ID and export it in HTML.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/segment/{id}/html", method = RequestMethod.GET, produces = "text/html")
+    public String getSegmentAsHtml(@PathVariable(value = "id") String id,
+        HttpServletRequest request) throws DataNotFoundException {
+        Segment segment = segmentService.findById(id);
+        if (segment != null) {
+            return exportService
+                .exportDataModelAsHtml(segment, segment.getName(), generateHost(request));
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "Export a message as JSON", notes = "Search a message by ID and export it in JSON.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/message/{id}/json", method = RequestMethod.GET, produces = "application/json")
+    public Message getMessageAsJson(@PathVariable(value = "id") String id)
+        throws DataNotFoundException {
+        Message message = messageService.findById(id);
+        return message;
+    }
+
+    @ApiOperation(value = "Export a message as HTML", notes = "Search a message by ID and export it in HTML.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/message/{id}/html", method = RequestMethod.GET, produces = "text/html")
+    public String getMessageAsHtml(@PathVariable(value = "id") String id,
+        HttpServletRequest request) throws DataNotFoundException {
+        Message message = messageService.findById(id);
+        if (message != null) {
+            return exportService
+                .exportDataModelAsHtml(message, message.getName(), generateHost(request));
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "Export an IG Document as JSON", notes = "Search an IG Document by ID and export it in JSON.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/igDocument/{id}/json", method = RequestMethod.GET, produces = "application/json")
+    public IGDocument getIgDocumentAsJson(@PathVariable(value = "id") String id)
+        throws DataNotFoundException {
+        IGDocument igDocument = igDocumentService.findById(id);
+        return igDocument;
+    }
+
+    @ApiOperation(value = "Export an IG Document as HTML", notes = "Search an IG Document by ID and export it in HTML.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/igDocument/{id}/html", method = RequestMethod.GET, produces = "text/html")
+    public String getIgDocumentAsHtml(@PathVariable(value = "id") String id)
+        throws DataNotFoundException {
+        IGDocument igDocument = igDocumentService.findById(id);
+        if (igDocument != null) {
+            try {
+                return IOUtils.toString(exportService
+                    .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,
+                        ExportConfig.getBasicExportConfig("table"),
+                        exportFontConfigService.getDefaultExportFontConfig()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "Export a profile component as JSON", notes = "Search a profile component by ID and export it in JSON.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/profileComponent/{id}/json", method = RequestMethod.GET, produces = "application/json")
+    public ProfileComponent getProfileComponentAsJson(@PathVariable(value = "id") String id)
+        throws DataNotFoundException {
+        ProfileComponent profileComponent = profileComponentService.findById(id);
+        return profileComponent;
+    }
+
+    @ApiOperation(value = "Export a profile component as HTML", notes = "Search a profile component by ID and export it in HTML.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/profileComponent/{id}/html", method = RequestMethod.GET, produces = "text/html")
+    public String getProfileComponentAsHtml(@PathVariable(value = "id") String id,
+        HttpServletRequest request) throws DataNotFoundException {
+        ProfileComponent profileComponent = profileComponentService.findById(id);
+        if (profileComponent != null) {
+            return exportService.exportDataModelAsHtml(profileComponent, profileComponent.getName(),
+                generateHost(request));
+        }
+        return null;
+    }
+
+    private String generateHost(HttpServletRequest request) {
+        String requestUrl = request.getRequestURL().toString();
+        String servletPath = request.getServletPath();
+        String host = requestUrl.substring(0, requestUrl.indexOf(servletPath));
+        return host;
+    }
 }
