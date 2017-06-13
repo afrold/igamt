@@ -35,7 +35,7 @@ angular.module('igl').factory('SearchService',function($http, $q) {
 
         listHL7Versions : function(callback) {
             var hl7Versions = [];
-            $http.get('api/igdocuments/hl7/findVersions', {
+            $http.get('api/search/listHl7Versions', {
                 timeout: 60000
             }).then(
                 function(response) {

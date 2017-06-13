@@ -5,10 +5,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentOperations;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -34,6 +32,8 @@ import java.util.List;
     @Autowired private MessageService messageService;
 
     @Autowired private TableService tableService;
+
+    @Autowired private IGDocumentOperations igDocumentOperations;
 
     @ApiOperation(value = "Search data types", notes = "Search by name (required) and HL7 version (not required). Send back a list of data types.")
     @ApiResponses({@ApiResponse(code = 200, message = "Success"),
@@ -133,6 +133,13 @@ import java.util.List;
         return null;
     }
 
-
+    @ApiOperation(value = "Search all HL7Versions", notes = "Search all HL7 versions. Send back a list of versions.")
+    @ApiResponses({@ApiResponse(code = 200, message = "Success"),
+        @ApiResponse(code = 400, message = "Bad request")})
+    @RequestMapping(value = "/listHl7Versions", method = RequestMethod.GET, produces = "application/json")
+    public List<String> listHl7Versions() {
+        List<String> hl7Versions = igDocumentOperations.findHl7Versions();
+        return hl7Versions;
+    }
 
 }

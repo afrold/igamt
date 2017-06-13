@@ -91,7 +91,7 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
     }
 
     $scope.updateResult = function(data){
-        if(data.length > 0){
+        if(data != ''){
             $scope.data = $sce.trustAsHtml(data);
         } else {
             $scope.showErrorMessage = true;
