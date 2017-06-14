@@ -48,23 +48,23 @@ public class ProfileValidationServiceImpl implements ProfileValidationService {
 
 	@Override
 	public void validate(Profile p) throws Exception {
-
-		ProfileSerializationImpl profileSerializationImpl = new ProfileSerializationImpl();
-		String pS = profileSerializationImpl.serializeProfileToXML(p, new DocumentMetaData(), p.getDateUpdated());
-		String schemaPath = "validation/profilesSchema/Profile.xsd";
-		validate(pS, schemaPath);
-
-		TableSerializationImpl tableSerializationImpl = new TableSerializationImpl();
-		String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTableLibrary(), new DocumentMetaData(),
-				p.getDateUpdated());
-		schemaPath = "validation/profilesSchema/ValueSets.xsd";
-		validate(tS, schemaPath);
-
-		ConstraintsSerializationImpl constraintsSerializationImpl = new ConstraintsSerializationImpl();
-		String cS = constraintsSerializationImpl.serializeConstraintsToXML(p, new DocumentMetaData(),
-				p.getDateUpdated());
-		schemaPath = "validation/profilesSchema/ConformanceContext.xsd";
-		validate(cS, schemaPath);
+//
+//		ProfileSerializationImpl profileSerializationImpl = new ProfileSerializationImpl();
+//		String pS = profileSerializationImpl.serializeProfileToXML(p, new DocumentMetaData(), p.getDateUpdated());
+//		String schemaPath = "validation/profilesSchema/Profile.xsd";
+//		validate(pS, schemaPath);
+//
+//		TableSerializationImpl tableSerializationImpl = new TableSerializationImpl();
+//		String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTableLibrary(), new DocumentMetaData(),
+//				p.getDateUpdated());
+//		schemaPath = "validation/profilesSchema/ValueSets.xsd";
+//		validate(tS, schemaPath);
+//
+//		ConstraintsSerializationImpl constraintsSerializationImpl = new ConstraintsSerializationImpl();
+//		String cS = constraintsSerializationImpl.serializeConstraintsToXML(p, new DocumentMetaData(),
+//				p.getDateUpdated());
+//		schemaPath = "validation/profilesSchema/ConformanceContext.xsd";
+//		validate(cS, schemaPath);
 
 	}
 
