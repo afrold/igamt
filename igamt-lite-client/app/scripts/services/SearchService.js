@@ -51,7 +51,7 @@ angular.module('igl').factory('SearchService',function($http, $q,$sce) {
             );
         },
 
-        getContent:function(entity, callback){
+        getExportUrl:function(entity,type){
             var url = "api/export/";
             switch(entity.type){
                 case 'datatype':
@@ -67,10 +67,13 @@ angular.module('igl').factory('SearchService',function($http, $q,$sce) {
                     url+="valueSet";
                     break;
             }
-            url += "/"+entity.id+"/html";
+            return url += "/"+entity.id+"/"+type;
+        },
+
+        getContent:function(entity, callback){
             $http({
                 method: 'GET',
-                url: url
+                url: getExportUrl(entity,'html')
             }).success(function(data){
                 callback(data);
             });
