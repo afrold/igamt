@@ -1,22 +1,39 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportableDataModel;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController @RequestMapping("/export") public class ExportController extends CommonController {
 
     Logger log = LoggerFactory.getLogger(ExportController.class);
@@ -76,9 +93,12 @@ import java.util.List;
                     Datatype datatype = datatypeService
                         .findOneByNameAndVersionAndScope(name, hl7Version,
                             Constant.SCOPE.HL7STANDARD.name());
-                    String html = exportService
-                        .exportDataModelAsHtml(datatype, datatype.getName(), generateHost(request));
-                    return new ExportableDataModel(html,datatype);
+                    if(datatype != null){
+	                    String html = exportService
+	                        .exportDataModelAsHtml(datatype, datatype.getName(), generateHost(request));
+	                    ExportableDataModel exportableDataModel = new ExportableDataModel(html,datatype);
+	                    return exportableDataModel;
+                    }
                 }
             }
         }

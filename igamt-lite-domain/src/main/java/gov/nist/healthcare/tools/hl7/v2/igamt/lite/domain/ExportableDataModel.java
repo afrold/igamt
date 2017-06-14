@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.io.Serializable;
+
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
  * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
@@ -13,13 +15,29 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  * <p>
  * Created by Maxence Lefort on 6/14/17.
  */
-public class ExportableDataModel {
+public class ExportableDataModel implements Serializable {
 
     String html;
     DataModel dataModel;
 
     public ExportableDataModel(String html, DataModel dataModel) {
         this.html = html;
+        this.dataModel = dataModel;
+    }
+
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
+    }
+
+    public DataModel getDataModel() {
+        return dataModel;
+    }
+
+    public void setDataModel(DataModel dataModel) {
         this.dataModel = dataModel;
     }
 }
