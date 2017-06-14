@@ -17,8 +17,9 @@ import java.io.Serializable;
  */
 public class ExportableDataModel implements Serializable {
 
-    String html;
-    DataModel dataModel;
+	private static final long serialVersionUID = 2328534939465058024L;
+	private String html;
+    private DataModel dataModel;
 
     public ExportableDataModel(String html, DataModel dataModel) {
         this.html = html;
