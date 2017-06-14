@@ -5,7 +5,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentOperations;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DataNotFoundException;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +33,7 @@ import java.util.List;
 
     @Autowired private TableService tableService;
 
-    @Autowired private IGDocumentOperations igDocumentOperations;
+    @Autowired private IGDocumentRepository igDocumentRepository;
 
     @ApiOperation(value = "Search data types", notes = "Search by name (required) and HL7 version (not required). Send back a list of data types.")
     @ApiResponses({@ApiResponse(code = 200, message = "Success"),
@@ -138,7 +138,7 @@ import java.util.List;
         @ApiResponse(code = 400, message = "Bad request")})
     @RequestMapping(value = "/listHl7Versions", method = RequestMethod.GET, produces = "application/json")
     public List<String> listHl7Versions() {
-        List<String> hl7Versions = igDocumentOperations.findHl7Versions();
+        List<String> hl7Versions = igDocumentRepository.findHl7Versions();
         return hl7Versions;
     }
 
