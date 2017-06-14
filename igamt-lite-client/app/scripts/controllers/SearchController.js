@@ -92,7 +92,7 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
     }
 
     $scope.updateResult = function(data){
-        if(data.html != ''){
+        if(data != '' && data.html != ''){
             $scope.data = data;
             var basePath = $scope.url = $location.absUrl().substring(0,$location.absUrl().length - ($location.url().length+1));
             $scope.shareHTML = basePath + SearchService.getExportUrl($scope.data.dataModel,'html');

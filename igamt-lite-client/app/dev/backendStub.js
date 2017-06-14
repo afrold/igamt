@@ -452,7 +452,7 @@ $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, 
     $httpBackend.whenRoute('GET','api/export/datatype').respond(function (method, url, data, headers, params) {
         var datatype = getDatatypes()[0];
         if(params.name=='ABCD'){
-            return [200, {}, {}];
+            return [200, '', {}];
         }
         return [200, getExportableDatatype(), {}];
     });
