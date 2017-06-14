@@ -68,20 +68,21 @@ import java.util.List;
         @ApiResponse(code = 200, message = "Success"),
         @ApiResponse(code = 400, message = "Bad request")
     })
-    @RequestMapping(value = "/datatype/html", method = RequestMethod.GET, produces = "application/json")
-    public String getDatatypeAsHtmlWithParams(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
+    @RequestMapping(value = "/datatype", method = RequestMethod.GET, produces = "application/json")
+    public ExportableDataModel getDatatypeWithParams(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
         if ((name != null && !name.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())) {
             if (name != null && !name.isEmpty()) {
                 if (hl7Version != null && !hl7Version.isEmpty()) {
                     Datatype datatype = datatypeService
                         .findOneByNameAndVersionAndScope(name, hl7Version,
                             Constant.SCOPE.HL7STANDARD.name());
-                    return exportService
+                    String html = exportService
                         .exportDataModelAsHtml(datatype, datatype.getName(), generateHost(request));
+                    return new ExportableDataModel(html,datatype);
                 }
             }
         }
-        return new String();
+        return null;
     }
 
     @ApiOperation(value = "Export a value set as JSON", notes = "Search a value set by ID and export it in JSON.")
@@ -113,20 +114,21 @@ import java.util.List;
         @ApiResponse(code = 200, message = "Success"),
         @ApiResponse(code = 400, message = "Bad request")
     })
-    @RequestMapping(value = "/valueSet/html", method = RequestMethod.GET, produces = "application/json")
-    public String getValueSetAsHtmlWithParams(@RequestParam("scope") String scope, @RequestParam(value="bindingIdentifier", required=true) String bindingIdentifier,@RequestParam(value="hl7Version", required=false) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
+    @RequestMapping(value = "/valueSet", method = RequestMethod.GET, produces = "application/json")
+    public ExportableDataModel getValueSetWithParams(@RequestParam("scope") String scope, @RequestParam(value="bindingIdentifier", required=true) String bindingIdentifier,@RequestParam(value="hl7Version", required=false) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
         if(scope.equals(Constant.SCOPE.HL7STANDARD.name()) || scope.equals(Constant.SCOPE.PHINVADS.name())){
             if((bindingIdentifier != null && !bindingIdentifier.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
                 if(bindingIdentifier != null && !bindingIdentifier.isEmpty()){
                     if(hl7Version != null && !hl7Version.isEmpty()){
                         Table table = tableService.findByScopeAndVersionAndBindingIdentifier(Constant.SCOPE.HL7STANDARD,bindingIdentifier, hl7Version);
-                        return exportService
+                        String html = exportService
                             .exportDataModelAsHtml(table, table.getName(), generateHost(request));
+                        return new ExportableDataModel(html,table);
                     }
                 }
             }
         }
-        return new String();
+        return null;
     }
 
     @ApiOperation(value = "Export a segment as JSON", notes = "Search a segment by ID and export it in JSON.")
@@ -158,18 +160,19 @@ import java.util.List;
         @ApiResponse(code = 200, message = "Success"),
         @ApiResponse(code = 400, message = "Bad request")
     })
-    @RequestMapping(value = "/segment/html", method = RequestMethod.GET, produces = "application/json")
-    public String getSegmentAsHtmlWithParams(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
+    @RequestMapping(value = "/segment", method = RequestMethod.GET, produces = "application/json")
+    public ExportableDataModel getSegmentWithParams(@RequestParam(value="name", required=true) String name,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
         if((name != null && !name.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
             if(name != null && !name.isEmpty()){
                 if(hl7Version != null && !hl7Version.isEmpty()){
                     Segment segment = segmentService.findByNameAndVersionAndScope(name, hl7Version, Constant.SCOPE.HL7STANDARD.name());
-                    return exportService
+                    String html = exportService
                         .exportDataModelAsHtml(segment, segment.getName(), generateHost(request));
+                    return new ExportableDataModel(html,segment);
                 }
             }
         }
-        return new String();
+        return null;
     }
 
     @ApiOperation(value = "Export a message as JSON", notes = "Search a message by ID and export it in JSON.")
@@ -201,15 +204,16 @@ import java.util.List;
         @ApiResponse(code = 200, message = "Success"),
         @ApiResponse(code = 400, message = "Bad request")
     })
-    @RequestMapping(value = "/message/html", method = RequestMethod.GET, produces = "application/json")
-    public String getMessageAsHtmlWithParams(@RequestParam(value="messageType", required=true) String messageType,@RequestParam(value="event", required=true) String event,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
+    @RequestMapping(value = "/message", method = RequestMethod.GET, produces = "application/json")
+    public ExportableDataModel getMessageWithParams(@RequestParam(value="messageType", required=true) String messageType,@RequestParam(value="event", required=true) String event,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
         if(messageType != null && !messageType.isEmpty() && event !=null && !event.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
             Message message = messageService.findByMessageTypeAndEventAndVersionAndScope(
                 messageType, event, hl7Version, Constant.SCOPE.HL7STANDARD.name());
-            return exportService
+            String html = exportService
                 .exportDataModelAsHtml(message, message.getName(), generateHost(request));
+            return new ExportableDataModel(html,message);
         }
-        return new String();
+        return null;
     }
 
     @ApiOperation(value = "Export an IG Document as JSON", notes = "Search an IG Document by ID and export it in JSON.")

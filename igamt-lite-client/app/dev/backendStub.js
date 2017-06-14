@@ -443,10 +443,11 @@ $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, 
     });
 
     $httpBackend.whenRoute('GET','api/export/datatype/html').respond(function (method, url, data, headers, params) {
+        var datatype = getDatatypes()[0];
         if(params.name=='ABCD'){
-            return [200, '', {}];
+            return [200, {}, {}];
         }
-        return [200, getHTMLDatatype(), {}];
+        return [200, {'html':getHTMLDatatype(),'json':datatype}, {}];
     });
 
     $httpBackend.whenRoute('GET','api/search/listHl7Versions').respond(function (method, url, data, headers, params) {

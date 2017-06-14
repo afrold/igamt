@@ -27,7 +27,7 @@ angular.module('igl').factory('SearchService',function($http, $q) {
             console.log('params: '+getParameters);
             $http({
                 method: 'GET',
-                url: 'api/export/'+searchParameters.value+'/html'+getParameters
+                url: 'api/export/'+searchParameters.value+getParameters
             }).success(function(data){
                 callback(data);
             });
