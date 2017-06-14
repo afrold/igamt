@@ -443,6 +443,9 @@ $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, 
     });
 
     $httpBackend.whenRoute('GET','api/export/datatype/html').respond(function (method, url, data, headers, params) {
+        if(params.name=='ABCD'){
+            return [200, '', {}];
+        }
         return [200, getHTMLDatatype(), {}];
     });
 
