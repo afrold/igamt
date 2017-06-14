@@ -39,15 +39,21 @@ public class DTMPredicate {
   public void setValue(String value) {
     this.value = value;
   }
-  
-  public String getPredicateDescription(){
-    if(this.value == null){
-      return "If " + this.target.getName() + "(" + this.target.getDescription()+ ")" + " " + this.verb + "."; 
-    }else {
-      return "If " + this.target.getDescription() + "(" + this.target.getDescription()+ ")" + " " + this.verb + " '" + this.value+ "'."; 
+
+  public String getPredicateDescription() {
+    if (target == null) {
+      return "Need target information.";
+    } else if (this.verb == null) {
+      return "Need verb information.";
+    } else if (this.value == null) {
+      return "If " + this.target.getName() + "(" + this.target.getDescription() + ")" + " "
+          + this.verb + ".";
+    } else {
+      return "If " + this.target.getDescription() + "(" + this.target.getDescription() + ")" + " "
+          + this.verb + " '" + this.value + "'.";
     }
   }
-  
+
   public DTMComponentDefinition getTarget() {
     return target;
   }
