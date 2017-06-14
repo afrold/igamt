@@ -1,4 +1,4 @@
-angular.module('igl').controller('SearchController', function ($scope, SearchService, $mdDialog,$sce) {
+angular.module('igl').controller('SearchController', function ($scope, SearchService, $mdDialog,$location) {
     $scope.types = [
         {
             name:'Dataype',
@@ -91,8 +91,12 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
     }
 
     $scope.updateResult = function(data){
-        if(data != ''){
-            $scope.data = $sce.trustAsHtml(data);
+        if(data.html != ''){
+            $scope.data = data;
+            var id = $scope.data.dataModel.id;
+            var basePath = $scope.url = $location.absUrl().substring(0,$location.absUrl().length - ($location.url().length+1)) + 'export/'+id;
+            $scope.shareHTML = basePath + '/html';
+            $scope.shareJSON = basePath + '/json';
         } else {
             $scope.showErrorMessage = true;
         }

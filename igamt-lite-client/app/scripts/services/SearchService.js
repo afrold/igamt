@@ -1,4 +1,4 @@
-angular.module('igl').factory('SearchService',function($http, $q) {
+angular.module('igl').factory('SearchService',function($http, $q,$sce) {
     var SearchService={
 
         generateParameters:function(fields){
@@ -29,6 +29,9 @@ angular.module('igl').factory('SearchService',function($http, $q) {
                 method: 'GET',
                 url: 'api/export/'+searchParameters.value+getParameters
             }).success(function(data){
+                if(data.html != ''){
+                    data.html = $sce.trustAsHtml(data.html);
+                }
                 callback(data);
             });
         },

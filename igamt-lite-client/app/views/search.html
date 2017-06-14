@@ -28,6 +28,34 @@
         <div ng-show="showErrorMessage">
             Unable to find an entity matching your request.
         </div>
-        <div style="margin:10px;" ng-bind-html="data" />
+
+        <md-content ng-show="data != undefined" flex layout="column" style="overflow: auto; height: 500px;">
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="HTML">
+                    <md-content class="md-padding" ng-bind-html="data.html"/>
+                </md-tab>
+                <md-tab label="JSON">
+                    <md-content class="md-padding">
+                        <pre>{{ data.dataModel | json }}</pre>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Share">
+                    <md-content class="md-padding">
+                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                            <md-input-container style="width:90%;">
+                                <label>HTML</label>
+                                <input ng-model="shareHTML" disabled/>
+                            </md-input-container>
+                        </section>
+                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                            <md-input-container style="width:90%;">
+                                <label>JSON</label>
+                                <input ng-model="shareJSON" disabled/>
+                            </md-input-container>
+                        </section>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-content>
     </div>
 </md-content>

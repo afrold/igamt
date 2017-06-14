@@ -19,6 +19,13 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         return request.response;
     };
 
+    function getExportableDatatype() {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatypes/exportableDatatype.json', false);
+        request.send(null);
+        return request.response;
+    };
+
     function getMessage() {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/messages/OMB_027_HL7STANDARD-2.7.json', false);
@@ -442,12 +449,12 @@ $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, 
         return [200, getHTMLDatatype(), {}];
     });
 
-    $httpBackend.whenRoute('GET','api/export/datatype/html').respond(function (method, url, data, headers, params) {
+    $httpBackend.whenRoute('GET','api/export/datatype').respond(function (method, url, data, headers, params) {
         var datatype = getDatatypes()[0];
         if(params.name=='ABCD'){
             return [200, {}, {}];
         }
-        return [200, {'html':getHTMLDatatype(),'json':datatype}, {}];
+        return [200, getExportableDatatype(), {}];
     });
 
     $httpBackend.whenRoute('GET','api/search/listHl7Versions').respond(function (method, url, data, headers, params) {
