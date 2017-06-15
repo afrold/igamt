@@ -141,9 +141,11 @@ import io.swagger.annotations.ApiResponses;
                 if(bindingIdentifier != null && !bindingIdentifier.isEmpty()){
                     if(hl7Version != null && !hl7Version.isEmpty()){
                         Table table = tableService.findByScopeAndVersionAndBindingIdentifier(Constant.SCOPE.HL7STANDARD,bindingIdentifier, hl7Version);
-                        String html = exportService
-                            .exportDataModelAsHtml(table, table.getName(), generateHost(request));
-                        return new ExportableDataModel(html,table);
+                        if(table != null){
+	                        String html = exportService
+	                            .exportDataModelAsHtml(table, table.getName(), generateHost(request));
+	                        return new ExportableDataModel(html,table);
+                        }
                     }
                 }
             }
@@ -186,9 +188,11 @@ import io.swagger.annotations.ApiResponses;
             if(name != null && !name.isEmpty()){
                 if(hl7Version != null && !hl7Version.isEmpty()){
                     Segment segment = segmentService.findByNameAndVersionAndScope(name, hl7Version, Constant.SCOPE.HL7STANDARD.name());
-                    String html = exportService
-                        .exportDataModelAsHtml(segment, segment.getName(), generateHost(request));
-                    return new ExportableDataModel(html,segment);
+                    if(segment != null){
+	                    String html = exportService
+	                        .exportDataModelAsHtml(segment, segment.getName(), generateHost(request));
+	                    return new ExportableDataModel(html,segment);
+                    }
                 }
             }
         }
@@ -229,9 +233,11 @@ import io.swagger.annotations.ApiResponses;
         if(messageType != null && !messageType.isEmpty() && event !=null && !event.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
             Message message = messageService.findByMessageTypeAndEventAndVersionAndScope(
                 messageType, event, hl7Version, Constant.SCOPE.HL7STANDARD.name());
-            String html = exportService
-                .exportDataModelAsHtml(message, message.getName(), generateHost(request));
-            return new ExportableDataModel(html,message);
+            if(message != null){
+	            String html = exportService
+	                .exportDataModelAsHtml(message, message.getName(), generateHost(request));
+	            return new ExportableDataModel(html,message);
+            }
         }
         return null;
     }
