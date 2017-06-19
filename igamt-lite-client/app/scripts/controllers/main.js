@@ -3515,42 +3515,34 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
     $rootScope.openRichTextDlg = function(obj, key, title, disabled) {
-        return $modal.open({
-            templateUrl: 'RichTextCtrl.html',
+        return $mdDialog.show({
+            templateUrl: 'RichTextCtrlMd.html',
             controller: 'RichTextCtrl',
-            windowClass: 'app-modal-window',
-            backdrop: true,
-            keyboard: true,
-            backdropClick: false,
-            resolve: {
-                editorTarget: function() {
-                    return {
+
+            locals: {
+                editorTarget:
+                     {
                         key: key,
                         obj: obj,
                         disabled: disabled,
                         title: title
-                    };
-                }
+                    }
             }
         });
     };
 
     $rootScope.openInputTextDlg = function(obj, key, title, disabled) {
-        return $modal.open({
-            templateUrl: 'InputTextCtrl.html',
+        return $mdDialog.open({
+            templateUrl: 'InputTextCtrlMd.html',
             controller: 'InputTextCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                editorTarget: function() {
-                    return {
+            locals: {
+                editorTarget:{
+
                         key: key,
                         obj: obj,
                         disabled: disabled,
                         title: title
-                    };
+
                 }
             }
         });
@@ -4024,28 +4016,28 @@ angular.module('igl').controller('LoginCtrl', [ '$rootScope','$scope', '$mdDialo
 }]);
 
 
-angular.module('igl').controller('RichTextCtrl', ['$scope', '$modalInstance', 'editorTarget', function($scope, $modalInstance, editorTarget) {
+angular.module('igl').controller('RichTextCtrl', ['$scope', '$mdDialog', 'editorTarget', function($scope, $mdDialog, editorTarget) {
     $scope.editorTarget = editorTarget;
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
-        $modalInstance.close($scope.editorTarget);
+        $mdDialog.hide($scope.editorTarget);
     };
 }]);
 
 
-angular.module('igl').controller('InputTextCtrl', ['$scope', '$modalInstance', 'editorTarget', function($scope, $modalInstance, editorTarget) {
+angular.module('igl').controller('InputTextCtrl', ['$scope', '$mdDialog', 'editorTarget', function($scope, $mdDialog, editorTarget) {
     $scope.editorTarget = editorTarget;
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
-        $modalInstance.close($scope.editorTarget);
+        $mdDialog.hide($scope.editorTarget);
     };
 }]);
 
@@ -4444,7 +4436,7 @@ angular.module('igl').controller('confirmSwitch', function($scope, $rootScope, $
     };
 });
 
-angular.module('igl').controller('EditSingleElementCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode) {
+angular.module('igl').controller('EditSingleElementCtrl', function($scope, $rootScope, $mdDialog, userInfoService, currentNode) {
     $scope.currentNode = currentNode;
 
     $scope.sevVale = '';
@@ -4452,11 +4444,11 @@ angular.module('igl').controller('EditSingleElementCtrl', function($scope, $root
     if ($scope.currentNode.sev) $scope.sevVale = $scope.currentNode.sev.value;
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
-        $modalInstance.close($scope.sevVale);
+        $mdDialog.hide($scope.sevVale);
     };
 });
 
@@ -4553,7 +4545,7 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
     };
 });
 
-angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode, currentComment, disabled, type) {
+angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope, $mdDialog, userInfoService, currentNode, currentComment, disabled, type) {
     $scope.currentNode = currentNode;
     $scope.currentComment = currentComment;
     var currentPath = null;
@@ -4577,7 +4569,7 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
     if ($scope.currentComment) $scope.descriptionText = $scope.currentComment.description;
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
@@ -4592,7 +4584,7 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
             targetObj.comments.push(newComment);
         }
 
-        $modalInstance.close($scope.currentNode);
+        $mdDialog.hide($scope.currentNode);
     };
 });
 

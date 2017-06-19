@@ -421,30 +421,19 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
 
     $scope.editCommentDlg = function(node, comment, disabled, type) {
-        var modalInstance = $modal.open({
-            templateUrl: 'EditComment.html',
+        var modalInstance = $mdDialog.show({
+            templateUrl: 'EditCommentMd.html',
             controller: 'EditCommentCtrlInPc',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentNode: function() {
-                    return node;
-                },
-                currentComment: function() {
-                    return comment;
-                },
-                disabled: function() {
-                    return disabled;
-                },
-                type: function() {
-                    return type;
+            locals: {
+                currentNode: node,
+                currentComment:comment,
+                disabled: disabled,
+                type: type
                 }
-            }
+
         });
 
-        modalInstance.result.then(function() {
+        modalInstance.then(function() {
             $scope.setDirty();
         });
     };
@@ -602,21 +591,16 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
 
     $scope.openDialogForEditSev = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'EditSingleElement.html',
             controller: 'EditSingleElementCtrlInPc',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentNode: function() {
-                    return node;
+            locals: {
+                currentNode: node
                 }
-            }
+
         });
 
-        modalInstance.result.then(function(value) {
+        modalInstance.then(function(value) {
             console.log(value);
             $scope.addSev(node);
             // node.singleElementValues = angular.copy(node.oldSingleElementValues);
@@ -2771,7 +2755,7 @@ angular.module('igl').controller('addComponentsCtrl',
             $mdDialog.hide();
         };
     });
-angular.module('igl').controller('EditSingleElementCtrlInPc', function($scope, $rootScope, $modalInstance, userInfoService, currentNode) {
+angular.module('igl').controller('EditSingleElementCtrlInPc', function($scope, $rootScope, $mdDialog, userInfoService, currentNode) {
     $scope.currentNode = currentNode;
 
     $scope.sevVale = '';
@@ -2785,14 +2769,14 @@ angular.module('igl').controller('EditSingleElementCtrlInPc', function($scope, $
 
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
-        $modalInstance.close($scope.sevVale);
+        $mdDialog.hide($scope.sevVale);
     };
 });
-angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootScope, $modalInstance, userInfoService, currentNode, currentComment, disabled, type) {
+angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootScope, $mdDialog, userInfoService, currentNode, currentComment, disabled, type) {
     $scope.currentNode = currentNode;
     $scope.currentComment = currentComment;
     var currentPath = null;
@@ -2811,7 +2795,7 @@ angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootSc
     if ($scope.currentComment) $scope.descriptionText = $scope.currentComment.description;
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+       $mdDialog.hide();
     };
 
     $scope.close = function() {
@@ -2830,7 +2814,7 @@ angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootSc
             currentNode.comments.push(newComment);
         }
 
-        $modalInstance.close($scope.currentNode);
+        $mdDialog.hide($scope.currentNode);
     };
 });
 

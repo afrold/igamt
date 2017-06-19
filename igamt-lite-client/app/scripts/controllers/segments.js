@@ -1222,30 +1222,19 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.editCommentDlg = function(node, comment, disabled, type) {
-        var modalInstance = $modal.open({
-            templateUrl: 'EditComment.html',
+        var modalInstance = $mdDialog.show({
+            templateUrl: 'EditCommentMd.html',
             controller: 'EditCommentCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentNode: function() {
-                    return node;
-                },
-                currentComment: function() {
-                    return comment;
-                },
-                disabled: function() {
-                    return disabled;
-                },
-                type: function() {
-                    return type;
-                }
+            locals: {
+                currentNode: node,
+                currentComment:  comment,
+                disabled: disabled,
+                type: type
+
             }
         });
 
-        modalInstance.result.then(function() {
+        modalInstance.then(function() {
             $scope.setDirty();
         });
     };
@@ -1294,21 +1283,17 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.openDialogForEditSev = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'EditSingleElement.html',
             controller: 'EditSingleElementCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentNode: function() {
-                    return node;
-                }
+            locals: {
+                currentNode:
+                    node
+
             }
         });
 
-        modalInstance.result.then(function(value) {
+        modalInstance.then(function(value) {
             $scope.addSev(node);
             node.sev.value = value;
             $scope.setDirty();
