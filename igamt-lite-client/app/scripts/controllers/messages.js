@@ -962,18 +962,19 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     };
 
     $scope.editModalBindingForMsg = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
+
             templateUrl: 'TableMappingMessageCtrl.html',
+            scope: $scope,
+            preserveScope: true,
             controller: 'TableMappingMessageCtrl',
-            windowClass: 'app-modal-window',
-            resolve: {
-                currentNode: function() {
-                    return node;
+            locals: {
+                currentNode: node
                 }
-            }
+
         });
 
-        modalInstance.result.then(function(node) {
+        modalInstance.then(function(node) {
             $scope.setDirty();
         });
     };
@@ -2855,7 +2856,7 @@ angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, 
     };
 });
 
-angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI, TableService) {
+angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $mdDialog, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     $scope.currentNode = currentNode;
     $scope.isSingleValueSetAllowed = false;
@@ -2983,11 +2984,11 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $mo
         $rootScope.message.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 
-        $modalInstance.close();
+        $mdDialog.hide();
     };
 
     $scope.ok = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 });

@@ -1333,18 +1333,18 @@ angular.module('igl')
         };
 
         $scope.editModalBindingForDT = function(node) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'TableMappingDatatypeCtrl.html',
+                scope: $scope,        // use parent scope in template
+                preserveScope: true,
                 controller: 'TableMappingDatatypeCtrl',
-                windowClass: 'app-modal-window',
-                resolve: {
-                    currentNode: function() {
-                        return node;
-                    }
+                locals: {
+                    currentNode: node
+
                 }
             });
 
-            modalInstance.result.then(function(node) {
+            modalInstance.then(function(node) {
                 $scope.setDirty();
             });
         };
@@ -1793,7 +1793,7 @@ angular.module('igl').controller('DatatypeReferencesCtrl', function($scope, $mod
     };
 });
 
-angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI, TableService) {
+angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $mdDialog, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     $scope.currentNode = currentNode;
     $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location == currentNode.path; }));
@@ -1911,11 +1911,11 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
         $rootScope.datatype.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 
-        $modalInstance.close();
+        $mdDialog.hide();
     };
 
     $scope.ok = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 });

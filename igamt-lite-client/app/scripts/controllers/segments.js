@@ -1205,18 +1205,18 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.editModalBindingForSeg = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'TableMappingSegmentCtrl.html',
+            scope: $scope,        // use parent scope in template
+            preserveScope: true,
             controller: 'TableMappingSegmentCtrl',
-            windowClass: 'app-modal-window',
-            resolve: {
-                currentNode: function() {
-                    return node;
+            locals: {
+                currentNode:node
                 }
-            }
+
         });
 
-        modalInstance.result.then(function(node) {
+        modalInstance.then(function(node) {
             $scope.setDirty();
         });
     };
@@ -3280,7 +3280,7 @@ angular.module('igl').controller('AddBindingForSegment', function($scope, $modal
         $modalInstance.dismiss('cancel');
     };
 });
-angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI, TableService) {
+angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mdDialog, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     $scope.currentNode = currentNode;
     $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location == currentNode.path; }));
@@ -3398,11 +3398,11 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mo
         $rootScope.segment.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 
-        $modalInstance.close();
+        $mdDialog.hide();
     };
 
     $scope.ok = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 });

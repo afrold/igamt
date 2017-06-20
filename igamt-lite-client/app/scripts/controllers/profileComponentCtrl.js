@@ -438,18 +438,18 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         });
     };
     $scope.editModalBindingForMsg = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'TableMappingMessageCtrl.html',
-            controller: 'TableBindingForMsgCtrl',
-            windowClass: 'app-modal-window',
-            resolve: {
-                currentNode: function() {
-                    return node;
+            controller: 'TableBindingForPcCtrl',
+            scope: $scope,        // use parent scope in template
+            preserveScope: true,
+            locals: {
+                currentNode:node
                 }
-            }
+
         });
 
-        modalInstance.result.then(function(node) {
+        modalInstance.then(function(node) {
             console.log("node");
             console.log(node);
             $scope.setDirty();
@@ -1041,21 +1041,15 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
     };
     $scope.addDefText = function(field) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'addDefTextModal.html',
             controller: 'addDefTextCtrl',
-            windowClass: 'edit-VS-modal',
-            resolve: {
-
-
-
-                field: function() {
-                    return field;
+            locals: {
+                field: field
                 }
 
-            }
         });
-        modalInstance.result.then(function(field) {
+        modalInstance.then(function(field) {
             $scope.setDirty();
 
         });
@@ -2018,21 +2012,21 @@ angular.module('igl').controller('AddDynamicMappingCtrlInPc', function($scope, $
     }
 
 });
-angular.module('igl').controller('addCommentCtrl',
-    function($scope, $rootScope, $modalInstance, field, PcService, $http, SegmentLibrarySvc) {
-        $scope.field = field;
-        $scope.close = function() {
-            //$scope.field.attributes.comment = $scope.comment;
-            $modalInstance.close();
-        };
-    });
+// angular.module('igl').controller('addCommentCtrl',
+//     function($scope, $rootScope, $modalInstance, field, PcService, $http, SegmentLibrarySvc) {
+//         $scope.field = field;
+//         $scope.close = function() {
+//             //$scope.field.attributes.comment = $scope.comment;
+//             $modalInstance.close();
+//         };
+//     });
 
 angular.module('igl').controller('addDefTextCtrl',
-    function($scope, $rootScope, $modalInstance, field, PcService, $http, SegmentLibrarySvc) {
+    function($scope, $rootScope, $mdDialog, field, PcService, $http, SegmentLibrarySvc) {
         $scope.field = field;
         $scope.close = function() {
             //$scope.field.attributes.comment = $scope.comment;
-            $modalInstance.close();
+            $mdDialog.hide();
         };
     });
 
@@ -2820,7 +2814,7 @@ angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootSc
 
 
 
-angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI, TableService) {
+angular.module('igl').controller('TableBindingForPcCtrl', function($scope, $mdDialog, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     console.log(currentNode);
     $scope.currentNode = currentNode;
@@ -2962,11 +2956,11 @@ angular.module('igl').controller('TableBindingForMsgCtrl', function($scope, $mod
         currentNode.valueSetBindings = $scope.selectedValueSetBindings;
         blockUI.stop();
 
-        $modalInstance.close(currentNode);
+        $mdDialog.hide(currentNode);
     };
 
     $scope.ok = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 });

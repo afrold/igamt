@@ -1685,14 +1685,19 @@
     </div>
 </script>
 <script type="text/ng-template" id="TableMappingSegmentCtrl.html">
-    <div class="modal-header modal-wide">
-        <h3 class="modal-title">Bind Value Set to {{::segment.name}}-{{::currentNode.path}}</h3>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <form role="form">
-                <div class="col-md-12">
-                    <div ng-cloak>
+    <md-dialog aria-label="table Mapping">
+        <form ng-cloak role="form">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Bind Value Set to {{::segment.name}}-{{::currentNode.path}} </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="ok()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
                         <md-content>
                             <div ng-show="selectedValueSetBindings.length > 0">
                                 <div ng-show="selectedValueSetBindings[0].type == 'singlecode'">
@@ -1960,14 +1965,11 @@
                                 </md-tab>
                             </md-tabs>
                         </md-content>
-                    </div>
                 </div>
-            </form>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button ng-show="changed" type="button" ng-click="saveMapping()" class="btn btn-raised btn-primary btn-sm"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</button>
-        <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-raised btn-warning btn-sm"><i class="fa fa-times fa-fw">&nbsp; </i>Close</button>
-        <button ng-show="!changed" class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
-    </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-show="changed" type="button" ng-click="saveMapping()" class="md-primary md-raised"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>

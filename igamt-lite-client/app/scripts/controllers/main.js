@@ -154,6 +154,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     };
 
+    $scope.noop = function(event){
+        event.stopImmediatePropagation();
+    };
+
+    $scope.closeSubMenu = function(event){
+       // $scope.mdMenu.hide();
+    }
+
     $rootScope.hasConfError = function(id) {
 
         if ($rootScope.validationResult) {
