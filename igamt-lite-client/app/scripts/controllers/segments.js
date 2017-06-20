@@ -653,28 +653,22 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.addFieldModal = function(segment) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'AddFieldModal.html',
             controller: 'AddFieldCtrl',
-            windowClass: 'creation-modal-window',
-            resolve: {
+            scope: $scope,
+            preserveScope: true,
+            locals: {
 
-                valueSets: function() {
-                    return $rootScope.tables;
-                },
-                datatypes: function() {
-                    return $rootScope.datatypes;
-                },
-                segment: function() {
-                    return segment;
-                },
-                messageTree: function() {
-                    return $rootScope.messageTree;
+                valueSets: $rootScope.tables,
+                datatypes:  $rootScope.datatypes,
+                segment:  segment,
+                messageTree: $rootScope.messageTree
                 }
 
-            }
+
         });
-        modalInstance.result.then(function(field) {
+        modalInstance.then(function(field) {
             $scope.setDirty();
 
             if ($scope.segmentsParams) {
@@ -2583,7 +2577,7 @@ angular.module('igl').controller('SegmentReferencesCtrl', function($scope, $moda
         $modalInstance.dismiss('cancel');
     };
 });
-angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance, datatypes, segment, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService, blockUI) {;
+angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, datatypes, segment, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService, blockUI) {
     $scope.valueSets = valueSets;
     $scope.datatypes = datatypes;
 
@@ -2764,13 +2758,13 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
 
         }
         blockUI.stop();
-        $modalInstance.close();
+        $mdDialog.hide();
 
     };
 
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 

@@ -1496,50 +1496,60 @@
     </div>
 </script>
 <script type="text/ng-template" id="AddFieldModal.html">
-    <div class="modal-header modal-wide">
-        <div class="form-inline">
-            <span class="header4">Create Field</span>
-        </div>
-    </div>
-    <div class="modal-body">
-        <div class="creation-modal-content">
-            <form name="addFieldForm" class="form-horizontal" novalidate>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.inputName.$valid}">
-                    <label class="col-md-3 control-label">Name*</label>
-                    <div class="controls col-md-9">
-                        <input name="inputName" id="inputName" class="form-control focus" ng-model="newField.name" autofocus required/>
-                    </div>
+    <md-dialog aria-label="create group">
+        <form ng-cloak name="addFieldForm" class="form-horizontal" novalidate id="addFieldForm">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Create Field </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.inputPosition.$valid}">
-                    <label class="col-md-3 control-label">Position*</label>
-                    <div class="controls col-md-9">
-                        <select ng-model="position" name="inputPosition" id="inputPosition" ng-change="selectPos()" class="form-control input-sm" required>
-                            <option ng-repeat="field in segment.fields track by field.id"> {{::field.position}}
-                                <option value="{{::segment.fields.length+1}}">{{::segment.fields.length+1}}
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.inputUsage.$valid}">
-                    <label class="col-md-3 control-label">Usage*</label>
-                    <div class="controls col-md-9">
-                        <select name="inputUsage" id="inputUsage" class="form-control input-sm" name="inputUsage" ng-change="selectUsage(newField.usage)" ng-model="newField.usage" ng-options="usage for usage in config.usages" required/>
-                    </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }">
-                    <label class="col-md-3 control-label">Cardinality*</label>
-                    <div class="controls col-md-9">
-                        <div class="form-inline">
-                            <input class="form-control" placeholder="Min" name="cardMin" style="width:49%" id="cardMin" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
-                            <input class="form-control" type="text" placeholder="Max" style="width:50%" name="cardMax" id="cardMax" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
-                        </div>
-                    </div>
-                </div>
+            </md-toolbar>
 
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !selectedDT()}">
-                    <label class="col-md-3 control-label">Datatype*</label>
-                    <div class="controls col-md-9">
-                        <input class="form-control" type="text" ng-model="searchDT.name" ng-hide="selectedDT()" />
-                        <li class="form-control" ng-show="selectedDT()">
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                        <md-content layout-padding>
+
+                <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.inputName.$valid}" class="md-block" flex-gt-sm>
+                    <label class="col-md-3 input-left">Name*</label>
+
+                        <input name="inputName" id="inputName" ng-model="newField.name" autofocus required/>
+                    <div ng-messages="addFieldForm.inputName.$error">
+                        <div ng-message="required">Name is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputPosition.$valid}" class="md-block" flex-gt-sm>
+                    <label class="input-left">Position*</label>
+
+                        <md-select ng-model="position" name="inputPosition" id="inputPosition" ng-change="selectPos()" required>
+                            <md-option ng-repeat="field in segment.fields track by field.id" ng-value="{{::field.position}}"> {{::field.position}}</md-option>
+                            <md-option ng-value="{{::segment.fields.length+1}}">{{::segment.fields.length+1}}</md-option>
+                        </md-select>
+
+                </md-input-container>
+                <md-input-container ng-class="{'has-error has-feedback': !addFieldForm.inputUsage.$valid}" class="md-block" flex-gt-sm>
+                    <label class="col-md-3">Usage*</label>
+                        <md-select name="inputUsage" id="inputUsage"  name="inputUsage" ng-change="selectUsage(newField.usage)" ng-model="newField.usage"  required>
+                            <md-option ng-repeat="usage in config.usages" ng-value="usage">{{usage}}</md-option>
+                        </md-select>
+
+                </md-input-container>
+                <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block" flex-gt-sm>
+                    <label class="input-left">Cardinality*</label>
+                        <div class="form-inline">
+                            <input  placeholder="Min" name="cardMin" style="width:49%" id="cardMin" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
+                            <input  type="text" placeholder="Max" style="width:50%" name="cardMax" id="cardMax" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
+                        </div>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label class="input-left">Datatype*</label>
+                    <div>
+                        <input  type="text" ng-model="searchDT.name" ng-hide="selectedDT()" />
+                        <li  ng-show="selectedDT()">
                             {{DT.name}} <span ng-show="DT.ext">_{{DT.ext}}</span>
                             <button type="button" class="close" aria-label="Close" ng-click="unselectDT()">
                                 <span aria-hidden="true">&times;</span>
@@ -1551,50 +1561,46 @@
                             </li>
                         </div>
                     </div>
-                </div>
-                <div class="form-group control-group" ng-show="selectedDT() && DT.components.length===0">
-                    <label class="col-md-3 control-label" ng-class="{'has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>
+                </md-input-container>
+                <md-input-container  ng-show="selectedDT() && DT.components.length===0" class="md-block" flex-gt-sm>
+                    <label class="input-left" ng-class="{'igl-has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>
                     <div class="controls col-md-9">
                         <div class="form-inline">
                             <input class="form-control" placeholder="Min Length" name="minLength" style="width:49%" id="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.minLength" required ng-minlength="0">
                             <input class="form-control" type="text" placeholder="Max Length" style="width:50%" name="maxLength" id="maxLength" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.maxLength" required>
                         </div>
                     </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.confLength.$valid}" ng-show="selectedDT() && DT.components.length===0">
-                    <label class="col-md-3 control-label">Conf Length</label>
-                    <div class="controls col-md-9">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm ng-class="{'has-error has-feedback': !addFieldForm.confLength.$valid}" ng-show="selectedDT() && DT.components.length===0">
+                    <label class="input-left">Conf Length</label>
                         <input class="form-control" name="confLength" id="confLength" ng-change="setDirty()" ng-pattern="confLengthPattern" ng-model="newField.confLength">
-                    </div>
-                </div>
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label">ValueSet</label>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label class="input-left">ValueSet</label>
                     <div class="controls col-md-9">
                         <tags-input ng-model="vs" key-property="id" display-property="bindingIdentifier" placeholder="Select Value Sets" add-from-autocomplete-only="true" replace-spaces-with-dashes="false" on-tag-added="tagAdded($tag)" on-tag-removed="tagRemoved($tag)">
                             <auto-complete source="loadVS($query)" min-length="0" load-on-focus="true" max-results-to-show="10"></auto-complete>
                         </tags-input>
                     </div>
 
-                </div>
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label">Comment</label>
-                    <div class="controls col-md-9">
-                        <textarea class="form-control" ng-model="newField.comment">
-                        </textarea>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label class="input-left">Comment</label>                     <input ng-model="newField.comment">
+                        </input></md-input-container>
+
+                        </md-content>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-raised bt-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-info btn-md" ng-click="addField()" ng-disabled="addFieldForm.$invalid || !selectedDT()"><span><i
-                    class="fa fa-plus fa-fw">
+            </md-dialog-content>
+            <md-dialog-actions layout="row" layout-align="end end">
+
+                <md-button class="md-primary md-raised" ng-click="addField()" ng-disabled="addFieldForm.$invalid || !selectedDT()"><span><i
+                        class="fa fa-plus fa-fw">
                 &nbsp; </i>Add</span>
-            </button>
-        </div>
-    </div>
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="DeleteField.html">
     <div class="modal-header">
