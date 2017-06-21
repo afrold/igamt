@@ -1,6 +1,5 @@
 <md-content ng-controller="SearchController">
     <div>
-        <div class="md-title">Search HL7 entities</div>
         <div class="searchBar">
             <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
                 <md-input-container class="searchBarComponent">
@@ -22,11 +21,11 @@
                         <input ng-model="field.value" ng-required="field.required"/>
                     </span>
                 </md-input-container>
-                <md-button class="searchBarComponent md-raised md-primary" ng-click="doSearch()"  ng-disabled="!isFormValid()">Search</md-button>
+                <md-button class="searchBarComponent md-raised md-primary" ng-click="doSearch()"  ng-disabled="!isFormValid()"><i class="fa fa-search fa-fw"></i>Search</md-button>
             </section>
         </div>
-        <div ng-show="showErrorMessage">
-            Unable to find an entity matching your request.
+        <div ng-show="showErrorMessage" style="align:center;">
+            No record matching your query.
         </div>
 
         <md-content ng-show="data != undefined" flex layout="column" style="overflow: auto; height: 500px;">
