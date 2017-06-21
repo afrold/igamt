@@ -292,7 +292,6 @@
                                                                                 class="fa fa-remove fa-fw"></i></a>
                                                                     </div>
                                                                 </td>
-                                                                =
                                                                 <td classs="col-md-1 col-fixed-100"
                                                                     ng-class="{'emptyCol': node.usage == 'X' || (node.type!=='field' && node.type!=='component') || datatypesMap[node.datatype.id].components.length > 0, 'input-change ': node.usage != 'X' && (node.attributes.minLength || node.attributes.maxLength)}">
                                                                     <div ng-show="node.usage != 'X' && (node.type==='field' || node.type==='component') && datatypesMap[node.datatype.id].components.length == 0">

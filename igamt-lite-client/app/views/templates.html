@@ -2901,10 +2901,12 @@
     </md-dialog>
 </script>
 <script type="text/ng-template" id="PredicateSegmentCtrl.html ">
-    <md-dialog aria-label="Conditional Predicate for Segment" style="{{getDialogStyle()}}">
+    <md-dialog aria-label="Conditional Predicate for Segment" style="80%">
+
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
+                    <h2>Predicate Summary</h2>
                     <h2 ng-if="dialogStep === 0">Predicate Summary</h2>
                     <h2 ng-if="dialogStep === 1">(1/2) Create Constraints</h2>
                     <h2 ng-if="dialogStep === 2">(2/2) Select Predicate and Set True/False Usage</h2>

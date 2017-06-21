@@ -69,19 +69,18 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         });
     };
     $scope.openAddGlobalPredicateDialogMsg = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'GlobalPredicateCtrl.html',
             controller: 'GlobalPredicateCtrlInPc',
-            windowClass: 'app-modal-window',
-            keyboard: false,
-            resolve: {
+            scope: $scope,
+            preserveScope: true,
+            locals: {
 
-                node: function() {
-                    return node;
-                }
+                node: node
+
             }
         });
-        modalInstance.result.then(function(predicate) {
+        modalInstance.then(function(predicate) {
             console.log("----");
             console.log(predicate);
             console.log(node);
@@ -97,17 +96,17 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         }, function() {});
     };
     $scope.openAddGlobalPredicateDialogSeg = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'PredicateSegmentCtrl.html',
             controller: 'PredicateSegmentCtrlInPc',
-            windowClass: 'app-modal-window',
-            resolve: {
-                node: function() {
-                    return node;
+            scope: $scope,
+            preserveScope: true,
+            locals: {
+                node: node
                 }
-            }
+
         });
-        modalInstance.result.then(function(predicate) {
+        modalInstance.then(function(predicate) {
             // if (segment) {
             //     $rootScope.segment.predicates = segment.predicates;
             //     $scope.setDirty();
@@ -2779,7 +2778,8 @@ angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootSc
     var index = currentNode.path.indexOf(".");
     currentPath = currentNode.path.substr(index + 1);
 
-
+    $scope.dialogStep = 0;
+    console.log($scope.dialogStep);
     $scope.disabled = disabled;
     $scope.title = '';
 
@@ -2794,6 +2794,13 @@ angular.module('igl').controller('EditCommentCtrlInPc', function($scope, $rootSc
        $mdDialog.hide();
     };
 
+    $scope.goNext = function() {
+        $scope.dialogStep = $scope.dialogStep + 1;
+    };
+
+    $scope.goBack = function () {
+        $scope.dialogStep = $scope.dialogStep - 1;
+    };
     $scope.close = function() {
         if ($scope.currentComment) {
             $scope.currentComment.description = $scope.descriptionText;
@@ -2968,7 +2975,7 @@ angular.module('igl').controller('TableBindingForPcCtrl', function($scope, $mdDi
 });
 
 
-angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $modalInstance, node, $rootScope, $q) {
+angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mdDialog, node, $rootScope, $q) {
     console.log(node);
     var index = node.path.indexOf(".");
     var path = node.path.substr(index + 1);
@@ -3054,6 +3061,20 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
             deferred.reject();
         }
         return deferred.promise;
+    };
+    $scope.selectPredicate = function (c){
+        angular.forEach($scope.tempPredicates, function(p) {
+            p.selected = false;
+        });
+        c.selected = true;
+        $scope.existingPredicate = c;
+        $scope.existingContext = $scope.selectedContextNode;
+
+        if (!$scope.existingContext.positionPath || $scope.existingContext.positionPath == '') {
+            $scope.existingPredicate.constraintTarget = $scope.selectedNode.path;
+        } else {
+            $scope.existingPredicate.constraintTarget = $scope.selectedNode.path.replace($scope.existingContext.positionPath + '.', '');
+        }
     };
 
     $scope.afterPredicateDrop = function() {
@@ -3286,10 +3307,11 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss();
+        console.log("called")
+        $mdDialog.hide();
     };
 
-    $scope.saveclose = function() {
+    $scope.save = function() {
         $scope.deleteExistingPredicate($scope.selectedMessage);
 
         if ($scope.existingPredicate != null) {
@@ -3301,7 +3323,7 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
 
         // $rootScope.recordChanged();
         // $modalInstance.close($scope.selectedMessage);
-        $modalInstance.close($scope.existingPredicate);
+        $mdDialog.hide($scope.existingPredicate);
 
     };
 
@@ -3412,7 +3434,8 @@ angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mo
 });
 
 
-angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $modalInstance, node, $rootScope, $q) {
+angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $mdDialog, node, $rootScope, $q) {
+
     console.log(node);
     var index = node.path.indexOf(".");
     var path = node.path.substr(index + 1);
@@ -3438,6 +3461,9 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
     //if (positionPath != '') positionPath = positionPath.substr(1);
     console.log(path);
     console.log(positionPath);
+    
+    $scope.dialogStep = 0;
+    console.log($scope.dialogStep);
 
     $scope.selectedNode = angular.copy(node);
     $scope.selectedNode.locationPath = angular.copy($scope.selectedNode.path);
@@ -3457,6 +3483,36 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
     $scope.treeDataForContext = [];
     $scope.treeDataForContext.push($scope.selectedSegment);
     $scope.treeDataForContext[0].pathInfoSet = [];
+
+    $scope.getDialogStyle = function(){
+        if ($scope.dialogStep === 0) return "width: 70%";
+        if ($scope.dialogStep === 1) return "width: 30%";
+        if ($scope.dialogStep === 2) return "width: 90%";
+        if ($scope.dialogStep === 3) return "width: 50%";
+        return "width: 90%";
+    };
+    $scope.goNext = function() {
+        $scope.dialogStep = $scope.dialogStep + 1;
+    };
+
+    $scope.goBack = function () {
+        $scope.dialogStep = $scope.dialogStep - 1;
+    };
+    $scope.selectPredicate = function (c){
+        angular.forEach($scope.tempPredicates, function(p) {
+            p.selected = false;
+        });
+        c.selected = true;
+        $scope.existingPredicate = c;
+        $scope.existingContext = $scope.selectedContextNode;
+
+        if (!$scope.existingContext.positionPath || $scope.existingContext.positionPath == '') {
+            $scope.existingPredicate.constraintTarget = $scope.selectedNode.path;
+        } else {
+            $scope.existingPredicate.constraintTarget = $scope.selectedNode.path.replace($scope.existingContext.positionPath + '.', '');
+        }
+    };
+
     $scope.generatePathInfo = function(current, positionNumber, locationName, instanceNumber, isInstanceNumberEditable, nodeName) {
         var pathInfo = {};
         pathInfo.positionNumber = positionNumber;
@@ -3689,15 +3745,15 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
         $scope.initPredicate();
     };
 
-    $scope.ok = function() {
-        $modalInstance.close();
+    $scope.cancel = function() {
+        $mdDialog.hide();
     };
 
-    $scope.saveclose = function() {
+    $scope.save = function() {
         $scope.deletePredicateByTarget();
         // $scope.selectedSegment.predicates.push($scope.existingPredicate);
         // $rootScope.recordChanged();
-        $modalInstance.close($scope.existingPredicate);
+        $mdDialog.hide($scope.existingPredicate);
     };
 
     $scope.initPredicate();
