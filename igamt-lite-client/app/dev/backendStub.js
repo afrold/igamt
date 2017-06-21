@@ -12,6 +12,28 @@ angular.module('igl').run(function ($httpBackend, $q, $http,$rootScope) {
         return fixProperties(datatypes);
     };
 
+    function getHTMLDatatype() {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatypes/datatype.html', false);
+        request.send(null);
+        return request.response;
+    };
+
+    function getExportableDatatype() {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatypes/exportableDatatype.json', false);
+        request.send(null);
+        return request.response;
+    };
+
+    function getMessage() {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/messages/OMB_027_HL7STANDARD-2.7.json', false);
+        request.send(null);
+        var message = angular.fromJson(request.response);
+        return [message];
+    };
+
     function getSegments() {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/segments/segments-USER-2.5.1.json', false);
@@ -405,6 +427,38 @@ $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, 
         console.log('api/save begin=' + message);
         var response = angular.fromJson(message);
         return [200, response, {}];
+    });
+
+    $httpBackend.whenRoute('GET','api/search/datatypes').respond(function (method, url, data, headers, params) {
+        return [200, getDatatypes(), {}];
+    });
+
+    $httpBackend.whenRoute('GET','api/search/message').respond(function (method, url, data, headers, params) {
+        return [200, getMessage(), {}];
+    });
+
+    $httpBackend.whenRoute('GET','api/search/valueSets').respond(function (method, url, data, headers, params) {
+        return [200, getTables(), {}];
+    });
+
+    $httpBackend.whenRoute('GET','api/search/segments').respond(function (method, url, data, headers, params) {
+        return [200, getSegments(), {}];
+    });
+
+    $httpBackend.whenRoute('GET','api/export/datatype/:id/html',undefined,undefined,['id']).respond(function (method, url, data, headers, params) {
+        return [200, getHTMLDatatype(), {}];
+    });
+
+    $httpBackend.whenRoute('GET','api/export/datatype').respond(function (method, url, data, headers, params) {
+        var datatype = getDatatypes()[0];
+        if(params.name=='ABCD'){
+            return [200, '', {}];
+        }
+        return [200, getExportableDatatype(), {}];
+    });
+
+    $httpBackend.whenRoute('GET','api/search/listHl7Versions').respond(function (method, url, data, headers, params) {
+        return [200, ['2.5','2.8','2.8.1','2.7'], {}];
     });
 
 });
