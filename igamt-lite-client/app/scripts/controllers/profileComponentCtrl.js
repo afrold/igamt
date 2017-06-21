@@ -638,6 +638,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             templateUrl: 'addComponents.html',
             parent: angular.element(document).find('body'),
             controller: 'addComponentsCtrl',
+            scope: $scope,
+            preserveScope: true,
             locals: {
                 messages: angular.copy($rootScope.messages.children),
                 segments: angular.copy($rootScope.segments),

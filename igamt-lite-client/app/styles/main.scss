@@ -3141,3 +3141,20 @@ md-select.inside-table{
 .md-scroll-mask {
     z-index: 0 !important;
 }
+.panel-heading md-select.md-default-theme .md-select-value, md-select .md-select-value {
+    border-bottom-color: rgba(154, 106, 106, 0.12);
+    margin-top: 0px;
+}
+.badge-delta {
+    color: black;
+    margin-top: 20px;
+    padding: 6px 6px !important;
+    font-size: medium;
+
+}
+.badge-delta-1{
+    background-color:#B5F7EC;
+}
+.badge-delta-2{
+ background-color:#EDE1AF;
+}

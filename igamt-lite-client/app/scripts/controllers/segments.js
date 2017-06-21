@@ -3167,7 +3167,7 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
         $scope.loadingSelection = true;
         $scope.segChanged = false;
         $scope.vsTemplate = false;
-        $scope.dataList = CompareService.cmpSegment(JSON.stringify(segment1), JSON.stringify(segment2), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+        $scope.dataList = CompareService.cmpSegment(segment1, segment, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
 
         $scope.loadingSelection = false;
         if ($scope.dynamicSeg_params) {

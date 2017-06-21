@@ -2075,7 +2075,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         $scope.msgChanged = false;
         $scope.vsTemplate = false;
         $scope.loadingSelection = false;
-        $rootScope.deltaMsgList = CompareService.cmpMessage(JSON.stringify(msg1), JSON.stringify(msg2), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+        $rootScope.deltaMsgList = CompareService.cmpMessage(msg1, msg2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
         //$scope.dataList = result;
         console.log($rootScope.deltaMsgList);
 

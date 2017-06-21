@@ -343,7 +343,7 @@ angular.module('igl')
 
                     $scope.dtChanged = false;
                     $scope.vsTemplate = false;
-                    $scope.dataList = CompareService.cmpDatatype(JSON.stringify(sourceParent), JSON.stringify(result), [], [], [], []);
+                    $scope.dataList = CompareService.cmpDatatype(sourceParent, result, [], [], [], []);
                     $scope.hideEvolution = false;
                     $rootScope.clearChanges();
                     $scope.cleanState();
@@ -2890,7 +2890,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
         $scope.loadingSelection = true;
         $scope.dtChanged = false;
         $scope.vsTemplate = false;
-        $scope.dataList = CompareService.cmpDatatype(JSON.stringify(datatype1), JSON.stringify(datatype2), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+        $scope.dataList = CompareService.cmpDatatype(datatype1, datatype2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
         $scope.loadingSelection = false;
         if ($scope.dynamicDt_params) {
             $scope.showDelta = true;

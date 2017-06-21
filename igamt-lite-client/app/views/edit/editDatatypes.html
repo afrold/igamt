@@ -656,80 +656,70 @@
                                                         <tbody>
                                                         <tr>
                                                             <td class="col-md-1">
-                                                                <span class="label"
-                                                                      style="background-color:#B5F7EC;color:black;">1</span>
+                                                                <span class="badge badge-delta badge-delta-1">1</span>
                                                             </td>
                                                             <td class="col-md-2">
-                                                                <select ng-model="version1" class="form-control"
-                                                                        disabled>
-                                                                    <option ng-selected="version1"> {{version1}}
-                                                                    </option>
-                                                                </select>
+                                                                <md-select ng-model="version1" placeholde="{{version1}}"
+                                                                        disabled></md-select>
                                                             </td>
                                                             <td class="col-md-2">
-                                                                <select ng-model="scope1" class="form-control" disabled>
-                                                                    <option ng-selected="scope1"> {{scope1}}</option>
-                                                                </select>
+                                                                <md-select ng-model="scope1"  disabled placeholder="{{scope1}}">
+                                                                </md-select>
                                                             </td>
                                                             <td class="col-md-3">
-                                                                <select ng-model="ig1" class="form-control" disabled>
-                                                                    <option ng-selected="ig1"> {{ig1}}</option>
-                                                                </select>
+                                                                <md-select ng-model="ig1"  disabled placeholder="ig1">
+                                                                </md-select>
                                                             </td>
                                                             <td class="col-md-4">
-                                                                <select ng-model="datatype1" class="form-control"
-                                                                        disabled>
-                                                                    <option ng-selected="datatype1">
-                                                                        {{getLabel(datatype1)}}
-                                                                    </option>
-                                                                </select>
+                                                                <md-select ng-model="datatype1"
+                                                                        disabled placeholder=" {{getLabel(datatype1)}}">
+                                                                </md-select>
                                                             </td>
 
                                                         </tr>
                                                         <tr>
                                                             <td class="col-md-1">
-                                                                <span class="label"
-                                                                      style="background-color:#EDE1AF;color:black;">2</span>
+                                                                <span class="badge badge-delta badge-delta-2">2</span>
 
                                                             </td>
                                                             <td class="col-md-2">
-                                                                <select ng-model="version2" class="form-control"
+                                                                <md-select ng-model="version2"
                                                                         ng-change="setVersion2(version2)"
                                                                         no-dirty-check>
-                                                                    <option ng-repeat="vr in versions" value='{{vr}}'
+                                                                    <md-option ng-repeat="vr in versions" value='{{vr}}'
                                                                             ng-selected="vr===version2"> {{vr}}
-                                                                    </option>
-                                                                </select>
+                                                                    </md-option>
+                                                                </md-select>
                                                             </td>
                                                             <td class="col-md-2">
-                                                                <select ng-model="scope2" class="form-control"
+                                                                <md-select ng-model="scope2"
                                                                         ng-change="setScope2(scope2)" no-dirty-check>
-                                                                    <option ng-repeat="scope in scopes"
+                                                                    <md-option ng-repeat="scope in scopes"
                                                                             value='{{scope.name}}'
                                                                             ng-selected="scope.name===scope2">
                                                                         {{scope.alias}}
-                                                                    </option>
-                                                                </select>
+                                                                    </md-option>
+                                                                </md-select>
                                                             </td>
                                                             <td class="col-md-3">
-                                                                <select class="form-control"
-                                                                        ng-options="ig as ig.title for ig in igList2 track by ig.id"
+                                                                <md-select
                                                                         ng-model="ig2" ng-change="setIG2(ig2)"
                                                                         ng-disabled="!scope2 || !version2 || igDisabled2"
-                                                                        no-dirty-check></select>
+                                                                        no-dirty-check>
+                                                                    <md-option ng-repeat="ig in igList2 track by ig.id" ng-value="ig">{{ig.title}}</md-option>
+                                                                </md-select>
 
                                                             </td>
                                                             <td class="col-md-4">
-                                                                <select ng-model="cmp.datatypeId" class="form-control"
+                                                                <md-select ng-model="cmp.datatypeId" placeholder="Select Data Type "
                                                                         ng-change="setDatatype2(cmp.datatypeId)"
                                                                         ng-disabled="!ig2" no-dirty-check>
-                                                                    <option value='-1'></option>
-                                                                    <option ng-repeat="datatype in datatypes2"
+                                                                    <md-option ng-repeat="datatype in datatypes2"
                                                                             ng-disabled="disableDT(datatype,datatype1)"
                                                                             ng-hide="hideDT(datatype,datatype1)"
                                                                             value='{{$index}}'> {{getLabel(datatype)}}
-                                                                    </option>
-                                                                </select>
+                                                                    </md-option>
+                                                                </md-select>
                                                             </td>
 
                                                         </tr>
@@ -744,11 +734,11 @@
                                                 </div>
 
                                                 <div class="" align="center" style="margin-bottom:10px">
-                                                    <button ng-click="cmpDatatype(datatype1,datatype2)"
+                                                    <md-button ng-click="cmpDatatype(datatype1,datatype2)"
                                                             ng-disabled="!datatype1 || cmp.datatypeId===-1||!dtChanged || !datatype2"
                                                             class="btn btn-raised btn-info btn-md">
                                                         <i class="fa fa-check"></i> Delta
-                                                    </button>
+                                                    </md-button>
                                                 </div>
                                             </div>
                                             <div accordion-group class="panel-primary" is-open="status.isSecondOpen">
