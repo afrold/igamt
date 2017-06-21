@@ -3666,8 +3666,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     };
 
     $rootScope.getTextAsTruncatedString = function(value, num) {
-        if (value.length > num) return value.substring(0, num) + "...";
-        return value;
+        if(value && num){
+            if (value.length > num) return value.substring(0, num) + "...";
+            return value;
+        }
+        return null;
+
     };
 
     $rootScope.getTextValue = function(value) {
@@ -4551,6 +4555,21 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
     $scope.close = function() {
         $modalInstance.close($scope.data);
     };
+});
+
+angular.module('igl').controller('EditUserDataCtrl', function($scope, $rootScope, $modalInstance, userInfoService, definition, text, disabled) {
+    $scope.definition = definition;
+    $scope.textData = text;
+    $scope.disabled = disabled;
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.close = function() {
+        $modalInstance.close($scope.textData);
+    };
+
 });
 
 angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode, currentComment, disabled, type) {

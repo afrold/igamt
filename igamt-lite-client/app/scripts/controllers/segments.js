@@ -703,6 +703,14 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         return result;
     };
 
+    $scope.deleteVS = function (item, array){
+        var index = array.indexOf(item);
+        if (index >= 0) {
+            array.splice(index, 1);
+            $scope.setDirty();
+        }
+    };
+
     $scope.addCoConstraintRow = function() {
         var isAdded = false;
         if(!$rootScope.segment.coConstraintsTable.ifColumnData) $rootScope.segment.coConstraintsTable.ifColumnData = [];
@@ -1246,6 +1254,33 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         });
 
         modalInstance.result.then(function() {
+            $scope.setDirty();
+        });
+    };
+
+    $scope.editUserData = function (definition, obj, disabled) {
+        var modalInstance = $modal.open({
+            templateUrl: 'EditUserData.html',
+            controller: 'EditUserDataCtrl',
+            backdrop: true,
+            keyboard: true,
+            windowClass: 'input-text-modal-window',
+            backdropClick: false,
+            resolve: {
+                definition: function() {
+                    return definition;
+                },
+                text: function() {
+                    return obj.text;
+                },
+                disabled: function() {
+                    return disabled;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(textData) {
+            obj.text = textData;
             $scope.setDirty();
         });
     };
