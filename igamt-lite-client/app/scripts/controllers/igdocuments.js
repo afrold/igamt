@@ -2617,7 +2617,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
         $mdDialog.hide();
     };
 
-    $scope.viewErrors = function(errorDetails) {
+    $scope.showErrors = function(errorDetails) {
         $scope.exportStep = 2;
         $scope.errorDetails = errorDetails;
         $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
@@ -2637,10 +2637,12 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
                     if (response.success === false) {
                         $scope.info.text = "gvtExportFailed";
                         $scope.info['details'] = response;
+                        $scope.showErrors($scope.info.details);
                         $scope.info.show = true;
                         $scope.info.type = 'danger';
                         $scope.loading = false;
                     } else {
+                        $scope.exportStep = 2;
                         var token = response.token;
                         $scope.info.text = 'gvtRedirectInProgress';
                         $scope.info.show = true;
@@ -2729,7 +2731,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     };
 
 
-    $scope.viewErrors = function(errorDetails) {
+    $scope.showErrors = function(errorDetails) {
         $scope.exportStep = 2;
         $scope.errorDetails = errorDetails;
         $scope.tmpProfileErrors = errorDetails != null ? [].concat($scope.errorDetails.profileErrors) : [];
@@ -2749,11 +2751,13 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
                 if (response.success === false) {
                     $scope.info.text = "gvtExportFailed";
                     $scope.info['details'] = response;
+                    $scope.showErrors($scope.info.details);
                     $scope.info.show = true;
                     $scope.info.type = 'danger';
                     $scope.loading = false;
                 } else {
                     var token = response.token;
+                    $scope.exportStep = 2;
                     $scope.info.text = 'gvtRedirectInProgress';
                     $scope.info.show = true;
                     $scope.info.type = 'info';
