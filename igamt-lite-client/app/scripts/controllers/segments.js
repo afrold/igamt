@@ -463,23 +463,21 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     // };
     $scope.otherDT = function(field) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'otherDTModal.html',
             controller: 'otherDTCtrl',
-            windowClass: 'edit-VS-modal',
-            resolve: {
+            scope: $scope,        // use parent scope in template
+            preserveScope: true,
+            locals: {
 
-                datatypes: function() {
-                    return $rootScope.datatypes;
-                },
+                datatypes:  $rootScope.datatypes,
 
-                field: function() {
-                    return field;
+                field:  field
                 }
 
-            }
+
         });
-        modalInstance.result.then(function(field) {
+        modalInstance.then(function(field) {
             $scope.setDirty();
             $scope.editableDT = '';
             if ($scope.segmentsParams) {
@@ -2879,7 +2877,7 @@ angular.module('igl').controller('EditVSCtrl', function($scope, $modalInstance, 
 
 
 });
-angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance, datatypes, field, $rootScope, SegmentService, blockUI) {
+angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, datatypes, field, $rootScope, SegmentService, blockUI) {
 
     $scope.dtChanged = false;
     $scope.field = field;
@@ -2889,6 +2887,9 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance,
     //$scope.tableList = angular.copy(field.tables);;
 
     $scope.isInDts = function(datatype) {
+        if(datatype=='none'){
+            return false;
+        }
 
         if (datatype && $scope.datatypes.indexOf(datatype) === -1) {
             return false;
@@ -2899,7 +2900,7 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance,
     };
     $scope.getDtLabel = function(element) {
         if (element) {
-            if (element.ext !== null) {
+            if (element.ext !== null && element.ext !=='') {
                 return element.name + "_" + element.ext;
             } else {
                 return element.name;
@@ -2921,7 +2922,7 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance,
 
         blockUI.stop();
 
-        $modalInstance.close(field);
+        $mdDialog.hide(field);
 
 
     };
@@ -2929,7 +2930,7 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance,
 
     $scope.cancel = function() {
         field.datatype = oldDt;
-        $modalInstance.close();
+        $mdDialog.hide();
     };
 
 

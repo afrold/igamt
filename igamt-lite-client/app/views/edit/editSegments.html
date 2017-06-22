@@ -975,6 +975,8 @@
                             <md-option ng-value="datatype" ng-repeat="datatype in results">
                                 <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
                             </md-option>
+                            <md-option ng-click="otherDT(node)" value="none"> Change Data Type root</md-option>
+
                         </md-select>
                     </div>
 
@@ -1558,19 +1560,19 @@
                         </div>
                     </div>
                 </md-input-container>
-                <md-input-container  ng-show="selectedDT() && DT.components.length===0" class="md-block" flex-gt-sm>
-                    <label class="input-left" ng-class="{'igl-has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>
-                    <div class="controls col-md-9">
-                        <div class="form-inline">
-                            <input class="form-control" placeholder="Min Length" name="minLength" style="width:49%" id="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.minLength" required ng-minlength="0">
-                            <input class="form-control" type="text" placeholder="Max Length" style="width:50%" name="maxLength" id="maxLength" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.maxLength" required>
-                        </div>
-                    </div>
-                </md-input-container>
-                <md-input-container class="md-block" flex-gt-sm ng-class="{'igl-has-error has-feedback': !addFieldForm.confLength.$valid}" ng-show="selectedDT() && DT.components.length===0">
-                    <label class="input-left">Conf Length</label>
-                        <input class="form-control" name="confLength" id="confLength" ng-change="setDirty()" ng-model="newField.confLength">
-                </md-input-container>
+                <!--<md-input-container  ng-show="selectedDT() && DT.components.length===0" class="md-block" flex-gt-sm>-->
+                    <!--<label class="input-left" ng-class="{'igl-has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>-->
+                    <!--<div class="controls col-md-9">-->
+                        <!--<div class="form-inline">-->
+                            <!--<input class="form-control" placeholder="Min Length" name="minLength" style="width:49%" id="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.minLength" required ng-minlength="0">-->
+                            <!--<input class="form-control" type="text" placeholder="Max Length" style="width:50%" name="maxLength" id="maxLength" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.maxLength" required>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</md-input-container>-->
+                <!--<md-input-container class="md-block" flex-gt-sm ng-class="{'igl-has-error has-feedback': !addFieldForm.confLength.$valid}">-->
+                    <!--<label class="input-left">Conf Length</label>-->
+                        <!--<input class="form-control" name="confLength" id="confLength" ng-change="setDirty()" ng-model="newField.confLength">-->
+                <!--</md-input-container>-->
                 <md-input-container class="md-block" flex-gt-sm>
                     <label class="input-left">ValueSet</label>
                     <div class="controls col-md-11">
@@ -1615,26 +1617,40 @@
     </div>
 </script>
 <script type="text/ng-template" id="otherDTModal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Select Datatype for {{::field.type}} : {{::field.name}}</h3>
-    </div>
-    <div class="modal-body">
-        <div class="input-group">
-            <span class="input-group-addon" id="segment-basic-addon1"><i class="fa fa-search"></i> Search</span>
-            <input type="text" class="form-control input-lg" ng-model="newDt" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as getDtLabel(datatype) for datatype in datatypes|filter:{name:$viewValue} | limitTo:5" placeholder="Search By Name">
-        </div>
-    </div>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised bt-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-info btn-md" ng-click="addDT()" ng-disabled="!isInDts(newDt)"><span><i
-                    class="fa fa-check">
+
+    <md-dialog aria-label="change Dt">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Select Datatype for {{::field.type}} : {{::field.name}} </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+
+
+        <md-input-container class="md-block" layout="row" layout-align="center center" style="max-width:300px ">
+            <i class="input-left" flex="20" class="fa fa-search"></i>
+            <input flex="80" type="text" ng-model="newDt" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as getDtLabel(datatype) for datatype in datatypes|filter:{name:$viewValue} | limitTo:5" placeholder="Search By Name">
+        </md-input-container>
+
+
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+
+                <md-button class="md-primary md-raised" ng-click="addDT()" ng-disabled="!isInDts(newDt)"><span><i
+                        class="fa fa-check">
                 &nbsp; </i>Select</span>
-        </button>
-    </div>
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="DeleteSegmentPredicate.html">
     <div class="modal-header">

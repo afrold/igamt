@@ -2604,7 +2604,7 @@ angular.module('igl').controller('addComponentsCtrl',
                         oldDynamicMappingDefinition: pc.dynamicMappingDefinition,
                         oldConformanceStatements: pc.conformanceStatements,
                         conformanceStatements: [],
-                        oldCoConstraintsTable: $rootScope.segmentsMap[pc.ref.id].coConstraintsTable,
+                        oldCoConstraintsTable: $rootScope.segmentsMap[pc.id].coConstraintsTable,
 
                     },
                     appliedTo: [],
