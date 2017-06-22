@@ -912,24 +912,16 @@
                                     {{tablesMap[vs.tableId].description}}
                                 </td>
                                 <td class="col-md-2">
-                                    <md-input-container flex="100">
-                                        <md-select placeholder="Select BindingStrength"
-                                                   ng-model='vs.bindingStrength'>
-                                            <md-option value="R">Required</md-option>
-                                            <md-option value="S">Suggested</md-option>
-                                            <md-option value="U">Unspecified</md-option>
-                                        </md-select>
-                                    </md-input-container>
+                                    <select placeholder="Select BindingStrength" ng-model='vs.bindingStrength'>
+                                        <option value="R">Required</option>
+                                        <option value="S">Suggested</option>
+                                        <option value="U">Unspecified</option>
+                                    </select>
                                 </td>
                                 <td class="col-md-2">
-                                    <md-input-container flex="100" ng-show="listOfBindingLocations">
-                                        <md-select placeholder="Select BindingLocation"
-                                                   ng-model='vs.bindingLocation'>
-                                            <md-option ng-repeat="bl in listOfBindingLocations" ng-value="bl">
-                                                {{bl}}
-                                            </md-option>
-                                        </md-select>
-                                    </md-input-container>
+                                    <select placeholder="Select BindingLocation" ng-show="listOfBindingLocations" ng-model='vs.bindingLocation'>
+                                        <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">{{bl}}</option>
+                                    </select>
                                 </td>
                                 <td class="col-md-1" style="text-align:center">
                                     <span ng-click="deleteValueSet($index);"><i class="fa fa-times" aria-hidden="true"></i></span>

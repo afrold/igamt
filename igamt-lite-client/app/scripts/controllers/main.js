@@ -4131,7 +4131,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
                 $rootScope.documentationsMap[data.id] = saved.data;
                 angular.forEach($rootScope.documentations, function(d) {
                     console.log("found");
-                    if (d.id == $rootScope.documentation.id) {
+                    if (d.id === $rootScope.documentation.id) {
                         d.title = $rootScope.documentationsMap[saved.data.id].title;
                         d.content = $rootScope.documentationsMap[saved.data.id].content;
                         d.dateUpdated = $rootScope.documentationsMap[saved.data.id].dateUpdated;
@@ -4226,7 +4226,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
         } else if (data.type && data.type === "message") {
             var message = $rootScope.message;
             ////console.log($rootScope.message);
-            MessageService.save(message).then(function(result) {
+            MessageService.save(message).then(function() {
                 var index = MessageService.findIndex(message.id);
                 if (index < 0) {
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
@@ -4291,7 +4291,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
                 var segment = $rootScope.segment;
                 var ext = segment.ext;
                 if (segment.libIds === undefined) segment.libIds = [];
-                if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1) {
+                if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) === -1) {
                     segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
                 }
                 SegmentService.save($rootScope.segment).then(function(result) {
@@ -4346,7 +4346,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
                     newLink.ext = ext;
                     DatatypeLibrarySvc.updateChild(libId, newLink).then(function(link) {
                         DatatypeService.merge($rootScope.datatypesMap[result.id], result);
-                        if (oldLink && oldLink != null) {
+                        if (oldLink && oldLink !== null) {
                             oldLink.ext = newLink.ext;
                             oldLink.name = newLink.name;
                         }
@@ -4388,7 +4388,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
                     var newLink = TableService.getTableLink(result);
                     newLink.bindingIdentifier = bindingIdentifier;
                     TableLibrarySvc.updateChild(libId, newLink).then(function(link) {
-                        if (oldLink && oldLink != null) oldLink.bindingIdentifier = link.bindingIdentifier;
+                        if (oldLink && oldLink !== null) oldLink.bindingIdentifier = link.bindingIdentifier;
                         $rootScope.msg().text = "tableSaved";
                         $rootScope.msg().type = "success";
                         $rootScope.msg().show = true;
@@ -4410,7 +4410,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
 
         } else if (data.type === "document") {
 
-            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function(result) {
+            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function() {
                 $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
                 $scope.continue();
 
@@ -4422,7 +4422,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
 
         } else if (data.type === "profile") {
 
-            if ($rootScope.igdocument != null && $rootScope.metaData != null) {
+            if ($rootScope.igdocument !== null && $rootScope.metaData !== null) {
                 ProfileSvc.saveMetaData($rootScope.igdocument.id, $rootScope.metaData).then(function(result) {
                     $scope.continue();
                 }, function(error) {
@@ -4470,29 +4470,28 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
     $scope.listOfBindingLocations = null;
 
     $scope.findOptions = function(dtId) {
+        console.log(dtId);
         var result = [];
         result.push('1');
-
-
         if (!dtId) return result;
 
         if (_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT) {
-                return valueSetAllowedDT == $rootScope.datatypesMap[dtId].name;
+                return valueSetAllowedDT === $rootScope.datatypesMap[dtId].name;
             })) {
             var hl7Version = $rootScope.datatypesMap[dtId].hl7Version;
-
             var bls = $rootScope.config.bindingLocationListByHL7Version[hl7Version];
-
             if (bls && bls.length > 0) return bls;
         }
-
+        console.log(result);
         return result;
     };
+
+
 
     $scope.isSelected = function(v) {
         if ($scope.data && $scope.data.valueSets) {
             for (var i = 0; i < $scope.data.valueSets.length; i++) {
-                if ($scope.data.valueSets[i].tableId == v.id) return true;
+                if ($scope.data.valueSets[i].tableId === v.id) return true;
             }
         }
         return false;
@@ -4512,7 +4511,7 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
 
     $scope.unselectValueSet = function(v) {
         var toBeDelBinding = _.find($scope.data.valueSets, function(binding) {
-            return binding.tableId == v.id;
+            return binding.tableId === v.id;
         });
         var index = $scope.data.valueSets.indexOf(toBeDelBinding);
         if (index >= 0) {
@@ -4521,13 +4520,13 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
     };
 
     $scope.columnDefinition = _.find($rootScope.segment.coConstraintsTable.thenColumnDefinitionList, function(columnDefinition) {
-        return columnDefinition.id == currentId;
+        return columnDefinition.id === currentId;
     });
 
+    console.log($scope.columnDefinition);
     if ($scope.columnDefinition) {
         var dtId = $scope.columnDefinition.dtId;
-
-        if ($rootScope.datatypesMap[dtId].name.toLowerCase() == 'varies') {
+        if ($rootScope.datatypesMap[dtId].name.toLowerCase() === 'varies') {
             var referenceColumnDefinition = _.find($rootScope.segment.coConstraintsTable.thenColumnDefinitionList, function(columnDefinition) {
                 return columnDefinition.dMReference;
             });
@@ -4576,7 +4575,7 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
     $scope.currentNode = currentNode;
     $scope.currentComment = currentComment;
     var currentPath = null;
-    if (type == 'message') {
+    if (type === 'message') {
         currentPath = $rootScope.refinePath($scope.currentNode.path);
     } else {
         currentPath = $scope.currentNode.path;
@@ -4586,7 +4585,7 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
     var targetObj = type === 'datatype' ? $rootScope.datatype : type === 'segment' ? $rootScope.segment : $rootScope.message;
     $scope.title = '';
 
-    if (type == 'message') {
+    if (type === 'message') {
         $scope.title = 'Comment of ' + targetObj.name + '.' + $rootScope.refinePath($scope.currentNode.locationPath);
     } else {
         $scope.title = 'Comment of ' + targetObj.name + '.' + $scope.currentNode.path;
@@ -4629,13 +4628,13 @@ angular.module('igl').controller('labelController', function($scope) {
     $scope.getLabel = function(element) {
 
         if (element.type === 'table') {
-            if (!element.ext || element.ext == "") {
+            if (!element.ext || element.ext === "") {
                 return element.bindingIdentifier;
             } else {
                 return element.bindingIdentifier + "_" + element.ext;
             }
         }
-        if (!element.ext || element.ext == "") {
+        if (!element.ext || element.ext === "") {
             return element.name;
         } else {
             return element.name + "_" + element.ext;
