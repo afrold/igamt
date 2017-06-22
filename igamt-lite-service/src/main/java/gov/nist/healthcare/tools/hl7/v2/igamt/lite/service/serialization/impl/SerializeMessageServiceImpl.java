@@ -103,7 +103,7 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
 
 	@Override
 	public SerializableElement serializeMessage(Message message, String host) {
-		return serializeMessage(message, String.valueOf(1), String.valueOf(1),SerializationLayout.IGDOCUMENT, message.getHl7Version(), ExportConfig.getBasicExportConfig("table"), true, host);
+		return serializeMessage(message, String.valueOf(0), String.valueOf(1),SerializationLayout.IGDOCUMENT, message.getHl7Version(), ExportConfig.getBasicExportConfig("table"), true, host);
 	}
 
 }
