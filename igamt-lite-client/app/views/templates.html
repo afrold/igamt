@@ -497,58 +497,67 @@
         </div>
     </div>
 </script>
-<script type="text/ng-template" id="RichTextCtrl.html ">
-    <div class="modal-header modal-wide ">
-        <h3 class="modal-title ">{{::editorTarget.obj.position}} . {{::editorTarget.obj.name}} : {{::editorTarget.title}}
-        </h3>
-    </div>
-    <div class="modal-body ">
-        <div class="row ">
-            <div class="col-md-12 ">
-                <div ng-show="!editorTarget.disabled ">
-                    <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus ng-model="editorTarget.obj[editorTarget.key] " id="globalEditor " name="content " ng-change="recordChanged() "></textarea>
+<script type="text/ng-template" id="RichTextCtrlMd.html">
+    <md-dialog aria-label="defTxt">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> {{::editorTarget.obj.position}} . {{::editorTarget.obj.name}} : {{::editorTarget.title}} </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
-                <div ng-show="editorTarget.disabled " style="width:100%; ">
-                    <div froala-view="editorTarget.obj[editorTarget.key] "></div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <div ng-show="!editorTarget.disabled ">
+                        <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus ng-model="editorTarget.obj[editorTarget.key] " id="globalEditor " name="content " ng-change="recordChanged() "></textarea>
+                    </div>
+                    <div ng-show="editorTarget.disabled " style="width:100%; ">
+                        <div froala-view="editorTarget.obj[editorTarget.key] "></div>
+                    </div>
+
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-primary btn-md " ng-click="close() "><span><i class="fa fa-times fa-fw ">
-            &nbsp; </i>Close</span>
-        </button>
-    </div>
+            </md-dialog-content>
+        </form>
+    </md-dialog>
+
 </script>
 <script type="text/ng-template" id="InputTextCtrl.html ">
-    <div class="modal-header ">
-        <h3 ng-show="editorTarget.obj.type==='segmentRef' ">
-            {{editorTarget.obj.position}}.{{segmentsMap[editorTarget.obj.ref].name}}:{{segmentsMap[editorTarget.obj.ref].description}}</h3>
 
-        <h3 ng-show="editorTarget.obj.type==='group' ">{{editorTarget.obj.position}}.{{editorTarget.obj.name}}</h3>
+    <md-dialog aria-label="InputTextCtrl">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2 ng-show="editorTarget.obj.type==='segmentRef' ">
+                        {{editorTarget.obj.position}}.{{segmentsMap[editorTarget.obj.ref].name}}:{{segmentsMap[editorTarget.obj.ref].description}}</h2>
 
-        <h3 ng-show="editorTarget.obj.type !='segmentRef' && editorTarget.obj.type !='group' " class="modal-title ">
-            {{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}
-        </h3> {{::editorTarget.obj.position}}.{{::segmentsMap[editorTarget.obj.ref].name}}:{{::segmentsMap[editorTarget.obj.ref].description}}
-        </h3>
+                    <h2 ng-show="editorTarget.obj.type==='group' ">{{editorTarget.obj.position}}.{{editorTarget.obj.name}}</h2>
 
-    </div>
-    <div class="modal-body ">
-        <form class="form-horizontal " novalidate>
-            <div class="row ">
-                <div class="col-md-12 ">
-                    <textarea rows="10 " type="text " ng-disabled="editorTarget.disabled " style="width:100%; " autofocus name="inputEditor " class="form-control " ng-change="recordChanged() " ng-model="editorTarget.obj[editorTarget.key] "></textarea>
+                    <h2 ng-show="editorTarget.obj.type !='segmentRef' && editorTarget.obj.type !='group' " class="modal-title ">
+                        {{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}
+                    </h2> {{::editorTarget.obj.position}}.{{::segmentsMap[editorTarget.obj.ref].name}}:{{::segmentsMap[editorTarget.obj.ref].description}}
+                    </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="close()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
-            </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <textarea rows="10 " type="text " ng-disabled="editorTarget.disabled " style="width:100%; " autofocus name="inputEditor " class="form-control " ng-change="recordChanged() " ng-model="editorTarget.obj[editorTarget.key] "></textarea>
+
+
+                </div>
+            </md-dialog-content>
         </form>
-    </div>
-    </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-primary btn-md " ng-click="close() "><span><i class="fa fa-times fa-fw ">
-            &nbsp; </i>Close</span>
-        </button>
-    </div>
+    </md-dialog>
 </script>
+
 <script type="text/ng-template" id="EditUserData.html">
     <div class="modal-header ">
         <h3>{{definition.title}}</h3>
@@ -569,32 +578,40 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="EditComment.html">
-    <div class="modal-header ">
-        <h3>{{title}}</h3>
-    </div>
-    <div class="modal-body ">
-        <form class="form-horizontal " novalidate>
-            <div class="row ">
-                <div class="col-md-12 ">
-                    <textarea rows="10 " type="text " ng-disabled="disabled" style="width:100%;" autofocus name="inputEditor" class="form-control" ng-model="descriptionText"></textarea>
+
+<script type="text/ng-template" id="EditCommentMd.html">
+
+
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> {{title}}</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
-                <div class="col-md-12 ">
-                    <p ng-show="!currentComment" style="text-align: right">New Comments</p>
-                    <p ng-show="currentComment" style="text-align: right">Last updated at {{currentComment.lastUpdatedDate|date:dateFormat}}</p>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <div class="col-md-12 ">
+                        <textarea rows="10 " type="text " ng-disabled="disabled" style="width:100%;" autofocus name="inputEditor" class="form-control" ng-model="descriptionText"></textarea>
+                    </div>
+                    <div class="col-md-12 ">
+                        <p ng-show="!currentComment" style="text-align: right">New Comments</p>
+                        <p ng-show="currentComment" style="text-align: right">Last updated at {{currentComment.lastUpdatedDate|date:dateFormat}}</p>
+                    </div>
+
                 </div>
-            </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button  class="md-primary md-raised" md-autofocus ng-click="close()">Save
+                </md-button>
+            </md-dialog-actions>
         </form>
-    </div>
-    </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
-            &nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
-            &nbsp; </i>Save</span>
-        </button>
-    </div>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="EditDMSecondReference.html">
     <div class="modal-header ">
@@ -1010,28 +1027,33 @@
     </div>
 </script>
 <script type="text/ng-template" id="EditSingleElement.html">
-    <div class="modal-header ">
-        <h3>Constant Value of {{currentNode.path}}</h3>
 
-    </div>
-    <div class="modal-body ">
-        <form class="form-horizontal " novalidate>
-            <div class="row ">
-                <div class="col-md-12 ">
-                    <input style="width:100%;" class="form-control" type="text" ng-model="sevVale" required/>
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Constant Value of {{currentNode.path}} </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
-            </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <md-input-container style="width:100%;">
+                    <input style="width:100%;" aria-label=" SE Value" type="text" ng-model="sevVale" required/>
+                    </md-input-container>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button  class="md-primary md-raised" md-autofocus ng-click="close()">
+                    save
+                </md-button>
+            </md-dialog-actions>
         </form>
-    </div>
-    </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
-            &nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
-            &nbsp; </i>Save</span>
-        </button>
-    </div>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="tree_node ">
 
@@ -2893,10 +2915,12 @@
     </md-dialog>
 </script>
 <script type="text/ng-template" id="PredicateSegmentCtrl.html ">
-    <md-dialog aria-label="Conditional Predicate for Segment" style="{{getDialogStyle()}}">
+    <md-dialog aria-label="Conditional Predicate for Segment" style="80%">
+
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
+                    <h2>Predicate Summary</h2>
                     <h2 ng-if="dialogStep === 0">Predicate Summary</h2>
                     <h2 ng-if="dialogStep === 1">(1/2) Create Constraints</h2>
                     <h2 ng-if="dialogStep === 2">(2/2) Select Predicate and Set True/False Usage</h2>

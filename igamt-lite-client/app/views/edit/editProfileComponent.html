@@ -292,7 +292,6 @@
                                                                                 class="fa fa-remove fa-fw"></i></a>
                                                                     </div>
                                                                 </td>
-                                                                =
                                                                 <td classs="col-md-1 col-fixed-100"
                                                                     ng-class="{'emptyCol': node.usage == 'X' || (node.type!=='field' && node.type!=='component') || datatypesMap[node.datatype.id].components.length > 0, 'input-change ': node.usage != 'X' && (node.attributes.minLength || node.attributes.maxLength)}">
                                                                     <div ng-show="node.usage != 'X' && (node.type==='field' || node.type==='component') && datatypesMap[node.datatype.id].components.length == 0">
@@ -1010,25 +1009,29 @@
 </script>
 
 <script type="text/ng-template" id="addDefTextModal.html">
-    <div class="modal-header modal-wide ">
-        <h3 class="modal-title ">{{field.name}} : Definition Text</h3>
-    </div>
-    <div class="modal-body ">
-        <div class="row ">
-            <div class="col-md-12 ">
-                <div>
+    <md-dialog aria-label="defTxt">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> {{field.name}} : Definition Text</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="close()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <div>
                     <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus
                               ng-model="field.attributes.text" id="globalEditor " name="content "></textarea>
-                </div>
+                    </div>
 
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-primary btn-md " ng-click="close() "><span><i class="fa fa-times fa-fw ">
-            &nbsp; </i>Close</span>
-        </button>
-    </div>
+                </div>
+            </md-dialog-content>
+        </form>
+    </md-dialog>
 </script>
 
 <script type="text/ng-template" id="applyPcTo.html">

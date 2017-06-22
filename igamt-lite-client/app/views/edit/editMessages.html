@@ -344,58 +344,56 @@
                                         <tbody>
                                             <tr>
                                                 <td class="col-md-1">
-                                                    <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
+                                                    <span class="badge badge-delta badge-delta-1">1</span>
                                                 </td>
                                                 <td class="col-md-2">
-                                                    <select ng-model="version1" class="form-control" disabled>
-                                                            <option ng-selected="version1"> {{::version1}}</option>
-                                                        </select>
+                                                    <md-select ng-model="version1"  disabled placeholder="{{version1}}">
+                                                    </md-select>
                                                 </td>
                                                 <td class="col-md-2">
-                                                    <select ng-model="scope1" class="form-control" disabled>
-                                                            <option ng-selected="scope1"> {{::scope1}}</option>
-                                                        </select>
+                                                    <md-select ng-model="scope1"  disabled placeholder="{{scope1}}">
+                                                        </md-select>
                                                 </td>
                                                 <td class="col-md-3">
-                                                    <select ng-model="ig1" class="form-control" disabled>
-                                                            <option ng-selected="ig1"> {{::ig1}}</option>
-                                                        </select>
+                                                    <md-select ng-model="ig1"  disabled placeholder="{{ig1}}">
+                                                        </md-select>
                                                 </td>
                                                 <td class="col-md-4">
-                                                    <select ng-model="message1" class="form-control" disabled>
-                                                            <option ng-selected="message1"> {{message1.name}}</option>
-                                                        </select>
+                                                    <md-select ng-model="message1"  disabled placeholder="{{message1.name}}">
+                                                        </md-select>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="col-md-1">
-                                                    <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
+                                                    <span class="badge badge-delta badge-delta-2">2</span>
                                                 </td>
                                                 <td class="col-md-2">
-                                                    <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
-                                                            <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</option>
-                                                        </select>
+                                                    <md-select ng-model="version2" ng-change="setVersion2(version2)" no-dirty-check>
+                                                            <md-option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{::vr}}</md-option>
+                                                        </md-select>
                                                 </td>
                                                 <td class="col-md-2">
-                                                    <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
-                                                            <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</option>
-                                                        </select>
+                                                    <md-select ng-model="scope2"  ng-change="setScope2(scope2)" no-dirty-check>
+                                                            <md-option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{::scope.alias}}</md-option>
+                                                        </md-select>
                                                 </td>
                                                 <td class="col-md-3">
-                                                    <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-click="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
+                                                    <md-select  ng-model="ig2" ng-click="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check>
+
+                                                        <md-option ng-repeat="ig in igList2 track by ig.id" ng-value="ig">{{ig.title}}</md-option>
+                                                    </md-select>
                                                 </td>
 
                                                 <td class="col-md-4">
-                                                    <select ng-model="cmpMsg.messageId" class="form-control" ng-change="setMsg2(cmpMsg.messageId)" ng-disabled="!ig2" no-dirty-check>
-                                                            <option value='-1'></option>
-                                                            <option ng-repeat="message in messages2 " ng-disabled="disableMsg(message,message1)" ng-hide="hideMsg(message,message1)" value='{{$index}}'> {{::message.name}}</option>
-                                                        </select>
+                                                    <md-select ng-model="cmpMsg.messageId" ng-change="setMsg2(cmpMsg.messageId)" ng-disabled="!ig2" no-dirty-check>
+                                                            <md-option ng-repeat="message in messages2 " ng-disabled="disableMsg(message,message1)" ng-hide="hideMsg(message,message1)" value='{{$index}}'> {{::message.name}}</md-option>
+                                                        </md-select>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <div class="" align="center" style="margin-bottom:10px">
-                                        <button ng-click="cmpMessage(message1,message2)" ng-disabled="!message1 || cmpMsg.messageId===-1||!msgChanged || !message2" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> Delta</button>
+                                        <md-button ng-click="cmpMessage(message1,message2)" ng-disabled="!message1 || cmpMsg.messageId===-1||!msgChanged || !message2" class="btn btn-raised btn-info btn-md"><i class="fa fa-check"></i> Delta</md-button>
                                     </div>
                                 </div>
                                 <div accordion-group class="panel-primary" is-open="status.isSecondOpen">
@@ -1027,167 +1025,194 @@
 </script>
 
 <script type="text/ng-template" id="AddSegmentModal.html">
-    <div class="modal-header modal-wide">
-        <div class="form-inline">
-            <span class="header4">Create Segment</span>
-        </div>
-    </div>
-    <div class="modal-body">
-        <div class="creation-modal-content">
-            <form name="addSegForm" class="form-horizontal" novalidate>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !selected()}">
-                    <label class="col-md-3 control-label">Existing Segment*</label>
-                    <div class="controls col-md-9">
-                        <input class="input-group form-control" type="text" ng-model="search.name" ng-hide="selected()" required/>
-                        <li class="form-control" ng-show="selected()">
-                            {{newSeg.name}} <span ng-show="newSeg.ext">_{{newSeg.ext}}</span>
-                            <button type="button" class="close" aria-label="Close" ng-click="unselect()">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </li>
-                        <div ng-show="search.name && !selected()">
-                            <li class="form-control" ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments | filter:search">
-                                {{segment.name}} <span ng-show="segment.ext">_{{segment.ext}}</span>
-                            </li>
-                        </div>
-                    </div>
+    <md-dialog aria-label="create group">
+        <form ng-cloak name="addSegForm" class="form-horizontal" novalidate id="addSegForm">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Create Segment </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
+            </md-toolbar>
 
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addSegForm.inputPosition.$valid}">
-                    <label class="col-md-3 control-label">Position*</label>
-                    <div class="controls col-md-9">
-                        <select ng-model="position" ng-change="selectPos()" class="form-control input-sm" required id="inputPosition" name="inputPosition">
-                            <option ng-show="segmentParent.type==='message'" ng-repeat="child in segmentParent.children"> {{child.position}}
-                                <option ng-show="segmentParent.obj && segmentParent.obj.type==='group'" ng-repeat="child in segmentParent.children"> {{child.obj.position}}
-                                    <option value="{{segmentParent.children.length+1}}">{{segmentParent.children.length+1}}
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addSegForm.usage.$valid}">
-                    <label class="col-md-3 control-label">Usage*</label>
-                    <div class="controls col-md-9">
-                        <select class="form-control input-sm" name="usage" id="usage" ng-change="selectUsage(newSegment.usage)" required ng-model="newSegment.usage" ng-options="usage for usage in config.usages" required />
-                    </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addSegForm.min.$valid ||!addSegForm.max.$valid }">
-                    <label class="col-md-3 control-label">Cardinality*</label>
-                    <div class="controls col-md-9">
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                        <md-content layout-padding>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label class="input-left">Existing Segment*</label>
+                                <input type="text" ng-model="search.name" ng-hide="selected()" required/>
+                                <li ng-show="selected()">
+                                    {{newSeg.name}} <span ng-show="newSeg.ext">_{{newSeg.ext}}</span>
+                                    <button type="button" class="close" aria-label="Close" ng-click="unselect()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </li>
+                                <div ng-show="search.name && !selected()">
+                                    <li ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments | filter:search">
+                                        {{segment.name}} <span ng-show="segment.ext">_{{segment.ext}}</span>
+                                    </li>
+                                </div>
+                                <div ng-messages="addSegForm.name.$error">
+                                    <div ng-message="required">Name is required.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center">
+                                <label class="input-left"> Position</label>
+                                <md-select ng-model="position" ng-change="selectPos()" class="point" required  id="inputPosition" name="inputPosition">
+                                    <md-option ng-show="segmentParent.type==='message'" ng-repeat="child in segmentParent.children" ng-value="{{child.position}}"> {{child.position}}</md-option>
+                                    <md-option ng-show="segmentParent.obj && segmentParent.obj.type==='group'" ng-repeat="child in segmentParent.children" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>
+                                    <md-option ng-value="{{segmentParent.children.length+1}}">{{segmentParent.children.length+1}}</md-option>
+                                </md-select>
+                                <div ng-messages="addSegForm.name.$error">
+                                    <div ng-message="required">Name is required.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center">
+                                <label class="input-left"> Usage</label>
+                                <md-select name="grUsage" id="grUsage" ng-change="selectUsage(newSegment.usage)" ng-model="newSegment.usage" required>
+                                    <md-option ng-repeat="usage in config.usages" ng-value="usage">{{usage}}
+                                    </md-option>
+                                </md-select>
+
+                                <div ng-messages="addSegForm.usage.$error">
+                                    <div ng-message="required">Name is required.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center" ng-class="{'igl-has-error has-feedback': !addSegForm.segCardMin.$valid ||!addSegForm..segCardMax.$valid }">
+                                <label class="input-left">Cardinality*</label>
+                                <div class="col-md-9">
                         <span class="form-inline">
-                                                <input  style="width:49%;margin-right: 1px" class="form-control"
-                                                    placeholder="Min"
-                                                        
-
-                                                       name="min"
-                                                       id="min"
-                                                       ng-change="setDirty()"
-                                                       ng-pattern="/^\d+$/"
-                                                       ng-model="newSegment.min" required  ng-disabled="disableMin">
-                                                <input  style="width:50%" class="form-control"type="text"
-                                                    placeholder="Max"
-
-
-
-                                                       name="max"
-                                                       id="max"
-                                                       ng-change="setDirty()"
-                                                       
-                                                       ng-pattern="/^\d+$|^\*?$/"
-                                                       ng-model="newSegment.max" ng-disabled="disableMax" required>
-                                            </span>
+                                                <input  style="width:49%;margin-right: 1px"
+                                                        placeholder="Min"
+                                                        name="segCardMin"
+                                                        id="segCardMin"
+                                                        ng-change="setDirty()"
+                                                        ng-pattern="/^\d+$/"
+                                                        ng-model="newSegment.min" ng-disabled="disableMin" required >
+                                                <input  style="width:50%"  type="text"
+                                                        placeholder="Max"
+                                                        name="segCardMax"
+                                                        id="segCardMax"
+                                                        ng-change="setDirty()"
+                                                        ng-pattern="/^\d+$|^\*?$/"
+                                                        ng-model="newSegment.max" ng-disabled="disableMax" required>
+                        </span>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label class="input-left"> Comment</label>
+                                <input type="text" id="comment" name="comment" ng-model="newSegment.comment">
+                            </md-input-container>
+                        </md-content>
                     </div>
                 </div>
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label">Comment</label>
-                    <div class="controls col-md-9">
-                        <textarea class="form-control" ng-model="newSegment.comment">
-                    </textarea>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-raised btn-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-info btn-md" type="submit" ng-click="addSegment()" ng-disabled="addSegForm.$invalid || !selected()"><span><i
-                    class="fa fa-plus fa-fw">
+            </md-dialog-content>
+            <md-dialog-actions layout="row" layout-align="end end">
+
+                <md-button class="btn btn-raised btn-info btn-md" type="submit" ng-click="addSegment()" ng-disabled="addSegForm.$invalid || !selected()"><span><i
+                        class="fa fa-plus fa-fw">
                 &nbsp; </i>Add</span>
-            </button>
-        </div>
-    </div>
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="AddGroupModal.html">
-    <div class="modal-header modal-wide">
-        <div class="form-inline">
-            <span class="header4">Create Group</span>
-        </div>
-    </div>
-    <div class="modal-body">
-        <div class="creation-modal-content">
-            <form name="addGrpForm" class="form-horizontal" novalidate>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addGrpForm.inputGroupName.$valid}">
-                    <label class="col-md-3 control-label">Group Name*</label>
-                    <div class="controls col-md-9">
-                        <input class="form-control" type="text" ng-model="grpName" name="inputGroupName" id="inputGroupName" required/>
-                    </div>
+    <md-dialog aria-label="create group">
+        <form ng-cloak name="addGrpForm" class="form-horizontal" novalidate id="addGrpForm">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Create Group </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addGrpForm.grPosition.$valid}">
-                    <label class="col-md-3 control-label">Position*</label>
-                    <div class="controls col-md-9">
-                        <select ng-model="position" class="form-control input-sm" ng-change="selectPos()" class="point" required id="grPosition" name="grPosition">
-                            <option ng-show="groupParent.type==='message'" ng-repeat="child in groupParent.children"> {{child.position}}
-                                <option ng-show="groupParent.obj && groupParent.obj.type==='group'" ng-repeat="child in groupParent.children"> {{child.obj.position}}
-                                    <option value="{{groupParent.children.length+1}}">{{groupParent.children.length+1}}
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addGrpForm.grUsage.$valid}">
-                    <label class="col-md-3 control-label">Usage*</label>
-                    <div class="controls col-md-9">
-                        <select class="form-control input-sm" name="grUsage" id="grUsage" ng-change="selectUsage(newGroup.usage)" ng-model="newGroup.usage" ng-options="usage for usage in config.usages" required />
-                    </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
-                    <label class="col-md-3 control-label">Cardinality*</label>
-                    <div class="controls col-md-9">
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                    <md-content layout-padding>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label class="input-left"> Group Name</label>
+                            <input type="text" id="name" name="name" ng-model="grpName"
+                                   required>
+                            <div ng-messages="addGrpForm.name.$error">
+                                <div ng-message="required">Name is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center">
+                            <label class="input-left"> Position</label>
+                            <md-select ng-model="position" ng-change="selectPos()" class="point" required  name="grPosition">
+                                <md-option ng-show="groupParent.type==='message'" ng-repeat="child in groupParent.children" ng-value="{{child.position}}"> {{child.position}}</md-option>
+                                <md-option ng-show="groupParent.obj && groupParent.obj.type==='group'" ng-repeat="child in groupParent.children" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>
+                                <md-option ng-value="{{groupParent.children.length+1}}">{{groupParent.children.length+1}}</md-option>
+                            </md-select>
+                            <div ng-messages="addGrpForm.name.$error">
+                                <div ng-message="required">position is required.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center">
+                            <label class="input-left"> Usage</label>
+                            <md-select name="grUsage" id="grUsage" ng-change="selectUsage(newGroup.usage)" ng-model="newGroup.usage" required>
+                                <md-option ng-repeat="usage in config.usages" ng-value="usage">{{usage}}
+                                </md-option>
+                            </md-select>
+
+                            <div ng-messages="addGrpForm.usage.$error">
+                                <div ng-message="required">usage is required.</div>
+                            </div>
+                        </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
+                    <label class="input-left">Cardinality*</label>
+                    <div class="col-md-9">
                         <span class="form-inline">
-                                                <input  style="width:49%;margin-right: 1px" class="form-control"
+                                                <input  style="width:49%;margin-right: 1px"
                                                     placeholder="Min"
                                                        name="grCardMin"
                                                        id="grCardMin"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-model="newGroup.min" ng-disabled="disableMin" required >
-                                                <input  style="width:50%" class="form-control" type="text"
+                                                <input  style="width:50%"  type="text"
                                                     placeholder="Max"
                                                        name="grCardMax"
                                                        id="grCardMax"
                                                        ng-change="setDirty()"
-                                                       
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="newGroup.max" ng-disabled="disableMax" required>
-                                            </span>
+                        </span>
                     </div>
-                </div>
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label">Comment</label>
-                    <div class="controls col-md-9">
-                        <textarea class="form-control" ng-model="newGroup.comment">
-                    </textarea>
-                    </div>
-                </div>
-            </form>
+                </md-input-container>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label class="input-left"> Comment</label>
+                                    <input type="text" id="comment" name="comment" ng-model="newGroup.comment">
+                                    <div ng-messages="addGrpForm.comment.$error">
+                                        <div ng-message="required">Name is required.</div>
+                                    </div>
+
+                                </md-input-container>
+                    </md-content>
         </div>
-        <div class="modal-footer">
-            <button class="btn btn-raised btn-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-info btn-md" ng-click="addGroup()" ng-disabled="addGrpForm.$invalid"><span><i
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row" layout-align="end end">
+
+            <md-button class="md-primary md-raised" ng-click="addGroup()" ng-disabled="addGrpForm.$invalid"><span><i
                     class="fa fa-plus fa-fw">
                 &nbsp; </i>Add</span>
-            </button>
-        </div>
-    </div>
+            </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="SelectSegmentFlavor.html">
     <div class="modal-header modal-wide">
@@ -1336,83 +1361,88 @@
     </div>
 </script>
 <script type="text/ng-template" id="TableMappingMessageCtrl.html">
-    <div class="modal-header modal-wide">
-        <h3 class="modal-title">Bind Value Set to {{::currentNode.locationPath}} of {{::message.name}}</h3>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <form role="form">
-                <div class="col-md-12">
-                    <div ng-cloak>
-                        <md-content>
-                            <div ng-show="selectedValueSetBindings.length > 0">
-                                <div ng-show="selectedValueSetBindings[0].type == 'singlecode'">
-                                    <h1 class="md-display-1">Single Code selected</h1>
+    <md-dialog aria-label="table Mapping">
+                                    <form ng-cloak role="form">
+                                        <md-toolbar>
+                                            <div class="md-toolbar-tools">
+                                                <h2> Bind Value Set to {{::currentNode.locationPath}} of {{::message.name}} </h2>
+                                                <span flex></span>
+                                                <md-button class="md-icon-button" ng-click="ok()">
+                                                    <i class="material-icons">clear</i>
+                                                </md-button>
+                                            </div>
+                                        </md-toolbar>
+                                        <md-dialog-content>
+                                            <div class="md-dialog-content">
+                                                <md-content>
+                                <div ng-show="selectedValueSetBindings.length > 0">
+                                    <div ng-show="selectedValueSetBindings[0].type == 'singlecode'">
+                                        <h1 class="md-display-1">Single Code selected</h1>
+                                    </div>
+                                    <div ng-show="selectedValueSetBindings[0].type == 'valueset'">
+                                        <h1 class="md-display-1">{{selectedValueSetBindings.length}} Value Set(s) selected</h1>
+                                    </div>
                                 </div>
-                                <div ng-show="selectedValueSetBindings[0].type == 'valueset'">
-                                    <h1 class="md-display-1">{{selectedValueSetBindings.length}} Value Set(s) selected</h1>
+                                <div ng-show="selectedValueSetBindings.length == 0">
+                                    <h1 class="md-display-1">No Value Set or Single Code selected</h1>
                                 </div>
-                            </div>
-                            <div ng-show="selectedValueSetBindings.length == 0">
-                                <h1 class="md-display-1">No Value Set or Single Code selected</h1>
-                            </div>
 
-                            <div ng-if="selectedValueSetBindings.length > 0 &&  selectedValueSetBindings[0].type == 'valueset'">
-                                <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered" ng-show="selectedValueSetBindings.length > 0">
-                                    <thead>
-                                    <tr class="tbl-header">
-                                        <th class="col-md-1">Scope/Version</th>
-                                        <th class="col-md-2">Mapping Identifier</th>
-                                        <th class="col-md-4">Description</th>
-                                        <th class="col-md-2">Binding Strength</th>
-                                        <th class="col-md-2">Binding Location</th>
-                                        <th class="col-md-1"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="b in displayedSelectedValueSetBindings">
-                                        <td class="col-md-1">
-                                            <span class="badge" ng-class="{'label-HL7' : getScopeLabel(tablesMap[b.tableId])==='HL7', 'label-USE': getScopeLabel(tablesMap[b.tableId])==='USR','label-MASTER':getScopeLabel(tablesMap[b.tableId])==='MAS','label-PRL':getScopeLabel(tablesMap[b.tableId])==='PRL','label-PVS':getScopeLabel(tablesMap[b.tableId])==='PVS'}">{{getScopeLabel(tablesMap[b.tableId])}} {{hasSameVersion(tablesMap[b.tableId])}}</span>
-                                        </td>
-                                        <td class="col-md-2">
-                                            {{tablesMap[b.tableId].bindingIdentifier}}
-                                        </td>
-                                        <td class="col-md-4">
-                                            {{tablesMap[b.tableId].description}}
-                                        </td>
-                                        <td class="col-md-2">
-                                            <select ng-model='b.bindingStrength' class="form-control" ng-change="setChanged()">
-                                                <option value="R">Required</option>
-                                                <option value="S">Suggested</option>
-                                                <option value="U">Unspecified</option>
-                                            </select>
-                                        </td>
-                                        <td class="col-md-2">
-                                            <select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' class="form-control" ng-change="setChanged()">
-                                                <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">
-                                                    {{bl}}
-                                                </option>
-                                            </select>
-                                        </td>
-                                        <td class="col-md-1" align="center">
-                                            <a ng-click="deleteBinding(b)" class="point">
-                                                <span title="Delete ValueSet Binding"><i class="icon-size-15 fa-times fa"></i></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                <div ng-if="selectedValueSetBindings.length > 0 &&  selectedValueSetBindings[0].type == 'valueset'">
+                                    <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered" ng-show="selectedValueSetBindings.length > 0">
+                                        <thead>
+                                        <tr class="tbl-header">
+                                            <th class="col-md-1">Scope/Version</th>
+                                            <th class="col-md-2">Mapping Identifier</th>
+                                            <th class="col-md-4">Description</th>
+                                            <th class="col-md-2">Binding Strength</th>
+                                            <th class="col-md-2">Binding Location</th>
+                                            <th class="col-md-1"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="b in displayedSelectedValueSetBindings">
+                                            <td class="col-md-1">
+                                                <span class="badge" ng-class="{'label-HL7' : getScopeLabel(tablesMap[b.tableId])==='HL7', 'label-USE': getScopeLabel(tablesMap[b.tableId])==='USR','label-MASTER':getScopeLabel(tablesMap[b.tableId])==='MAS','label-PRL':getScopeLabel(tablesMap[b.tableId])==='PRL','label-PVS':getScopeLabel(tablesMap[b.tableId])==='PVS'}">{{getScopeLabel(tablesMap[b.tableId])}} {{hasSameVersion(tablesMap[b.tableId])}}</span>
+                                            </td>
+                                            <td class="col-md-2">
+                                                {{tablesMap[b.tableId].bindingIdentifier}}
+                                            </td>
+                                            <td class="col-md-4">
+                                                {{tablesMap[b.tableId].description}}
+                                            </td>
+                                            <td class="col-md-2">
+                                                <select ng-model='b.bindingStrength' class="form-control" ng-change="setChanged()">
+                                                    <option value="R">Required</option>
+                                                    <option value="S">Suggested</option>
+                                                    <option value="U">Unspecified</option>
+                                                </select>
+                                            </td>
+                                            <td class="col-md-2">
+                                                <select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' class="form-control" ng-change="setChanged()">
+                                                    <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">
+                                                        {{bl}}
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td class="col-md-1" align="center">
+                                                <a ng-click="deleteBinding(b)" class="point">
+                                                    <span title="Delete ValueSet Binding"><i class="icon-size-15 fa-times fa"></i></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                            <div ng-if="selectedValueSetBindings.length > 0 && selectedValueSetBindings[0].type == 'singlecode'">
-                                <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered">
-                                    <thead>
+                                <div ng-if="selectedValueSetBindings.length > 0 && selectedValueSetBindings[0].type == 'singlecode'">
+                                    <table st-table="displayedSelectedValueSetBindings" st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered">
+                                        <thead>
                                         <tr class="tbl-header">
                                             <th class="col-md-11">Conformance Statement for Single Code</th>
                                             <th class="col-md-1">Action</th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
+                                        </thead>
+                                        <tbody>
                                         <tr ng-repeat="b in displayedSelectedValueSetBindings">
                                             <td class="col-md-11">
                                                 {{::currentNode.locationPath}} ({{::currentNode.obj.name}})
@@ -1434,77 +1464,25 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <br/>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br/>
 
-                            <span ng-show="isSingleValueSetAllowed" class="header3">
+                                <span ng-show="isSingleValueSetAllowed" class="header3">
                                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
                                 Allowed to select a Value Set or a Single Code.
                             </span>
 
-                            <span ng-show="!isSingleValueSetAllowed" class="header3">
+                                <span ng-show="!isSingleValueSetAllowed" class="header3">
                                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
                                 Allowed to select one or more Value Set(s).
                             </span>
 
-                            <md-tabs md-dynamic-height md-border-bottom>
-                                <md-tab label="Value Set">
-                                    <md-content class="md-padding">
-                                        <table st-safe-src="tables" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
-                                            <thead>
-                                            <tr class="tbl-header">
-                                                <th st-sort="scope" class="col-md-1">Scope/Version</th>
-                                                <th st-sort="bindingIdentifier" class="col-md-3">Binding Identifier</th>
-                                                <th class="col-md-7">Description</th>
-                                                <th class="col-md-1">Action</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="5">
-                                                    <input st-search="bindingIdentifier" placeholder="search for BindingIdentifier" class="input-sm form-control" type="search"/>
-                                                </th>
-                                            </tr>
-                                            </thead>
-
-                                            <tbody>
-                                            <tr ng-repeat="v in displayCollection">
-                                                <td class="col-md-1">
-                                                    <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
-                                                </td>
-                                                <td class="col-md-3">
-                                                    {{v.bindingIdentifier}}
-                                                </td>
-                                                <td class="col-md-7">
-                                                    {{v.description}}
-                                                </td>
-                                                <td class="col-md-1" align="center">
-                                                    <a ng-show="!isSelected(v)" ng-click="selectValueSet(v)" class="point">
-                                                        <i class="icon-size-15 fa-circle-thin fa"></i>
-                                                    </a>
-                                                    <a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">
-                                                        <i class="icon-size-15 fa-check-circle fa"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                            <tr style="float:center !important;" ng-if="tables.length > 10">
-                                                <td colspan="5" class="text-center" style="float:center !important;">
-                                                    <div st-pagination="" st-items-by-page="10" st-displayed-pages="10" style="float:center !important;"></div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </md-content>
-                                </md-tab>
-                                <md-tab label="Single Code" ng-disabled="!isSingleValueSetAllowed" md-on-select="singleCodeInit();">
-                                    <md-content class="md-padding">
-                                        <div ng-if="selectedValueSetBindings.length == 0 || selectedValueSetBindings[0].type == 'valueset'">
-                                            <a ng-click="addManualCode();" class="point">
-                                                <i class="icon-size-15 fa-plus fa"> Create Single Code directly</i>
-                                            </a>
-                                        </div>
-                                        <div ng-show="!valueSetSelectedForSingleCode">
-                                            <table st-safe-src="tables" st-table="displayTables" class="table table-striped table-condensed table-bordered">
+                                <md-tabs md-dynamic-height md-border-bottom>
+                                    <md-tab label="Value Set">
+                                        <md-content class="md-padding">
+                                            <table st-safe-src="tables" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <th st-sort="scope" class="col-md-1">Scope/Version</th>
@@ -1520,7 +1498,7 @@
                                                 </thead>
 
                                                 <tbody>
-                                                <tr ng-repeat="v in displayTables">
+                                                <tr ng-repeat="v in displayCollection">
                                                     <td class="col-md-1">
                                                         <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
                                                     </td>
@@ -1531,8 +1509,11 @@
                                                         {{v.description}}
                                                     </td>
                                                     <td class="col-md-1" align="center">
-                                                        <a ng-click="selectValueSetForSingleCode(v);" class="point">
+                                                        <a ng-show="!isSelected(v)" ng-click="selectValueSet(v)" class="point">
                                                             <i class="icon-size-15 fa-circle-thin fa"></i>
+                                                        </a>
+                                                        <a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">
+                                                            <i class="icon-size-15 fa-check-circle fa"></i>
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -1543,83 +1524,130 @@
                                                     </td>
                                                 </tr>
                                             </table>
-                                        </div>
-                                        <div ng-show="valueSetSelectedForSingleCode">
-                                            <table class="table table-striped table-condensed table-bordered">
-                                                <thead>
-                                                <tr class="tbl-header">
-                                                    <th class="col-md-1">Scope/Version</th>
-                                                    <th class="col-md-3">Binding Identifier</th>
-                                                    <th class="col-md-7">Description</th>
-                                                    <th class="col-md-1">Action</th>
-                                                </tr>
-                                                </thead>
-                                                <tr>
-                                                    <td class="col-md-1">
-                                                        <span class="badge" ng-class="{'label-HL7' : getScopeLabel(valueSetSelectedForSingleCode)==='HL7', 'label-USE': getScopeLabel(valueSetSelectedForSingleCode)==='USR','label-MASTER':getScopeLabel(valueSetSelectedForSingleCode)==='MAS','label-PRL':getScopeLabel(valueSetSelectedForSingleCode)==='PRL','label-PVS':getScopeLabel(valueSetSelectedForSingleCode)==='PVS'}">{{getScopeLabel(valueSetSelectedForSingleCode)}} {{hasSameVersion(valueSetSelectedForSingleCode)}}</span>
-                                                    </td>
-                                                    <td class="col-md-3">
-                                                        {{valueSetSelectedForSingleCode.bindingIdentifier}}
-                                                    </td>
-                                                    <td class="col-md-7">
-                                                        {{valueSetSelectedForSingleCode.description}}
-                                                    </td>
-                                                    <td class="col-md-1" align="center">
-                                                        <a ng-click="valueSetSelectedForSingleCode = null;" class="point">
-                                                            <i class="icon-size-15 fa-check-circle fa"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <table st-safe-src="valueSetSelectedForSingleCode.codes" st-table="displayCodes" class="table table-striped table-condensed table-bordered">
-                                                <thead>
-                                                <tr class="tbl-header">
-                                                    <th st-sort="value" class="col-md-3">Code</th>
-                                                    <th st-sort="label" class="col-md-5">Description</th>
-                                                    <th st-sort="label" class="col-md-3">CodeSystem</th>
-                                                    <th class="col-md-1" style="text-align:center">Status</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr ng-repeat="c in displayCodes">
-                                                    <td class="col-md-3">
-                                                        <span>{{c.value}}</span>
-                                                    </td>
-                                                    <td class="col-md-5">
-                                                        <span>{{c.label}}</span>
-                                                    </td>
-                                                    <td class="col-md-3">
-                                                        <span>{{c.codeSystem}}</span>
-                                                    </td>
-                                                    <td class="col-md-1" style="text-align:center">
-                                                        <a ng-show="!isCodeSelected(c)" ng-click="selectCode(c)" class="point">
-                                                            <i class="icon-size-15 fa-circle-thin fa"></i>
-                                                        </a>
-                                                        <a ng-show="isCodeSelected(c)" ng-click="unselectCode(c)" class="point">
-                                                            <i class="icon-size-15 fa-check-circle fa"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                                <tr style="float:center !important;" ng-if="valueSetSelectedForSingleCode.codes.length > 10">
-                                                    <td colspan="6" class="text-center" style="float:center !important;">
-                                                        <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </md-content>
-                                </md-tab>
-                            </md-tabs>
-                        </md-content>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button ng-show="changed" type="button" ng-click="saveMapping()" class="btn btn-raised btn-primary btn-sm"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</button>
-        <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-raised btn-warning btn-sm"><i class="fa fa-times fa-fw">&nbsp; </i>Close</button>
-        <button ng-show="!changed" class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
-    </div>
+                                        </md-content>
+                                    </md-tab>
+                                    <md-tab label="Single Code" ng-disabled="!isSingleValueSetAllowed" md-on-select="singleCodeInit();">
+                                        <md-content class="md-padding">
+                                            <div ng-if="selectedValueSetBindings.length == 0 || selectedValueSetBindings[0].type == 'valueset'">
+                                                <a ng-click="addManualCode();" class="point">
+                                                    <i class="icon-size-15 fa-plus fa"> Create Single Code directly</i>
+                                                </a>
+                                            </div>
+                                            <div ng-show="!valueSetSelectedForSingleCode">
+                                                <table st-safe-src="tables" st-table="displayTables" class="table table-striped table-condensed table-bordered">
+                                                    <thead>
+                                                    <tr class="tbl-header">
+                                                        <th st-sort="scope" class="col-md-1">Scope/Version</th>
+                                                        <th st-sort="bindingIdentifier" class="col-md-3">Binding Identifier</th>
+                                                        <th class="col-md-7">Description</th>
+                                                        <th class="col-md-1">Action</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colspan="5">
+                                                            <input st-search="bindingIdentifier" placeholder="search for BindingIdentifier" class="input-sm form-control" type="search"/>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    <tr ng-repeat="v in displayTables">
+                                                        <td class="col-md-1">
+                                                            <span class="badge" ng-class="{'label-HL7' : getScopeLabel(v)==='HL7', 'label-USE': getScopeLabel(v)==='USR','label-MASTER':getScopeLabel(v)==='MAS','label-PRL':getScopeLabel(v)==='PRL','label-PVS':getScopeLabel(v)==='PVS'}">{{getScopeLabel(v)}} {{hasSameVersion(v)}}</span>
+                                                        </td>
+                                                        <td class="col-md-3">
+                                                            {{v.bindingIdentifier}}
+                                                        </td>
+                                                        <td class="col-md-7">
+                                                            {{v.description}}
+                                                        </td>
+                                                        <td class="col-md-1" align="center">
+                                                            <a ng-click="selectValueSetForSingleCode(v);" class="point">
+                                                                <i class="icon-size-15 fa-circle-thin fa"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                    <tr style="float:center !important;" ng-if="tables.length > 10">
+                                                        <td colspan="5" class="text-center" style="float:center !important;">
+                                                            <div st-pagination="" st-items-by-page="10" st-displayed-pages="10" style="float:center !important;"></div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div ng-show="valueSetSelectedForSingleCode">
+                                                <table class="table table-striped table-condensed table-bordered">
+                                                    <thead>
+                                                    <tr class="tbl-header">
+                                                        <th class="col-md-1">Scope/Version</th>
+                                                        <th class="col-md-3">Binding Identifier</th>
+                                                        <th class="col-md-7">Description</th>
+                                                        <th class="col-md-1">Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tr>
+                                                        <td class="col-md-1">
+                                                            <span class="badge" ng-class="{'label-HL7' : getScopeLabel(valueSetSelectedForSingleCode)==='HL7', 'label-USE': getScopeLabel(valueSetSelectedForSingleCode)==='USR','label-MASTER':getScopeLabel(valueSetSelectedForSingleCode)==='MAS','label-PRL':getScopeLabel(valueSetSelectedForSingleCode)==='PRL','label-PVS':getScopeLabel(valueSetSelectedForSingleCode)==='PVS'}">{{getScopeLabel(valueSetSelectedForSingleCode)}} {{hasSameVersion(valueSetSelectedForSingleCode)}}</span>
+                                                        </td>
+                                                        <td class="col-md-3">
+                                                            {{valueSetSelectedForSingleCode.bindingIdentifier}}
+                                                        </td>
+                                                        <td class="col-md-7">
+                                                            {{valueSetSelectedForSingleCode.description}}
+                                                        </td>
+                                                        <td class="col-md-1" align="center">
+                                                            <a ng-click="valueSetSelectedForSingleCode = null;" class="point">
+                                                                <i class="icon-size-15 fa-check-circle fa"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table st-safe-src="valueSetSelectedForSingleCode.codes" st-table="displayCodes" class="table table-striped table-condensed table-bordered">
+                                                    <thead>
+                                                    <tr class="tbl-header">
+                                                        <th st-sort="value" class="col-md-3">Code</th>
+                                                        <th st-sort="label" class="col-md-5">Description</th>
+                                                        <th st-sort="label" class="col-md-3">CodeSystem</th>
+                                                        <th class="col-md-1" style="text-align:center">Status</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="c in displayCodes">
+                                                        <td class="col-md-3">
+                                                            <span>{{c.value}}</span>
+                                                        </td>
+                                                        <td class="col-md-5">
+                                                            <span>{{c.label}}</span>
+                                                        </td>
+                                                        <td class="col-md-3">
+                                                            <span>{{c.codeSystem}}</span>
+                                                        </td>
+                                                        <td class="col-md-1" style="text-align:center">
+                                                            <a ng-show="!isCodeSelected(c)" ng-click="selectCode(c)" class="point">
+                                                                <i class="icon-size-15 fa-circle-thin fa"></i>
+                                                            </a>
+                                                            <a ng-show="isCodeSelected(c)" ng-click="unselectCode(c)" class="point">
+                                                                <i class="icon-size-15 fa-check-circle fa"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                    <tr style="float:center !important;" ng-if="valueSetSelectedForSingleCode.codes.length > 10">
+                                                        <td colspan="6" class="text-center" style="float:center !important;">
+                                                            <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </md-content>
+                                    </md-tab>
+                                </md-tabs>
+                            </md-content>
+                        </div>
+                        </md-dialog-content>
+                        <md-dialog-actions layout="row">
+                            <md-button ng-show="changed" type="button" ng-click="saveMapping()" class="md-primary md-raised"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</md-button>
+                        </md-dialog-actions>
+                </form>
+    </md-dialog>
+
 </script>

@@ -343,7 +343,7 @@ angular.module('igl')
 
                     $scope.dtChanged = false;
                     $scope.vsTemplate = false;
-                    $scope.dataList = CompareService.cmpDatatype(JSON.stringify(sourceParent), JSON.stringify(result), [], [], [], []);
+                    $scope.dataList = CompareService.cmpDatatype(sourceParent, result, [], [], [], []);
                     $scope.hideEvolution = false;
                     $rootScope.clearChanges();
                     $scope.cleanState();
@@ -1333,67 +1333,52 @@ angular.module('igl')
         };
 
         $scope.editModalBindingForDT = function(node) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'TableMappingDatatypeCtrl.html',
+                scope: $scope,        // use parent scope in template
+                preserveScope: true,
                 controller: 'TableMappingDatatypeCtrl',
-                windowClass: 'app-modal-window',
-                resolve: {
-                    currentNode: function() {
-                        return node;
-                    }
+                locals: {
+                    currentNode: node
+
                 }
             });
 
-            modalInstance.result.then(function(node) {
+            modalInstance.then(function(node) {
                 $scope.setDirty();
             });
         };
 
         $scope.editCommentDlg = function(node, comment, disabled, type) {
-            var modalInstance = $modal.open({
-                templateUrl: 'EditComment.html',
+            var modalInstance = $mdDialog.show({
+                templateUrl: 'EditCommentMd.html',
                 controller: 'EditCommentCtrl',
-                backdrop: true,
-                keyboard: true,
-                windowClass: 'input-text-modal-window',
-                backdropClick: false,
-                resolve: {
-                    currentNode: function() {
-                        return node;
-                    },
-                    currentComment: function() {
-                        return comment;
-                    },
-                    disabled: function() {
-                        return disabled;
-                    },
-                    type: function() {
-                        return type;
-                    }
+                locals: {
+                    currentNode: node,
+                    currentComment:  comment,
+                    disabled: disabled,
+                    type: type
+
                 }
             });
 
-            modalInstance.result.then(function() {
+            modalInstance.then(function() {
                 $scope.setDirty();
             });
         };
 
         $scope.openDialogForEditSev = function(node) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'EditSingleElement.html',
                 controller: 'EditSingleElementCtrl',
-                backdrop: true,
-                keyboard: true,
-                windowClass: 'input-text-modal-window',
-                backdropClick: false,
-                resolve: {
-                    currentNode: function() {
-                        return node;
-                    }
+                locals: {
+                    currentNode:
+                    node
+
                 }
             });
 
-            modalInstance.result.then(function(value) {
+            modalInstance.then(function(value) {
                 $scope.addSev(node);
                 node.sev.value = value;
                 $scope.setDirty();
@@ -1808,7 +1793,7 @@ angular.module('igl').controller('DatatypeReferencesCtrl', function($scope, $mod
     };
 });
 
-angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI, TableService) {
+angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $mdDialog, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     $scope.currentNode = currentNode;
     $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location == currentNode.path; }));
@@ -1926,11 +1911,11 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
         $rootScope.datatype.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 
-        $modalInstance.close();
+        $mdDialog.hide();
     };
 
     $scope.ok = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 });
@@ -2905,7 +2890,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
         $scope.loadingSelection = true;
         $scope.dtChanged = false;
         $scope.vsTemplate = false;
-        $scope.dataList = CompareService.cmpDatatype(JSON.stringify(datatype1), JSON.stringify(datatype2), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+        $scope.dataList = CompareService.cmpDatatype(datatype1, datatype2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
         $scope.loadingSelection = false;
         if ($scope.dynamicDt_params) {
             $scope.showDelta = true;

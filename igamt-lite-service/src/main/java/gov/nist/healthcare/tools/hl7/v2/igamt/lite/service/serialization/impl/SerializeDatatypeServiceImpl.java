@@ -172,6 +172,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 
 	@Override
 	public SerializableDatatype serializeDatatype(Datatype datatype, String host) {
-		return serializeDatatype(datatype,String.valueOf(1), "1", 1, ExportConfig.getBasicExportConfig("table").getDatatypesExport(), true, host);
+		return serializeDatatype(datatype,String.valueOf(0), "1", 1, ExportConfig.getBasicExportConfig("table").getDatatypesExport(), true, host);
 	}
 }

@@ -513,23 +513,21 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     // };
     $scope.otherDT = function(field) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'otherDTModal.html',
             controller: 'otherDTCtrl',
-            windowClass: 'edit-VS-modal',
-            resolve: {
+            scope: $scope,        // use parent scope in template
+            preserveScope: true,
+            locals: {
 
-                datatypes: function() {
-                    return $rootScope.datatypes;
-                },
+                datatypes:  $rootScope.datatypes,
 
-                field: function() {
-                    return field;
+                field:  field
                 }
 
-            }
+
         });
-        modalInstance.result.then(function(field) {
+        modalInstance.then(function(field) {
             $scope.setDirty();
             $scope.editableDT = '';
             if ($scope.segmentsParams) {
@@ -703,28 +701,22 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.addFieldModal = function(segment) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'AddFieldModal.html',
             controller: 'AddFieldCtrl',
-            windowClass: 'creation-modal-window',
-            resolve: {
+            scope: $scope,
+            preserveScope: true,
+            locals: {
 
-                valueSets: function() {
-                    return $rootScope.tables;
-                },
-                datatypes: function() {
-                    return $rootScope.datatypes;
-                },
-                segment: function() {
-                    return segment;
-                },
-                messageTree: function() {
-                    return $rootScope.messageTree;
+                valueSets: $rootScope.tables,
+                datatypes:  $rootScope.datatypes,
+                segment:  segment,
+                messageTree: $rootScope.messageTree
                 }
 
-            }
+
         });
-        modalInstance.result.then(function(field) {
+        modalInstance.then(function(field) {
             $scope.setDirty();
 
             if ($scope.segmentsParams) {
@@ -1281,47 +1273,36 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.editModalBindingForSeg = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'TableMappingSegmentCtrl.html',
+            scope: $scope,        // use parent scope in template
+            preserveScope: true,
             controller: 'TableMappingSegmentCtrl',
-            windowClass: 'app-modal-window',
-            resolve: {
-                currentNode: function() {
-                    return node;
+            locals: {
+                currentNode:node
                 }
-            }
+
         });
 
-        modalInstance.result.then(function(node) {
+        modalInstance.then(function(node) {
             $scope.setDirty();
         });
     };
 
     $scope.editCommentDlg = function(node, comment, disabled, type) {
-        var modalInstance = $modal.open({
-            templateUrl: 'EditComment.html',
+        var modalInstance = $mdDialog.show({
+            templateUrl: 'EditCommentMd.html',
             controller: 'EditCommentCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentNode: function() {
-                    return node;
-                },
-                currentComment: function() {
-                    return comment;
-                },
-                disabled: function() {
-                    return disabled;
-                },
-                type: function() {
-                    return type;
-                }
+            locals: {
+                currentNode: node,
+                currentComment:  comment,
+                disabled: disabled,
+                type: type
+
             }
         });
 
-        modalInstance.result.then(function() {
+        modalInstance.then(function() {
             $scope.setDirty();
         });
     };
@@ -1397,21 +1378,17 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.openDialogForEditSev = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'EditSingleElement.html',
             controller: 'EditSingleElementCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentNode: function() {
-                    return node;
-                }
+            locals: {
+                currentNode:
+                    node
+
             }
         });
 
-        modalInstance.result.then(function(value) {
+        modalInstance.then(function(value) {
             $scope.addSev(node);
             node.sev.value = value;
             $scope.setDirty();
@@ -2701,7 +2678,7 @@ angular.module('igl').controller('SegmentReferencesCtrl', function($scope, $moda
         $modalInstance.dismiss('cancel');
     };
 });
-angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance, datatypes, segment, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService, blockUI) {;
+angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, datatypes, segment, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService, blockUI) {
     $scope.valueSets = valueSets;
     $scope.datatypes = datatypes;
 
@@ -2882,13 +2859,13 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $modalInstance
 
         }
         blockUI.stop();
-        $modalInstance.close();
+        $mdDialog.hide();
 
     };
 
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 
@@ -3003,7 +2980,7 @@ angular.module('igl').controller('EditVSCtrl', function($scope, $modalInstance, 
 
 
 });
-angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance, datatypes, field, $rootScope, SegmentService, blockUI) {
+angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, datatypes, field, $rootScope, SegmentService, blockUI) {
 
     $scope.dtChanged = false;
     $scope.field = field;
@@ -3013,6 +2990,9 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance,
     //$scope.tableList = angular.copy(field.tables);;
 
     $scope.isInDts = function(datatype) {
+        if(datatype=='none'){
+            return false;
+        }
 
         if (datatype && $scope.datatypes.indexOf(datatype) === -1) {
             return false;
@@ -3023,7 +3003,7 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance,
     };
     $scope.getDtLabel = function(element) {
         if (element) {
-            if (element.ext !== null) {
+            if (element.ext !== null && element.ext !=='') {
                 return element.name + "_" + element.ext;
             } else {
                 return element.name;
@@ -3045,7 +3025,7 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance,
 
         blockUI.stop();
 
-        $modalInstance.close(field);
+        $mdDialog.hide(field);
 
 
     };
@@ -3053,7 +3033,7 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $modalInstance,
 
     $scope.cancel = function() {
         field.datatype = oldDt;
-        $modalInstance.close();
+        $mdDialog.hide();
     };
 
 
@@ -3291,7 +3271,7 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
         $scope.loadingSelection = true;
         $scope.segChanged = false;
         $scope.vsTemplate = false;
-        $scope.dataList = CompareService.cmpSegment(JSON.stringify(segment1), JSON.stringify(segment2), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+        $scope.dataList = CompareService.cmpSegment(segment1, segment, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
 
         $scope.loadingSelection = false;
         if ($scope.dynamicSeg_params) {
@@ -3398,7 +3378,7 @@ angular.module('igl').controller('AddBindingForSegment', function($scope, $modal
         $modalInstance.dismiss('cancel');
     };
 });
-angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI, TableService) {
+angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mdDialog, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     $scope.currentNode = currentNode;
     $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location == currentNode.path; }));
@@ -3516,11 +3496,11 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mo
         $rootScope.segment.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 
-        $modalInstance.close();
+        $mdDialog.hide();
     };
 
     $scope.ok = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 });

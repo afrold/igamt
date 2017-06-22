@@ -154,6 +154,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     };
 
+    $scope.noop = function(event){
+        event.stopImmediatePropagation();
+    };
+
+    $scope.closeSubMenu = function(event){
+       // $scope.mdMenu.hide();
+    }
+
     $rootScope.hasConfError = function(id) {
 
         if ($rootScope.validationResult) {
@@ -3515,42 +3523,34 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
     $rootScope.openRichTextDlg = function(obj, key, title, disabled) {
-        return $modal.open({
-            templateUrl: 'RichTextCtrl.html',
+        return $mdDialog.show({
+            templateUrl: 'RichTextCtrlMd.html',
             controller: 'RichTextCtrl',
-            windowClass: 'app-modal-window',
-            backdrop: true,
-            keyboard: true,
-            backdropClick: false,
-            resolve: {
-                editorTarget: function() {
-                    return {
+
+            locals: {
+                editorTarget:
+                     {
                         key: key,
                         obj: obj,
                         disabled: disabled,
                         title: title
-                    };
-                }
+                    }
             }
         });
     };
 
     $rootScope.openInputTextDlg = function(obj, key, title, disabled) {
-        return $modal.open({
-            templateUrl: 'InputTextCtrl.html',
+        return $mdDialog.open({
+            templateUrl: 'InputTextCtrlMd.html',
             controller: 'InputTextCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                editorTarget: function() {
-                    return {
+            locals: {
+                editorTarget:{
+
                         key: key,
                         obj: obj,
                         disabled: disabled,
                         title: title
-                    };
+
                 }
             }
         });
@@ -3666,12 +3666,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     };
 
     $rootScope.getTextAsTruncatedString = function(value, num) {
-        if(value && num){
-            if (value.length > num) return value.substring(0, num) + "...";
-            return value;
-        }
-        return null;
-
+        if (value.length > num) return value.substring(0, num) + "...";
+        return value;
     };
 
     $rootScope.getTextValue = function(value) {
@@ -4028,28 +4024,28 @@ angular.module('igl').controller('LoginCtrl', [ '$rootScope','$scope', '$mdDialo
 }]);
 
 
-angular.module('igl').controller('RichTextCtrl', ['$scope', '$modalInstance', 'editorTarget', function($scope, $modalInstance, editorTarget) {
+angular.module('igl').controller('RichTextCtrl', ['$scope', '$mdDialog', 'editorTarget', function($scope, $mdDialog, editorTarget) {
     $scope.editorTarget = editorTarget;
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
-        $modalInstance.close($scope.editorTarget);
+        $mdDialog.hide($scope.editorTarget);
     };
 }]);
 
 
-angular.module('igl').controller('InputTextCtrl', ['$scope', '$modalInstance', 'editorTarget', function($scope, $modalInstance, editorTarget) {
+angular.module('igl').controller('InputTextCtrl', ['$scope', '$mdDialog', 'editorTarget', function($scope, $mdDialog, editorTarget) {
     $scope.editorTarget = editorTarget;
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
-        $modalInstance.close($scope.editorTarget);
+        $mdDialog.hide($scope.editorTarget);
     };
 }]);
 
@@ -4131,7 +4127,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
                 $rootScope.documentationsMap[data.id] = saved.data;
                 angular.forEach($rootScope.documentations, function(d) {
                     console.log("found");
-                    if (d.id === $rootScope.documentation.id) {
+                    if (d.id == $rootScope.documentation.id) {
                         d.title = $rootScope.documentationsMap[saved.data.id].title;
                         d.content = $rootScope.documentationsMap[saved.data.id].content;
                         d.dateUpdated = $rootScope.documentationsMap[saved.data.id].dateUpdated;
@@ -4226,7 +4222,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
         } else if (data.type && data.type === "message") {
             var message = $rootScope.message;
             ////console.log($rootScope.message);
-            MessageService.save(message).then(function() {
+            MessageService.save(message).then(function(result) {
                 var index = MessageService.findIndex(message.id);
                 if (index < 0) {
                     $rootScope.igdocument.profile.messages.children.splice(0, 0, message);
@@ -4291,7 +4287,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
                 var segment = $rootScope.segment;
                 var ext = segment.ext;
                 if (segment.libIds === undefined) segment.libIds = [];
-                if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) === -1) {
+                if (segment.libIds.indexOf($rootScope.igdocument.profile.segmentLibrary.id) == -1) {
                     segment.libIds.push($rootScope.igdocument.profile.segmentLibrary.id);
                 }
                 SegmentService.save($rootScope.segment).then(function(result) {
@@ -4346,7 +4342,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
                     newLink.ext = ext;
                     DatatypeLibrarySvc.updateChild(libId, newLink).then(function(link) {
                         DatatypeService.merge($rootScope.datatypesMap[result.id], result);
-                        if (oldLink && oldLink !== null) {
+                        if (oldLink && oldLink != null) {
                             oldLink.ext = newLink.ext;
                             oldLink.name = newLink.name;
                         }
@@ -4388,7 +4384,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
                     var newLink = TableService.getTableLink(result);
                     newLink.bindingIdentifier = bindingIdentifier;
                     TableLibrarySvc.updateChild(libId, newLink).then(function(link) {
-                        if (oldLink && oldLink !== null) oldLink.bindingIdentifier = link.bindingIdentifier;
+                        if (oldLink && oldLink != null) oldLink.bindingIdentifier = link.bindingIdentifier;
                         $rootScope.msg().text = "tableSaved";
                         $rootScope.msg().type = "success";
                         $rootScope.msg().show = true;
@@ -4410,7 +4406,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
 
         } else if (data.type === "document") {
 
-            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function() {
+            IgDocumentService.saveMetadata($rootScope.igdocument.id, $rootScope.metaData).then(function(result) {
                 $rootScope.igdocument.metaData = angular.copy($rootScope.metaData);
                 $scope.continue();
 
@@ -4422,7 +4418,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
 
         } else if (data.type === "profile") {
 
-            if ($rootScope.igdocument !== null && $rootScope.metaData !== null) {
+            if ($rootScope.igdocument != null && $rootScope.metaData != null) {
                 ProfileSvc.saveMetaData($rootScope.igdocument.id, $rootScope.metaData).then(function(result) {
                     $scope.continue();
                 }, function(error) {
@@ -4448,7 +4444,7 @@ angular.module('igl').controller('confirmSwitch', function($scope, $rootScope, $
     };
 });
 
-angular.module('igl').controller('EditSingleElementCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode) {
+angular.module('igl').controller('EditSingleElementCtrl', function($scope, $rootScope, $mdDialog, userInfoService, currentNode) {
     $scope.currentNode = currentNode;
 
     $scope.sevVale = '';
@@ -4456,11 +4452,11 @@ angular.module('igl').controller('EditSingleElementCtrl', function($scope, $root
     if ($scope.currentNode.sev) $scope.sevVale = $scope.currentNode.sev.value;
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
-        $modalInstance.close($scope.sevVale);
+        $mdDialog.hide($scope.sevVale);
     };
 });
 
@@ -4470,28 +4466,29 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
     $scope.listOfBindingLocations = null;
 
     $scope.findOptions = function(dtId) {
-        console.log(dtId);
         var result = [];
         result.push('1');
+
+
         if (!dtId) return result;
 
         if (_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT) {
-                return valueSetAllowedDT === $rootScope.datatypesMap[dtId].name;
+                return valueSetAllowedDT == $rootScope.datatypesMap[dtId].name;
             })) {
             var hl7Version = $rootScope.datatypesMap[dtId].hl7Version;
+
             var bls = $rootScope.config.bindingLocationListByHL7Version[hl7Version];
+
             if (bls && bls.length > 0) return bls;
         }
-        console.log(result);
+
         return result;
     };
-
-
 
     $scope.isSelected = function(v) {
         if ($scope.data && $scope.data.valueSets) {
             for (var i = 0; i < $scope.data.valueSets.length; i++) {
-                if ($scope.data.valueSets[i].tableId === v.id) return true;
+                if ($scope.data.valueSets[i].tableId == v.id) return true;
             }
         }
         return false;
@@ -4511,7 +4508,7 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
 
     $scope.unselectValueSet = function(v) {
         var toBeDelBinding = _.find($scope.data.valueSets, function(binding) {
-            return binding.tableId === v.id;
+            return binding.tableId == v.id;
         });
         var index = $scope.data.valueSets.indexOf(toBeDelBinding);
         if (index >= 0) {
@@ -4520,13 +4517,13 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
     };
 
     $scope.columnDefinition = _.find($rootScope.segment.coConstraintsTable.thenColumnDefinitionList, function(columnDefinition) {
-        return columnDefinition.id === currentId;
+        return columnDefinition.id == currentId;
     });
 
-    console.log($scope.columnDefinition);
     if ($scope.columnDefinition) {
         var dtId = $scope.columnDefinition.dtId;
-        if ($rootScope.datatypesMap[dtId].name.toLowerCase() === 'varies') {
+
+        if ($rootScope.datatypesMap[dtId].name.toLowerCase() == 'varies') {
             var referenceColumnDefinition = _.find($rootScope.segment.coConstraintsTable.thenColumnDefinitionList, function(columnDefinition) {
                 return columnDefinition.dMReference;
             });
@@ -4556,26 +4553,11 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
     };
 });
 
-angular.module('igl').controller('EditUserDataCtrl', function($scope, $rootScope, $modalInstance, userInfoService, definition, text, disabled) {
-    $scope.definition = definition;
-    $scope.textData = text;
-    $scope.disabled = disabled;
-
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-
-    $scope.close = function() {
-        $modalInstance.close($scope.textData);
-    };
-
-});
-
-angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentNode, currentComment, disabled, type) {
+angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope, $mdDialog, userInfoService, currentNode, currentComment, disabled, type) {
     $scope.currentNode = currentNode;
     $scope.currentComment = currentComment;
     var currentPath = null;
-    if (type === 'message') {
+    if (type == 'message') {
         currentPath = $rootScope.refinePath($scope.currentNode.path);
     } else {
         currentPath = $scope.currentNode.path;
@@ -4585,7 +4567,7 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
     var targetObj = type === 'datatype' ? $rootScope.datatype : type === 'segment' ? $rootScope.segment : $rootScope.message;
     $scope.title = '';
 
-    if (type === 'message') {
+    if (type == 'message') {
         $scope.title = 'Comment of ' + targetObj.name + '.' + $rootScope.refinePath($scope.currentNode.locationPath);
     } else {
         $scope.title = 'Comment of ' + targetObj.name + '.' + $scope.currentNode.path;
@@ -4595,7 +4577,7 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
     if ($scope.currentComment) $scope.descriptionText = $scope.currentComment.description;
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.close = function() {
@@ -4610,7 +4592,7 @@ angular.module('igl').controller('EditCommentCtrl', function($scope, $rootScope,
             targetObj.comments.push(newComment);
         }
 
-        $modalInstance.close($scope.currentNode);
+        $mdDialog.hide($scope.currentNode);
     };
 });
 
@@ -4628,13 +4610,13 @@ angular.module('igl').controller('labelController', function($scope) {
     $scope.getLabel = function(element) {
 
         if (element.type === 'table') {
-            if (!element.ext || element.ext === "") {
+            if (!element.ext || element.ext == "") {
                 return element.bindingIdentifier;
             } else {
                 return element.bindingIdentifier + "_" + element.ext;
             }
         }
-        if (!element.ext || element.ext === "") {
+        if (!element.ext || element.ext == "") {
             return element.name;
         } else {
             return element.name + "_" + element.ext;

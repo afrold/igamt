@@ -93,6 +93,6 @@ public class SerializeProfileComponentServiceImpl implements SerializeProfileCom
 
 	@Override
 	public SerializableElement serializeProfileComponent(ProfileComponent profileComponent, String host) {
-		return serializeProfileComponent(profileComponent,1,String.valueOf(1), true, host);
+		return serializeProfileComponent(profileComponent,0,String.valueOf(1), true, host);
 	}
 }

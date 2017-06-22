@@ -51,8 +51,8 @@ angular.module('igl').factory('CompareService',
 
             },
             cmpMessage: function(msg1, msg2, dtList1, dtList2, segList1, segList2) {
-                var msg1 = CompareService.fMsg(JSON.parse(msg1), dtList1, segList1);
-                var msg2 = CompareService.fMsg(JSON.parse(msg2), dtList2, segList2);
+                var msg1 = CompareService.fMsg(msg1, dtList1, segList1);
+                var msg2 = CompareService.fMsg(msg2, dtList2, segList2);
                 var diff = ObjectDiff.diffOwnProperties(msg1, msg2);
                 var dataList = [];
                 if (diff.changed === "object change") {
@@ -63,7 +63,7 @@ angular.module('igl').factory('CompareService',
                     }
                 }
                 var isEmpty = true;
-             
+
                 var result = [];
                 for (var i = 0; i < dataList.length; i++) {
 
@@ -85,8 +85,8 @@ angular.module('igl').factory('CompareService',
 
             },
             cmpSegment: function(segment1, segment2, dtList1, dtList2, segList1, segList2) {
-                var seg1 = CompareService.fSegment(JSON.parse(segment1), dtList1, segList1);
-                var seg2 = CompareService.fSegment(JSON.parse(segment2), dtList2, segList2);
+                var seg1 = CompareService.fSegment(segment1, dtList1, segList1);
+                var seg2 = CompareService.fSegment(segment2, dtList2, segList2);
                 //var diff = ObjectDiff.diffOwnProperties(seg1, seg2);
                 var diff = ObjectDiff.diff(seg1, seg2);
 
@@ -100,8 +100,8 @@ angular.module('igl').factory('CompareService',
             },
             cmpDatatype: function(datatype1, datatype2, dtList1, dtList2, segList1, segList2) {
 
-                var dt1 = CompareService.fDatatype(JSON.parse(datatype1), dtList1, segList1);
-                var dt2 = CompareService.fDatatype(JSON.parse(datatype2), dtList2, segList2);
+                var dt1 = CompareService.fDatatype(datatype1, dtList1, segList1);
+                var dt2 = CompareService.fDatatype(datatype2, dtList2, segList2);
                 var diff = ObjectDiff.diffOwnProperties(dt1, dt2);
                 var dataList = [];
                 if (diff.changed === "object change") {
@@ -116,16 +116,16 @@ angular.module('igl').factory('CompareService',
             },
             cmpValueSet: function(table1, table2) {
 
-                var vs1 = JSON.parse(table1);
-                var vs2 = JSON.parse(table2);
-               
-                
+                var vs1 = table1;
+                var vs2 = table2;
+
+
                 var diff = ObjectDiff.diffOwnProperties(vs1, vs2);
                 var dataList = [];
                 if (diff.changed === "object change") {
                     CompareService.writettTable(diff, dataList);
                 }
-              
+
                 return dataList
             },
             fMsg: function(msg, datatypeList, segmentList) {
@@ -517,7 +517,7 @@ angular.module('igl').factory('CompareService',
 
                             }
                         } else if (childArray.value.type.value === "table") {
-                         
+
                             if (childArray.value.bindingIdentifier.changed === "primitive change") {
                                 result.label = {
                                     element1: childArray.value.bindingIdentifier.removed,
@@ -558,7 +558,7 @@ angular.module('igl').factory('CompareService',
                                 });
                             }
                         } else if (childArray.value.type.value === "code") {
-                           
+
                             if (childArray.value.codeSystem && childArray.value.codeSystem.changed === "primitive change") {
                                 result.codeSystem = {
                                     element1: childArray.value.codeSystem.removed,
