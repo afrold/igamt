@@ -605,6 +605,9 @@ angular.module('igl').factory(
                 angular.forEach($rootScope.datatypes, function (dt) {
                     $rootScope.findTableRefsForMenu(table, dt, $rootScope.getDatatypeLabel(dt),dt);
                 });
+                 angular.forEach($rootScope.profileComponents, function (pc) {
+                $rootScope.findTableRefsForMenu(table, pc, pc.name,pc);
+                });
 
                 if ($rootScope.referencesForMenu != null && $rootScope.referencesForMenu.length > 0) {
                     abortValueSetDelete(table);
@@ -695,10 +698,16 @@ angular.module('igl').factory(
                     $rootScope.findDatatypeRefsForMenu(datatype, segment, $rootScope.getSegmentLabel(segment),segment);
                 }
             });
-            angular.forEach($rootScope.datatypes, function (dt) {
-                if (dt && dt != null && dt.id !== datatype.id) $rootScope.findDatatypeRefsForMenu(datatype, dt, $rootScope.getDatatypeLabel(dt),dt);
+            angular.forEach($rootScope.segments, function (segment) {
+                if(segment && segment != null) {
+                    $rootScope.findDatatypeRefsForMenu(datatype, segment, $rootScope.getSegmentLabel(segment),segment);
+                }
+            });
+            angular.forEach($rootScope.profileComponents, function (pc) {
+               $rootScope.findDatatypeRefsForMenu(datatype, pc, pc.name,pc);
             });
             if ($rootScope.referencesForMenu != null && $rootScope.referencesForMenu.length > 0) {
+                console.log($rootScope.referencesForMenu);
                 abortDatatypeDelete(datatype);
             } else {
                 confirmDatatypeDelete(datatype);

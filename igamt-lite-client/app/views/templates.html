@@ -4396,23 +4396,21 @@
     </div>
 </script>
 <script type="text/ng-template" id="createDatatype.html">
-    <div class="modal-content">
-        <div class="modal-wide modal-header">
+    <md-dialog aria-label="Create Data Type Library ">
+        <form ng-cloak name="addDT" id="addDT">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Add {{datatypeLibrary.scope}} Datatype </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
 
-            <div class="form-inline">
-                <span class="header4" style="color:white;">Add {{datatypeLibrary.scope}} Datatype</span>
+                </div>
+            </md-toolbar>
 
-                <span class="pull-right">
-                    <button class="btn btn-raised btn-default btn-xs" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
-                    </button>
-                    <button class="btn btn-raised btn-primary btn-xs" type="button" ng-click="ok()" ng-disabled="addedDatatypes===0"><i class="fa fa-check fa-fw"></i>Add
-                    </button>
-                </span>
-            </div>
-        </div>
-
-
-        <form name="addDT">
+            <md-dialog-content>
+                <div class="md-dialog-content">
             <div class="modal-body">
                 <div class="container" style="margin-bottom: 20px;margin-top: 10px;margin-right:10px;">
                     <div class="row" style="padding-top:10px">
@@ -4509,8 +4507,17 @@
 
                     </div>
                 </div>
+
+                </div>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button class="md-primary md-raised" ng-click="ok()">
+                    Submit
+                </md-button>
+            </md-dialog-actions>
         </form>
-        </div>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="AddHL7Datatype.html">
 

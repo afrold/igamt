@@ -616,28 +616,23 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
         $scope.addDatatypeTemplate = function() {
             var scopes = ['HL7STANDARD'];
-                        var addDatatypeInstance = $modal.open({
+                        var addDatatypeInstance = $mdDialog.show({
                             templateUrl: 'createDatatype.html',
                             controller: 'AddDatatypeTemplate',
                             size: 'lg',
-                            windowClass: 'addDatatype',
-                            resolve: {
-                                datatypes: function() {
+                            scope: $scope,        // use parent scope in template
+                            preserveScope: true,
+                            locals: {
+                                datatypes:  $rootScope.datatypes,
 
-                                    return $rootScope.datatypes;
-                                },
-                               AllUnchanged: function() {
+                               AllUnchanged:  $scope.AllUnchanged,
 
-                                    return $scope.AllUnchanged;
-                                },
-                                datatypeLibrary: function(){
-                                	return $rootScope.datatypeLibrary;
-                                },
-                                tableLibrary :function(){
-                                	return $scope.tableLibrary;
+                                datatypeLibrary: $rootScope.datatypeLibrary,
+
+                                tableLibrary :$scope.tableLibrary
                                 }
-                            }
-                        }).result.then(function(results) {
+
+                        }).then(function(results) {
                             DatatypeLibrarySvc.addChildrenFromDatatypes($rootScope.datatypeLibrary.id, results).then(function(result){
 
 
@@ -3209,7 +3204,7 @@ angular.module('igl').controller('AddDatatypeCtrl',
 	    });
 
 angular.module('igl').controller('AddDatatypeTemplate',
-	    function($scope, $rootScope, $modalInstance,datatypes, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http,datatypeLibrary,tableLibrary,AllUnchanged) {
+	    function($scope, $rootScope, $mdDialog,datatypes, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http,datatypeLibrary,tableLibrary,AllUnchanged) {
 
 	$scope.AllUnchanged=AllUnchanged;
 
@@ -3301,10 +3296,10 @@ angular.module('igl').controller('AddDatatypeTemplate',
 
 
 	$scope.cancel = function() {
-	   $modalInstance.dismiss('cancel');
+	   $mdDialog.hide('cancel');
 	        };
 
 	    $scope.ok = function() {
-	            $modalInstance.close($scope.addedDatatypes);
+	            $mdDialog.hide($scope.addedDatatypes);
 	        };
 	    });
