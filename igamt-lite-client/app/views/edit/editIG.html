@@ -48,6 +48,25 @@
                 </span>
                 <div class="col-md-8">
                     <md-menu-bar class="pull-right">
+
+                        <md-menu>
+                            <button ng-click="$mdMenu.open()" type="button" class="white-color">
+                                <i class="fa fa-link fa-fw"></i>Connect To GVT
+                            </button>
+                            <md-menu-content>
+                                <md-menu-item>
+                                    <md-button  ng-click="selectMessagesForExport(igdocument, true)">
+                                        Conformance Profile
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="selectCompositeProfilesForExport(igdocument,true)" >
+                                        Composite Profile
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+
                         <md-menu>
 
                             <!--<md-button ng-click="$mdMenu.open()" type="button" md-colors="{background:'indigo'}">-->
@@ -55,8 +74,6 @@
 
                                 <i class="fa fa-download fa-fw"></i> Export
                             </button>
-
-
                             <md-menu-content>
                                 <md-menu-item>
                                     <md-menu>
@@ -69,23 +86,6 @@
                                             </md-menu-item>
                                             <md-menu-item>
                                                 <md-button ng-click="selectCompositeProfilesForExport(igdocument,false)" >
-                                                    Composite Profile
-                                                </md-button>
-                                            </md-menu-item>
-                                        </md-menu-content>
-                                    </md-menu>
-                                </md-menu-item>
-                                <md-menu-item>
-                                    <md-menu>
-                                        <md-button ng-click="$mdMenu.open()">To GVT</md-button>
-                                        <md-menu-content>
-                                            <md-menu-item>
-                                                <md-button  ng-click="selectMessagesForExport(igdocument, true)">
-                                                    Conformance Profile
-                                                </md-button>
-                                            </md-menu-item>
-                                            <md-menu-item>
-                                                <md-button ng-click="selectCompositeProfilesForExport(igdocument,true)" >
                                                     Composite Profile
                                                 </md-button>
                                             </md-menu-item>
@@ -184,7 +184,7 @@
                         </md-menu>
                         <md-menu>
                             <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                <button ng-click="close()" class="white-color">
+                                <button ng-click="close()" class="white-color" class="md-warn">
 
                                 <i class="fa fa-close fa-fw"></i> Close
                             </button>
