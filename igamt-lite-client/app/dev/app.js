@@ -91,6 +91,10 @@ app.config(function($routeProvider, RestangularProvider, $httpProvider, Keepaliv
             templateUrl: 'views/configuration.html',
             controller:	'ConfigurationController'
         })
+        .when('/search', {
+            templateUrl: 'views/search.html',
+            controller:	'SearchController'
+        })
         .when('/setting', {
             templateUrl: 'views/setting.html'
         })
