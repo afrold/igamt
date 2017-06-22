@@ -511,24 +511,20 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     ];
 
     $scope.addSegmentModal = function(place) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'AddSegmentModal.html',
             controller: 'AddSegmentCtrl',
-            windowClass: 'creation-modal-window',
-            resolve: {
-                segments: function() {
-                    return $rootScope.segments;
-                },
-                place: function() {
-                    return place;
-                },
-                messageTree: function() {
-                    return $rootScope.messageTree;
+            scope: $scope,
+            preserveScope: true,
+            locals: {
+                segments: $rootScope.segments,
+                place:  place,
+                messageTree:$rootScope.messageTree
                 }
 
-            }
+
         });
-        modalInstance.result.then(function(segment) {
+        modalInstance.then(function(segment) {
 
             $scope.setDirty();
 
@@ -538,24 +534,19 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         });
     };
     $scope.addGroupModal = function(place) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'AddGroupModal.html',
+            scope: $scope,
+            preserveScope: true,
             controller: 'AddGroupCtrl',
-            windowClass: 'creation-modal-window',
-            resolve: {
-                segments: function() {
-                    return $rootScope.segments;
-                },
-                place: function() {
-                    return place;
-                },
-                messageTree: function() {
-                    return $rootScope.messageTree;
+            locals: {
+                segments: $rootScope.segments,
+                place:  place,
+                messageTree: $rootScope.messageTree
                 }
 
-            }
         });
-        modalInstance.result.then(function(segment) {
+        modalInstance.then(function(segment) {
             $scope.setDirty();
 
             if ($scope.messagesParams)
@@ -962,67 +953,52 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     };
 
     $scope.editModalBindingForMsg = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
+
             templateUrl: 'TableMappingMessageCtrl.html',
+            scope: $scope,
+            preserveScope: true,
             controller: 'TableMappingMessageCtrl',
-            windowClass: 'app-modal-window',
-            resolve: {
-                currentNode: function() {
-                    return node;
+            locals: {
+                currentNode: node
                 }
-            }
+
         });
 
-        modalInstance.result.then(function(node) {
+        modalInstance.then(function(node) {
             $scope.setDirty();
         });
     };
-
     $scope.editCommentDlg = function(node, comment, disabled, type) {
-        var modalInstance = $modal.open({
-            templateUrl: 'EditComment.html',
+        var modalInstance = $mdDialog.show({
+            templateUrl: 'EditCommentMd.html',
             controller: 'EditCommentCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentNode: function() {
-                    return node;
-                },
-                currentComment: function() {
-                    return comment;
-                },
-                disabled: function() {
-                    return disabled;
-                },
-                type: function() {
-                    return type;
-                }
+            locals: {
+                currentNode: node,
+                currentComment:  comment,
+                disabled: disabled,
+                type: type
+
             }
         });
 
-        modalInstance.result.then(function() {
+        modalInstance.then(function() {
             $scope.setDirty();
         });
     };
+
 
     $scope.openDialogForEditSev = function(node) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'EditSingleElement.html',
             controller: 'EditSingleElementCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'input-text-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentNode: function() {
-                    return node;
+            locals: {
+                currentNode:  node
                 }
-            }
+
         });
 
-        modalInstance.result.then(function(value) {
+        modalInstance.then(function(value) {
             $scope.addSev(node);
             node.sev.value = value;
             $scope.setDirty();
@@ -1467,7 +1443,7 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function($scope, $m
 
 });
 
-angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService, blockUI) {
+angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService, blockUI) {
     $scope.segmentParent = place;
     //console.log(place);
 
@@ -1611,19 +1587,20 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $modalInstan
             $scope.messagesParams.refresh();
         }
         blockUI.stop();
-        $modalInstance.close();
+        $mdDialog.hide();
+
 
     };
 
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 
 });
 
-angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService, blockUI) {
+angular.module('igl').controller('AddGroupCtrl', function($scope, $mdDialog, segments, place, $rootScope, $http, ngTreetableParams, SegmentService, MessageService, blockUI) {
     $scope.groupParent = place;
 
     $scope.newGroup = {
@@ -1718,14 +1695,14 @@ angular.module('igl').controller('AddGroupCtrl', function($scope, $modalInstance
             $scope.messagesParams.refresh();
         }
         blockUI.stop();
-        $modalInstance.close();
+        $mdDialog.hide();
 
 
     };
 
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 
@@ -2098,7 +2075,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
         $scope.msgChanged = false;
         $scope.vsTemplate = false;
         $scope.loadingSelection = false;
-        $rootScope.deltaMsgList = CompareService.cmpMessage(JSON.stringify(msg1), JSON.stringify(msg2), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+        $rootScope.deltaMsgList = CompareService.cmpMessage(msg1, msg2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
         //$scope.dataList = result;
         console.log($rootScope.deltaMsgList);
 
@@ -2871,7 +2848,7 @@ angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, 
     };
 });
 
-angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $modalInstance, currentNode, $rootScope, blockUI, TableService) {
+angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $mdDialog, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     $scope.currentNode = currentNode;
     $scope.isSingleValueSetAllowed = false;
@@ -2999,11 +2976,11 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $mo
         $rootScope.message.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 
-        $modalInstance.close();
+        $mdDialog.hide();
     };
 
     $scope.ok = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 });

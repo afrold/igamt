@@ -28,13 +28,13 @@
             No record matching your query.
         </div>
 
-        <md-content ng-show="data != undefined" flex layout="column" style="overflow: auto; height: 500px;">
+        <md-content ng-show="data != undefined">
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="HTML">
-                    <md-content class="md-padding" ng-bind-html="data.html"/>
+                    <md-content class="md-padding" ng-bind-html="data.html"  flex layout="column" style="overflow: auto; height: 500px;"/>
                 </md-tab>
                 <md-tab label="JSON">
-                    <md-content class="md-padding">
+                    <md-content class="md-padding"  flex layout="column" style="overflow: auto; height: 500px;">
                         <pre>{{ data.dataModel | json }}</pre>
                     </md-content>
                 </md-tab>

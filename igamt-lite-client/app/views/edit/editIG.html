@@ -50,8 +50,8 @@
                     <md-menu-bar class="pull-right">
 
                         <md-menu>
-                            <button ng-click="$mdMenu.open()" type="button" class="white-color">
-                                <i class="fa fa-link fa-fw"></i>Connect To GVT
+                            <button ng-click="$mdMenu.hide(null, { closeAll: true });$mdMenu.open()" type="button" class="white-color">
+                                <i class="fa fa-link fa-fw"></i> Connect To GVT
                             </button>
                             <md-menu-content>
                                 <md-menu-item>
@@ -74,10 +74,12 @@
 
                                 <i class="fa fa-download fa-fw"></i> Export
                             </button>
+
+
                             <md-menu-content>
                                 <md-menu-item>
                                     <md-menu>
-                                        <md-button ng-click="$mdMenu.open()">As XML</md-button>
+                                        <md-button ng-click="$mdMenu.hide(null, { closeAll: true });$mdMenu.open()">As XML</md-button>
                                         <md-menu-content>
                                             <md-menu-item>
                                                 <md-button  ng-click="selectMessagesForExport(igdocument, false)">
@@ -94,7 +96,7 @@
                                 </md-menu-item>
                                 <md-menu-item>
                                     <md-menu>
-                                        <md-button ng-click="$mdMenu.open()">As HTML</md-button>
+                                        <md-button ng-click="$mdMenu.hide(null, { closeAll: true });$mdMenu.open()">As HTML</md-button>
                                         <md-menu-content>
                                             <md-menu-item>
                                                 <md-button  ng-click="exportAsWithLayout('html','IGDocument')">IG
@@ -117,7 +119,7 @@
                                 </md-menu-item>
                                 <md-menu-item>
                                     <md-menu>
-                                        <md-button ng-click="$mdMenu.open()">As Word</md-button>
+                                        <md-button ng-click="$mdMenu.hide(null, { closeAll: true });$mdMenu.open()">As Word</md-button>
                                         <md-menu-content>
                                             <md-menu-item>
 
@@ -184,7 +186,7 @@
                         </md-menu>
                         <md-menu>
                             <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                <button ng-click="close()" class="white-color" class="md-warn">
+                                <button ng-click="close()" class="white-color">
 
                                 <i class="fa fa-close fa-fw"></i> Close
                             </button>

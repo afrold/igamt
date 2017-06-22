@@ -25,6 +25,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.cmpVS = false;
     $scope.vsTemplate = false;
 
+    $scope.toCmp=null;
     //$scope.scopes = ["USER", "HL7STANDARD"];
     $scope.scopes = [{
         name: "USER",
@@ -280,6 +281,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
     };
     $scope.setIG2 = function(ig) {
+        console.log(ig);
         if (ig) {
             IgDocumentService.getOne(ig.id).then(function(igDoc) {
                 SegmentLibrarySvc.getSegmentsByLibrary(igDoc.profile.segmentLibrary.id).then(function(segments) {
@@ -311,7 +313,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.hideMsg = function(msg1, msg2) {
 
         if (msg2) {
-            return !(msg1.structID === JSON.parse(msg2).structID);
+            return !(msg1.structID === msg2.structID);
         } else {
             return false;
         }
@@ -319,7 +321,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.disableMsg = function(msg1, msg2) {
 
         if (msg2) {
-            return (msg1.id === JSON.parse(msg2).id);
+            return msg1.id === msg2.id;
         } else {
             return false;
         }
@@ -327,7 +329,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.hideSeg = function(seg1, seg2) {
 
         if (seg2) {
-            return !(seg1.name === JSON.parse(seg2).name);
+            return !(seg1.name === seg2.name);
         } else {
             return false;
         }
@@ -335,21 +337,19 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
     $scope.disableSeg = function(seg1, seg2) {
 
         if (seg2) {
-            return (seg1.id === JSON.parse(seg2).id);
+            return (seg1.id === seg2.id);
         } else {
             return false;
         }
     };
 
     $scope.setMsg1 = function(msg) {
-        console.log(JSON.parse(msg));
         $scope.msg1 = msg;
     };
     $scope.setMsg2 = function(msg) {
         $scope.msg2 = msg;
     };
     $scope.setSegment1 = function(segment) {
-        console.log(JSON.parse(segment));
 
         $scope.segment1 = segment;
     };
@@ -357,19 +357,18 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         $scope.segment2 = segment;
     };
     $scope.setDatatype1 = function(datatype) {
-        console.log(JSON.parse(datatype));
 
         $scope.datatype1 = datatype
     };
     $scope.setDatatype2 = function(datatype) {
         $scope.datatype2 = datatype
     };
-    $scope.setTable1 = function(table) {
-        console.log(JSON.parse(table));
-    };
-    $scope.setTable2 = function(table) {
-        console.log(JSON.parse(table));
-    };
+    // $scope.setTable1 = function(table) {
+    //     console.log(JSON.parse(table));
+    // };
+    // $scope.setTable2 = function(table) {
+    //     console.log(JSON.parse(table));
+    // };
     $scope.clearAll = function() {
         $scope.msg1 = "";
         $scope.msg2 = "";
@@ -1310,12 +1309,12 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
 
         $scope.loadingSelection = true;
         $scope.msgChanged = false;
-        $scope.formatMsg(JSON.parse($scope.msg1)).then(function(msg1) {
+        $scope.formatMsg($scope.msg1).then(function(msg1) {
 
 
-            $scope.formatMsg(JSON.parse($scope.msg2)).then(function(msg2) {
-                console.log(JSON.parse($scope.msg1));
-                console.log(JSON.parse($scope.msg2));
+            $scope.formatMsg($scope.msg2).then(function(msg2) {
+                // console.log($scope.msg1);
+                // console.log(JSON.parse($scope.msg2));
 
                 $scope.diff = ObjectDiff.diffOwnProperties(msg1, msg2);
                 console.log($scope.diff);

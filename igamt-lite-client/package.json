@@ -2,7 +2,12 @@
   "name": "igl",
   "version": "0.0.0",
   "dependencies": {
-    "angular-pageslide-directive": "^2.1.0"
+    "@angular/common": "^4.2.3",
+    "@angular/core": "^4.2.3",
+    "@angular/material": "^2.0.0-beta.6",
+    "angular-pageslide-directive": "^2.1.0",
+    "rxjs": "^5.4.1",
+    "zone.js": "^0.8.12"
   },
   "devDependencies": {
     "bower": "^1.7.9",

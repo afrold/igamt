@@ -1597,72 +1597,78 @@
 </script>
 
 <script type="text/ng-template" id="ShareIGDocumentModal.html">
-
-    <div>
-        <div class="modal-header">
-            <h3 class="modal-title">Share IG Document</h3>
-        </div>
-        <div class="modal-body">
-            <div class="container" style="margin-bottom: 20px;margin-top: 20px">
-                <div class="row" ng-if="error != null">
-                    <div class="col-md-12">
-                        <span ng-bind="error" style="color: red;"></span>
-                    </div>
+    <md-dialog aria-label="Share IG Document">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Share IG Document </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
+            </md-toolbar>
 
-                <div class="row" ng-if="igdocumentSelected.shareParticipants.length > 0">
-                    <div class="col-md-12">
-                        <h5>Shared with</h5>
+            <md-dialog-content>
+                <div class="md-dialog-content" style="min-height: 200px">
+                    <div class="container" style="margin-bottom: 20px;margin-top: 20px">
+                        <div class="row" ng-if="error != null">
+                            <div class="col-md-12">
+                                <span ng-bind="error" style="color: red;"></span>
+                            </div>
+                        </div>
 
-                        <div class="table-responsive">
-                            <table class="table">
-                                <tbody>
-                                    <tr ng-repeat="participant in igdocumentSelected.shareParticipants">
-                                        <td><i>{{participant.fullname}} ({{participant.username}})</i></td>
-                                        <td>
-                                            <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="!participant.pendingApproval"><i class="fa fa-times"></i> Remove
-                                        </button>
-                                            <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request
-                                        </button>
-                                            <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="participant.pendingApproval"><i class="fa fa-times"></i> Cancel
-                                        </button>
-                                        </td>
-                                        <td>
-                                            {{participant.permission}}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="row" ng-if="igdocumentSelected.shareParticipants.length > 0">
+                            <div class="col-md-12">
+                                <h5>Shared with</h5>
+
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr ng-repeat="participant in igdocumentSelected.shareParticipants">
+                                                <td><i>{{participant.fullname}} ({{participant.username}})</i></td>
+                                                <td>
+                                                    <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="!participant.pendingApproval"><i class="fa fa-times"></i> Remove
+                                                </button>
+                                                    <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request
+                                                </button>
+                                                    <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="participant.pendingApproval"><i class="fa fa-times"></i> Cancel
+                                                </button>
+                                                </td>
+                                                <td>
+                                                    {{participant.permission}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-8">
+                                    <tags-input ng-model="tags" key-property="id" display-property="username" placeholder="Find user" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">
+                                        <auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
+                                    </tags-input>
+                                </div>
+                                <div class="col-md-4">
+                                    <ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
+                                        <ui-select-match>{{$select.selected}}</ui-select-match>
+                                        <ui-select-choices repeat="item in itemArray | filter: $select.search">
+                                            <div ng-bind-html="item | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
                         </div>
                     </div>
                 </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
 
-
-                <div class="row">
-                    <div class="col-md-8">
-                        <tags-input ng-model="tags" key-property="id" display-property="username" placeholder="Find user" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">
-                            <auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
-                        </tags-input>
-                    </div>
-                    <div class="col-md-4">
-                        <ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
-                            <ui-select-match>{{$select.selected}}</ui-select-match>
-                            <ui-select-choices repeat="item in itemArray | filter: $select.search">
-                                <div ng-bind-html="item | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i
-                        class="fa fa-times fa-fw"></i> Cancel
-                </button>
-                <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="tags.length === 0"><i class="fa fa-check"></i>Share
-                </button>
-            </div>
-        </div>
-    </div>
+                <md-button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="tags.length === 0"><i class="fa fa-check"></i>Share
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="autocomplete-template">
     <div class="autocomplete-template">

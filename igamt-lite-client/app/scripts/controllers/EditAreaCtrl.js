@@ -50,7 +50,7 @@ angular.module('igl')
         $scope.openRichTextDlg = function (obj, key, title, disabled) {
             var original = obj[key];
             var modalInstance = $rootScope.openRichTextDlg(obj, key, title, disabled);
-            modalInstance.result.then(function () {
+            modalInstance.then(function () {
                 if(!disabled && original !== obj[key]){
                     $scope.setDirty();
                 }
@@ -64,7 +64,7 @@ angular.module('igl')
         $scope.openInputTextDlg = function (obj, key, title, disabled) {
             var original = obj[key];
             var modalInstance = $rootScope.openInputTextDlg(obj, key, title, disabled);
-            modalInstance.result.then(function () {
+            modalInstance.then(function () {
                 if(!disabled && original !== obj[key]){
                     $scope.setDirty();
                 }

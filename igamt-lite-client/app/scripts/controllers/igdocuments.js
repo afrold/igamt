@@ -2031,22 +2031,19 @@ angular.module('igl')
                 }
                 if (!isPresent) return user;
             });
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'ShareIGDocumentModal.html',
                 controller: 'ShareIGDocumentCtrl',
-                size: 'lg',
-                resolve: {
-                    igdocumentSelected: function() {
-                        return igdocument;
-                    },
-                    userList: function() {
-                        return _.filter(filteredUserList, function(user) {
+                locals: {
+                    igdocumentSelected: igdocument
+                    ,
+                    userList:  _.filter(filteredUserList, function(user) {
 
                             return user.id != igdocument.accountId && igdocument.shareParticipantIds && igdocument.shareParticipantIds != null && igdocument.shareParticipantIds.indexOf(user.id) == -1;
-                        });
+                        })
 
                     }
-                }
+
             });
         }, function(error) {
 
@@ -3855,7 +3852,7 @@ angular.module('igl').controller('AddSegmentDlg',
         };
     });
 
-angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalInstance, $http, igdocumentSelected, userList, IgDocumentService, $rootScope) {
+angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $mdDialog, $http, igdocumentSelected, userList, IgDocumentService, $rootScope) {
 
     $scope.igdocumentSelected = igdocumentSelected;
     $scope.userList = userList;
@@ -3883,7 +3880,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $modalI
         });
     };
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
     $scope.tags = [];
     $scope.selectedItem = {

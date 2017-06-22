@@ -646,52 +646,48 @@
 
                                                     <tr>
                                                         <td class="col-md-1">
-                                                            <span class="label" style="background-color:#B5F7EC;color:black;">1</span>
+                                                            <span class="badge badge-delta badge-delta-1">1</span>
                                                         </td>
                                                         <td class="col-md-2">
-                                                            <select ng-model="version1" class="form-control" disabled>
-                                                            <option ng-selected="version1"> {{version1}}</option>
-                                                        </select>
+                                                            <md-select ng-model="version1" disabled placeholder="{{version1}}">
+                                                        </md-select>
                                                         </td>
                                                         <td class="col-md-2">
-                                                            <select ng-model="scope1" class="form-control" disabled>
-                                                            <option ng-selected="scope1"> {{scope1}}</option>
-                                                        </select>
+                                                            <md-select ng-model="scope1" disabled placeholder="{{scope1}}">
+                                                        </md-select>
                                                         </td>
                                                         <td class="col-md-3">
-                                                            <select ng-model="ig1" class="form-control" disabled>
-                                                            <option ng-selected="ig1"> {{ig1}}</option>
-                                                        </select>
+                                                            <md-select ng-model="ig1" disabled placeholder="{{ig1}}">
+                                                        </md-select>
                                                         </td>
                                                         <td class="col-md-4">
-                                                            <select ng-model="segment1" class="form-control" disabled>
-                                                            <option ng-selected="segment1"> {{getLabel(segment1)}}</option>
-                                                        </select>
+                                                            <md-select ng-model="segment1" disabled placeholder="{{getLabel(segment1)}}"></md-select>
                                                         </td>
                                                     </tr>
 
                                                     <tr>
                                                         <td class="col-md-1">
-                                                            <span class="label" style="background-color:#EDE1AF;color:black;">2</span>
+                                                            <span class="badge badge-delta badge-delta-2">2</span>
                                                         </td>
                                                         <td class="col-md-2">
-                                                            <select ng-model="version2" class="form-control" ng-change="setVersion2(version2)" no-dirty-check>
-                                                            <option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</option>
-                                                        </select>
+                                                            <md-select ng-model="version2"  ng-change="setVersion2(version2)" no-dirty-check>
+                                                            <md-option ng-repeat="vr in versions" value='{{vr}}' ng-selected="vr===version2"> {{vr}}</md-option>
+                                                        </md-select>
                                                         </td>
                                                         <td class="col-md-2">
-                                                            <select ng-model="scope2" class="form-control" ng-change="setScope2(scope2)" no-dirty-check>
-                                                            <option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</option>
-                                                        </select>
+                                                            <md-select ng-model="scope2"  ng-change="setScope2(scope2)" no-dirty-check>
+                                                            <md-option ng-repeat="scope in scopes" value='{{scope.name}}' ng-selected="scope.name===scope2"> {{scope.alias}}</md-option>
+                                                        </md-select>
                                                         </td>
                                                         <td class="col-md-3">
-                                                            <select class="form-control" ng-options="ig as ig.title for ig in igList2 track by ig.id" ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check></select>
+                                                            <md-select ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check>
+                                                                <md-option ng-repeat="ig in igList2 track by ig.id">{{ig.title}}</md-option>
+                                                            </md-select>
                                                         </td>
                                                         <td class="col-md-4">
-                                                            <select ng-model="cmp.segmentId" class="form-control" ng-change="setSegment2(cmp.segmentId)" ng-disabled="!ig2" no-dirty-check>
-                                                            <option value='-1'></option>
+                                                            <md-select ng-model="cmp.segmentId" ng-change="setSegment2(cmp.segmentId)" ng-disabled="!ig2" no-dirty-check placeholder="Select Segment">
                                                             <option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{$index}}'> {{getLabel(segment)}}</option>
-                                                        </select>
+                                                        </md-select>
                                                         </td>
 
                                                     </tr>
@@ -701,8 +697,8 @@
 
                                             </table>
                                             <div class="" align="center" style="margin-bottom:10px">
-                                                <button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || cmp.segmentId===-1||!segChanged || !segment2" class="btn btn-raised btn-info btn-md">
-                                                        <i class="fa fa-check"></i> Delta</button>
+                                                <md-button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || cmp.segmentId===-1||!segChanged || !segment2" class="btn btn-raised btn-info btn-md">
+                                                        <i class="fa fa-check"></i> Delta</md-button>
                                             </div>
                                         </div>
                                         <div accordion-group class="panel-primary panel-level1" is-open="status.isSecondOpen">
@@ -979,6 +975,8 @@
                             <md-option ng-value="datatype" ng-repeat="datatype in results">
                                 <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
                             </md-option>
+                            <md-option ng-click="otherDT(node)" value="none"> Change Data Type root</md-option>
+
                         </md-select>
                     </div>
 
@@ -1496,50 +1494,60 @@
     </div>
 </script>
 <script type="text/ng-template" id="AddFieldModal.html">
-    <div class="modal-header modal-wide">
-        <div class="form-inline">
-            <span class="header4">Create Field</span>
-        </div>
-    </div>
-    <div class="modal-body">
-        <div class="creation-modal-content">
-            <form name="addFieldForm" class="form-horizontal" novalidate>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.inputName.$valid}">
-                    <label class="col-md-3 control-label">Name*</label>
-                    <div class="controls col-md-9">
-                        <input name="inputName" id="inputName" class="form-control focus" ng-model="newField.name" autofocus required/>
-                    </div>
+    <md-dialog aria-label="create group">
+        <form ng-cloak name="addFieldForm" class="form-horizontal" novalidate id="addFieldForm">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Create Field </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.inputPosition.$valid}">
-                    <label class="col-md-3 control-label">Position*</label>
-                    <div class="controls col-md-9">
-                        <select ng-model="position" name="inputPosition" id="inputPosition" ng-change="selectPos()" class="form-control input-sm" required>
-                            <option ng-repeat="field in segment.fields track by field.id"> {{::field.position}}
-                                <option value="{{::segment.fields.length+1}}">{{::segment.fields.length+1}}
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.inputUsage.$valid}">
-                    <label class="col-md-3 control-label">Usage*</label>
-                    <div class="controls col-md-9">
-                        <select name="inputUsage" id="inputUsage" class="form-control input-sm" name="inputUsage" ng-change="selectUsage(newField.usage)" ng-model="newField.usage" ng-options="usage for usage in config.usages" required/>
-                    </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }">
-                    <label class="col-md-3 control-label">Cardinality*</label>
-                    <div class="controls col-md-9">
-                        <div class="form-inline">
-                            <input class="form-control" placeholder="Min" name="cardMin" style="width:49%" id="cardMin" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
-                            <input class="form-control" type="text" placeholder="Max" style="width:50%" name="cardMax" id="cardMax" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
-                        </div>
-                    </div>
-                </div>
+            </md-toolbar>
 
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !selectedDT()}">
-                    <label class="col-md-3 control-label">Datatype*</label>
-                    <div class="controls col-md-9">
-                        <input class="form-control" type="text" ng-model="searchDT.name" ng-hide="selectedDT()" />
-                        <li class="form-control" ng-show="selectedDT()">
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                        <md-content layout-padding>
+
+                <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.inputName.$valid}" class="md-block" flex-gt-sm>
+                    <label class="col-md-3 input-left">Name*</label>
+
+                        <input name="inputName" id="inputName" ng-model="newField.name" autofocus required/>
+                    <div ng-messages="addFieldForm.inputName.$error">
+                        <div ng-message="required">Name is required.</div>
+                    </div>
+                </md-input-container>
+                <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputPosition.$valid}" class="md-block" flex-gt-sm>
+                    <label class="input-left">Position*</label>
+
+                        <md-select ng-model="position" name="inputPosition" id="inputPosition" ng-change="selectPos()" required>
+                            <md-option ng-repeat="field in segment.fields track by field.id" ng-value="{{::field.position}}"> {{::field.position}}</md-option>
+                            <md-option ng-value="{{::segment.fields.length+1}}">{{::segment.fields.length+1}}</md-option>
+                        </md-select>
+
+                </md-input-container>
+                <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputUsage.$valid}" class="md-block" flex-gt-sm>
+                    <label class="input-left">Usage*</label>
+                        <md-select name="inputUsage" id="inputUsage"  name="inputUsage" ng-change="selectUsage(newField.usage)" ng-model="newField.usage"  required>
+                            <md-option ng-repeat="usage in config.usages" ng-value="usage">{{usage}}</md-option>
+                        </md-select>
+
+                </md-input-container>
+                <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block" flex-gt-sm>
+                    <label class="input-left">Cardinality*</label>
+                        <div class="form-inline">
+                            <input  placeholder="Min" name="cardMin" style="width:49%" id="cardMin" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
+                            <input  type="text" placeholder="Max" style="width:50%" name="cardMax" id="cardMax" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
+                        </div>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label class="input-left">Datatype*</label>
+                    <div>
+                        <input  type="text" ng-model="searchDT.name" ng-hide="selectedDT()" />
+                        <li  ng-show="selectedDT()">
                             {{DT.name}} <span ng-show="DT.ext">_{{DT.ext}}</span>
                             <button type="button" class="close" aria-label="Close" ng-click="unselectDT()">
                                 <span aria-hidden="true">&times;</span>
@@ -1551,50 +1559,47 @@
                             </li>
                         </div>
                     </div>
-                </div>
-                <div class="form-group control-group" ng-show="selectedDT() && DT.components.length===0">
-                    <label class="col-md-3 control-label" ng-class="{'has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>
-                    <div class="controls col-md-9">
-                        <div class="form-inline">
-                            <input class="form-control" placeholder="Min Length" name="minLength" style="width:49%" id="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.minLength" required ng-minlength="0">
-                            <input class="form-control" type="text" placeholder="Max Length" style="width:50%" name="maxLength" id="maxLength" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.maxLength" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group control-group" ng-class="{'has-error has-feedback': !addFieldForm.confLength.$valid}" ng-show="selectedDT() && DT.components.length===0">
-                    <label class="col-md-3 control-label">Conf Length</label>
-                    <div class="controls col-md-9">
-                        <input class="form-control" name="confLength" id="confLength" ng-change="setDirty()" ng-pattern="confLengthPattern" ng-model="newField.confLength">
-                    </div>
-                </div>
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label">ValueSet</label>
-                    <div class="controls col-md-9">
+                </md-input-container>
+                <!--<md-input-container  ng-show="selectedDT() && DT.components.length===0" class="md-block" flex-gt-sm>-->
+                    <!--<label class="input-left" ng-class="{'igl-has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>-->
+                    <!--<div class="controls col-md-9">-->
+                        <!--<div class="form-inline">-->
+                            <!--<input class="form-control" placeholder="Min Length" name="minLength" style="width:49%" id="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.minLength" required ng-minlength="0">-->
+                            <!--<input class="form-control" type="text" placeholder="Max Length" style="width:50%" name="maxLength" id="maxLength" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.maxLength" required>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</md-input-container>-->
+                <!--<md-input-container class="md-block" flex-gt-sm ng-class="{'igl-has-error has-feedback': !addFieldForm.confLength.$valid}">-->
+                    <!--<label class="input-left">Conf Length</label>-->
+                        <!--<input class="form-control" name="confLength" id="confLength" ng-change="setDirty()" ng-model="newField.confLength">-->
+                <!--</md-input-container>-->
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label class="input-left">ValueSet</label>
+                    <div class="controls col-md-11">
                         <tags-input ng-model="vs" key-property="id" display-property="bindingIdentifier" placeholder="Select Value Sets" add-from-autocomplete-only="true" replace-spaces-with-dashes="false" on-tag-added="tagAdded($tag)" on-tag-removed="tagRemoved($tag)">
                             <auto-complete source="loadVS($query)" min-length="0" load-on-focus="true" max-results-to-show="10"></auto-complete>
                         </tags-input>
                     </div>
 
-                </div>
-                <div class="form-group control-group">
-                    <label class="col-md-3 control-label">Comment</label>
-                    <div class="controls col-md-9">
-                        <textarea class="form-control" ng-model="newField.comment">
-                        </textarea>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label class="input-left">Comment</label>
+                    <input ng-model="newField.comment">
+                        </input></md-input-container>
+
+                        </md-content>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-raised bt-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-info btn-md" ng-click="addField()" ng-disabled="addFieldForm.$invalid || !selectedDT()"><span><i
-                    class="fa fa-plus fa-fw">
+            </md-dialog-content>
+            <md-dialog-actions layout="row" layout-align="end end">
+
+                <md-button class="md-primary md-raised" ng-click="addField()" ng-disabled="addFieldForm.$invalid"><span><i
+                        class="fa fa-plus fa-fw">
                 &nbsp; </i>Add</span>
-            </button>
-        </div>
-    </div>
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="DeleteField.html">
     <div class="modal-header">
@@ -1612,26 +1617,40 @@
     </div>
 </script>
 <script type="text/ng-template" id="otherDTModal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Select Datatype for {{::field.type}} : {{::field.name}}</h3>
-    </div>
-    <div class="modal-body">
-        <div class="input-group">
-            <span class="input-group-addon" id="segment-basic-addon1"><i class="fa fa-search"></i> Search</span>
-            <input type="text" class="form-control input-lg" ng-model="newDt" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as getDtLabel(datatype) for datatype in datatypes|filter:{name:$viewValue} | limitTo:5" placeholder="Search By Name">
-        </div>
-    </div>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised bt-default btn-md" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-info btn-md" ng-click="addDT()" ng-disabled="!isInDts(newDt)"><span><i
-                    class="fa fa-check">
+
+    <md-dialog aria-label="change Dt">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Select Datatype for {{::field.type}} : {{::field.name}} </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+
+
+        <md-input-container class="md-block" layout="row" layout-align="center center" style="max-width:300px ">
+            <i class="input-left" flex="20" class="fa fa-search"></i>
+            <input flex="80" type="text" ng-model="newDt" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as getDtLabel(datatype) for datatype in datatypes|filter:{name:$viewValue} | limitTo:5" placeholder="Search By Name">
+        </md-input-container>
+
+
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+
+                <md-button class="md-primary md-raised" ng-click="addDT()" ng-disabled="!isInDts(newDt)"><span><i
+                        class="fa fa-check">
                 &nbsp; </i>Select</span>
-        </button>
-    </div>
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="DeleteSegmentPredicate.html">
     <div class="modal-header">
@@ -1685,14 +1704,19 @@
     </div>
 </script>
 <script type="text/ng-template" id="TableMappingSegmentCtrl.html">
-    <div class="modal-header modal-wide">
-        <h3 class="modal-title">Bind Value Set to {{::segment.name}}-{{::currentNode.path}}</h3>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <form role="form">
-                <div class="col-md-12">
-                    <div ng-cloak>
+    <md-dialog aria-label="table Mapping">
+        <form ng-cloak role="form">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Bind Value Set to {{::segment.name}}-{{::currentNode.path}} </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="ok()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
                         <md-content>
                             <div ng-show="selectedValueSetBindings.length > 0">
                                 <div ng-show="selectedValueSetBindings[0].type == 'singlecode'">
@@ -1960,14 +1984,11 @@
                                 </md-tab>
                             </md-tabs>
                         </md-content>
-                    </div>
                 </div>
-            </form>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button ng-show="changed" type="button" ng-click="saveMapping()" class="btn btn-raised btn-primary btn-sm"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</button>
-        <button ng-show="changed" type="button" ng-click="ok()" class="btn btn-raised btn-warning btn-sm"><i class="fa fa-times fa-fw">&nbsp; </i>Close</button>
-        <button ng-show="!changed" class="btn btn-raised btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
-    </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-show="changed" type="button" ng-click="saveMapping()" class="md-primary md-raised"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
