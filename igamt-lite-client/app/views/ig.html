@@ -562,8 +562,8 @@
             <form ng-cloak>
                 <md-toolbar>
                     <div class="md-toolbar-tools">
-                        <h2 ng-if="!toGVT">Export XML </h2>
-                        <h2 ng-if="toGVT">Export To GVT </h2>
+                        <h2 ng-if="!toGVT"><i class="fa fa-download fa-fw"></i>Export XML </h2>
+                        <h2 ng-if="toGVT"><i class="fa fa-paper-plane fa-fw"></i>Connect To GVT </h2>
                         <span flex></span>
                         <md-button class="md-icon-button" ng-click="cancel()">
                             <i class="material-icons">clear</i>
@@ -632,7 +632,7 @@
                             </form>
                         </div>
                         <div ng-show="exportStep === 1">
-                            <div ng-class="'alert alert-info'" style="font-size:14px;">
+                            <div ng-class="'alert alert-info'" style="font-size:14px;font-weight: bold">
                                 Login information on GVT at {{::appInfo.gvtUrl}}
                             </div>
                             <form name="gvtLoginForm" id="gvtLoginForm" novalidate ng-cloak
@@ -666,18 +666,22 @@
                         </div>
 
                         <div ng-show="exportStep === 2">
-                            <div ng-show="info.type === 'info'" layout="row">
-                                <div ng-class="'alert alert-success'" style="font-size:14px;">
-                                    <i class="fa fa-check" aria-hidden="true"></i> Files Successfully Sent to GVT !
+                            <div ng-show="info.type === 'info'">
+
+                                <div ng-class="'alert alert-success'" style="font-size:14px;;font-weight: bold">
+                                    <p><i class="fa fa-check" aria-hidden="true"></i> Transaction Successful !</p>
+
                                 </div>
-                                <p><a ng-href="{{redirectUrl}}" target="_blank">You are now being redirected to GVT.
+                                <p><a  style="font-size:14px;" ng-href="{{redirectUrl}}" target="_blank">You are now being redirected to GVT.
                                     Please click here if you are not redirected after 3s</a>
                                 </p>
+
                             </div>
+
                             <div ng-show="info.type === 'danger'">
-                                <div ng-class="'alert alert-success'" style="font-size:14px;" layout="row">
+                                <div ng-class="'alert alert-danger'" style="font-size:14px;font-weight: bold">
                                     <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                    Files Not sent to GVT
+                                    Transaction Failed
                                 </div>
 
                                 <form name="gvtErrorForm" id="gvtErrorForm" novalidate class="form-horizontal">
@@ -811,7 +815,7 @@
                                ng-show="xmlFormat=== 'Validation'"
                                ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
                                ng-click="exportAsZIPToGVT() "><span><i
-                            class="fa fa-download fa-fw "></i>Export to GVT</span></md-button>
+                            class="fa fa-paper-plane fa-fw "></i>Send</span></md-button>
                 </md-dialog-actions>
             </form>
         </md-dialog>
@@ -821,8 +825,8 @@
             <div ng-cloak>
                 <md-toolbar>
                     <div class="md-toolbar-tools">
-                        <h2 ng-if="!toGVT">Export XML </h2>
-                        <h2 ng-if="toGVT"><i class="fa fa-paper-plane fa-fw"></i> Export To GVT </h2>
+                        <h2 ng-if="!toGVT"><i class="fa fa-download fa-fw"></i>Export XML </h2>
+                        <h2 ng-if="toGVT"><i class="fa fa-paper-plane fa-fw"></i> Connect To GVT </h2>
                         <span flex></span>
                         <md-button class="md-icon-button" ng-click="cancel()">
                             <i class="material-icons">clear</i>
@@ -830,7 +834,7 @@
                     </div>
                 </md-toolbar>
 
-                <md-dialog-content layout="row">
+                <md-dialog-content>
                     <div class="md-dialog-content">
                         <div ng-show="exportStep === 0">
                             <form novalidate ng-cloak>
@@ -893,7 +897,7 @@
                         </div>
                         <div ng-show=" exportStep === 1">
 
-                            <div ng-class="'alert alert-info'">
+                            <div ng-class="'alert alert-info'" style="font-weight: bold; font-size:14px">
                                 Login information of GVT at {{appInfo.gvtUrl}}
                             </div>
                             <form name="gvtLoginForm" id="gvtLoginForm" novalidate ng-cloak
@@ -932,18 +936,21 @@
                         <div ng-show="exportStep === 2" >
 
                             <div ng-show="info.type === 'info'">
-                                <div ng-class="'alert alert-success'" style="font-size:14px;">
-                                    <i class="fa fa-check" aria-hidden="true"></i> Files Successfully Sent to GVT !
+
+                                <div ng-class="'alert alert-success'" style="font-size:14px;font-weight: bold;">
+                                    <p><i class="fa fa-check" aria-hidden="true"></i> Transaction Successful !</p>
+
                                 </div>
-                                <p><a ng-href="{{redirectUrl}}" target="_blank">You are now being redirected to GVT.
+                                <p><a  style="font-size:14px;font-weight: bold;" ng-href="{{redirectUrl}}" target="_blank">You are now being redirected to GVT.
                                     Please click here if you are not redirected after 3s</a>
                                 </p>
+
                             </div>
 
                             <div ng-show="info.type === 'danger'">
-                                <div ng-class="'alert alert-success'" style="font-size:14px;">
+                                <div ng-class="'alert alert-danger'" style="font-size:14px;font-weight: bold;">
                                     <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                    Files Not sent to GVT
+                                   Transaction Failed
                                 </div>
 
                             <form name="gvtErrorForm" id="gvtErrorForm" novalidate class="form-horizontal">
@@ -1082,7 +1089,7 @@
                                ng-show="xmlFormat=== 'Validation'"
                                ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
                                ng-click="exportAsZIPToGVT()"><span><i
-                            class="fa fa-paper-plane fa-fw "></i>Export to GVT</span></md-button>
+                            class="fa fa-paper-plane fa-fw "></i>Send</span></md-button>
                 </md-dialog-actions>
             </div>
          </md-dialog>
