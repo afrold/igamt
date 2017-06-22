@@ -3526,6 +3526,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return $mdDialog.show({
             templateUrl: 'RichTextCtrlMd.html',
             controller: 'RichTextCtrl',
+            scope: $scope,
+            preserveScope: true,
 
             locals: {
                 editorTarget:
