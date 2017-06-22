@@ -39,7 +39,8 @@ var app = angular
         'pageslide-directive',
         'rzModule',
     		'ui.select',
-        'flow'
+        'flow',
+        'ui.sortable'
       ]);
 
 var
