@@ -224,7 +224,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                     $scope.loadingSelection = true;
                     $scope.dtChanged = false;
                     $scope.vsTemplate = false;
-                    $scope.dataList = CompareService.cmpDatatype(JSON.stringify($scope.cmp1), JSON.stringify($scope.cmp2), [], [], [], []);
+                    $scope.dataList = CompareService.cmpDatatype($scope.cmp1, $scope.cmp2, [], [], [], []);
                  
                     
                     $scope.loadingSelection = false;
@@ -692,7 +692,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $scope.loadingSelection = true;
             $scope.dtChanged = false;
             $scope.vsTemplate = false;
-            $scope.dataList = CompareService.cmpDatatype(JSON.stringify(datatype1), JSON.stringify(datatype2), $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
+            $scope.dataList = CompareService.cmpDatatype(datatype1, datatype2, $scope.dtList1, $scope.dtList2, $scope.segList1, $scope.segList2);
             console.log("hg==========");
             console.log($scope.dataList);
             $scope.loadingSelection = false;
