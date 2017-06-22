@@ -322,8 +322,8 @@
                                                     </div>
                                                     <div class="col-md-12" style="overflow-y:auto;">
                                                         <table>
-                                                            <tbody ui:sortable="coConSortableOption" ng:model="coConRowIndexList">
-                                                            <tr ng:repeat="item in coConRowIndexList" class="item" style="cursor: move;">
+                                                            <tbody ui-sortable="coConSortableOption" ng-model="coConRowIndexList">
+                                                            <tr ng-repeat="item in coConRowIndexList" class="item" style="cursor: move;">
                                                                 <td>{{$index}}</td>
                                                                 <td>{{item}}</td>
                                                             </tr>
@@ -393,7 +393,7 @@
                                                                 </th>
                                                             </tr>
                                                             </thead>
-                                                            <tbody ui:sortable="coConSortableOption" ng:model="coConRowIndexList">
+                                                            <tbody ui-sortable="coConSortableOption" ng-model="coConRowIndexList">
                                                             <tr style="cursor: move;" ng-show="segment.coConstraintsTable.rowSize > 0" ng-repeat="rowObject in coConRowIndexList">
                                                                 <td style="overflow: hidden;width: 200px;text-align:center;background-color: #2188ff !important; {{getNewBorder(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex])}}" ng-show="segment.coConstraintsTable.ifColumnDefinition">
                                                                     <div layout="row" layout-align="start center">
