@@ -56,7 +56,7 @@
                                         <md-content layout-padding>
                                             <md-input-container class="md-block" flex-gt-sm>
                                                 <label class="input-left">Name</label>
-                                                <input type="text"  name="name" ng-change="setDirty()" ng-model="message.name" ng-disabled="viewSettings.tableReadonly">
+                                                <input type="text"  name="name" ng-change="setDirty()" ng-model="message.name" ng-disabled="viewSettings.tableReadonly" required>
                                                 <div ng-messages="editForm.name.$error">
                                                     <div ng-message="required">Name is required.</div>
                                                 </div>

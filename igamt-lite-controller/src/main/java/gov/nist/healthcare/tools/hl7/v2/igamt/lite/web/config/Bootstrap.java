@@ -254,14 +254,11 @@ public class Bootstrap implements InitializingBean {
     // modifyCodeUsage();
     // fixMissingData();
 
-    // new Master Datatype Generation
-
-    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
-    // Colorate(); // genenerates the datatypes evolution matrix.
-    // //
 
 
     // To RUN on Production for 2.0.0-rc
+    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
+    // Colorate(); // genenerates the datatypes evolution matrix.
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
     // fixDatatypeRecursion();
@@ -278,13 +275,34 @@ public class Bootstrap implements InitializingBean {
     // refactorCoConstrint();
     // updateUserExportConfigs();
     // hotfix();
-    // Need to run ONE TIME
+    // // Need to run ONE TIME
     // fixConfLength();
     // fixWrongConstraints();
     // updateSegmentDatatypeDescription();
     // updateGroupName();
     // fixProfielComponentConfLength();
     // updateGroupName();
+    
+    
+    fixCodeSysLOINC();
+  }
+
+
+  private void fixCodeSysLOINC() {
+    List<Table> tables = tableService.findAll();
+    
+    for(Table t:tables){
+      boolean isChanged = false;
+      
+      for(Code c:t.getCodes()){
+        if(c.getCodeSystem() != null && c.getCodeSystem().toLowerCase().equals("loinc")){
+          isChanged = true;
+          c.setCodeSystem("LN");
+        }
+      }
+      if(isChanged) tableService.save(t);
+    }
+    
   }
 
 

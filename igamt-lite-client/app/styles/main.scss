@@ -3169,3 +3169,18 @@ md-select.inside-table{
   margin-left: 5px;
   margin-right: 5px;
 }
+
+.md-button.md-small {
+    min-width: 1%;
+}
+
+
+.md-button.md-success, .md-button.md-success:hover{
+    background-color:#5cb85c!important;
+    color: rgba(255,255,255,0.87);
+}
+
+.md-button.md-info, .md-button.md-info:hover{
+    background-color:#2d9de7!important;
+    color: rgba(255,255,255,0.87);
+}

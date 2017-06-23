@@ -2396,6 +2396,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
 
     $scope.addComplexPredicate = function() {
         $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
+        $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
         $scope.tempPredicates.push($scope.complexConstraint);
         $scope.initComplexPredicate();
     };

@@ -2144,6 +2144,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
 
     $scope.addComplexConformanceStatement = function() {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
+        $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
         $scope.selectedDatatype.conformanceStatements.push($scope.complexConstraint);
         $scope.initComplexStatement();
         $scope.changed = true;
