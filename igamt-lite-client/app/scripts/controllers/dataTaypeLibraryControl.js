@@ -2433,7 +2433,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
 
         $scope.navToLibrary = function(library) {
-            if(library.accountId.toString()===accountId){
+            if(library.accountId.toString()===$scope.accountId){
                 $scope.editLibrary(library,false);
             }else{
                 $scope.editLibrary(library,true);
