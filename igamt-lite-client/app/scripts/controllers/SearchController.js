@@ -7,12 +7,14 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                 {
                     name:'Name',
                     param:'name',
-                    required:true
+                    required:true,
+                    disabled:false
                 },
                 {
                     name:'HL7 Version',
                     param:'hl7Version',
-                    required:true
+                    required:true,
+                    disabled:false
                 }
             ]
         },
@@ -24,17 +26,20 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                     name:'Scope',
                     param:'scope',
                     values:['HL7STANDARD','PHINVADS'],
-                    required:true
+                    required:true,
+                    disabled:false
                 },
                 {
                     name:'Binding Identifier',
                     param:'bindingIdentifier',
-                    required:true
+                    required:true,
+                    disabled:false
                 },
                 {
                     name:'HL7 Version',
                     param:'hl7Version',
-                    required:false
+                    required:false,
+                    disabled:false
                 }
             ]
         },
@@ -45,12 +50,14 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                 {
                     name:'Name',
                     param:'name',
-                    required:true
+                    required:true,
+                    disabled:false
                 },
                 {
                     name:'HL7 Version',
                     param:'hl7Version',
-                    required:true
+                    required:true,
+                    disabled:false
                 }
             ]
         },        {
@@ -60,17 +67,20 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
                 {
                     name:'Type',
                     param:'messageType',
-                    required:true
+                    required:true,
+                    disabled:false
                 },
                 {
                     name:'Event',
                     param:'event',
-                    required:true
+                    required:true,
+                    disabled:false
                 },
                 {
                     name:'HL7 Version',
                     param:'hl7Version',
-                    required:true
+                    required:true,
+                    disabled:false
                 }
             ]
         }
@@ -112,6 +122,16 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
         if($scope.searchParameters){
             if($scope.searchParameters.fields){
                 var isValid = true;
+                if($scope.searchParameters.value === "message"){
+                	if($scope.searchParameters.fields[0].value === "ACK"){
+                		$scope.searchParameters.fields[1].required=false;
+                		$scope.searchParameters.fields[1].disabled=true;
+                		$scope.searchParameters.fields[1].value="";
+                	}else {
+                		$scope.searchParameters.fields[1].required=true;
+                		$scope.searchParameters.fields[1].disabled=false;
+                	}
+                }
                 $scope.searchParameters.fields.forEach(function(field){
                     if(field.required){
                         if(!field.value || field.value === ''){
