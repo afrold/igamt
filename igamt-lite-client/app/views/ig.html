@@ -15,11 +15,7 @@
     <div class="row" ng-show="isAuthenticated()">
         <!--<div class="row">-->
         <div ng-show="!isPending()">
-            <!--<div class="page-header">-->
-            <!--<h5> Hello, <span ng-bind="getFullName()"></span></h5>-->
-            <!--</div>-->
             <br/>
-
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab md-active="accordi.igList" md-on-select="selectIgTab(0)">
                     <md-tab-label>
@@ -41,31 +37,6 @@
                 </md-tab>
 
             </md-tabs>
-            <!--<accordion close-others="false">-->
-            <!--<accordion-group is-open="accordi.igList" panel-class="panel-primary">-->
-            <!--<accordion-heading>-->
-            <!--<i class="fa" ng-class="{'fa-caret-down': accordi.igList, 'fa-caret-right': !accordi.igList}"></i>-->
-            <!--<i class="fa fa-file-text-o fa-fw"></i> IG Documents List-->
-            <!--</accordion-heading>-->
-            <!--&lt;!&ndash;<div class="panel panel-info">&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
-            <!--<div ng-include="'views/edit/listIG.html'"></div>-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--</accordion-group>-->
-            <!--<accordion-group is-open="accordi.igDetails" panel-class="panel-primary">-->
-            <!--<accordion-heading>-->
-            <!--<i class="fa"-->
-            <!--ng-class="{'fa-caret-down': accordi.igDetails, 'fa-caret-right': !accordi.igDetails}"></i>-->
-            <!--<i class="fa fa-pencil fa-fw"></i>Edit IG Document : {{igdocument.metaData.title}}-->
-            <!--</accordion-heading>-->
-            <!--&lt;!&ndash;<div class="panel panel-info">&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="panel-body">&ndash;&gt;-->
-            <!--<div ng-include="'views/edit/editIG.html'"></div>-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--</accordion-group>-->
-            <!--</accordion>-->
         </div>
         <div style="font-size: 18px;text-align: center" ng-show="isPending()">
             <div msg key='account.pendingSection'></div>
@@ -75,7 +46,7 @@
         <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You
             can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
     </div>
-    <script type="text/ng-template" id="hl7VersionsDlgMD.html">
+<script type="text/ng-template" id="hl7VersionsDlgMD.html">
 
         <md-dialog style="width:80% !important; min-width:80% !important;">
             <form ng-cloak id="hl7VersionsDlgForm" name="hl7VersionsDlgForm" class="form-horizontal">
@@ -293,91 +264,97 @@
 
     </script>
 
-    <script type="text/ng-template" id="DeleteProfileComponentCtrl.html ">
-        <div class="modal-header ">
-            <h3 class="modal-title ">Delete Confirmation
-            </h3>
-        </div>
-        <div class="modal-body ">
+<script type="text/ng-template" id="DeleteProfileComponentCtrl.html ">
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Delete Confirmation</h2>
 
-            <p>Are you sure you want to delete the Profile Component:"{{profileComponentToDelete.name}} " ? This
-                operation is irreversible</p>
-        </div>
-        </div>
-        <div class="modal-footer ">
-            <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                    class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
-                    class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
-            </button>
-            <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                <div layout="row" layout-sm="column" layout-align="space-around">
-                    <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
                 </div>
-            </div>
-        </div>
-        </div>
-    </script>
+            </md-toolbar>
 
-    <script type="text/ng-template" id="DeleteCompositeMessageCtrl.html ">
-        <div class="modal-header ">
-            <h3 class="modal-title ">Delete Confirmation
-            </h3>
-        </div>
-        <div class="modal-body ">
+            <md-dialog-content>
+                <div class="md-dialog-content">
 
-            <p>Are you sure you want to delete the Composite Message:"{{compositeMessageToDelete.name}} " ? This
-                operation is irreversible</p>
-        </div>
-        </div>
-        <div class="modal-footer ">
-            <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                    class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
-                    class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
-            </button>
-            <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                <div layout="row" layout-sm="column" layout-align="space-around">
-                    <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+
+        <p>Are you sure you want to delete the Profile Component:"{{profileComponentToDelete.name}} " ? This operation is irreversible</p>
                 </div>
-            </div>
-        </div>
-        </div>
-    </script>
-    <script type="text/ng-template" id="DeleteCompositeProfileCtrl.html ">
-        <div class="modal-header ">
-            <h3 class="modal-title ">Delete Confirmation
-            </h3>
-        </div>
-        <div class="modal-body ">
+            </md-dialog-content>
 
-            <p>Are you sure you want to delete the Composite Profile:"{{compositeMessageToDelete.name}} " ? This
-                operation is irreversible</p>
-        </div>
-        </div>
-        <div class="modal-footer ">
-            <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                    class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
-                    class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
-            </button>
-            <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                <div layout="row" layout-sm="column" layout-align="space-around">
-                    <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+            <md-dialog-actions layout="row">
+                <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
+                        class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
+                </button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+<script type="text/ng-template" id="DeleteCompositeMessageCtrl.html ">
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Delete Confirmation</h2>
+
                 </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+
+        <p>Are you sure you want to delete the Composite Message:"{{compositeMessageToDelete.name}} " ? This operation is irreversible</p>
             </div>
-        </div>
-        </div>
-    </script>
-    <script type="text/ng-template" id="CantDeleteMsgCtrl.html ">
-        <div class="modal-header ">
-            <h3 class="modal-title ">Can't Delete Conformance Profile
-            </h3>
-        </div>
-        <div class="modal-body ">
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
+                        class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
+                </button>
+                <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+                    <div layout="row" layout-sm="column" layout-align="space-around">
+                        <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+                    </div>
+                </div>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+<script type="text/ng-template" id="DeleteCompositeProfileCtrl.html">
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Delete Confirmation</h2>
+
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+
+                    <p>Are you sure you want to delete the Composite Profile:"{{compositeMessageToDelete.name}} " ? This operation is irreversible            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
+                        class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
+                </button>
+                <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+                    <div layout="row" layout-sm="column" layout-align="space-around">
+                        <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+                    </div>
+                </div>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+<script type="text/ng-template" id="CantDeleteMsgCtrl.html ">
+    <div class="modal-header ">
+        <h3 class="modal-title ">Can't Delete Conformance Profile
+        </h3>
+    </div>
+    <div class="modal-body ">
 
             <p> Conformance Profile:"{{msg.name}} " cannot be deleted because it is used in the following Composite
                 Profiles: </p>
@@ -408,53 +385,52 @@
                 </div>
             </div>
         </div>
-        </div>
-    </script>
-    <script type="text/ng-template" id="CantDeletePcCtrl.html ">
-        <div class="modal-header ">
-            <h3 class="modal-title ">Can't Delete Profile Component
-            </h3>
-        </div>
-        <div class="modal-body ">
+    </div>
+    </div>
+</script>
+<script type="text/ng-template" id="CantDeletePcCtrl.html ">
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Can't Delete Profile Component</h2>
 
-            <p>Profile Component:"{{profileComponent.name}} " cannot be deleted because it is applied in the Composite
-                Profiles: </p>
-            <table id="applyPcToTable" tt-table tt-params="cantDeletePcParams"
-                   class="table table-bordered table-fix-header table-condensed profile-table">
-                <thead>
-                <tr class="tbl-header" style="">
-                    <th class="col-md-3">Composite Profile Name</th>
-                    <th class="col-md-3">Core Profile Name</th>
-                    <th class="col-md-3">Applied Profile Components</th>
-
-                </tr>
-
-                </thead>
-                <tbody></tbody>
-            </table>
-
-        </div>
-        </div>
-        <div class="modal-footer ">
-            <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                    class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
-            </button>
-
-            <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                <div layout="row" layout-sm="column" layout-align="space-around">
-                    <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
                 </div>
-            </div>
-        </div>
-        </div>
-    </script>
-    <script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html ">
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <p>Profile Component:"{{profileComponent.name}} " cannot be deleted because it is applied in the Composite Profiles: </p>
+                    <table id="applyPcToTable" tt-table tt-params="cantDeletePcParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                        <thead>
+                        <tr class="tbl-header" style="">
+                            <th class="col-md-3">Composite Profile Name</th>
+                            <th class="col-md-3">Core Profile Name</th>
+                            <th class="col-md-3">Applied Profile Components</th>
+
+                        </tr>
+
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+            <md-dialog-actions layout="row">
+                <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
+                        class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
+                </button>
+                <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+                    <div layout="row" layout-sm="column" layout-align="space-around">
+                        <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+                    </div>
+                </div>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+ <script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html ">
         <div class="modal-header ">
             <h3 class="modal-title ">Delete Confirmation
             </h3>
         </div>
         <div class="modal-body ">
-
             <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}} " ? This operation
                 is irreversible
             </p>

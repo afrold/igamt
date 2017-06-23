@@ -4408,23 +4408,21 @@
     </div>
 </script>
 <script type="text/ng-template" id="createDatatype.html">
-    <div class="modal-content">
-        <div class="modal-wide modal-header">
+    <md-dialog aria-label="Create Data Type Library ">
+        <form ng-cloak name="addDT" id="addDT">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Add {{datatypeLibrary.scope}} Datatype </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
 
-            <div class="form-inline">
-                <span class="header4" style="color:white;">Add {{datatypeLibrary.scope}} Datatype</span>
+                </div>
+            </md-toolbar>
 
-                <span class="pull-right">
-                    <button class="btn btn-raised btn-default btn-xs" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i>Cancel
-                    </button>
-                    <button class="btn btn-raised btn-primary btn-xs" type="button" ng-click="ok()" ng-disabled="addedDatatypes===0"><i class="fa fa-check fa-fw"></i>Add
-                    </button>
-                </span>
-            </div>
-        </div>
-
-
-        <form name="addDT">
+            <md-dialog-content>
+                <div class="md-dialog-content">
             <div class="modal-body">
                 <div class="container" style="margin-bottom: 20px;margin-top: 10px;margin-right:10px;">
                     <div class="row" style="padding-top:10px">
@@ -4521,8 +4519,17 @@
 
                     </div>
                 </div>
+
+                </div>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button class="md-primary md-raised" ng-click="ok()">
+                    Submit
+                </md-button>
+            </md-dialog-actions>
         </form>
-        </div>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="AddHL7Datatype.html">
 
@@ -5452,45 +5459,6 @@
     </div>
     </div>
 </script>
-<script type="text/ng-template" id="DatatypeReferencesCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Data Type Cross References Found
-            <button class="btn btn-raised  btn-xs btn-primary pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Close</span>
-            </button>
-        </h3>
-    </div>
-    <div class="modal-body">
-        <p>We cannot delete this data type because it is being referenced by elements below:</p>
-
-        <div class="igl-table">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr class="tbl-header">
-                        <th>Namee</th>
-                        <th>Path</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="ref in referencesForMenu  track by ref.id ">
-                        <td>
-                            <span>
-                            <span ng-show="ref.type === 'field'" class="label label-field label-icon">F</span>
-                            <span ng-show="ref.type === 'component'" class="label label-component label-icon">C</span>
-                            <span ng-show="ref.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
-                            <span style="width:60%" name="name" ng-bind="ref.name"></span>
-                            <span ng-bind="ref.description"></span>
-                            </span>
-                        </td>
-                        <td>
-                            <div>{{::ref.path}}</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</script>
 <script type="text/ng-template" id="ConfirmSingleElementDuplicatedCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Warning for duplicated Constant Value</h3>
@@ -5619,7 +5587,7 @@
 
 </script>
 <script type="text/ng-template" id="GlobalConformanceStatementCtrlInPc.html">
-    <md-dialog aria-label="Conformance Statements">
+    <md-dialog aria-label="Conformance Statements" style="width:70%">
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
@@ -6517,6 +6485,27 @@
             </md-input-container>
 
         </div>
+</script>
+<script type="text/ng-template" id="cannotFindOld.html">
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Old value Missing </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
+
+                    <p>Sorry we cannot find the old value </p>
+                </div>
+            </md-dialog-content>
+        </form>
+    </md-dialog>
 </script>
 
 <!--<script type="text/ng-template" id="hl7VersionsDlg.html">-->

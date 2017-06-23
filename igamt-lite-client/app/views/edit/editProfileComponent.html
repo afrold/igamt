@@ -434,14 +434,15 @@
                                                                     style="text-align:center">
 
                                                                     <div ng-show="isAvailableForValueSet(node)">
-                                                                        <div ng-repeat="binding in findingBindings(node)">
+                                                                        <div ng-repeat="binding in findingBindingsPc(node)">
                                                                                 <span class="badge label-white">
                                                                 <span ng-class="{'label-message-icon' : binding.bindingFrom == 'message', 'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}"><i
-                                                                        class="fa fa-circle fa-fw"/></span>
+                                                                        class="fa fa-circle fa-fw"/>
+                                                                </span>
 
 
                                                                                 <span title="For {{getValueSetContext(node)}}"
-                                                                                      ng-show=" binding.type == 'valueset'"
+                                                                                      ng-show="binding.type == 'valueset'"
                                                                                       ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                                                                                 </span>
                                                                             <span title="For {{getValueSetContext(node)}}"
@@ -452,8 +453,7 @@
                                                                             </span>
                                                                         </div>
                                                                         <a class="point">
-                                                                            <span ng-click="editModalBindingForMsg(node)"><i
-                                                                                    class="fa fa-plus fa-fw"></i></span>
+                                                                            <span ng-click="editModalBindingForMsg(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
                                                                             <a ng-show="node.valueSetBindings && node.valueSetBindings.length>0"
                                                                                ng-click="cancelBinding(node)"><i
                                                                                     class="fa fa-remove fa-fw"></i></a>
@@ -910,7 +910,8 @@
                 <option ng-click="otherDT(node)" value="Others"> Others</option>
             </select>
             <a ng-click="editDatatype=false;cancelDatatype(node)"
-               ng-show="node.attributes.datatype||editableDT===node.id"><i class="fa fa-remove fa-fw"></i></a>
+               ng-show="node.attributes.datatype||editableDT===node.id"><i class="fa fa-remove fa-fw"></i>
+            </a>
 
 
         </td>

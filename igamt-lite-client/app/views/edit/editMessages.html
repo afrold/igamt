@@ -1278,20 +1278,29 @@
     </div>
 </script>
 <script type="text/ng-template" id="ConfirmMessageDeleteCtrl.html">
-    <div class="modal-header modal-wide">
-        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Delete Confirmation
-        </p>
-    </div>
-    <div class="modal-body">
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Delete confirmation</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
         <p>Are you sure you want to delete Message {{::messageToDelete.name}} ? </p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-    </div>
+                </div>
+            </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button  class="md-primary md-raised" md-autofocus ng-click="delete()">Delete
+            </md-button>
+    </md-dialog-actions>
+    </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="DeleteSegmentRefOrGrp.html">
     <div class="modal-header">

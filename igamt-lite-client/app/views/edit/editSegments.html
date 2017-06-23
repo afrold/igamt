@@ -1450,28 +1450,42 @@
     </div>
 </script>
 <script type="text/ng-template" id="ConfirmSegmentDeleteCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Delete Confirmation</h3>
-    </div>
-    <div class="modal-body">
-        <p>Are you sure you want to delete Segment {{getSegmentLabel(segToDelete)}} ? </p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-    </div>
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Delete Confirmation</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+        <p>Are you sure you want to delete Segment <display-label of="segToDelete"></display-label></p>
+              </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button  class="md-primary md-raised" md-autofocus ng-click="delete()">delete
+        </md-button>
+    </md-dialog-actions>
+    </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="SegmentReferencesCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Segment References Found
-            <button class="btn btn-raised btn-primary pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
-            </button>
-        </h3>
-    </div>
-    <div class="modal-body">
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Segment cross Reference Found</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="ok()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
         <p>We cannot delete this segment because it is being referenced by the messages below:</p>
         <div class="igl-table">
             <table class="table table-striped table-bordered">
@@ -1501,6 +1515,10 @@
             </table>
         </div>
     </div>
+            </div>
+            </md-dialog-content>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="AddFieldModal.html">
     <md-dialog aria-label="create group">
