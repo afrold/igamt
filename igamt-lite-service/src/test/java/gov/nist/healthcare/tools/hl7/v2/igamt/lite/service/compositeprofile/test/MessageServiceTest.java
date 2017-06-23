@@ -186,4 +186,11 @@ public class MessageServiceTest implements MessageService {
     return null;
   }
 
+  @Override
+  public List<Message> findAllByMessageTypeAndEventAndVersionAndScope(String messageType,
+      String event, String hl7Version, String scope) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }
