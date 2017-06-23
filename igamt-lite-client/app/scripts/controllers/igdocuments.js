@@ -899,19 +899,19 @@ angular.module('igl')
         }, function() {});
     };
     $rootScope.deleteProfileComponent = function(pcLibId, profileComponent) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'DeleteProfileComponentCtrl.html',
             controller: 'DeleteProfileComponentCtrl',
-            resolve: {
-                profileComponentToDelete: function() {
-                    return profileComponent;
-                },
-                pcLibId: function() {
-                    return pcLibId;
+            scope: $scope,        // use parent scope in template
+            preserveScope: true,
+            locals: {
+                profileComponentToDelete:  profileComponent,
+
+                pcLibId: pcLibId
                 }
-            }
+
         });
-        modalInstance.result.then(function(profileComponent) {
+        modalInstance.then(function(profileComponent) {
 
         }, function() {});
     };
@@ -966,17 +966,18 @@ angular.module('igl')
     };
 
     $rootScope.cantDeletePc = function(profileComponent) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'CantDeletePcCtrl.html',
             controller: 'CantDeletePcCtrl',
-            resolve: {
-                profileComponent: function() {
-                    return profileComponent;
-                },
+            scope: $scope,
+            preserveScope: true,
+            locals: {
+                profileComponent: profileComponent
+                }
 
-            }
+
         });
-        modalInstance.result.then(function(profileComponent) {
+        modalInstance.then(function(profileComponent) {
 
         }, function() {});
     };
@@ -2143,7 +2144,7 @@ angular.module('igl').controller('ViewIGChangesCtrl', function($scope, $modalIns
     };
 });
 
-angular.module('igl').controller('DeleteProfileComponentCtrl', function($scope, $modalInstance, pcLibId, profileComponentToDelete, $rootScope, $http, PcService) {
+angular.module('igl').controller('DeleteProfileComponentCtrl', function($scope, $mdDialog, pcLibId, profileComponentToDelete, $rootScope, $http, PcService) {
     $scope.profileComponentToDelete = profileComponentToDelete;
     $scope.loading = false;
     $scope.delete = function() {
@@ -2160,14 +2161,14 @@ angular.module('igl').controller('DeleteProfileComponentCtrl', function($scope, 
                 $rootScope.profileComponent = null;
                 $rootScope.subview = null;
             }
-            $modalInstance.close();
+            $mdDialog.hide();
 
         });
 
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 });
 
@@ -2239,7 +2240,7 @@ angular.module('igl').controller('DeleteCompositeProfileCtrl', function($scope, 
     };
 });
 
-angular.module('igl').controller('CantDeletePcCtrl', function($scope, $modalInstance, ngTreetableParams, profileComponent, $rootScope, $http, PcService) {
+angular.module('igl').controller('CantDeletePcCtrl', function($scope, $mdDialog, ngTreetableParams, profileComponent, $rootScope, $http, PcService) {
     $scope.profileComponent = profileComponent;
     $scope.loading = false;
     var getAppliedProfileComponentsById = function(cp) {
@@ -2278,7 +2279,7 @@ angular.module('igl').controller('CantDeletePcCtrl', function($scope, $modalInst
     });
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 });
 

@@ -2647,7 +2647,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $mdDialog.hide($scope.selectedSegment);
     };
 });
-angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $modalInstance, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
+angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $mdDialog, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
 
@@ -2658,24 +2658,24 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $m
         } else {
             CloneDeleteSvc.deleteSegmentLink($scope.segToDelete);
         }
-        $modalInstance.close($scope.segToDelete);
+        $mdDialog.hide($scope.segToDelete);
         $scope.loading = false;
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
-angular.module('igl').controller('SegmentReferencesCtrl', function($scope, $modalInstance, segToDelete) {
+angular.module('igl').controller('SegmentReferencesCtrl', function($scope, $mdDialog, segToDelete) {
 
     $scope.segToDelete = segToDelete;
 
     $scope.ok = function() {
-        $modalInstance.close($scope.segToDelete);
+        $mdDialog.hide($scope.segToDelete);
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
 angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, datatypes, segment, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService, blockUI) {
@@ -2904,82 +2904,83 @@ angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInsta
 
 
 });
-angular.module('igl').controller('EditVSCtrl', function($scope, $modalInstance, valueSets, field, $rootScope, SegmentService, blockUI) {
-    $scope.vsChanged = false;
-    $scope.field = field;
-    if (field.attributes) {
-        if (field.attributes.tables && field.attributes.tables.length > 0) {
-            $scope.vs = angular.copy(field.attributes.tables);
-            $scope.tableList = angular.copy(field.attributes.tables);
-        } else {
-            $scope.vs = [];
-            $scope.tableList = [];
-        }
-
-    } else {
-        $scope.vs = angular.copy(field.tables);
-        $scope.tableList = angular.copy(field.tables);
-    }
-
-    $scope.loadVS = function($query) {
-
-
-        return valueSets.filter(function(table) {
-            return table.bindingIdentifier.toLowerCase().indexOf($query.toLowerCase()) != -1;
-        });
-
-    };
-    $scope.tagAdded = function(tag) {
-        $scope.vsChanged = true;
-        $scope.tableList.push({
-            id: tag.id,
-            bindingIdentifier: tag.bindingIdentifier,
-            bindingLocation: null,
-            bindingStrength: null
-        });
-
-
-        //$scope.log.push('Added: ' + tag.text);
-    };
-
-    $scope.tagRemoved = function(tag) {
-        $scope.vsChanged = true;
-
-        for (var i = 0; i < $scope.tableList.length; i++) {
-            if ($scope.tableList[i].id === tag.id) {
-                $scope.tableList.splice(i, 1);
-            }
-        };
-
-
-    };
-
-    $scope.addVS = function() {
-        blockUI.start();
-
-        $scope.vsChanged = false;
-        if (field.attributes) {
-            field.attributes.tables = $scope.tableList;
-        } else {
-            field.tables = $scope.tableList;
-        }
-
-
-
-        blockUI.stop();
-
-        $modalInstance.close();
-
-
-    };
-
-
-    $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
-    };
-
-
-});
+// angular.module('igl').controller('EditVSCtrl', function($scope, $modalInstance, valueSets, field, $rootScope, SegmentService, blockUI) {
+//     $scope.vsChanged = false;
+//     $scope.field = field;
+//     if (field.attributes) {
+//         console.log("here");
+//         if (field.attributes.tables && field.attributes.tables.length > 0) {
+//             $scope.vs = angular.copy(field.attributes.tables);
+//             $scope.tableList = angular.copy(field.attributes.tables);
+//         } else {
+//             $scope.vs = [];
+//             $scope.tableList = [];
+//         }
+//
+//     } else {
+//         $scope.vs = angular.copy(field.tables);
+//         $scope.tableList = angular.copy(field.tables);
+//     }
+//
+//     $scope.loadVS = function($query) {
+//
+//
+//         return valueSets.filter(function(table) {
+//             return table.bindingIdentifier.toLowerCase().indexOf($query.toLowerCase()) != -1;
+//         });
+//
+//     };
+//     $scope.tagAdded = function(tag) {
+//         $scope.vsChanged = true;
+//         $scope.tableList.push({
+//             id: tag.id,
+//             bindingIdentifier: tag.bindingIdentifier,
+//             bindingLocation: null,
+//             bindingStrength: null
+//         });
+//
+//
+//         //$scope.log.push('Added: ' + tag.text);
+//     };
+//
+//     $scope.tagRemoved = function(tag) {
+//         $scope.vsChanged = true;
+//
+//         for (var i = 0; i < $scope.tableList.length; i++) {
+//             if ($scope.tableList[i].id === tag.id) {
+//                 $scope.tableList.splice(i, 1);
+//             }
+//         };
+//
+//
+//     };
+//
+//     $scope.addVS = function() {
+//         blockUI.start();
+//
+//         $scope.vsChanged = false;
+//         if (field.attributes) {
+//             field.attributes.tables = $scope.tableList;
+//         } else {
+//             field.tables = $scope.tableList;
+//         }
+//
+//
+//
+//         blockUI.stop();
+//
+//         $modalInstance.close();
+//
+//
+//     };
+//
+//
+//     $scope.cancel = function() {
+//         $modalInstance.dismiss('cancel');
+//     };
+//
+//
+// });
 angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, datatypes, field, $rootScope, SegmentService, blockUI) {
 
     $scope.dtChanged = false;

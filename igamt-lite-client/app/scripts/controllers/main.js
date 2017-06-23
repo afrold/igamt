@@ -1206,7 +1206,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
                     DatatypeLibrarySvc.addChildrenFromDatatypes($rootScope.datatypeLibrary.id, $rootScope.selectedDatatypes).then(function(result) {
                         angular.forEach(result, function(dtToAdd) {
-                            $rootScope.datatypeLibrary.children.push({ name: dtToAdd, ext: dtToAdd.ext, id: dtToAdd.id });
+                            console.log(dtToAdd);
+                            $rootScope.datatypeLibrary.children.push({ name: dtToAdd.name, ext: dtToAdd.ext, id: dtToAdd.id });
                             if (dtToAdd.parentVersion) {
                                 var objectMap = dtToAdd.parentVersion + "VV" + dtToAdd.hl7Version;
                                 $rootScope.usingVersionMap[objectMap] = dtToAdd;
@@ -1936,6 +1937,20 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     });
                 }
             }
+            else if (angular.equals(obj.type, 'profilecomponent')) {
+                if (obj.children) {
+                    angular.forEach(obj.children, function(subPc) {
+                      if(subPc.attributes.datatype&&subPc.attributes.datatype.id&&subPc.attributes.datatype&&subPc.attributes.datatype.id===datatype.id){
+                          var found = angular.copy(obj);
+                          found.path = path+'.'+subPc.path;
+                          found.target = angular.copy(target);
+                          found.datatypeLink = angular.copy(obj.datatype);
+                          $rootScope.referencesForMenu.push(found);
+                          console.log($rootScope.referencesForMenu);
+                      }
+                    });
+                }
+            }
         }
     };
 
@@ -2107,6 +2122,24 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                 if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                     angular.forEach(obj.components, function(component) {
                         $rootScope.findTableRefsForMenu(table, component, path + "." + component.position, target);
+                    });
+                }
+            } else if (angular.equals(obj.type, 'profilecomponent')) {
+                if (obj.children) {
+                    angular.forEach(obj.children, function(subPc) {
+                        if(subPc.valueSetBindings){
+                            angular.forEach(subPc.valueSetBindings, function(b){
+                                if(b.tableId===table.id){
+                                    var found = angular.copy(obj);
+                                    found.path = path+'.'+subPc.path;
+                                    found.target = angular.copy(target);
+                                    found.datatypeLink = angular.copy(obj.datatype);
+                                    $rootScope.referencesForMenu.push(found);
+                                    console.log($rootScope.referencesForMenu);
+                                }
+                            });
+
+                        }
                     });
                 }
             }
