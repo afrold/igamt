@@ -469,7 +469,7 @@
                                                                                 <md-select placeholder="Select DT Flavor"
                                                                                            ng-model="segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].datatypeId"
                                                                                            ng-change="setDirty()">
-                                                                                    <md-option ng-repeat="link in igdocument.profile.datatypeLibrary.children | filter: {name: segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value}" ng-value="link.id">
+                                                                                    <md-option ng-repeat="link in igdocument.profile.datatypeLibrary.children | filter: {name: segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value}  : true" ng-value="link.id">
                                                                                         {{getDatatypeLabel(datatypesMap[link.id])}}
                                                                                     </md-option>
                                                                                 </md-select>
