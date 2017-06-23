@@ -5,15 +5,13 @@
             <div style="margin:5px">
                 <div class="panel">
                     <div class="panel-heading" layout="row" style="padding-right: 40%;padding-left: 40%">
-                        <label flex="40" style="margin: auto;color: black;">Delta Settings</label>
-
                                     <md-select  class="select-auto" style="margin: auto !important;" flex="60" ng-model="toCmp"  ng-change="setCmpType(toCmp)" style="width: 100%;margin: auto" placeholder="Select Delta Type">
                                         <md-option ng-repeat="cmpType in toCompare" value="{{cmpType.name}}">{{cmpType.alias}}</md-option>
                                     </md-select>
                     </div>
-                    <div class="panel-body">
-                        <div class="col-md-8">
-                            <div class="row" align="right" style="margin-bottom:20px">
+                    <div class="panel-body" ng-show="cmpSeg == true || cmpVS == true || cmpDT == true || cmpMsg == true">
+                        <div class="col-md-8" >
+                            <div class="row" align="right" style="margin-bottom:0px">
                                 <div class="col-md-1">
                                     <md-button ng-click="clearAll()" class="btn btn-raised btn-primary btn-xs"><i class="fa fa-times"></i> Clear All</md-button>
                                 </div>
@@ -27,7 +25,7 @@
                                     <md-button ng-click="clearIG()" class="btn btn-raised btn-default btn-xs"><i class="fa fa-times"></i> Clear IG Document</md-button>
                                 </div>
                             </div>
-                            <div class="row" align="center" style="margin-bottom:20px">
+                            <div class="row" align="center" style="margin-bottom:0px">
                                 <div class="col-md-1"><span class="badge badge-delta badge-delta-1">1</span></div>
                                 <div class="col-md-3">
                                     <div class="input-group">
@@ -81,22 +79,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" style="padding-top:5px;padding-left:63%;margin-top: 20px;margin-bottom: 20px;">
+                            <div class="row" style="padding-top:5px;padding-left:63%;margin-top: 0px;margin-bottom: 0px;">
                                 <div class="col-md-4" align="right" ng-show="cmpMsg">
-                                    <md-button ng-click="cmpMessage(msg1,msg2)" ng-disabled="!msg1 || !msg2||!msgChanged" class="btn btn-raised btn-info btn-md">
-                                        <i class="fa fa-check"></i> Message Delta</md-button>
+                                    <md-button ng-click="cmpMessage(msg1,msg2)" ng-disabled="!msg1 || !msg2||!msgChanged" class="md-raised md-primary">
+                                        <i class="fa fa-chevron-circle-right"></i> Compare</md-button>
                                 </div>
                                 <div class="col-md-4" align="right" ng-show="cmpSeg">
-                                    <md-button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || !segment2||!segChanged" class="btn btn-raised btn-info btn-md">
-                                        <i class="fa fa-check"></i> Segment Delta</md-button>
+                                    <md-button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || !segment2||!segChanged" class="md-raised md-primary">
+                                        <i class="fa fa-chevron-circle-right"></i> Compare</md-button>
                                 </div>
                                 <div class="col-md-4" align="right" ng-show="cmpDT">
-                                    <md-button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="btn btn-raised btn-info btn-md">
-                                        <i class="fa fa-check"></i> Datatype Delta</md-button>
+                                    <md-button ng-click="cmpDatatype(datatype1,datatype2)" ng-disabled="!datatype1 || !datatype2||!dtChanged" class="md-raised md-primary">
+                                        <i class="fa fa-chevron-circle-right"></i> Compare</md-button>
                                 </div>
                                 <div class="col-md-4" align="right" ng-show="cmpVS">
-                                    <md-button ng-click="cmpValueSet(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="btn btn-raised btn-info btn-md">
-                                        <i class="fa fa-check"></i> Value Set Delta</md-button>
+                                    <md-button ng-click="cmpValueSet(table1,table2)" ng-disabled="!table1 || !table2||!vsChanged" class="md-raised md-primary">
+                                        <i class="fa fa-chevron-circle-right"></i> Compare</md-button>
                                 </div>
                             </div>
                             <!--<div class="row" style="padding-top:20px">
@@ -109,12 +107,12 @@
                             </div>-->
                         </div>
                         <div class="col-md-4">
-                            <div class="row" style="margin-bottom:20px">
+                            <div class="row" style="margin-bottom:0px">
                                 <div class="col-md-1" align="right">
                                     <md-button ng-click="clearMessage()" class="btn btn-raised btn-default btn-xs"><i class="fa fa-times"></i> Clear {{toCmp}}</md-button>
                                 </div>
                             </div>
-                            <div class="row" align="center" style="margin-bottom:20px">
+                            <div class="row" align="center" style="margin-bottom:0px">
                                 <div class="col-md-9" ng-show="cmpMsg">
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Message</span>
@@ -148,7 +146,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" align="center" style="margin-bottom:20px">
+                            <div class="row" align="center" style="margin-bottom:0px">
                                 <div class=" col-md-9" ng-show="cmpMsg">
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Message</span>
