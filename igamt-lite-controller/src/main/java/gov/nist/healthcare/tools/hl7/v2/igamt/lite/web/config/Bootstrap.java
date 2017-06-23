@@ -303,7 +303,6 @@ public class Bootstrap implements InitializingBean {
           c.setCodeSystem("LN");
         }
       }
-      
       if(isChanged) tableService.save(t);
     }
     
