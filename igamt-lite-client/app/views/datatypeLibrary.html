@@ -160,14 +160,14 @@ if (self === top) {
                 <md-tabs md-dynamic-height md-border-bottom ng-init="getDataTypeLibraryByScope('USER');">
                 <md-tab md-active="tabs[0].active" md-on-select="selectList()">
                     <md-tab-label>
-                        <i class="fa fa-file-text-o fa-fw"></i> Data Type Library List
+                        <i class="fa fa-file-text-o fa-fw"></i>Library List
                     </md-tab-label>
                     <md-tab-body>
                     <div>
                         <md-tabs md-dynamic-height md-border-bottom>
                             <md-tab md-active="ttype==='USER'" md-on-select="getDataTypeLibraryByScope('USER')" ng-init="getDataTypeLibraryByScope('USER');">
                                 <md-tab-label>
-                                    <i class="fa fa-file-text-o fa-fw"></i> User Data Type Libraries
+                                    <i class="fa fa-file-text-o fa-fw"></i> My Libraries
                                 </md-tab-label>
                                 <md-tab-body>
 
@@ -181,19 +181,17 @@ if (self === top) {
                                             <md-menu class="pull-right">
                                                 <button type="button" class="white-color"
                                                      ng-click="createGeneralDatatypeLibrary()" >
-                                                    <i class="fa fa-plus"></i> Create Data Type Library
+                                                    <i class="fa fa-plus"></i> Create Library
                                                 </button>
                                             </md-menu>
                                         </md-menu-bar>
 
                                     </div>
                                     <div layout="row" class="container">
-                                        <span class="material-icons" style="font-size: 42px; color: rgba(234, 234, 234, 0.99);">search</span>
+                                        <span class="material-icons" style="font-size: 42px;">search</span>
                                         <md-input-container flex style="margin: 0px !important" layout="row">
 
-                                            <input type="search"  flex ng-model="search.metaData.name"  style="border-bottom-color: #d2d2d2;
-                            color: black;
-                            background-color: rgba(234, 234, 234, 0.99);"/>
+                                            <input type="search"  flex ng-model="search.metaData.name" />
 
                                         </md-input-container>
                                     </div>
@@ -214,22 +212,29 @@ if (self === top) {
 
                                                     <div flex class="md-list-item-text" layout="column" style="margin-left: 5px; max-width: 100%">
 
-                                                        <span class="md-headline ig-title">{{row.metaData.name}}
+                                                        <span class="md-headline ig-title"><a class="point" ng-click="navToLibrary(row)">{{row.metaData.name}}</a>
                                                         </span>
+
                                                         <div class="md-subhead" flex layout="row" layout-align="start start">
                                                             <div flex="40" class="ig-list-info">
                                                                 <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                Created  {{row.dateUpdated | date:dateFormat}}
+                                                                Created {{row.dateUpdated | date:dateFormat}}
 
                                                             </div>
 
 
                                                             <div flex="60" layout="row" layout-align="end end" style="margin-top:-14px;">
+                                                                <md-button ng-click="editLibrary(row,false);"  title="Edit Library " class="md-primary md-raised md-small" type="button">
+                                                                    <i class="fa fa-pencil fa-fw"></i>
+                                                                </md-button>
 
-                                                                <span ng-click="editLibrary(row,false);" style="color:blue" title="Edit Library " ><i class="fa fa-pencil fa-fw igList-icons"></i></span>
+                                                                <md-button ng-click="editLibrary(row,true);"    title="Read Library " class="md-raised md-small" type="button">
+                                                                    <i class="fa fa-eye fa-fw"></i>
+                                                                </md-button>
 
-                                                                <span  ng-click="editLibrary(row,true);" style="color:black" title="Read Library "><i class="fa fa-eye fa-fw igList-icons"></i></span>
-                                                                <span  title="Delete Library" style="color:red" ng-click="deleteLibrary(row)" ng-if="row.accountId.toString()===accountId"><i class="fa fa-trash-o fa-fw igList-icons"></i></span>
+                                                                <md-button  title="Delete Library"  ng-click="deleteLibrary(row)" ng-if="row.accountId.toString()===accountId"  class="md-warn md-raised md-small" type="button">
+                                                                    <i class="fa fa-trash-o fa-fw"></i>
+                                                                </md-button>
 
 
                                                             </div>
@@ -250,7 +255,7 @@ if (self === top) {
                             </md-tab>
                             <md-tab md-active="ttype==='MASTER'" md-on-select="getDataTypeLibraryByScope('MASTER');">
                                 <md-tab-label>
-                                    Master Data Type Libraries
+                                    Master Libraries
                                 </md-tab-label>
                                 <md-tab-body>
 
@@ -264,19 +269,17 @@ if (self === top) {
                                             <md-menu class="pull-right">
                                                 <button type="button" class="white-color"
                                                         ng-click="createGeneralDatatypeLibrary()" >
-                                                    <i class="fa fa-plus"></i> Create Data Type Library
+                                                    <i class="fa fa-plus"></i> Create Library
                                                 </button>
                                             </md-menu>
                                         </md-menu-bar>
 
                                     </div>
                                     <div layout="row" class="container">
-                                        <span class="material-icons" style="font-size: 42px; color: rgba(234, 234, 234, 0.99);">search</span>
+                                        <span class="material-icons" style="font-size: 42px;">search</span>
                                         <md-input-container flex style="margin: 0px !important" layout="row">
 
-                                            <input type="search"  flex ng-model="search.metaData.name"  style="border-bottom-color: #d2d2d2;
-                            color: black;
-                            background-color: rgba(234, 234, 234, 0.99);"/>
+                                            <input type="search"  flex ng-model="search.metaData.name"  />
 
                                         </md-input-container>
                                     </div>
@@ -308,19 +311,25 @@ if (self === top) {
                                                         <div class="md-subhead" flex layout="row" layout-align="start start">
                                                             <div flex="40" class="ig-list-info">
                                                                 <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                                Created  {{row.dateUpdated | date:dateFormat}}
-                                                                <span>,Steward: {{row.metaData.owner}}</span>
+                                                                Created on {{row.dateUpdated | date:dateFormat}}
+                                                                <span> by {{row.metaData.owner}}</span>
                                                             </div>
 
 
                                                             <div flex="60" layout="row" layout-align="end end" style="margin-top:-14px;">
 
-                                                                <span ng-click="editLibrary(row,false)" style="color:blue" title="Edit Library " ><i class="fa fa-pencil fa-fw igList-icons"></i></span>
 
-                                                                <span  ng-click="editLibrary(row,true)" style="color:black" title="Read Library "><i class="fa fa-eye fa-fw igList-icons"></i></span>
+                                                                <md-button ng-click="editLibrary(row,false);"  title="Edit Library " class="md-primary md-raised md-small" type="button">
+                                                                    <i class="fa fa-pencil fa-fw"></i>
+                                                                </md-button>
 
-                                                                <span  title="Delete Library" style="color:red" ng-click="deleteLibrary(row)" ng-if="row.accountId.toString()===accountId"><i class="fa fa-trash-o fa-fw igList-icons"></i></span>
+                                                                <md-button ng-click="editLibrary(row,true);"    title="Read Library " class="md-raised md-small" type="button">
+                                                                    <i class="fa fa-eye fa-fw"></i>
+                                                                </md-button>
 
+                                                                <md-button  title="Delete Library"  ng-click="deleteLibrary(row)" ng-if="row.accountId.toString()===accountId"  class="md-warn md-raised md-small" type="button">
+                                                                    <i class="fa fa-trash-o fa-fw"></i>
+                                                                </md-button>
 
                                                             </div>
                                                         </div>
@@ -347,8 +356,8 @@ if (self === top) {
                 </md-tab>
                 <md-tab md-active="tabs[1].active" ng-if="datatypeLibrary" md-on-select="make_active(1)">
                     <md-tab-label>
-                        <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Data Type Library</span>
-                        <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Data Type Library</span>
+                        <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Library</span>
+                        <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Library</span>
                     </md-tab-label>
                     <md-tab-body>
 
@@ -547,7 +556,7 @@ if (self === top) {
     <div class="row" style="margin-left:0px; margin-right: 20px" ng-init="initForm()">
 
         <div class="page-header" style="margin-bottom: 20px">
-            <span class="header4">Data Type Library Metadata</span>
+            <span class="header4"> Library Metadata</span>
             <span class="pull-right">
 
           <button type="button" class="btn btn-raised btn-sm btn-success"
@@ -1190,7 +1199,7 @@ if (self === top) {
         </h3>
     </div>
     <div class="modal-body">
-        <p>Are you sure you want to delete the Data Type Library? This operation is irreversible</p>
+        <p>Are you sure you want to delete the  Library? This operation is irreversible</p>
     </div>
     </div>
     <div class="modal-footer">

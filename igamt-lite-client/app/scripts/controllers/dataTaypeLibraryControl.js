@@ -421,6 +421,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
 
 
+
+
         $rootScope.processEditLibrary=function(datatypeLibraryDocument, readOnly){
             $rootScope.Activate(datatypeLibraryDocument.id);
             blockUI.start();
@@ -2426,6 +2428,15 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
                 blockUI.stop();
+            }
+        };
+
+
+        $scope.navToLibrary = function(library) {
+            if(library.accountId.toString()===$scope.accountId){
+                $scope.editLibrary(library,false);
+            }else{
+                $scope.editLibrary(library,true);
             }
         };
 
