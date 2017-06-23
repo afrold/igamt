@@ -2306,16 +2306,15 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         $scope.confirmPublish = function(datatypeCopy) {
-            var modalInstance = $modal.open({
-                templateUrl: 'ConfirmDatatypePublishCtl.html',
-                controller: 'ConfirmDatatypePublishCtl',
-                resolve: {
-                    datatypeToPublish: function() {
-                        return datatypeCopy;
+            var modalInstance = $mdDialog.show({
+                templateUrl: 'ConfirmDatatypePublishCtlMd.html',
+                controller: 'ConfirmDatatypePublishCtlMd',
+                locals: {
+                    datatypeToPublish: datatypeCopy
                     }
-                }
+
             });
-            modalInstance.result.then(function(datatypetoPublish) {
+            modalInstance.then(function(datatypetoPublish) {
             	console.log("Saving");
             	console.log($rootScope.datatype);
             	console.log("IN LIBRARY");

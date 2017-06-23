@@ -604,16 +604,16 @@ angular.module('igl')
         };
 
         $scope.confirmPublish = function(datatypeCopy) {
-            var modalInstance = $modal.open({
-                templateUrl: 'ConfirmDatatypePublishCtl.html',
-                controller: 'ConfirmDatatypePublishCtl',
-                resolve: {
-                    datatypeToPublish: function() {
-                        return datatypeCopy;
-                    }
+            console.log("here")
+            var modalInstance = $mdDialog.show({
+                templateUrl: 'ConfirmDatatypePublishCtlMd.html',
+                controller: 'ConfirmDatatypePublishCtlMd',
+                locals: {
+                    datatypeToPublish: datatypeCopy
+
                 }
             });
-            modalInstance.result.then(function(datatypetoPublish) {
+            modalInstance.then(function(datatypetoPublish) {
                 var ext = $rootScope.datatype.ext;
 
                 DatatypeService.publish($rootScope.datatype).then(function(result) {
@@ -3100,19 +3100,19 @@ angular.module('igl').controller('ShareDatatypeCtrl', function($scope, $modalIns
 
 });
 
-angular.module('igl').controller('ConfirmDatatypePublishCtl', function($scope, $rootScope, $http, $modalInstance, datatypeToPublish) {
+angular.module('igl').controller('ConfirmDatatypePublishCtlMd', function($scope, $rootScope, $http, $mdDialog, datatypeToPublish) {
 
     $scope.datatypeToPublish = datatypeToPublish;
     $scope.loading = false;
 
-    $scope.delete = function() {
-        $modalInstance.close($scope.datatypeToPublish);
+    $scope.confirm = function() {
+        $mdDialog.hide($scope.datatypeToPublish);
     };
 
     $scope.cancel = function() {
         $scope.datatypeToPublish.status = 'UNPUBLISHED';
         $rootScope.clearChanges();
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
 
