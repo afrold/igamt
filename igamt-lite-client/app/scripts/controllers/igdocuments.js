@@ -487,9 +487,18 @@ angular.module('igl')
         }
     }
 
+
+    $scope.navToIg = function(igdocument) {
+        if($scope.igDocumentConfig.selectedType === 'USER'){
+            $scope.edit(igdocument);
+        }else{
+            $scope.view(igdocument);
+        }
+    };
+
+
     $scope.edit = function(igdocument) {
-        console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
-        $scope.viewSettings.setTableReadonly(false);
+         $scope.viewSettings.setTableReadonly(false);
         $scope.tocView = 'views/toc.html';
         $scope.show(igdocument);
     };
