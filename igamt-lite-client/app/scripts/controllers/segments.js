@@ -1499,7 +1499,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         return result;
     };
 
-    $scope.deleteBinding = function(binding){
+    $scope.deleteValueSetBinding = function(binding){
         var index = $rootScope.segment.valueSetBindings.indexOf(binding);
         if (index >= 0) {
             $rootScope.segment.valueSetBindings.splice(index, 1);
@@ -1574,7 +1574,6 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
         modalInstance.result.then(function(currentMappingStructure) {
             $rootScope.segment.dynamicMappingDefinition.mappingStructure = currentMappingStructure;
-            console.log($rootScope.segment.dynamicMappingDefinition);
             $scope.setDirty();
         });
     };
@@ -3381,7 +3380,7 @@ angular.module('igl').controller('AddBindingForSegment', function($scope, $modal
 angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $mdDialog, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     $scope.currentNode = currentNode;
-    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location == currentNode.path; }));
+    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location === currentNode.path; }));
     $scope.listOfBindingLocations = null;
     $scope.isSingleValueSetAllowed = false;
     $scope.valueSetSelectedForSingleCode = null;
@@ -3492,7 +3491,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $md
 
     $scope.saveMapping = function() {
         blockUI.start();
-        var otherValueSetBindings = angular.copy(_.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location != currentNode.path; }));
+        var otherValueSetBindings = angular.copy(_.filter($rootScope.segment.valueSetBindings, function(binding){ return binding.location !== currentNode.path; }));
         $rootScope.segment.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 

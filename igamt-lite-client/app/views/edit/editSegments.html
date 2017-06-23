@@ -1001,12 +1001,12 @@
             <div ng-show="isAvailableForValueSet(node)">
                 <div ng-repeat="binding in findingBindings(node)">
                     <span class="badge label-white">
-                        <span ng-class="{'label-field-icon' : binding.bindingFrom == 'segment', 'label-component-icon' : binding.bindingFrom == 'field', 'label-sub-component-icon' : binding.bindingFrom == 'component'}">
+                        <span ng-class="{'label-field-icon' : binding.bindingFrom === 'segment', 'label-component-icon' : binding.bindingFrom === 'field', 'label-sub-component-icon' : binding.bindingFrom === 'component'}">
                             <i class="fa fa-circle fa-fw"/>
                         </span>
                         <span ng-show="binding.type == 'valueset'" title="For {{getSegmentLabel(segment)}}" ng-click="redirectVS(binding)">{{getTableLabel(binding)}}</span>
                         <span ng-show="binding.type == 'singlecode'" title="For {{getSegmentLabel(segment)}}" ng-click="redirectVS(binding)">{{binding.code.value}}<i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]</span>
-                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom == 'segment'" ng-click="deleteBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                        <span title="Delete ValueSet Binding" ng-show="binding.bindingFrom === 'segment'" ng-click="deleteValueSetBinding(binding)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                     </span>
                 </div>
                 <a ng-click="editModalBindingForSeg(node)" class="point">
