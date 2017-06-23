@@ -1,7 +1,7 @@
 angular.module('igl').factory(
     'CloneDeleteSvc',
 
-    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, SectionSvc, FilteringSvc,VersionAndUseService) {
+    function ($rootScope, $modal, ProfileAccessSvc, $cookies, IgDocumentService, MessageService, SegmentLibrarySvc, SegmentService, DatatypeService, DatatypeLibrarySvc, TableLibrarySvc, TableService, MastermapSvc, SectionSvc, FilteringSvc,VersionAndUseService,$mdDialog) {
 
         var svc = this;
         svc.copySection = function (section) {
@@ -632,23 +632,24 @@ angular.module('igl').factory(
         }
 
         function abortValueSetDelete(table) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'ValueSetReferencesCtrl.html',
                 controller: 'ValueSetReferencesCtrl',
-                resolve: {
-                    tableToDelete: function () {
-                        return table;
-                    }
+                scope:$rootScope,
+                preserveScope:true,
+                locals: {
+                    tableToDelete: table
+
                 }
             });
-            modalInstance.result.then(function (table) {
+            modalInstance.then(function (table) {
                 // $rootScope.tableToDelete = table;
             }, function () {
             });
         };
 
         function confirmValueSetDelete(table) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'ConfirmValueSetDeleteCtrl.html',
                 controller: 'ConfirmValueSetDeleteCtrl',
                 resolve: {
@@ -657,7 +658,7 @@ angular.module('igl').factory(
                     }
                 }
             });
-            modalInstance.result.then(function (table) {
+            modalInstance.then(function (table) {
 //                tableToDelete = table;
                 if (table.id === $rootScope.activeModel) {
                     $rootScope.displayNullView();
@@ -673,16 +674,17 @@ angular.module('igl').factory(
         };
 
         function confirmMessageDelete(message) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'ConfirmMessageDeleteCtrl.html',
                 controller: 'ConfirmMessageDeleteCtrl',
-                resolve: {
-                    messageToDelete: function () {
-                        return message;
+                scope:$rootScope,
+                preserveScope:true,
+                locals: {
+                    messageToDelete: message
                     }
-                }
+
             });
-            modalInstance.result.then(function (message) {
+            modalInstance.then(function (message) {
             }, function () {
             });
         };
@@ -732,7 +734,7 @@ angular.module('igl').factory(
                 index = $rootScope.tableLibrary.children.indexOf(tmp);
                 $rootScope.tableLibrary.children.splice(index, 1);
                 $rootScope.tablesMap[table.id] = null;
-                $rootScope.references = [];
+                $rootScope.referencesForMenu = [];
                 if ($rootScope.table === table) {
                     $rootScope.table = null;
                 }
@@ -832,7 +834,7 @@ angular.module('igl').factory(
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
                 //TODO MasterMap need to delete datatype
-//                MastermapSvc.deleteDatatype($scope.segToDelete.id);
+//                MastermapSvc.deleteDatatype($rootScope.segToDelete.id);
                 //$rootScope.$broadcast('event:SetToC');
             }, function (error) {
                 $rootScope.msg().text = error.data.text;
@@ -843,16 +845,17 @@ angular.module('igl').factory(
 
         function abortDatatypeDelete(datatype) {
             var dtToDelete;
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'DatatypeReferencesCtrl.html',
                 controller: 'DatatypeReferencesCtrl',
-                resolve: {
-                    dtToDelete: function () {
-                        return datatype;
+                scope:$rootScope,
+                preserveScope:true,
+                locals: {
+                    dtToDelete: datatype
                     }
-                }
+
             });
-            modalInstance.result.then(function (datatype) {
+            modalInstance.then(function (datatype) {
                 dtToDelete = datatype;
             }, function () {
             });
@@ -860,16 +863,15 @@ angular.module('igl').factory(
 
         function confirmDatatypeDelete(datatype) {
             var dtToDelete;
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
                 controller: 'ConfirmDatatypeDeleteCtrl',
-                resolve: {
-                    dtToDelete: function () {
-                        return datatype;
+                locals: {
+                    dtToDelete:datatype,
                     }
-                }
+
             });
-            modalInstance.result.then(function (datatype) {
+            modalInstance.then(function (datatype) {
                 if (datatype.id === $rootScope.activeModel) {
                     $rootScope.displayNullView();
                 }
@@ -918,16 +920,17 @@ angular.module('igl').factory(
 
         function abortSegmentDelete(segment) {
             var segToDelete;
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'SegmentReferencesCtrl.html',
                 controller: 'SegmentReferencesCtrl',
-                resolve: {
-                    segToDelete: function () {
-                        return segment;
+                scope:$rootScope,
+                preserveScope:true,
+                locals: {
+                    segToDelete: segment
                     }
-                }
+
             });
-            modalInstance.result.then(function (segment) {
+            modalInstance.then(function (segment) {
                 segToDelete = segment;
             }, function () {
             });
@@ -935,16 +938,17 @@ angular.module('igl').factory(
 
         function confirmSegmentDelete(segment) {
             var segToDelete;
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'ConfirmSegmentDeleteCtrl.html',
                 controller: 'ConfirmSegmentDeleteCtrl',
-                resolve: {
-                    segToDelete: function () {
-                        return segment;
-                    }
+                scope:$rootScope,
+                preserveScope:true,
+                locals: {
+                    segToDelete: segment
+
                 }
             });
-            modalInstance.result.then(function (segment) {
+            modalInstance.then(function (segment) {
                 segToDelete = segment;
                 if (segment.id === $rootScope.activeModel) {
                     $rootScope.displayNullView();

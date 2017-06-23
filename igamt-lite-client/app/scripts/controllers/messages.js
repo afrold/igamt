@@ -1384,7 +1384,7 @@ angular.module('igl').controller('MessageViewCtrl', function($scope, $rootScope,
 
 });
 
-angular.module('igl').controller('ConfirmMessageDeleteCtrl', function($scope, $modalInstance, messageToDelete, $rootScope, MessagesSvc, IgDocumentService, CloneDeleteSvc) {
+angular.module('igl').controller('ConfirmMessageDeleteCtrl', function($scope, $mdDialog, messageToDelete, $rootScope, MessagesSvc, IgDocumentService, CloneDeleteSvc) {
     $scope.messageToDelete = messageToDelete;
     $scope.loading = false;
     $scope.delete = function() {
@@ -1418,7 +1418,7 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function($scope, $m
                 $rootScope.msg().show = true;
                 $rootScope.manualHandle = true;
                 $scope.loading = false;
-                $modalInstance.close($scope.messageToDelete);
+                $mdDialog.hide($scope.messageToDelete);
             }, function(error) {
                 $rootScope.msg().text = error.data.text;
                 $rootScope.msg().type = "danger";
@@ -1437,7 +1437,7 @@ angular.module('igl').controller('ConfirmMessageDeleteCtrl', function($scope, $m
 
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 
 

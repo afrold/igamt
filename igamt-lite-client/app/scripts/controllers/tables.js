@@ -448,7 +448,7 @@ angular.module('igl').controller('TableModalCtrl', function($scope) {
     };
 });
 
-angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function($scope, $modalInstance, tableToDelete, $rootScope, TableService, TableLibrarySvc, CloneDeleteSvc) {
+angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function($scope, $mdDialog, tableToDelete, $rootScope, TableService, TableLibrarySvc, CloneDeleteSvc) {
     $scope.tableToDelete = tableToDelete;
     $scope.loading = false;
 
@@ -460,80 +460,12 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function($scope, $
         } else {
             CloneDeleteSvc.deleteTableLink($scope.tableToDelete);
         }
-        $modalInstance.close($scope.tableToDelete);
+        $mdDialog.hide($scope.tableToDelete);
         $scope.loading = false;
     };
 
-
-    //    $scope.delete = function () {
-    //        $scope.loading = true;
-    //
-    //        if (!$scope.isNewTableThenDelete(tableToDelete.id)) {
-    ////        	$rootScope.recordChangeForEdit2('table', "delete", tableToDelete.id,'id', tableToDelete.id);
-    //        }
-    //        // We must delete from two collections.
-    //        var index = $rootScope.tables.indexOf(tableToDelete);
-    //        $rootScope.tables.splice(index, 1);
-    //        var index = $rootScope.tableLibrary.children.indexOf($scope.tableToDelete);
-    //        if (index > -1) $rootScope.tableLibrary.children.splice(index, 1);
-    //        $rootScope.tablesMap[tableToDelete.id] = undefined;
-    //
-    //        $rootScope.generalInfo.type = 'info';
-    //        $rootScope.generalInfo.message = "Table " + $scope.tableToDelete.bindingIdentifier + " deleted successfully";
-    //
-    //        if ($rootScope.table === $scope.tableToDelete) {
-    //            $rootScope.table = null;
-    //        }
-    //
-    //        $rootScope.references = [];
-    //		$rootScope.$broadcast('event:SetToC');
-    //        $modalInstance.close($scope.tableToDelete);
-    //    };
-
-    //    $scope.delete = function () {
-    //        $scope.loading = true;
-    //
-    //        TableService.delete($scope.tableToDelete).then(function (result) {
-    //                TableLibrarySvc.deleteChild($scope.tableToDelete.id).then(function (res) {
-    //                    // We must delete from two collections.
-    //                    var index = $rootScope.tables.indexOf($scope.tableToDelete);
-    //                    $rootScope.tables.splice(index, 1);
-    //                    var tmp = TableLibrarySvc.findOneChiletd($scope.tableToDelete.id, $rootScope.tableLibrary.children);
-    //                    index = $rootScope.tableLibrary.children.indexOf(tmp);
-    //                    $rootScope.tableLibrary.children.splice(index, 1);
-    //                    $rootScope.tablesMap[$scope.tableToDelete.id] = null;
-    //                    $rootScope.references = [];
-    //                    if ($rootScope.table === $scope.tableToDelete) {
-    //                        $rootScope.table = null;
-    //                    }
-    //                    $rootScope.recordDelete("table", "edit", $scope.tableToDelete.id);
-    //                    $rootScope.msg().text = "tableDeleteSuccess";
-    //                    $rootScope.msg().type = "success";
-    //                    $rootScope.msg().show = true;
-    //                    $rootScope.manualHandle = true;
-    //                    $scope.loading = false;
-    //                    $rootScope.$broadcast('event:SetToC');
-    //                    $modalInstance.close($scope.tableToDelete);
-    //                }, function (error) {
-    //                    $rootScope.msg().text = error.data.text;
-    //                    $rootScope.msg().type = "danger";
-    //                    $rootScope.msg().show = true;
-    //                    $rootScope.manualHandle = true;
-    //                    $scope.loading = false;
-    //                });
-    //            }, function (error) {
-    //                $rootScope.msg().text = error.data.text;
-    //                $rootScope.msg().type = "danger";
-    //                $rootScope.msg().show = true;
-    //                $rootScope.manualHandle = true;
-    //                $scope.loading = false;
-    //            }
-    //        );
-    //    };
-
-
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
 
@@ -578,16 +510,16 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function($scope, $
     };
 });
 
-angular.module('igl').controller('ValueSetReferencesCtrl', function($scope, $modalInstance, tableToDelete) {
+angular.module('igl').controller('ValueSetReferencesCtrl', function($scope, $mdDialog, tableToDelete) {
 
     $scope.tableToDelete = tableToDelete;
 
     $scope.ok = function() {
-        $modalInstance.close($scope.tableToDelete);
+        $mdDialog.hide($scope.tableToDelete);
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 });
 

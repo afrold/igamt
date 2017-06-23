@@ -924,64 +924,79 @@
 </script>
 
 <script type="text/ng-template" id="ConfirmValueSetDeleteCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Delete Confirmation</h3>
-    </div>
-    <div class="modal-body">
-        <p>Are you sure you want to delete Value Set {{tableToDelete.bindingIdentifier}} ? </p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-    </div>
+    <md-dialog aria-label="abortDelete">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Value Set Cross Reference found</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                  <p>Are you sure you want to delete Value Set <display-label of="tableToDelete"></display-label> </p>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button  class="md-primary md-raised" md-autofocus ng-click="delete()">delete
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
-
 <script type="text/ng-template" id="ValueSetReferencesCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Value Set References Found
-            <button class="btn btn-raised btn-primary btn-xs pull-right" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
-            </button>
-        </h3>
-    </div>
-    <div class="modal-body">
-        <p>We cannot delete this value set because it is being referenced by elements below:</p>
+    <md-dialog aria-label="abortDelete">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Value Set Cross Reference found</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="ok()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
 
-        <div class="igl-table">
-            <table class="table table-striped table-condensed table-bordered">
-                <thead>
-                    <tr class="tbl-header">
-                        <th>Name</th>
-                        <th>Path</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="ref in referencesForMenu track by $index">
-                        <td>
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <p>We cannot delete this value set because it is being referenced by elements below:</p>
+
+                    <div class="igl-table">
+                        <table class="table table-striped table-condensed table-bordered">
+                            <thead>
+                            <tr class="tbl-header">
+                                <th>Name</th>
+                                <th>Path</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="ref in referencesForMenu">
+                                <td>
                             <span>
-                                              <img style="width:15px; height:15px"
-                                                   ng-src="images/{{ref.type}}.png">
+                                              <!--<img style="width:15px; height:15px"-->
+                                                   <!--ng-src="images/{{ref.type}}.png">-->
                                              <span style="width:60%"
                                                    name="name"
-                                                   ng-bind="::ref.name"></span>
-                            <span ng-bind="::ref.description"></span>
+                                                   ng-bind="ref.name"></span>
+                            <span ng-bind="ref.description"></span>
                             </span>
 
-                        </td>
-                        <td>
-                            <div>{{ref.path}}</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <!--<div class="modal-footer">-->
-    <!--<button class="btn btn-raised btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>-->
-    <!--</button>-->
-    <!--</div>-->
+                                </td>
+                                <td>
+                                    <div>{{ref.path}}</div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </md-dialog-content>
+        </form>
+    </md-dialog>
 </script>
 
 <script type="text/ng-template" id="valueSet_node">

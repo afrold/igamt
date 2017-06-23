@@ -250,7 +250,12 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         }
     };
 
-    $scope.findingBindings = function(node) {
+    $scope.print=function(node){
+        console.log(node);
+        console.log("=====================")
+        console.log($scope.findingBindings2(node));
+    }
+    $scope.findingBindingsPc = function(node) {
         var result = [];
 
         if (node && (node.type === "field" || node.type === "component")) {
@@ -936,11 +941,28 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         }
     };
     $scope.cancelDatatype = function(field) {
-        field.attributes.datatype = null;
-        field.datatype = field.attributes.oldDatatype;
-        $scope.editableDT = '';
-        $scope.setDirty();
+
+
+
+        if($rootScope.datatypesMap[field.attributes.oldDatatype.id]){
+            field.attributes.datatype = null;
+            field.datatype = field.attributes.oldDatatype;
+            $scope.editableDT = '';
+            $scope.setDirty();
+        }else{
+            $scope.cannotFindOldValue(field.attributes.oldDatatype);
+        }
+
     };
+    $scope.cannotFindOldValue= function(old){
+        $mdDialog.show({
+            templateUrl: 'cannotFindOld.html',
+            controller: 'cannotFindOld',
+            locals: {
+            old:old
+            }
+        })
+    }
     $scope.backDT = function() {
         $scope.editableDT = '';
 
@@ -997,10 +1019,12 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
     };
     $scope.editVSModal = function(field) {
+        console.log("calling this ")
         var modalInstance = $modal.open({
             templateUrl: 'editVSModal.html',
             controller: 'EditVSCtrl',
-            windowClass: 'edit-VS-modal',
+            scope:$scope,
+
             resolve: {
 
                 valueSets: function() {
@@ -2571,6 +2595,7 @@ angular.module('igl').controller('addComponentsCtrl',
 
 
             } else if (pc.type === 'segment') {
+                console.log("==================here");
                 var newPc = {
                     id: new ObjectId().toString(),
                     name: $rootScope.segmentsMap[pc.id].name,
@@ -2582,6 +2607,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     parentGroupPredicates: pc.parentGroupPredicates,
 
                     oldValueSetBindings: pc.valueSetBindings,
+                    valueSetBindings:[],
 
                     source: pc.source,
                     from: "segment",
@@ -2615,7 +2641,7 @@ angular.module('igl').controller('addComponentsCtrl',
                 var newPc = {
                     id: new ObjectId().toString(),
                     name: $rootScope.datatypesMap[pc.id].label,
-                    ext: $rootScope.datatypesMap[pc.id].ex,
+                    ext: $rootScope.datatypesMap[pc.id].ext,
                     type: pc.type,
                     path: $rootScope.datatypesMap[pc.id].label,
                     itemId: pc.id,
@@ -2630,7 +2656,14 @@ angular.module('igl').controller('addComponentsCtrl',
             console.log(newPc);
             if (newPc.type !== "segmentRef") {
                 newPc.oldValueSetBindings = $scope.findingBindings(newPc);
+
             }
+            if(newPc.oldValueSetBindings&&newPc.oldValueSetBindings.length!==0){
+
+                console.log("found binding")
+                newPc.valueSetBindings=[];
+            }
+            console.log(newPc);
 
             // newPc.oldSingleElementValues = $scope.findingSingleElement(newPc);
             newPc.oldComments = $scope.findingComments(newPc);
@@ -4311,5 +4344,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrlInPc', function
         console.log($scope.tempComformanceStatements);
         console.log($rootScope.segmentsMap[node.attributes.ref.id].conformanceStatements)
         $mdDialog.hide($scope.tempComformanceStatements);
+    };
+});
+angular.module('igl').controller('cannotFindOld', function($scope, $mdDialog, old) {
+
+    $scope.old = old;
+
+
+    $scope.cancel = function() {
+        $mdDialog.hide(old);
     };
 });

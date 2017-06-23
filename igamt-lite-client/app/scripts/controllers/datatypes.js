@@ -1760,7 +1760,7 @@ angular.module('igl').controller('SelectDatatypeFlavorCtrl', function($scope, $f
 
     });
 
-angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function($scope, $modalInstance, dtToDelete, $rootScope, DatatypeLibrarySvc, DatatypeService, MastermapSvc, CloneDeleteSvc) {
+angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function($scope, $mdDialog, dtToDelete, $rootScope, DatatypeLibrarySvc, DatatypeService, MastermapSvc, CloneDeleteSvc) {
     $scope.dtToDelete = dtToDelete;
     $scope.loading = false;
     $scope.delete = function() {
@@ -1771,25 +1771,25 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function($scope, $
             CloneDeleteSvc.deleteDatatypeLink($scope.dtToDelete);
         }
 
-        $modalInstance.close($scope.dtToDelete);
+        $mdDialog.hide($scope.dtToDelete);
         $scope.loading = false;
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
 
-angular.module('igl').controller('DatatypeReferencesCtrl', function($scope, $modalInstance, dtToDelete) {
+angular.module('igl').controller('DatatypeReferencesCtrl', function($scope, $mdDialog, dtToDelete) {
 
     $scope.dtToDelete = dtToDelete;
 
     $scope.ok = function() {
-        $modalInstance.close($scope.dtToDelete);
+        $mdDialog.hide($scope.dtToDelete);
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
 
