@@ -150,35 +150,37 @@
                                                 <md-input-container class="md-block" flex-gt-sm>
                                                     <label class="input-left">Extension</label>
                                                     <input type="text" name="ext"
-                                                           ng-model="hl7VersionsDlgForm.metaData.ext">
-
+                                                           ng-model="hl7VersionsDlgForm.metaData.ext" required>
+                                                    <div ng-messages="hl7VersionsDlgForm.ext.$error">
+                                                        <div ng-message="required">Extension is required.</div>
+                                                    </div>
                                                 </md-input-container>
 
-                                                <md-input-container class="md-block" flex-gt-sm>
-                                                    <label class="input-left">Specification</label>
-                                                    <input type="text" name="specificationName"
-                                                           ng-model="hl7VersionsDlgForm.metaData.specificationName">
+                                                <!--<md-input-container class="md-block" flex-gt-sm>-->
+                                                    <!--<label class="input-left">Specification</label>-->
+                                                    <!--<input type="text" name="specificationName"-->
+                                                           <!--ng-model="hl7VersionsDlgForm.metaData.specificationName">-->
 
-                                                </md-input-container>
+                                                <!--</md-input-container>-->
 
-                                                <md-input-container class="md-block" flex-gt-sm>
-                                                    <label class="input-left">Status</label>
-                                                    <input type="text" name="specificationName"
-                                                           ng-model="hl7VersionsDlgForm.metaData.status">
+                                                <!--<md-input-container class="md-block" flex-gt-sm>-->
+                                                    <!--<label class="input-left">Status</label>-->
+                                                    <!--<input type="text" name="specificationName"-->
+                                                           <!--ng-model="hl7VersionsDlgForm.metaData.status">-->
 
-                                                </md-input-container>
+                                                <!--</md-input-container>-->
 
-                                                <md-input-container class="md-block" flex-gt-sm>
-                                                    <label class="input-left">Topics</label>
-                                                    <input type="text" name="specificationName"
-                                                           ng-model="hl7VersionsDlgForm.metaData.topics">
+                                                <!--<md-input-container class="md-block" flex-gt-sm>-->
+                                                    <!--<label class="input-left">Topics</label>-->
+                                                    <!--<input type="text" name="specificationName"-->
+                                                           <!--ng-model="hl7VersionsDlgForm.metaData.topics">-->
 
-                                                </md-input-container>
+                                                <!--</md-input-container>-->
 
 
                                                 <div layout="row" layout-align="start center ">
                                                     <label style="color:black !important; margin-right:8px;">Select HL7
-                                                        version:</label>
+                                                        version * :</label>
 
 
                                                     <md-radio-group ng-model="hl7Version"
@@ -204,17 +206,15 @@
 
                                 <md-tab md-active="tabs[1].active" md-on-select="make_active(1)">
                                     <md-tab-label>
-                                        <i class="fa fa-file-text-o fa-fw"></i> List of Events*
+                                        <i class="fa fa-file-text-o fa-fw"></i> Message Events*
                                     </md-tab-label>
                                     <md-tab-body>
-                                        <div class="row" style="overflow-x:scroll;margin-left:20px">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">Selected Messages:</span>
-                                                <span ng-repeat="event in eventList" class="label label-primary">{{event.name}}^{{event.parentStructId}} <i
+                                        <div class="row" style="overflow-x:scroll;margin-left:20px; margin-bottom:20px; margin-top:10px">
+                                            <span style="color:lightslategray;"><i>Selected Message Events:</i></span>
+                                            <span ng-repeat="event in eventList" class="label label-default" style="margin-right:5px">{{event.name}}^{{event.parentStructId}} <i
                                                         class="fa fa-times" aria-hidden="true"
                                                         ng-click="trackSelections(false, event)"></i></span>
-                                            </div>
-                                        </div>
+                                         </div>
                                         <div class="row" style="margin-left:20px">
                                             <div ng-show="loading" style="text-align:center">
                                                 <i class="fa fa-spinner fa-pulse fa-2x"></i>
@@ -227,8 +227,8 @@
                                                            style="width:100% !important">
                                                         <thead>
                                                         <tr class="tbl-header" layout="row">
-                                                            <td flex="30">Struct ID</td>
-                                                            <td flex="30">Event ID</td>
+                                                            <td flex="30">Message Structure</td>
+                                                            <td flex="30">Message Event</td>
                                                             <td flex="40">Description</td>
                                                         </tr>
                                                         </thead>
@@ -245,33 +245,32 @@
                         </md-tabs>
                     </div>
 
+                </md-dialog-content>
+
                     <md-dialog-actions layout="row">
 
-                        <md-button class="md-primary" ng-click="make_active(0)"
-                                   ng-if="tabs[1].active&&clickSource==='btn'"
-                        "">
-                        Back
+                        <md-button   class="btn btn-raised btn-primary btn-md"  ng-click="make_active(0)"
+                                   ng-if="tabs[1].active&&clickSource==='btn'">
+                        <i class="fa fa-arrow-left fa-fw"></i> Back
                         </md-button>
-                        <md-button class="md-primary" ng-click="make_active(1)" ng-if="tabs[0].active"
-                                   ng-disabled="!hl7Version" &&clickSource==='btn'
-                        "">
-                        Next
+                        <md-button  class="btn btn-raised btn-primary btn-md" ng-click="make_active(1)" ng-if="tabs[0].active"
+                                   ng-disabled="(!hl7Version && clickSource==='btn') || hl7VersionsDlgForm.$invalid">
+                            <i class="fa fa-arrow-right fa-fw"></i>  Next
                         </md-button>
 
-                        <md-button ng-show="clickSource === 'ctx'" class="md-primary md-raised" type="button"
+                        <md-button ng-show="clickSource === 'ctx'" class="btn btn-raised btn-primary btn-md " type="button"
                                    ng-click="ok()" ng-disabled="okDisabled">
-                            <i class="fa fa-check"></i>Submit
+                            <i class="fa fa-check fa-fw"></i>Create
                         </md-button>
 
-                        <md-button ng-show="clickSource === 'btn'" class="md-primary md-raised" type="button"
+                        <md-button ng-show="clickSource === 'btn'"  class="btn btn-raised btn-primary btn-md" type="button"
                                    ng-click="ok()" ng-disabled="okDisabled || hl7VersionsDlgForm.$invalid">
-                            <i class="fa fa-check"></i>Submit
+                            <i class="fa fa-check fa-fw"></i>Create
                         </md-button>
 
 
                     </md-dialog-actions>
-                </md-dialog-content>
-            </form>
+             </form>
             </div>
         </md-dialog>
     </script>

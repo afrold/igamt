@@ -487,9 +487,18 @@ angular.module('igl')
         }
     }
 
+
+    $scope.navToIg = function(igdocument) {
+        if($scope.igDocumentConfig.selectedType === 'USER'){
+            $scope.edit(igdocument);
+        }else{
+            $scope.view(igdocument);
+        }
+    };
+
+
     $scope.edit = function(igdocument) {
-        console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
-        $scope.viewSettings.setTableReadonly(false);
+         $scope.viewSettings.setTableReadonly(false);
         $scope.tocView = 'views/toc.html';
         $scope.show(igdocument);
     };
@@ -2571,6 +2580,13 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     $scope.appInfo = $rootScope.appInfo;
     $scope.selected = false;
 
+    // init selection to false
+    for(var i in $scope.igdocumentToSelect.profile.compositeProfiles.children){
+        var message = $scope.igdocumentToSelect.profile.compositeProfiles.children[i];
+         message.selected = $scope.selected = false;
+    }
+
+
     $scope.trackSelections = function () {
         $scope.selected = false;
         for(var i in $scope.igdocumentToSelect.profile.compositeProfiles.children){
@@ -2582,9 +2598,8 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     $scope.selectionAll = function (bool) {
         for(var i in $scope.igdocumentToSelect.profile.compositeProfiles.children){
             var message = $scope.igdocumentToSelect.profile.compositeProfiles.children[i];
-            message.selected = bool;
+             message.selected = bool;
         }
-
         $scope.selected = bool;
     };
 
@@ -2683,11 +2698,19 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
     $scope.appInfo = $rootScope.appInfo;
     $scope.selected = false;
 
+    // init selection to false
+    for(var i in $scope.igdocumentToSelect.profile.messages.children){
+        var message = $scope.igdocumentToSelect.profile.messages.children[i];
+        $scope.selected = false;
+        message.selected = false;
+     }
+
+
     $scope.trackSelections = function () {
         $scope.selected = false;
         for(var i in $scope.igdocumentToSelect.profile.messages.children){
             var message = $scope.igdocumentToSelect.profile.messages.children[i];
-            if(message.selected) $scope.selected = true;
+             if(message.selected) $scope.selected = true;
         }
     };
 
@@ -2696,7 +2719,6 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function($scope,
             var message = $scope.igdocumentToSelect.profile.messages.children[i];
             message.selected = bool;
         }
-
         $scope.selected = bool;
     };
 
