@@ -438,7 +438,7 @@
 <script type="text/ng-template" id="createDatatypeLibrary.html">
 
     <md-dialog aria-label="Create Data Type Library ">
-        <form ng-cloak>
+        <form ng-cloak name="createDtLibForm" id="createDtLibForm">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2> Create Data Type Library </h2>
@@ -619,21 +619,22 @@
                         </md-tab-body>
                     </md-tab>
                     </md-tabs>
-                    <md-dialog-actions layout="row">
-                        <md-button class="md-primary" ng-click="make_active_dlg(1)" ng-if="tabs_dlg[0].active">
-                            Next
-                        </md-button>
-
-                        <md-button class="md-primary" ng-click="make_active_dlg(0)" ng-if="tabs_dlg[1].active">
-                            Back
-                        </md-button>
-                        <md-button class="md-primary md-raised" ng-click="createLibrary()">
-                            Submit
-                        </md-button>
-                    </md-dialog-actions>
                 </div>
             </md-dialog-content>
-        </form>
+
+            <md-dialog-actions layout="row">
+                        <md-button class="btn btn-raised btn-primary btn-md" ng-click="make_active_dlg(1)" ng-if="tabs_dlg[0].active" ng-disabled="createDtLibForm.$invalid">
+                            <i class="fa fa-arrow-right fa-fw"></i>  Next
+                        </md-button>
+
+                        <md-button class="btn btn-raised btn-primary btn-md" ng-click="make_active_dlg(0)" ng-if="tabs_dlg[1].active">
+                            <i class="fa fa-arrow-left fa-fw"></i> Back
+                        </md-button>
+                        <md-button class="btn btn-raised btn-primary btn-md" ng-click="createLibrary()" ng-disabled="createDtLibForm.$invalid">
+                            <i class="fa fa-check fa-fw"></i> Create
+                        </md-button>
+                    </md-dialog-actions>
+         </form>
         </div>
     </md-dialog>
 </script>
