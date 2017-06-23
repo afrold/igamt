@@ -229,8 +229,13 @@ import io.swagger.annotations.ApiResponses;
         @ApiResponse(code = 400, message = "Bad request")
     })
     @RequestMapping(value = "/message", method = RequestMethod.GET, produces = "application/json")
-    public ExportableDataModel getMessageWithParams(@RequestParam(value="messageType", required=true) String messageType,@RequestParam(value="event", required=true) String event,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
-        if(messageType != null && !messageType.isEmpty() && event !=null && !event.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
+    public ExportableDataModel getMessageWithParams(@RequestParam(value="messageType", required=true) String messageType,@RequestParam(value="event", required=false) String event,@RequestParam(value="hl7Version", required=true) String hl7Version, HttpServletRequest request) throws DataNotFoundException {
+        if(messageType != null && !messageType.isEmpty() && hl7Version != null && !hl7Version.isEmpty()){
+          
+          if(messageType.equals("ACK") || (event !=null && !event.isEmpty())){
+            if(messageType.equals("ACK")){
+              event="";
+            }
             Message message = messageService.findByMessageTypeAndEventAndVersionAndScope(
                 messageType, event, hl7Version, Constant.SCOPE.HL7STANDARD.name());
             if(message != null){
@@ -238,6 +243,8 @@ import io.swagger.annotations.ApiResponses;
 	                .exportDataModelAsHtml(message, message.getName(), generateHost(request));
 	            return new ExportableDataModel(html,message);
             }
+          }
+          
         }
         return null;
     }
