@@ -254,14 +254,11 @@ public class Bootstrap implements InitializingBean {
     // modifyCodeUsage();
     // fixMissingData();
 
-    // new Master Datatype Generation
-
-    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
-    // Colorate(); // genenerates the datatypes evolution matrix.
-    // //
 
 
     // To RUN on Production for 2.0.0-rc
+    // CreateCollectionOfUnchanged(); // group datatype by sets of versions
+    // Colorate(); // genenerates the datatypes evolution matrix.
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
     // fixDatatypeRecursion();
@@ -278,7 +275,7 @@ public class Bootstrap implements InitializingBean {
     // refactorCoConstrint();
     // updateUserExportConfigs();
     // hotfix();
-    // Need to run ONE TIME
+    // // Need to run ONE TIME
     // fixConfLength();
     // fixWrongConstraints();
     // updateSegmentDatatypeDescription();
