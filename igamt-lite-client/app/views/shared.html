@@ -14,16 +14,16 @@
 <div  ng-if="isAuthenticated()" class="container" ng-init="init()">
 
             <md-tabs>
-                <md-tab active="datatypeTab"  md-selected="datatypeTab" select="select(dtTab)">
-                    <md-tab-label ng-click="setTypeOfSharing('datatype');">
+                <md-tab active="datatypeTab"  md-selected="datatypeTab" select="select(dtTab)" md-on-select="setTypeOfSharing('datatype');">
+                    <md-tab-label>
                         Datatypes
                     </md-tab-label>
                     <md-tab-body>
                     <div ng-include="sharedElementView"></div>
                     </md-tab-body>
                 </md-tab>
-                 <md-tab active="tableTab"  md-selected="tableTab" select="select(vsTab)">
-                    <md-tab-label ng-click="setTypeOfSharing('table');">
+                 <md-tab active="tableTab"  md-selected="tableTab" select="select(vsTab)" md-on-select="setTypeOfSharing('table')">
+                    <md-tab-label >
                         Value Sets
                     </md-tab-label>
                      <md-tab-body>
@@ -61,7 +61,7 @@
 
             <h3 ng-if="Sharedsubview !== 'datatypePending.html'"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </h3>
             <h3 ng-if="Sharedsubview === 'datatypePending.html'"><i class="fa fa-hourglass" aria-hidden="true"></i> Pending Requests </h3>
-                <div id="edit" ng-show="subview" style="width:100%; max-height: 800px; background-color: white;overflow: scroll;">
+                <div id="edit" style="width:100%; max-height: 800px; background-color: white;overflow: scroll;">
                     <div ng-include="Sharedsubview"></div>
                 </div>
 			</div>

@@ -1496,6 +1496,9 @@ angular.module('igl')
                             angular.forEach($rootScope.datatypes, function(dt) {
                                 if (dt && dt != null && dt.id !== $rootScope.datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt), dt);
                             });
+                            angular.forEach($rootScope.profileComponents, function (pc) {
+                                $rootScope.findDatatypeRefs(datatype, pc, pc.name,pc);
+                            });
 
                             $rootScope.tmpReferences = [].concat($rootScope.references);
 
