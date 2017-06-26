@@ -2889,7 +2889,7 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $md
     }
 
     if(positionPath != '') positionPath = positionPath.substr(1);
-    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return binding.location == positionPath; }));
+    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return "" + binding.location === "" + positionPath; }));
     $scope.listOfBindingLocations = null;
 
     if(_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT){
@@ -2973,7 +2973,7 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $md
 
     $scope.saveMapping = function() {
         blockUI.start();
-        var otherValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return binding.location != positionPath; }));
+        var otherValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return ""+ binding.location !== "" + positionPath; }));
         $rootScope.message.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 
