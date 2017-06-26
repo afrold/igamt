@@ -12,14 +12,14 @@
                 <md-input-container class="searchBarComponent" ng-repeat="field in searchParameters.fields">
                     <span ng-if="field.values.length > 0">
                         <label>{{field.name}}</label>
-                        <md-select ng-model="field.value" ng-required="field.required">
+                        <md-select ng-model="field.value" ng-required="field.required" ng-disabled="field.disabled">
                             <md-option ng-repeat="value in field.values | orderBy" value="{{value}}">{{value}}</md-option>
                         </md-select>
                     </span>
                     <span ng-if="field.values == undefined || field.values.length <= 0">
                         <label>{{field.name}}</label>
-                        <input ng-model="field.value" ng-required="field.required"/>
-                    </span>
+                        <input ng-model="field.value" ng-required="field.required" style="margin-top:20px" ng-disabled="field.disabled"/>
+                     </span>
                 </md-input-container>
                 <md-button class="searchBarComponent md-raised md-primary" ng-click="doSearch()"  ng-disabled="!isFormValid()"><i class="fa fa-search fa-fw"></i>Search</md-button>
             </section>
@@ -38,7 +38,7 @@
                         <pre>{{ data.dataModel | json }}</pre>
                     </md-content>
                 </md-tab>
-                <md-tab label="Share">
+                <md-tab label="Links">
                     <md-content class="md-padding">
                         <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
                             <md-input-container style="width:90%;">
