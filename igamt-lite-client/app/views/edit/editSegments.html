@@ -694,12 +694,12 @@
                                                         </td>
                                                         <td class="col-md-3">
                                                             <md-select ng-model="ig2" ng-change="setIG2(ig2)" ng-disabled="!scope2 || !version2 || igDisabled2" no-dirty-check>
-                                                                <md-option ng-repeat="ig in igList2 track by ig.id">{{ig.title}}</md-option>
+                                                                <md-option ng-repeat="ig in igList2 track by ig.id" ng-value="ig">{{ig.title}}</md-option>
                                                             </md-select>
                                                         </td>
                                                         <td class="col-md-4">
                                                             <md-select ng-model="cmp.segmentId" ng-change="setSegment2(cmp.segmentId)" ng-disabled="!ig2" no-dirty-check placeholder="Select Segment">
-                                                            <option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{$index}}'> {{getLabel(segment)}}</option>
+                                                            <md-option ng-repeat="segment in segments2 " ng-disabled="disableSeg(segment,segment1)" ng-hide="hideSeg(segment,segment1)" value='{{$index}}'> {{getLabel(segment)}}</md-option>
                                                         </md-select>
                                                         </td>
 
