@@ -839,6 +839,8 @@
                                                            ng-click="redirectSeg(ref.target)">{{::ref.path}}</a>
                                                         <a ng-show="ref.type === 'component'"
                                                            ng-click="redirectDT(ref.target)">{{::ref.path}}</a>
+                                                        <a ng-show="ref.type === 'profilecomponent'"
+                                                           ng-click="redirectDT(ref.target)">{{::ref.path}}</a>
                                                     </td>
                                                     <td st-ratio="15">
 
@@ -846,13 +848,15 @@
                                                               ng-click="redirectSeg(ref.target)">{{::ref.name}}</span>
                                                         <span ng-show="ref.type === 'component'"
                                                               ng-click="redirectDT(ref.target)">{{::ref.name}}</span>
+                                                        <span ng-show="ref.type === 'profilecomponent'"
+                                                              ng-click="redirectDT(ref.target)">{{::ref.name}}</span>
 
                                                     </td>
                                                     <td st-ratio="10">
                                                         {{::ref.usage}}
                                                     </td>
                                                     <td st-ratio="20">
-                                                    <span ng-show="ref.target.status !== 'PUBLISHED'" style="text-align:left">
+                                                    <span ng-show="ref.target.status !== 'PUBLISHED'&& ref.type !== 'profilecomponent'" style="text-align:left">
                                                              <a ng-click="redirectDT(ref.datatype)" class="point">
 
                                                                    <display-label of="datatypesMap[ref.datatype.id]"

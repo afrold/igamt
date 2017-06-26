@@ -31,6 +31,10 @@ angular.module('igl').factory('PcService', ['$rootScope', 'ViewSettings', 'Eleme
             });
             return delay.promise;
         },
+        merge: function(to, from) {
+            to = angular.extend(to, from);
+            return to;
+        },
 
 
         findAll: function() {

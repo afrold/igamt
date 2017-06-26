@@ -5069,28 +5069,35 @@
     </div>
     </div>
 </script>
-<script type="text/ng-template" id="ConfirmDatatypePublishCtl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Publish Confirmation
-        </h3>
-    </div>
-    <div class="modal-body">
+<script type="text/ng-template" id="ConfirmDatatypePublishCtlMd.html">
+    <md-dialog aria-label="create profile component" style="width: 50%">
+        <form ng-cloak role="form" name="newForm">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Publish confirmation </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+
         <p>Are You Sure You Want To Publish this Data Type ? A published Data Type Is Assigned A Version And Cannot Be Edited.</p>
         <p>This Operation is Irreversible.</p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
-                class="fa fa-check fa-fw">&nbsp; </i>Confirm</span>
-        </button>
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
-        </div>
-    </div>
-    </div>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row" layout-align="end end">
+
+                <md-button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="confirm()"><span><i
+                        class="fa fa-check fa-fw">&nbsp; </i>Confirm</span>
+                </md-button>
+            </md-dialog-actions>
+
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="cannotPublish.html">
     <div class="modal-header">
@@ -5549,11 +5556,14 @@
                                     <span ng-show="ref.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
                                     <span ng-show="ref.type === 'field'">{{::ref.path}}</span>
                                     <span ng-show="ref.type === 'component'">{{::ref.path}}</span>
+                                    <span ng-show="ref.type === 'profilecomponent'">{{::ref.path}}</span>
+
                                 </td>
                                 <td st-ratio="20">
 
                                     <span ng-show="ref.type === 'field'" ng-click="redirectSeg(ref.target)">{{::ref.name}}</span>
                                     <span ng-show="ref.type === 'component'" ng-click="redirectDT(ref.target)">{{::ref.name}}</span>
+                                    <span ng-show="ref.type === 'profilecomponent'" ng-click="redirectDT(ref.target)">{{::ref.name}}</span>
 
                                 </td>
                                 <td st-ratio="20">

@@ -282,27 +282,28 @@ public class Bootstrap implements InitializingBean {
     // updateGroupName();
     // fixProfielComponentConfLength();
     // updateGroupName();
-    
-    
-    fixCodeSysLOINC();
+
+
+    // fixCodeSysLOINC();
   }
 
 
   private void fixCodeSysLOINC() {
     List<Table> tables = tableService.findAll();
-    
-    for(Table t:tables){
+
+    for (Table t : tables) {
       boolean isChanged = false;
-      
-      for(Code c:t.getCodes()){
-        if(c.getCodeSystem() != null && c.getCodeSystem().toLowerCase().equals("loinc")){
+
+      for (Code c : t.getCodes()) {
+        if (c.getCodeSystem() != null && c.getCodeSystem().toLowerCase().equals("loinc")) {
           isChanged = true;
           c.setCodeSystem("LN");
         }
       }
-      if(isChanged) tableService.save(t);
+      if (isChanged)
+        tableService.save(t);
     }
-    
+
   }
 
 

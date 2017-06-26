@@ -13,26 +13,28 @@
 </script>
 <div  ng-if="isAuthenticated()" class="container" ng-init="init()">
 
-            <tabset>
-                <tab active="datatypeTab"  ng-attr-active="datatypeTab" select="select(dtTab)">
-                    <tab-heading ng-click="setTypeOfSharing('datatype');">
+            <md-tabs>
+                <md-tab active="datatypeTab"  md-selected="datatypeTab" select="select(dtTab)" md-on-select="setTypeOfSharing('datatype');">
+                    <md-tab-label>
                         Datatypes
-                    </tab-heading>
+                    </md-tab-label>
+                    <md-tab-body>
                     <div ng-include="sharedElementView"></div>
-                </tab>
-                 <tab active="tableTab"  ng-attr-active="tableTab" select="select(vsTab)">
-                    <tab-heading ng-click="setTypeOfSharing('table');">
+                    </md-tab-body>
+                </md-tab>
+                 <md-tab active="tableTab"  md-selected="tableTab" select="select(vsTab)" md-on-select="setTypeOfSharing('table')">
+                    <md-tab-label >
                         Value Sets
-                    </tab-heading>
-                    <div ng-include="sharedElementViewForTables"></div>
-                </tab>
-               <!--  <tab active="segmentTab" select="select(segTab)">
-                  <tab-heading>
-                    Segments
-                  </tab-heading>
-                  <div ng-include="'views/edit/editIG.html'"></div>
-                </tab -->
-            </tabset>
+                    </md-tab-label>
+                     <md-tab-body>
+
+                     <div ng-include="sharedElementViewForTables"></div>
+                     </md-tab-body>
+                </md-tab>
+
+            </md-tabs>
+
+
 </div>
 
     <div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto">
@@ -42,38 +44,26 @@
 
 <script type="text/ng-template" id="sharedElementView">
 <br/>
-		<div class="row">
+		<div layout="row">
 			<!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
 			<!--<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
 			<!--<i class="fa fa-caret-right"></i>-->
 			<!--</button>-->
 			<!--</div>-->
-			<div ng-show="!hideToc" class="col-md-3">
-				<div class="panel panel-primary">
-					<!-- Default panel contents -->
-					<div class="panel-heading panel-heading-collapsable"> <i class="glyphicon glyphicon-list"></i><span> Table of Contents </span>
-						<button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right" style="margin:0px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-left"></i> </button>
-					</div>
-					<div class="panel-body toc-container">
+			<div flex="30">
+                <div style="width:100%; max-height: 800px; overflow: scroll;background-color: rgba(238, 238, 238, 0.46); padding-top: 20px;">
+
 						<div ng-include="SharedtocView"></div>
-					</div>
-				</div>
+                </div>
+
 			</div>
-			<div ng-class="{'col-md-9': !hideToc,'col-md-12': hideToc}">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-right"></i> </button>
-            <span ng-if="Sharedsubview !== 'datatypePending.html'"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </span>
-            <span ng-if="Sharedsubview === 'datatypePending.html'"><i class="fa fa-hourglass" aria-hidden="true"></i> Pending Requests </span>
-          </div>
-					<div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init">
-						<form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form>
-							<div id="edit" ng-show="Sharedsubview" style="width:100%;">
-								<div ng-include="Sharedsubview"></div>
-							</div>
-						</form>
-					</div>
-				</div>
+			<div flex="70">
+
+            <h3 ng-if="Sharedsubview !== 'datatypePending.html'"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </h3>
+            <h3 ng-if="Sharedsubview === 'datatypePending.html'"><i class="fa fa-hourglass" aria-hidden="true"></i> Pending Requests </h3>
+                <div id="edit" style="width:100%; max-height: 800px; background-color: white;overflow: scroll;">
+                    <div ng-include="Sharedsubview"></div>
+                </div>
 			</div>
 		</div>
 
@@ -81,38 +71,29 @@
 </script>
 <script type="text/ng-template" id="sharedElementViewForTables.html">
 <br/>
-		<div class="row">
+		<div layout="row">
 			<!--<div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">-->
 			<!--<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-click="hideToc = !hideToc">-->
 			<!--<i class="fa fa-caret-right"></i>-->
 			<!--</button>-->
 			<!--</div>-->
-			<div ng-show="!hideToc" class="col-md-3">
-				<div class="panel panel-primary">
-					<!-- Default panel contents -->
-					<div class="panel-heading panel-heading-collapsable"> <i class="glyphicon glyphicon-list"></i><span> Table of Contents </span>
-						<button title="Hide  Table of Contents" class="btn btn-raised btn-xs btn-default pull-right" style="margin:0px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-left"></i> </button>
-					</div>
-					<div class="panel-body toc-container">
-						<div ng-include="SharedtocViewForTables"></div>
-					</div>
-				</div>
+			<div flex="30">
+                <div style="width:100%; max-height: 800px; overflow: scroll;background-color: rgba(238, 238, 238, 0.46); padding-top: 20px;">
+
+                <div ng-include="SharedtocViewForTables"></div>
+                </div>
+
 			</div>
-			<div ng-class="{'col-md-9': !hideToc,'col-md-12': hideToc}">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<button title="Show Table of Contents" class="btn btn-raised btn-xs btn-primary" ng-show="hideToc" style="margin-right:6px" ng-click="hideToc = !hideToc"> <i class="fa fa-caret-right"></i> </button>
+			<div flex="70">
+
             <span ng-if="!pending"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </span>
             <span ng-if="pending"><i class="fa fa-hourglass" aria-hidden="true"></i> Pending Requests </span>
-          </div>
-					<div class="panel-body" style="padding-bottom:100px" ng-controller="EditAreaCtrl" ng-init="init">
-						<form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form>
-							<div id="edit" ng-show="Sharedsubview" style="width:100%;">
+
+							<div id="edit" ng-show="subview" style="width:100%; max-height: 800px; background-color: white;overflow: scroll;">
 								<div ng-include="SharedsubviewForTable"></div>
-							</div>
-						</form>
-					</div>
-				</div>
+
+                            </div>
+
 			</div>
 		</div>
 

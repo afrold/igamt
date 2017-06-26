@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc', 'VersionAndUseService', '$q', 'DatatypeLibrarySvc', 'CloneDeleteSvc', 'TableService', 'TableLibrarySvc', '$mdDialog', function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc, VersionAndUseService, $q, DatatypeLibrarySvc, CloneDeleteSvc, TableService, TableLibrarySvc, $mdDialog) {
+angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc', 'VersionAndUseService', '$q', 'DatatypeLibrarySvc', 'CloneDeleteSvc', 'TableService', 'TableLibrarySvc', '$mdDialog','PcService', function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc, VersionAndUseService, $q, DatatypeLibrarySvc, CloneDeleteSvc, TableService, TableLibrarySvc, $mdDialog,PcService) {
     // This line fetches the info from the server if the user is currently
     // logged in.
     // If success, the app is updated according to the role.
@@ -1913,6 +1913,19 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     });
                 }
             }
+            else if (angular.equals(obj.type, 'profilecomponent')) {
+                if (obj.children) {
+                    angular.forEach(obj.children, function(subPc) {
+                        if(subPc.attributes.datatype&&subPc.attributes.datatype.id&&subPc.attributes.datatype&&subPc.attributes.datatype.id===datatype.id){
+                            var found = angular.copy(obj);
+                            found.path = path+'.'+subPc.path;
+                            found.target = angular.copy(target);
+                            found.datatypeLink = angular.copy(obj.datatype);
+                            $rootScope.references.push(found);
+                        }
+                    });
+                }
+            }
         }
     };
     $rootScope.findDatatypeRefsForMenu = function(datatype, obj, path, target) {
@@ -2416,18 +2429,19 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     $rootScope.replaceElement = function(source, dest, listOfRefs) {
         $rootScope.SegmentsToUpdate = [];
         $rootScope.datatypeToUpdate = [];
+        $rootScope.profileComponentToUpdate = [];
         var newLink = angular.fromJson({
             id: dest.id,
             name: dest.name,
             ext: dest.ext
         });
         var refs = angular.copy(listOfRefs);
-        angular.forEach(listOfRefs, function(ref) {
+        angular.forEach(listOfRefs, function (ref) {
             if (ref.target.status !== "PUBLISHED") {
                 if (ref.type == 'field') {
                     console.log(ref.target);
                     var segment = angular.copy(ref.target);
-                    angular.forEach(ref.target.fields, function(field) {
+                    angular.forEach(ref.target.fields, function (field) {
                         if (field.position == ref.position) {
                             field.datatype.id = dest.id;
                         }
@@ -2435,33 +2449,64 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                     $rootScope.SegmentsToUpdate.push(ref.target);
 
                 } else if (ref.type == 'component') {
-                    angular.forEach(ref.target.components, function(component) {
+                    angular.forEach(ref.target.components, function (component) {
                         if (component.position == ref.position) {
                             component.datatype.id = dest.id;
                         }
                     });
                     $rootScope.datatypeToUpdate.push(ref.target);
+                } else if (ref.type == 'profilecomponent') {
+
+                    angular.forEach(ref.target.children, function (subPc) {
+
+                        if (ref.target.name + "." + subPc.path == ref.path) {
+                            if (subPc.attributes.datatype && subPc.attributes.datatype.id && subPc.attributes.datatype && subPc.attributes.datatype.id === source.id) {
+                                subPc.attributes.datatype.id = dest.id;
+                            }
+                        }
+
+                    });
+                    $rootScope.profileComponentToUpdate.push(ref.target);
+
+
                 }
+
+                console.log(" refs to update ");
+                console.log($rootScope.profileComponentToUpdate);
+
             }
         });
-        SegmentService.saves($rootScope.SegmentsToUpdate).then(function(segs) {
-            angular.forEach(segs, function(seg) {
+
+        SegmentService.saves($rootScope.SegmentsToUpdate).then(function (segs) {
+            angular.forEach(segs, function (seg) {
                 SegmentService.merge($rootScope.segmentsMap[seg.id], seg);
 
 
             });
-            DatatypeService.saves($rootScope.datatypeToUpdate).then(function(dts) {
 
-                angular.forEach(dts, function(dt) {
+
+            DatatypeService.saves($rootScope.datatypeToUpdate).then(function (dts) {
+
+                angular.forEach(dts, function (dt) {
                     DatatypeService.merge($rootScope.datatypesMap[dt.id], dt);
                 });
+
+                PcService.saveAll($rootScope.profileComponentToUpdate).then(function (pcs) {
+                    angular.forEach(pcs, function (pc) {
+                        DatatypeService.merge($rootScope.profileComponentsMap[pc.id], pc);
+                        $rootScope.editDatatype(dest);
+
+                    });
+
+                });
+
+
             });
-            $rootScope.editDatatype(dest);
 
+
+            //
         });
-
-        //
-    };
+    }
 
 
 
@@ -4663,27 +4708,34 @@ angular.module('igl').controller('ConfirmSingleElementDuplicatedCtrl', function(
 
 angular.module('igl').controller('labelController', function($scope) {
     $scope.getLabel = function(element) {
-
-        if (element.type === 'table') {
+        if(element){
+            if (element.type === 'table') {
             if (!element.ext || element.ext == "") {
                 return element.bindingIdentifier;
             } else {
                 return element.bindingIdentifier + "_" + element.ext;
             }
         }
-        if (!element.ext || element.ext == "") {
-            return element.name;
-        } else {
-            return element.name + "_" + element.ext;
+            if (!element.ext || element.ext == "") {
+                return element.name;
+            } else {
+                return element.name + "_" + element.ext;
+            }
+
         }
+
+
     };
     $scope.hasHl7Version = function(element) {
-        if (element.hl7Version) {
+        if (element&&element.hl7Version) {
             return element.hl7Version;
         }
     };
 
     $scope.getDescriptionLabel = function(element) {
+        if(!element){
+            return "UNFOUND";
+        }
         if (element.type === 'table') {
 
             if (element.name && element.name !== '') {
