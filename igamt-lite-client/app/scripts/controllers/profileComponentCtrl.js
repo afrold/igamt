@@ -470,20 +470,23 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
 
     $scope.openAddGlobalConformanceStatementDialogSeg = function(node, context) {
+
         $mdDialog.show({
-            templateUrl: 'ConformanceStatementSegmentCtrlInPc.html',
+            templateUrl: 'ConformanceStatementSegmentCtrl.html',
             parent: angular.element(document).find('body'),
-            controller: 'ConformanceStatementSegmentCtrlInPc',
+            controller: 'ConformanceStatementSegmentCtrl',
+            scope:$scope,
+            preserveScope:true,
             locals: {
-                node: node,
-                context: context
+                selectedSegment :angular.copy($rootScope.segmentsMap[node.attributes.ref.id]),
+                config : $rootScope.config,
+                tables : $rootScope.tables
             }
 
-        }).then(function(confs) {
-            if (confs) {
-                console.log(confs);
-                node.attributes.conformanceStatements = confs;
-                $scope.setDirty();
+        }).then(function(segment) {
+            if (segment) {
+                node.attributes.conformanceStatements = segment.conformanceStatements;
+                // $scope.setDirty();
             }
         });
 
@@ -563,20 +566,56 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
         });
     };
-    $scope.openAddGlobalConformanceStatementDialog = function(node, context) {
+    // $scope.openAddGlobalConformanceStatementDialog = function(node, context) {
+    //     $mdDialog.show({
+    //         templateUrl: 'GlobalConformanceStatementCtrlInPc.html',
+    //         parent: angular.element(document).find('body'),
+    //         controller: 'GlobalConformanceStatementCtrl',
+    //         scope:$scope,
+    //         preserveScope:true,
+    //         locals: {
+    //             node: node,
+    //             context: context
+    //         }
+    //
+    //     }).then(function(confs) {
+    //         if (confs) {
+    //             console.log(confs);
+    //             console.log("qqwqw");
+    //
+    //             node.attributes.conformanceStatements = confs;
+    //             // $scope.setDirty();
+    //         }
+    //     });
+    //
+    // };
+    $scope.openAddGlobalConformanceStatementDialog = function(node,context) {
         $mdDialog.show({
-            templateUrl: 'GlobalConformanceStatementCtrlInPc.html',
             parent: angular.element(document).find('body'),
-            controller: 'GlobalConformanceStatementCtrlInPc',
+            templateUrl: 'GlobalConformanceStatementCtrl.html',
+            controller: 'GlobalConformanceStatementCtrl',
             locals: {
-                node: node,
-                context: context
-            }
+                selectedMessage: angular.copy($rootScope.messagesMap[node.source.messageId]),
 
-        }).then(function(confs) {
-            if (confs) {
-                console.log(confs);
-                node.attributes.conformanceStatements = confs;
+                segmentsMap: $rootScope.segmentsMap,
+                config : $rootScope.config,
+                tables : $rootScope.tables
+            }
+        }).then(function(message) {
+            if (message) {
+                $scope.listGlobalConformanceStatements = [];
+                $scope.listGlobalPredicates = [];
+                $scope.travelMessage(message, '');
+
+
+                node.attributes.conformanceStatements=$scope.listGlobalConformanceStatements;
+
+
+
+                console.log($scope.listGlobalConformanceStatements);
+
+                // $scope.findAllGlobalConstraints();
+                console.log(node);
                 $scope.setDirty();
             }
         });
@@ -592,6 +631,35 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         console.log(sev);
         node.singleElementValues = sev;
         $scope.setDirty();
+    };
+    $scope.findAllGlobalConstraints = function() {
+        $scope.listGlobalConformanceStatements = [];
+        $scope.listGlobalPredicates = [];
+        $scope.travelMessage($rootScope.message, '');
+    };
+
+    $scope.travelMessage = function(current, positionPath) {
+        if (current.conformanceStatements && current.conformanceStatements.length > 0) {
+            $scope.listGlobalConformanceStatements=_.union(current.conformanceStatements,$scope.listGlobalConformanceStatements);
+        }
+
+        if (current.predicates && current.predicates.length > 0) {
+            $scope.listGlobalPredicates.push(current);
+        }
+
+        if (current.type == 'message' || current.type == 'group') {
+            for (var i in current.children) {
+                var segGroup = current.children[i];
+
+                if (positionPath == '') {
+                    segGroup.positionPath = segGroup.position + '[1]';
+                } else {
+                    segGroup.positionPath = positionPath + '.' + segGroup.position + '[1]';
+                }
+
+                $scope.travelMessage(segGroup, segGroup.positionPath);
+            }
+        }
     };
 
     $scope.openDialogForEditSev = function(node) {
@@ -3796,10 +3864,12 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
 });
 
 
-angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function($scope, $mdDialog, node, context, $rootScope, $q) {
-    //$scope.selectedMessage = angular.copy(selectedMessage);
-
-    $scope.seeOrEdit = context;
+angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function($scope, segmentsMap, config, tables, selectedMessage, $rootScope, $q) {
+    $scope.dialogStep = 0;
+    $scope.segmentsMap = segmentsMap;
+    $scope.config = config;
+    $scope.tables = tables;
+    $scope.selectedMessage = angular.copy(selectedMessage);
     $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -3808,12 +3878,14 @@ angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function(
     $scope.newComplexConstraintId = null;
     $scope.selectedContextNode = null;
     $scope.treeDataForMessage = [];
+    $scope.treeDataForContext = [];
     $scope.constraintType = 'Plain';
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
     $scope.changed = false;
-    // $scope.selectedMessage.pathInfoSet = [];
-    // $scope.treeDataForMessage.push($scope.selectedMessage);
+    $scope.selectedMessage.pathInfoSet = [];
+    $rootScope.processMessageTree($scope.selectedMessage);
+    $scope.treeDataForMessage.push($scope.selectedMessage);
     $scope.draggingStatus = null;
     $scope.contextKey = null;
 
@@ -3875,6 +3947,8 @@ angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function(
 
     };
     $scope.selectContext = function(selectedContextNode) {
+        console.log(selectedContextNode);
+        console.log($scope.selectedMessage);
         $scope.contextKey = new ObjectId().toString();
         $scope.selectedContextNode = selectedContextNode;
         $scope.selectedContextNode.pathInfoSet = [];
@@ -3884,7 +3958,18 @@ angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function(
         $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null, $scope.contextKey);
         console.log("$scope.selectedContextNode");
 
+
         $scope.initConformanceStatement();
+        $scope.treeDataForContext.push($scope.selectedContextNode);
+
+    };
+
+    $scope.goNext = function() {
+        $scope.dialogStep = $scope.dialogStep + 1;
+    };
+
+    $scope.goBack = function () {
+        $scope.dialogStep = $scope.dialogStep - 1;
     };
 
 
@@ -4074,7 +4159,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function(
         $mdDialog.hide();
     };
 
-    $scope.saveclose = function() {
+    $scope.save = function() {
         //$rootScope.recordChanged();
 
         $mdDialog.hide($scope.selectedContextNode.conformanceStatements);

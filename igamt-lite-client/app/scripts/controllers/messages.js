@@ -711,7 +711,14 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         }).then(function(message) {
             if (message) {
                 $rootScope.message = message;
+                console.log("BEFORE");
+
+                console.log($rootScope.message);
+
                 $scope.findAllGlobalConstraints();
+                console.log("AFTER");
+
+                console.log($rootScope.message);
                 $scope.setDirty();
             }
         });
@@ -2524,6 +2531,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.secondNodeData = null;
     $scope.changed = false;
     $scope.selectedMessage.pathInfoSet = [];
+    $rootScope.processMessageTree($scope.selectedMessage);
     $scope.treeDataForMessage.push($scope.selectedMessage);
     $scope.draggingStatus = null;
     $scope.contextKey = null;

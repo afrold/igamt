@@ -2407,7 +2407,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.segment.name + "_" + $rootScope.segment.ext);
+    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext,   $scope.selectedSegment.name + "_" + $scope.selectedSegment.ext);
     $scope.newComplexConstraint = [];
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
@@ -2550,7 +2550,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
             freeText: null,
             verb: null,
             ignoreCase: false,
-            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.segment.name + "_" + $rootScope.segment.ext),
+            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $scope.selectedSegment.name + "_" + $scope.selectedSegment.ext),
             contraintType: null,
             value: null,
             value2: null,
@@ -2565,7 +2565,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.segment.name + "_" + $rootScope.segment.ext);
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $scope.selectedSegment.name + "_" + $scope.selectedSegment.ext);
     };
 
     $scope.initConformanceStatement();
@@ -2587,7 +2587,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
             }
 
             $scope.newConstraint.position_1 = positionPath.substr(1);
-            $scope.newConstraint.location_1 = $rootScope.segment.name + '-' + locationPath.substr(1);
+            $scope.newConstraint.location_1 = $scope.selectedSegment.name + '-' + locationPath.substr(1);
         }
     };
 
@@ -2608,7 +2608,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
             }
 
             $scope.newConstraint.position_2 = positionPath.substr(1);
-            $scope.newConstraint.location_2 = $rootScope.segment.name + '-' + locationPath.substr(1);
+            $scope.newConstraint.location_2 = $scope.selectedSegment.name + '-' + locationPath.substr(1);
         }
     };
 
