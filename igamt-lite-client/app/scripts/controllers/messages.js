@@ -2214,15 +2214,23 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
     };
 
     $scope.selectContext = function(selectedContextNode) {
-        $scope.contextKey = new ObjectId().toString();
-        $scope.selectedContextNode = selectedContextNode;
-        $scope.selectedContextNode.contextKey = $scope.contextKey;
-        $scope.selectedContextNode.pathInfoSet = [];
-        $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
-        $scope.initPredicate();
-        $scope.initComplexPredicate();
-        $scope.treeDataForContext=[];
-        $scope.treeDataForContext.push($scope.selectedContextNode);
+        if($scope.selectedContextNode && $scope.selectedContextNode  === selectedContextNode){
+            $scope.contextKey = null;
+            $scope.selectedContextNode = null;
+            $scope.initPredicate();
+            $scope.initComplexPredicate();
+            $scope.treeDataForContext=[];
+        }else {
+            $scope.contextKey = new ObjectId().toString();
+            $scope.selectedContextNode = selectedContextNode;
+            $scope.selectedContextNode.contextKey = $scope.contextKey;
+            $scope.selectedContextNode.pathInfoSet = [];
+            $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
+            $scope.initPredicate();
+            $scope.initComplexPredicate();
+            $scope.treeDataForContext=[];
+            $scope.treeDataForContext.push($scope.selectedContextNode);
+        }
     };
 
     $scope.afterFirstNodeDrop = function() {
@@ -2612,14 +2620,23 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
 
 
     $scope.selectContext = function(selectedContextNode) {
-        $scope.treeDataForContext = [];
-        $scope.contextKey = new ObjectId().toString();
-        $scope.selectedContextNode = selectedContextNode;
-        $scope.selectedContextNode.contextKey = $scope.contextKey;
-        $scope.selectedContextNode.pathInfoSet = [];
-        $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
-        $scope.initConformanceStatement();
-        $scope.treeDataForContext.push($scope.selectedContextNode);
+        if($scope.selectedContextNode && $scope.selectedContextNode  === selectedContextNode){
+            $scope.contextKey = null;
+            $scope.selectedContextNode = null;
+            $scope.initPredicate();
+            $scope.initComplexPredicate();
+            $scope.treeDataForContext=[];
+        }else {
+            $scope.treeDataForContext = [];
+            $scope.contextKey = new ObjectId().toString();
+            $scope.selectedContextNode = selectedContextNode;
+            $scope.selectedContextNode.contextKey = $scope.contextKey;
+            $scope.selectedContextNode.pathInfoSet = [];
+            $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
+            $scope.initConformanceStatement();
+            $scope.treeDataForContext.push($scope.selectedContextNode);
+        }
+
     };
 
     $scope.goNext = function() {
@@ -2897,7 +2914,7 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $md
     }
 
     if(positionPath != '') positionPath = positionPath.substr(1);
-    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return binding.location == positionPath; }));
+    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return "" + binding.location === "" + positionPath; }));
     $scope.listOfBindingLocations = null;
 
     if(_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT){
@@ -2981,7 +2998,7 @@ angular.module('igl').controller('TableMappingMessageCtrl', function($scope, $md
 
     $scope.saveMapping = function() {
         blockUI.start();
-        var otherValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return binding.location != positionPath; }));
+        var otherValueSetBindings = angular.copy(_.filter($rootScope.message.valueSetBindings, function(binding){ return ""+ binding.location !== "" + positionPath; }));
         $rootScope.message.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 

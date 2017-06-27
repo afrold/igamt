@@ -1796,7 +1796,7 @@ angular.module('igl').controller('DatatypeReferencesCtrl', function($scope, $mdD
 angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $mdDialog, currentNode, $rootScope, blockUI, TableService) {
     $scope.changed = false;
     $scope.currentNode = currentNode;
-    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location == currentNode.path; }));
+    $scope.selectedValueSetBindings = angular.copy(_.filter($rootScope.datatype.valueSetBindings, function(binding){ return "" + binding.location ===  "" + currentNode.path; }));
     $scope.listOfBindingLocations = null;
     $scope.isSingleValueSetAllowed = false;
     $scope.valueSetSelectedForSingleCode = null;
@@ -1907,7 +1907,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
 
     $scope.saveMapping = function() {
         blockUI.start();
-        var otherValueSetBindings = angular.copy(_.filter($rootScope.datatype.valueSetBindings, function(binding){ return binding.location != currentNode.path; }));
+        var otherValueSetBindings = angular.copy(_.filter($rootScope.datatype.valueSetBindings, function(binding){ return "" + binding.location !==  "" + currentNode.path; }));
         $rootScope.datatype.valueSetBindings= $scope.selectedValueSetBindings.concat(otherValueSetBindings);
         blockUI.stop();
 
