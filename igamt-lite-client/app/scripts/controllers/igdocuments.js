@@ -935,16 +935,17 @@ angular.module('igl')
         });
     };
     $rootScope.deleteCompositeProfile = function(compositeMessage) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'DeleteCompositeProfileCtrl.html',
             controller: 'DeleteCompositeProfileCtrl',
-            resolve: {
-                compositeMessageToDelete: function() {
-                    return compositeMessage;
+            scope:$scope,
+            preserveScope:true,
+            locals: {
+                compositeMessageToDelete:  compositeMessage
                 }
-            }
+
         });
-        modalInstance.result.then(function(compositeMessage) {
+        modalInstance.then(function(compositeMessage) {
 
         }, function() {});
 
@@ -2175,7 +2176,7 @@ angular.module('igl').controller('DeleteProfileComponentCtrl', function($scope, 
     };
 });
 
-angular.module('igl').controller('DeleteCompositeProfileCtrl', function($scope, $modalInstance, compositeMessageToDelete, $rootScope, $http, CompositeProfileService, PcService) {
+angular.module('igl').controller('DeleteCompositeProfileCtrl', function($scope, $mdDialog, compositeMessageToDelete, $rootScope, $http, CompositeProfileService, PcService) {
 
     $scope.compositeMessageToDelete = compositeMessageToDelete;
     var pcsToChange = [];
@@ -2232,14 +2233,14 @@ angular.module('igl').controller('DeleteCompositeProfileCtrl', function($scope, 
             $rootScope.msg().show = true;
             $rootScope.manualHandle = true;
             $scope.loading = false;
-            $modalInstance.close($scope.compositeMessageToDelete);
+            $mdDialog.hide($scope.compositeMessageToDelete);
         });
 
 
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
 
