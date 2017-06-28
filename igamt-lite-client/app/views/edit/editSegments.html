@@ -551,7 +551,7 @@
                                                             <tr ng-repeat="item in displayItems">
                                                                 <td class="col-md-3">
 
-                                                                    <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'" ng-change="setDirty();">
+                                                                    <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="viewSettings.tableReadonly || segment.scope !== 'USER'" ng-change="setDirty();">
                                                                         <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value'" value="{{c.value}}">
                                                                             {{c.value}}({{c.label}})
                                                                         </md-option>
@@ -562,7 +562,7 @@
                                                                                ng-show="item.firstReferenceValue"
                                                                                placeholder="Select DT Flavor"
                                                                                ng-change="setDirty()"
-                                                                               ng-disabled="viewSettings.tableReadonly || !segment.scope === 'USER'">
+                                                                               ng-disabled="viewSettings.tableReadonly || segment.scope !== 'USER'">
                                                                            <md-option ng-repeat="link in igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}" value="{{link.id}}">
                                                                                {{getDatatypeLabel(datatypesMap[link.id])}}
                                                                            </md-option>

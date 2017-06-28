@@ -317,7 +317,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.isAvailableConstantValue = function(node) {
         if (node.type === "field" || node.type === "component") {
             if ($scope.hasChildren(node)) return false;
-            var bindings = $scope.findingBindings(node);
+            var bindings = $scope.findingBindingsPc(node);
             if (bindings && bindings.length > 0) return false;
             if ($rootScope.datatypesMap[node.datatype.id].name == 'ID' || $rootScope.datatypesMap[node.datatype.id].name == "IS") return false;
             return true;
@@ -1180,6 +1180,153 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 });
 
 angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $mdDialog, node, context, $rootScope, TableService) {
+    $scope.initCoConstraintsTable = function() {
+        if($scope.seg){
+            if($scope.seg.name === 'OBX'){
+                if(!$scope.coConstraintsTable
+                    || !$scope.coConstraintsTable.ifColumnDefinition
+                    || !$scope.coConstraintsTable.thenColumnDefinitionList
+                    || $scope.coConstraintsTable.thenColumnDefinitionList.length === 0){
+
+                    var field2 = null;
+                    var field3 = null;
+                    var field5 = null;
+
+                    angular.forEach($scope.seg.fields, function(field) {
+                        if(field.position === 2){
+                            field2 = field;
+                        }else if(field.position === 3){
+                            field3 = field;
+                        }else if(field.position === 5){
+                            field5 = field;
+                        }
+                    });
+
+                    var ifColumnDefinition = {
+                        id: new ObjectId().toString(),
+                        path: "3",
+                        constraintPath : "3[1]",
+                        type : "field",
+                        constraintType : "value",
+                        name : field3.name,
+                        usage : field3.usage,
+                        dtId : field3.datatype.id,
+                        primitive : false,
+                        dMReference : false
+                    };
+
+                    var field2ColumnDefinition = {
+                        id: new ObjectId().toString(),
+                        path: "2",
+                        constraintPath : "2[1]",
+                        type : "field",
+                        constraintType : "dmr",
+                        name : field2.name,
+                        usage : field2.usage,
+                        dtId : field2.datatype.id,
+                        primitive : true,
+                        dMReference : true
+                    };
+
+                    var field5ColumnDefinition = {
+                        id: new ObjectId().toString(),
+                        path: "5",
+                        constraintPath : "5[1]",
+                        type : "field",
+                        constraintType : "valueset",
+                        name : field5.name,
+                        usage : field5.usage,
+                        dtId : field5.datatype.id,
+                        primitive : true,
+                        dMReference : false
+                    };
+
+                    var thenColumnDefinitionList = [];
+                    thenColumnDefinitionList.push(field2ColumnDefinition);
+                    thenColumnDefinitionList.push(field5ColumnDefinition);
+
+                    var userColumnDefinitionList = [];
+                    var userColumnDefinition = {
+                        id : new ObjectId().toString(),
+                        title : "Comments"
+                    };
+                    userColumnDefinitionList.push(userColumnDefinition);
+
+                    $scope.coConstraintsTable.ifColumnDefinition = ifColumnDefinition;
+                    $scope.coConstraintsTable.thenColumnDefinitionList = thenColumnDefinitionList;
+                    $scope.coConstraintsTable.userColumnDefinitionList = userColumnDefinitionList;
+
+
+                    var isAdded = false;
+                    if(!$scope.coConstraintsTable.ifColumnData) $scope.coConstraintsTable.ifColumnData = [];
+                    if(!$scope.coConstraintsTable.thenMapData) $scope.coConstraintsTable.thenMapData = {};
+                    if(!$scope.coConstraintsTable.userMapData) $scope.coConstraintsTable.userMapData = {};
+                    if(!$scope.coConstraintsTable.rowSize) $scope.coConstraintsTable.rowSize = 0;
+
+                    if($scope.coConstraintsTable.ifColumnDefinition){
+                        var newIFData = {};
+                        newIFData.valueData = {};
+                        newIFData.bindingLocation = null;
+
+                        $scope.coConstraintsTable.ifColumnData.push(newIFData);
+                        isAdded = true;
+                    }
+
+                    if($scope.coConstraintsTable.thenColumnDefinitionList){
+                        for (var i = 0, len1 = $scope.coConstraintsTable.thenColumnDefinitionList.length; i < len1; i++) {
+                            var thenColumnDefinition = $scope.coConstraintsTable.thenColumnDefinitionList[i];
+
+                            var newTHENData = {};
+                            newTHENData.valueData = {};
+                            newTHENData.valueSets = [];
+
+                            if(!$scope.coConstraintsTable.thenMapData[thenColumnDefinition.id]) $scope.coConstraintsTable.thenMapData[thenColumnDefinition.id] = [];
+
+                            $scope.coConstraintsTable.thenMapData[thenColumnDefinition.id].push(newTHENData);
+                            isAdded = true;
+                        };
+                    }
+
+                    if($scope.coConstraintsTable.userColumnDefinitionList){
+                        for (var i = 0, len1 = $scope.coConstraintsTable.userColumnDefinitionList.length; i < len1; i++) {
+                            var userColumnDefinition = $scope.coConstraintsTable.userColumnDefinitionList[i];
+
+                            var newUSERData = {};
+                            newUSERData.text = "";
+
+                            if(!$scope.coConstraintsTable.userMapData[userColumnDefinition.id]) $scope.coConstraintsTable.userMapData[userColumnDefinition.id] = [];
+
+                            $scope.coConstraintsTable.userMapData[userColumnDefinition.id].push(newUSERData);
+                            isAdded = true;
+                        };
+                    }
+
+                    if(isAdded) {
+                        $scope.coConstraintsTable.rowSize = $scope.coConstraintsTable.rowSize + 1;
+                    }
+                }
+            }
+        }
+
+        if($scope.seg && $scope.coConstraintsTable && $scope.coConstraintsTable.thenColumnDefinitionList){
+            $scope.coConstraintsTable.thenColumnDefinitionListForDisplay = [];
+            for (var i in $scope.coConstraintsTable.thenColumnDefinitionList) {
+                var def = $scope.coConstraintsTable.thenColumnDefinitionList[i];
+
+                if(def.constraintType === 'dmr'){
+                    $scope.coConstraintsTable.thenColumnDefinitionListForDisplay.push(def);
+                    var clone = angular.copy(def);
+                    clone.constraintType = 'dmf';
+                    $scope.coConstraintsTable.thenColumnDefinitionListForDisplay.push(clone);
+                }else {
+                    $scope.coConstraintsTable.thenColumnDefinitionListForDisplay.push(def);
+                }
+            }
+        }
+    };
+
+
+
     $scope.node = angular.copy(node);
     $scope.seg = angular.copy($rootScope.segmentsMap[node.attributes.ref.id]);
     console.log(node);
@@ -1199,6 +1346,16 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
 
     };
     $scope.findCoConstraints();
+    $scope.initCoConstraintsTable();
+    $scope.coConRowIndexList = [];
+
+    for (var i = 0, len1 = $scope.coConstraintsTable.rowSize; i < len1; i++) {
+        var rowIndexObj = {};
+        rowIndexObj.rowIndex = i;
+        rowIndexObj.id = new ObjectId().toString();
+        $scope.coConRowIndexList.push(rowIndexObj);
+    }
+
     console.log($scope.coConstraintsTable);
 
 
