@@ -331,7 +331,7 @@ public class PathGroupServiceImpl implements PathGroupService {
       SubProfileComponentAttributes attributes) {
     for (PathGroup pathGroup : pathGroups) {
       if (path.startsWith(pathGroup.getPath() + ".")) {
-        add(pathGroup.getChildren(), path.replace(pathGroup.getPath() + ".", ""), attributes);
+        add(pathGroup.getChildren(), path.replaceFirst(pathGroup.getPath() + ".", ""), attributes);
         return;
       } else if (path.equals(pathGroup.getPath())) {
         pathGroup.add(attributes);
