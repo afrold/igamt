@@ -6,7 +6,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.StringUtils;
+
 import static org.junit.Assert.*;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -45,5 +51,25 @@ public class SerializationUtilTest {
         assertFalse(serializationUtil.isShowConfLength("0.1.9"));
         assertFalse(serializationUtil.isShowConfLength("2.5.1"));
         assertFalse(serializationUtil.isShowConfLength("2.5.1.0"));
+    }
+    
+    private boolean doTestRemoveBr(String div, int expectedBrs){
+    	Document doc = Jsoup.parse(div);
+    	Element elementDiv = doc.select("div").first();
+    	serializationUtil.removeDoubleBrTag(elementDiv);
+    	String html = doc.body().html();
+    	return StringUtils.countOccurrencesOf(html, "<br>") == expectedBrs;
+    }
+    
+    @Test
+    public void testRemoveDoubleBrTagsDoubleTag(){
+    	String div = "<div><br/><br/>paragraph 1<br/>p2<br/><br/></div>";
+    	assertTrue(doTestRemoveBr(div,3));
+    }
+    
+    @Test
+    public void testRemoveDoubleBrTagsNoDoubleTag(){
+    	String div = "<div><br/>paragraph 1</div>";
+    	assertTrue(doTestRemoveBr(div,1));
     }
 }
