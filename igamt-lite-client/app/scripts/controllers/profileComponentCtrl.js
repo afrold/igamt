@@ -593,7 +593,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         $mdDialog.show({
             parent: angular.element(document).find('body'),
             templateUrl: 'GlobalConformanceStatementCtrl.html',
-            controller: 'GlobalConformanceStatementCtrl',
+            controller: 'GlobalConformanceStatementCtrlInPc',
             locals: {
                 selectedMessage: angular.copy($rootScope.messagesMap[node.source.messageId]),
 
@@ -3077,6 +3077,15 @@ angular.module('igl').controller('TableBindingForPcCtrl', function($scope, $mdDi
 
 
 angular.module('igl').controller('GlobalPredicateCtrlInPc', function($scope, $mdDialog, node, $rootScope, $q) {
+
+    $scope.getDialogStyle = function(){
+        if ($scope.dialogStep === 0) return "width: 70%";
+        if ($scope.dialogStep === 1) return "width: 30%";
+        if ($scope.dialogStep === 2) return "width: 90%";
+        if ($scope.dialogStep === 3) return "width: 50%";
+        return "width: 90%";
+    };
+
     console.log(node);
     var index = node.path.indexOf(".");
     var path = node.path.substr(index + 1);

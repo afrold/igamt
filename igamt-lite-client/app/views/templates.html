@@ -5201,17 +5201,20 @@
     </div>
 </script>
 <script type="text/ng-template" id="ShareDatatypeModal.html">
-    <div>
-        <div class="modal-header">
-            <h3 class="modal-title">Share Datatype</h3>
-        </div>
-        <div class="modal-body">
-            <div class="container" style="margin-bottom: 20px;margin-top: 20px">
-                <div class="row" ng-if="error != null">
-                    <div class="col-md-12">
-                        <span ng-bind="error" style="color: red;"></span>
-                    </div>
+    <md-dialog aria-label="Share IG Document">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Share IG Document </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content" style="min-height: 200px">
 
                 <div class="row" ng-if="igdocumentSelected.shareParticipantIds.length > 0">
                     <div class="col-md-12">
@@ -5222,8 +5225,8 @@
                                     <tr ng-repeat="participant in igdocumentSelected.shareParticipantIds">
                                         <td><i>{{participant.fullname}} ({{participant.username}})</i></td>
                                         <td>
-                                            <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request</button>
-                                            <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="participant.pendingApproval"><i class="fa fa-times"></i> Cancel</button>
+                                            <md-button disabled class="btn btn-raised btn-warning btn-xs" type="button" style="margin-top: 0;" ng-if="participant.pendingApproval">Pending Request</md-button>
+                                            <md-button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs" type="button" style="margin-top: 0;" ng-click="unshare(participant)" ng-if="participant.pendingApproval"><i class="fa fa-times"></i> Cancel</md-button>
                                         </td>
                                         <td>
                                             {{participant.permission}}
@@ -5236,13 +5239,21 @@
                 </div>
 
 
-                <div class="row">
-                    <div class="col-md-8">
-                        <tags-input ng-model="tags" key-property="id" display-property="username" placeholder="Find user" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">
-                            <auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
-                        </tags-input>
+                <div layout="row" layout-align="center center">
+                    <div flex="80">
+                        <!--<tags-input ng-model="tags" key-property="id" display-property="username" placeholder="Find user" replace-spaces-with-dashes="false" add-from-autocomplete-only="true">-->
+                            <!--<auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>-->
+                        <!--</tags-input>-->
+                        <md-contact-chips
+                                ng-model="tags"
+                                md-contacts="loadUsernames($query)"
+                                md-contact-name="fullname"
+                                md-require-match="true"
+                                md-highlight-flags="i"
+                                placeholder="Search By User Name">
+                        </md-contact-chips>
                     </div>
-                    <div class="col-md-4">
+                    <div flex="20">
                         <ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
                             <ui-select-match>{{$select.selected}}</ui-select-match>
                             <ui-select-choices repeat="item in itemArray | filter: $select.search">
@@ -5252,12 +5263,15 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-raised btn-default" type="button" ng-click="cancel()"><i class="fa fa-times fa-fw"></i> Cancel </button>
-                <button class="btn btn-raised btn-primary" type="button" ng-click="ok()" ng-disabled="tags.length === 0"><i class="fa fa-check"></i>Share</button>
-            </div>
-        </div>
-    </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+
+                <md-button class="btn btn-raised btn-primary" type="button" ng-click="ok()"
+                           ng-disabled="tags.length === 0"><i class="fa fa-check"></i>Share
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="ShareDatatypeErrorModal.html">
     <div>

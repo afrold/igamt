@@ -25,13 +25,13 @@
                         <span class="header4">Value Set: {{table.bindingIdentifier}}</span> <span class="version-badge-label" ng-if="table.publicationVersion">v{{table.publicationVersion}}</span></span>
                         <span class="pull-right">
                             <div class="btn-group" ng-hide="table.scope !== 'USER'" style="margin-bottom: 0px;" ng-if="!igdocument">
-                                <button type="button" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(table)">
-                                    <i class="fa fa-share-alt" aria-hidden="true"></i> Share<span class="badge" ng-bind="table.shareParticipantIds.length" style="margin-right:5px;"></span>
-                                </button>
-                                <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>
-                                <ul class="dropdown-menu igl-menu" role="menu">
-                                    <li ng-repeat="participant in table.shareParticipantIds"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant.username}} <span ng-if="participant.pendingApproval">(Pending...)</span></a></li>
-                                </ul>
+                                <!--<button type="button" class="btn btn-raised btn-primary btn-sm" ng-class="" ng-click="shareModal(table)">-->
+                                    <!--<i class="fa fa-share-alt" aria-hidden="true"></i> Share<span class="badge" ng-bind="table.shareParticipantIds.length" style="margin-right:5px;"></span>-->
+                                <!--</button>-->
+                                <!--<button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span class="sr-only">Toggle Dropdown</span> </button>-->
+                                <!--<ul class="dropdown-menu igl-menu" role="menu">-->
+                                    <!--<li ng-repeat="participant in table.shareParticipantIds"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant.username}} <span ng-if="participant.pendingApproval">(Pending...)</span></a></li>-->
+                                <!--</ul>-->
                             </div>
 
                             <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
@@ -42,7 +42,7 @@
                             <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!editForm.$dirty" ng-click="reset()">
                                 <span><i class="fa fa-times fa-fw"></i> Reset</span>
                             </button>
-                            <button title="commit" type="button" class="btn btn-raised btn-sm btn-info" ng-click="publishTable(table)" ng-if="table.status !== 'PUBLISHED'"><span><i class="fa fa-check" aria-hidden="true"></i> Publish</span></button>
+                            <!--<button title="commit" type="button" class="btn btn-raised btn-sm btn-info" ng-click="publishTable(table)" ng-if="table.status !== 'PUBLISHED'"><span><i class="fa fa-check" aria-hidden="true"></i> Publish</span></button>-->
                         </span>
                     </div>
 
