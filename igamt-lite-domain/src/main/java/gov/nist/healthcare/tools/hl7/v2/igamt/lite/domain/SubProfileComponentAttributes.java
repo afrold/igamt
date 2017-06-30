@@ -44,13 +44,12 @@ public class SubProfileComponentAttributes {
   private String text = "";
   private SegmentLink ref;
   private SegmentLink oldRef;
-  private List<ConformanceStatement> oldConformanceStatements =
-      new ArrayList<ConformanceStatement>();
-  private List<ConformanceStatement> conformanceStatements;
+  private List<ConformanceStatement> oldConformanceStatements =new ArrayList<ConformanceStatement>();
   private DynamicMappingDefinition oldDynamicMappingDefinition = new DynamicMappingDefinition();
-  private DynamicMappingDefinition dynamicMappingDefinition = new DynamicMappingDefinition();
   private CoConstraintsTable oldCoConstraintsTable = new CoConstraintsTable();
-  private CoConstraintsTable coConstraintsTable = new CoConstraintsTable();
+  private List<ConformanceStatement> conformanceStatements;
+  private DynamicMappingDefinition dynamicMappingDefinition;
+  private CoConstraintsTable coConstraintsTable;
 
 
 

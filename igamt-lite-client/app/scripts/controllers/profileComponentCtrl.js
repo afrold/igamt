@@ -1224,7 +1224,21 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 });
 
 angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $mdDialog, node, context, $rootScope, TableService) {
+    $scope.backToCoConTable = function(){
+        $scope.coConTable = true;
+        $scope.ifAddCoCon = false;
+        $scope.thenAddCoCon = false;
+        $scope.thenData = false;
+        $scope.userAddCoCon = false;
+        $scope.userData = false;
+    };
     $scope.initCoConstraintsTable = function() {
+        $scope.coConTable = true;
+        $scope.ifAddCoCon = false;
+        $scope.thenAddCoCon = false;
+        $scope.thenData = false;
+        $scope.userAddCoCon = false;
+        $scope.userData = false;
         if($scope.seg){
             if($scope.seg.name === 'OBX'){
                 if(!$scope.coConstraintsTable
@@ -1370,7 +1384,6 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
     };
     $scope.node = angular.copy(node);
     $scope.seg = angular.copy($rootScope.segmentsMap[node.attributes.ref.id]);
-    console.log(node);
     $scope.changed = false;
     $scope.setDirty = function() {
         $scope.changed = true;
@@ -1394,12 +1407,6 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         rowIndexObj.id = new ObjectId().toString();
         $scope.coConRowIndexList.push(rowIndexObj);
     }
-    console.log($scope.coConstraintsTable);
-    $scope.ifAddCoCon = false;
-    $scope.thenAddCoCon = false;
-    $scope.userAddCoCon = false;
-    $scope.thenData = false;
-    $scope.userData = false;
     $scope.saveIF = function() {
         var ifColumnDefinition = {};
         ifColumnDefinition.id = new ObjectId().toString();
@@ -1440,6 +1447,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
             $scope.coConstraintsTable.ifColumnDefinition = ifColumnDefinition;
         }
         $scope.setDirty();
+        $scope.coConTable = true;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
         $scope.thenData = false;
@@ -1488,6 +1496,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         $scope.targetNode = subComponent;
     };
     $scope.coConstraintIFDefinition = function() {
+        $scope.coConTable = false;
         $scope.ifAddCoCon = true;
         $scope.thenAddCoCon = false;
         $scope.userAddCoCon = false;
@@ -1535,6 +1544,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         };
     };
     $scope.coConstraintTHENDefinition = function(columnDefinition) {
+        $scope.coConTable = false;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = true;
         $scope.userAddCoCon = false;
@@ -1596,6 +1606,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         };
     };
     $scope.coConstraintUSERDefinitionF = function(coConstraintUSERDefinition) {
+        $scope.coConTable = false;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
         $scope.thenData = false;
@@ -1617,6 +1628,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
     $scope.editValueSetThenMapData = function(currentId, currentIndex) {
         $scope.currentId = currentId;
         $scope.currentIndex = currentIndex;
+        $scope.coConTable = false;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
         $scope.thenData = true;
@@ -1704,7 +1716,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
             $scope.coConstraintsTable.thenMapData[$scope.currentId][$scope.currentIndex] = angular.copy($scope.data);
             $scope.setDirty();
         }
-
+        $scope.coConTable = true;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
         $scope.thenData = false;
@@ -1716,7 +1728,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
             $scope.coConstraintsTable.userMapData[$scope.currentId][$scope.currentIndex] = angular.copy($scope.data);
             $scope.setDirty();
         }
-
+        $scope.coConTable = true;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
         $scope.thenData = false;
@@ -1767,6 +1779,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
             }
         }
         $scope.setDirty();
+        $scope.coConTable = true;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
         $scope.thenData = false;
@@ -1919,6 +1932,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         }
         $scope.initCoConstraintsTable();
         $scope.setDirty();
+        $scope.coConTable = true;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
         $scope.thenData = false;
@@ -2208,6 +2222,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
     $scope.editUserData = function (currentId, currentIndex) {
         $scope.currentId = currentId;
         $scope.currentIndex = currentIndex;
+        $scope.coConTable = false;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
         $scope.userAddCoCon = false;
@@ -2912,7 +2927,7 @@ angular.module('igl').controller('addComponentsCtrl',
                         oldDynamicMappingDefinition: pc.dynamicMappingDefinition,
                         oldConformanceStatements: pc.conformanceStatements,
                         conformanceStatements: null,
-                        oldCoConstraintsTable: $rootScope.segmentsMap[pc.id].coConstraintsTable,
+                        oldCoConstraintsTable: pc.coConstraintsTable,
                     },
                     appliedTo: [],
                     version: ""
