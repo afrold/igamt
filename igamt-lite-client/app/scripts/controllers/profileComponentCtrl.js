@@ -556,7 +556,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         $mdDialog.show({
             parent: angular.element(document).find('body'),
             templateUrl: 'GlobalConformanceStatementCtrl.html',
-            controller: 'GlobalConformanceStatementCtrlInPc',
+            controller: 'GlobalConformanceStatementCtrl',
             locals: {
                 selectedMessage : selectedMessage,
                 contextPath : node.path,

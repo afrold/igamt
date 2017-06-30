@@ -2550,6 +2550,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.treeDataForMessage.push($scope.selectedMessage);
     $scope.draggingStatus = null;
     $scope.contextKey = null;
+    $scope.mode = mode;
 
     $scope.setChanged = function() {
         $scope.changed = true;
