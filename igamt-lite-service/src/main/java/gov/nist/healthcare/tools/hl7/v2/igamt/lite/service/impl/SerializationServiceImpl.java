@@ -215,7 +215,8 @@ import nu.xom.Document;
         Profile profile = igDocument.getProfile();
         //Create base section node for the profile serialization
         String id = profile.getId();
-        String position = String.valueOf(profile.getSectionPosition());
+        String position = String.valueOf(igDocument.getChildSections().size()+1);
+        //String position = String.valueOf(profile.getSectionPosition());
         prefix = String.valueOf(profile.getSectionPosition() + 1);
         String headerLevel = String.valueOf(1);
         String title = "";
