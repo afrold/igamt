@@ -1769,22 +1769,22 @@
                                         <tr ng-repeat="participant in igdocumentSelected.shareParticipants">
                                             <td><i>{{participant.fullname}} ({{participant.username}})</i></td>
                                             <td>
-                                                <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs"
+                                                <md-button disabled="loading" class="btn btn-raised btn-danger btn-xs"
                                                         type="button" style="margin-top: 0;"
                                                         ng-click="unshare(participant)"
                                                         ng-if="!participant.pendingApproval"><i class="fa fa-times"></i>
                                                     Remove
-                                                </button>
-                                                <button ng-disabled="loading" class="btn btn-raised btn-warning btn-xs"
+                                                </md-button>
+                                                <button disabled class="btn btn-raised btn-warning btn-xs"
                                                         type="button" style="margin-top: 0;"
                                                         ng-if="participant.pendingApproval">Pending Request
                                                 </button>
-                                                <button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs"
+                                                <md-button ng-disabled="loading" class="btn btn-raised btn-danger btn-xs"
                                                         type="button" style="margin-top: 0;"
                                                         ng-click="unshare(participant)"
                                                         ng-if="participant.pendingApproval"><i class="fa fa-times"></i>
                                                     Cancel
-                                                </button>
+                                                </md-button>
                                             </td>
                                             <td>
                                                 {{participant.permission}}
@@ -1795,17 +1795,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <tags-input ng-model="tags" key-property="id" display-property="username"
-                                            placeholder="Find user" replace-spaces-with-dashes="false"
-                                            add-from-autocomplete-only="true">
-                                    <auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true"
-                                                   load-on-empty="true" max-results-to-show="32"
-                                                   template="autocomplete-template"></auto-complete>
-                                </tags-input>
+                        <div layout="row" layout-align="center center">
+                            <div flex="80">
+
+                                <md-contact-chips
+                                        ng-model="tags"
+                                        md-contacts="loadUsernames($query)"
+                                        md-contact-name="fullname"
+                                        md-require-match="true"
+                                        md-highlight-flags="i"
+                                        placeholder="Search By User Name">
+                                </md-contact-chips>
+
+                                <!--<tags-input ng-model="tags" key-property="id" display-property="username"-->
+                                            <!--placeholder="Find user" replace-spaces-with-dashes="false"-->
+                                            <!--add-from-autocomplete-only="true">-->
+                                    <!--<auto-complete source="loadUsernames($query)" min-length="0" load-on-focus="true"-->
+                                                   <!--load-on-empty="true" max-results-to-show="32"-->
+                                                   <!--template="autocomplete-template"></auto-complete>-->
+                                <!--</tags-input>-->
                             </div>
-                            <div class="col-md-4">
+                            <div flex="20">
                                 <ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
                                     <ui-select-match>{{$select.selected}}</ui-select-match>
                                     <ui-select-choices repeat="item in itemArray | filter: $select.search">

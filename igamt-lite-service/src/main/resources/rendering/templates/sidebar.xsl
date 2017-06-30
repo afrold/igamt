@@ -14,7 +14,9 @@
                 <xsl:text>TABLE OF CONTENT</xsl:text>
             </xsl:element>
             <xsl:element name="br"/>
-            <xsl:call-template name="displayTableOfContentSection"/>
+            <xsl:for-each select="ConformanceProfile/Sections/Section">
+            	<xsl:call-template name="displayTableOfContentSection"/>
+            </xsl:for-each>
         </xsl:element>
         <xsl:element name="div">
             <xsl:attribute name="id">

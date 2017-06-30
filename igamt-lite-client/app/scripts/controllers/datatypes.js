@@ -1268,33 +1268,26 @@ angular.module('igl')
                     }
                     if (!isPresent) return user;
                 });
-
-                var modalTemplate = "ShareDatatypeErrorModal.html";
-                if (datatype.status === "PUBLISHED") {
-                    modalTemplate = "ShareDatatypeModal.html";
-                }
-                var modalInstance = $modal.open({
-                    templateUrl: modalTemplate,
+                var modalInstance = $mdDialog.show({
+                    templateUrl: 'ShareDatatypeModal.html',
                     controller: 'ShareDatatypeCtrl',
+                    scope:$scope,
+                    preserveScope:true,
                     size: 'lg',
-                    resolve: {
-                        igdocumentSelected: function() {
-                            return datatype;
-                        },
-                        userList: function() {
-                            return _.filter(filteredUserList, function(user) {
-                                return user.id != $rootScope.accountId && datatype.shareParticipantIds && datatype.shareParticipantIds != null && datatype.shareParticipantIds.indexOf(user.id) == -1;
-                            });
-                        }
+                    locals: {
+                        igdocumentSelected:  datatype,
+                        userList:  _.filter(filteredUserList, function(user) {
+
+                            return user.id != $rootScope.accountId && datatype.shareParticipantIds && datatype.shareParticipantIds != null && datatype.shareParticipantIds.indexOf(user.id) == -1;
+                        })
                     }
                 });
 
-                modalInstance.result.then(function(result) {
+                modalInstance.then(function(result) {
                     $scope.saveDatatypeAfterShare();
                 }, function() {
-                    if (modalTemplate === 'ShareDatatypeModal.html') {
                         $scope.saveDatatypeAfterShare();
-                    }
+
                 });
 
             }, function(error) {
@@ -3009,7 +3002,7 @@ angular.module('igl').controller('AddBindingForDatatype', function($scope, $moda
     };
 });
 
-angular.module('igl').controller('ShareDatatypeCtrl', function($scope, $modalInstance, $http, igdocumentSelected, userList, DatatypeService, $rootScope) {
+angular.module('igl').controller('ShareDatatypeCtrl', function($scope, $mdDialog, $http, igdocumentSelected, userList, DatatypeService, $rootScope) {
 
     $scope.igdocumentSelected = igdocumentSelected;
 
@@ -3047,13 +3040,13 @@ angular.module('igl').controller('ShareDatatypeCtrl', function($scope, $modalIns
             $rootScope.msg().text = "dtSharedSuccessfully";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
-            $modalInstance.close();
+            $mdDialog.hide();
         }, function(error) {
             $scope.error = error.data;
         });
     };
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide();
     };
 
     $scope.selectedItem = {

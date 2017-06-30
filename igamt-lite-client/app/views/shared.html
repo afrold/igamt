@@ -12,27 +12,42 @@
     }
 </script>
 <div  ng-if="isAuthenticated()" class="container" ng-init="init()">
+    <md-tabs md-dynamic-height md-border-bottom>
 
-            <md-tabs>
-                <md-tab active="datatypeTab"  md-selected="datatypeTab" select="select(dtTab)" md-on-select="setTypeOfSharing('datatype');">
-                    <md-tab-label>
-                        Datatypes
-                    </md-tab-label>
-                    <md-tab-body>
+    <md-tab  active="datatypeTab"  md-selected="datatypeTab" select="select(dtTab)" md-on-select="setTypeOfSharing('datatype');">
+        <md-tab-label>
+            Datatypes
+        </md-tab-label>
+        <md-tab-body>
+            <md-content class="md-padding">
+                <div class="md-content">
                     <div ng-include="sharedElementView"></div>
-                    </md-tab-body>
-                </md-tab>
-                 <md-tab active="tableTab"  md-selected="tableTab" select="select(vsTab)" md-on-select="setTypeOfSharing('table')">
-                    <md-tab-label >
-                        Value Sets
-                    </md-tab-label>
-                     <md-tab-body>
+                </div>
+            </md-content>
+        </md-tab-body>
+    </md-tab>
+    </md-tabs>
 
-                     <div ng-include="sharedElementViewForTables"></div>
-                     </md-tab-body>
-                </md-tab>
+            <!--<md-tabs>-->
+                <!--<md-tab active="datatypeTab"  md-selected="datatypeTab" select="select(dtTab)" md-on-select="setTypeOfSharing('datatype');">-->
+                    <!--<md-tab-label>-->
+                        <!--Datatypes-->
+                    <!--</md-tab-label>-->
+                    <!--<md-tab-body>-->
+                    <!--<div ng-include="sharedElementView"></div>-->
+                    <!--</md-tab-body>-->
+                <!--</md-tab>-->
+                 <!--<md-tab active="tableTab"  md-selected="tableTab" select="select(vsTab)" md-on-select="setTypeOfSharing('table')">-->
+                    <!--<md-tab-label >-->
+                        <!--Value Sets-->
+                    <!--</md-tab-label>-->
+                     <!--<md-tab-body>-->
+                        <!--<p>Comming Soon</p>-->
+                     <!--&lt;!&ndash;<div ng-include="sharedElementViewForTables"></div>&ndash;&gt;-->
+                     <!--</md-tab-body>-->
+                <!--</md-tab>-->
 
-            </md-tabs>
+            <!--</md-tabs>-->
 
 
 </div>
@@ -59,7 +74,6 @@
 			</div>
 			<div flex="70">
 
-            <h3 ng-if="Sharedsubview !== 'datatypePending.html'"><i class="fa fa-pencil" aria-hidden="true"></i> Edit Area </h3>
             <h3 ng-if="Sharedsubview === 'datatypePending.html'"><i class="fa fa-hourglass" aria-hidden="true"></i> Pending Requests </h3>
                 <div id="edit" style="width:100%; max-height: 800px; background-color: white;overflow: scroll;">
                     <div ng-include="Sharedsubview"></div>
@@ -106,14 +120,11 @@
       <div>
         <span style="font-size:18px;" data-nodrag ng-click="showPending()"><strong>Pending requests</strong></span>
       </div>
-      <div style="margin-top:10px;">
-        <span style="font-size:18px;" data-nodrag><strong>Shared Datatypes</strong></span>
-      </div>
         <ol ui-tree-nodes="" ng-model="SharedDataTypeTree">
             <li ng-repeat="dataLibrary in SharedDataTypeTree" ui-tree-node>
-                <div ui-tree-handle data-nodrag>
-                    <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Data Types: <span class="badge">{{datatypes.length}}</span>
-                </div>
+                <!--<div ui-tree-handle data-nodrag>-->
+                    <!--<i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Data Types: <span class="badge">{{datatypes.length}}</span>-->
+                <!--</div>-->
 
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes track by $index" ui-tree-node ng-if="!collapsed">

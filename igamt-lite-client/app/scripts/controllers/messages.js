@@ -2216,6 +2216,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
         return deferred.promise;
     };
 
+
     $scope.selectContext = function(selectedContextNode) {
         if($scope.selectedContextNode && $scope.selectedContextNode  === selectedContextNode){
             $scope.contextKey = null;
