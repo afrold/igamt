@@ -495,7 +495,7 @@
 
 
                                                                 <td style="text-align:center" ng-class="{'input-change':(node.comments && node.comments.length>0),'emptyCol':node.type==='message'}">
-                                                                    <div ng-repeat="comment in findingComments(node)">
+                                                                    <div ng-repeat="comment in findingCommentsInPC(node)">
                                                                         <span class="badge label-white">
                                                                             <span ng-class="{'label-message-icon' : comment.from == 'message', 'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                                                                             <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-click="editCommentDlg(node, comment, false, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>

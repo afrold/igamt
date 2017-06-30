@@ -39,8 +39,10 @@ public class SubProfileComponentAttributes {
   private List<TableLink> oldTables = new ArrayList<TableLink>();
   private DatatypeLink datatype;
   private DatatypeLink oldDatatype;
-  private String comment = "";
-  private String oldComment = "";
+  // private String comment = "";
+  // private String oldComment = "";
+  private List<Comment> oldComments = new ArrayList<Comment>();
+  private List<Comment> comments = new ArrayList<Comment>();
   private String text = "";
   private SegmentLink ref;
   private SegmentLink oldRef;
@@ -183,21 +185,21 @@ public class SubProfileComponentAttributes {
     this.oldDatatype = oldDatatype;
   }
 
-  public String getComment() {
-    return comment;
-  }
-
-  public void setComment(String comment) {
-    this.comment = comment;
-  }
-
-  public String getOldComment() {
-    return oldComment;
-  }
-
-  public void setOldComment(String oldComment) {
-    this.oldComment = oldComment;
-  }
+  // public String getComment() {
+  // return comment;
+  // }
+  //
+  // public void setComment(String comment) {
+  // this.comment = comment;
+  // }
+  //
+  // public String getOldComment() {
+  // return oldComment;
+  // }
+  //
+  // public void setOldComment(String oldComment) {
+  // this.oldComment = oldComment;
+  // }
 
   public String getText() {
     return text;
@@ -277,6 +279,34 @@ public class SubProfileComponentAttributes {
   @Override
   public String toString() {
     return ReflectionToStringBuilder.toString(this);
+  }
+
+  /**
+   * @return the oldComments
+   */
+  public List<Comment> getOldComments() {
+    return oldComments;
+  }
+
+  /**
+   * @param oldComments the oldComments to set
+   */
+  public void setOldComments(List<Comment> oldComments) {
+    this.oldComments = oldComments;
+  }
+
+  /**
+   * @return the comments
+   */
+  public List<Comment> getComments() {
+    return comments;
+  }
+
+  /**
+   * @param comments the comments to set
+   */
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
   }
 
 
