@@ -704,9 +704,12 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             controller: 'GlobalConformanceStatementCtrl',
             locals: {
                 selectedMessage: message,
+                contextPath: null,
+                currentConformanceStatements : null,
                 segmentsMap: $rootScope.segmentsMap,
                 config : $rootScope.config,
-                tables : $rootScope.tables
+                tables : $rootScope.tables,
+                mode: "message"
             }
         }).then(function(message) {
             if (message) {
@@ -2518,8 +2521,11 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
     $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
 
 });
-
-angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, segmentsMap, config, tables, selectedMessage, $rootScope, $q, $mdDialog) {
+/*
+ contextPath: ".",
+ currentConformanceStatements : $scope.findingConfSt(node),
+ */
+angular.module('igl').controller('GlobalConformanceStatementCtrl', function($scope, segmentsMap, config, tables, selectedMessage, contextPath,  currentConformanceStatements, $rootScope, $q, $mdDialog, mode) {
     $scope.dialogStep = 0;
     $scope.segmentsMap = segmentsMap;
     $scope.config = config;
@@ -2620,10 +2626,10 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
 
 
     $scope.selectContext = function(selectedContextNode) {
-        if($scope.selectedContextNode && $scope.selectedContextNode  === selectedContextNode){
+        if($scope.selectedContextNode && $scope.selectedContextNode === selectedContextNode){
             $scope.contextKey = null;
             $scope.selectedContextNode = null;
-            $scope.initPredicate();
+            $scope.initConformanceStatement();
             $scope.initComplexPredicate();
             $scope.treeDataForContext=[];
         }else {
@@ -2827,14 +2833,64 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     };
 
     $scope.save = function() {
-        $rootScope.recordChanged();
-        $mdDialog.hide($scope.selectedMessage);
+        if(mode === 'pc'){
+            $rootScope.recordChanged();
+            $mdDialog.hide($scope.selectedContextNode);
+        }else{
+            $rootScope.recordChanged();
+            $mdDialog.hide($scope.selectedMessage);
+        }
+    };
+
+    $scope.travelByContextPath = function (obj, path){
+        var splittedPath = path.split(".");
+
+        if(splittedPath.length > 1){
+            var currentPath = splittedPath[1];
+            var childObj = _.find(obj.children, function(child){ return child.position + ""  == currentPath + ""; });
+
+            if(childObj){
+                splittedPath.splice(0, 1);
+                var newPath = splittedPath.join(".");
+                console.log(newPath);
+                $scope.travelByContextPath(childObj, newPath);
+            }
+        }else {
+            $scope.treeDataForContext = [];
+            $scope.contextKey = new ObjectId().toString();
+            $scope.selectedContextNode = obj;
+            $scope.selectedContextNode.conformanceStatements = angular.copy(currentConformanceStatements);
+            $scope.selectedContextNode.contextKey = $scope.contextKey;
+            $scope.selectedContextNode.pathInfoSet = [];
+            $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
+            $scope.initConformanceStatement();
+            $scope.treeDataForContext.push($scope.selectedContextNode);
+            $scope.dialogStep = 1;
+        }
+
     };
 
     $scope.initConformanceStatement();
     $scope.initComplexStatement();
-    $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
 
+    if(contextPath){
+        if(contextPath.indexOf('.') < 0){
+            $scope.treeDataForContext = [];
+            $scope.contextKey = new ObjectId().toString();
+            $scope.selectedContextNode = $scope.selectedMessage;
+            $scope.selectedContextNode.conformanceStatements = angular.copy(currentConformanceStatements);
+            $scope.selectedContextNode.contextKey = $scope.contextKey;
+            $scope.selectedContextNode.pathInfoSet = [];
+            $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
+            $scope.initConformanceStatement();
+            $scope.treeDataForContext.push($scope.selectedContextNode);
+            $scope.dialogStep = 1;
+        }else {
+            $scope.travelByContextPath($scope.selectedMessage, contextPath);
+        }
+    }else {
+        $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
+    }
 });
 
 angular.module('igl').controller('DeleteMessagePredicateCtrl', function($scope, $modalInstance, position, message, $rootScope) {

@@ -951,10 +951,14 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             parent: angular.element(document).find('body'),
             templateUrl: 'ConformanceStatementSegmentCtrl.html',
             controller: 'ConformanceStatementSegmentCtrl',
+            scope:$scope,
+            preserveScope:true,
             locals: {
                 selectedSegment : $rootScope.segment,
+                currentConformanceStatements : null,
                 config : $rootScope.config,
-                tables : $rootScope.tables
+                tables : $rootScope.tables,
+                mode : "segment"
             }
         }).then(function(segment) {
             if (segment) {
@@ -2397,7 +2401,8 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
     $scope.existingPredicate = $scope.findExistingPredicate();
 
 });
-angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, config, tables, selectedSegment, $rootScope, $q, $mdDialog) {
+
+angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, config, tables, selectedSegment, currentConformanceStatements, mode, $rootScope, $q, $mdDialog) {
     $scope.selectedSegment = angular.copy(selectedSegment);
     $scope.config = config;
     $scope.tables = tables;
@@ -2644,8 +2649,13 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     };
 
     $scope.save = function() {
+        $rootScope.recordChanged();
         $mdDialog.hide($scope.selectedSegment);
     };
+
+    if(mode === 'pc'){
+        $scope.selectedSegment.conformanceStatements = angular.copy(currentConformanceStatements);
+    }
 });
 angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $mdDialog, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
     $scope.segToDelete = segToDelete;

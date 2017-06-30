@@ -314,6 +314,11 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
         return false;
     };
+
+    $scope.printNode = function (node) {
+        console.log(node);
+    };
+
     $scope.isAvailableConstantValue = function(node) {
         if (node.type === "field" || node.type === "component") {
             if ($scope.hasChildren(node)) return false;
@@ -369,10 +374,12 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
         return result;
     };
+
     $scope.findingConfSt = function(node) {
         if (node) {
-            if (!node.attributes.conformanceStatements || node.attributes.conformanceStatements.length <= 0) {
-                return node.attributes.oldConformanceStatements;
+            if (!node.attributes.conformanceStatements) {
+                if(node.attributes.oldConformanceStatements && node.attributes.oldConformanceStatements.length > 0) return node.attributes.oldConformanceStatements;
+                return null;
             } else {
                 return node.attributes.conformanceStatements;
             }
@@ -468,29 +475,6 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         $scope.showConfSt = false;
         $scope.currentNode = null;
     };
-
-    $scope.openAddGlobalConformanceStatementDialogSeg = function(node, context) {
-
-        $mdDialog.show({
-            templateUrl: 'ConformanceStatementSegmentCtrl.html',
-            parent: angular.element(document).find('body'),
-            controller: 'ConformanceStatementSegmentCtrl',
-            scope:$scope,
-            preserveScope:true,
-            locals: {
-                selectedSegment :angular.copy($rootScope.segmentsMap[node.attributes.ref.id]),
-                config : $rootScope.config,
-                tables : $rootScope.tables
-            }
-
-        }).then(function(segment) {
-            if (segment) {
-                node.attributes.conformanceStatements = segment.conformanceStatements;
-                // $scope.setDirty();
-            }
-        });
-
-    };
     $scope.hasDynamicMapping = function(node) {
         if (node.type === "segmentRef") {
             var mappingStructure = _.find($rootScope.config.variesMapItems, function(item) {
@@ -566,60 +550,52 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
         });
     };
-    // $scope.openAddGlobalConformanceStatementDialog = function(node, context) {
-    //     $mdDialog.show({
-    //         templateUrl: 'GlobalConformanceStatementCtrlInPc.html',
-    //         parent: angular.element(document).find('body'),
-    //         controller: 'GlobalConformanceStatementCtrl',
-    //         scope:$scope,
-    //         preserveScope:true,
-    //         locals: {
-    //             node: node,
-    //             context: context
-    //         }
-    //
-    //     }).then(function(confs) {
-    //         if (confs) {
-    //             console.log(confs);
-    //             console.log("qqwqw");
-    //
-    //             node.attributes.conformanceStatements = confs;
-    //             // $scope.setDirty();
-    //         }
-    //     });
-    //
-    // };
-    $scope.openAddGlobalConformanceStatementDialog = function(node,context) {
+
+    $scope.openDialogPCMessageConformanceStatements = function(node) {
+        var selectedMessage = $rootScope.messagesMap[node.source.messageId];
         $mdDialog.show({
             parent: angular.element(document).find('body'),
             templateUrl: 'GlobalConformanceStatementCtrl.html',
             controller: 'GlobalConformanceStatementCtrl',
             locals: {
-                selectedMessage: angular.copy($rootScope.messagesMap[node.source.messageId]),
-
-                segmentsMap: $rootScope.segmentsMap,
+                selectedMessage : selectedMessage,
+                contextPath : node.path,
+                currentConformanceStatements : $scope.findingConfSt(node),
+                segmentsMap : $rootScope.segmentsMap,
                 config : $rootScope.config,
-                tables : $rootScope.tables
+                tables : $rootScope.tables,
+                mode : "pc"
             }
-        }).then(function(message) {
-            if (message) {
-                $scope.listGlobalConformanceStatements = [];
-                $scope.listGlobalPredicates = [];
-                $scope.travelMessage(message, '');
-
-
-                node.attributes.conformanceStatements=$scope.listGlobalConformanceStatements;
-
-
-
-                console.log($scope.listGlobalConformanceStatements);
-
-                // $scope.findAllGlobalConstraints();
-                console.log(node);
+        }).then(function(obj) {
+            if (obj) {
+                node.attributes.conformanceStatements = obj.conformanceStatements;
                 $scope.setDirty();
             }
         });
+    };
 
+    $scope.openDialogPCSegmentConformanceStatements = function(node) {
+        var selectedSegment = $rootScope.segmentsMap[node.attributes.ref.id];
+        $mdDialog.show({
+            parent: angular.element(document).find('body'),
+            templateUrl: 'ConformanceStatementSegmentCtrl.html',
+            controller: 'ConformanceStatementSegmentCtrl',
+            scope:$scope,
+            preserveScope:true,
+            locals: {
+                selectedSegment : selectedSegment,
+                currentConformanceStatements : $scope.findingConfSt(node),
+                config : $rootScope.config,
+                tables : $rootScope.tables,
+                mode : "pc"
+            }
+
+        }).then(function(obj) {
+            if (obj) {
+                node.attributes.conformanceStatements = obj.conformanceStatements;
+                $scope.setDirty();
+            }
+        });
     };
 
     $scope.addSev = function(node) {
@@ -808,7 +784,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
     };
     $scope.cancelConfSt = function(node) {
-        node.attributes.conformanceStatements = [];
+        node.attributes.conformanceStatements = null;
         $scope.setDirty();
     };
     $scope.cancelDynMap = function(node) {
@@ -2695,9 +2671,9 @@ angular.module('igl').controller('addComponentsCtrl',
             console.log('parent Node details: ', currentScope.parentNode);
             console.log('selected Node details: ', currentScope.node);
             if (pc.type === 'message') {
-
                 var newPc = {
                     id: new ObjectId().toString(),
+                    obj : pc,
                     type: pc.type,
                     name: pc.name,
                     path: pc.structID,
@@ -2708,7 +2684,7 @@ angular.module('igl').controller('addComponentsCtrl',
                     from: "message",
                     attributes: {
                         oldConformanceStatements: pc.conformanceStatements,
-                        conformanceStatements: [],
+                        conformanceStatements: null,
                     },
                     appliedTo: [],
                     version: ""
@@ -2716,6 +2692,7 @@ angular.module('igl').controller('addComponentsCtrl',
             } else if (pc.type === 'segmentRef') {
                 var newPc = {
                     id: new ObjectId().toString(),
+                    obj : pc,
                     type: pc.type,
                     path: pc.parent + '.' + pc.position,
                     itemId: pc.id,
@@ -2750,8 +2727,8 @@ angular.module('igl').controller('addComponentsCtrl',
                         max: null,
                         oldComment: pc.comment,
                         comment: null,
-                        oldConformanceStatements: pc.conformanceStatements,
-                        conformanceStatements: [],
+                        oldConformanceStatements: $rootScope.segmentsMap[pc.ref.id].conformanceStatements,
+                        conformanceStatements: null,
                     },
                     appliedTo: [],
                     version: ""
@@ -2778,7 +2755,7 @@ angular.module('igl').controller('addComponentsCtrl',
                         oldComment: pc.comment,
                         comment: null,
                         oldConformanceStatements: pc.conformanceStatements,
-                        conformanceStatements: [],
+                        conformanceStatements: null,
                     },
                     appliedTo: [],
                     version: ""
@@ -2901,7 +2878,6 @@ angular.module('igl').controller('addComponentsCtrl',
 
 
             } else if (pc.type === 'segment') {
-                console.log("==================here");
                 var newPc = {
                     id: new ObjectId().toString(),
                     name: $rootScope.segmentsMap[pc.id].name,
@@ -2935,9 +2911,8 @@ angular.module('igl').controller('addComponentsCtrl',
                         },
                         oldDynamicMappingDefinition: pc.dynamicMappingDefinition,
                         oldConformanceStatements: pc.conformanceStatements,
-                        conformanceStatements: [],
+                        conformanceStatements: null,
                         oldCoConstraintsTable: $rootScope.segmentsMap[pc.id].coConstraintsTable,
-
                     },
                     appliedTo: [],
                     version: ""
@@ -4101,7 +4076,7 @@ angular.module('igl').controller('PredicateSegmentCtrlInPc', function($scope, $m
 
 });
 
-
+/*
 angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function($scope, segmentsMap, config, tables, selectedMessage, $rootScope, $q) {
     $scope.dialogStep = 0;
     $scope.segmentsMap = segmentsMap;
@@ -4404,13 +4379,16 @@ angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function(
     };
     $scope.findingConfSt = function(node) {
         if (node) {
-            if (!node.attributes.conformanceStatements || node.attributes.conformanceStatements.length <= 0) {
-                return node.attributes.oldConformanceStatements;
-            } else {
+            if (node.attributes.conformanceStatements) {
                 return node.attributes.conformanceStatements;
+            } else {
+                if(node.attributes.oldConformanceStatements && node.attributes.oldConformanceStatements.length > 0){
+                    return node.attributes.oldConformanceStatements;
+                }
+
             }
         }
-
+        return null;
     };
 
     $scope.initConformanceStatement();
@@ -4437,6 +4415,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrlInPc', function(
 
 
 });
+
 
 angular.module('igl').controller('ConformanceStatementSegmentCtrlInPc', function($scope, $rootScope, $q, node, context, $mdDialog) {
     $scope.segment = angular.copy($rootScope.segmentsMap[node.attributes.ref.id]);
@@ -4678,3 +4657,4 @@ angular.module('igl').controller('cannotFindOld', function($scope, $mdDialog, ol
         $mdDialog.hide(old);
     };
 });
+    */

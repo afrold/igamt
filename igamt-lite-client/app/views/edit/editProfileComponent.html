@@ -128,7 +128,7 @@
                                                             <tbody dnd-list="profileComponent.children">
                                                             <tr ng-repeat="node in profileComponent.children" dnd-draggable="node" dnd-moved="profileComponent.children.splice($index, 1);updatePosition();">
                                                                 <td class="col-md-1 col-fixed-250">
-                                                                    <span ng-bind="node.position"></span>
+                                                                    <span ng-click="printNode(node)" ng-bind="node.position"></span>
                                                                 </td>
                                                                 <td class="col-md-1 col-fixed-250">
                                                                     <span ng-if="node.type=='datatype'" class="label label-default label-icon">D</span>
@@ -403,44 +403,20 @@
 
                                                                     </div>
                                                                 </td>
-                                                                <td style="text-align:center"
-                                                                    ng-class="{'emptyCol':(node.type!=='message' && node.type!=='group' && node.type!=='segment' && node.type!=='segmentRef'),'input-change':(node.attributes.conformanceStatements && node.attributes.conformanceStatements.length>0)}">
-                                                                    <!--<div ng-repeat="confSt in findingConfSt(node)">
-                                                                        <span title="{{confSt.description}}">
-                                                                            {{getConstraintAsTruncatedString(confSt, 15)}}
-                                                                        </span>
-                                                                    </div>-->
+                                                                <td style="text-align:center" ng-class="{'emptyCol':(node.type!=='message' && node.type!=='group' && node.type!=='segment' && node.type!=='segmentRef'),'input-change': node.attributes.conformanceStatements}">
                                                                     <span>
-                                                                            <!--<i style="font-size:15px;" ng-show="!currentNode || currentNode.id !==node.id" ng-click="seeConfSt(node)" class="material-icons">visibility</i>
-                                                                            <i style="font-size:15px;" ng-show="currentNode && currentNode.id ===node.id" ng-click="unseeConfSt(node)" class="material-icons">visibility_off</i>-->
-                                                                            
-                                                                            <a ng-click="openAddGlobalConformanceStatementDialog(node,'edit')"
-                                                                               class="point"
-                                                                               ng-if="node.type!=='segmentRef' && (node.type==='message' || node.type==='group' || node.type==='segment') ">
-                                                                                <i class="fa fa-pencil fa-fw"
-                                                                                   ng-if="(findingConfSt(node) && findingConfSt(node).length>0)"></i>
-                                                                                <i class="fa fa-plus fa-fw"
-                                                                                   ng-if="!(findingConfSt(node) && findingConfSt(node).length>0)"></i>
-                                                                            </a>
-                                                                            <a ng-click="openAddGlobalConformanceStatementDialogSeg(node,'edit')"
-                                                                               class="point"
-                                                                               ng-if="node.type==='segmentRef'">
-                                                                                <i class="fa fa-pencil fa-fw"
-                                                                                   ng-if="(findingConfSt(node) && findingConfSt(node).length>0)"></i>
-                                                                                <i class="fa fa-plus fa-fw"
-                                                                                   ng-if="!(findingConfSt(node) && findingConfSt(node).length>0)"></i>
-                                                                            </a>
-
-                                                                            <i ng-click="cancelConfSt(node)"
-                                                                               ng-show="node.attributes.conformanceStatements && node.attributes.conformanceStatements.length>0"
-                                                                               class="fa fa-times fa-fw"></i>
-                                                                        </span>
-                                                                    <!--<a ng-click="openAddGlobalConformanceStatementDialog(node)" class="point">
-                                                                        <i class="fa fa-pencil fa-fw" ng-if="(node.conformanceStatements && node.conformanceStatements.length>0)||(node.oldConformanceStatements && node.oldConformanceStatements.length>0)"></i>
-                                                                        <i class="fa fa-plus fa-fw" ng-if="node.conformanceStatements.length===0 && node.conformanceStatements.lengtt===0 "></i>
-                                                                    </a>-->
-
-
+                                                                        <a ng-click="openDialogPCMessageConformanceStatements(node)" class="point" ng-if="node.type==='message' || node.type==='group' || node.type==='segment'">
+                                                                            <span ng-if="findingConfSt(node)">{{findingConfSt(node).length}}</span>
+                                                                            <i class="fa fa-pencil fa-fw" ng-if="(findingConfSt(node) && findingConfSt(node).length>0)"></i>
+                                                                            <i class="fa fa-plus fa-fw" ng-if="!(findingConfSt(node) && findingConfSt(node).length>0)"></i>
+                                                                        </a>
+                                                                        <a ng-click="openDialogPCSegmentConformanceStatements(node)" class="point" ng-if="node.type==='segmentRef'">
+                                                                            <span ng-if="findingConfSt(node)">{{findingConfSt(node).length}}</span>
+                                                                            <i class="fa fa-pencil fa-fw" ng-if="(findingConfSt(node) && findingConfSt(node).length>0)"></i>
+                                                                            <i class="fa fa-plus fa-fw" ng-if="!(findingConfSt(node) && findingConfSt(node).length>0)"></i>
+                                                                        </a>
+                                                                        <i ng-click="cancelConfSt(node)" ng-show="node.attributes.conformanceStatements" class="fa fa-times fa-fw"></i>
+                                                                    </span>
                                                                 </td>
                                                                 <td ng-class="{'emptyCol':!hasDynamicMapping(node),'input-change':(node.attributes.dynamicMappingDefinition && node.attributes.dynamicMappingDefinition.dynamicMappingItems.length>0)}">
                                                                         <span ng-show="hasDynamicMapping(node)">
