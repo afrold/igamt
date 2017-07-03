@@ -19,6 +19,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsTable;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 public class SubProfileComponentAttributes {
 
@@ -52,6 +53,7 @@ public class SubProfileComponentAttributes {
   private CoConstraintsTable coConstraintsTable;
 
 
+  private Predicate predicate;
 
   public Usage getUsage() {
     return usage;
@@ -277,6 +279,14 @@ public class SubProfileComponentAttributes {
   @Override
   public String toString() {
     return ReflectionToStringBuilder.toString(this);
+  }
+
+  public Predicate getPredicate() {
+    return predicate;
+  }
+
+  public void setPredicate(Predicate predicate) {
+    this.predicate = predicate;
   }
 
 
