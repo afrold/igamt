@@ -151,15 +151,16 @@
                                                                     <select style="width:50px;"
                                                                             ng-change="selectFlavor(node,segFlavor)"
                                                                             ng-show="editableRef===node.id"
-                                                                            class="form-control input-sm" name="flavor"
+                                                                            class="form-control input-sm"
+                                                                            name="flavor"
                                                                             ng-model="segFlavor"
-                                                                            ng-options="segFlavor as segFlavor.label for segFlavor in segFlavors"/>
+                                                                            ng-options="segFlavor as segFlavor.label for segFlavor in segFlavors"></select>
                                                                 </td>
                                                                 <td class="col-md-2 col-fixed-40" ng-if="node.type !== 'segment' &&  node.type !== 'segmentRef'">
                                                                     <span ng-bind="node.name"></span>
                                                                 </td>
                                                                 <td ng-class="{'col-md-2 col-fixed-80 select-change':node.attributes.usage,'col-md-2 col-fixed-80':!node.attributes.usage,'emptyCol':node.type==='message'}">
-                                                                    <div ng-if="node.usage !== 'C'  || (node.usage === 'C' && !findingPredicates(node))" ng-hide="node.type==='message'">
+                                                                    <div ng-if="node.usage !== 'C'  || (node.usage === 'C' && !findPredicate(node))" ng-hide="node.type==='message'">
                                                                         <md-select ng-init="initUsage(node)"
                                                                                    placeholder="Select Usage"
                                                                                    name="usage" id="usage"
@@ -171,10 +172,10 @@
                                                                             </md-option>
                                                                         </md-select>
                                                                     </div>
-                                                                    <span ng-if="findingPredicates(node)" class="badge label-white">
-                                                                        <span>C({{findingPredicates(node).trueUsage}}/{{findingPredicates(node).falseUsage}})</span>
+                                                                    <span ng-if="findPredicate(node)" class="badge label-white">
+                                                                        <span>C({{findPredicate(node).trueUsage}}/{{findPredicate(node).falseUsage}})</span>
                                                                     </span>
-                                                                    <a ng-show="node.attributes.usage && !findingPredicates(node)" ng-click="cancelUsage(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                                    <a ng-show="node.attributes.usage && !findPredicate(node)" ng-click="cancelUsage(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                                 </td>
                                                                 <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol': node.usage == 'X' || node.type==='component'|| node.type==='message', 'input-change':node.usage != 'X' && (node.attributes.min || node.attributes.max)}">
                                                                     <div ng-show="node.usage != 'X' && node.type!=='component' && node.type!=='message'" class="form-inline" layout="row" layout-align="center center">
@@ -313,53 +314,38 @@
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                <td ng-class="{'has-error': node.usage === 'C' && !findingPredicates(node) , 'emptyCol':node.usage !== 'C','input-change':node.predicates.length>0}">
+                                                                <td ng-class="{'has-error': node.usage === 'C' && !findPredicate(node) , 'emptyCol':node.usage !== 'C','input-change':node.attributes.predicate}">
                                                                     <div>
-
-                                                                        <div ng-show="node.usage==='C' && !findingPredicates(node) && node.from==='message'">
-                                                                            <a ng-click="openAddGlobalPredicateDialogMsg(node)"
-                                                                               class="point">
-                                                                                <span><i
-                                                                                        class="fa fa-plus fa-fw"></i></span>
+                                                                        <div ng-show="node.usage==='C' && !findPredicate(node) && node.from==='message'">
+                                                                            <a ng-click="openDialogPCMessagePredicate(node)" class="point">
+                                                                                <span><i class="fa fa-plus fa-fw"></i></span>
                                                                                 <p class="warning">Need predicate</p>
                                                                             </a>
                                                                         </div>
-                                                                        <div ng-show="node.usage==='C' && !findingPredicates(node) && node.from==='segment' && node.type==='field'">
-                                                                            <a ng-click="openAddGlobalPredicateDialogSeg(node)"
+                                                                        <div ng-show="node.usage==='C' && !findPredicate(node) && node.from==='segment'">
+                                                                            <a ng-click="openDialogPCSegmentPredicate(node)"
                                                                                class="point">
-                                                                                <span><i
-                                                                                        class="fa fa-plus fa-fw"></i></span>
+                                                                                <span><i class="fa fa-plus fa-fw"></i></span>
                                                                                 <p class="warning">Need predicate</p>
                                                                             </a>
                                                                         </div>
-
-                                                                        <div ng-show="node.usage==='C' && findingPredicates(node) ">
-
-                                                                                <span title="{{getPredicateAsString(findingPredicates(node))}}"
-                                                                                      class="badge label-white">
-                                                                    <span ng-class="{'label-message-icon' : findingPredicates(node).bindingFrom == 'message', 'label-field-icon' : findingPredicates(node).bindingFrom == 'segment','label-component-icon':findingPredicates(node).bindingFrom==='field','label-sub-component-icon' : findingPredicates(node).bindingFrom == 'component'}"><i
-                                                                            class="fa fa-circle fa-fw"/></span>
-                                                                                <span ng-show="findingPredicates(node).bindingFrom === 'message' && node.from==='message' "
-                                                                                      ng-click="openAddGlobalPredicateDialogMsg(node)">{{getConstraintAsTruncatedString(findingPredicates(node), 15)}}
-                                                                    <i class="fa fa-pencil fa-fw edit-icon"></i>
-                                                                </span>
-                                                                                <span ng-show="(findingPredicates(node).bindingFrom === 'segment' && node.from==='segment' && node.type==='field') "
-                                                                                      ng-click="openAddGlobalPredicateDialogSeg(node)">{{getConstraintAsTruncatedString(findingPredicates(node), 15)}}
-                                                                    <i class="fa fa-pencil fa-fw edit-icon"></i>
-                                                                </span>
-                                                                                <span ng-show="(node.from==='message' && (findingPredicates(node).bindingFrom !=='message')) || (node.from==='segment' && (findingPredicates(node).bindingFrom !=='segment'))">{{getConstraintAsTruncatedString(findingPredicates(node), 15)}}
-                                                                    
-                                                                </span>
-
-                                                                                    <!--<span ng-show="(findingPredicates(node).bindingFrom == 'message' && node.from==='message')||(findingPredicates(node).bindingFrom == 'segment' && node.from==='segment') " ng-click="openAddGlobalPredicateDialog(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>-->
-                                                                                <span ng-show="((findingPredicates(node).bindingFrom == 'message' && node.from==='message')||(findingPredicates(node).bindingFrom == 'segment' && node.from==='segment')) &&  node.predicates.length>0"
-                                                                                      ng-click="cancelPredicate(node)"><i
-                                                                                        class="fa fa-times fa-fw edit-icon"></i></span>
+                                                                        <div ng-show="node.usage==='C' && findPredicate(node) ">
+                                                                            <span title="{{getPredicateAsString(findPredicate(node))}}" class="badge label-white">
+                                                                                <span ng-class="{'label-message-icon' : findPredicate(node).context.type === 'message', 'label-field-icon' : findPredicate(node).context.type === 'segment','label-component-icon':findPredicate(node).context.type === 'field', 'label-sub-component-icon' : findPredicate(node).context.type === 'component'}">
+                                                                                    <i class="fa fa-circle fa-fw"></i>
                                                                                 </span>
-                                                                            <div ng-show="countPredicate(node.path) > 1">
-                                                                                <p class="warning">Multiple
-                                                                                    predicates</p>
-                                                                            </div>
+                                                                                <span ng-show="node.from==='segment'">
+                                                                                    {{getConstraintAsTruncatedString(findPredicate(node), 15)}}
+                                                                                    <i class="fa fa-pencil fa-fw edit-icon" ng-show="findPredicate(node).context.type === 'segment'" ng-click="openDialogPCSegmentPredicate(node)"></i>
+                                                                                </span>
+                                                                                <span ng-show="node.from==='message'">
+                                                                                    {{getConstraintAsTruncatedString(findPredicate(node), 15)}}
+                                                                                    <i class="fa fa-pencil fa-fw edit-icon" ng-show="findPredicate(node).context.type === 'message'" ng-click="openDialogPCMessagePredicate(node)"></i>
+                                                                                </span>
+                                                                                <span ng-show="node.attributes.predicate" ng-click="cancelPredicate(node)">
+                                                                                    <i class="fa fa-times fa-fw edit-icon"></i>
+                                                                                </span>
+                                                                            </span>
                                                                         </div>
                                                                     </div>
                                                                 </td>

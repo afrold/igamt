@@ -2896,6 +2896,266 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return cs;
     };
 
+    $rootScope.findPredicateForPC = function (pc){
+        if(pc.from === 'message' && pc.type !== 'message'){
+            if(pc.type === 'field'){
+                var path = pc.path;
+                var splitPath = path.split(".");
+                var copyPath = angular.copy(splitPath);
+                var result;
+                var message = $rootScope.messagesMap[pc.source.messageId];
+                var segment = $rootScope.segmentsMap[pc.source.segmentId];
+
+
+                var parent = message;
+                var contextPath = null;
+                for (var i = 1; i < splitPath.length - 1; i++) {
+                    copyPath.shift();
+                    var newPath = copyPath.join('[1].') + '[1]';
+                    console.log(newPath);
+                    result = _.find(parent.predicates, function(p){
+                        p.context = {};
+                        p.context.type = 'message';
+                        p.context.id = pc.source.messageId;
+                        p.context.path =  contextPath;
+                        return p.constraintTarget === newPath;
+                    });
+                    if(!contextPath) {
+                        contextPath = splitPath[i];
+                    }else {
+                        contextPath = contextPath + "." + splitPath[i];
+                    }
+                    parent = _.find(parent.children, function(child){
+                        return child.position + "" === splitPath[i] + "";
+                    });
+                }
+
+                if(!result) {
+                    result = _.find(segment.predicates, function(p) {
+                        p.context = {};
+                        p.context.type = 'segment';
+                        p.context.id = pc.source.segmentId;
+                        p.context.path =  null;
+                        return p.constraintTarget === splitPath[splitPath.length - 1] + "[1]";
+                    });
+                }
+
+                console.log(result);
+                return result;
+            }else if(pc.type === 'component'){
+                var path = pc.path;
+                var splitPath = path.split(".");
+                var copyPath = angular.copy(splitPath);
+                var result;
+                var message = $rootScope.messagesMap[pc.source.messageId];
+                var segment = $rootScope.segmentsMap[pc.source.segmentId];
+                var fieldDT = $rootScope.datatypesMap[pc.source.fieldDt];
+
+                if(!pc.source.componentDT){
+                    var parent = message;
+                    var contextPath = null;
+                    for (var i = 1; i < splitPath.length - 2; i++) {
+                        copyPath.shift();
+                        var newPath = copyPath.join('[1].') + '[1]';
+                        console.log(newPath);
+                        result = _.find(parent.predicates, function(p){
+                            p.context = {};
+                            p.context.type = 'message';
+                            p.context.id = pc.source.messageId;
+                            p.context.path =  contextPath;
+                            return p.constraintTarget === newPath;
+                        });
+                        if(!contextPath) {
+                            contextPath = splitPath[i];
+                        }else {
+                            contextPath = contextPath + "." + splitPath[i];
+                        }
+                        parent = _.find(parent.children, function(child){
+                            return child.position + "" === splitPath[i] + "";
+                        });
+                    }
+
+                    if(!result) {
+                        result = _.find(segment.predicates, function(p) {
+                            p.context = {};
+                            p.context.type = 'segment';
+                            p.context.id = pc.source.segmentId;
+                            p.context.path =  null;
+                            return p.constraintTarget === splitPath[splitPath.length - 2] + "[1]." + splitPath[splitPath.length - 1] + "[1]";
+                        });
+                    }
+
+                    if(!result) {
+                        result = _.find(fieldDT.predicates, function(p) {
+                            p.context = {};
+                            p.context.type = 'datatype';
+                            p.context.id = pc.source.fieldDt;
+                            p.context.path =  null;
+                            return p.constraintTarget === splitPath[splitPath.length - 1] + "[1]";
+                        });
+                    }
+                    return result;
+
+                }else{
+                    var componentDT = $rootScope.datatypesMap[pc.source.componentDt];
+
+                    var parent = message;
+                    var contextPath = null;
+                    for (var i = 1; i < splitPath.length - 3; i++) {
+                        copyPath.shift();
+                        var newPath = copyPath.join('[1].') + '[1]';
+                        console.log(newPath);
+                        result = _.find(parent.predicates, function(p){
+                            p.context = {};
+                            p.context.type = 'message';
+                            p.context.id = pc.source.messageId;
+                            p.context.path =  contextPath;
+                            return p.constraintTarget === newPath;
+                        });
+                        if(!contextPath) {
+                            contextPath = splitPath[i];
+                        }else {
+                            contextPath = contextPath + "." + splitPath[i];
+                        }
+                        parent = _.find(parent.children, function(child){
+                            return child.position + "" === splitPath[i] + "";
+                        });
+                    }
+
+                    if(!result) {
+                        result = _.find(segment.predicates, function(p) {
+                            p.context = {};
+                            p.context.type = 'segment';
+                            p.context.id = pc.source.segmentId;
+                            p.context.path =  null;
+                            return p.constraintTarget === splitPath[splitPath.length  - 3] + "[1]." + splitPath[splitPath.length  - 2] + "[1]." + splitPath[splitPath.length - 1] + "[1]";
+                        });
+                    }
+
+                    if(!result) {
+                        result = _.find(fieldDT.predicates, function(p) {
+                            p.context = {};
+                            p.context.type = 'datatype';
+                            p.context.id = pc.source.fieldDt;
+                            p.context.path =  null;
+                            return p.constraintTarget === splitPath[splitPath.length  - 2] + "[1]." + splitPath[splitPath.length  - 1] + "[1]";
+                        });
+                    }
+
+                    if(!result) {
+                        result = _.find(componentDT.predicates, function(p) {
+                            p.context = {};
+                            p.context.type = 'datatype';
+                            p.context.id = pc.source.componentDt;
+                            p.context.path =  null;
+                            return p.constraintTarget === splitPath[splitPath.length - 1] + "[1]";
+                        });
+                    }
+                    return result;
+                }
+
+            }else {
+                var path = pc.path;
+                var splitPath = path.split(".");
+                var copyPath = angular.copy(splitPath);
+                var result;
+                var message = $rootScope.messagesMap[pc.source.messageId];
+
+                var parent = message;
+                var contextPath = null;
+                for (var i = 1; i < splitPath.length - 1; i++) {
+                    copyPath.shift();
+                    var newPath = copyPath.join('[1].') + '[1]';
+                    console.log(newPath);
+                    result = _.find(parent.predicates, function(p){
+                        p.context = {};
+                        p.context.type = 'message';
+                        p.context.id = pc.source.messageId;
+                        p.context.path =  contextPath;
+                        return p.constraintTarget === newPath;
+                    });
+                    if(!contextPath) {
+                        contextPath = splitPath[i];
+                    }else {
+                        contextPath = contextPath + "." + splitPath[i];
+                    }
+                    parent = _.find(parent.children, function(child){
+                        return child.position + "" === splitPath[i] + "";
+                    });
+                }
+                return result;
+            }
+
+        }else if(pc.from === 'segment' && pc.type === 'field'){
+            var path = pc.path;
+            var segment = $rootScope.segmentsMap[pc.source.segmentId];
+            var position = path.split(".")[1];
+            return _.find(segment.predicates, function(p) {
+                p.context = {};
+                p.context.type = 'segment';
+                p.context.id = pc.source.segmentId;
+                p.context.path =  null;
+                return p.constraintTarget === position + "[1]";
+            });
+        }else if(pc.from === 'segment' && pc.type === 'component'){
+            var path = pc.path;
+            var splitPath = path.split(".");
+            var segment = $rootScope.segmentsMap[pc.source.segmentId];
+            if(splitPath.length === 3){
+                var fieldDT = $rootScope.datatypesMap[pc.source.fieldDt];
+                var result = _.find(segment.predicates, function(p) {
+                    p.context = {};
+                    p.context.type = 'segment';
+                    p.context.id = pc.source.segmentId;
+                    p.context.path =  null;
+                    return p.constraintTarget === splitPath[1] + "[1]." + splitPath[2] + "[1]";
+                });
+
+                if(!result) {
+                    result = _.find(fieldDT.predicates, function(p) {
+                        p.context = {};
+                        p.context.type = 'datatype';
+                        p.context.id = pc.source.fieldDt;
+                        p.context.path =  null;
+                        return p.constraintTarget === splitPath[2] + "[1]";
+                    });
+                }
+                return result;
+            }else if(splitPath.length === 4){
+                var fieldDT = $rootScope.datatypesMap[pc.source.fieldDt];
+                var componentDT = $rootScope.datatypesMap[pc.source.componentDt];
+                var result = _.find(segment.predicates, function(p) {
+                    p.context = {};
+                    p.context.type = 'segment';
+                    p.context.id = pc.source.segmentId;
+                    p.context.path =  null;
+                    return p.constraintTarget === splitPath[1] + "[1]." + splitPath[2] + "[1]." + splitPath[3] + "[1]";
+                });
+
+                if(!result) {
+                    result = _.find(fieldDT.predicates, function(p) {
+                        p.context = {};
+                        p.context.type = 'datatype';
+                        p.context.id = pc.source.fieldDt;
+                        p.context.path =  null;
+                        return p.constraintTarget === splitPath[2] + "[1]." + splitPath[3] + "[1]";
+                    });
+                }
+
+                if(!result) {
+                    result = _.find(componentDT.predicates, function(p) {
+                        p.context = {};
+                        p.context.type = 'datatype';
+                        p.context.id = pc.source.componentDt;
+                        p.context.path =  null;
+                        return p.constraintTarget === splitPath[3] + "[1]";
+                    });
+                }
+                return result;
+            }
+        }
+        return null;
+    };
 
 
     $rootScope.generateCompositePredicate = function(compositeType, firstConstraint, secondConstraint, constraints) {

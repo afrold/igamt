@@ -735,10 +735,12 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             controller: 'GlobalPredicateCtrl',
             locals: {
                 selectedMessage: message,
+                currentPredicate : null,
                 selectedNode: node,
                 segmentsMap: $rootScope.segmentsMap,
                 config : $rootScope.config,
-                tables : $rootScope.tables
+                tables : $rootScope.tables,
+                mode : 'message'
             }
         }).then(function(message) {
             if (message) {
@@ -2098,7 +2100,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
     };
 });
 
-angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segmentsMap, config, tables, selectedMessage, $rootScope, $q, $mdDialog, selectedNode) {
+angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segmentsMap, config, tables, selectedMessage, $rootScope, $q, $mdDialog, selectedNode, currentPredicate, mode) {
     $scope.dialogStep = 0;
     $scope.segmentsMap = segmentsMap;
     $scope.config = config;
@@ -2126,7 +2128,6 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
     $scope.existingContext = null;
     $scope.tempPredicates = [];
     $scope.contextKey = null;
-
 
     $scope.getDialogStyle = function(){
         if ($scope.dialogStep === 0) return "width: 70%";
@@ -2234,6 +2235,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
             $scope.initComplexPredicate();
             $scope.treeDataForContext=[];
             $scope.treeDataForContext.push($scope.selectedContextNode);
+            console.log("Selected:::" + $scope.contextKey);
         }
     };
 
@@ -2308,7 +2310,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
         current.pathInfoSet.push(pathInfo);
 
-        if (current.type == 'message' || current.type == 'group') {
+        if (current.type === 'message' || current.type === 'group') {
             for (var i in current.children) {
                 var segGroup = current.children[i];
                 segGroup.pathInfoSet = angular.copy(current.pathInfoSet);
@@ -2333,7 +2335,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
                 }
                 $scope.generatePathInfo(segGroup, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
             }
-        } else if (current.type == 'segmentRef') {
+        } else if (current.type === 'segmentRef') {
             var seg = current.segment;
             for (var i in seg.fields) {
                 var f = seg.fields[i];
@@ -2434,12 +2436,22 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
         $mdDialog.hide();
     };
 
-    $scope.save = function() {
-        $scope.deleteExistingPredicate($scope.selectedMessage);
-        if ($scope.existingPredicate != null) {
-            $scope.addChangedPredicate($scope.selectedMessage);
+    $scope.saveClose = function() {
+        if(mode === 'pc'){
+            $scope.existingPredicate.context = {};
+            $scope.existingPredicate.context.type = 'message';
+            $scope.existingPredicate.context.id = selectedMessage.id;
+            if($scope.existingContext.positionPath !== '.'){
+                $scope.existingPredicate.context.path = $scope.existingContext.positionPath.split('[1]').join('');
+            }
+            $mdDialog.hide($scope.existingPredicate);
+        }else {
+            $scope.deleteExistingPredicate($scope.selectedMessage);
+            if ($scope.existingPredicate != null) {
+                $scope.addChangedPredicate($scope.selectedMessage);
+            }
+            $mdDialog.hide($scope.selectedMessage);
         }
-        $mdDialog.hide($scope.selectedMessage);
     };
 
     $scope.addChangedPredicate = function(current) {
@@ -2478,8 +2490,14 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
     };
 
     $scope.findAllGlobalPredicates = function() {
-        $scope.listGlobalPredicates = [];
-        $scope.travelMessage($scope.selectedMessage, '');
+        if(mode === 'pc'){
+            $scope.listGlobalPredicates = [];
+            $scope.travelMessage($scope.selectedMessage, '');
+            $scope.existingPredicate = angular.copy(currentPredicate);
+        }else {
+            $scope.listGlobalPredicates = [];
+            $scope.travelMessage($scope.selectedMessage, '');
+        }
     };
 
     $scope.travelMessage = function(current, parrentPositionPath) {

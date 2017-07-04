@@ -26,23 +26,14 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   private Integer priority;
   private String type;
   private String name;
-  private List<ValueSetOrSingleCodeBinding> oldValueSetBindings =
-      new ArrayList<ValueSetOrSingleCodeBinding>();
-  private List<ValueSetOrSingleCodeBinding> valueSetBindings =
-      new ArrayList<ValueSetOrSingleCodeBinding>();
+  private List<ValueSetOrSingleCodeBinding> oldValueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
+  private List<ValueSetOrSingleCodeBinding> valueSetBindings = new ArrayList<ValueSetOrSingleCodeBinding>();
   private SingleElementValue oldSingleElementValues = new SingleElementValue();
   private SingleElementValue singleElementValues = new SingleElementValue();
-
-
   private List<Comment> oldComments = new ArrayList<Comment>();
   private List<Comment> comments = new ArrayList<Comment>();
-  private List<Predicate> oldPredicates = new ArrayList<Predicate>();
-  private List<Predicate> predicates = new ArrayList<Predicate>();
-
-
-
+  private Predicate oldPredicate = null;
   private String from;
-
 
   public String getId() {
     return id;
@@ -148,8 +139,6 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
     this.singleElementValues = singleElementValues;
   }
 
-
-
   public List<Comment> getOldComments() {
     return oldComments;
   }
@@ -166,25 +155,6 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
     this.comments = comments;
   }
 
-
-  public List<Predicate> getOldPredicates() {
-    return oldPredicates;
-  }
-
-  public void setOldPredicates(List<Predicate> oldPredicates) {
-    this.oldPredicates = oldPredicates;
-  }
-
-  public List<Predicate> getPredicates() {
-    return predicates;
-  }
-
-  public void setPredicates(List<Predicate> predicates) {
-    this.predicates = predicates;
-  }
-
-
-
   public String getFrom() {
     return from;
   }
@@ -196,6 +166,14 @@ public class SubProfileComponent implements java.io.Serializable, Cloneable {
   @Override
   public String toString() {
     return ReflectionToStringBuilder.toString(this);
+  }
+
+  public Predicate getOldPredicate() {
+    return oldPredicate;
+  }
+
+  public void setOldPredicate(Predicate oldPredicate) {
+    this.oldPredicate = oldPredicate;
   }
 
 }

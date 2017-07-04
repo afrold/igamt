@@ -51,8 +51,6 @@ public class SubProfileComponentAttributes {
   private List<ConformanceStatement> conformanceStatements;
   private DynamicMappingDefinition dynamicMappingDefinition;
   private CoConstraintsTable coConstraintsTable;
-
-
   private Predicate predicate;
 
   public Usage getUsage() {
