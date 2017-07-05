@@ -163,16 +163,17 @@ public class SerializableProfileComponent extends SerializableSection {
                             .addAttribute(new Attribute("DefinitionText", definitionTexts.get(subProfileComponentAttributes)));
                     }
                     profileComponentElement.appendChild(subProfileComponentElement);
-                    if(subProfileComponent.getPredicates()!=null && !subProfileComponent.getPredicates().isEmpty()){
-                    	List<SerializableConstraint> serializableConstraints = new ArrayList<>();
-                    	for(Predicate predicate : subProfileComponent.getPredicates()){
-                    		SerializableConstraint serializableConstraint = new SerializableConstraint(predicate, subProfileComponent.getPath());
-                    		serializableConstraints.add(serializableConstraint);
-                    	}
-                    	if(!serializableConstraints.isEmpty()){
-                    		profileComponentElement.appendChild(new SerializableConstraints(serializableConstraints, this.profileComponent.getId(), "", "Conformance Statements", "").serializeElement());
-                    	}
-                    }
+                    //TODO Need to revise
+//                    if(subProfileComponent.getPredicates()!=null && !subProfileComponent.getPredicates().isEmpty()){
+//                    	List<SerializableConstraint> serializableConstraints = new ArrayList<>();
+//                    	for(Predicate predicate : subProfileComponent.getPredicates()){
+//                    		SerializableConstraint serializableConstraint = new SerializableConstraint(predicate, subProfileComponent.getPath());
+//                    		serializableConstraints.add(serializableConstraint);
+//                    	}
+//                    	if(!serializableConstraints.isEmpty()){
+//                    		profileComponentElement.appendChild(new SerializableConstraints(serializableConstraints, this.profileComponent.getId(), "", "Conformance Statements", "").serializeElement());
+//                    	}
+//                    }
                     	
                 }
             }
