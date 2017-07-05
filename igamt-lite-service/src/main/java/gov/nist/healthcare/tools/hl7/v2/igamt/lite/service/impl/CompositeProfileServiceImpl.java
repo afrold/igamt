@@ -107,6 +107,7 @@ public class CompositeProfileServiceImpl implements CompositeProfileService {
     }
 
     List<PathGroup> pathGroups = pathGroupService.buildPathGroups(coreMessage, pcs, segmentsMap);
+
     if (!pathGroups.isEmpty()) {
       pathGroups = pathGroups.get(0).getChildren();
     }

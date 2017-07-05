@@ -226,7 +226,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         }
 
     };
-    $scope.findingComments = function(node) {
+    $scope.findingCommentsInPC = function(node) {
         var result = [];
 
         if (node) {

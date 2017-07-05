@@ -198,7 +198,12 @@ public class PathGroupServiceImpl implements PathGroupService {
       // order subPcs
       SubProfileComponentComparator Comp = new SubProfileComponentComparator();
       Collections.sort(pc.getChildren(), Comp);
+
       for (SubProfileComponent subPc : pc.getChildren()) {
+        if (!subPc.getComments().isEmpty()) {
+
+          // subPc.getAttributes().setComments(subPc.getComments());
+        }
         add(pathGroups, subPc.getPath(), subPc.getAttributes());
       }
 
@@ -312,6 +317,8 @@ public class PathGroupServiceImpl implements PathGroupService {
           if (segRef.getRef().getLabel().equals(segLabel)) {
             SubProfileComponent sub = new SubProfileComponent();
             sub.setAttributes(subPc.getAttributes());
+            List<Comment> comments = subPc.getComments();
+            sub.setComments(comments);
             sub.setName(subPc.getName());
             sub.setPosition(subPc.getPosition());
             sub.setType(subPc.getType());

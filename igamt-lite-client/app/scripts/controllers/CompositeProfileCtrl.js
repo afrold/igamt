@@ -300,7 +300,22 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
 
         return false;
     };
+    $scope.debug=function(node){
+        console.log("node is ");
+
+        console.log(node);
+        console.log("the refined  path");
+        console.log($rootScope.refinePathDebug(node.path));
+
+        console.log("the Comments")
+        console.log($rootScope.compositeProfile.comments);
+
+
+
+
+    };
     $scope.findingComments = function(node) {
+
         var result = [];
         if (node && $rootScope.compositeProfile) {
             result = _.filter($rootScope.compositeProfile.comments, function(comment) {
@@ -312,6 +327,7 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
             }
 
             if (node.segment) {
+
                 var parentSeg = $rootScope.compositeProfile.segmentsMap[node.segment];
                 var subResult = _.filter(parentSeg.comments, function(comment) {
                     return comment.location == node.segmentPath;
@@ -322,6 +338,17 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
                 }
                 result = result.concat(subResult);
             }
+            if(node.ref){
+                subResult = _.filter($rootScope.compositeProfile.comments, function(comment) {
+                    return comment.location == node.ref.label;
+                });
+                for (var i = 0; i < subResult.length; i++) {
+                    subResult[i].from = 'segment';
+                    subResult[i].index = i + 1;
+                }
+                result = result.concat(subResult);
+            }
+
 
             if (node.fieldDT) {
                 var parentDT = $rootScope.compositeProfile.datatypesMap[node.fieldDT];
