@@ -213,6 +213,7 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         });
     };
     $scope.seeConfSt = function(node, context) {
+        console.log(node);
         $mdDialog.show({
             templateUrl: 'GlobalConformanceStatementCtrlInPc.html',
             parent: angular.element(document).find('body'),
@@ -612,9 +613,126 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         return result;
     }
 
+    $scope.findingPredicatesDebug = function(node) {
+        console.log(node);
+
+        var result = null;
+        if (node && $rootScope.compositeProfile) {
+            result = _.find($scope.groupsPredicates, function(p) {
+                if (p.context && p.context.type === "group") {
+                    //var tempath = node.path.replace(p.context.path + '.', '');
+                    if (node.type === 'group' && p.context.path === $rootScope.refinePath(p.constraintTarget) && parseInt($rootScope.refinePath(p.constraintTarget)) === node.position) {
+                        return true;
+                    } else {
+                        return (p.context.path + '.' + $rootScope.refinePath(p.constraintTarget)) == $rootScope.refinePath(node.path);
+
+                    }
+                }
+
+            });
+            if (result) {
+
+                result.from = 'message';
+                return result;
+            }
+            console.log(node.path);
+            result = _.find($rootScope.compositeProfile.predicates, function(binding) {
+                return binding.constraintTarget == node.path;
+            });
+            if (result) {
+                result.from = 'message';
+                return result;
+            }
+
+
+
+            if (node.segment) {
+                console.log("============= node has segment");
+                var parentSeg = $rootScope.compositeProfile.segmentsMap[node.segment];
+                var index = node.path.indexOf(".");
+                var pa = node.path.split(".");
+                if (node.type === "field") {
+                    var ind = 0;
+                    while (pa.length > 1) {
+                        pa.splice(0, 1);
+                    }
+                }
+
+                //var tempPath = node.path.substr(index + 1);
+                if (parentSeg) {
+                    console.log("============= node has Parent segment");
+
+                    result = _.find(parentSeg.predicates, function(binding) {
+                        return binding.constraintTarget == pa.join(".");
+                    });
+                }
+
+                if (result) {
+                    result.from = 'segment';
+                    console.log(result);
+                    return result;
+
+                }
+            }
+
+
+
+            if (node.fieldDT) {
+                var parentDT = $rootScope.compositeProfile.datatypesMap[node.fieldDT];
+                var pa = node.path.split(".");
+                if (node.type === "component") {
+                    var ind = 0;
+                    while (pa.length > 1) {
+                        pa.splice(0, 1);
+                    }
+                }
+
+                //var tempPath = node.path.substr(index + 1);
+                if (parentDT) {
+                    result = _.find(parentDT.predicates, function(binding) {
+                        return binding.constraintTarget == pa.join(".");
+                    });
+                }
+
+                if (result) {
+                    result.from = 'field';
+                    return result;
+                }
+            }
+
+            if (node.componentDT) {
+                var parentDT = $rootScope.compositeProfile.datatypesMap[node.componentDT];
+                //var subPath = node.constraintTarget.substr(node.constraintTarget.split('.', 2).join('.').length + 1);
+                var pa = node.path.split(".");
+                if (node.type === "component") {
+                    var ind = 0;
+                    while (pa.length > 1) {
+                        pa.splice(0, 1);
+                    }
+                }
+
+                //var tempPath = node.path.substr(index + 1);
+                if (parentDT) {
+                    result = _.find(parentDT.predicates, function(binding) {
+                        return binding.constraintTarget == pa.join(".");
+                    });
+                }
+
+                if (result) {
+                    result.from = 'component';
+                    return result;
+                }
+            }
+        }
+
+
+        return result;
+    }
 });
 
 angular.module('igl').controller('SeeConfStDlgCtl', function($scope, $rootScope, $mdDialog, node, context) {
+
+    console.log(node);
     if (node.type === "group") {
         $scope.selectedContextNode = node;
 

@@ -338,7 +338,7 @@
                                                 <div class="col-md-12">
                                                     <span ng-hide="groupsPredicates.length > 0 || msgPredicates.length>0">No Predicate</span>
                                                     <div>
-                                                        <span>Message : {{compositeProfile.datatypesMap.name}}</span>
+                                                        <span>Message : {{compositeProfile.name}}</span>
                                                         <table st-table="displayed" st-safe-src="msgPredicates" class="table table-striped table-bordered">
                                                             <thead>
                                                                 <tr class="tbl-header">
@@ -358,9 +358,12 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
+                                                    <pre>{{groupsPredicates}}</pre>
+                                                    <br/>
+                                                    <pre>{{msgPredicates}}</pre>
                                                     <div ng-repeat="node in groupsPredicates">
-                                                        <span ng-show="node.context.type =='group'">Group : {{node.context.name}}</span>
-                                                        <span ng-show="node.context.type =='message' || node.context===null">Message : {{node.context.name}}</span>
+                                                        <span ng-show="node.context.path =='group'">Group : {{node.context.name}}</span>
+                                                        <span ng-show="node.context.path =='message'">Message : {{node.context.name}}</span>
                                                         <table st-table="displayed" st-safe-src="node" class="table table-striped table-bordered">
                                                             <thead>
                                                                 <tr class="tbl-header">
@@ -380,6 +383,8 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -511,9 +516,12 @@
 
 
         <td ng-class="{'has-error': node.usage === 'C' && !findingPredicates(node) , 'emptyCol':node.usage !== 'C'}">
+            <button ng-click="findingPredicatesDebug(node)">test</button>
             <div ng-show="node.usage==='C' && findingPredicates(node) ">
 
                 <span title="{{getPredicateAsString(findingPredicates(node))}}" class="badge label-white">
+
+
                 <span ng-class="{'label-message-icon' : findingPredicates(node).from == 'message', 'label-field-icon' : findingPredicates(node).from == 'segment','label-component-icon':findingPredicates(node).from==='field','label-sub-component-icon' : findingPredicates(node).from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                 <span>{{getConstraintAsTruncatedString(findingPredicates(node), 15)}}</span>
                 <div ng-show="countPredicate(node.path) > 1">

@@ -129,12 +129,12 @@ public class PathGroupServiceImpl implements PathGroupService {
               coreMessage.getSingleElementValues().add(sub.getSingleElementValues());
             }
           }
-          if (sub.getPredicates() != null && !sub.getPredicates().isEmpty()) {
-            Predicate pred = sub.getPredicates().get(0);
+          if (sub.getAttributes().getPredicate() != null) {
+            Predicate pred = sub.getAttributes().getPredicate();
             boolean predExist = false;
             for (Predicate predicate : coreMessage.getPredicates()) {
               if (predicate.getConstraintTarget().equals(pred.getConstraintTarget())
-                  && pred.getContext().getName().equals(coreMessage.getStructID())) {
+                  && pred.getContext().getPath() == null) {
                 predExist = true;
                 predicate.setAssertion(pred.getAssertion());
                 predicate.setConstraintClassification(pred.getConstraintClassification());
@@ -147,7 +147,7 @@ public class PathGroupServiceImpl implements PathGroupService {
               }
             }
             if (!predExist) {
-              if (pred.getContext().getName().equals(coreMessage.getStructID())) {
+              if (pred.getContext().getPath() == null) {
                 coreMessage.getPredicates().add(pred);
               } else {
 
@@ -198,7 +198,12 @@ public class PathGroupServiceImpl implements PathGroupService {
       // order subPcs
       SubProfileComponentComparator Comp = new SubProfileComponentComparator();
       Collections.sort(pc.getChildren(), Comp);
+
       for (SubProfileComponent subPc : pc.getChildren()) {
+        if (!subPc.getComments().isEmpty()) {
+
+          // subPc.getAttributes().setComments(subPc.getComments());
+        }
         add(pathGroups, subPc.getPath(), subPc.getAttributes());
       }
 
@@ -284,10 +289,10 @@ public class PathGroupServiceImpl implements PathGroupService {
               seg.getSingleElementValues().add(subPc.getSingleElementValues());
             }
           }
-          if (subPc.getPredicates() != null && !subPc.getPredicates().isEmpty()
+          if (subPc.getAttributes().getPredicate() != null
               && subPc.getPath().startsWith(segLabel)) {
 
-            Predicate pred = subPc.getPredicates().get(0);
+            Predicate pred = subPc.getAttributes().getPredicate();
             boolean predExist = false;
             for (Predicate predicate : seg.getPredicates()) {
               if (predicate.getConstraintTarget().equals(pred.getConstraintTarget())) {
@@ -312,6 +317,8 @@ public class PathGroupServiceImpl implements PathGroupService {
           if (segRef.getRef().getLabel().equals(segLabel)) {
             SubProfileComponent sub = new SubProfileComponent();
             sub.setAttributes(subPc.getAttributes());
+            List<Comment> comments = subPc.getComments();
+            sub.setComments(comments);
             sub.setName(subPc.getName());
             sub.setPosition(subPc.getPosition());
             sub.setType(subPc.getType());
