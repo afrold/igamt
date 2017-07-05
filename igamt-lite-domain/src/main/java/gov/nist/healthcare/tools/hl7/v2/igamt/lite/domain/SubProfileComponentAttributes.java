@@ -19,6 +19,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsTable;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 public class SubProfileComponentAttributes {
 
@@ -46,15 +47,13 @@ public class SubProfileComponentAttributes {
   private String text = "";
   private SegmentLink ref;
   private SegmentLink oldRef;
-  private List<ConformanceStatement> oldConformanceStatements =
-      new ArrayList<ConformanceStatement>();
-  private List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
+  private List<ConformanceStatement> oldConformanceStatements =new ArrayList<ConformanceStatement>();
   private DynamicMappingDefinition oldDynamicMappingDefinition = new DynamicMappingDefinition();
-  private DynamicMappingDefinition dynamicMappingDefinition = new DynamicMappingDefinition();
   private CoConstraintsTable oldCoConstraintsTable = new CoConstraintsTable();
-  private CoConstraintsTable coConstraintsTable = new CoConstraintsTable();
-
-
+  private List<ConformanceStatement> conformanceStatements;
+  private DynamicMappingDefinition dynamicMappingDefinition;
+  private CoConstraintsTable coConstraintsTable;
+  private Predicate predicate;
 
   public Usage getUsage() {
     return usage;
@@ -235,6 +234,7 @@ public class SubProfileComponentAttributes {
   }
 
   public List<ConformanceStatement> getConformanceStatements() {
+    if(conformanceStatements != null && conformanceStatements.size() == 0)  return null;
     return conformanceStatements;
   }
 
@@ -307,6 +307,14 @@ public class SubProfileComponentAttributes {
    */
   public void setComments(List<Comment> comments) {
     this.comments = comments;
+
+  public Predicate getPredicate() {
+    return predicate;
+  }
+
+  public void setPredicate(Predicate predicate) {
+    this.predicate = predicate;
+
   }
 
 
