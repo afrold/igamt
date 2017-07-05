@@ -2823,6 +2823,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
 
     $scope.addConformanceStatement = function() {
         var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
+        if(!$scope.selectedContextNode.conformanceStatements) $scope.selectedContextNode.conformanceStatements = [];
         $scope.selectedContextNode.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
@@ -2835,6 +2836,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
 
     $scope.addFreeTextConformanceStatement = function() {
         var cs = $rootScope.generateFreeTextConformanceStatement($scope.newConstraint);
+        if(!$scope.selectedContextNode.conformanceStatements) $scope.selectedContextNode.conformanceStatements = [];
         $scope.selectedContextNode.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
@@ -2843,6 +2845,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.addComplexConformanceStatement = function() {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+        if(!$scope.selectedContextNode.conformanceStatements) $scope.selectedContextNode.conformanceStatements = [];
         $scope.selectedContextNode.conformanceStatements.push($scope.complexConstraint);
         $scope.initComplexStatement();
         $scope.changed = true;
@@ -2852,7 +2855,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         $mdDialog.hide();
     };
 
-    $scope.save = function() {
+    $scope.saveClose = function() {
         if(mode === 'pc'){
             $rootScope.recordChanged();
             $mdDialog.hide($scope.selectedContextNode);

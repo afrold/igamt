@@ -2346,7 +2346,7 @@
             <md-dialog-actions layout="row">
                 <md-button ng-show="dialogStep === 1 && mode !== 'pc'" class="btn btn-raised btn-primary btn-sm " ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
                 <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm " ng-click="goNext()" ng-disabled="contextKey === null"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
-                <md-button ng-show="dialogStep === 1" class="btn btn-raised btn-success btn-sm " ng-click="save()" ng-disabled="!changed" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
+                <md-button ng-show="dialogStep === 1" class="btn btn-raised btn-success btn-sm " ng-click="saveClose()" ng-disabled="!changed" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>

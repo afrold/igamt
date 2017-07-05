@@ -2635,6 +2635,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     $scope.addComplexConformanceStatement = function() {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+        if(!$scope.selectedSegment.conformanceStatements) $scope.selectedSegment.conformanceStatements = [];
         $scope.selectedSegment.conformanceStatements.push($scope.complexConstraint);
         $scope.initComplexStatement();
         $scope.changed = true;
@@ -2642,6 +2643,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
 
     $scope.addFreeTextConformanceStatement = function() {
         var cs = $rootScope.generateFreeTextConformanceStatement($scope.newConstraint);
+        if(!$scope.selectedSegment.conformanceStatements) $scope.selectedSegment.conformanceStatements = [];
         $scope.selectedSegment.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
@@ -2649,6 +2651,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
 
     $scope.addConformanceStatement = function() {
         var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
+        if(!$scope.selectedSegment.conformanceStatements) $scope.selectedSegment.conformanceStatements = [];
         $scope.selectedSegment.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
