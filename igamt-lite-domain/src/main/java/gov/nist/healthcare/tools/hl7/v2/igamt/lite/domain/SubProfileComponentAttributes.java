@@ -47,7 +47,8 @@ public class SubProfileComponentAttributes {
   private String text = "";
   private SegmentLink ref;
   private SegmentLink oldRef;
-  private List<ConformanceStatement> oldConformanceStatements =new ArrayList<ConformanceStatement>();
+  private List<ConformanceStatement> oldConformanceStatements =
+      new ArrayList<ConformanceStatement>();
   private DynamicMappingDefinition oldDynamicMappingDefinition = new DynamicMappingDefinition();
   private CoConstraintsTable oldCoConstraintsTable = new CoConstraintsTable();
   private List<ConformanceStatement> conformanceStatements;
@@ -234,7 +235,8 @@ public class SubProfileComponentAttributes {
   }
 
   public List<ConformanceStatement> getConformanceStatements() {
-    if(conformanceStatements != null && conformanceStatements.size() == 0)  return null;
+    if (conformanceStatements != null && conformanceStatements.size() == 0)
+      return null;
     return conformanceStatements;
   }
 
@@ -307,6 +309,7 @@ public class SubProfileComponentAttributes {
    */
   public void setComments(List<Comment> comments) {
     this.comments = comments;
+  }
 
   public Predicate getPredicate() {
     return predicate;
