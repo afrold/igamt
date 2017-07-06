@@ -166,8 +166,23 @@
                                                                                    name="usage" id="usage"
                                                                                    class="inside-table"
                                                                                    ng-change="setDirty();updateUsage(node);"
-                                                                                   required ng-model="node.usage">
+                                                                                   ng-if="node.from !== 'segment' || node.type !== 'segmentRef'"
+                                                                                   required
+                                                                                   ng-model="node.usage">
                                                                             <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                                                                {{usage}}
+                                                                            </md-option>
+                                                                        </md-select>
+                                                                        <md-select ng-init="initUsage(node)"
+                                                                                   placeholder="Select Usage"
+                                                                                   name="usage"
+                                                                                   id="usage"
+                                                                                   class="inside-table"
+                                                                                   ng-change="setDirty();updateUsage(node);"
+                                                                                   ng-if="node.from === 'segment' && node.type === 'segmentRef'"
+                                                                                   required
+                                                                                   ng-model="node.usage">
+                                                                            <md-option ng-repeat="usage in config.usages" ng-disabled="usage === 'C'" ng-value="usage">
                                                                                 {{usage}}
                                                                             </md-option>
                                                                         </md-select>
