@@ -19,12 +19,12 @@
                     <div class="page-header">
                         <span class="header4">IG Document Metadata</span>
             <span class="pull-right">
-         <button title="Save Changes" class="btn btn-raised btn-sm btn-success"
+            <md-button title="Save Changes" class="btn btn-raised btn-sm btn-success"
                  ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-hide="viewSettings.tableReadonly"
                  ng-click="save()">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
-         </button>
+            </md-button>
 
                 <!--<button ng-show="editForm.$invalid" title="The data you entered are invalid. Please fix data before saving" class="btn btn-raised btn-sm btn-primary"-->
                         <!--ng-disabled="editForm.$invalid || !editForm.$dirty"-->
@@ -33,27 +33,27 @@
                     <!--<span><i class="fa fa-check fa-fw"></i> Save</span>-->
                 <!--</button>-->
 
-                         <button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                         <md-button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                                  ng-disabled="!editForm.$dirty"
                                  ng-hide="viewSettings.tableReadonly"
                                  ng-click="reset()">
                              <span><i class="fa fa-times fa-fw"></i>Reset</span>
-                         </button>
+                         </md-button>
                     </span>
                     </div>
 
-                <div class="static_info">
-                 <i class="fa fa-calendar" aria-hidden="true"></i>
-					Updated {{igdocument.dateUpdated | date:dateFormat}}
-                     <span ng-if="igdocument.owner" style="font-style: italic;">
-                         <i class="fa fa-user" aria-hidden="true"></i> 
-                         ,{{igdocument.owner}}
-                    </span>
-                    <span>,HL7 Version: {{igdocument.profile.metaData.hl7Version}}</span>
-                </div>
+                <!--<div class="static_info">-->
+                 <!--<i class="fa fa-calendar" aria-hidden="true"></i>-->
+					<!--Updated {{igdocument.dateUpdated | date:dateFormat}}-->
+                     <!--<span ng-if="igdocument.owner" style="font-style: italic;">-->
+                         <!--<i class="fa fa-user" aria-hidden="true"></i> -->
+                         <!--,{{igdocument.owner}}-->
+                    <!--</span>-->
+                    <!--<span>,HL7 Version: {{igdocument.profile.metaData.hl7Version}}</span>-->
+                <!--</div>-->
 
                 <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
-                    <md-content layout-padding>
+                    <md-content layout-padding class="scrollableContent">
 
                         <md-input-container class="md-block" flex-gt-sm >
                             <label class="input-left">Cover Picture</label>

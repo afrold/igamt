@@ -461,7 +461,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 predicate.context.type = 'segment';
                 predicate.context.id = selectedSegment.id;
                 node.attributes.predicate = predicate;
-                
+
                 console.log(predicate);
                 $scope.setDirty();
             }

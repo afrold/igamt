@@ -11,7 +11,7 @@
         top.location = self.location;
     }
 </script>
-<div ng-show="!loadingIGDocument">
+<div ng-show="!loadingIGDocument" style="max-height: 800px; overflow-y: hidden">
     <div class="row" ng-show="!isEditing">
         <div class="col-md-12">
             <p>No Implementation Guide Selected.</p>
@@ -232,7 +232,7 @@
 
                 <div flex="70">
 
-                            <div id="edit" ng-show="subview" style="width:100%; max-height: 800px; background-color: white;overflow: scroll;">
+                            <div id="edit" ng-show="subview" style="width:100%; max-height: 800px; background-color: white;overflow: hidden;">
                                 <div ng-include="subview"></div>
                             </div>
 
