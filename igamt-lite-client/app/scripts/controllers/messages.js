@@ -2441,7 +2441,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
             $scope.existingPredicate.context = {};
             $scope.existingPredicate.context.type = 'message';
             $scope.existingPredicate.context.id = selectedMessage.id;
-            if($scope.existingContext.positionPath !== '.'){
+            if($scope.existingContext.positionPath && $scope.existingContext.positionPath !== '.'){
                 $scope.existingPredicate.context.path = $scope.existingContext.positionPath.split('[1]').join('');
             }
             $mdDialog.hide($scope.existingPredicate);

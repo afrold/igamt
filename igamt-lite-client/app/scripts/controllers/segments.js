@@ -2221,7 +2221,19 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
         });
         c.selected = true;
         $scope.existingPredicate = c;
-        $scope.existingPredicate.constraintTarget = $scope.selectedNode.position + '[1]';
+
+        if(mode === 'pc'){
+            var newPath = $scope.selectedNode.path.split(".");
+
+            if(newPath.length === 1){
+                $scope.existingPredicate.constraintTarget = ".";
+            }else if(newPath.length > 1){
+                newPath.shift();
+                $scope.existingPredicate.constraintTarget = newPath.join("[1].") + "[1]";
+            }
+        }else {
+            $scope.existingPredicate.constraintTarget = $scope.selectedNode.position + '[1]';
+        }
     };
 
     $scope.toggleChildren = function(data) {

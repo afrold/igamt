@@ -2722,6 +2722,8 @@ angular.module('igl').controller('addComponentsCtrl', function($scope, $rootScop
                 appliedTo: [],
                 version: ""
             };
+            if(!newPc.source) newPc.source = {};
+            newPc.source.segmentId = pc.id;
         } else if (pc.type === 'datatype') {
             var newPc = {
                 id: new ObjectId().toString(),
