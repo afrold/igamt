@@ -21,6 +21,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.docx4j.XmlUtils;
+import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.contenttype.CTOverride;
@@ -80,6 +81,9 @@ public class DocxExportUtil {
 
 	@Autowired
 	private FileStorageService fileStorageService;
+	
+	@Autowired
+	private SerializationUtil serializationUtil;
 
 	public void createCoverPageForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory,
 			MetaData metaData, String dateUpdated) {
@@ -123,9 +127,19 @@ public class DocxExportUtil {
 								addLineBreak(wordMLPackage, factory);
 						}
 						if(null!=metaData.getDescription() & !"".equals(metaData.getDescription())){
-								wordMLPackage.getMainDocumentPart()
-										.addStyledParagraphOfText("Style1", "Description: "+metaData.getDescription());
-								addLineBreak(wordMLPackage, factory);
+						  XHTMLImporterImpl xHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
+						  List<Object> htmlDescription;
+                          try {
+                            String cleanedDescription = serializationUtil.cleanRichtext(metaData.getDescription());
+                            htmlDescription = xHTMLImporter.convert(cleanedDescription, null);
+                            for(Object htmlDescriptionPart : htmlDescription){  
+                              wordMLPackage.getMainDocumentPart().addObject(htmlDescriptionPart);
+                            }
+                            addLineBreak(wordMLPackage, factory);
+                          } catch (Docx4JException e) {
+                            logger.error("Unable to create the Description part of the cover page");
+                            e.printStackTrace();
+                          }
 						}
 				}
 				if(null!=dateUpdated && !dateUpdated.isEmpty()) {
