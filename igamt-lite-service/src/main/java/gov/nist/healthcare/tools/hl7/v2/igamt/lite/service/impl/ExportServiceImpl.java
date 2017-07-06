@@ -16,8 +16,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSerialization;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSerialization;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SerializationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportParameters;
@@ -52,13 +50,7 @@ public class ExportServiceImpl implements ExportService {
     private ExportUtil exportUtil;
 
     @Autowired
-    private IGDocumentSerialization igDocumentSerializationService;
-
-    @Autowired
     private SerializationService serializationService;
-
-    @Autowired
-    private ProfileSerialization profileSerializationService;
 
     @Autowired
     private ExportFontConfigService exportFontConfigService;

@@ -139,14 +139,22 @@ import nu.xom.Document;
         for(TableLink tableLink : datatypeLibraryDocument.getTableLibrary().getChildren()){
           this.bindedTables.add(tableLink.getId());
         }
+        
+        int datatypeSectionPosition = 1;
+        if(datatypeLibraryDocument.getMetaData().getDescription() != null && !datatypeLibraryDocument.getMetaData().getDescription().trim().isEmpty()){
+          SerializableSection descriptionSection = new SerializableSection("descriptionSection", "1", "1", "1", "Description");
+          descriptionSection.addSectionContent(datatypeLibraryDocument.getMetaData().getDescription());
+          serializableSections.addSection(descriptionSection);
+          datatypeSectionPosition++;
+        }
+        SerializableSection datatypeLibrarySection = new SerializableSection("datatypeLibrarySection",String.valueOf(datatypeSectionPosition),String.valueOf(datatypeSectionPosition),"1","Datatype Library");
         SerializableSection datatypeSection = this.serializeDatatypes(
             datatypeLibraryDocument.getDatatypeLibrary(), 1, true);
         //datatypeSection.setTitle("Data Types");
-        SerializableSection valueSetsSection = this.serializeValueSets(datatypeLibraryDocument.getTableLibrary(),2);
+        //SerializableSection valueSetsSection = this.serializeValueSets(datatypeLibraryDocument.getTableLibrary(),2);
         //valueSetsSection.setTitle("Value Sets");
-        SerializableSection datatypeLibrarySection = new SerializableSection("datatypeLibrarySection","1","1","1","Datatype Library");
         datatypeLibrarySection.addSection(datatypeSection);
-        datatypeLibrarySection.addSection(valueSetsSection);
+        //datatypeLibrarySection.addSection(valueSetsSection);
         serializableSections.addSection(datatypeLibrarySection);
         serializableStructure.addSerializableElement(serializableSections);
         return serializableStructure.serializeStructure();
