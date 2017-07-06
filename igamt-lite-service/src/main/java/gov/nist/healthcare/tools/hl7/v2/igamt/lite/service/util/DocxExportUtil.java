@@ -15,6 +15,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 
 import com.mongodb.gridfs.GridFSDBFile;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocumentMetadata;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.FileStorageService;
 import org.apache.commons.codec.binary.Base64;
@@ -81,9 +83,6 @@ public class DocxExportUtil {
 
 	@Autowired
 	private FileStorageService fileStorageService;
-	
-	@Autowired
-	private SerializationUtil serializationUtil;
 
 	public void createCoverPageForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory,
 			MetaData metaData, String dateUpdated) {
@@ -125,21 +124,6 @@ public class DocxExportUtil {
 								wordMLPackage.getMainDocumentPart()
 										.addStyledParagraphOfText("Title", metaData.getName());
 								addLineBreak(wordMLPackage, factory);
-						}
-						if(null!=metaData.getDescription() & !"".equals(metaData.getDescription())){
-						  XHTMLImporterImpl xHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
-						  List<Object> htmlDescription;
-                          try {
-                            String cleanedDescription = serializationUtil.cleanRichtext(metaData.getDescription());
-                            htmlDescription = xHTMLImporter.convert(cleanedDescription, null);
-                            for(Object htmlDescriptionPart : htmlDescription){  
-                              wordMLPackage.getMainDocumentPart().addObject(htmlDescriptionPart);
-                            }
-                            addLineBreak(wordMLPackage, factory);
-                          } catch (Docx4JException e) {
-                            logger.error("Unable to create the Description part of the cover page");
-                            e.printStackTrace();
-                          }
 						}
 				}
 				if(null!=dateUpdated && !dateUpdated.isEmpty()) {
