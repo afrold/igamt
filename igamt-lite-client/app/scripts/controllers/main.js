@@ -2205,10 +2205,26 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         if (positionPath != '') positionPath = positionPath.substr(1);
-
         return positionPath;
     };
 
+    $rootScope.refinePathDebug = function(instancePath) {
+        var pathArray = [];
+
+        if (instancePath) pathArray = instancePath.split('.');
+        var positionPath = '';
+        for (var i in pathArray) {
+            var position = pathArray[i].split('[')[0];
+            positionPath = positionPath + '.' + position;
+        }
+
+        if (positionPath != '') positionPath = positionPath.substr(1);
+        console.log("positionPath")
+
+        console.log(positionPath);
+
+        return positionPath;
+    };
 
 
     $rootScope.saveBindingForSegment = function() {

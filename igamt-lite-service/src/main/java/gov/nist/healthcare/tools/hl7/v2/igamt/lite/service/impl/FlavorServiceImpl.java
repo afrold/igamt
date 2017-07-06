@@ -70,9 +70,9 @@ public class FlavorServiceImpl implements FlavorService {
       SegmentRef segRef = (SegmentRef) dm;
       if (attributes != null && !attributes.isEmpty()) {
         for (SubProfileComponentAttributes attr : attributes) {
-          if (attr.getComment() != null) {
-            segRef.setComment(attr.getComment());
-          }
+          // if (attr.getComment() != null) {
+          // segRef.setComment(attr.getComment());
+          // }
           if (attr.getMax() != null) {
             segRef.setMax(attr.getMax());
           }
@@ -108,6 +108,9 @@ public class FlavorServiceImpl implements FlavorService {
               if (attr.getCoConstraintsTable() != null
                   && attr.getCoConstraintsTable().getRowSize() > 0) {
                 segmentFlavor.setCoConstraintsTable(attr.getCoConstraintsTable());
+              }
+              if (attr.getComments() != null && !attr.getComments().isEmpty()) {
+                segmentFlavor.setComments(attr.getComments());
               }
             }
           }
@@ -190,6 +193,26 @@ public class FlavorServiceImpl implements FlavorService {
                 e.printStackTrace();
               }
             }
+            if (attr.getComments() != null && !attr.getComments().isEmpty()) {
+              Segment originalSeg = queryService.getSegmentsMap().get(segRef.getRef().getId());
+              try {
+                Segment segmentFlavor = originalSeg.clone();
+                segmentFlavor.setExt(ext + "_" + segRef.getPosition());
+                segmentFlavor.setId(ObjectId.get().toString());
+                segmentFlavor.setScope(SCOPE.USER);
+                segmentFlavor.setComments(attr.getComments());
+
+
+                queryService.getSegmentsMap().put(segmentFlavor.getId(), segmentFlavor);
+                segRef.getRef().setId(segmentFlavor.getId());
+                segRef.getRef().setExt(segmentFlavor.getExt());
+
+
+              } catch (CloneNotSupportedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+            }
 
           }
 
@@ -205,9 +228,9 @@ public class FlavorServiceImpl implements FlavorService {
       System.out.println("FIELD : " + field.getName());
       if (attributes != null && !attributes.isEmpty()) {
         for (SubProfileComponentAttributes attr : attributes) {
-          if (attr.getComment() != null) {
-            field.setComment(attr.getComment());
-          }
+          // if (attr.getComment() != null) {
+          // field.setComment(attr.getComment());
+          // }
           if (attr.getMax() != null) {
             field.setMax(attr.getMax());
           }
@@ -263,9 +286,9 @@ public class FlavorServiceImpl implements FlavorService {
       System.out.println("COMPONENT: " + component.getName());
       if (attributes != null && !attributes.isEmpty()) {
         for (SubProfileComponentAttributes attr : attributes) {
-          if (attr.getComment() != null) {
-            component.setComment(attr.getComment());
-          }
+          // if (attr.getComment() != null) {
+          // component.setComment(attr.getComment());
+          // }
           if (attr.getUsage() != null) {
             component.setUsage(attr.getUsage());
           }

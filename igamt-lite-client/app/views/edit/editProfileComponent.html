@@ -166,8 +166,23 @@
                                                                                    name="usage" id="usage"
                                                                                    class="inside-table"
                                                                                    ng-change="setDirty();updateUsage(node);"
-                                                                                   required ng-model="node.usage">
+                                                                                   ng-if="node.from !== 'segment' || node.type !== 'segmentRef'"
+                                                                                   required
+                                                                                   ng-model="node.usage">
                                                                             <md-option ng-repeat="usage in config.usages" ng-value="usage">
+                                                                                {{usage}}
+                                                                            </md-option>
+                                                                        </md-select>
+                                                                        <md-select ng-init="initUsage(node)"
+                                                                                   placeholder="Select Usage"
+                                                                                   name="usage"
+                                                                                   id="usage"
+                                                                                   class="inside-table"
+                                                                                   ng-change="setDirty();updateUsage(node);"
+                                                                                   ng-if="node.from === 'segment' && node.type === 'segmentRef'"
+                                                                                   required
+                                                                                   ng-model="node.usage">
+                                                                            <md-option ng-repeat="usage in config.usages" ng-disabled="usage === 'C'" ng-value="usage">
                                                                                 {{usage}}
                                                                             </md-option>
                                                                         </md-select>
@@ -392,7 +407,7 @@
                                                                     </a>
                                                                 </td>
                                                                 <td style="text-align:center" ng-class="{'input-change':(node.comments && node.comments.length>0),'emptyCol':node.type==='message'}">
-                                                                    <div ng-repeat="comment in findingComments(node)">
+                                                                    <div ng-repeat="comment in findingCommentsInPC(node)">
                                                                         <span class="badge label-white">
                                                                             <span ng-class="{'label-message-icon' : comment.from == 'message', 'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                                                                             <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-click="editCommentDlg(node, comment, false, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>

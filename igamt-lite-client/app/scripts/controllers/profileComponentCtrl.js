@@ -226,7 +226,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         }
 
     };
-    $scope.findingComments = function(node) {
+    $scope.findingCommentsInPC = function(node) {
         var result = [];
 
         if (node) {
@@ -2725,6 +2725,8 @@ angular.module('igl').controller('addComponentsCtrl', function($scope, $rootScop
                 appliedTo: [],
                 version: ""
             };
+            if(!newPc.source) newPc.source = {};
+            newPc.source.segmentId = pc.id;
         } else if (pc.type === 'datatype') {
             var newPc = {
                 id: new ObjectId().toString(),

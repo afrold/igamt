@@ -1601,6 +1601,7 @@ angular
                         console.log(compositeProfile);
                         $rootScope.compositeProfile = compositeProfile;
                         $scope.$emit('event:openCP', cm);
+
                     });
 
                 };
