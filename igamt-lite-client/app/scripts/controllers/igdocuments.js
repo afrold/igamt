@@ -32,17 +32,17 @@ angular.module('igl')
     $rootScope.usageF = false;
     $scope.nodeReady = true;
     $scope.igDocumentTypes = [{
-            name: "USER",
+            name: "My IGs",
             type: 'USER'
         },
         {
-            name: "PRELODED",
+            name: "Preloaded IGs",
             type: 'PRELOADED'
         }, {
-            name: "SHARED",
+            name: "Shared IGs",
             type: 'SHARED'
         },{
-        name:"ALL",
+        name:"All IGs",
             type:"all"
         }
 
