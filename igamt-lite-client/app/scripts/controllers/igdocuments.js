@@ -32,16 +32,20 @@ angular.module('igl')
     $rootScope.usageF = false;
     $scope.nodeReady = true;
     $scope.igDocumentTypes = [{
-            name: "My Implementation Guides",
+            name: "USER",
             type: 'USER'
         },
         {
-            name: "Preloaded Implementation Guides",
+            name: "PRELODED",
             type: 'PRELOADED'
         }, {
-            name: "Shared Implementation Guides",
+            name: "SHARED",
             type: 'SHARED'
+        },{
+        name:"ALL",
+            type:"all"
         }
+
     ];
     $scope.loadingIGDocument = false;
     $scope.toEditIGDocumentId = null;
