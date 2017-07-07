@@ -20,9 +20,9 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Composite Profile: {{compositeProfileStructure.name}} </span>
                         <div class="pull-right">
-                            <button ng-disabled="editForm.$invalid ||!editForm.$dirty" title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-click="save()">
+                            <md-button ng-if="!viewSettings.tableReadonly" ng-disabled="editForm.$invalid ||!editForm.$dirty" title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-click="save()">
                                                             <span><i class="fa fa-check fa-fw"></i> Save</span>
-                                                        </button>
+                                                        </md-button>
                         </div>
                     </div>
                     <div class="static_info">
@@ -36,7 +36,7 @@
                                 <i class="fa fa-code-fork fa-fw" aria-hidden="true"></i>Structure
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px">
+                                <div style="margin-top: 20px" class="scrollableContent">
                                     <div class="row margin-0 full-width hidden-xs">
                                         <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
                                             <div class="yy-timeline-box-inner">
@@ -71,7 +71,7 @@
                                         </div>
                                     </div>
                                     <div dnd-list="compositeProfile.appliedProfileComponents">
-                                        <div class="row margin-0 full-width hidden-xs" ng-repeat="pcInfo in compositeProfile.appliedProfileComponents" dnd-draggable="pcInfo" dnd-moved="compositeProfile.appliedProfileComponents.splice($index, 1);changePosition()">
+                                        <div class="row margin-0 full-width hidden-xs" ng-repeat="pcInfo in compositeProfile.appliedProfileComponents" dnd-draggable="pcInfo" dnd-moved="compositeProfile.appliedProfileComponents.splice($index, 1);changePosition()"  dnd-disable-if="viewSettings.tableReadonly">
 
                                             <div class="yy-timeline-box" ng-class-odd="'right'" ng-class-even="'right'">
                                                 <div class="yy-timeline-box-inner">
@@ -89,9 +89,9 @@
                                                             <br>Date Applied : {{pcInfo.pcDate | date:dateFormat}}
                                                             <br>
                                                             <div align="center">
-                                                                <button style="margin-bottom:5px;" class="btn btn-raised btn-danger btn-xs" ng-click="removePc(pcInfo.pc.id)"><span><i class="fa fa-times fa-fw">
+                                                                <md-button ng-if="!viewSettings.tableReadonly" style="margin-bottom:5px;" class="btn btn-raised btn-danger btn-xs" ng-click="removePc(pcInfo.pc.id)"><span><i class="fa fa-times fa-fw">
                                                         &nbsp; </i></span>
-                                                    </button>
+                                                    </md-button>
                                                             </div>
                                                         </div>
 
@@ -116,18 +116,18 @@
                                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> MetaData
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                                <div style="margin-top: 20px" ng-cloak class="md-inline-form scrollableContent" layout="column">
                                     <md-content layout-padding>
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Name</label>
-                                            <input type="text" name="name" ng-change="setDirty()" ng-model="compositeProfileStructure.name" required>
+                                            <input ng-disabled="viewSettings.tableReadonly" type="text" name="name" ng-change="setDirty()" ng-model="compositeProfileStructure.name" required>
                                             <div ng-messages="editForm.name.$error">
                                                 <div ng-message="required">Name is required.</div>
                                             </div>
                                         </md-input-container>
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Extension</label>
-                                            <input type="text" name="ext" ng-change="setDirty()" ng-model="compositeProfileStructure.ext" required ng-checkcompext property="old">
+                                            <input ng-disabled="viewSettings.tableReadonly" type="text" name="ext" ng-change="setDirty()" ng-model="compositeProfileStructure.ext" required ng-checkcompext property="old">
 
                                             <div ng-messages="editForm.ext.$error">
                                                 <div ng-message="required">Extension is required.</div>
@@ -148,14 +148,14 @@
 
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Description</label>
-                                            <input type="text" name="description" ng-change="setDirty()" ng-model="compositeProfile.description">
+                                            <input  ng-disabled="viewSettings.tableReadonly" type="text" name="description" ng-change="setDirty()" ng-model="compositeProfile.description">
 
                                         </md-input-container>
 
 
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Message Type</label>
-                                            <input type="text" name="messageType" ng-model="compositeProfile.messageType" disabled required>
+                                            <input ng-disabled="viewSettings.tableReadonly" type="text" name="messageType" ng-model="compositeProfile.messageType" disabled required>
                                             <div ng-messages="editForm.messageType.$error">
                                                 <div ng-message="required">Message Type is required.</div>
                                             </div>
@@ -210,14 +210,18 @@
                                 <i class="fa fa-table fa-fw" aria-hidden="true "></i>Definition
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px ">
+                                <div style="margin-top: 20px " class="scrollableContent">
                                     <accordion>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
                                                 <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
-                                                <div>
+                                                <div ng-if="!viewSettings.tableReadonly">
                                                     <textarea froala="froalaEditorOptions" ng-model="compositeProfileStructure.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
+                                                </div>
+
+                                                <div class="fr-view" ng-if="viewSettings.tableReadonly">
+                                                    <div froala-view="compositeProfileStructure.defPreText"></div>
                                                 </div>
 
                                             </div>
@@ -297,6 +301,9 @@
                                                 <div>
                                                     <textarea froala="froalaEditorOptions" ng-model="compositeProfileStructure.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
                                                 </div>
+                                                <div class="fr-view" ng-if="viewSettings.tableReadonly">
+                                                    <div froala-view="compositeProfileStructure.defPostText"></div>
+                                                </div>
 
                                             </div>
                                         </div>
@@ -338,7 +345,7 @@
                                                 <div class="col-md-12">
                                                     <span ng-hide="groupsPredicates.length > 0 || msgPredicates.length>0">No Predicate</span>
                                                     <div>
-                                                        <span>Message : {{compositeProfile.datatypesMap.name}}</span>
+                                                        <span>Composite Profile: {{compositeProfile.name}}</span>
                                                         <table st-table="displayed" st-safe-src="msgPredicates" class="table table-striped table-bordered">
                                                             <thead>
                                                                 <tr class="tbl-header">
@@ -349,7 +356,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr ng-repeat="c in displayed">
+                                                                <tr ng-repeat="c in displayed" ng-if="c.context.type!=='segment'">
                                                                     <td class="col-md-2">{{c.constraintTarget}}</td>
                                                                     <td class="col-md-8">{{c.description}}</td>
                                                                     <td class="col-md-1">{{c.trueUsage}}</td>
@@ -358,9 +365,10 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
+
                                                     <div ng-repeat="node in groupsPredicates">
-                                                        <span ng-show="node.context.type =='group'">Group : {{node.context.name}}</span>
-                                                        <span ng-show="node.context.type =='message' || node.context===null">Message : {{node.context.name}}</span>
+                                                        <span ng-show="node.path">Group : {{node.context.name}}</span>
+                                                        <span ng-show="!node.path">Message : {{node.context.name}}</span>
                                                         <table st-table="displayed" st-safe-src="node" class="table table-striped table-bordered">
                                                             <thead>
                                                                 <tr class="tbl-header">
@@ -380,6 +388,8 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -511,9 +521,12 @@
 
 
         <td ng-class="{'has-error': node.usage === 'C' && !findingPredicates(node) , 'emptyCol':node.usage !== 'C'}">
+            <!--<button ng-click="findingPredicatesDebug(node)">test</button>-->
             <div ng-show="node.usage==='C' && findingPredicates(node) ">
 
                 <span title="{{getPredicateAsString(findingPredicates(node))}}" class="badge label-white">
+
+
                 <span ng-class="{'label-message-icon' : findingPredicates(node).from == 'message', 'label-field-icon' : findingPredicates(node).from == 'segment','label-component-icon':findingPredicates(node).from==='field','label-sub-component-icon' : findingPredicates(node).from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
                 <span>{{getConstraintAsTruncatedString(findingPredicates(node), 15)}}</span>
                 <div ng-show="countPredicate(node.path) > 1">

@@ -229,9 +229,6 @@ input.igl-has-error,select.igl-has-error {
 
 .footer__inner {
     padding-left:20px;
-    padding-top:20px;
-    padding-right:20px;
-    padding-bottom:20px;
 
 }
 
@@ -329,6 +326,7 @@ ul, menu, dir {
     padding: 0;
     height: 34px;
     color: white;
+    float: right;
 }
 
 ul.list-horiz > li, li.list-horiz {

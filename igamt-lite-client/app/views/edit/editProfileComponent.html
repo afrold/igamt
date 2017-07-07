@@ -20,7 +20,7 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Profile Component: {{profileComponent.name}} </span>
                         <div class="pull-right">
-                            <button ng-disabled="!editForm.$dirty" title="Save Changes" type="button"
+                            <button ng-disabled="!editForm.$dirty||viewSettings.tableReadonly" title="Save Changes" type="button"
                                     class="btn btn-raised btn-sm btn-success" ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </button>
@@ -35,19 +35,19 @@
                                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> MetaData
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                                <div style="margin-top: 20px" ng-cloak class="md-inline-form scrollableContent" layout="column">
                                     <md-content layout-padding>
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Name</label>
-                                            <input type="text" name="name" ng-change="setDirty()" ng-model="profileComponent.name" required>
+                                            <input type="text" name="name" ng-change="setDirty()" ng-model="profileComponent.name" required ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Description</label>
-                                            <input type="text" name="description" ng-change="setDirty()" ng-model="profileComponent.description">
+                                            <input type="text" name="description" ng-change="setDirty()" ng-model="profileComponent.description" ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Comment</label>
-                                            <textarea rows="3" ng-change="setDirty()" name="comment" id="comment" ng-model="profileComponent.comment"/>
+                                            <textarea rows="3" ng-change="setDirty()" name="comment" id="comment" ng-model="profileComponent.comment" ng-disabled="viewSettings.tableReadonly"/>
                                         </md-input-container>
                                     </md-content>
                                 </div>
@@ -58,16 +58,20 @@
                                 <i class="fa fa-table fa-fw " aria-hidden="true "></i>Definition
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px ">
+                                <div style="margin-top: 20px " class="scrollableContent">
                                     <accordion>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
                                                 <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
                                             </accordion-heading>
                                             <div class="panel-body">
-                                                <div>
-                                                    <textarea froala="froalaEditorOptions" ng-model="profileComponent.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
+                                                <div ng-if="!viewSettings.tableReadonly">
+                                                    <textarea ng-disabled="viewSettings.tableReadonly" froala="froalaEditorOptions" ng-model="profileComponent.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
                                                 </div>
+                                                <div class="fr-view" ng-if="viewSettings.tableReadonly">
+                                                    <div froala-view="profileComponent.defPreText"></div>
+                                                </div>
+
                                             </div>
                                         </div>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
@@ -96,7 +100,7 @@
                                                     </div>
                                                     <div class="col-md-12 " style="margin-bottom:20px">
                                                         <div class="pull-left">
-                                                            <md-button class="md-primary md-raised" md-autofocus ng-click="addPComponents()">
+                                                            <md-button class="md-primary md-raised" md-autofocus ng-click="addPComponents()" ng-if="!viewSettings.tableReadonly">
                                                                 <i class="fa fa-plus "></i> Add Items
                                                             </md-button>
                                                         </div>
@@ -148,7 +152,7 @@
                                                                         <span>{{node.attributes.ref.name}}</span>
                                                                         <span ng-if="node.attributes.ref.ext && node.attributes.ref.ext!==null">_{{node.attributes.ref.ext}}</span>
                                                                     </span>
-                                                                    <select style="width:50px;"
+                                                                    <select ng-disabled="viewSettings.tableReadonly" style="width:50px;"
                                                                             ng-change="selectFlavor(node,segFlavor)"
                                                                             ng-show="editableRef===node.id"
                                                                             class="form-control input-sm"
@@ -161,7 +165,7 @@
                                                                 </td>
                                                                 <td ng-class="{'col-md-2 col-fixed-80 select-change':node.attributes.usage,'col-md-2 col-fixed-80':!node.attributes.usage,'emptyCol':node.type==='message'}">
                                                                     <div ng-if="node.usage !== 'C'  || (node.usage === 'C' && !findPredicate(node))" ng-hide="node.type==='message'">
-                                                                        <md-select ng-init="initUsage(node)"
+                                                                        <md-select ng-disabled="viewSettings.tableReadonly" ng-init="initUsage(node)"
                                                                                    placeholder="Select Usage"
                                                                                    name="usage" id="usage"
                                                                                    class="inside-table"
@@ -181,7 +185,7 @@
                                                                                    ng-change="setDirty();updateUsage(node);"
                                                                                    ng-if="node.from === 'segment' && node.type === 'segmentRef'"
                                                                                    required
-                                                                                   ng-model="node.usage">
+                                                                                   ng-model="node.usage" ng-disabled="viewSettings.tableReadonly">
                                                                             <md-option ng-repeat="usage in config.usages" ng-disabled="usage === 'C'" ng-value="usage">
                                                                                 {{usage}}
                                                                             </md-option>
@@ -190,12 +194,12 @@
                                                                     <span ng-if="findPredicate(node)" class="badge label-white">
                                                                         <span>C({{findPredicate(node).trueUsage}}/{{findPredicate(node).falseUsage}})</span>
                                                                     </span>
-                                                                    <a ng-show="node.attributes.usage && !findPredicate(node)" ng-click="cancelUsage(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                                    <a ng-show="node.attributes.usage && !findPredicate(node)" ng-click="cancelUsage(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
                                                                 </td>
                                                                 <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol': node.usage == 'X' || node.type==='component'|| node.type==='message', 'input-change':node.usage != 'X' && (node.attributes.min || node.attributes.max)}">
                                                                     <div ng-show="node.usage != 'X' && node.type!=='component' && node.type!=='message'" class="form-inline" layout="row" layout-align="center center">
                                                                         <md-input-container flex="50" class="withoutMargin">
-                                                                            <input aria-label="minC" style="width:50px;"
+                                                                            <input ng-disabled="viewSettings.tableReadonly" aria-label="minC" style="width:50px;"
                                                                                    name="min" min="0" type="number"
                                                                                    ng-init="initMinCard(node)"
                                                                                    ng-change="setDirty();updateMinCard(node);"
@@ -204,21 +208,21 @@
                                                                                    ng-minlength="1"/>
                                                                         </md-input-container>
                                                                         <md-input-container flex="50" class="withoutMargin">
-                                                                            <input aria-label="MaxC" style="width:50px;"
+                                                                            <input ng-disabled="viewSettings.tableReadonly" aria-label="MaxC" style="width:50px;"
                                                                                    type="text" name="max"
                                                                                    ng-init="initMaxCard(node)"
                                                                                    ng-change="setDirty();updateMaxCard(node);"
                                                                                    ng-pattern="/^\d+$|^\*?$/"
                                                                                    ng-model="node.max">
                                                                         </md-input-container>
-                                                                        <a class="point" ng-show="node.attributes.min || node.attributes.max" ng-click="cancelCard(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                                        <a  ng-if="!viewSettings.tableReadonly" class="point" ng-show="node.attributes.min || node.attributes.max" ng-click="cancelCard(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                                     </div>
                                                                 </td>
                                                                 <td classs="col-md-1 col-fixed-100" ng-class="{'emptyCol': node.usage == 'X' || (node.type!=='field' && node.type!=='component') || datatypesMap[node.datatype.id].components.length > 0, 'input-change ': node.usage != 'X' && (node.attributes.minLength || node.attributes.maxLength)}">
                                                                     <div ng-show="node.usage != 'X' && (node.type==='field' || node.type==='component') && datatypesMap[node.datatype.id].components.length == 0">
                                                                         <div ng-if="node.attributes.minLength !== 'NA' && node.attributes.maxLength !== 'NA' && node.minLength !== 'NA' && node.maxLength !== 'NA'" class="form-inline" layout="row" layout-align="center center">
                                                                             <md-input-container flex="50" class="withoutMargin">
-                                                                                <input aria-label="minL"
+                                                                                <input  ng-disabled="viewSettings.tableReadonly" aria-label="minL"
                                                                                        style="width:50px;"
                                                                                        name="minLength"
                                                                                        ng-init="initMinL(node)"
@@ -228,7 +232,7 @@
                                                                                        ng-minlength="1">
                                                                             </md-input-container>
                                                                             <md-input-container flex="50" class="withoutMargin">
-                                                                                <input aria-label="maxL" type="text"
+                                                                                <input ng-disabled="viewSettings.tableReadonly" aria-label="maxL" type="text"
                                                                                        name="maxLength"
                                                                                        style="width:50px;"
                                                                                        ng-init="initMaxL(node)"
@@ -236,11 +240,11 @@
                                                                                        ng-pattern="/^\d+$|^\*?$/"
                                                                                        ng-model="node.maxLength">
                                                                             </md-input-container>
-                                                                            <a title="Reset to base values" ng-show="node.attributes.minLength || node.attributes.maxLength " ng-click="cancelL(node)"><i class="fa fa-remove fa-fw"></i></a>
-                                                                            <a title="Set to NA" ng-show="!node.attributes.minLength && !node.attributes.maxLength " ng-click="clearL(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                                            <a title="Reset to base values" ng-show="node.attributes.minLength || node.attributes.maxLength " ng-click="cancelL(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
+                                                                            <a title="Set to NA" ng-show="!node.attributes.minLength && !node.attributes.maxLength " ng-click="clearL(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
                                                                         </div>
                                                                         <div ng-if="node.attributes.minLength === 'NA' || node.attributes.maxLength === 'NA' || node.minLength === 'NA' || node.attributes.maxLength === 'NA'">
-                                                                            <span ng-click="editL(node)" class="point">NA <i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                                                            <span ng-if="!viewSettings.tableReadonly" ng-click="editL(node)" class="point">NA <i class="fa fa-pencil fa-fw edit-icon"></i></span>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -248,7 +252,7 @@
                                                                     <div ng-show="node.usage != 'X' && (node.type==='field' || node.type==='component') && datatypesMap[node.datatype.id].components.length == 0">
                                                                         <div ng-if="node.attributes.confLength !== 'NA' && node.confLength !== 'NA'" class="form-inline" layout="row" layout-align="center center">
                                                                             <md-input-container flex="100" class="withoutMargin">
-                                                                                <input aria-label="conf"
+                                                                                <input  ng-disabled="viewSettings.tableReadonly" aria-label="conf"
                                                                                        name="confLength"
                                                                                        style="width:50px;"
                                                                                        ng-init="initConfL(node)"
@@ -256,11 +260,11 @@
                                                                                        ng-pattern="confLengthPattern"
                                                                                        ng-model="node.confLength">
                                                                             </md-input-container>
-                                                                            <a title="Reset to base values" ng-show="node.attributes.confLength" ng-click="cancelConfL(node)"><i class="fa fa-remove fa-fw"></i></a>
-                                                                            <a title="Set to NA" ng-show="!node.attributes.confLength" ng-click="clearConfL(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                                            <a title="Reset to base values" ng-show="node.attributes.confLength" ng-click="cancelConfL(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
+                                                                            <a title="Set to NA" ng-show="!node.attributes.confLength" ng-click="clearConfL(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
                                                                         </div>
                                                                         <div ng-if="node.attributes.confLength === 'NA' || node.confLength === 'NA'">
-                                                                            <span ng-click="editConfL(node)" class="point">NA <i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                                                            <span ng-click="editConfL(node)" class="point" ng-if="!viewSettings.tableReadonly">NA <i class="fa fa-pencil fa-fw edit-icon"></i></span>
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -271,21 +275,21 @@
                                                                             <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                                                                                 <span class="badge label-white" ng-show="editableDT!==node.id" style="text-align:left">
                                                                                     <display-label of="datatypesMap[node.datatype.id]" desc="false" ng-click="redirectDT(node.datatype)"></display-label>
-                                                                                    <span title="Change Datatype" ng-click="editDatatype=true;editDT(node)">
+                                                                                    <span title="Change Datatype" ng-click="editDatatype=true;editDT(node)" ng-if="!viewSettings.tableReadonly">
                                                                                     <i class="fa fa-pencil fa-fw edit-icon"></i></span>
                                                                                 </span>
                                                                                 <div ng-if="editableDT===node.id" style="text-align:left">
-                                                                                    <md-select placeholder="Select Data type" ng-model="node.datatype" ng-change="selectDT(node)" ng-controller="FormRowCtrl" ng-init="init(node)">
+                                                                                    <md-select placeholder="Select Data type" ng-model="node.datatype" ng-change="selectDT(node)" ng-controller="FormRowCtrl" ng-init="init(node)" ng-disabled="viewSettings.tableReadonly">
                                                                                         <md-option ng-value="datatype" ng-repeat="datatype in datatypes">
                                                                                             <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
                                                                                         </md-option>
                                                                                     </md-select>
                                                                                 </div>
                                                                                 <div align="center">
-                                                                                    <a ng-show="editableDT===node.id" ng-click="backDT()" class="point">
+                                                                                    <a ng-show="editableDT===node.id && !viewSettings.tableReadonly" ng-click="backDT()" class="point" >
                                                                                         <span><i class="glyphicon glyphicon-remove"></i></span>
                                                                                     </a>
-                                                                                    <a ng-show="node.attributes.datatype" ng-show="node.datatype && editableDT!==node.id" ng-click="editDatatype=false;cancelDatatype(node)" class="point">
+                                                                                    <a ng-show="node.attributes.datatype" ng-show="node.datatype && editableDT!==node.id&&viewSettings.tableReadonly" ng-click="editDatatype=false;cancelDatatype(node)" class="point">
                                                                                         <span><i class="glyphicon glyphicon-remove"></i></span>
                                                                                     </a>
                                                                                 </div>
@@ -304,9 +308,9 @@
                                                                                 <i class="fa fa-arrow-right" aria-hidden="true"></i>[{{binding.code.codeSystem}}]
                                                                             </span>
                                                                         </div>
-                                                                        <a class="point">
-                                                                            <span ng-click="editModalBindingForMsg(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
-                                                                            <a ng-show="node.valueSetBindings && node.valueSetBindings.length>0" ng-click="cancelBinding(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                                        <a class="point" ng-if="!viewSettings.tableReadonly">
+                                                                            <span ng-click="editModalBindingForMsg(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                                                            <a ng-show="node.valueSetBindings && node.valueSetBindings.length>0" ng-click="cancelBinding(node)"  ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
                                                                         </a>
                                                                     </div>
                                                                 </td>
@@ -316,14 +320,14 @@
                                                                             <span ng-show="node.sev" class="badge label-white">
                                                                                 <span ng-show="node.sev.value!=='' && node.sev.value!==null" ng-class="{'label-message-icon' : node.from == 'message', 'label-field-icon' : node.from == 'segment'}"><i class="fa fa-circle fa-fw"/></span>
                                                                                 <span>{{node.sev.value}}</span>
-                                                                                <span ng-show="node.sev.value!=='' && node.sev.value!==null" title="Edit SingleElement" ng-click="openDialogForEditSev(node)">
+                                                                                <span ng-show="node.sev.value!=='' && node.sev.value!==null&&!viewSettings.tableReadonly" title="Edit SingleElement" ng-click="openDialogForEditSev(node)">
                                                                                     <i class="fa fa-pencil fa-fw edit-icon"></i>
                                                                                 </span>
-                                                                                <span ng-show="node.singleElementValues && node.singleElementValues.location" title="Cancel SingleElement" ng-click="cancelSev(node)">
+                                                                                <span ng-show="node.singleElementValues && node.singleElementValues.location&&!viewSettings.tableReadonly" title="Cancel SingleElement" ng-click="cancelSev(node)">
                                                                                     <i class="fa fa-times fa-fw edit-icon"></i>
                                                                                 </span>
                                                                             </span>
-                                                                            <a ng-show="!node.sev || !node.sev.value" class="point" ng-click="openDialogForEditSev(node)">
+                                                                            <a  ng-show="(!node.sev || !node.sev.value)&&!viewSettings.tableReadonly" class="point" ng-click="openDialogForEditSev(node)">
                                                                                 <span><i class="fa fa-plus fa-fw"></i></span>
                                                                             </a>
                                                                         </div>
@@ -332,13 +336,13 @@
                                                                 <td ng-class="{'has-error': node.usage === 'C' && !findPredicate(node) , 'emptyCol':node.usage !== 'C','input-change':node.attributes.predicate}">
                                                                     <div>
                                                                         <div ng-show="node.usage==='C' && !findPredicate(node) && node.from==='message'">
-                                                                            <a ng-click="openDialogPCMessagePredicate(node)" class="point">
+                                                                            <a ng-if="!viewSettings.tableReadonly" ng-click="openDialogPCMessagePredicate(node)" class="point">
                                                                                 <span><i class="fa fa-plus fa-fw"></i></span>
                                                                                 <p class="warning">Need predicate</p>
                                                                             </a>
                                                                         </div>
                                                                         <div ng-show="node.usage==='C' && !findPredicate(node) && node.from==='segment'">
-                                                                            <a ng-click="openDialogPCSegmentPredicate(node)"
+                                                                            <a ng-if="!viewSettings.tableReadonly" ng-click="openDialogPCSegmentPredicate(node)"
                                                                                class="point">
                                                                                 <span><i class="fa fa-plus fa-fw"></i></span>
                                                                                 <p class="warning">Need predicate</p>
@@ -351,13 +355,13 @@
                                                                                 </span>
                                                                                 <span ng-show="node.from==='segment'">
                                                                                     {{getConstraintAsTruncatedString(findPredicate(node), 15)}}
-                                                                                    <i class="fa fa-pencil fa-fw edit-icon" ng-show="findPredicate(node).context.type === 'segment'" ng-click="openDialogPCSegmentPredicate(node)"></i>
+                                                                                    <i class="fa fa-pencil fa-fw edit-icon" ng-show="findPredicate(node).context.type === 'segment'&&!viewSettings.tableReadonly" ng-click="openDialogPCSegmentPredicate(node)"></i>
                                                                                 </span>
                                                                                 <span ng-show="node.from==='message'">
                                                                                     {{getConstraintAsTruncatedString(findPredicate(node), 15)}}
-                                                                                    <i class="fa fa-pencil fa-fw edit-icon" ng-show="findPredicate(node).context.type === 'message'" ng-click="openDialogPCMessagePredicate(node)"></i>
+                                                                                    <i class="fa fa-pencil fa-fw edit-icon" ng-show="findPredicate(node).context.type === 'message'&&!viewSettings.tableReadonly" ng-click="openDialogPCMessagePredicate(node)"></i>
                                                                                 </span>
-                                                                                <span ng-show="node.attributes.predicate" ng-click="cancelPredicate(node)">
+                                                                                <span ng-show="node.attributes.predicate &&!viewSettings.tableReadonly" ng-click="cancelPredicate(node)">
                                                                                     <i class="fa fa-times fa-fw edit-icon"></i>
                                                                                 </span>
                                                                             </span>
@@ -368,29 +372,33 @@
                                                                     <span>
                                                                         <a ng-click="openDialogPCMessageConformanceStatements(node)" class="point" ng-if="node.type==='message' || node.type==='group' || node.type==='segment'">
                                                                             <span ng-if="findingConfSt(node)">{{findingConfSt(node).length}}</span>
-                                                                            <i class="fa fa-pencil fa-fw" ng-if="(findingConfSt(node) && findingConfSt(node).length>0)"></i>
-                                                                            <i class="fa fa-plus fa-fw" ng-if="!(findingConfSt(node) && findingConfSt(node).length>0)"></i>
+                                                                            <i class="fa fa-pencil fa-fw" ng-if="(findingConfSt(node) && findingConfSt(node).length>0)&&!viewSettings.tableReadonly"></i>
+                                                                            <i class="fa fa-plus fa-fw" ng-if="!(findingConfSt(node) && findingConfSt(node).length>0)&&!viewSettings.tableReadonly"></i>
                                                                         </a>
-                                                                        <a ng-click="openDialogPCSegmentConformanceStatements(node)" class="point" ng-if="node.type==='segmentRef'">
+                                                                        <a ng-click="openDialogPCSegmentConformanceStatements(node)" class="point" ng-if="node.type==='segmentRef'&&!viewSettings.tableReadonly">
                                                                             <span ng-if="findingConfSt(node)">{{findingConfSt(node).length}}</span>
-                                                                            <i class="fa fa-pencil fa-fw" ng-if="(findingConfSt(node) && findingConfSt(node).length>0)"></i>
-                                                                            <i class="fa fa-plus fa-fw" ng-if="!(findingConfSt(node) && findingConfSt(node).length>0)"></i>
+                                                                            <i class="fa fa-pencil fa-fw" ng-if="(findingConfSt(node) && findingConfSt(node).length>0)&&!viewSettings.tableReadonly"></i>
+                                                                            <i class="fa fa-plus fa-fw" ng-if="!(findingConfSt(node) && findingConfSt(node).length>0)&&!viewSettings.tableReadonly"></i>
                                                                         </a>
-                                                                        <i ng-click="cancelConfSt(node)" ng-show="node.attributes.conformanceStatements" class="fa fa-times fa-fw"></i>
+                                                                        <i ng-click="cancelConfSt(node)" ng-show="node.attributes.conformanceStatements&&!viewSettings.tableReadonly" class="fa fa-times fa-fw"></i>
                                                                     </span>
                                                                 </td>
                                                                 <td ng-class="{'emptyCol':!hasDynamicMapping(node),'input-change':node.attributes.dynamicMappingDefinition}">
                                                                     <span ng-show="hasDynamicMapping(node)">
                                                                         <a class="point">
-                                                                            <i ng-click="openAddDynamicMappingDialog(node,'edit')" class="fa fa-pencil fa-fw"/>
-                                                                            <i ng-click="cancelDynMap(node)" ng-show="node.attributes.dynamicMappingDefinition" class="fa fa-times fa-fw"/>
+                                                                            <i ng-click="openAddDynamicMappingDialog(node,'edit')" ng-if="!viewSettings.tableReadonly" class="fa fa-pencil fa-fw"/>
+                                                                            <i ng-show="node.attributes.dynamicMappingDefinition&&viewSettings.tableReadonly" ng-click="openAddDynamicMappingDialog(node,'see')" class="fa fa-eye fa-fw"/>
+
+                                                                            <i ng-click="cancelDynMap(node)" ng-show="node.attributes.dynamicMappingDefinition&&!viewSettings.tableReadonly" class="fa fa-times fa-fw"/>
                                                                         </a>
                                                                     </span>
                                                                 </td>
                                                                 <td ng-class="{'emptyCol':!hasCoConstraints(node),'input-change':node.attributes.coConstraintsTable}">
                                                                     <span ng-show="hasCoConstraints(node)">
                                                                         <a class="point">
-                                                                            <i ng-click="openAddCoConstraintsDialog(node,'edit')" class="fa fa-pencil fa-fw"></i>
+                                                                            <i ng-click="openAddCoConstraintsDialog(node,'edit')" ng-if="!viewSettings.tableReadonly" class="fa fa-pencil fa-fw"></i>
+                                                                            <i ng-if="!node.attributes.coConstraintsTable&&viewSettings.tableReadonly" ng-click="openAddCoConstraintsDialog(node,'see')" class="fa fa-eye fa-fw"></i>
+
                                                                             <i ng-click="cancelCoCon(node)" ng-show="node.attributes.coConstraintsTable" class="fa fa-times fa-fw"></i>
                                                                         </a>
                                                                     </span>
@@ -398,11 +406,11 @@
                                                                 <td class="col-md-1 col-fixed-80 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
                                                                 </td>
                                                                 <td class="col-md-1 col-fixed-80" ng-class="{'input-change':(node.attributes.text && node.attributes.text !== '' && node.attributes.text !== null)}" ng-if="node.type==='field' || node.type==='component'">
-                                                                    <a ng-click="addDefText(node)" class="point">
+                                                                    <a ng-click="addDefText(node)" class="point" ng-if="!viewSettings.tableReadonly">
                                                                         <i class="fa fa-pencil fa-fw" ng-if="node.attributes.text && node.attributes.text !== '' && node.attributes.text !== null "></i>
                                                                         <i class="fa fa-plus fa-fw" ng-if="!node.attributes.text || node.attributes.text === '' || node.attributes.text === null"></i>
                                                                     </a>
-                                                                    <a ng-click="cancelDefText(node)" ng-show="node.attributes.text && node.attributes.text !== '' && node.attributes.text !== null">
+                                                                    <a ng-click="cancelDefText(node)" ng-show="node.attributes.text && node.attributes.text !== '' && node.attributes.text !== null&&!viewSettings.tableReadonly">
                                                                         <i class="fa fa-times fa-fw"></i>
                                                                     </a>
                                                                 </td>
@@ -410,17 +418,19 @@
                                                                     <div ng-repeat="comment in findingCommentsInPC(node)">
                                                                         <span class="badge label-white">
                                                                             <span ng-class="{'label-message-icon' : comment.from == 'message', 'label-field-icon' : comment.from == 'segment', 'label-component-icon' : comment.from == 'field', 'label-sub-component-icon' : comment.from == 'component'}"><i class="fa fa-circle fa-fw"/></span>
-                                                                            <span title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-click="editCommentDlg(node, comment, false, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                                                                            <span ng-if="!viewSettings.tableReadonly" title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}" ng-click="editCommentDlg(node, comment, false, 'compositeProfile')">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+                                                                            <span ng-if="viewSettings.tableReadonly" title="{{comment.description}}@{{comment.lastUpdatedDate|date:dateFormat}}">{{comment.lastUpdatedDate|date:dateFormat}}</span>
+
                                                                         </span>
                                                                     </div>
-                                                                    <a class="point" ng-hide="node.type==='message'">
+                                                                    <a class="point" ng-hide="node.type==='message'" ng-if="!viewSettings.tableReadonly">
                                                                         <span ng-click="editCommentDlg(node, null, false, 'message')"><i class="fa fa-plus fa-fw"></i></span>
-                                                                        <a ng-show="node.comments && node.comments.length>0" ng-click="cancelComments(node)"><i class="fa fa-remove fa-fw"></i></a>
+                                                                        <a ng-if="!viewSettings.tableReadonly" ng-show="node.comments && node.comments.length>0" ng-click="cancelComments(node)"><i class="fa fa-remove fa-fw"></i></a>
                                                                     </a>
                                                                 </td>
 
                                                                 <td class="col-md-1" ng-style="commentWidth">
-                                                                    <button type="button"
+                                                                    <button type="button" ng-if="!viewSettings.tableReadonly"
                                                                             class="btn btn-raised btn-raised btn-xs btn-danger"
                                                                             ng-click="removePcEntry(node)">
                                                                         <span><i class="fa fa-times fa-fw"></i></span>
@@ -438,7 +448,7 @@
                                                             <div class="panel-heading">Conformance Statements</div>
                                                             <div class="panel-body">
                                                                 <span class="pull-right" class="margin-right:5px">
-                                                                    <button title="Add/Edit Conformance Statements" type="button" class="btn btn-raised btn-sm btn-success" ng-click="openAddGlobalConformanceStatementDialog(currentNode)">
+                                                                    <button ng-if="!viewSettings.tableReadonly" title="Add/Edit Conformance Statements" type="button" class="btn btn-raised btn-sm btn-success" ng-click="openAddGlobalConformanceStatementDialog(currentNode)">
                                                                         <span><i class="fa fa-plus fa-fw"></i> Add/Edit Conformance Statements</span>
                                                                     </button>
                                                                 </span>
@@ -475,9 +485,14 @@
                                                 <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>
                                             </accordion-heading>
                                             <div class="panel-body">
-                                                <div>
+                                                <div ng-if=!viewSettings.tableReadonly" >
                                                     <textarea froala="froalaEditorOptions" ng-model="profileComponent.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
                                                 </div>
+
+                                                <div class="fr-view" ng-if="viewSettings.tableReadonly">
+                                                    <div froala-view="profileComponent.defPostText"></div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </accordion>
@@ -489,7 +504,7 @@
                                 <i class="fa fa-link fa-fw" aria-hidden="true"></i>Cross-References
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px">
+                                <div style="margin-top: 20px" class="scrollableContent">
                                     <div class="col-md-12">
                                         <div class="pull-right">
                                         </div>
@@ -747,8 +762,14 @@
             <md-dialog-content>
                 <div class="md-dialog-content">
                     <div>
-                    <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus
+                    <textarea ng-if="!viewSettings.tableReadonly" rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus
                               ng-model="field.attributes.text" id="globalEditor " name="content "></textarea>
+
+
+
+                        <div class="fr-view" ng-if="viewSettings.tableReadonly">
+                            <div froala-view="field.attributes.text"></div>
+                        </div>
                     </div>
 
                 </div>
@@ -898,7 +919,7 @@
                                     <md-tab>
                                         <md-tab-label>Message</md-tab-label>
                                         <md-tab-body>
-                                            <div class=" panel panel-default">
+                                            <div class=" panel panel-default scrollableContent">
                                                 <div class="panel-heading">Choose Items</div>
                                                 <div class="panel-body">
 
@@ -923,7 +944,7 @@
                                     <md-tab>
                                         <md-tab-label>Segment</md-tab-label>
                                         <md-tab-body>
-                                            <div class=" panel panel-default">
+                                            <div class=" panel panel-default scrollableContent">
                                                 <div class="panel-heading">Choose Items</div>
                                                 <div class="panel-body">
 

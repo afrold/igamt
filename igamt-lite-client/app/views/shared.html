@@ -12,6 +12,7 @@
     }
 </script>
 <div  ng-if="isAuthenticated()" class="container" ng-init="init()">
+    <br/>
     <md-tabs md-dynamic-height md-border-bottom>
 
     <md-tab  active="datatypeTab"  md-selected="datatypeTab" select="select(dtTab)" md-on-select="setTypeOfSharing('datatype');">
@@ -66,7 +67,7 @@
 			<!--</button>-->
 			<!--</div>-->
 			<div flex="30">
-                <div style="width:100%; max-height: 800px; overflow: scroll;background-color: rgba(238, 238, 238, 0.46); padding-top: 20px;">
+                <div class="tree-fixed">
 
 						<div ng-include="SharedtocView"></div>
                 </div>
@@ -75,7 +76,7 @@
 			<div flex="70">
 
             <h3 ng-if="Sharedsubview === 'datatypePending.html'"><i class="fa fa-hourglass" aria-hidden="true"></i> Pending Requests </h3>
-                <div id="edit" style="width:100%; max-height: 800px; background-color: white;overflow: scroll;">
+                <div id="edit" class="subview-fixed">
                     <div ng-include="Sharedsubview"></div>
                 </div>
 			</div>
@@ -130,9 +131,10 @@
                     <li ng-repeat="data in datatypes track by $index" ui-tree-node ng-if="!collapsed">
 
 						<div ui-tree-handle data-nodrag context-menu="unshareDatatype" style="font-weight:normal;cursor:pointer;">
-						<span class="badge" ng-class="{'label-HL7' : getScopeLabel(data)==='HL7',
-                                'label-USE':  getScopeLabel(data)==='USR','label-MASTER':getScopeLabel(data)==='MAS'}">{{getScopeLabel(data)}}{{data.hl7Version}} <span class="version-badge">v{{data.publicationVersion}}</span></span>
-                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">{{getLabelOfData(data.name, data.ext)}}-{{data.description}} <i ng-if="versionAndUseMap[data.id].deprecated" class="fa fa-exclamation-triangle" style ="color:#ab1a10 !important;" aria-hidden="true"/></span>
+
+                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">
+                                <display-label of="data" desc="true"></display-label>
+                            </span>
                         </div>
                     </li>
                 </ol>

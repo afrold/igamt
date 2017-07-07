@@ -452,7 +452,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 //$rootScope.isEditing = true;
                 // $scope.hl7Version = $rootScope.datatypeLibrary.metaData.hl7Version;
                 $rootScope.datatypeLibraryId = $rootScope.datatypeLibrary.id;
-                $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibraryDocument.metaData);
+                $scope.datatypeLibMetaDataCopy = angular.copy(datatypeLibraryDocument.datatypeLibrary.metaData);
                 $rootScope.currentData= $scope.datatypeLibMetaDataCopy;
                 $scope.loadingSelection = false;
                 $scope.DataTypeTree = [];
@@ -1527,19 +1527,21 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         };
 
         $scope.confirmLibraryDelete = function(datatypeLibrary) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'ConfirmDatatypeLibraryDeleteCtrl.html',
                 controller: 'ConfirmDatatypeLibraryDeleteCtrl',
-                resolve: {
-                    datatypeLibraryToDelete: function() {
-                        return datatypeLibrary;
-                    }
+                scope:$scope,
+                preserveScope:true,
+                locals: {
+                    datatypeLibraryToDelete: datatypeLibrary
+
                 }
+
             });
-            modalInstance.result.then(function(datatypeLibraryDocument) {
+            modalInstance.then(function(datatypeLibraryDocument) {
                 DatatypeLibraryDocumentSvc.delete(datatypeLibraryDocument.id).then(function(result) {
                 	$rootScope.datatypeLibrary=null;
-                    $rootScope.msg().text = "Data Type Library deleted";
+                    $rootScope.msg().text = "LibraryDeleteSuccess";
                     var idxP = _.findIndex($scope.datatypeLibsStruct, function(child) {
                         return child.id === datatypeLibrary.id;
                     });
@@ -2551,17 +2553,17 @@ angular.module('igl').controller('DatatypeListInstanceDlgCtl',
         };
     });
 
-angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function($scope, $rootScope, $http, $modalInstance, datatypeLibraryToDelete) {
+angular.module('igl').controller('ConfirmDatatypeLibraryDeleteCtrl', function($scope, $rootScope, $http, $mdDialog, datatypeLibraryToDelete) {
 
     $rootScope.datatypeLibraryToDelete = datatypeLibraryToDelete;
     $scope.loading = false;
 
     $scope.delete = function() {
-        $modalInstance.close($rootScope.datatypeLibraryToDelete);
+        $mdDialog.hide($rootScope.datatypeLibraryToDelete);
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
 

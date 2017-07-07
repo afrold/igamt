@@ -21,7 +21,7 @@
                     <md-tab-label>
                         <i class="fa fa-file-text-o fa-fw"></i> IG Documents List
                     </md-tab-label>
-                    <md-tab-body>
+                    <md-tab-body class="root">
                         <div ng-include="'views/edit/listIG.html'"></div>
                     </md-tab-body>
                 </md-tab>
@@ -31,7 +31,7 @@
                         <span ng-if="!viewSettings.tableReadonly"> <i class="fa fa-pencil fa-fw"></i>IG Document</span>
                         <span ng-if="viewSettings.tableReadonly"> <i class="fa fa-search fa-fw"></i>IG Document</span>
                     </md-tab-label>
-                    <md-tab-body>
+                    <md-tab-body class="root">
                         <div ng-include="'views/edit/editIG.html'"></div>
                     </md-tab-body>
                 </md-tab>
@@ -426,30 +426,30 @@
     </md-dialog>
 </script>
  <script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html ">
-        <div class="modal-header ">
-            <h3 class="modal-title ">Delete Confirmation
-            </h3>
-        </div>
-        <div class="modal-body ">
-            <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}} " ? This operation
-                is irreversible
-            </p>
-        </div>
-        </div>
-        <div class="modal-footer ">
-            <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                    class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
-                    class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
-            </button>
-            <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                <div layout="row" layout-sm="column" layout-align="space-around">
-                    <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
-                </div>
-            </div>
-        </div>
-        </div>
+        <md-dialog aria-label="confirmation">
+            <form ng-cloak>
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2> Delete Confirmation</h2>
+                        <span flex></span>
+                        <md-button class="md-icon-button" ng-click="cancel()">
+                            <i class="material-icons">clear</i>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+
+                <md-dialog-content>
+                    <div class="md-dialog-content">
+                        <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}} " ? This operation
+                            is irreversible
+                        </p>                    </div>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button  class="md-primary md-raised" md-autofocus ng-click="delete()">delete
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
     </script>
     <script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html ">
         <div class="modal-header ">

@@ -461,6 +461,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 predicate.context.type = 'segment';
                 predicate.context.id = selectedSegment.id;
                 node.attributes.predicate = predicate;
+
+                console.log(predicate);
                 $scope.setDirty();
             }
         }, function() {});
@@ -1014,6 +1016,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         var modalInstance = $mdDialog.show({
             templateUrl: 'addDefTextModal.html',
             controller: 'addDefTextCtrl',
+            scope:$scope,
+            preserveScope:true,
             locals: {
                 field: field
                 }
@@ -2478,6 +2482,7 @@ angular.module('igl').controller('addComponentsCtrl', function($scope, $rootScop
                         return parent.children;
                     }
                 } else {
+
                     return messages;
                 }
             }

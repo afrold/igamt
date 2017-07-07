@@ -101,7 +101,7 @@
                                 </md-tab-label>
                                 <md-tab-body>
 
-                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form scrollableContent" layout="column">
                                         <md-content layout-padding>
                                             <md-input-container class="md-block" flex-gt-sm>
                                                 <label class="input-left">Name</label>
@@ -220,7 +220,7 @@
                                     <i class="fa fa-table" aria-hidden="true"></i>Definition
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <div class="el-def" style="margin-top: 5px">
+                                    <div class="el-def scrollableContent" style="margin-top: 5px">
                                         <accordion>
 
 
@@ -634,7 +634,7 @@
                                 </md-tab-label>
                                 <md-tab-body>
 
-                                    <div class="panel-body" style="margin:5px;">
+                                    <div class="panel-body scrollableContent" style="margin:5px;">
                                         <accordion>
                                             <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
                                                 <accordion-heading>
@@ -800,7 +800,7 @@
                                 </md-tab-label>
                                 <md-tab-body>
 
-                                    <div class="el-def" style="margin-top:20px">
+                                    <div class="el-def scrollableContent" style="margin-top:20px">
 
                                 <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary"
                                       ng-hide="typeOfSharing ">
@@ -900,7 +900,7 @@
                                     <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <div class="panel-body">
+                                    <div class="panel-body scrollableContent">
 
 
 
@@ -1814,22 +1814,29 @@
     </div>
 </script>
 <script type="text/ng-template" id="ConfirmDatatypeDeleteCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Delete Confirmation
-        </h3>
-    </div>
-    <div class="modal-body">
-        <p>Are you sure you want to delete Datatype <display-label of="dtToDelete"></display-label> </p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i
-                class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-    </div>
+<md-dialog aria-label="confirmation">
+<form ng-cloak>
+<md-toolbar>
+<div class="md-toolbar-tools">
+<h2> Delete Confirmation</h2>
+<span flex><h2> Delete Confirmation</h2></span>
+<md-button class="md-icon-button" ng-click="cancel()">
+<i class="material-icons">clear</i>
+</md-button>
+</div>
+</md-toolbar>
+<md-dialog-content>
+<div class="md-dialog-content">
+
+<p>Are you sure you want to delete Datatype <display-label of ="dtToDelete"></display-label></p>
+</div>
+</md-dialog-content>
+<md-dialog-actions layout="row">
+<md-button  class="md-primary md-raised" md-autofocus ng-click="delete()">Delete
+</md-button>
+</md-dialog-actions>
+</form>
+</md-dialog>
 </script>
 <script type="text/ng-template" id="DeleteComponent.html">
     <div class="modal-header">
