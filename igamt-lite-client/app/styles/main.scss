@@ -1501,6 +1501,7 @@ input.account-input {
     border-color: #000000;
     min-height: 500px;
     flex: 1 0 auto;
+    min-height: 900px;
 }
 
 .appcontent {
@@ -3210,4 +3211,21 @@ md-select.inside-table{
 .scrollableContent{
     overflow-y: scroll !important;
     max-height: 600px !important;
+}
+.tree-fixed{
+    width:100%;
+    max-height: 800px;
+    overflow: scroll;
+    background-color: rgba(238, 238, 238, 0.46);
+    padding-top: 20px;
+    min-height: 400px;
+
+}
+.subview-fixed{
+    width:100%;
+    max-height: 800px;
+    background-color: white;
+    overflow: hidden;
+    min-height: 400px;
+
 }

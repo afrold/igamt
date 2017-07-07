@@ -1016,6 +1016,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         var modalInstance = $mdDialog.show({
             templateUrl: 'addDefTextModal.html',
             controller: 'addDefTextCtrl',
+            scope:$scope,
+            preserveScope:true,
             locals: {
                 field: field
                 }

@@ -225,14 +225,14 @@
         <div>
             <div layout="row">
                 <div flex="30">
-                    <div style="width:100%; max-height: 800px; overflow: scroll;background-color: rgba(238, 238, 238, 0.46); padding-top: 20px;">
+                    <div class="tree-fixed">
                     <div ng-include="tocView"></div>
                     </div>
                 </div>
 
                 <div flex="70">
 
-                            <div id="edit" ng-show="subview" style="width:100%; max-height: 800px; background-color: white;overflow: hidden;">
+                            <div id="edit" ng-show="subview" class="subview-fixed">
                                 <div ng-include="subview"></div>
                             </div>
 
