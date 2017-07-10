@@ -57,22 +57,36 @@
 </script>
 <script type="text/ng-template" id="ConfirmLogout.html">
 
-    <div class="modal-header">
-        <h3 class="modal-title">Logout Confirmation
-        </h3>
-    </div>
-    <div class="modal-body">
-        <p>You currently have unsaved changes. Are you sure you want to proceed ? All unsaved changes will be lost</p>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="logout()"><span><i
-                class="fa fa-sign-out fa-fw">&nbsp; </i>Logout</span>
-        </button>
-        <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-    </div>
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Logout Confirmation</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <p>You currently have unsaved changes. Are you sure you want to proceed ? All unsaved changes will be lost</p>
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i
+                        class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+                </md-button>
+                <md-button class="btn btn-raised btn-success btn-sm" ng-click="logout()"><span><i
+                        class="fa fa-sign-out fa-fw">&nbsp; </i>Logout</span>
+                </md-button>
+             </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
+
 <script type="text/ng-template" id="ConfirmLeaveDlg.html">
     <!--<div class="modal-header">-->
         <!--<p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Confirmation-->
@@ -514,7 +528,7 @@
                 <div class="md-dialog-content">
                     <div ng-show="!editorTarget.disabled ">
                         <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus ng-model="editorTarget.obj[editorTarget.key] " id="globalEditor " name="content " ng-change="recordChanged() "></textarea>
-                    </div>
+                      </div>
                     <div ng-show="editorTarget.disabled " style="width:100%; ">
                         <div froala-view="editorTarget.obj[editorTarget.key] "></div>
                     </div>
@@ -2426,7 +2440,7 @@
             </div>
         </td>
         <td>
-            <i class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}"></i>
+            <i class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-hide="data.type === 'message'  || data.type === 'segment' || data.type === 'datatype'" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}"></i>
         </td>
         <td>
             <div ng-if="data.type === 'message'">
@@ -6153,6 +6167,35 @@
                     <p>Sorry we cannot find the old value </p>
                 </div>
             </md-dialog-content>
+        </form>
+    </md-dialog>
+</script>
+
+
+<script type="text/ng-template" id="AfterClonedIgDlg.html">
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>IG Document cloned successfully !</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    New IG Document <a class="point" title="Edit" ng-click="edit()">{{clonedIgDocument.metaData.title}}</a> was successfully created !
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <md-button class="btn btn-raised btn-success btn-sm" ng-click="edit()"><span><i
+                        class="fa fa-pencil fa-fw">&nbsp; </i>Edit</span>
+                </md-button>
+            </md-dialog-actions>
         </form>
     </md-dialog>
 </script>

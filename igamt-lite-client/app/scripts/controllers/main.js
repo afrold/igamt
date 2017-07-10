@@ -292,13 +292,17 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     $scope.logout = function() {
         if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'ConfirmLogout.html',
-                controller: 'ConfirmLogoutCtrl'
+                controller: 'ConfirmLogoutCtrl',
+                escapeToClose: true
             });
-            modalInstance.result.then(function() {
-                $scope.execLogout();
-            }, function() {});
+            modalInstance.then(function(logout) {
+                if(logout) {
+                    $scope.execLogout();
+                }
+            }, function() {
+            });
         } else {
             $scope.execLogout();
         }
@@ -4409,13 +4413,13 @@ angular.module('igl').controller('InputTextCtrl', ['$scope', '$mdDialog', 'edito
     };
 }]);
 
-angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance", "$rootScope", "$http", function($scope, $modalInstance, $rootScope, $http) {
+angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$mdDialog", "$rootScope", "$http", function($scope, $mdDialog, $rootScope, $http) {
     $scope.logout = function() {
-        $modalInstance.close();
+         $mdDialog.hide(true);
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide(false);
     };
 }]);
 

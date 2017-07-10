@@ -32,17 +32,17 @@ angular.module('igl')
     $rootScope.usageF = false;
     $scope.nodeReady = true;
     $scope.igDocumentTypes = [{
-            name: "My IGs",
+            name: "My IG Documents",
             type: 'USER'
         },
         {
-            name: "Preloaded IGs",
+            name: "Preloaded IG Documents",
             type: 'PRELOADED'
         }, {
-            name: "Shared IGs",
+            name: "Shared IG Documents",
             type: 'SHARED'
         },{
-        name:"All IGs",
+        name:"All IG Documents",
             type:"all"
         }
 
@@ -368,22 +368,21 @@ angular.module('igl')
     };
 
     $scope.clone = function(igdocument) {
-        console.log(igdocument);
         $scope.toEditIGDocumentId = igdocument.id;
         $http.post('api/igdocuments/' + igdocument.id + '/clone').then(function(response) {
             $scope.toEditIGDocumentId = null;
+            var cloned = angular.fromJson(response.data);
             if ($scope.igDocumentConfig.selectedType === 'USER') {
-                $rootScope.igs.push(angular.fromJson(response.data));
+                $rootScope.igs.push(cloned);
             } else {
                 $scope.igDocumentConfig.selectedType = 'USER';
                 $scope.loadIGDocuments();
             }
-            $scope.selectIgTab(0);
-            $scope.make_active(0);
-            console.log($scope.tabs);
-            $rootScope.msg().text = "igClonedSuccess";
-            $rootScope.msg().type = "success";
-            $rootScope.msg().show = true;
+            // console.log($scope.tabs);
+            // $rootScope.msg().text = "igClonedSuccess";
+            // $rootScope.msg().type = "success";
+            // $rootScope.msg().show = true;
+            $scope.afterCloneDone(cloned);
         }, function(error) {
             $scope.toEditIGDocumentId = null;
             $rootScope.msg().text = "igClonedFailed";
@@ -391,6 +390,27 @@ angular.module('igl')
             $rootScope.msg().show = true;
         });
     };
+
+
+    $scope.afterCloneDone = function(clonedIgDocument){
+        var modalInstance = $mdDialog.show({
+            templateUrl: 'AfterClonedIgDlg.html',
+            controller: 'AfterClonedIgCtrl',
+            escapeToClose: true,
+            locals: {
+                clonedIgDocument:clonedIgDocument
+            }
+        });
+        modalInstance.then(function(clonedIgDocument) {
+            if(clonedIgDocument && clonedIgDocument != null) {
+                $scope.edit(clonedIgDocument);
+            }
+        }, function() {
+            $scope.selectIgTab(0);
+            $scope.make_active(0);
+        });
+    };
+
 
     $scope.findOne = function(id) {
         for (var i = 0; i < $rootScope.igs.length; i++) {
@@ -1937,6 +1957,14 @@ angular.module('igl')
 
     };
 
+    $scope.codeCompare  = function (a,b) {
+        if (a.value < b.value)
+            return -1;
+        if (a.value > b.value)
+            return 1;
+        return 0;
+    };
+
     $scope.selectTable = function(t) {
         $rootScope.Activate(t.id);
         var table = angular.copy(t);
@@ -1961,6 +1989,7 @@ angular.module('igl')
                     }
                 }
                 $rootScope.table.smallCodes = $rootScope.table.codes.slice(0, 1000);
+                $rootScope.table.smallCodes.sort($scope.codeCompare);
                 $rootScope.findValueSetBindings();
                 $scope.loadingSelection = false;
                 $rootScope.$emit("event:initEditArea");
@@ -4356,3 +4385,17 @@ angular.module('igl').controller('CustomExportCtrl', function($scope, $modalInst
         $modalInstance.dismiss('cancel');
     };
 });
+
+angular.module('igl').controller('AfterClonedIgCtrl', [ '$rootScope','$scope', '$mdDialog', 'clonedIgDocument', function($rootScope,$scope, $mdDialog, clonedIgDocument) {
+    $scope.clonedIgDocument = clonedIgDocument;
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.edit = function() {
+        // ////console.log("logging in...");
+        $mdDialog.hide($scope.clonedIgDocument);
+    };
+}]);
+
