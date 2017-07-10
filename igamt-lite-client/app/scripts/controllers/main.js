@@ -1854,7 +1854,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     };
 
     $rootScope.createNewFlavorName = function(label) {
-        if ($rootScope.igdocument != null) {
+        if ($rootScope.igdocument !== null) {
             if ($rootScope.igdocument.metaData["ext"] === null || $rootScope.igdocument.metaData["ext"] === '') {
                 return label + "_" + (Math.floor(Math.random() * 10000000) + 1);
             } else {

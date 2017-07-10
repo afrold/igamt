@@ -747,21 +747,14 @@
 
                             <div flex="60">
                                 <md-radio-group ng-model="coConstraintType">
-                                    <md-radio-button value="value" class="md-primary" ng-disabled="isVariesDT()">Value</md-radio-button>
+                                    <md-radio-button value="value" class="md-primary">Value</md-radio-button>
                                     <md-radio-button value="valueset">Value Set</md-radio-button>
                                 </md-radio-group>
                             </div>
                         </div>
-
-                        <span class="header3" ng-show="isVariesDT()">
-                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-                This Datatype is varies, so just 'Value Set' is allowed.
-            </span>
-
                         <span class="header3" ng-show="dMReference">
-                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
-                This is Dynamic Mapping Reference Field. Data cell requires DT base name and Flavor.
-            </span>
+                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>This is Dynamic Mapping Reference Field. Data cell requires DT base name and Flavor.
+                        </span>
                     </form>
                 </div>
 
