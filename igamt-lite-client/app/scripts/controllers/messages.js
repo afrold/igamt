@@ -15,6 +15,14 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         isSixOpen: false,
         isFirstDisabled: false
     };
+    $scope.defTabStatus = {
+        active: 1
+    };
+
+    $scope.deltaTabStatus = {
+        active: 0
+    };
+
     $scope.tabStatus = {
         active: 1
     };
