@@ -2440,7 +2440,7 @@
             </div>
         </td>
         <td>
-            <i class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}"></i>
+            <i class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-hide="data.type === 'message'  || data.type === 'segment' || data.type === 'datatype'" ng-model="data" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingNodeFromContextTree({nodeData: data})'}"></i>
         </td>
         <td>
             <div ng-if="data.type === 'message'">
