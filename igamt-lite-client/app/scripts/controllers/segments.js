@@ -16,6 +16,14 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         isFirstDisabled: false
     };
 
+    $scope.defTabStatus = {
+        active:1
+    };
+
+    $scope.deltaTabStatus = {
+        active : 0
+    };
+
     $scope.tabStatus = {
         active: 1
     };

@@ -139,9 +139,6 @@
                                             </md-input-container>
 
 
-
-
-
                                             <md-input-container class="md-block" flex-gt-sm
                                                                 ng-if="datatype.scope==='MASTER'">
                                                 <label class="input-left">Compatibility Versions</label>
@@ -221,16 +218,15 @@
                                 </md-tab-label>
                                 <md-tab-body>
                                     <div class="el-def scrollableContent" style="margin-top: 5px">
-                                        <accordion>
 
-
-                                            <div accordion-group class="panel-primary"
-                                                 is-open="accordStatus.isFifthOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Definition Pre-Text </span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>
-                                                </accordion-heading>
+                                        <md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">
+                                            <md-tab>
+                                                <md-tab-label>
+                                                    <span>Definition Pre-Text </span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+                                            <div class="panel-primary"
+                                                >
                                                 <div class="panel-body">
 
                                                     <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
@@ -246,15 +242,16 @@
                                                 </div>
 
                                             </div>
+                                                </md-tab-body>
+                                            </md-tab>
+                                            <md-tab md-on-select="refreshSlider();">
+                                                <md-tab-label>
+                                                    <span >Data Type Definition </span>
+                                                </md-tab-label>
+                                                <md-tab-body>
 
-                                            <div accordion-group class="panel-primary"
-                                                 is-open="accordStatus.isFirstOpen" ng-click="refreshSlider();">
+                                            <div  class="panel-primary">
 
-                                                <accordion-heading>
-                                                    <span style="color:white;">Data Type Definition </span><i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
-                                                </accordion-heading>
                                                 <div class="" style="margin:5px 5px 5px 5px">
 
                                                     <div class="row"
@@ -489,13 +486,16 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                                </md-tab-body>
+                                            </md-tab>
 
-                                            <div accordion-group class="panel-primary" is-open="accordStatus.isSixOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Definition Post-Text </span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>
-                                                </accordion-heading>
+
+                                            <md-tab >
+                                                <md-tab-label>
+                                                    <span >Definition Post-Text</span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+                                            <div  class="panel-primary">
                                                 <div class="panel-body">
 
                                                     <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
@@ -511,13 +511,19 @@
                                                 </div>
                                             </div>
 
-                                            <div accordion-group class="panel-primary"
-                                                 is-open="accordStatus.isSecondOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Conformance Statements</span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{ 'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>
-                                                </accordion-heading>
+                                                </md-tab-body>
+                                            </md-tab>
+
+                                            <md-tab >
+                                                <md-tab-label>
+                                                    <span >Conformance Statements</span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+
+
+
+                                            <div class="panel-primary" >
+
                                                 <div class="panel-body">
                                                     <div class="col-md-12 igl-page-header" style="">
 
@@ -570,13 +576,16 @@
 
                                                 </div>
                                             </div>
-                                            <div accordion-group class="panel-primary"
-                                                 is-open="accordStatus.isThirdOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Conditional Predicates</span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>
-                                                </accordion-heading>
+                                                </md-tab-body>
+                                            </md-tab>
+
+                                            <md-tab >
+                                                <md-tab-label>
+                                                    <span >Conditional Predicates</span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+
+                                                <div class="panel-primary">
                                                 <div class="panel-body">
                                                     <div class="col-md-12">
                                                         <span ng-hide="datatype.predicates.length > 0">No conditional predicate</span>
@@ -623,8 +632,9 @@
                                                 </div>
                                             </div>
 
-
-                                        </accordion>
+                                                </md-tab-body>
+                                            </md-tab>
+                                        </md-tabs>
                                     </div>
                                 </md-tab-body>
                             </md-tab>
@@ -635,14 +645,16 @@
                                 <md-tab-body>
 
                                     <div class="panel-body scrollableContent" style="margin:5px;">
-                                        <accordion>
-                                            <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;"> Delta Configuration</span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
-                                                </accordion-heading>
-                                                <div class="">
+                                        <md-tabs md-dynamic-height md-border-bottom md-selected="deltaTabStatus.active">
+                                            <md-tab>
+                                                <md-tab-label>
+                                                    <span>Delta Configuration </span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+
+                                             <div class="panel-primary">
+
+                                                <div class="panel-body">
                                                     <table class="table table-stripped table-borderless table-condensed">
                                                         <thead>
                                                         <tr class="tbl-header">
@@ -737,17 +749,18 @@
                                                     <md-button ng-click="cmpDatatype(datatype1,datatype2)"
                                                             ng-disabled="!datatype1 || cmp.datatypeId===-1||!dtChanged || !datatype2"
                                                             class="btn btn-raised btn-info btn-md">
-                                                        <i class="fa fa-check"></i> Delta
+                                                        <i class="fa fa-check"></i> View Delta
                                                     </md-button>
                                                 </div>
                                             </div>
-                                            <div accordion-group class="panel-primary" is-open="status.isSecondOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;"> Delta Result</span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i>
-                                                </accordion-heading>
-                                                </accordion-heading>
+                                                </md-tab-body>
+                                            </md-tab>
+                                            <md-tab>
+                                                <md-tab-label>
+                                                    <span>Delta Result </span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+                                            <div class="panel-primary">
                                                 <div class="panel-body">
                                                     <table tt-table tt-params="dynamicDt_params"
                                                            class=" table-marginless table-bordered table-condensed">
@@ -785,7 +798,9 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                        </accordion>
+                                                </md-tab-body>
+                                            </md-tab>
+                                        </md-tabs>
 
 
                                     </div>

@@ -17,6 +17,13 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.tabStatus = {
         active: 1
     };
+    $scope.defTabStatus = {
+        active: 1
+    };
+
+    $scope.deltaTabStatus = {
+        active: 0
+    };
     $scope.init = function() {
         $scope.tabStatus = {
             active: 1
