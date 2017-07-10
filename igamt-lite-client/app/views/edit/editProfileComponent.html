@@ -62,11 +62,12 @@
                                     <accordion>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
+                                                <span style="color:white;">Definition Pre-Text </span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
                                             </accordion-heading>
                                             <div class="panel-body">
                                                 <div ng-if="!viewSettings.tableReadonly">
                                                     <textarea ng-disabled="viewSettings.tableReadonly" froala="froalaEditorOptions" ng-model="profileComponent.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
+
                                                 </div>
                                                 <div class="fr-view" ng-if="viewSettings.tableReadonly">
                                                     <div froala-view="profileComponent.defPreText"></div>

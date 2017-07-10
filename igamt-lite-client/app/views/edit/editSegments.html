@@ -125,11 +125,11 @@
                                     <accordion>
                                         <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
+                                                <span style="color:white;">Definition Pre-Text </span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
                                                 <div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">
                                                     <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1" name="text1" ng-change="setDirty()"></textarea>
-                                                </div>
+                                                  </div>
                                                 <div ng-show="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')">
                                                     <div froala-view="segment.text1"></div>
                                                 </div>
@@ -218,11 +218,11 @@
 
                                         <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isThirdOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>                                                </accordion-heading>
+                                                <span style="color:white;">Definition Post-Text </span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
                                                 <div ng-show="!viewSettings.tableReadonly && segment.scope === 'USER'">
                                                     <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2" name="text2" ng-change="setDirty()"></textarea>
-                                                </div>
+                                                  </div>
                                                 <div ng-show="viewSettings.tableReadonly || (segment.scope === 'MASTER' || segment.scope === 'HL7STANDARD')">
                                                     <div class="fr-view">
                                                         <div froala-view="segment.text2"></div>

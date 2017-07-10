@@ -169,11 +169,11 @@
                                         <accordion>
                                             <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                                 <accordion-heading>
-                                                    <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
+                                                    <span style="color:white;">Definition Pre-Text </span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
                                                 <div class="panel-body">
                                                     <div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">
                                                         <textarea froala="froalaEditorOptions" ng-model="table.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
-                                                    </div>
+                                                      </div>
                                                     <div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.status==='PUBLISHED')">
                                                         <div class="fr-view">
                                                             <div froala-view="table.defPreText"></div>
@@ -348,7 +348,7 @@
                                                 <div class="panel-body">
                                                     <div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">
                                                         <textarea froala="froalaEditorOptions" ng-model="table.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
-                                                    </div>
+                                                      </div>
                                                     <div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.status==='PUBLISHED')">
                                                         <div class="fr-view">
                                                             <div froala-view="table.defPostText"></div>

@@ -372,18 +372,20 @@ angular.module('igl')
         $scope.toEditIGDocumentId = igdocument.id;
         $http.post('api/igdocuments/' + igdocument.id + '/clone').then(function(response) {
             $scope.toEditIGDocumentId = null;
+            var cloned = angular.fromJson(response.data);
             if ($scope.igDocumentConfig.selectedType === 'USER') {
-                $rootScope.igs.push(angular.fromJson(response.data));
+                $rootScope.igs.push(cloned);
             } else {
                 $scope.igDocumentConfig.selectedType = 'USER';
                 $scope.loadIGDocuments();
             }
             $scope.selectIgTab(0);
             $scope.make_active(0);
-            console.log($scope.tabs);
-            $rootScope.msg().text = "igClonedSuccess";
-            $rootScope.msg().type = "success";
-            $rootScope.msg().show = true;
+            // console.log($scope.tabs);
+            // $rootScope.msg().text = "igClonedSuccess";
+            // $rootScope.msg().type = "success";
+            // $rootScope.msg().show = true;
+            $scope.afterCloneDone(cloned);
         }, function(error) {
             $scope.toEditIGDocumentId = null;
             $rootScope.msg().text = "igClonedFailed";
@@ -391,6 +393,23 @@ angular.module('igl')
             $rootScope.msg().show = true;
         });
     };
+
+
+    $scope.afterCloneDone = function(clonedIgDocument){
+        var modalInstance = $mdDialog.show({
+            templateUrl: 'AfterClonedIgDlg.html',
+            controller: 'AfterClonedIgCtrl',
+            locals: {
+                clonedIgDocument:clonedIgDocument
+            }
+        });
+        modalInstance.then(function(clonedIgDocument) {
+            $scope.edit(clonedIgDocument);
+        }, function() {
+
+        });
+    };
+
 
     $scope.findOne = function(id) {
         for (var i = 0; i < $rootScope.igs.length; i++) {
@@ -4352,3 +4371,17 @@ angular.module('igl').controller('CustomExportCtrl', function($scope, $modalInst
         $modalInstance.dismiss('cancel');
     };
 });
+
+angular.module('igl').controller('AfterClonedIgCtrl', [ '$rootScope','$scope', '$mdDialog', 'clonedIgDocument', function($rootScope,$scope, $mdDialog, clonedIgDocument) {
+    $scope.clonedIgDocument = clonedIgDocument;
+
+    $scope.cancel = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.edit = function() {
+        // ////console.log("logging in...");
+        $mdDialog.hide($scope.clonedIgDocument);
+    };
+}]);
+
