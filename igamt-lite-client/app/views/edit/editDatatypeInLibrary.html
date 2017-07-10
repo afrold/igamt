@@ -97,6 +97,8 @@
                                         <div class="controls col-md-10">
                                             <div ng-show="!readOnly && datatype.status !== 'PUBLISHED'">
                                                 <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>
+                                                <br />
+                                                <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
                                             </div>
                                             <div ng-show="readOnly || (datatype.scope === 'HL7STANDARD' || datatype.status === 'PUBLISHED')">
                                                 <div class="fr-view">
@@ -120,6 +122,8 @@
                                             <div class="panel-body">
                                                 <div ng-show="!readOnly && datatype.status !== 'PUBLISHED'">
                                                     <textarea froala="froalaEditorOptions" ng-model="datatype.defPreText" name="text" id="text" ng-change="setDirty()"></textarea>
+                                                    <br />
+                                                    <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
                                                 </div>
                                                 <div ng-show="readOnly || (datatype.scope === 'HL7STANDARD' || datatype.status === 'PUBLISHED')">
                                                     <div class="fr-view">
@@ -255,6 +259,8 @@
                                             <div class="panel-body">
                                                 <div ng-show="!readOnly && datatype.status !=='PUBLISHED'">
                                                     <textarea froala="froalaEditorOptions" ng-model="datatype.defPostText" name="text" id="text" ng-change="setDirty()"></textarea>
+                                                    <br />
+                                                    <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
                                                 </div>
                                                 <div ng-show="readOnly || (datatype.scope==='HL7STANDARD' || datatype.status==='PUBLISHED' )">
                                                     <div class="fr-view">

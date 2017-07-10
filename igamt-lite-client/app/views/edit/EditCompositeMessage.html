@@ -78,6 +78,8 @@
                                     <div class="controls col-md-10">
                                         <div ng-show="!viewSettings.tableReadonly">
                                             <textarea froala="froalaEditorOptions" ng-model="compositeMessage.usageNote" name="text" id="text" ng-change="setDirty()"></textarea>
+                                            <br />
+                                            <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
                                         </div>
                                         <div ng-show="viewSettings.tableReadonly">
                                             <div class="fr-view">

@@ -335,6 +335,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 
 
 app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http, AppInfo, StorageService, $templateCache, $window, Notification) {
+    $rootScope.froalaDocLink = "https://www.froala.com/wysiwyg-editor/examples";
     $rootScope.appInfo = {};
     //Check if the login dialog is already displayed.
     $rootScope.loginDialogShown = false;
@@ -345,7 +346,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         $rootScope.appInfo = appInfo;
         $rootScope.froalaEditorOptions = {
             placeholderText: '',
-//            toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'insertFile'],
+            toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'insertFile'],
             imageUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
             imageAllowedTypes: ['jpeg', 'jpg', 'png', 'gif'],
             fileUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",

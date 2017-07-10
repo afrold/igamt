@@ -518,6 +518,8 @@
                         <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus
                                   ng-model="editorTarget.obj[editorTarget.key] " id="globalEditor " name="content "
                                   ng-change="recordChanged() "></textarea>
+                         <br />
+                         <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
                     </div>
                     <div ng-if="editorTarget.disabled " style="width:100%; ">
                         <div froala-view="editorTarget.obj[editorTarget.key] "></div>

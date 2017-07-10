@@ -173,6 +173,8 @@
                                                 <div class="panel-body">
                                                     <div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">
                                                         <textarea froala="froalaEditorOptions" ng-model="table.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
+                                                        <br />
+                                                        <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
                                                     </div>
                                                     <div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.status==='PUBLISHED')">
                                                         <div class="fr-view">
@@ -348,6 +350,8 @@
                                                 <div class="panel-body">
                                                     <div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">
                                                         <textarea froala="froalaEditorOptions" ng-model="table.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
+                                                        <br />
+                                                        <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
                                                     </div>
                                                     <div ng-if="viewSettings.tableReadonly || (table.scope === 'HL7STANDARD' || table.status==='PUBLISHED')">
                                                         <div class="fr-view">

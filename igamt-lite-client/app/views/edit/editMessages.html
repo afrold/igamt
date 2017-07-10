@@ -115,6 +115,8 @@
                                                          <textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus
                                                                    ng-model="message.usageNote" name="usageNote"
                                                                    id="usageNote" ng-change="setDirty()"></textarea>
+                                                    <br />
+                                                    <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
                                                 </div>
                                                 <div class="fr-view" ng-show="viewSettings.tableReadonly">
                                                     <div froala-view="message.usageNote"></div>
@@ -150,6 +152,8 @@
                                             <div class="panel-body">
                                                 <div ng-show="!viewSettings.tableReadonly">
                                                     <textarea froala="froalaEditorOptions" ng-model="message.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
+                                                    <br />
+                                                    <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
                                                 </div>
                                                 <div ng-show="viewSettings.tableReadonly">
                                                     <div class="fr-view">
@@ -243,6 +247,8 @@
                                     <div class="panel-body">
                                         <div ng-show="!viewSettings.tableReadonly">
                                             <textarea froala="froalaEditorOptions" ng-model="message.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
+                                            <br />
+                                            <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
                                         </div>
                                         <div ng-show="viewSettings.tableReadonly">
                                             <div class="fr-view">
