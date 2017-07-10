@@ -214,13 +214,11 @@
                                     <accordion>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Definition Pre-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
+                                                <span style="color:white;">Definition Pre-Text </span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
                                                 <div ng-if="!viewSettings.tableReadonly">
                                                     <textarea froala="froalaEditorOptions" ng-model="compositeProfileStructure.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
-                                                    <br />
-                                                    <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
-                                                </div>
+                                                  </div>
 
                                                 <div class="fr-view" ng-if="viewSettings.tableReadonly">
                                                     <div froala-view="compositeProfileStructure.defPreText"></div>
@@ -298,13 +296,11 @@
 
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isThirdOpen">
                                             <accordion-heading>
-                                                <span style="color:white;">Definition Post-Text</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>                                                </accordion-heading>
+                                                <span style="color:white;">Definition Post-Text </span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>                                                </accordion-heading>
                                             <div class="panel-body">
-                                                <div>
+                                                <div ng-if="!viewSettings.tableReadonly">
                                                     <textarea froala="froalaEditorOptions" ng-model="compositeProfileStructure.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
-                                                    <br />
-                                                    <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
-                                                </div>
+                                                  </div>
                                                 <div class="fr-view" ng-if="viewSettings.tableReadonly">
                                                     <div froala-view="compositeProfileStructure.defPostText"></div>
                                                 </div>

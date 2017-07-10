@@ -190,14 +190,12 @@
 
 
                                                 <md-input-container class="md-block" flex-gt-sm >
-                                                    <label class="input-left">Usage Note </label>
+                                                    <label class="input-left">Usage Note  </label>
                                                     <div  ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
                                                          <textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus
                                                                   ng-model="datatype.usageNote" name="usageNote"
                                                                   id="usageNote" ng-change="setDirty()"></textarea>
-                                                        <br />
-                                                        <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
-                                                    </div>
+                                                      </div>
                                                          <div class="fr-view" ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
                                                             <div froala-view="datatype.usageNote"></div>
                                                      </div>
@@ -229,7 +227,7 @@
                                             <div accordion-group class="panel-primary"
                                                  is-open="accordStatus.isFifthOpen">
                                                 <accordion-heading>
-                                                    <span style="color:white;">Definition Pre-Text</span> <i
+                                                    <span style="color:white;">Definition Pre-Text </span> <i
                                                         class="pull-left fa" style="color:white;"
                                                         ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>
                                                 </accordion-heading>
@@ -239,9 +237,7 @@
                                                         <textarea froala="froalaEditorOptions"
                                                                   ng-model="datatype.defPreText" name="text"
                                                                   id="defPreText" ng-change="setDirty()"></textarea>
-                                                        <br />
-                                                        <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
-                                                    </div>
+                                                      </div>
                                                     <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
                                                         <div class="fr-view">
                                                             <div froala-view="datatype.defPreText"></div>
@@ -496,7 +492,7 @@
 
                                             <div accordion-group class="panel-primary" is-open="accordStatus.isSixOpen">
                                                 <accordion-heading>
-                                                    <span style="color:white;">Definition Post-Text</span> <i
+                                                    <span style="color:white;">Definition Post-Text </span> <i
                                                         class="pull-left fa" style="color:white;"
                                                         ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>
                                                 </accordion-heading>
@@ -506,9 +502,7 @@
                                                         <textarea froala="froalaEditorOptions"
                                                                   ng-model="datatype.defPostText" name="text"
                                                                   id="defPostText" ng-change="setDirty()"></textarea>
-                                                        <br />
-                                                        <a ng-href="{{froalaDocLink}}" title="" target="_blank"><i class="fa fa-external-link"></i> Editor's documentation</a>
-                                                    </div>
+                                                      </div>
                                                     <div ng-show="viewSettings.tableReadonly || datatype.status==='PUBLISHED'">
                                                         <div class="fr-view">
                                                             <div froala-view="datatype.defPostText"></div>
