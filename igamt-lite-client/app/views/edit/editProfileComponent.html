@@ -201,7 +201,7 @@
                                                                     <div ng-show="node.usage != 'X' && node.type!=='component' && node.type!=='message'" class="form-inline" layout="row" layout-align="center center">
                                                                         <md-input-container flex="50" class="withoutMargin">
                                                                             <input ng-disabled="viewSettings.tableReadonly" aria-label="minC" style="width:50px;"
-                                                                                   name="min" min="0" type="number"
+                                                                                   name="min" type="text"
                                                                                    ng-init="initMinCard(node)"
                                                                                    ng-change="setDirty();updateMinCard(node);"
                                                                                    ng-pattern="/^\d+$/"

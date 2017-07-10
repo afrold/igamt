@@ -897,9 +897,8 @@
                 <ng-form name="{{formName}}"  layout="row" layout-align="center center" ng-controller="FormRowCtrl" ng-init="init(node)" >
                         <md-input-container flex="50" class="withoutMargin">
                                                 <input
-                                                       type="number"
+                                                       type="text"
                                                        name="min"
-                                                       min="0"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
@@ -908,6 +907,7 @@
 
                          <md-input-container flex="50" class="withoutMargin" >
                                                 <input name="max"
+                                                       type="text"
                                                        ng-change="setDirty()"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
