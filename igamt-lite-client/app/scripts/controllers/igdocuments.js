@@ -32,16 +32,20 @@ angular.module('igl')
     $rootScope.usageF = false;
     $scope.nodeReady = true;
     $scope.igDocumentTypes = [{
-            name: "My Implementation Guides",
+            name: "My IGs",
             type: 'USER'
         },
         {
-            name: "Preloaded Implementation Guides",
+            name: "Preloaded IGs",
             type: 'PRELOADED'
         }, {
-            name: "Shared Implementation Guides",
+            name: "Shared IGs",
             type: 'SHARED'
+        },{
+        name:"All IGs",
+            type:"all"
         }
+
     ];
     $scope.loadingIGDocument = false;
     $scope.toEditIGDocumentId = null;
@@ -878,16 +882,17 @@ angular.module('igl')
     };
 
     $scope.confirmDelete = function(igdocument) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'ConfirmIGDocumentDeleteCtrl.html',
             controller: 'ConfirmIGDocumentDeleteCtrl',
-            resolve: {
-                igdocumentToDelete: function() {
-                    return igdocument;
+            scope:$scope,
+            preserveScope:true,
+            locals: {
+                igdocumentToDelete:  igdocument
                 }
-            }
+
         });
-        modalInstance.result.then(function(igdocument) {
+        modalInstance.then(function(igdocument) {
 
             $scope.igdocumentToDelete = igdocument;
             console.log("DELETING ======");
@@ -954,16 +959,17 @@ angular.module('igl')
         });
     };
     $rootScope.deleteCompositeProfile = function(compositeMessage) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'DeleteCompositeProfileCtrl.html',
             controller: 'DeleteCompositeProfileCtrl',
-            resolve: {
-                compositeMessageToDelete: function() {
-                    return compositeMessage;
+            scope:$scope,
+            preserveScope:true,
+            locals: {
+                compositeMessageToDelete:  compositeMessage
                 }
-            }
+
         });
-        modalInstance.result.then(function(compositeMessage) {
+        modalInstance.then(function(compositeMessage) {
 
         }, function() {});
 
@@ -2194,7 +2200,7 @@ angular.module('igl').controller('DeleteProfileComponentCtrl', function($scope, 
     };
 });
 
-angular.module('igl').controller('DeleteCompositeProfileCtrl', function($scope, $modalInstance, compositeMessageToDelete, $rootScope, $http, CompositeProfileService, PcService) {
+angular.module('igl').controller('DeleteCompositeProfileCtrl', function($scope, $mdDialog, compositeMessageToDelete, $rootScope, $http, CompositeProfileService, PcService) {
 
     $scope.compositeMessageToDelete = compositeMessageToDelete;
     var pcsToChange = [];
@@ -2251,14 +2257,14 @@ angular.module('igl').controller('DeleteCompositeProfileCtrl', function($scope, 
             $rootScope.msg().show = true;
             $rootScope.manualHandle = true;
             $scope.loading = false;
-            $modalInstance.close($scope.compositeMessageToDelete);
+            $mdDialog.hide($scope.compositeMessageToDelete);
         });
 
 
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
 
@@ -2355,7 +2361,7 @@ angular.module('igl').controller('CantDeleteMsgCtrl', function($scope, ngTreetab
 
 
 
-angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function($scope, $modalInstance, igdocumentToDelete, $rootScope, $http) {
+angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function($scope, $mdDialog, igdocumentToDelete, $rootScope, $http) {
     $scope.igdocumentToDelete = igdocumentToDelete;
     $scope.loading = false;
     $scope.delete = function() {
@@ -2373,7 +2379,7 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function($scope,
             $rootScope.msg().show = true;
             $rootScope.manualHandle = true;
             $scope.loading = false;
-            $modalInstance.close($scope.igdocumentToDelete);
+            $mdDialog.hide($scope.igdocumentToDelete);
 
         }, function(error) {
             $scope.error = error;
@@ -2389,7 +2395,7 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function($scope,
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
 
@@ -4378,3 +4384,4 @@ angular.module('igl').controller('AfterClonedIgCtrl', [ '$rootScope','$scope', '
         $mdDialog.hide($scope.clonedIgDocument);
     };
 }]);
+

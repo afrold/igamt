@@ -13,7 +13,7 @@
 </script>
 <div class="row">
     <md-tabs md-dynamic-height md-border-bottom>
-        <md-tab  ng-repeat="tt in igDocumentTypes" md-on-select="selectIGDocumentType(tt.type);make_active($index)" md-active="tabs[$index].active">
+        <md-tab  ng-repeat="tt in igDocumentTypes" md-on-select="selectIGDocumentType(tt.type);make_active($index)" md-active="tabs[$index].active" ng-if="tt.type!=='all'||isAdmin()">
             <md-tab-label>
                 <i class="fa fa-file-text-o fa-fw"></i> {{::tt.name}}
 
@@ -75,35 +75,6 @@
 
 
                                                                 <div flex="60" layout="row" layout-align="end end" style="margin-top:-14px;">
-                                                                                    <!--<md-button ng-if="igDocumentConfig.selectedType === 'USER'" md-colors="{background:'blue'}"-->
-                                                                                               <!--aria-label="Edit IG Document" type="button"-->
-                                                                                               <!--ng-click="edit(row)" class="buttonForIgList">-->
-                                                                                        <!--<span><i class="fa fa-pencil fa-fw"></i></span>-->
-                                                                                    <!--</md-button>-->
-                                                                                    <!--<md-button aria-label="View IG Document" type="button" md-colors="{background:'grey'}"-->
-                                                                                               <!--ng-click="view(row)" class="buttonForIgList">-->
-                                                                                        <!--<span><i class="fa fa-eye fa-fw"></i></span>-->
-                                                                                    <!--</md-button>-->
-                                                                                    <!--<md-button aria-label="Create Copy of IG Document" type="button" md-colors="{background:'light-blue'}"-->
-                                                                                               <!--ng-click="clone(row);selectIGDocumentType('USER')" class="buttonForIgList">-->
-                                                                                        <!--<span style="color:white"><i class="fa fa-plus fa-fw"></i></span>-->
-                                                                                    <!--</md-button>-->
-                                                                                    <!--<md-button aria-label="Delete IG Document" type="button"-->
-                                                                                               <!--ng-if="igDocumentConfig.selectedType === 'USER'" md-colors="{background:'red'}"-->
-                                                                                               <!--ng-click="confirmDelete(row)" class="buttonForIgList">-->
-                                                                                        <!--<span><i class="fa fa-trash-o fa-fw"></i></span>-->
-                                                                                    <!--</md-button>-->
-                                                                                        <!--<md-button  ng-if="row.comment === 'PENDING_APPROVAL'" aria-label="Approve Share Document" type="button"-->
-                                                                                                   <!--ng-click="confirmShareDocument(row)" md-colors="{background:'blue'}" class="buttonForIgList">-->
-                                                                                    <!--<span><i class="fa fa-check fa-fw"-->
-                                                                                             <!--aria-hidden="true"></i></span>-->
-                                                                                        <!--</md-button>-->
-                                                                                        <!--<md-button ng-if="row.comment === 'PENDING_APPROVAL'"  aria-label="Reject Share Document" type="button" md-colors="{background:'blue-grey'}"-->
-                                                                                                   <!--ng-click="rejectShareDocument(row)" class="buttonForIgList">-->
-                                                                                    <!--<span><i class="fa fa-times fa-fw"-->
-                                                                                             <!--aria-hidden="true"></i></span>-->
-                                                                                        <!--</md-button>-->
-
                                                                     <md-button ng-if="igDocumentConfig.selectedType === 'USER'" ng-click="edit(row)"  title="Edit IG document" class="md-primary md-raised md-small" type="button">
                                                                         <i class="fa fa-pencil fa-fw"></i>
                                                                     </md-button>
@@ -135,7 +106,7 @@
                                                         <div flex layout="row" layout-align="start start">
                                                             <label flex="10" style="color: black; " class="label-list" >Conformance Profiles</label>
                                                             <div flex="90">
-                                                                <span class="label label-primary" style="margin-right: 10px; font-size:10px; font-weight: bold" ng-repeat="cp in row.profile.messages.children">{{cp.name}}</span>
+                                                                <span class="label label-default" style="margin-right: 10px; font-size:10px; font-weight: bold" ng-repeat="cp in row.profile.messages.children">{{cp.name}}</span>
                                                             </div>
 
 

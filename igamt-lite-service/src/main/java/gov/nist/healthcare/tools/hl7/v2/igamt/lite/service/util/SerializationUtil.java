@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
@@ -54,7 +55,7 @@ public class SerializationUtil {
     richtext = richtext.replace("<p style=\"\"><br></p>", "");
     richtext = richtext.replace("<p ","<div ");
     richtext = richtext.replace("<p>","<div>");
-    richtext = richtext.replace("</p>","<br/></div>");
+    richtext = richtext.replace("</p>","</div>");
     richtext = richtext.replace("&lsquo;","&#39;");
     richtext = richtext.replaceAll("[^\\p{Print}]", "?");
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
@@ -159,16 +160,24 @@ public class SerializationUtil {
     return "<div class=\"fr-view\">" + html + "</div>";
   }
 
-  private void removeDoubleBrTag(Element element) {
-    if(element.children().size()==2){
-      Element firstChild = element.children().get(0);
-      if(firstChild.tag().getName().equals("br")){
-        Element secondChild = element.children().get(1);
-        if(secondChild.tag().getName().equals("br")){
-          element.children().get(1).remove();
-        }
-      }
-    }
+  public void removeDoubleBrTag(Element element) {
+	  ArrayList<Element> toBeRemoved = new ArrayList<>();
+	  Element previousElement = null;
+	  for(Node node : element.childNodes()){
+		  if(node instanceof Element){
+			  if(previousElement != null){
+				  if(previousElement.tag().getName().equals("br") && ((Element)node).tag().getName().equals("br")){
+					  toBeRemoved.add((Element)node);
+				  }
+			  }
+			  previousElement = (Element)node;
+		  } else {
+			  previousElement = null;
+		  }
+	  }
+	  for(Element elementToBeRemoved : toBeRemoved){
+		  elementToBeRemoved.remove();
+	  }
   }
 
   private void removeEndingBrTag(Element element) {

@@ -15,7 +15,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 public class PredicateContext {
 
   private String type;
-  private String name;
+  private String id;
   private String path;
 
   public String getType() {
@@ -26,14 +26,6 @@ public class PredicateContext {
     this.type = type;
   }
 
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public String getPath() {
     return path;
   }
@@ -42,6 +34,11 @@ public class PredicateContext {
     this.path = path;
   }
 
+  public String getId() {
+    return id;
+  }
 
-
+  public void setId(String id) {
+    this.id = id;
+  }
 }

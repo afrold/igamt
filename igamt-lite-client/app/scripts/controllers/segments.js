@@ -934,9 +934,11 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             controller: 'PredicateSegmentCtrl',
             locals: {
                 selectedSegment: $rootScope.segment,
+                currentPredicate: null,
                 selectedNode: node,
                 config : $rootScope.config,
-                tables : $rootScope.tables
+                tables : $rootScope.tables,
+                mode : "segment"
             }
         }).then(function(segment) {
             if (segment) {
@@ -951,10 +953,14 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             parent: angular.element(document).find('body'),
             templateUrl: 'ConformanceStatementSegmentCtrl.html',
             controller: 'ConformanceStatementSegmentCtrl',
+            scope:$scope,
+            preserveScope:true,
             locals: {
                 selectedSegment : $rootScope.segment,
+                currentConformanceStatements : null,
                 config : $rootScope.config,
-                tables : $rootScope.tables
+                tables : $rootScope.tables,
+                mode : "segment"
             }
         }).then(function(segment) {
             if (segment) {
@@ -2087,7 +2093,7 @@ angular.module('igl').controller('DynamicMappingCtrl', function($scope, $modalIn
     };
 
 });
-angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config, tables, selectedSegment, selectedNode, $rootScope, $q, $mdDialog){
+angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config, tables, selectedSegment, selectedNode, $rootScope, $q, $mdDialog, mode, currentPredicate){
     $scope.dialogStep = 0;
     $scope.config = config;
     $scope.tables = tables;
@@ -2215,7 +2221,19 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
         });
         c.selected = true;
         $scope.existingPredicate = c;
-        $scope.existingPredicate.constraintTarget = $scope.selectedNode.position + '[1]';
+
+        if(mode === 'pc'){
+            var newPath = $scope.selectedNode.path.split(".");
+
+            if(newPath.length === 1){
+                $scope.existingPredicate.constraintTarget = ".";
+            }else if(newPath.length > 1){
+                newPath.shift();
+                $scope.existingPredicate.constraintTarget = newPath.join("[1].") + "[1]";
+            }
+        }else {
+            $scope.existingPredicate.constraintTarget = $scope.selectedNode.position + '[1]';
+        }
     };
 
     $scope.toggleChildren = function(data) {
@@ -2309,7 +2327,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
             }
 
             $scope.newConstraint.position_1 = positionPath.substr(1);
-            $scope.newConstraint.location_1 = $rootScope.segment.name + '-' + locationPath.substr(1);
+            $scope.newConstraint.location_1 = selectedSegment.name + '-' + locationPath.substr(1);
         }
     };
 
@@ -2330,14 +2348,18 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
             }
 
             $scope.newConstraint.position_2 = positionPath.substr(1);
-            $scope.newConstraint.location_2 = $rootScope.segment.name + '-' + locationPath.substr(1);
+            $scope.newConstraint.location_2 = selectedSegment.name + '-' + locationPath.substr(1);
         }
     };
 
     $scope.findExistingPredicate = function() {
-        for (var i = 0, len1 = $scope.selectedSegment.predicates.length; i < len1; i++) {
-            if ($scope.selectedSegment.predicates[i].constraintTarget.indexOf($scope.selectedNode.position + '[') === 0)
-                return $scope.selectedSegment.predicates[i];
+        if(mode === 'pc'){
+            return angular.copy(currentPredicate);
+        }else {
+            for (var i = 0, len1 = $scope.selectedSegment.predicates.length; i < len1; i++) {
+                if ($scope.selectedSegment.predicates[i].constraintTarget.indexOf($scope.selectedNode.position + '[') === 0)
+                    return $scope.selectedSegment.predicates[i];
+            }
         }
     };
 
@@ -2386,10 +2408,14 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
         $mdDialog.hide();
     };
 
-    $scope.save = function() {
-        $scope.deletePredicateByTarget();
-        $scope.selectedSegment.predicates.push($scope.existingPredicate);
-        $mdDialog.hide($scope.selectedSegment);
+    $scope.saveClose = function() {
+        if(mode === 'pc'){
+            $mdDialog.hide($scope.existingPredicate);
+        }else {
+            $scope.deletePredicateByTarget();
+            $scope.selectedSegment.predicates.push($scope.existingPredicate);
+            $mdDialog.hide($scope.selectedSegment);
+        }
     };
 
     $scope.initPredicate();
@@ -2397,7 +2423,8 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
     $scope.existingPredicate = $scope.findExistingPredicate();
 
 });
-angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, config, tables, selectedSegment, $rootScope, $q, $mdDialog) {
+
+angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, config, tables, selectedSegment, currentConformanceStatements, mode, $rootScope, $q, $mdDialog) {
     $scope.selectedSegment = angular.copy(selectedSegment);
     $scope.config = config;
     $scope.tables = tables;
@@ -2407,7 +2434,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.segment.name + "_" + $rootScope.segment.ext);
+    $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext,   $scope.selectedSegment.name + "_" + $scope.selectedSegment.ext);
     $scope.newComplexConstraint = [];
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
@@ -2550,7 +2577,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
             freeText: null,
             verb: null,
             ignoreCase: false,
-            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.segment.name + "_" + $rootScope.segment.ext),
+            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $scope.selectedSegment.name + "_" + $scope.selectedSegment.ext),
             contraintType: null,
             value: null,
             value2: null,
@@ -2565,7 +2592,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $rootScope.segment.name + "_" + $rootScope.segment.ext);
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, $scope.selectedSegment.name + "_" + $scope.selectedSegment.ext);
     };
 
     $scope.initConformanceStatement();
@@ -2587,7 +2614,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
             }
 
             $scope.newConstraint.position_1 = positionPath.substr(1);
-            $scope.newConstraint.location_1 = $rootScope.segment.name + '-' + locationPath.substr(1);
+            $scope.newConstraint.location_1 = $scope.selectedSegment.name + '-' + locationPath.substr(1);
         }
     };
 
@@ -2608,7 +2635,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
             }
 
             $scope.newConstraint.position_2 = positionPath.substr(1);
-            $scope.newConstraint.location_2 = $rootScope.segment.name + '-' + locationPath.substr(1);
+            $scope.newConstraint.location_2 = $scope.selectedSegment.name + '-' + locationPath.substr(1);
         }
     };
 
@@ -2620,6 +2647,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     $scope.addComplexConformanceStatement = function() {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint, $scope.constraints);
         $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+        if(!$scope.selectedSegment.conformanceStatements) $scope.selectedSegment.conformanceStatements = [];
         $scope.selectedSegment.conformanceStatements.push($scope.complexConstraint);
         $scope.initComplexStatement();
         $scope.changed = true;
@@ -2627,6 +2655,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
 
     $scope.addFreeTextConformanceStatement = function() {
         var cs = $rootScope.generateFreeTextConformanceStatement($scope.newConstraint);
+        if(!$scope.selectedSegment.conformanceStatements) $scope.selectedSegment.conformanceStatements = [];
         $scope.selectedSegment.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
@@ -2634,6 +2663,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
 
     $scope.addConformanceStatement = function() {
         var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
+        if(!$scope.selectedSegment.conformanceStatements) $scope.selectedSegment.conformanceStatements = [];
         $scope.selectedSegment.conformanceStatements.push(cs);
         $scope.changed = true;
         $scope.initConformanceStatement();
@@ -2643,9 +2673,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         $mdDialog.hide();
     };
 
-    $scope.save = function() {
+    $scope.saveClose = function() {
+        $rootScope.recordChanged();
         $mdDialog.hide($scope.selectedSegment);
     };
+
+    if(mode === 'pc'){
+        $scope.selectedSegment.conformanceStatements = angular.copy(currentConformanceStatements);
+    }
 });
 angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function($scope, $mdDialog, segToDelete, $rootScope, SegmentService, SegmentLibrarySvc, MastermapSvc, CloneDeleteSvc) {
     $scope.segToDelete = segToDelete;

@@ -19,6 +19,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsTable;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 public class SubProfileComponentAttributes {
 
@@ -39,20 +40,21 @@ public class SubProfileComponentAttributes {
   private List<TableLink> oldTables = new ArrayList<TableLink>();
   private DatatypeLink datatype;
   private DatatypeLink oldDatatype;
-  private String comment = "";
-  private String oldComment = "";
+  // private String comment = "";
+  // private String oldComment = "";
+  private List<Comment> oldComments = new ArrayList<Comment>();
+  private List<Comment> comments = new ArrayList<Comment>();
   private String text = "";
   private SegmentLink ref;
   private SegmentLink oldRef;
   private List<ConformanceStatement> oldConformanceStatements =
       new ArrayList<ConformanceStatement>();
-  private List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
   private DynamicMappingDefinition oldDynamicMappingDefinition = new DynamicMappingDefinition();
-  private DynamicMappingDefinition dynamicMappingDefinition = new DynamicMappingDefinition();
   private CoConstraintsTable oldCoConstraintsTable = new CoConstraintsTable();
-  private CoConstraintsTable coConstraintsTable = new CoConstraintsTable();
-
-
+  private List<ConformanceStatement> conformanceStatements;
+  private DynamicMappingDefinition dynamicMappingDefinition;
+  private CoConstraintsTable coConstraintsTable;
+  private Predicate predicate;
 
   public Usage getUsage() {
     return usage;
@@ -183,21 +185,21 @@ public class SubProfileComponentAttributes {
     this.oldDatatype = oldDatatype;
   }
 
-  public String getComment() {
-    return comment;
-  }
-
-  public void setComment(String comment) {
-    this.comment = comment;
-  }
-
-  public String getOldComment() {
-    return oldComment;
-  }
-
-  public void setOldComment(String oldComment) {
-    this.oldComment = oldComment;
-  }
+  // public String getComment() {
+  // return comment;
+  // }
+  //
+  // public void setComment(String comment) {
+  // this.comment = comment;
+  // }
+  //
+  // public String getOldComment() {
+  // return oldComment;
+  // }
+  //
+  // public void setOldComment(String oldComment) {
+  // this.oldComment = oldComment;
+  // }
 
   public String getText() {
     return text;
@@ -233,6 +235,8 @@ public class SubProfileComponentAttributes {
   }
 
   public List<ConformanceStatement> getConformanceStatements() {
+    if (conformanceStatements != null && conformanceStatements.size() == 0)
+      return null;
     return conformanceStatements;
   }
 
@@ -277,6 +281,43 @@ public class SubProfileComponentAttributes {
   @Override
   public String toString() {
     return ReflectionToStringBuilder.toString(this);
+  }
+
+  /**
+   * @return the oldComments
+   */
+  public List<Comment> getOldComments() {
+    return oldComments;
+  }
+
+  /**
+   * @param oldComments the oldComments to set
+   */
+  public void setOldComments(List<Comment> oldComments) {
+    this.oldComments = oldComments;
+  }
+
+  /**
+   * @return the comments
+   */
+  public List<Comment> getComments() {
+    return comments;
+  }
+
+  /**
+   * @param comments the comments to set
+   */
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
+  }
+
+  public Predicate getPredicate() {
+    return predicate;
+  }
+
+  public void setPredicate(Predicate predicate) {
+    this.predicate = predicate;
+
   }
 
 

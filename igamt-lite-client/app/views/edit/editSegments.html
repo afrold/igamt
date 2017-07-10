@@ -59,7 +59,7 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
+                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form scrollableContent" layout="column">
                                         <md-content layout-padding>
                                             <md-input-container class="md-block" flex-gt-sm>
                                                 <label class="input-left">Name</label>
@@ -121,7 +121,7 @@
                                 <md-tab-body>
 
 
-                                <div class="el-def" style="margin-top: 5px">
+                                <div class="el-def scrollableContent" style="margin-top: 5px">
                                     <accordion>
                                         <div accordion-group class="panel-primary panel-level1" is-open="accordStatus.isFirstOpen">
                                             <accordion-heading>
@@ -555,7 +555,7 @@
                                                             <tr ng-repeat="item in displayItems">
                                                                 <td class="col-md-3">
 
-                                                                    <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="viewSettings.tableReadonly || !segment.scope == 'USER'" ng-change="setDirty();">
+                                                                    <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="viewSettings.tableReadonly || segment.scope !== 'USER'" ng-change="setDirty();">
                                                                         <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value'" value="{{c.value}}">
                                                                             {{c.value}}({{c.label}})
                                                                         </md-option>
@@ -566,7 +566,7 @@
                                                                                ng-show="item.firstReferenceValue"
                                                                                placeholder="Select DT Flavor"
                                                                                ng-change="setDirty()"
-                                                                               ng-disabled="viewSettings.tableReadonly || !segment.scope === 'USER'">
+                                                                               ng-disabled="viewSettings.tableReadonly || segment.scope !== 'USER'">
                                                                            <md-option ng-repeat="link in igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}" value="{{link.id}}">
                                                                                {{getDatatypeLabel(datatypesMap[link.id])}}
                                                                            </md-option>
@@ -642,7 +642,7 @@
                                 </md-tab-label>
                                 <md-tab-body>
 
-                                <div class="panel-body" style="margin:5px;">
+                                <div class="panel-body scrollableContent" style="margin:5px;">
                                     <accordion>
                                         <div accordion-group class="panel-primary panel-level1" is-open="status.isFirstOpen">
                                             <accordion-heading>
@@ -756,7 +756,7 @@
                                     <i class="fa fa-link" aria-hidden="true"></i>Cross-References <span class="badge">{{references.length}}</span>
                                 </md-tab-label>
                                 <md-tab-body>
-                                <div class="el-def" style="margin-top:20px">
+                                <div class="el-def scrollableContent" style="margin-top:20px">
                                     <span class="pull-right" style="margin-bottom:10px">
                                         <button type="button" ng-click="AddBindingForSegment(segment)" class="btn btn-raised btn-info btn-md"><i class="fa fa-plus"></i> Add Binding</button>
                                     </span>

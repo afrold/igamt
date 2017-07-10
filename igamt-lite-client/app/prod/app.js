@@ -59,8 +59,8 @@ var
 //the message to be shown to the user
 var msg = {};
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, NotificationProvider,blockUIConfig, flowFactoryProvider) {
-
+app.config(function ($routeProvider, RestangularProvider, $mdAriaProvider, $httpProvider, KeepaliveProvider, IdleProvider, NotificationProvider,blockUIConfig, flowFactoryProvider) {
+    $mdAriaProvider.disableWarnings();
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
