@@ -32,17 +32,17 @@ angular.module('igl')
     $rootScope.usageF = false;
     $scope.nodeReady = true;
     $scope.igDocumentTypes = [{
-            name: "My IGs",
+            name: "My IG Documents",
             type: 'USER'
         },
         {
-            name: "Preloaded IGs",
+            name: "Preloaded IG Documents",
             type: 'PRELOADED'
         }, {
-            name: "Shared IGs",
+            name: "Shared IG Documents",
             type: 'SHARED'
         },{
-        name:"All IGs",
+        name:"All IG Documents",
             type:"all"
         }
 
@@ -368,7 +368,6 @@ angular.module('igl')
     };
 
     $scope.clone = function(igdocument) {
-        console.log(igdocument);
         $scope.toEditIGDocumentId = igdocument.id;
         $http.post('api/igdocuments/' + igdocument.id + '/clone').then(function(response) {
             $scope.toEditIGDocumentId = null;
@@ -379,8 +378,6 @@ angular.module('igl')
                 $scope.igDocumentConfig.selectedType = 'USER';
                 $scope.loadIGDocuments();
             }
-            $scope.selectIgTab(0);
-            $scope.make_active(0);
             // console.log($scope.tabs);
             // $rootScope.msg().text = "igClonedSuccess";
             // $rootScope.msg().type = "success";
@@ -399,14 +396,18 @@ angular.module('igl')
         var modalInstance = $mdDialog.show({
             templateUrl: 'AfterClonedIgDlg.html',
             controller: 'AfterClonedIgCtrl',
+            escapeToClose: true,
             locals: {
                 clonedIgDocument:clonedIgDocument
             }
         });
         modalInstance.then(function(clonedIgDocument) {
-            $scope.edit(clonedIgDocument);
+            if(clonedIgDocument && clonedIgDocument != null) {
+                $scope.edit(clonedIgDocument);
+            }
         }, function() {
-
+            $scope.selectIgTab(0);
+            $scope.make_active(0);
         });
     };
 
@@ -2086,6 +2087,8 @@ angular.module('igl')
                 }
                 if (!isPresent) return user;
             });
+
+
             var modalInstance = $mdDialog.show({
                 templateUrl: 'ShareIGDocumentModal.html',
                 controller: 'ShareIGDocumentCtrl',
@@ -3929,6 +3932,8 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $mdDial
     $scope.igdocumentSelected = igdocumentSelected;
     $scope.userList = userList;
     $scope.error = "";
+
+
     $scope.ok = function() {
         var idsTab = $scope.tags.map(function(user) {
             return user.id;

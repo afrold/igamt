@@ -413,8 +413,10 @@ public class IGDocumentController extends CommonController {
       }
       for (ProfileComponent pc : profilecomponents) {
         List<String> newIds = new ArrayList<>();
-        for (String cpId : pc.getCompositeProfileStructureList()) {
-          newIds.add(compositeProfileIdChangeMap.get(cpId));
+        if (pc.getCompositeProfileStructureList() != null) {
+          for (String cpId : pc.getCompositeProfileStructureList()) {
+            newIds.add(compositeProfileIdChangeMap.get(cpId));
+          }
         }
         pc.setCompositeProfileStructureList(newIds);
 

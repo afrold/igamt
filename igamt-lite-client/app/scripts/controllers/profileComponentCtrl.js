@@ -8,6 +8,13 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.tabStatus = {
         active: 1
     };
+    $scope.defTabStatus = {
+        active: 1
+    };
+    $scope.deltaTabStatus = {
+        active: 0
+    };
+
     $scope.accordStatus = {
         isCustomHeaderOpen: false,
         isFirstOpen: false,

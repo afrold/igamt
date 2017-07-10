@@ -15,6 +15,14 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         isSixOpen: false,
         isFirstDisabled: false
     };
+    $scope.defTabStatus = {
+        active: 1
+    };
+
+    $scope.deltaTabStatus = {
+        active: 0
+    };
+
     $scope.tabStatus = {
         active: 1
     };
@@ -1465,6 +1473,30 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
     //         return current_b.id == current.id;
     //     }).length == 0
     // });
+    $scope.searchText="";
+    $scope.segments = segments;
+    $scope.querySearch=function (query) {
+        return query? $scope.segments.filter( createFilterFor(query) ):$scope.segments;
+    }
+    function createFilterFor(query) {
+        var lowercaseQuery = angular.lowercase(query);
+
+        return function filterFn(seg) {
+
+            return $scope.getLowerCaseLabel(seg).indexOf(lowercaseQuery) === 0;
+        };
+
+    }
+
+
+
+    $scope.getLowerCaseLabel= function(element) {
+        if (!element.ext || element.ext == "") {
+            return angular.lowercase(element.name);
+        } else {
+            return angular.lowercase(element.name + "_" + element.ext);
+        }
+    };
 
     $scope.newSegment = {
         accountId: null,
@@ -2097,6 +2129,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
             $scope.status.isSecondOpen = true;
             $scope.dynamicMsg_params.refresh();
         }
+        $scope.deltaTabStatus.active = 1;
     };
 });
 

@@ -17,6 +17,13 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.tabStatus = {
         active: 1
     };
+    $scope.defTabStatus = {
+        active: 1
+    };
+
+    $scope.deltaTabStatus = {
+        active: 0
+    };
     $scope.init = function() {
         $scope.tabStatus = {
             active: 1
@@ -743,8 +750,7 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
         $scope.loadingSelection = true;
         $scope.vsChanged = false;
         $scope.vsTemplate = false;
-        console.log(table2)
-        TableService.getOne(table2.id).then(function(vs2) {
+         TableService.getOne(table2.id).then(function(vs2) {
             $scope.dataList = CompareService.cmpValueSet(JSON.stringify(table1), JSON.stringify(vs2));
 
             $scope.loadingSelection = false;
@@ -754,6 +760,7 @@ angular.module('igl').controller('cmpTableCtrl', function($scope, $modal, Object
                 $scope.status.isSecondOpen = true;
                 $scope.dynamicVs_params.refresh();
             }
+            $scope.deltaTabStatus.active = 1;
         });
 
 

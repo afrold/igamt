@@ -31,15 +31,15 @@
 
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                                  style="margin-bottom: 0px;" ng-if="!igdocument">
-                              <button  ng-diasbled="datatype.status=='UNPUBLISHED'" type="button" class="btn btn-raised btn-primary btn-sm" ng-class=""
+                              <md-button  ng-diasbled="datatype.status=='UNPUBLISHED'" type="button" class="btn btn-raised btn-primary btn-sm" ng-class=""
                                       ng-click="shareModal(datatype)">
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
                                 <span class="badge" ng-bind="datatype.shareParticipantIds.length"
                                       style="margin-right:5px;"></span>
-                              </button>
-                        <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle"
+                              </md-button>
+                        <md-button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle"
                                 data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span
-                                class="sr-only">Toggle Dropdown</span> </button>
+                                class="sr-only">Toggle Dropdown</span> </md-button>
                         <ul class="dropdown-menu igl-menu" role="menu">
                             <li ng-repeat="participant in datatype.shareParticipantIds"><a><i class="fa fa-user"
                                                                                               aria-hidden="true"></i> {{participant.username}} <span
@@ -49,33 +49,33 @@
 
 
 
-                    <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                    <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                             ng-disabled="!editForm.$dirty||datatype.status === 'PUBLISHED'"
                             ng-hide="viewSettings.tableReadonly||datatype.status==='PUBLISHED'"
                             ng-click="saveDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
-                    </button>
-                    <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                    </md-button>
+                    <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                             ng-disabled="!editForm.$dirty"
                             ng-show="datatype.status==='PUBLISHED'&& editForm.$dirty"
                             ng-click="saveBindingForDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
-                    </button>
-                    <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                    </md-button>
+                    <md-button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                             ng-show="datatype.status==='PUBLISHED'"
                             ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
                                   <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                    </button>
-                    <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                    </md-button>
+                    <md-button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                             ng-hide="viewSettings.tableReadonly || datatype.status==='PUBLISHED'"
                             ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
                                   <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                    </button>
-                    <button title="commit" type="button" class="btn btn-raised btn-sm btn-info"
+                    </md-button>
+                    <md-button title="commit" type="button" class="btn btn-raised btn-sm btn-info"
                             ng-click="publishDatatype(datatype)" ng-if="datatype.status !== 'PUBLISHED'&&!igdocument">
                               <i class="fa fa-check" aria-hidden="true"></i>
                               <span> Publish </span>
-                    </button>
+                    </md-button>
                     </span>
                     </div>
 
@@ -101,7 +101,7 @@
                                 </md-tab-label>
                                 <md-tab-body>
 
-                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form scrollableContent" layout="column">
+                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                         <md-content layout-padding>
                                             <md-input-container class="md-block" flex-gt-sm>
                                                 <label class="input-left">Name</label>
@@ -137,9 +137,6 @@
                                                  </div>
 
                                             </md-input-container>
-
-
-
 
 
                                             <md-input-container class="md-block" flex-gt-sm
@@ -220,17 +217,15 @@
                                     <i class="fa fa-table" aria-hidden="true"></i>Definition
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <div class="el-def scrollableContent" style="margin-top: 5px">
-                                        <accordion>
-
-
-                                            <div accordion-group class="panel-primary"
-                                                 is-open="accordStatus.isFifthOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Definition Pre-Text </span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>
-                                                </accordion-heading>
+                                    <div class="el-def" style="margin-top: 5px">
+                                        <md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">
+                                            <md-tab>
+                                                <md-tab-label>
+                                                    <span>Definition Pre-Text </span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+                                            <div class="panel-primary"
+                                                >
                                                 <div class="panel-body">
 
                                                     <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
@@ -246,15 +241,16 @@
                                                 </div>
 
                                             </div>
+                                                </md-tab-body>
+                                            </md-tab>
+                                            <md-tab md-on-select="refreshSlider();">
+                                                <md-tab-label>
+                                                    <span >Data Type Definition </span>
+                                                </md-tab-label>
+                                                <md-tab-body>
 
-                                            <div accordion-group class="panel-primary"
-                                                 is-open="accordStatus.isFirstOpen" ng-click="refreshSlider();">
+                                            <div  class="panel-primary">
 
-                                                <accordion-heading>
-                                                    <span style="color:white;">Data Type Definition </span><i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>
-                                                </accordion-heading>
                                                 <div class="" style="margin:5px 5px 5px 5px">
 
                                                     <div class="row"
@@ -489,13 +485,16 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                                </md-tab-body>
+                                            </md-tab>
 
-                                            <div accordion-group class="panel-primary" is-open="accordStatus.isSixOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Definition Post-Text </span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{ 'fa-chevron-down': accordStatus.isSixOpen, 'fa-chevron-right': !accordStatus.isSixOpen}"></i>
-                                                </accordion-heading>
+
+                                            <md-tab >
+                                                <md-tab-label>
+                                                    <span >Definition Post-Text</span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+                                            <div  class="panel-primary">
                                                 <div class="panel-body">
 
                                                     <div ng-show="!viewSettings.tableReadonly && datatype.status!=='PUBLISHED'">
@@ -511,13 +510,19 @@
                                                 </div>
                                             </div>
 
-                                            <div accordion-group class="panel-primary"
-                                                 is-open="accordStatus.isSecondOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Conformance Statements</span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{ 'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>
-                                                </accordion-heading>
+                                                </md-tab-body>
+                                            </md-tab>
+
+                                            <md-tab >
+                                                <md-tab-label>
+                                                    <span >Conformance Statements</span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+
+
+
+                                            <div class="panel-primary" >
+
                                                 <div class="panel-body">
                                                     <div class="col-md-12 igl-page-header" style="">
 
@@ -570,13 +575,16 @@
 
                                                 </div>
                                             </div>
-                                            <div accordion-group class="panel-primary"
-                                                 is-open="accordStatus.isThirdOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Conditional Predicates</span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>
-                                                </accordion-heading>
+                                                </md-tab-body>
+                                            </md-tab>
+
+                                            <md-tab >
+                                                <md-tab-label>
+                                                    <span >Conditional Predicates</span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+
+                                                <div class="panel-primary">
                                                 <div class="panel-body">
                                                     <div class="col-md-12">
                                                         <span ng-hide="datatype.predicates.length > 0">No conditional predicate</span>
@@ -623,8 +631,9 @@
                                                 </div>
                                             </div>
 
-
-                                        </accordion>
+                                                </md-tab-body>
+                                            </md-tab>
+                                        </md-tabs>
                                     </div>
                                 </md-tab-body>
                             </md-tab>
@@ -633,16 +642,17 @@
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i>Delta
                                 </md-tab-label>
                                 <md-tab-body>
+                                    <div class="panel-body metadata-scroll" style="margin:5px;">
+                                        <md-tabs md-dynamic-height md-border-bottom md-selected="deltaTabStatus.active">
+                                            <md-tab>
+                                                <md-tab-label>
+                                                    <span>Delta Configuration </span>
+                                                </md-tab-label>
+                                                <md-tab-body>
 
-                                    <div class="panel-body scrollableContent" style="margin:5px;">
-                                        <accordion>
-                                            <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;"> Delta Configuration</span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
-                                                </accordion-heading>
-                                                <div class="">
+                                             <div class="panel-primary">
+
+                                                <div class="panel-body">
                                                     <table class="table table-stripped table-borderless table-condensed">
                                                         <thead>
                                                         <tr class="tbl-header">
@@ -737,17 +747,18 @@
                                                     <md-button ng-click="cmpDatatype(datatype1,datatype2)"
                                                             ng-disabled="!datatype1 || cmp.datatypeId===-1||!dtChanged || !datatype2"
                                                             class="btn btn-raised btn-info btn-md">
-                                                        <i class="fa fa-check"></i> Delta
+                                                        <i class="fa fa-check"></i> View Delta
                                                     </md-button>
                                                 </div>
                                             </div>
-                                            <div accordion-group class="panel-primary" is-open="status.isSecondOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;"> Delta Result</span> <i
-                                                        class="pull-left fa" style="color:white;"
-                                                        ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i>
-                                                </accordion-heading>
-                                                </accordion-heading>
+                                                </md-tab-body>
+                                            </md-tab>
+                                            <md-tab>
+                                                <md-tab-label>
+                                                    <span>Delta Result </span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+                                            <div class="panel-primary">
                                                 <div class="panel-body">
                                                     <table tt-table tt-params="dynamicDt_params"
                                                            class=" table-marginless table-bordered table-condensed">
@@ -785,7 +796,9 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                        </accordion>
+                                                </md-tab-body>
+                                            </md-tab>
+                                        </md-tabs>
 
 
                                     </div>
@@ -800,7 +813,7 @@
                                 </md-tab-label>
                                 <md-tab-body>
 
-                                    <div class="el-def scrollableContent" style="margin-top:20px">
+                                    <div class="el-def metadata-scroll" style="margin-top:20px">
 
                                 <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary"
                                       ng-hide="typeOfSharing ">
@@ -900,7 +913,7 @@
                                     <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <div class="panel-body scrollableContent">
+                                    <div class="panel-body metadata-scroll">
 
 
 
