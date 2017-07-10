@@ -32,17 +32,17 @@ angular.module('igl')
     $rootScope.usageF = false;
     $scope.nodeReady = true;
     $scope.igDocumentTypes = [{
-            name: "My IGs",
+            name: "My IG Documents",
             type: 'USER'
         },
         {
-            name: "Preloaded IGs",
+            name: "Preloaded IG Documents",
             type: 'PRELOADED'
         }, {
-            name: "Shared IGs",
+            name: "Shared IG Documents",
             type: 'SHARED'
         },{
-        name:"All IGs",
+        name:"All IG Documents",
             type:"all"
         }
 
@@ -1957,6 +1957,14 @@ angular.module('igl')
 
     };
 
+    $scope.codeCompare  = function (a,b) {
+        if (a.value < b.value)
+            return -1;
+        if (a.value > b.value)
+            return 1;
+        return 0;
+    };
+
     $scope.selectTable = function(t) {
         $rootScope.Activate(t.id);
         var table = angular.copy(t);
@@ -1981,6 +1989,7 @@ angular.module('igl')
                     }
                 }
                 $rootScope.table.smallCodes = $rootScope.table.codes.slice(0, 1000);
+                $rootScope.table.smallCodes.sort($scope.codeCompare);
                 $rootScope.findValueSetBindings();
                 $scope.loadingSelection = false;
                 $rootScope.$emit("event:initEditArea");
