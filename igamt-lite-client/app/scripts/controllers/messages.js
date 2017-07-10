@@ -2129,6 +2129,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
             $scope.status.isSecondOpen = true;
             $scope.dynamicMsg_params.refresh();
         }
+        $scope.deltaTabStatus.active = 1;
     };
 });
 

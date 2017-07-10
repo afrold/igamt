@@ -3347,6 +3347,7 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
             $scope.status.isSecondOpen = true;
             $scope.dynamicSeg_params.refresh();
         }
+        $scope.deltaTabStatus.active = 1;
 
     };
 
