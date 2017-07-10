@@ -46,7 +46,7 @@
                         </span>
                     </div>
 
-                    <div class="static_info">
+                    <div class="static_info" style="margin-top: 10px" >
                         <i class="fa fa-calendar" aria-hidden="true"></i>Updated :{{table.dateUpdated | date:dateFormat}}<span ng-if="table.owner" style="font-style: italic;"><i class="fa fa-user" aria-hidden="true"></i>{{table.owner}}</span>
                         <span>HL7 Version: {{table.hl7Version}}</span>
                         <span ng-if="table.publicationVersion">Version: {{table.publicationVersion}}</span>
@@ -657,7 +657,7 @@
                           (Owner: {{table.owner}})
                         </span>
 
-                        <div class="static_info">
+                        <div class="static_info" style="margin-top: 10px">
                             <i class="fa fa-calendar" aria-hidden="true"></i>Updated :{{table.dateUpdated | date:dateFormat}}
                             <span ng-if="table.owner" style="font-style: italic;"><i class="fa fa-user" aria-hidden="true"></i>{{table.owner}}</span>
                             <span>HL7 Version: {{table.hl7Version}}</span>
