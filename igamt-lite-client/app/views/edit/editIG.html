@@ -11,7 +11,7 @@
         top.location = self.location;
     }
 </script>
-<div ng-show="!loadingIGDocument" style="max-height: 800px; overflow-y: hidden">
+<div ng-show="!loadingIGDocument">
     <div class="row" ng-show="!isEditing">
         <div class="col-md-12">
             <p>No Implementation Guide Selected.</p>
@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-md-12" ng-show="igDocumentMsg !== null">
                 <div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">
-                    <button type="button" class="close" ng-click="igDocumentMsg.show = false">×</button>
+                    <md-button type="button" class="close" ng-click="igDocumentMsg.show = false">×</md-button>
                     <div msg key-expr="igDocumentMsg.text"></div>
                 </div>
             </div>

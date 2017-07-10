@@ -3208,13 +3208,13 @@ md-select.inside-table{
     max-height: 800px !important;
 }
 
-.scrollableContent{
-    overflow-y: scroll !important;
-    max-height: 600px !important;
-}
+//.scrollableContent{
+//    overflow-y: hidden !important;
+//    max-height: 800px !important;
+//}
 .tree-fixed{
     width:100%;
-    max-height: 800px;
+    max-height: 900px;
     overflow: scroll;
     background-color: rgba(238, 238, 238, 0.46);
     padding-top: 20px;
@@ -3223,9 +3223,31 @@ md-select.inside-table{
 }
 .subview-fixed{
     width:100%;
-    max-height: 800px;
+    max-height: 900px;
     background-color: white;
     overflow: hidden;
-    min-height: 400px;
 
+}
+.panel-primary>.panel-heading+.panel-collapse .panel-body {
+    border-top-color: #428bca;
+    max-height: 600px;
+    overflow: auto;
+}
+.small-dialog{
+
+
+}
+.medium-dialog{
+    min-height:400px;
+    min-width: 500px;
+    overflow: auto;
+}
+.large-dialog{
+
+}
+.metadata-scroll{
+    width:100%;
+    max-height: 900px;
+    background-color: white;
+    overflow: auto;
 }

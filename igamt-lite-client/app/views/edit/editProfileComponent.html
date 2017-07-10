@@ -20,10 +20,10 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Profile Component: {{profileComponent.name}} </span>
                         <div class="pull-right">
-                            <button ng-disabled="!editForm.$dirty||viewSettings.tableReadonly" title="Save Changes" type="button"
+                            <md-button ng-disabled="!editForm.$dirty||viewSettings.tableReadonly" title="Save Changes" type="button"
                                     class="btn btn-raised btn-sm btn-success" ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
-                            </button>
+                            </md-button>
                         </div>
                     </div>
                     <div class="static_info">
@@ -35,7 +35,7 @@
                                 <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> MetaData
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px" ng-cloak class="md-inline-form scrollableContent" layout="column">
+                                <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                     <md-content layout-padding>
                                         <md-input-container class="md-block" flex-gt-sm>
                                             <label class="input-left">Name</label>
@@ -58,7 +58,7 @@
                                 <i class="fa fa-table fa-fw " aria-hidden="true "></i>Definition
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px " class="scrollableContent">
+                                <div style="margin-top: 20px " class="">
 
                                     <md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">
                                         <md-tab>
@@ -68,7 +68,6 @@
                                             <md-tab-body>
 
                                         <div  class="panel-primary">
-
                                             <div class="panel-body">
                                                 <div ng-if="!viewSettings.tableReadonly">
                                                     <textarea ng-disabled="viewSettings.tableReadonly" froala="froalaEditorOptions" ng-model="profileComponent.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
@@ -520,7 +519,7 @@
                                 <i class="fa fa-link fa-fw" aria-hidden="true"></i>Cross-References
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px" class="scrollableContent">
+                                <div style="margin-top: 20px" class="metadata-scroll">
                                     <div class="col-md-12">
                                         <div class="pull-right">
                                         </div>
@@ -935,7 +934,7 @@
                                     <md-tab>
                                         <md-tab-label>Message</md-tab-label>
                                         <md-tab-body>
-                                            <div class=" panel panel-default scrollableContent">
+                                            <div class=" panel panel-default metadata-scroll">
                                                 <div class="panel-heading">Choose Items</div>
                                                 <div class="panel-body">
 
@@ -960,7 +959,7 @@
                                     <md-tab>
                                         <md-tab-label>Segment</md-tab-label>
                                         <md-tab-body>
-                                            <div class=" panel panel-default scrollableContent">
+                                            <div class=" panel panel-default metadata-scroll">
                                                 <div class="panel-heading">Choose Items</div>
                                                 <div class="panel-body">
 

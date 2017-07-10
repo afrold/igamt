@@ -59,7 +59,7 @@
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form scrollableContent" layout="column">
+                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                         <md-content layout-padding>
                                             <md-input-container class="md-block" flex-gt-sm>
                                                 <label class="input-left">Name</label>
@@ -119,11 +119,9 @@
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i>Definition
                                 </md-tab-label>
                                 <md-tab-body>
+                                <div class="el-def" style="margin-top: 5px">
 
-
-                                <div class="el-def scrollableContent" style="margin-top: 5px">
-
-                                    <md-tabs md-dynamic-height md-border-bottom md-selected="tabStatus.active">
+                                    <md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">
                                         <md-tab>
                                             <md-tab-label>
                                                 Definition Pre-Text
@@ -680,13 +678,11 @@
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i>Delta
                                 </md-tab-label>
                                 <md-tab-body>
-
-                                <div class="panel-body scrollableContent" style="margin:5px;">
-
+                                <div class="panel-body metadata-scroll" style="margin:5px;">
                                     <md-tabs md-dynamic-height md-border-bottom md-selected="deltaTabStatus.active">
                                         <md-tab >
                                             <md-tab-label>
-                                                Delta Configuration
+                                                <i class="fa fa-cogs fa-fw"></i> Delta Configuration
                                             </md-tab-label>
                                             <md-tab-body>
 
@@ -758,7 +754,7 @@
                                             </table>
                                             <div class="" align="center" style="margin-bottom:10px">
                                                 <md-button ng-click="cmpSegment(segment1,segment2)" ng-disabled="!segment1 || cmp.segmentId===-1||!segChanged || !segment2" class="btn btn-raised btn-info btn-md">
-                                                        <i class="fa fa-check"></i> Delta</md-button>
+                                                        <i class="fa fa-check"></i> View Delta</md-button>
                                             </div>
                                         </div>
                                                 </div>
@@ -809,7 +805,7 @@
                                     <i class="fa fa-link" aria-hidden="true"></i>Cross-References <span class="badge">{{references.length}}</span>
                                 </md-tab-label>
                                 <md-tab-body>
-                                <div class="el-def scrollableContent" style="margin-top:20px">
+                                <div class="el-def metadata-scroll" style="margin-top:20px">
                                     <span class="pull-right" style="margin-bottom:10px">
                                         <button type="button" ng-click="AddBindingForSegment(segment)" class="btn btn-raised btn-info btn-md"><i class="fa fa-plus"></i> Add Binding</button>
                                     </span>
@@ -1715,20 +1711,29 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
+                <div class="md-dialog-content medium-dialog">
+                    <md-autocomplete
+                            md-selected-item="newDt"
 
-
-        <md-input-container class="md-block" layout="row" layout-align="center center" style="max-width:300px ">
-            <i class="input-left" flex="20" class="fa fa-search"></i>
-            <input flex="80" type="text" ng-model="newDt" data-animation="am-flip-x" data-auto-select="true" typeahead="datatype as getDtLabel(datatype) for datatype in datatypes|filter:{name:$viewValue} | limitTo:5" placeholder="Search By Name">
-        </md-input-container>
-
+                            md-search-text="searchText"
+                            md-items="item in querySearch(searchText)"
+                            md-item-text="item.label"
+                            md-min-length="0"
+                            placeholder="Search Data Type "
+                            md-autofocus>
+                        <md-item-template>
+                            <display-label of="item" desc="true"></display-label>
+                        </md-item-template>
+                        <md-not-found>
+                            No Datatype matching were found.
+                        </md-not-found>
+                    </md-autocomplete>
 
                 </div>
             </md-dialog-content>
             <md-dialog-actions layout="row">
 
-                <md-button class="md-primary md-raised" ng-click="addDT()" ng-disabled="!isInDts(newDt)"><span><i
+                <md-button class="md-primary md-raised" ng-click="addDT()" ng-disabled="!datatypesMap[newDt.id]"><span><i
                         class="fa fa-check">
                 &nbsp; </i>Select</span>
                 </md-button>

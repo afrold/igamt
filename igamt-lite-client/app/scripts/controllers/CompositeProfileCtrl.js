@@ -13,7 +13,7 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
     $scope.defTabStatus = {
         active : 1
     };
-    
+
 
     $scope.redirectVS = function(binding) {
 
