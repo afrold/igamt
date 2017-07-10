@@ -3020,8 +3020,32 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, data
 
     $scope.dtChanged = false;
     $scope.field = field;
+    $scope.searchText="";
     var oldDt = angular.copy(field.datatype);
     $scope.datatypes = datatypes;
+    $scope.querySearch=function (query) {
+        return query? $scope.datatypes.filter( createFilterFor(query) ):$scope.datatypes;
+    }
+    function createFilterFor(query) {
+        var lowercaseQuery = angular.lowercase(query);
+
+        return function filterFn(dt) {
+
+            return $scope.getLowerCaseLabel(dt).indexOf(lowercaseQuery) === 0;
+        };
+
+    }
+
+
+
+    $scope.getLowerCaseLabel= function(element) {
+        if (!element.ext || element.ext == "") {
+            return angular.lowercase(element.name);
+        } else {
+            return angular.lowercase(element.name + "_" + element.ext);
+        }
+    };
+
     //$scope.vs = angular.copy(field.tables);
     //$scope.tableList = angular.copy(field.tables);;
 

@@ -24,7 +24,7 @@ public class ProfileComponent
   private String defPreText = "";
   private String defPostText = "";
   private Date dateUpdated;
-  private List<String> compositeProfileStructureList;
+  private List<String> compositeProfileStructureList = new ArrayList<String>();
   private List<SubProfileComponent> children = new ArrayList<SubProfileComponent>();
   private String type;
 

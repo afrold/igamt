@@ -24,14 +24,14 @@
                     <div class="page-header">
                         <span class="header4">Conformance Profile: {{message.name}} </span>
                         <span class="pull-right">
-                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                            <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                                     ng-disabled="editForm.$invalid ||!editForm.$dirty"
                                     ng-hide="viewSettings.tableReadonly" ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
-                        </button>
-                        <button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                        </md-button>
+                        <md-button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly" ng-disabled="!editForm.$dirty" ng-click="reset()">
                             <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                        </button>
+                        </md-button>
                         </span>
                     </div>
                  <div class="static_info">
@@ -51,8 +51,8 @@
                                 <md-tab-label>
                                     <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>MetaData
                                 </md-tab-label>
-                                <md-tab-body class="scrollableContent">
-                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form scrollableContent" layout="column">
+                                <md-tab-body class="metadata-scroll">
+                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                         <md-content layout-padding>
                                             <md-input-container class="md-block" flex-gt-sm>
                                                 <label class="input-left">Name</label>
@@ -140,9 +140,9 @@
                                 <md-tab-label>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i>Definition
                                 </md-tab-label>
-                                <md-tab-body class="scrollableContent">
+                                <md-tab-body>
 
-                                <div class="el-def scrollableContent" style="margin-top: 5px">
+                                <div class="el-def" style="margin-top: 5px">
                                     <accordion>
                                         <div accordion-group class="panel-primary" is-open="accordStatus.isFifthOpen">
                                             <accordion-heading>
@@ -324,9 +324,9 @@
                                 <md-tab-label>
                                     <i class="fa fa-table fa-fw" aria-hidden="true"></i>Delta
                                 </md-tab-label>
-                                <md-tab-body class="scrollableContent">
+                                <md-tab-body class="metadata-scroll">
 
-                        <div class="panel-body scrollableContent" style="margin:5px;">
+                        <div class="panel-body metadata-scroll" style="margin:5px;">
                             <accordion>
                                 <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
                                     <accordion-heading>
@@ -1038,23 +1038,33 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
+                <div class="md-dialog-content large-dialogue">
                     <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                         <md-content layout-padding>
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label class="input-left">Existing Segment*</label>
-                                <input type="text" ng-model="search.name" ng-hide="selected()" required/>
-                                <li ng-show="selected()">
-                                    {{newSeg.name}} <span ng-show="newSeg.ext">_{{newSeg.ext}}</span>
-                                    <button type="button" class="close" aria-label="Close" ng-click="unselect()">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </li>
-                                <div ng-show="search.name && !selected()">
-                                    <li ng-class="{'active':isActive(segment.id)}" ng-click="selectSeg(segment)" ng-repeat="segment in segments | filter:search">
-                                        {{segment.name}} <span ng-show="segment.ext">_{{segment.ext}}</span>
-                                    </li>
-                                </div>
+
+
+                                    <md-autocomplete
+                                            md-selected-item="newSeg"
+
+                                            md-search-text="searchText"
+                                            md-items="item in querySearch(searchText)"
+                                            md-item-text="item.label"
+                                            md-min-length="0"
+                                            placeholder="Search Segment "
+                                            md-autofocus>
+                                        <md-item-template>
+                                            <display-label of="item" desc="true"></display-label>
+                                        </md-item-template>
+                                        <md-not-found>
+                                            No Segment found.
+                                        </md-not-found>
+                                    </md-autocomplete>
+
+
+
+
+
+
                                 <div ng-messages="addSegForm.name.$error">
                                     <div ng-message="required">Name is required.</div>
                                 </div>
@@ -1083,27 +1093,31 @@
                                 </div>
                             </md-input-container>
 
-                            <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center" ng-class="{'igl-has-error has-feedback': !addSegForm.segCardMin.$valid ||!addSegForm..segCardMax.$valid }">
-                                <label class="input-left">Cardinality*</label>
-                                <div class="col-md-9">
-                        <span class="form-inline">
+                            <div class="md-block" flex-gt-sm layout="row" layout-align="center center" ng-class="{'igl-has-error has-feedback': !addSegForm.segCardMin.$valid ||!addSegForm..segCardMax.$valid }">
+                                <div layout="row" layout-align="center center" >
+                            <md-input-container class="md-block" flex="50">
+                                <label class="input-left"> Min Cardinality</label>
                                                 <input  style="width:49%;margin-right: 1px"
-                                                        placeholder="Min"
                                                         name="segCardMin"
                                                         id="segCardMin"
                                                         ng-change="setDirty()"
                                                         ng-pattern="/^\d+$/"
+
                                                         ng-model="newSegment.min" ng-disabled="disableMin" required >
-                                                <input  style="width:50%"  type="text"
-                                                        placeholder="Max"
+                            </md-input-container>
+
+                                    <md-input-container class="md-block" flex="50">
+                                        <label class="input-left"> Max Cardinality</label>
+
+                                        <input  style="width:50%"  type="text"
                                                         name="segCardMax"
                                                         id="segCardMax"
                                                         ng-change="setDirty()"
                                                         ng-pattern="/^\d+$|^\*?$/"
                                                         ng-model="newSegment.max" ng-disabled="disableMax" required>
-                        </span>
+                                    </md-input-container>
                                 </div>
-                            </md-input-container>
+                            </div>
                             <md-input-container class="md-block" flex-gt-sm>
                                 <label class="input-left"> Comment</label>
                                 <input type="text" id="comment" name="comment" ng-model="newSegment.comment">

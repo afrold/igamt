@@ -2058,6 +2058,8 @@ angular.module('igl')
                 }
                 if (!isPresent) return user;
             });
+
+
             var modalInstance = $mdDialog.show({
                 templateUrl: 'ShareIGDocumentModal.html',
                 controller: 'ShareIGDocumentCtrl',
@@ -3901,6 +3903,8 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $mdDial
     $scope.igdocumentSelected = igdocumentSelected;
     $scope.userList = userList;
     $scope.error = "";
+
+
     $scope.ok = function() {
         var idsTab = $scope.tags.map(function(user) {
             return user.id;

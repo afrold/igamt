@@ -31,15 +31,15 @@
 
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
                                  style="margin-bottom: 0px;" ng-if="!igdocument">
-                              <button  ng-diasbled="datatype.status=='UNPUBLISHED'" type="button" class="btn btn-raised btn-primary btn-sm" ng-class=""
+                              <md-button  ng-diasbled="datatype.status=='UNPUBLISHED'" type="button" class="btn btn-raised btn-primary btn-sm" ng-class=""
                                       ng-click="shareModal(datatype)">
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
                                 <span class="badge" ng-bind="datatype.shareParticipantIds.length"
                                       style="margin-right:5px;"></span>
-                              </button>
-                        <button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle"
+                              </md-button>
+                        <md-button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle"
                                 data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span
-                                class="sr-only">Toggle Dropdown</span> </button>
+                                class="sr-only">Toggle Dropdown</span> </md-button>
                         <ul class="dropdown-menu igl-menu" role="menu">
                             <li ng-repeat="participant in datatype.shareParticipantIds"><a><i class="fa fa-user"
                                                                                               aria-hidden="true"></i> {{participant.username}} <span
@@ -49,33 +49,33 @@
 
 
 
-                    <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                    <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                             ng-disabled="!editForm.$dirty||datatype.status === 'PUBLISHED'"
                             ng-hide="viewSettings.tableReadonly||datatype.status==='PUBLISHED'"
                             ng-click="saveDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
-                    </button>
-                    <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                    </md-button>
+                    <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                             ng-disabled="!editForm.$dirty"
                             ng-show="datatype.status==='PUBLISHED'&& editForm.$dirty"
                             ng-click="saveBindingForDatatype()">
                               <span><i class="fa fa-check fa-fw"></i> Save</span>
-                    </button>
-                    <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                    </md-button>
+                    <md-button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                             ng-show="datatype.status==='PUBLISHED'"
                             ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
                                   <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                    </button>
-                    <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                    </md-button>
+                    <md-button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                             ng-hide="viewSettings.tableReadonly || datatype.status==='PUBLISHED'"
                             ng-disabled="!editForm.$dirty || datatype.status === 'PUBLISHED'" ng-click="reset()">
                                   <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                    </button>
-                    <button title="commit" type="button" class="btn btn-raised btn-sm btn-info"
+                    </md-button>
+                    <md-button title="commit" type="button" class="btn btn-raised btn-sm btn-info"
                             ng-click="publishDatatype(datatype)" ng-if="datatype.status !== 'PUBLISHED'&&!igdocument">
                               <i class="fa fa-check" aria-hidden="true"></i>
                               <span> Publish </span>
-                    </button>
+                    </md-button>
                     </span>
                     </div>
 
@@ -101,7 +101,7 @@
                                 </md-tab-label>
                                 <md-tab-body>
 
-                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form scrollableContent" layout="column">
+                                    <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                         <md-content layout-padding>
                                             <md-input-container class="md-block" flex-gt-sm>
                                                 <label class="input-left">Name</label>
@@ -220,7 +220,7 @@
                                     <i class="fa fa-table" aria-hidden="true"></i>Definition
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <div class="el-def scrollableContent" style="margin-top: 5px">
+                                    <div class="el-def" style="margin-top: 5px">
                                         <accordion>
 
 
@@ -634,7 +634,7 @@
                                 </md-tab-label>
                                 <md-tab-body>
 
-                                    <div class="panel-body scrollableContent" style="margin:5px;">
+                                    <div class="panel-body metadata-scroll" style="margin:5px;">
                                         <accordion>
                                             <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
                                                 <accordion-heading>
@@ -800,7 +800,7 @@
                                 </md-tab-label>
                                 <md-tab-body>
 
-                                    <div class="el-def scrollableContent" style="margin-top:20px">
+                                    <div class="el-def metadata-scroll" style="margin-top:20px">
 
                                 <span class="pull-right" style="margin-bottom:10px" ng-if="datatypeLibrary"
                                       ng-hide="typeOfSharing ">
@@ -900,7 +900,7 @@
                                     <i class="fa fa-area-chart" aria-hidden="true"></i> Version History
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <div class="panel-body scrollableContent">
+                                    <div class="panel-body metadata-scroll">
 
 
 
