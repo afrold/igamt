@@ -6,9 +6,15 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
         isSecondOpen: true,
         isThirdOpen: false,
         isFourthOpen: false,
-        isFifthOpen : false,
+        isFifthOpen : false
 
     };
+
+    $scope.defTabStatus = {
+        active : 1
+    };
+    
+
     $scope.redirectVS = function(binding) {
 
         TableService.getOne(binding.tableId).then(function(valueSet) {

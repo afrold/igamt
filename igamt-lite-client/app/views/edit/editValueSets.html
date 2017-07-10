@@ -166,10 +166,14 @@
                                 </md-tab-label>
                                 <md-tab-body>
                                     <div class="el-def igl-def-table-container" style="margin-top: 20px">
-                                        <accordion>
-                                            <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Definition Pre-Text </span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
+
+                                        <md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">
+                                            <md-tab>
+                                                <md-tab-label>
+                                                    Definition Pre-Text
+                                                </md-tab-label>
+                                                <md-tab-body>
+                                            <div  class="panel-primary">
                                                 <div class="panel-body">
                                                     <div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">
                                                         <textarea froala="froalaEditorOptions" ng-model="table.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
@@ -182,11 +186,15 @@
                                                 </div>
                                             </div>
 
-                                            <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Value Set Definition </span>
-                                                    <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>
-                                                </accordion-heading>
+                                                </md-tab-body>
+                                            </md-tab>
+                                                 <md-tab>
+                                                    <md-tab-label>
+                                                        Value Set Definition
+                                                    </md-tab-label>
+                                                    <md-tab-body>
+
+                                            <div class="panel-primary">
                                                 <div class="igl-def-table-container">
                                                     <div class="">
                                                         <span class="pull-left">
@@ -341,10 +349,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div accordion-group class="panel-primary" is-open="accordStatus.isThirdOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;">Definition Post-Text </span><i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>
-                                                </accordion-heading>
+                                                    </md-tab-body>
+                                                 </md-tab>
+                                            <md-tab>
+                                                <md-tab-label>
+                                                    Definition Post-Text
+                                                </md-tab-label>
+                                                <md-tab-body>
+                                            <div class="panel-primary" >
                                                 <div class="panel-body">
                                                     <div ng-if="!viewSettings.tableReadonly && table.status==='UNPUBLISHED'">
                                                         <textarea froala="froalaEditorOptions" ng-model="table.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
@@ -356,7 +368,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </accordion>
+                                                </md-tab-body>
+                                            </md-tab>
+                                        </md-tabs>
                                     </div>
                                 </md-tab-body>
                             </md-tab>
@@ -366,12 +380,14 @@
                                 </md-tab-label>
                                 <md-tab-body>
                                     <div class="panel-body metadata-scroll" style="margin:5px;">
-                                        <accordion>
-                                            <div accordion-group class="panel-primary" is-open="status.isFirstOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;"> Delta Configuration</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>
-                                                </accordion-heading>
-
+                                        <md-tabs md-dynamic-height md-border-bottom md-selected="deltaTabStatus.active">
+                                            <md-tab>
+                                                <md-tab-label>
+                                                    <span>Delta Configuration </span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+                                             <div class="panel-primary">
+                                                    <div class="panel-body">
                                                 <table class="table table-stripped table-borderless table-condensed">
                                                     <thead>
                                                     <tr class="tbl-header">
@@ -542,10 +558,16 @@
 
                                                 </div>
                                             </div>
-                                            <div accordion-group class="panel-primary" is-open="status.isSecondOpen">
-                                                <accordion-heading>
-                                                    <span style="color:white;"> Delta Result</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i> </accordion-heading>
-                                                </accordion-heading>
+                                             </div>
+                                                </md-tab-body>
+                                            </md-tab>
+                                            <md-tab>
+                                                <md-tab-label>
+                                                    <span>Delta Result </span>
+                                                </md-tab-label>
+                                                <md-tab-body>
+
+                                            <div  class="panel-primary">
                                                 <div class="panel-body">
                                                     <table tt-table tt-params="dynamicVs_params" class=" table-marginless table-bordered table-condensed">
                                                         <thead>
@@ -560,7 +582,9 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                        </accordion>
+                                                </md-tab-body>
+                                            </md-tab>
+                                        </md-tabs>
 
                                     </div>
                                 </md-tab-body>

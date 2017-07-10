@@ -210,12 +210,17 @@
                                 <i class="fa fa-table fa-fw" aria-hidden="true "></i>Definition
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px ">
-                                    <accordion>
-                                        <div accordion-group class="panel-primary" is-open="accordStatus.isFirstOpen">
-                                            <accordion-heading>
-                                                <span style="color:white;">Definition Pre-Text </span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFirstOpen, 'fa-chevron-right': !accordStatus.isFirstOpen}"></i>                                                </accordion-heading>
-                                            <div class="panel-body">
+                                <div style="margin-top: 20px " class="">
+                                    <md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">
+                                    <md-tab>
+                                        <md-tab-label>
+                                           Definition Pre-Text
+                                        </md-tab-label>
+                                        <md-tab-body>
+
+                                         <div  class="panel-primary">
+
+                                             <div class="panel-body">
                                                 <div ng-if="!viewSettings.tableReadonly">
                                                     <textarea froala="froalaEditorOptions" ng-model="compositeProfileStructure.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
                                                   </div>
@@ -226,9 +231,15 @@
 
                                             </div>
                                         </div>
-                                        <div accordion-group class="panel-primary" is-open="accordStatus.isSecondOpen">
-                                            <accordion-heading>
-                                                <span style="color:white;">Composite Profile Definition</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isSecondOpen, 'fa-chevron-right': !accordStatus.isSecondOpen}"></i>                                                </accordion-heading>
+                                        </md-tab-body>
+                                    </md-tab>
+                                        <md-tab>
+                                            <md-tab-label>
+                                                Composite Profile Definition
+                                            </md-tab-label>
+                                            <md-tab-body>
+                                        <div class="panel-primary">
+
                                             <div class="panel-body">
                                                 <div>
                                                     <div class="pull-left">
@@ -293,10 +304,17 @@
                                                 </div>
                                             </div>
                                         </div>
+                                            </md-tab-body>
+                                        </md-tab>
 
-                                        <div accordion-group class="panel-primary" is-open="accordStatus.isThirdOpen">
-                                            <accordion-heading>
-                                                <span style="color:white;">Definition Post-Text </span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isThirdOpen, 'fa-chevron-right': !accordStatus.isThirdOpen}"></i>                                                </accordion-heading>
+                                        <md-tab>
+                                            <md-tab-label>
+                                                Definition Post-Text
+                                            </md-tab-label>
+                                            <md-tab-body>
+
+                                        <div  class="panel-primary">
+
                                             <div class="panel-body">
                                                 <div ng-if="!viewSettings.tableReadonly">
                                                     <textarea froala="froalaEditorOptions" ng-model="compositeProfileStructure.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
@@ -307,10 +325,17 @@
 
                                             </div>
                                         </div>
-                                        <div accordion-group class="panel-primary" is-open="accordStatus.isFourthOpen">
-                                            <accordion-heading>
-                                                <span style="color:white;">Conformance Statements</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': accordStatus.isFourthOpen, 'fa-chevron-right': !accordStatus.isFourthOpen}"></i>
-                                            </accordion-heading>
+                                            </md-tab-body>
+                                        </md-tab>
+
+                                        <md-tab>
+                                            <md-tab-label>
+                                                Conformance Statements
+                                            </md-tab-label>
+                                            <md-tab-body>
+
+                                        <div class="panel-primary" >
+
                                             <div class="panel-body">
 
                                                 <div class="col-md-12">
@@ -337,10 +362,18 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div accordion-group class="panel-primary" is-open="accordStatus.isFifthOpen">
-                                            <accordion-heading>
-                                                <span style="color:white;">Conditional Predicates</span> <i class="pull-left fa" style="color:white;" ng-class="{ 'fa-chevron-down': accordStatus.isFifthOpen, 'fa-chevron-right': !accordStatus.isFifthOpen}"></i>                                                </accordion-heading>
-                                            </accordion-heading>
+                                            </md-tab-body>
+                                        </md-tab>
+
+
+                                        <md-tab>
+                                            <md-tab-label>
+                                                Conditional Predicates
+                                            </md-tab-label>
+                                            <md-tab-body>
+
+                                        <div  class="panel-primary" >
+
                                             <div class="panel-body">
                                                 <div class="col-md-12">
                                                     <span ng-hide="groupsPredicates.length > 0 || msgPredicates.length>0">No Predicate</span>
@@ -393,8 +426,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </accordion>
-
+                                            </md-tab-body>
+                                        </md-tab>
+                                    </md-tabs>
 
 
                                 </div>
