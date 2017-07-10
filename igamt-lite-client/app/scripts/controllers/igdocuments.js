@@ -368,7 +368,6 @@ angular.module('igl')
     };
 
     $scope.clone = function(igdocument) {
-        console.log(igdocument);
         $scope.toEditIGDocumentId = igdocument.id;
         $http.post('api/igdocuments/' + igdocument.id + '/clone').then(function(response) {
             $scope.toEditIGDocumentId = null;
@@ -379,8 +378,6 @@ angular.module('igl')
                 $scope.igDocumentConfig.selectedType = 'USER';
                 $scope.loadIGDocuments();
             }
-            $scope.selectIgTab(0);
-            $scope.make_active(0);
             // console.log($scope.tabs);
             // $rootScope.msg().text = "igClonedSuccess";
             // $rootScope.msg().type = "success";
@@ -399,14 +396,18 @@ angular.module('igl')
         var modalInstance = $mdDialog.show({
             templateUrl: 'AfterClonedIgDlg.html',
             controller: 'AfterClonedIgCtrl',
+            escapeToClose: true,
             locals: {
                 clonedIgDocument:clonedIgDocument
             }
         });
         modalInstance.then(function(clonedIgDocument) {
-            $scope.edit(clonedIgDocument);
+            if(clonedIgDocument && clonedIgDocument != null) {
+                $scope.edit(clonedIgDocument);
+            }
         }, function() {
-
+            $scope.selectIgTab(0);
+            $scope.make_active(0);
         });
     };
 
