@@ -42,21 +42,21 @@ public class SerializationUtil {
 
   private static final Integer IMG_MAX_WIDTH = 100;
 
-  public String str(String value) { 
+  public String str(String value) {
     return value != null ? value : "";
   }
 
   public String cleanRichtext(String richtext) {
-    //richtext = StringEscapeUtils.unescapeHtml4(richtext);
+    // richtext = StringEscapeUtils.unescapeHtml4(richtext);
     richtext = richtext.replace("<br>", "<br />");
-    if(richtext.contains("<pre>")){
+    if (richtext.contains("<pre>")) {
       richtext = richtext.replace("\n", "<br />");
     }
     richtext = richtext.replace("<p style=\"\"><br></p>", "");
-    richtext = richtext.replace("<p ","<div ");
-    richtext = richtext.replace("<p>","<div>");
-    richtext = richtext.replace("</p>","</div>");
-    richtext = richtext.replace("&lsquo;","&#39;");
+    richtext = richtext.replace("<p ", "<div ");
+    richtext = richtext.replace("<p>", "<div>");
+    richtext = richtext.replace("</p>", "</div>");
+    richtext = richtext.replace("&lsquo;", "&#39;");
     richtext = richtext.replaceAll("[^\\p{Print}]", "?");
     org.jsoup.nodes.Document doc = Jsoup.parse(richtext);
     Elements elements1 = doc.select("h1");
@@ -73,7 +73,7 @@ public class SerializationUtil {
     elements4.tagName("p").attr("style",
         "display: block;font-size: 10.0pt;margin-left: 0;margin-right: 0;font-weight: bold;");
     Elements elementsPre = doc.select("pre");
-    elementsPre.tagName("p").attr("class","codeParagraph");
+    elementsPre.tagName("p").attr("class", "codeParagraph");
     for (org.jsoup.nodes.Element elementImg : doc.select("img")) {
       try {
         if (elementImg.attr("src") != null && !"".equals(elementImg.attr("src"))) {
@@ -81,30 +81,27 @@ public class SerializationUtil {
           String ext = null;
           byte[] bytes = null;
           if (elementImg.attr("src").indexOf("name=") != -1) {
-            String filename = elementImg.attr("src")
-                .substring(elementImg.attr("src").indexOf("name=") + 5);
+            String filename =
+                elementImg.attr("src").substring(elementImg.attr("src").indexOf("name=") + 5);
             ext = FilenameUtils.getExtension(filename);
             GridFSDBFile dbFile = fileStorageService.findOneByFilename(filename);
             if (dbFile != null) {
               imgis = dbFile.getInputStream();
               /*
-               * This is only used if we want to resize the image result of the bytes array
-              String style = elementImg.attr("style");
-              StyleSheet styleSheet = new StyleSheet();
-              AttributeSet dec = styleSheet.getDeclaration(style);
-              Object width = dec.getAttribute(CSS.Attribute.WIDTH);
-              double widthDouble = Double.parseDouble(width.toString().replace("px", ""));
-              Object height = dec.getAttribute(CSS.Attribute.HEIGHT);
-              double heightDouble =  Double.parseDouble(height.toString().replace("px", ""));
-              if(widthDouble>IMG_MAX_WIDTH){
-                heightDouble = (heightDouble*IMG_MAX_WIDTH)/widthDouble;
-                widthDouble = IMG_MAX_WIDTH;
-              }
-              bytes = this.scale(IOUtils.toByteArray(imgis),(int) widthDouble,(int)  heightDouble);
-              elementImg.removeAttr("style");
-              elementImg.attr("width","'"+(int)widthDouble+"px'");
-              elementImg.attr("height","'"+(int)heightDouble+"px'");
-              */
+               * This is only used if we want to resize the image result of the bytes array String
+               * style = elementImg.attr("style"); StyleSheet styleSheet = new StyleSheet();
+               * AttributeSet dec = styleSheet.getDeclaration(style); Object width =
+               * dec.getAttribute(CSS.Attribute.WIDTH); double widthDouble =
+               * Double.parseDouble(width.toString().replace("px", "")); Object height =
+               * dec.getAttribute(CSS.Attribute.HEIGHT); double heightDouble =
+               * Double.parseDouble(height.toString().replace("px", ""));
+               * if(widthDouble>IMG_MAX_WIDTH){ heightDouble =
+               * (heightDouble*IMG_MAX_WIDTH)/widthDouble; widthDouble = IMG_MAX_WIDTH; } bytes =
+               * this.scale(IOUtils.toByteArray(imgis),(int) widthDouble,(int) heightDouble);
+               * elementImg.removeAttr("style");
+               * elementImg.attr("width","'"+(int)widthDouble+"px'");
+               * elementImg.attr("height","'"+(int)heightDouble+"px'");
+               */
               bytes = IOUtils.toByteArray(imgis);
             }
           } else {
@@ -119,12 +116,12 @@ public class SerializationUtil {
             elementImg.attr("src", texEncImg);
           }
         }
-        if (elementImg.attr("alt") == null || elementImg.attr("alt").isEmpty()){
+        if (elementImg.attr("alt") == null || elementImg.attr("alt").isEmpty()) {
           elementImg.attr("alt", ".");
-      }
-      //String imgStyle = elementImg.attr("style");
-      //elementImg.attr("style", "" + imgStyle);
-//    style="width: 300px;
+        }
+        // String imgStyle = elementImg.attr("style");
+        // elementImg.attr("style", "" + imgStyle);
+        // style="width: 300px;
       } catch (RuntimeException e) {
         e.printStackTrace(); // If error, we leave the original document
         // as is.
@@ -135,25 +132,25 @@ public class SerializationUtil {
     }
     for (org.jsoup.nodes.Element elementTbl : doc.select("table")) {
       if (elementTbl.attr("summary") == null || elementTbl.attr("summary").isEmpty()) {
-          elementTbl.attr("summary", ".");
+        elementTbl.attr("summary", ".");
       }
-  }
-    for(org.jsoup.nodes.Element element : doc.select("td")){
+    }
+    for (org.jsoup.nodes.Element element : doc.select("td")) {
       removeEndingBrTag(element);
     }
-    for(org.jsoup.nodes.Element element : doc.select("th")){
+    for (org.jsoup.nodes.Element element : doc.select("th")) {
       removeEndingBrTag(element);
     }
-    for(org.jsoup.nodes.Element element : doc.select("div")){
-      element.html("<br/>"+element.html());
+    for (org.jsoup.nodes.Element element : doc.select("div")) {
+      element.html("<br/>" + element.html());
       removeDoubleBrTag(element);
     }
     Node bodyNode = doc.childNode(0).childNode(1);
     Node lastNode = bodyNode.childNode(bodyNode.childNodeSize() - 1);
-    if(lastNode instanceof Element) {
+    if (lastNode instanceof Element) {
       removeEndingBrTag((Element) lastNode);
     }
-    //Renaming strong to work as html4 
+    // Renaming strong to work as html4
     doc.select("strong").tagName("b");
     String html = doc.body().html();
     html = html.replace("<br>", "<br />");
@@ -161,35 +158,36 @@ public class SerializationUtil {
   }
 
   public void removeDoubleBrTag(Element element) {
-	  ArrayList<Element> toBeRemoved = new ArrayList<>();
-	  Element previousElement = null;
-	  for(Node node : element.childNodes()){
-		  if(node instanceof Element){
-			  if(previousElement != null){
-				  if(previousElement.tag().getName().equals("br") && ((Element)node).tag().getName().equals("br")){
-					  toBeRemoved.add((Element)node);
-				  }
-			  }
-			  previousElement = (Element)node;
-		  } else {
-			  previousElement = null;
-		  }
-	  }
-	  for(Element elementToBeRemoved : toBeRemoved){
-		  elementToBeRemoved.remove();
-	  }
+    ArrayList<Element> toBeRemoved = new ArrayList<>();
+    Element previousElement = null;
+    for (Node node : element.childNodes()) {
+      if (node instanceof Element) {
+        if (previousElement != null) {
+          if (previousElement.tag().getName().equals("br")
+              && ((Element) node).tag().getName().equals("br")) {
+            toBeRemoved.add((Element) node);
+          }
+        }
+        previousElement = (Element) node;
+      } else {
+        previousElement = null;
+      }
+    }
+    for (Element elementToBeRemoved : toBeRemoved) {
+      elementToBeRemoved.remove();
+    }
   }
 
   private void removeEndingBrTag(Element element) {
-    if(element.childNodeSize()>0){
+    if (element.childNodeSize() > 0) {
       boolean isLastElementNotBr = false;
       int i = 1;
-      while(!isLastElementNotBr && element.childNodeSize() >= i){
-        Node node = element.childNodes().get(element.childNodeSize()-i);
+      while (!isLastElementNotBr && element.childNodeSize() >= i) {
+        Node node = element.childNodes().get(element.childNodeSize() - i);
         i++;
-        if(node instanceof Element){
+        if (node instanceof Element) {
           Element childElement = (Element) node;
-          if(childElement.tagName().equals("br")){
+          if (childElement.tagName().equals("br")) {
             childElement.remove();
           } else {
             isLastElementNotBr = true;
@@ -205,15 +203,15 @@ public class SerializationUtil {
     ByteArrayInputStream in = new ByteArrayInputStream(fileData);
     try {
       BufferedImage img = ImageIO.read(in);
-      if(height == 0) {
-        height = (width * img.getHeight())/ img.getWidth();
+      if (height == 0) {
+        height = (width * img.getHeight()) / img.getWidth();
       }
-      if(width == 0) {
-        width = (height * img.getWidth())/ img.getHeight();
+      if (width == 0) {
+        width = (height * img.getWidth()) / img.getHeight();
       }
       Image scaledImage = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
       BufferedImage imageBuff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-      imageBuff.getGraphics().drawImage(scaledImage, 0, 0, new Color(0,0,0), null);
+      imageBuff.getGraphics().drawImage(scaledImage, 0, 0, new Color(0, 0, 0), null);
 
       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
@@ -225,7 +223,8 @@ public class SerializationUtil {
     }
   }
 
-  private BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight, boolean preserveAlpha) {
+  private BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight,
+      boolean preserveAlpha) {
     int imageType = preserveAlpha ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
     BufferedImage scaledBI = new BufferedImage(scaledWidth, scaledHeight, imageType);
     Graphics2D g = scaledBI.createGraphics();
@@ -256,10 +255,11 @@ public class SerializationUtil {
 
       if (depth == 1) {
         xsect.addAttribute(new Attribute("prefix", String.valueOf(s.getSectionPosition())));
-        setSectionsPrefixes(s.getChildSections(), String.valueOf(s.getSectionPosition()),
-            depth + 1, xsect);
+        setSectionsPrefixes(s.getChildSections(), String.valueOf(s.getSectionPosition()), depth + 1,
+            xsect);
       } else {
-        xsect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(s.getSectionPosition())));
+        xsect.addAttribute(
+            new Attribute("prefix", prefix + "." + String.valueOf(s.getSectionPosition())));
         setSectionsPrefixes(s.getChildSections(),
             prefix + "." + String.valueOf(s.getSectionPosition()), depth + 1, xsect);
       }
@@ -267,7 +267,8 @@ public class SerializationUtil {
     }
   }
 
-  private SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortSections(Set<Section> s) {
+  private SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortSections(
+      Set<Section> s) {
     SortedSet<Section> sortedSet = new TreeSet<Section>();
     Iterator<Section> setIt = s.iterator();
     while (setIt.hasNext()) {
@@ -277,28 +278,29 @@ public class SerializationUtil {
   }
 
   public Boolean isShowConfLength(String hl7Version) {
-    //Check if hl7Version > 2.5.1
-    if(hl7Version == null || "".equals(hl7Version)){
-      return false;
-    }
-    Integer[] comparisonVersion = {2,5,1};
-    String[] versionToCompare = hl7Version.split("\\.");
-    if(versionToCompare !=null&&versionToCompare.length>0) {
-      for (int i = 0; i < versionToCompare.length; i++) {
-        Integer comparisonValue = 0;
-        if (i < comparisonVersion.length) {
-          comparisonValue = comparisonVersion[i];
-        }
-        if(versionToCompare[i].contains("*")){
-          return true;
-        }
-        if (Integer.valueOf(versionToCompare[i]) > comparisonValue) {
-          return true;
-        } else if(Integer.valueOf(versionToCompare[i]) < comparisonValue){
-          return false;
-        }
-      }
-    }
-    return false;
+    // Check if hl7Version > 2.5.1
+    // if(hl7Version == null || "".equals(hl7Version)){
+    // return false;
+    // }
+    // Integer[] comparisonVersion = {2,5,1};
+    // String[] versionToCompare = hl7Version.split("\\.");
+    // if(versionToCompare !=null&&versionToCompare.length>0) {
+    // for (int i = 0; i < versionToCompare.length; i++) {
+    // Integer comparisonValue = 0;
+    // if (i < comparisonVersion.length) {
+    // comparisonValue = comparisonVersion[i];
+    // }
+    // if(versionToCompare[i].contains("*")){
+    // return true;
+    // }
+    // if (Integer.valueOf(versionToCompare[i]) > comparisonValue) {
+    // return true;
+    // } else if(Integer.valueOf(versionToCompare[i]) < comparisonValue){
+    // return false;
+    // }
+    // }
+    // }
+    // temporary fix
+    return true;
   }
 }

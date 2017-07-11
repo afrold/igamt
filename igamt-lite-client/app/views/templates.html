@@ -1325,32 +1325,32 @@
                     <div ng-show="dialogStep === 0">
                         <form novalidate ng-cloak>
                             <div class="col-md-6">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Selected Node Info</div>
                                     <div class="panel-body" style="min-height:350px; max-height:350px;overflow-y: scroll;">
                                         <div layout="row" layout-align="start center" style="margin-top: 40px">
                                             <md-input-container flex="100">
-                                                <label>Name</label>
-                                                <input ng-model="selectedNode.obj.name" disabled>
+                                                <label style="font-weight: bold;color:black">Name</label>
+                                                <input style="font-weight: bold;color:black"  ng-model="selectedNode.obj.name" disabled>
                                             </md-input-container>
                                         </div>
                                         <div layout="row" layout-align="start center">
                                             <md-input-container flex="100">
-                                                <label>Path</label>
-                                                <input ng-model="selectedNode.locationPath" disabled>
+                                                <label style="font-weight: bold;color:black">Path</label>
+                                                <input style="font-weight: bold;color:black" ng-model="selectedNode.locationPath" disabled>
                                             </md-input-container>
                                         </div>
                                         <div layout="row" layout-align="start center">
                                             <md-input-container flex="100">
-                                                <label>Position Path</label>
-                                                <input ng-model="selectedNode.path" disabled>
+                                                <label style="font-weight: bold;color:black">Position Path</label>
+                                                <input style="font-weight: bold;color:black" ng-model="selectedNode.path" disabled>
                                             </md-input-container>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Existing Predicate</div>
                                     <div class="panel-body" style="min-height:350px; max-height:350px;overflow-y: scroll;">
                                         <span ng-if="!existingPredicate" style="color:red;margin-top: 40px;">No Predicate. Please go to next step and make a new Predicate.</span>
@@ -1404,7 +1404,7 @@
                     <div ng-show="dialogStep === 1">
                         <form novalidate ng-cloak>
                             <div class="col-md-12">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Message/Group Tree</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table class="table table-striped ">
@@ -1423,7 +1423,7 @@
                     <div ng-show="dialogStep === 2">
                         <form novalidate ng-cloak>
                             <div class="col-md-4">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Selected Context Tree</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table class="table table-striped">
@@ -1434,7 +1434,7 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Temporary Constraints</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
@@ -1756,7 +1756,7 @@
                     <div ng-show="dialogStep === 3">
                         <form novalidate ng-cloak>
                             <div class="col-md-12">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
@@ -1777,7 +1777,7 @@
                                                             <p ng-bind="::c.description" />
                                                         </md-input-container>
                                                         <md-input-container flex="25" class="normal" style="margin: 18px;">
-                                                            <label>True Usage</label>
+                                                            <label >True Usage</label>
                                                             <md-select placeholder="Select TRUE Usage" ng-model="existingPredicate.trueUsage" ng-change="setChanged()">
                                                                 <md-option ng-repeat="usage in config.conditionalUsage" ng-value="usage">
                                                                     {{usage}}
@@ -1887,7 +1887,7 @@
                     <div ng-show="dialogStep === 0">
                         <form novalidate ng-cloak>
                             <div class="col-md-4">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Message/Group Tree</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table class="table table-striped">
@@ -1901,7 +1901,7 @@
                                 <span ng-if="!contextKey" style="color:red;">No selected context.</span>
                                 <span ng-if="!contextKey" style="color:blue;">Please select message or group in a message tree.</span>
                                 <div ng-if="contextKey">
-                                    <div class="panel panel-default">
+                                    <div class="panel panel-primary">
                                         <div class="panel-heading">Conformance Statements of {{selectedContextNode.name}}</div>
                                         <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                             <table st-table="displayed" st-safe-src="selectedContextNode.conformanceStatements" class="table table-striped table-bordered">
@@ -1954,7 +1954,7 @@
                     <div ng-show="dialogStep === 1">
                         <form novalidate ng-cloak>
                             <div class="col-md-4">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Selected Context Tree</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table class="table table-striped">
@@ -1966,7 +1966,7 @@
                             </div>
 
                             <div class="col-md-8">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Conformance Statements of {{selectedContextNode.name}}</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="selectedContextNode.conformanceStatements" class="table table-striped table-bordered">
@@ -2524,7 +2524,7 @@
                 <div class="md-dialog-content">
                     <form novalidate ng-cloak>
                         <div class="col-md-4">
-                            <div class="panel panel-default">
+                            <div class="panel panel-primary">
                                 <div class="panel-heading">Selected Context Tree</div>
                                 <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                     <table class="table table-striped">
@@ -2536,7 +2536,7 @@
                         </div>
 
                         <div class="col-md-8">
-                            <div class="panel panel-default">
+                            <div class="panel panel-primary">
                                 <div class="panel-heading">Conformance Statements of {{selectedSegment.name}}</div>
                                 <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                     <table st-table="displayed" st-safe-src="selectedSegment.conformanceStatements" class="table table-striped table-bordered">
@@ -2946,32 +2946,32 @@
                     <div ng-show="dialogStep === 0">
                         <form novalidate ng-cloak>
                             <div class="col-md-6">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Selected Node Info</div>
                                     <div class="panel-body" style="min-height:350px; max-height:350px;overflow-y: scroll;">
                                         <div layout="row" layout-align="start center" style="margin-top: 40px">
                                             <md-input-container flex="100">
-                                                <label>Segment Label Name</label>
-                                                <input ng-model="selectedSegment.label" disabled>
+                                                <label style="font-weight: bold;color:black">Segment Label Name</label>
+                                                <input style="font-weight: bold;color:black"  ng-model="selectedSegment.label" disabled>
                                             </md-input-container>
                                         </div>
                                         <div layout="row" layout-align="start center">
                                             <md-input-container flex="100">
-                                                <label>Position</label>
-                                                <input ng-model="selectedNode.position" disabled>
+                                                <label style="font-weight: bold;color:black">Position</label>
+                                                <input style="font-weight: bold;color:black" ng-model="selectedNode.position" disabled>
                                             </md-input-container>
                                         </div>
                                         <div layout="row" layout-align="start center">
                                             <md-input-container flex="100">
-                                                <label>Description</label>
-                                                <input ng-model="selectedNode.name" disabled>
+                                                <label style="font-weight: bold;color:black">Description</label>
+                                                <input style="font-weight: bold;color:black" ng-model="selectedNode.name" disabled>
                                             </md-input-container>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Existing Predicate</div>
                                     <div class="panel-body" style="min-height:350px; max-height:350px;overflow-y: scroll;">
                                         <span ng-if="!existingPredicate" style="color:red;margin-top: 40px;">No Predicate. Please go to next step and make a new Predicate.</span>
@@ -3021,7 +3021,7 @@
                     <div ng-show="dialogStep === 1">
                         <form novalidate ng-cloak>
                             <div class="col-md-4">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Selected Context Tree</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table class="table table-striped">
@@ -3032,7 +3032,7 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Temporary Constraints</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
@@ -3354,7 +3354,7 @@
                     <div ng-show="dialogStep === 2">
                         <form novalidate ng-cloak>
                             <div class="col-md-12">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
@@ -3501,7 +3501,7 @@
                 <div class="md-dialog-content">
                     <form novalidate ng-cloak>
                         <div class="col-md-4">
-                            <div class="panel panel-default">
+                            <div class="panel panel-primary">
                                 <div class="panel-heading">Selected Context Tree</div>
                                 <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                     <table class="table table-striped">
@@ -3513,7 +3513,7 @@
                         </div>
 
                         <div class="col-md-8">
-                            <div class="panel panel-default">
+                            <div class="panel panel-primary">
                                 <div class="panel-heading">Conformance Statements of {{selectedDatatype.name}}</div>
                                 <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                     <table st-table="displayed" st-safe-src="selectedDatatype.conformanceStatements" class="table table-striped table-bordered">
@@ -3923,32 +3923,32 @@
                     <div ng-show="dialogStep === 0">
                         <form novalidate ng-cloak>
                             <div class="col-md-6">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Selected Node Info</div>
                                     <div class="panel-body" style="min-height:350px; max-height:350px;overflow-y: scroll;">
                                         <div layout="row" layout-align="start center" style="margin-top: 40px">
                                             <md-input-container flex="100">
-                                                <label>Datatype Label Name</label>
-                                                <input ng-model="selectedDatatype.label" disabled>
+                                                <label style="font-weight: bold;color:black">Datatype Label Name</label>
+                                                <input  style="font-weight: bold;color:black" ng-model="selectedDatatype.label" disabled>
                                             </md-input-container>
                                         </div>
                                         <div layout="row" layout-align="start center">
                                             <md-input-container flex="100">
-                                                <label>Position</label>
-                                                <input ng-model="selectedNode.position" disabled>
+                                                <label style="font-weight: bold;color:black">Position</label>
+                                                <input style="font-weight: bold;color:black" ng-model="selectedNode.position" disabled>
                                             </md-input-container>
                                         </div>
                                         <div layout="row" layout-align="start center">
                                             <md-input-container flex="100">
-                                                <label>Description</label>
-                                                <input ng-model="selectedNode.name" disabled>
+                                                <label style="font-weight: bold;color:black">Description</label>
+                                                <input style="font-weight: bold;color:black"  ng-model="selectedNode.name" disabled>
                                             </md-input-container>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Existing Predicate</div>
                                     <div class="panel-body" style="min-height:350px; max-height:350px;overflow-y: scroll;">
                                         <span ng-if="!existingPredicate" style="color:red;margin-top: 40px;">No Predicate. Please go to next step and make a new Predicate.</span>
@@ -3998,7 +3998,7 @@
                     <div ng-show="dialogStep === 1">
                         <form novalidate ng-cloak>
                             <div class="col-md-4">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Selected Context Tree</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table class="table table-striped">
@@ -4009,7 +4009,7 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">Temporary Constraints</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
@@ -4331,7 +4331,7 @@
                     <div ng-show="dialogStep === 2">
                         <form novalidate ng-cloak>
                             <div class="col-md-12">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
@@ -5742,7 +5742,7 @@
                     <div class="modal-body ">
                         <form role="form ">
                             <div class="col-md-3 ">
-                                <div class="panel panel-default ">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading ">Segment Tree</div>
                                     <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
                                         <table class="table table-striped ">
@@ -5753,7 +5753,7 @@
                                 </div>
                             </div>
                             <div class="col-md-9 ">
-                                <div class="panel panel-default ">
+                                <div class="panel panel-primary ">
                                     <div class="panel-heading ">Conformance Statements Builder</div>
                                     <div class="panel-body " style=" max-height:200px;overflow-y: scroll; ">
                                         <span class="pull-right ">
@@ -6008,7 +6008,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12" style="margin-top: 10px">
-                                <div class="panel panel-default">
+                                <div class="panel panel-primary">
                                     <div class="panel-heading">List of Conformance Statements</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
                                         <table st-table="displayed" st-safe-src="tempComformanceStatements" class="table table-striped table-bordered">
