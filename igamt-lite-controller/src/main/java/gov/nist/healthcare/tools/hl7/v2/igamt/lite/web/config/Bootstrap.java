@@ -307,6 +307,7 @@ public class Bootstrap implements InitializingBean {
   }
 
 
+
   private void updateGroupName() {
     List<Message> messages = messageService.findAll();
 
