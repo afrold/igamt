@@ -14,6 +14,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.selectedCodes = [];
     $scope.isDeltaCalled = false;
     $scope.itemsByPage = 30;
+    $scope.tempCodeSys = '';
     $scope.tabStatus = {
         active: 1
     };
@@ -84,9 +85,19 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                 $rootScope.editDatatype(datatype);
             });
 
-
-
         });
+    };
+
+    $scope.submitNewCodeSystem = function (code, codeSys) {
+      $rootScope.codeSystems.push(codeSys);
+      code.codeSystem = codeSys;
+    };
+
+    $scope.applyAllCodeSys = function (applyCodeSysValue) {
+        for (var i = 0, len = $rootScope.table.codes.length; i < len; i++) {
+            $rootScope.table.codes[i].codeSystem = applyCodeSysValue;
+        }
+        $scope.setDirty();
     };
 
     $scope.isBindingChanged = function() {

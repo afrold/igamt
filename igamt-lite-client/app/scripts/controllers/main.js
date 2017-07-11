@@ -2620,127 +2620,129 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         for (var q = 0; q < $rootScope.references.length; q++) {
             var ref = $rootScope.references[q];
-            if (ref.tableLink.isNew) {
-                if (ref.type == 'component') {
-                    var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
-                    ref.tableLink.isNew = null;
-                    ref.tableLink.isChanged = null;
-                    var newTableLink = angular.copy(ref.tableLink);
-                    var targetComponent = angular.copy(ref);
-                    targetComponent.target = null;
-                    targetComponent.path = null;
-                    targetComponent.tableLink = null;
+            if(ref && ref.tableLink){
+                if (ref.tableLink.isNew) {
+                    if (ref.type == 'component') {
+                        var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
+                        ref.tableLink.isNew = null;
+                        ref.tableLink.isChanged = null;
+                        var newTableLink = angular.copy(ref.tableLink);
+                        var targetComponent = angular.copy(ref);
+                        targetComponent.target = null;
+                        targetComponent.path = null;
+                        targetComponent.tableLink = null;
 
-                    var toBeUpdateComponent = _.find(targetDatatype.components, function(component) {
-                        return component.position == targetComponent.position;
-                    });
-                    if (toBeUpdateComponent) toBeUpdateComponent.tables.push(newTableLink);
-                    $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
-                    var oldDatatype = _.find($rootScope.datatypes, function(dt) {
-                        return dt.id == targetDatatype.id;
-                    });
-                    var index = $rootScope.datatypes.indexOf(oldDatatype);
-                    if (index > -1) $rootScope.datatypes[index] = targetDatatype;
+                        var toBeUpdateComponent = _.find(targetDatatype.components, function(component) {
+                            return component.position == targetComponent.position;
+                        });
+                        if (toBeUpdateComponent) toBeUpdateComponent.tables.push(newTableLink);
+                        $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
+                        var oldDatatype = _.find($rootScope.datatypes, function(dt) {
+                            return dt.id == targetDatatype.id;
+                        });
+                        var index = $rootScope.datatypes.indexOf(oldDatatype);
+                        if (index > -1) $rootScope.datatypes[index] = targetDatatype;
 
-                    var datatypeUpdateParameter = {};
-                    datatypeUpdateParameter.datatypeId = targetDatatype.id;
-                    datatypeUpdateParameter.componentId = targetComponent.id;
-                    datatypeUpdateParameter.tableLink = newTableLink;
-                    datatypeUpdateParameterList.push(datatypeUpdateParameter);
-                } else if (ref.type == 'field') {
-                    var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
-                    ref.tableLink.isNew = null;
-                    ref.tableLink.isChanged = null;
-                    var newTableLink = angular.copy(ref.tableLink);
-                    var targetField = angular.copy(ref);
-                    targetField.target = null;
-                    targetField.path = null;
-                    targetField.tableLink = null;
+                        var datatypeUpdateParameter = {};
+                        datatypeUpdateParameter.datatypeId = targetDatatype.id;
+                        datatypeUpdateParameter.componentId = targetComponent.id;
+                        datatypeUpdateParameter.tableLink = newTableLink;
+                        datatypeUpdateParameterList.push(datatypeUpdateParameter);
+                    } else if (ref.type == 'field') {
+                        var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
+                        ref.tableLink.isNew = null;
+                        ref.tableLink.isChanged = null;
+                        var newTableLink = angular.copy(ref.tableLink);
+                        var targetField = angular.copy(ref);
+                        targetField.target = null;
+                        targetField.path = null;
+                        targetField.tableLink = null;
 
-                    var toBeUpdateField = _.find(targetSegment.fields, function(field) {
-                        return field.position == targetField.position;
-                    });
-                    if (toBeUpdateField) toBeUpdateField.tables.push(newTableLink);
-                    $rootScope.segmentsMap[targetSegment.id] = targetSegment;
-                    var oldSegment = _.find($rootScope.segments, function(seg) {
-                        return seg.id == targetSegment.id;
-                    });
-                    var index = $rootScope.segments.indexOf(oldSegment);
-                    if (index > -1) $rootScope.segments[index] = targetSegment;
+                        var toBeUpdateField = _.find(targetSegment.fields, function(field) {
+                            return field.position == targetField.position;
+                        });
+                        if (toBeUpdateField) toBeUpdateField.tables.push(newTableLink);
+                        $rootScope.segmentsMap[targetSegment.id] = targetSegment;
+                        var oldSegment = _.find($rootScope.segments, function(seg) {
+                            return seg.id == targetSegment.id;
+                        });
+                        var index = $rootScope.segments.indexOf(oldSegment);
+                        if (index > -1) $rootScope.segments[index] = targetSegment;
 
-                    var segmentUpdateParameter = {};
-                    segmentUpdateParameter.segmentId = targetSegment.id;
-                    segmentUpdateParameter.fieldId = targetField.id;
-                    segmentUpdateParameter.tableLink = newTableLink;
-                    segmentUpdateParameterList.push(segmentUpdateParameter);
-                }
-            } else if (ref.tableLink.isChanged) {
-                if (ref.type == 'component') {
-                    var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
-                    ref.tableLink.isNew = null;
-                    ref.tableLink.isChanged = null;
-                    var newTableLink = angular.copy(ref.tableLink);
-                    var targetComponent = angular.copy(ref);
-                    targetComponent.target = null;
-                    targetComponent.path = null;
-                    targetComponent.tableLink = null;
+                        var segmentUpdateParameter = {};
+                        segmentUpdateParameter.segmentId = targetSegment.id;
+                        segmentUpdateParameter.fieldId = targetField.id;
+                        segmentUpdateParameter.tableLink = newTableLink;
+                        segmentUpdateParameterList.push(segmentUpdateParameter);
+                    }
+                } else if (ref.tableLink.isChanged) {
+                    if (ref.type == 'component') {
+                        var targetDatatype = angular.copy($rootScope.datatypesMap[ref.target.id]);
+                        ref.tableLink.isNew = null;
+                        ref.tableLink.isChanged = null;
+                        var newTableLink = angular.copy(ref.tableLink);
+                        var targetComponent = angular.copy(ref);
+                        targetComponent.target = null;
+                        targetComponent.path = null;
+                        targetComponent.tableLink = null;
 
-                    var toBeUpdateComponent = _.find(targetDatatype.components, function(component) {
-                        return component.position == targetComponent.position;
-                    });
-                    if (toBeUpdateComponent) {
-                        for (var i = 0; i < toBeUpdateComponent.tables.length; i++) {
-                            if (toBeUpdateComponent.tables[i].id == $rootScope.table.id) {
-                                toBeUpdateComponent.tables[i] = newTableLink;
+                        var toBeUpdateComponent = _.find(targetDatatype.components, function(component) {
+                            return component.position == targetComponent.position;
+                        });
+                        if (toBeUpdateComponent) {
+                            for (var i = 0; i < toBeUpdateComponent.tables.length; i++) {
+                                if (toBeUpdateComponent.tables[i].id == $rootScope.table.id) {
+                                    toBeUpdateComponent.tables[i] = newTableLink;
+                                }
                             }
                         }
-                    }
-                    $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
-                    var oldDatatype = _.find($rootScope.datatypes, function(dt) {
-                        return dt.id == targetDatatype.id;
-                    });
-                    var index = $rootScope.datatypes.indexOf(oldDatatype);
-                    if (index > -1) $rootScope.datatypes[index] = targetDatatype;
+                        $rootScope.datatypesMap[targetDatatype.id] = targetDatatype;
+                        var oldDatatype = _.find($rootScope.datatypes, function(dt) {
+                            return dt.id == targetDatatype.id;
+                        });
+                        var index = $rootScope.datatypes.indexOf(oldDatatype);
+                        if (index > -1) $rootScope.datatypes[index] = targetDatatype;
 
-                    var datatypeUpdateParameter = {};
-                    datatypeUpdateParameter.datatypeId = targetDatatype.id;
-                    datatypeUpdateParameter.componentId = targetComponent.id;
-                    datatypeUpdateParameter.tableLink = newTableLink;
-                    datatypeUpdateParameter.key = $rootScope.table.id;
-                    datatypeUpdateParameterList.push(datatypeUpdateParameter);
-                } else if (ref.type == 'field') {
-                    var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
-                    ref.tableLink.isNew = null;
-                    ref.tableLink.isChanged = null;
-                    var newTableLink = angular.copy(ref.tableLink);
-                    var targetField = angular.copy(ref);
-                    targetField.target = null;
-                    targetField.path = null;
-                    targetField.tableLink = null;
+                        var datatypeUpdateParameter = {};
+                        datatypeUpdateParameter.datatypeId = targetDatatype.id;
+                        datatypeUpdateParameter.componentId = targetComponent.id;
+                        datatypeUpdateParameter.tableLink = newTableLink;
+                        datatypeUpdateParameter.key = $rootScope.table.id;
+                        datatypeUpdateParameterList.push(datatypeUpdateParameter);
+                    } else if (ref.type == 'field') {
+                        var targetSegment = angular.copy($rootScope.segmentsMap[ref.target.id]);
+                        ref.tableLink.isNew = null;
+                        ref.tableLink.isChanged = null;
+                        var newTableLink = angular.copy(ref.tableLink);
+                        var targetField = angular.copy(ref);
+                        targetField.target = null;
+                        targetField.path = null;
+                        targetField.tableLink = null;
 
-                    var toBeUpdateField = _.find(targetSegment.fields, function(field) {
-                        return field.position == targetField.position;
-                    });
-                    if (toBeUpdateField) {
-                        for (var i = 0; i < toBeUpdateField.tables.length; i++) {
-                            if (toBeUpdateField.tables[i].id == $rootScope.table.id) {
-                                toBeUpdateField.tables[i] = newTableLink;
+                        var toBeUpdateField = _.find(targetSegment.fields, function(field) {
+                            return field.position == targetField.position;
+                        });
+                        if (toBeUpdateField) {
+                            for (var i = 0; i < toBeUpdateField.tables.length; i++) {
+                                if (toBeUpdateField.tables[i].id == $rootScope.table.id) {
+                                    toBeUpdateField.tables[i] = newTableLink;
+                                }
                             }
                         }
-                    }
-                    $rootScope.segmentsMap[targetSegment.id] = targetSegment;
-                    var oldSegment = _.find($rootScope.segments, function(seg) {
-                        return seg.id == targetSegment.id;
-                    });
-                    var index = $rootScope.segments.indexOf(oldSegment);
-                    if (index > -1) $rootScope.segments[index] = targetSegment;
+                        $rootScope.segmentsMap[targetSegment.id] = targetSegment;
+                        var oldSegment = _.find($rootScope.segments, function(seg) {
+                            return seg.id == targetSegment.id;
+                        });
+                        var index = $rootScope.segments.indexOf(oldSegment);
+                        if (index > -1) $rootScope.segments[index] = targetSegment;
 
-                    var segmentUpdateParameter = {};
-                    segmentUpdateParameter.segmentId = targetSegment.id;
-                    segmentUpdateParameter.fieldId = targetField.id;
-                    segmentUpdateParameter.tableLink = newTableLink;
-                    segmentUpdateParameter.key = $rootScope.table.id;
-                    segmentUpdateParameterList.push(segmentUpdateParameter);
+                        var segmentUpdateParameter = {};
+                        segmentUpdateParameter.segmentId = targetSegment.id;
+                        segmentUpdateParameter.fieldId = targetField.id;
+                        segmentUpdateParameter.tableLink = newTableLink;
+                        segmentUpdateParameter.key = $rootScope.table.id;
+                        segmentUpdateParameterList.push(segmentUpdateParameter);
+                    }
                 }
             }
         }
