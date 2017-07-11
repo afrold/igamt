@@ -5,13 +5,15 @@
 angular.module('igl').factory('ViewSettings',
     ['StorageService', function (StorageService) {
         var columnOptions = [
-            { id: "datatype", label: "Datatype"},
+            { id: "length", label: "Length"},
+            { id: "confLength", label: "Conf. Length"},
+            // { id: "datatype", label: "Datatype"},
             { id: "valueSet", label: "Value Set"},
+            { id: "singleElm", label: "Constant Value"},
             { id: "predicate", label: "Predicate"},
             { id: "confStatement", label: "Conf. Statement"},
             { id: "defText", label: "Defin. Text"},
-            { id: "comment", label: "Comment"},
-            { id: "singleElm", label: "Single Elm."}
+            { id: "comment", label: "Comment"}
         ];
         var selectedColumns =  {
             "datatype": true,
@@ -20,7 +22,9 @@ angular.module('igl').factory('ViewSettings',
             "confStatement": true,
             "defText": true,
             "comment": true,
-            "singleElm": true
+            "singleElm": true,
+            "length": true,
+            "confLength": true
         };
 
 //        var visibleColumns = StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY) == null ? angular.copy(columnOptions) : angular.fromJson(StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY));
@@ -30,7 +34,7 @@ angular.module('igl').factory('ViewSettings',
             visibleColumns: visibleColumns,
             selectedColumns: selectedColumns,
             translations: {buttonDefaultText: 'Visible Columns'},
-            extra: {displayProp: 'label', buttonClasses: 'btn btn-xs btn-primary', showCheckAll: false, showUncheckAll: false, scrollable: false},
+            extra: {displayProp: 'label', buttonClasses: 'btn btn-xs btn-default', showCheckAll: false, showUncheckAll: false, scrollable: false, enableSearch: false},
             tableRelevance:StorageService.get(StorageService.TABLE_RELEVANCE_SETTINGS) == null ? false : StorageService.get(StorageService.TABLE_RELEVANCE_SETTINGS),
             tableConcise:StorageService.get(StorageService.TABLE_CONCISE_SETTINGS) == null ? false : StorageService.get(StorageService.TABLE_CONCISE_SETTINGS),
             tableCollapse:StorageService.get(StorageService.TABLE_COLLAPSE_SETTINGS) == null ? true : StorageService.get(StorageService.TABLE_COLLAPSE_SETTINGS),
