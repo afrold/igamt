@@ -3015,6 +3015,7 @@ angular.module('igl').controller('ShareDatatypeCtrl', function($scope, $mdDialog
                     function(response) {
                         participant.username = response.data.username;
                         participant.fullname = response.data.fullname;
+
                     },
                     function(error) {
                     }

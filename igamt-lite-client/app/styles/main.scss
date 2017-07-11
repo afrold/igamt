@@ -2358,7 +2358,7 @@ table.conformance-profiles-table td {
 }
 
 .ig-table-tableFix tbody.dnd-list {
-    height: 5px !important; 
+    height: 5px !important;
     overflow-y: scroll;
 }
 
@@ -2700,7 +2700,7 @@ margin-bottom: 5px;
 }
 .conf-box{
 margin-left:10px;
-border:2px solid; 
+border:2px solid;
 padding:5px;
 background-color: gainsboro;
 
@@ -2713,7 +2713,7 @@ margin-bottom: 10px;
 }
 
 .addMargin{
-	margin-bottom:8px; 
+	margin-bottom:8px;
 }
 .gray{
     background: gainsboro !important;
@@ -2860,7 +2860,7 @@ tr .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12, .col-xs-11, .col-sm-11, .col-
 .fixed_headers {
   table-layout: fixed;
   border-collapse: collapse;
-  
+
   th { }
   th, td {
     padding: 5px;
@@ -2868,7 +2868,7 @@ tr .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12, .col-xs-11, .col-sm-11, .col-
 
 
   }
-  
+
 
 
   thead {
@@ -3285,9 +3285,95 @@ background-color: black;
     background: white !important;
     background-color: white !important;
 }
+.md-autocomplete-suggestions li {
+    font-size: 14px;
+    overflow: hidden;
+    line-height: 48px;
+    height: 48px;
+    -webkit-transition: background .15s linear;
+    transition: background .15s linear;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background-color: white !important;
+    display: block;
+    width: 100%;
+}
 
+.md-contact-suggestion .md-contact-email, .md-contact-suggestion .md-contact-name {
+    display: inline-table;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
+md-content.autocomplete {
+    min-height: 250px; }
+md-content.autocomplete input {
+    min-width: 400px; }
+
+.md-item-text.compact {
+    padding-top: 8px;
+    padding-bottom: 8px; }
+
+.contact-item {
+    box-sizing: border-box; }
+.contact-item.selected {
+    opacity: 0.5; }
+.contact-item.selected h3 {
+    opacity: 0.5; }
+.contact-item .md-list-item-text {
+    padding: 14px 0;
+    max-width: 190px;
+}
+.contact-item .md-list-item-text h3 {
+    margin: 0 !important;
+    padding: 0;
+    line-height: 1.2em !important;
+}
+.contact-item .md-list-item-text h3, .contact-item .md-list-item-text p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; }
+@media (min-width: 960px) {
+    .contact-item {
+        float: left;
+        width: 33%; } }
+
+md-contact-chips {
+    margin-bottom: 10px; }
+
+.md-chips {
+
+    padding: 5px 0 8px;
+}
+
+.fixedRows {
+    height: 250px;
+    overflow: hidden;
+}
+.scroll-definition >md-tab> md-tab-body{
+    max-height: 500px !important;
+    overflow-y: scroll !important;
+}
+
+.table-striped>tbody>tr>td, .table-striped>tbody>tr>th {
+    background-color: rgba(255,255,255,0.87) !important;
+    color: black !important;
+    font-size: large !important;
+}
+.predictate-font{
+    font-weight: bold;
+    color:black;
+}
 md-input-container > label {
     color: black;
     font-weight: bold;
+}
+.scroll-definition{
+    //max-height: 500px !important;
+    //overflow-y: scroll !important;
+}
+.panel-primary{
+    max-height:800px !important;
+    overflow-y: scroll !important;
 }

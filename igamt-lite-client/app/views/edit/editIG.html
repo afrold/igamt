@@ -32,11 +32,11 @@
                 <div class="static_info">
                     <i class="fa fa-calendar" aria-hidden="true"></i>
                     Updated {{igdocument.dateUpdated | date:dateFormat}}
-                    <span ng-if="igdocument.owner" style="font-style: italic;">
-                         <i class="fa fa-user" aria-hidden="true"></i>
-                         ,{{igdocument.owner}}
-                    </span>
+
                     <span>,HL7 Version: {{igdocument.profile.metaData.hl7Version}}</span>
+                    <span ng-if="igdocument.owner" style="font-style: italic;">
+                        <span ng-if="igdocument.owner">, Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(igdocument.owner.email)}}"/> {{igdocument.owner.fullname}}</span>
+                    </span>
                 </div>
              </div>
 

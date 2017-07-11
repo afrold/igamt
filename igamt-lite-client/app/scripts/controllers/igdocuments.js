@@ -3943,6 +3943,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $mdDial
         }
     });
 
+    console.log($scope.igdocumentSelected);
     $scope.ok = function() {
         var idsTab = $scope.tags.map(function(user) {
             return user.id;
@@ -3955,6 +3956,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $mdDial
                 tag.permission = $scope.selectedItem.selected;
                 tag.pendingApproval = true;
                 $scope.igdocumentSelected.shareParticipants.push(tag);
+                $scope.igdocumentSelected.realUsers.push(tag);
             });
             $rootScope.msg().text = "igSharedSuccessfully";
             $rootScope.msg().type = "success";
@@ -3988,6 +3990,11 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $mdDial
             var indexOfId = $scope.igdocumentSelected.shareParticipantIds.indexOf(shareParticipant.id);
             if (indexOfId > -1) {
                 $scope.igdocumentSelected.shareParticipantIds.splice(indexOfId, 1);
+            }
+            for(i=0; i<$scope.igdocumentSelected.realUsers.length;i++){
+                if($scope.igdocumentSelected.realUsers[i].id==shareParticipant.id){
+                    $scope.igdocumentSelected.realUsers.splice(i, 1);
+                }
             }
             var participantIndex = -1;
             for (var i = 0; i < $scope.igdocumentSelected.shareParticipants.length; i++) {
