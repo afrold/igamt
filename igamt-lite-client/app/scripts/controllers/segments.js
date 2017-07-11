@@ -16,6 +16,14 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         isFirstDisabled: false
     };
 
+    $scope.defTabStatus = {
+        active:1
+    };
+
+    $scope.deltaTabStatus = {
+        active : 0
+    };
+
     $scope.tabStatus = {
         active: 1
     };
@@ -429,6 +437,29 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             $scope.setDirty();
         });
     };
+
+
+    $scope.isDual = function (def){
+        if(def) {
+            if($rootScope.segment.name === 'OBX' && def.path + "" === "5") return true;
+        }
+        return false;
+    };
+
+    $scope.editValueSetForVaries = function (id, index){
+        $rootScope.segment.coConstraintsTable.thenMapData[id][index].valueData = {};
+        $scope.openDialogForEditValueSetThenMapData(id,index);
+    };
+
+    $scope.editValueForVaries = function (id, index){
+        $rootScope.segment.coConstraintsTable.thenMapData[id][index].valueData = {};
+        $rootScope.segment.coConstraintsTable.thenMapData[id][index].valueData.value = " ";
+
+        $rootScope.segment.coConstraintsTable.thenMapData[id][index].valueSets = [];
+
+    };
+
+
 
 
     $scope.changeSegmentLink = function(segmentLink) {
@@ -1694,7 +1725,6 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
     $scope.isVariesDT = function (){
         if($scope.targetNode) {
             if($rootScope.datatypesMap[$scope.targetNode.datatype.id].name.toLowerCase() == 'varies') {
-                $scope.coConstraintType = 'valueset';
                 return true;
             }
         }
@@ -3339,6 +3369,7 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
             $scope.status.isSecondOpen = true;
             $scope.dynamicSeg_params.refresh();
         }
+        $scope.deltaTabStatus.active = 1;
 
     };
 

@@ -19,19 +19,14 @@
 
             </md-tab-label>
             <md-tab-body>
-                <div class="container ig-menu-bar"  style="margin-top: 20px;margin-buttom: 20px" layout="row">
-                    <span flex="80"></span>
-
-
-
-                     <md-menu-bar  flex="20">
-                       <md-menu class="pull-right">
-                        <button type="button" ng-controller="HL7VersionsDlgCtrl" class="white-color"
-                         ng-click="create('btn')" >
-                         <i class="fa fa-plus"></i> Create New IG Document
-                         </button>
-                       </md-menu>
-                    </md-menu-bar>
+                <div class="container"  style="margin-top: 20px;margin-buttom: 20px" layout="row">
+                    <md-toolbar  flex="100" class="ig-menu-bar">
+                        <div class="md-toolbar-tools">
+                            <h2 flex md-truncate><i class="fa fa-list fa-fw"></i> IG Documents List</h2>
+                            <button class="btn btn-raised btn-primary" ng-controller="HL7VersionsDlgCtrl" class="white-color"
+                                    ng-click="create('btn')" > <i class="fa fa-plus fa-fw"></i> Create IG Document</button>
+                        </div>
+                    </md-toolbar>
 
                 </div>
                 <div layout="row" class="container">

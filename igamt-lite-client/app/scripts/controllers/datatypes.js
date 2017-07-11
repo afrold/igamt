@@ -3,12 +3,11 @@
  */
 angular.module('igl')
     .controller('DatatypeListCtrl', function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $q, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService, MastermapSvc, FilteringSvc, DatatypeLibrarySvc, TableLibrarySvc, MessageService, TableService, blockUI, SegmentService, VersionAndUseService, CompareService, ValidationService,$mdDialog) {
-        $scope.accordStatus = {
-            isCustomHeaderOpen: false,
-            isFirstOpen: true,
-            isSecondOpen: true,
-            isThirdOpen: true,
-            isFirstDisabled: false
+        $scope.defTabStatus = {
+            active: 1
+        };
+        $scope.deltaTabStatus = {
+            active: 0
         };
         $scope.tabStatus = {
             active: 1
@@ -2891,6 +2890,7 @@ angular.module('igl').controller('cmpDatatypeCtrl', function($scope, $modal, Obj
             $scope.status.isSecondOpen = true;
             $scope.dynamicDt_params.refresh();
         }
+        $scope.deltaTabStatus.active = 1;
 
     };
 });

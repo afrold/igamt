@@ -15,6 +15,14 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         isSixOpen: false,
         isFirstDisabled: false
     };
+    $scope.defTabStatus = {
+        active: 1
+    };
+
+    $scope.deltaTabStatus = {
+        active: 0
+    };
+
     $scope.tabStatus = {
         active: 1
     };
@@ -2121,6 +2129,7 @@ angular.module('igl').controller('cmpMessageCtrl', function($scope, $modal, Obje
             $scope.status.isSecondOpen = true;
             $scope.dynamicMsg_params.refresh();
         }
+        $scope.deltaTabStatus.active = 1;
     };
 });
 

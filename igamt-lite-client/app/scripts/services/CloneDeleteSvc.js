@@ -86,6 +86,8 @@ angular.module('igl').factory(
             }else{
             	newDatatype.ext = newDatatype.ext+(Math.floor(Math.random() * 100) + 1);
             }
+
+            console.log("WOO:::" + newDatatype.ext);
             newDatatype.scope = $rootScope.datatypeLibrary.scope
             newDatatype.parentVersion=null;
             newDatatype.status='UNPUBLISHED';
