@@ -451,7 +451,51 @@
                                                                 <td ng-show="!segment.coConstraintsTable.ifColumnDefinition" style="font-weight: bold;overflow: hidden;width: 200px;background-color: #b1daff !important;"/>
 
                                                                 <td ng-repeat="columnDefinition in segment.coConstraintsTable.thenColumnDefinitionListForDisplay" colspan="4" style="overflow: hidden;width: 200px;text-align:center; ">
-                                                                    <div ng-show="columnDefinition.constraintType === 'value'">
+                                                                    <div ng-show="isDual(columnDefinition)">
+                                                                        <div ng-if="(!segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets || segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets.length === 0) &&
+                                                                                    (!segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData || !segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value)">
+
+                                                                            <span ng-click="editValueSetForVaries(columnDefinition.id, rowObject.rowIndex)" class="label label-icon">ValueSet</span>
+                                                                            or
+                                                                            <span ng-click="editValueForVaries(columnDefinition.id, rowObject.rowIndex)" class="label label-icon">Value</span>
+                                                                        </div>
+
+                                                                        <div layout="row" layout-align="start center" ng-if="segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData && segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value">
+                                                                            <md-input-container flex="70" style="margin:0;">
+                                                                                <input ng-model="segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value"
+                                                                                       ng-change="setDirty();"
+                                                                                       ng-disabled="viewSettings.tableReadonly || !segment.scope === 'USER'">
+                                                                            </md-input-container>
+                                                                            <md-input-container flex="30" ng-show="!columnDefinition.primitive" style="margin:5px;">
+                                                                                <md-select placeholder="Select BindingLocation" ng-model='segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.bindingLocation' ng-change="setDirty()">
+                                                                                    <md-option ng-repeat="option in findOptions(columnDefinition.dtId)" ng-value="option">
+                                                                                        {{option}}
+                                                                                    </md-option>
+                                                                                </md-select>
+                                                                            </md-input-container>
+                                                                        </div>
+
+
+                                                                        <div ng-if="segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets && segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets.length > 0">
+                                                                            <!--<div ng-show="!segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets || segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets.length === 0">-->
+                                                                                <!--<span ng-click="openDialogForEditValueSetThenMapData(columnDefinition.id, rowObject.rowIndex)"><i class="fa fa-plus fa-fw edit-icon"></i></span>-->
+                                                                            <!--</div>-->
+                                                                            <div ng-repeat="vs in segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets">
+                                                                                    <span title="{{tablesMap[vs.tableId].bindingIdentifier}}" class="badge label-white">
+                                                                                        <span class="label label-sub-component-icon label-icon">VS</span>
+                                                                                        <span>{{getTextAsTruncatedString(tablesMap[vs.tableId].bindingIdentifier, 10)}}</span>
+                                                                                        <span ng-click="deleteVS(vs, segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets)"><i class="fa fa-times fa-fw edit-icon"></i></span>
+                                                                                    </span>
+                                                                            </div>
+                                                                            <a class="point">
+                                                                                <span ng-click="openDialogForEditValueSetThenMapData(columnDefinition.id, rowObject.rowIndex)"><i class="fa fa-plus fa-fw edit-icon"></i></span>
+                                                                            </a>
+                                                                        </div>
+
+
+
+                                                                    </div>
+                                                                    <div ng-show="columnDefinition.constraintType === 'value' && !isDual(columnDefinition)">
                                                                         <div layout="row" layout-align="start center">
                                                                             <md-input-container flex="70" style="margin:0;">
                                                                                 <input ng-model="segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value"
@@ -467,7 +511,7 @@
                                                                             </md-input-container>
                                                                         </div>
                                                                     </div>
-                                                                    <div ng-show="columnDefinition.constraintType === 'valueset'">
+                                                                    <div ng-show="columnDefinition.constraintType === 'valueset' && !isDual(columnDefinition)">
                                                                         <div ng-show="!segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets || segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets.length === 0">
                                                                             <span ng-click="openDialogForEditValueSetThenMapData(columnDefinition.id, rowObject.rowIndex)"><i class="fa fa-plus fa-fw edit-icon"></i></span>
                                                                         </div>
@@ -483,7 +527,6 @@
                                                                                 <span ng-click="openDialogForEditValueSetThenMapData(columnDefinition.id, rowObject.rowIndex)"><i class="fa fa-plus fa-fw edit-icon"></i></span>
                                                                             </a>
                                                                         </div>
-
                                                                     </div>
                                                                     <div ng-show="columnDefinition.constraintType === 'dmr'">
                                                                         <div layout="row" layout-align="start center">
@@ -646,14 +689,14 @@
                                                                         <span>{{c.label}}</span>
                                                                     </td>
                                                                     <td class="col-md-1" style="text-align:left">
-                                                                        <span ng-show="getDefaultStatus(c) == 'full'">
-                                                                            <i class="fa fa-circle" aria-hidden="true"></i>
+                                                                        <span title="This default mapping will be used." ng-show="getDefaultStatus(c) == 'full'">
+                                                                            <i class="fa fa-circle" aria-hidden="true">&nbsp; Active</i>
                                                                         </span>
                                                                         <span ng-show="getDefaultStatus(c) == 'partial'">
                                                                             <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
                                                                         </span>
-                                                                        <span ng-show="getDefaultStatus(c) == 'empty'">
-                                                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                                        <span title="This default mapping is deprecated."  ng-show="getDefaultStatus(c) == 'empty'">
+                                                                            <i class="fa fa-circle-o" aria-hidden="true">&nbsp; Inactive</i>
                                                                         </span>
                                                                     </td>
                                                                 </tr>
