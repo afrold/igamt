@@ -40,7 +40,8 @@ var app = angular
         'rzModule',
     		'ui.select',
         'flow',
-        'ui.sortable'
+        'ui.sortable',
+        'angular-md5'
       ]);
 
 var
