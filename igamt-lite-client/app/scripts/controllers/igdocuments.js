@@ -2092,6 +2092,8 @@ angular.module('igl')
             var modalInstance = $mdDialog.show({
                 templateUrl: 'ShareIGDocumentModal.html',
                 controller: 'ShareIGDocumentCtrl',
+                scope:$scope,
+                preserveScope:true,
                 locals: {
                     igdocumentSelected: igdocument
                     ,
@@ -3932,7 +3934,12 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function($scope, $mdDial
     $scope.igdocumentSelected = igdocumentSelected;
     $scope.userList = userList;
     $scope.error = "";
+    angular.forEach($scope.userList, function(user){
+        if(user.email){
+            user.image=$rootScope.generateHash(user.email);
 
+        }
+    });
 
     $scope.ok = function() {
         var idsTab = $scope.tags.map(function(user) {
