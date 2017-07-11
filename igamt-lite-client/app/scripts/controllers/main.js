@@ -1858,27 +1858,14 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     };
 
     $rootScope.createNewFlavorName = function(label) {
-        if ($rootScope.igdocument !== null) {
-            if ($rootScope.igdocument.metaData["ext"] === null || $rootScope.igdocument.metaData["ext"] === '') {
-                return label + "_" + (Math.floor(Math.random() * 10000000) + 1);
-            } else {
-                return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
-            }
-        } else {
-            return null;
-        }
+        return label + "_" + (Math.floor(Math.random() * 10000000) + 1);
     };
 
     $rootScope.createNewExtension = function(ext) {
-        if ($rootScope.igdocument != null) {
-            var rand = (Math.floor(Math.random() * 10000000) + 1);
-            if ($rootScope.igdocument.metaData["ext"] === null) {
-                return ext != null && ext != "" ? ext + "_" + rand : rand;
-            } else {
-                return ext != null && ext != "" ? ext + "_" + $rootScope.igdocument.metaData["ext"] + "_" + rand + 1 : rand + 1;
-            }
-        } else {
-            return null;
+        if(ext !== null && ext !== "") {
+            return ext + "_" + (Math.floor(Math.random() * 10000000) + 1);
+        }else {
+            return Math.floor(Math.random() * 10000000) + 1;
         }
     };
 
