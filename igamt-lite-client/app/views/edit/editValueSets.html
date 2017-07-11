@@ -124,23 +124,7 @@
                                             </div>
                                             <md-input-container class="md-block" flex-gt-sm>
                                                 <label class="input-left">Code Systems</label>
-                                                <span ng-repeat="cs in codeSystems">
-											<span ng-hide="codeSysEditMode">{{cs}}</span>
-                                                <input ng-model="cs" type="text" ng-show="codeSysEditMode" />
-                                                <a ng-click="delCodeSystem(cs)" ng-show="codeSysEditMode" class="point">
-                                                    <span><i class="fa fa-times-circle fa-fw"></i></span>
-                                                </a>
-                                                <span ng-hide="$last">,</span>
-                                                </span>
-                                                <div class="pull-right">
-                                                    <a ng-click="makeCodeSystemEditable()" ng-hide="codeSysEditMode" class="point">
-                                                        <span><i class="fa fa-pencil fa-fw"></i></span>
-                                                    </a>
-                                                    <input ng-model="codeSysForm.str" placeholder="type new codeSystem" type="text" ng-show="codeSysEditMode" />
-                                                    <a ng-click="addCodeSystem()" ng-show="codeSysEditMode" class="point">
-                                                        <span><i class="fa fa-plus-circle fa-fw"></i></span>
-                                                    </a>
-                                                </div>
+                                                <input ng-model="codeSystems" type="text" disabled />
                                             </md-input-container>
 
                                             <md-input-container class="md-block" flex-gt-sm >
@@ -231,13 +215,7 @@
                                                                     <th st-sort="value" class="col-md-2">Value</th>
                                                                     <th st-sort="label" class="col-md-3">Description</th>
                                                                     <th class="col-md-2">CodeSystem</th>
-                                                                    <th class="col-md-1">Usage
-                                                                        <span class="btn-group btn-group-xs btn-info" role="group" aria-label="...">
-                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-raised btn-default btn-info">R</button>
-                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-raised btn-default btn-info">P</button>
-                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-raised btn-default btn-info">E</button>
-                                                                        </span>
-                                                                    </th>
+                                                                    <th class="col-md-1">Usage</th>
                                                                     <th class="col-md-3">Comments</th>
                                                                 </tr>
                                                                 <tr>
@@ -258,8 +236,27 @@
                                                                             </md-input-container>
                                                                         </div>
                                                                     </th>
-                                                                    <th/>
-                                                                    <th/>
+                                                                    <th>
+                                                                        <div layout="row">
+                                                                            <md-input-container flex="100" class="normal">
+                                                                                <md-select placeholder="Select CodeSys for all"
+                                                                                           style="margin-top: -30px;"
+                                                                                           ng-change="applyAllCodeSys(applyCodeSysValue);"
+                                                                                           ng-model="applyCodeSysValue">
+                                                                                    <md-option ng-repeat="cs in codeSystems" ng-value="cs">
+                                                                                        {{::cs}}
+                                                                                    </md-option>
+                                                                                </md-select>
+                                                                            </md-input-container>
+                                                                        </div>
+                                                                    </th>
+                                                                    <th>
+                                                                        <span class="btn-group btn-group-xs btn-info" role="group" aria-label="...">
+                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-raised btn-default btn-info">R</button>
+                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-raised btn-default btn-info">P</button>
+                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-raised btn-default btn-info">E</button>
+                                                                        </span>
+                                                                    </th>
                                                                     <th/>
                                                                 </tr>
                                                                 </thead>
@@ -294,23 +291,26 @@
                                                                         <span ng-if="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)" style="color:red">Duplicated</span>
                                                                     </td>
                                                                     <td class="col-md-2">
-                                                                        <div ng-show="!codeSystems || codeSystems.length === 0">
-                                                                            <span style="color:red">There is no CodeSystem in this ValueSet Metadata.</span>
-                                                                        </div>
-                                                                        <div ng-hide="!codeSystems || codeSystems.length === 0">
                                                                             <div layout="row">
-                                                                                <md-input-container flex="100" class="normal">
+                                                                                <md-input-container ng-show="c.codeSystem !== 'New CodeSystem'" flex="100" class="normal">
                                                                                     <md-select placeholder="Select CodeSystem"
                                                                                                style="margin-top: 20px;"
-                                                                                               ng-change="setDirty()"
+                                                                                               ng-change="setDirty();"
                                                                                                ng-model="c.codeSystem">
+                                                                                        <md-option value="New CodeSystem" style="color:red;">New CodeSystem</md-option>
                                                                                         <md-option ng-repeat="cs in codeSystems" ng-value="cs">
                                                                                             {{::cs}}
                                                                                         </md-option>
                                                                                     </md-select>
                                                                                 </md-input-container>
+                                                                                <md-input-container ng-show="c.codeSystem === 'New CodeSystem'" flex="80" class="normal">
+                                                                                    <input placeholder="Type new CodeSystem" ng-model="tempCodeSys" type="text"/>
+                                                                                </md-input-container>
+
+                                                                                <button ng-show="c.codeSystem === 'New CodeSystem'" title="Add new CodeSystem" type="button" class="btn btn-raised btn-sm btn-info" ng-click="submitNewCodeSystem(c, tempCodeSys);">
+                                                                                    <span><i class="fa fa-plus fa-fw"></i></span>
+                                                                                </button>
                                                                             </div>
-                                                                        </div>
                                                                     </td>
                                                                     <td class="col-md-1">
                                                                         <div layout="row">
