@@ -754,7 +754,7 @@
                                 </md-select>
                             </div>
                         </div>
-                        <div layout="row" ng-show="!dMReference">
+                        <div layout="row" ng-show="!dMReference && !isVariesDT()">
                             <div flex="40" >
                                 <span style="color:black; font-weight: bold">Type:</span>
                             </div>
@@ -768,6 +768,9 @@
                         </div>
                         <span class="header3" ng-show="dMReference">
                             <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>This is Dynamic Mapping Reference Field. Data cell requires DT base name and Flavor.
+                        </span>
+                        <span class="header3" ng-show="isVariesDT()">
+                            <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>This is Varies Field. You will define the Constraint type for each row.
                         </span>
                     </form>
                 </div>
