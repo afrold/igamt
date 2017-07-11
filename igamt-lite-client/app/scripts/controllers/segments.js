@@ -439,6 +439,29 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
 
+    $scope.isDual = function (def){
+        if(def) {
+            if($rootScope.segment.name === 'OBX' && def.path + "" === "5") return true;
+        }
+        return false;
+    };
+
+    $scope.editValueSetForVaries = function (id, index){
+        $rootScope.segment.coConstraintsTable.thenMapData[id][index].valueData = {};
+        $scope.openDialogForEditValueSetThenMapData(id,index);
+    };
+
+    $scope.editValueForVaries = function (id, index){
+        $rootScope.segment.coConstraintsTable.thenMapData[id][index].valueData = {};
+        $rootScope.segment.coConstraintsTable.thenMapData[id][index].valueData.value = " ";
+
+        $rootScope.segment.coConstraintsTable.thenMapData[id][index].valueSets = [];
+
+    };
+
+
+
+
     $scope.changeSegmentLink = function(segmentLink) {
         segmentLink.isChanged = true;
 
@@ -1702,7 +1725,6 @@ angular.module('igl').controller('CoConstraintTHENDefinitionCtrl', function($sco
     $scope.isVariesDT = function (){
         if($scope.targetNode) {
             if($rootScope.datatypesMap[$scope.targetNode.datatype.id].name.toLowerCase() == 'varies') {
-                $scope.coConstraintType = 'valueset';
                 return true;
             }
         }
