@@ -291,9 +291,9 @@
 
                                                     <button ng-if="igdocument && datatype.scope!=='HL7STANDARD' && datatype.components && datatype.components.length > 0"
                                                             class="pull-right" title="Verify Data type" type="button"
-                                                            ng-class="'btn btn-raised btn-sm btn-success'"
+                                                            ng-class="'btn btn-raised btn-sm btn-primary'"
                                                             ng-click="validateDatatype()">
-                                                        Verify
+                                                       <i class="fa fa-check fa-fw"></i> Verify
                                                     </button>
 
                                                     <div class="pull-right" ng-dropdown-multiselect=""
@@ -320,11 +320,11 @@
                                                                             ng-click="OtoX(datatype)">O to X
                                                                     </button>
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100"
+                                                                <th ng-show="viewSettings.isVisibleColumn('length')" class="col-md-1 col-fixed-100"
                                                                     style="text-align:center">Length
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-80"
-                                                                    ng-show="showConfLength()"
+                                                                    ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')"
                                                                     style="text-align:center">Conf. Length
                                                                 </th>
                                                                 <th class="col-md-1 col-fixed-100"
@@ -1079,7 +1079,7 @@
 
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id)}"
+        <td ng-show="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id)}"
             data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.minLength === 'NA' || node.maxLength === 'NA'">
@@ -1108,7 +1108,7 @@
 
         </td>
         <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.confLength === 'NA','has-validation-error':hasConfError(node.id) && datatypesMap[node.datatype.id].components.length===0}"
-            ng-show="showConfLength()" data-toggle="tooltip" title="{{displayMessageError(node.id,'CONFLENGTH')}}">
+            ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')" data-toggle="tooltip" title="{{displayMessageError(node.id,'CONFLENGTH')}}">
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.confLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
@@ -1293,12 +1293,12 @@
                 </div>
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA'}">
+        <td ng-show="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA'}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.minLength !== 'NA' && node.maxLength !== 'NA'">
                 [{{::node.minLength}},{{::node.maxLength}}]
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.confLength === 'NA'}" ng-show="showConfLength()">
+        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.confLength === 'NA'}" ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.confLength !== 'NA'"><span
                     ng-bind="::node.confLength"></span></div>
         </td>
@@ -1389,13 +1389,13 @@
                 </p>
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id)}"
+        <td ng-show="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id)}"
             data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.minLength !== 'NA' && node.maxLength !== 'NA'">
                 [{{::node.minLength}},{{::node.maxLength}}]
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.maxLength === 'NA'}" ng-show="showConfLength()">
+        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.maxLength === 'NA'}" ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.maxLength !== 'NA'"><span
                     ng-bind="::node.confLength"></span></div>
         </td>
@@ -1505,12 +1505,12 @@
                 </p>
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA'}" >
+        <td ng-show="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA'}" >
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.minLength !== 'NA' && node.maxLength !== 'NA'">
                 [{{::node.minLength}},{{::node.maxLength}}]
             </div>
         </td>
-        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.confLength === 'NA'}" ng-show="showConfLength()">
+        <td ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.confLength === 'NA'}" ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.confLength !== 'NA'"><span
                     ng-bind="::node.confLength"></span></div>
         </td>

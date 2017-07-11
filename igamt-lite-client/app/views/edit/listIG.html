@@ -65,7 +65,8 @@
                                                                           <i class="fa fa-calendar" aria-hidden="true"></i>
                                                                              Updated {{row.dateUpdated | date:dateFormat}}
                                                                             <span>,HL7 Version: {{row.profile.metaData.hl7Version}},</span>
-                                                                            <span ng-if="row.owner"> Author : <img style="max-width:20px !important;border-radius: 50% " src="{{generateHash(row.owner.email)}}"/> {{row.owner.fullname}}</span>
+                                                                            <span ng-if="row.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(row.owner.email)}}"/> {{row.owner.fullname}}</span>
+                                                                            <span ng-if="row.metaData.orgName&&row.metaData.orgName!==''"> {{row.metaData.orgName}}</span>
                                                                 </div>
 
 
@@ -96,8 +97,8 @@
                                                                 </div>
 												             </div>
 
-                                                        <a ng-click="showDetails=!showDetails"><span ng-show="showDetails"> <i class="fa fa-caret-down" aria-hidden="true"></i>Hide Details</span>
-                                                            <span ng-show="!showDetails"><i class="fa fa-caret-right" aria-hidden="true"></i>Show Details:</span> </a>
+                                                        <a style="margin-top:-10px" ng-click="showDetails=!showDetails"><span ng-show="showDetails"> <i class="fa fa-caret-down" aria-hidden="true"></i>Hide Info</span>
+                                                            <span ng-show="!showDetails"><i class="fa fa-caret-right" aria-hidden="true"></i>More Info</span> </a>
 
                                                         <div ng-show="showDetails">
                                                         <div flex class="row" style="margin:0!important">

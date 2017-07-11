@@ -45,8 +45,10 @@ angular.module('igl')
         name:"All IG Documents",
             type:"all"
         }
-
     ];
+
+    $scope.showToc = true;
+
     $scope.loadingIGDocument = false;
     $scope.toEditIGDocumentId = null;
     $scope.verificationResult = null;
