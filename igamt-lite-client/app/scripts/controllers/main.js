@@ -3417,6 +3417,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             cs.assertion = cs.assertion.replace("<Assertion>", "<Assertion><NOT>");
             cs.assertion = cs.assertion.replace("</Assertion>", "</NOT></Assertion>");
         }
+        cs.description = cs.description.split('[1]').join('');
 
         return cs;
     };
@@ -3669,6 +3670,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             cp.assertion = cp.assertion.replace("<Condition>", "<Condition><NOT>");
             cp.assertion = cp.assertion.replace("</Condition>", "</NOT></Condition>");
         }
+
+        cp.description = cp.description.split('[1]').join('');
 
         return cp;
     };
