@@ -1795,13 +1795,16 @@
                                 </div>
                             </div>
                         </div>
-                        <div layout="row" layout-align="center center">
-                            <div flex="80">
+                        <div layout="row" layout-align="start start">
 
-                                <md-contact-chips
+
+                                <md-contact-chips flex="80" style="width: 100%"
                                         ng-model="tags"
                                         md-contacts="loadUsernames($query)"
                                         md-contact-name="fullname"
+                                        md-require-match="true"
+                                        md-contact-email="email"
+                                        md-contact-image="image"
                                         md-require-match="true"
                                         md-highlight-flags="i"
                                         placeholder="Search By User Name">
@@ -1814,7 +1817,6 @@
                                                    <!--load-on-empty="true" max-results-to-show="32"-->
                                                    <!--template="autocomplete-template"></auto-complete>-->
                                 <!--</tags-input>-->
-                            </div>
                             <div flex="20">
                                 <ui-select ng-model="selectedItem.selected" theme="bootstrap" ng-disabled="true">
                                     <ui-select-match>{{$select.selected}}</ui-select-match>

@@ -1,6 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
@@ -37,6 +39,24 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
 
   private Set<ShareParticipantPermission> shareParticipantIds =
       new HashSet<ShareParticipantPermission>();
+
+  private List<ShareParticipant> realUsers = new ArrayList<ShareParticipant>();
+  private ShareParticipant owner;
+
+
+  /**
+   * @return the owner
+   */
+  public ShareParticipant getOwner() {
+    return owner;
+  }
+
+  /**
+   * @param owner the owner to set
+   */
+  public void setOwner(ShareParticipant owner) {
+    this.owner = owner;
+  }
 
   private void addSection(Section s) {
     s.setSectionPosition(this.childSections.size() + 1);
@@ -367,6 +387,20 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
    */
   public void setPosition(int position) {
     this.position = position;
+  }
+
+  /**
+   * @return the realUsers
+   */
+  public List<ShareParticipant> getRealUsers() {
+    return realUsers;
+  }
+
+  /**
+   * @param realUsers the realUsers to set
+   */
+  public void setRealUsers(List<ShareParticipant> realUsers) {
+    this.realUsers = realUsers;
   }
 
 

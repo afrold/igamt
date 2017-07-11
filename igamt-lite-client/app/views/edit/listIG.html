@@ -108,20 +108,20 @@
 
 
                                                         </div>
-                                                        <div flex layout="row" ng-if="row.shareParticipants&&row.shareParticipants.length>0">
-                                                            <h5 flex="10">Participants</h5>
-                                                            <md-chips flex="90" ng-model="row.shareParticipants"
-                                                                      readonly="chipsReadOnly" md-removable="false"
-                                                                      class="md-primary">
-                                                                <md-chip-template>
-														       <span style="font-size: 9px">
-														           <strong> {{$chip.fullname}}</strong>
+                                                        <div flex layout="row" ng-if="row.realUsers" layout-align="start start">
+                                                            <label flex="10" style="color: black; " class="label-list" >Participant</label>                                                            <!--<md-chips flex="90" ng-model="row.realUsers"-->
+                                                            <div flex="90">
+                                                            <span ng-repeat="user in row.realUsers " class=" badge badge-participant-iglist"> <img class="participant" src="{{generateHash(user.email)}}"/> {{user.fullname}}
+                                                            </span>
+                                                            </div>
 
-                                                               </span>
-                                                                </md-chip-template>
-
-                                                            </md-chips>
-
+                                                        </div>
+                                                        <div flex layout="row" ng-if="row.owner" layout-align="start start">
+                                                            <label flex="10" style="color: black; " class="label-list" >Created By</label>                                                            <!--<md-chips flex="90" ng-model="row.realUsers"-->
+                                                            <div flex="90">
+                                                            <span  class=" badge badge-participant-iglist"> <img class="participant" src="{{generateHash(owner.email)}}"/> {{user.fullname}}
+                                                            </span>
+                                                            </div>
 
                                                         </div>
 

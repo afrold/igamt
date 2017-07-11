@@ -3239,7 +3239,7 @@ md-select.inside-table{
 }
 .medium-dialog{
     min-height:400px;
-    min-width: 500px;
+    min-width: 700px;
     overflow: auto;
 }
 .large-dialog{
@@ -3251,3 +3251,40 @@ md-select.inside-table{
     background-color: white;
     overflow: auto;
 }
+white-color:hover{
+background-color: black;
+}
+.participant{
+    margin-top: 0px !important;
+    margin-bottom:0px !important;
+    margin-right: 0px !important;
+    border-radius:50%;
+    /* box-sizing: content-box; */
+}
+.badge-participant-iglist{
+    min-width: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #222;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #eee;
+    border-radius: 30px;
+}
+.md-chips .md-chip-input-container md-autocomplete input {
+    position: relative;
+    width: 700px;
+}
+.md-chips .md-chip-input-container md-autocomplete .selected{
+ background: white !important;
+    background-color: white !important;
+}
+.md-chips .md-chip-input-container md-autocomplete.selected{
+    background: white !important;
+    background-color: white !important;
+}
+
+
+

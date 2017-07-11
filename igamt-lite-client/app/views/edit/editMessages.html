@@ -1227,25 +1227,29 @@
                             </div>
                         </md-input-container>
 
-                <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
-                    <label class="input-left">Cardinality*</label>
-                    <div class="col-md-9">
-                        <span class="form-inline">
+                <div class="md-block" flex-gt-sm layout="row" layout-align="center center" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
+
+
+                        <md-input-container flex="50">
+                            <label class="input-left"> Min Cardinality </label>
                                                 <input  style="width:49%;margin-right: 1px"
-                                                    placeholder="Min"
                                                        name="grCardMin"
                                                        id="grCardMin"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-model="newGroup.min" ng-disabled="disableMin" required >
-                                                <input  style="width:50%"  type="text"
-                                                    placeholder="Max"
+                        </md-input-container>
+                        <md-input-container flex="50">
+                            <label class="input-left"> Max Cardinality </label>
+
+                        <input  style="width:50%"  type="text"
                                                        name="grCardMax"
                                                        id="grCardMax"
                                                        ng-change="setDirty()"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="newGroup.max" ng-disabled="disableMax" required>
-                        </span>
+                        </md-input-container>
+
                     </div>
                 </md-input-container>
                                 <md-input-container class="md-block" flex-gt-sm>

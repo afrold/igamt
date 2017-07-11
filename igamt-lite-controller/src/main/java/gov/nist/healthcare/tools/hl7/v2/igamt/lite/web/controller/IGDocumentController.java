@@ -81,6 +81,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
@@ -326,6 +327,12 @@ public class IGDocumentController extends CommonController {
       throw new UserAccountNotFoundException();
     }
     return igDocumentService.findByAccountId(account.getId());
+    // if (!d.isEmpty()) {
+    // for (IGDocument ig : d) {
+    // SetUserInfos(ig);
+    // }
+    // }
+    // return d;
   }
 
   @RequestMapping(value = "/{id}/clone", method = RequestMethod.POST)
@@ -1699,12 +1706,41 @@ public class IGDocumentController extends CommonController {
       if (account == null)
         throw new UserAccountNotFoundException();
       List<IGDocument> d = igDocumentService.findSharedIgDocuments(account.getId());
+      if (!d.isEmpty()) {
+        for (IGDocument ig : d) {
+          SetUserInfos(ig);
+        }
+      }
       return d;
     } catch (Exception e) {
       log.error("", e);
       throw new IGDocumentException("Failed to share IG Document \n" + e.getMessage());
     }
   }
+
+  public void SetUserInfos(IGDocument ig) {
+    Set<Long> participants = new HashSet<Long>();
+    if (ig.getShareParticipantIds() != null && !ig.getShareParticipantIds().isEmpty())
+      for (ShareParticipantPermission participant : ig.getShareParticipantIds()) {
+        participants.add(participant.getAccountId());
+      }
+    participants.add(ig.getAccountId());
+
+    List<Account> accounts = accountRepository.findAllInIds(participants);
+    if (!accounts.isEmpty()) {
+      for (Account acc : accounts) {
+        ShareParticipant participant = new ShareParticipant(acc.getId());
+        participant.setUsername(acc.getUsername());
+        participant.setFullname(acc.getFullName());
+        participant.setEmail(acc.getEmail());
+
+        ig.getRealUsers().add(participant);
+
+
+      }
+    }
+  }
+
 
   private List<IGDocument> allIGDocument() throws IGDocumentException {
     try {
@@ -1714,6 +1750,11 @@ public class IGDocumentController extends CommonController {
         throw new UserAccountNotFoundException();
       if (hasRole("admin")) {
         List<IGDocument> d = igDocumentService.findAllByScope(IGDocumentScope.USER);
+        if (!d.isEmpty()) {
+          for (IGDocument ig : d) {
+            SetUserInfos(ig);
+          }
+        }
         return d;
       } else {
         throw new IGDocumentException("you dont have the rights ");
