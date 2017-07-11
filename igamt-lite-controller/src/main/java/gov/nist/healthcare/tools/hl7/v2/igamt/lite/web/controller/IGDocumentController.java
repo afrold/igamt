@@ -326,7 +326,14 @@ public class IGDocumentController extends CommonController {
     if (account == null) {
       throw new UserAccountNotFoundException();
     }
-    return igDocumentService.findByAccountId(account.getId());
+
+    List<IGDocument> d = igDocumentService.findByAccountId(account.getId());
+    if (!d.isEmpty()) {
+      for (IGDocument ig : d) {
+        SetUserInfos(ig);
+      }
+    }
+    return d;
     // if (!d.isEmpty()) {
     // for (IGDocument ig : d) {
     // SetUserInfos(ig);
@@ -1206,6 +1213,7 @@ public class IGDocumentController extends CommonController {
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
     IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(),
         idrw.getMetaData(), idrw.getHl7Version(), account.getId());
+    SetUserInfos(igDocument);
     return igDocument;
   }
 
@@ -1733,10 +1741,11 @@ public class IGDocumentController extends CommonController {
         participant.setUsername(acc.getUsername());
         participant.setFullname(acc.getFullName());
         participant.setEmail(acc.getEmail());
-
-        ig.getRealUsers().add(participant);
-
-
+        if (acc.getId().equals(ig.getAccountId())) {
+          ig.setOwner(participant);
+        } else {
+          ig.getRealUsers().add(participant);
+        }
       }
     }
   }

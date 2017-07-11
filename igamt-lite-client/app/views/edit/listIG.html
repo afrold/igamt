@@ -51,8 +51,7 @@
                                                               dnd-moved="tmpIgs.splice($index, 1);orderIgs(tmpIgs)"
                                                               dnd-effect-allowed="move" style="border-bottom: 0.5px solid;padding: 18px; border-bottom: 0.1px solid;
                                                               padding: 0px;
-                                                              overflow-x: hidden;
-                                                              overflow-y: scroll;
+                                                              max-height: 100%;
 
                                                               border-bottom-color: #d2d2d2;">
 
@@ -70,7 +69,8 @@
                                                                 <div flex="40" class="ig-list-info">
                                                                           <i class="fa fa-calendar" aria-hidden="true"></i>
                                                                              Updated {{row.dateUpdated | date:dateFormat}}
-                                                                            <span>,HL7 Version: {{row.profile.metaData.hl7Version}}</span>
+                                                                            <span>,HL7 Version: {{row.profile.metaData.hl7Version}},</span>
+                                                                            <span ng-if="row.owner"> Author : <img style="max-width:20px !important;border-radius: 50% " src="{{generateHash(row.owner.email)}}"/> {{row.owner.fullname}}</span>
                                                                 </div>
 
 
@@ -101,33 +101,28 @@
                                                                 </div>
 												             </div>
 
+                                                        <a ng-click="showDetails=!showDetails"><span ng-show="showDetails"> <i class="fa fa-caret-down" aria-hidden="true"></i>Hide Details</span>
+                                                            <span ng-show="!showDetails"><i class="fa fa-caret-right" aria-hidden="true"></i>Show Details:</span> </a>
 
-
-                                                        <div flex layout="row" layout-align="start start">
-                                                            <label flex="10" style="color: black; " class="label-list" >Conformance Profiles</label>
-                                                            <div flex="90">
-                                                                <span class="label label-default" style="margin-right: 10px; font-size:10px; font-weight: bold" ng-repeat="cp in row.profile.messages.children">{{cp.name}}</span>
-                                                            </div>
+                                                        <div ng-show="showDetails">
+                                                        <div flex class="row" style="margin:0!important">
+                                                            <label style="color: black; " class="label-list" >Conformance Profiles:</label>
+                                                            <span class="badge" style="margin-right: 10px; font-size:15px; font-weight: bold" ng-repeat="cp in row.profile.messages.children">{{cp.name}}-{{cp.identifier}}</span>
 
 
 
 
                                                         </div>
-                                                        <div flex layout="row" ng-if="row.realUsers" layout-align="start start">
-                                                            <label flex="10" style="color: black; " class="label-list" >Participant</label>                                                            <!--<md-chips flex="90" ng-model="row.realUsers"-->
-                                                            <div flex="90">
-                                                            <span ng-repeat="user in row.realUsers " class=" badge badge-participant-iglist"> <img class="participant" src="{{generateHash(user.email)}}"/> {{user.fullname}}
-                                                            </span>
-                                                            </div>
+                                                        <div flex class="row" style="margin:0!important" ng-if="row.realUsers.length>0">
+                                                            <label style="color: black;" class="label-list" >Participants:</label>                                                            <!--<md-chips flex="90" ng-model="row.realUsers"-->
+
+                                                                <span ng-repeat="user in row.realUsers"> <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(user.email)}}"/>
+                                                                    <span style="font-family: Source Sans Pro,Helvetica,Arial,sans-serif;
+    font-style: italic;
+    font-weight: bold;">{{user.fullname}}</span>
+                                                                </span>
 
                                                         </div>
-                                                        <div flex layout="row" ng-if="row.owner" layout-align="start start">
-                                                            <label flex="10" style="color: black; " class="label-list" >Created By</label>                                                            <!--<md-chips flex="90" ng-model="row.realUsers"-->
-                                                            <div flex="90">
-                                                            <span  class=" badge badge-participant-iglist"> <img class="participant" src="{{generateHash(owner.email)}}"/> {{user.fullname}}
-                                                            </span>
-                                                            </div>
-
                                                         </div>
 
 
