@@ -646,14 +646,14 @@
                                                                         <span>{{c.label}}</span>
                                                                     </td>
                                                                     <td class="col-md-1" style="text-align:left">
-                                                                        <span ng-show="getDefaultStatus(c) == 'full'">
-                                                                            <i class="fa fa-circle" aria-hidden="true"></i>
+                                                                        <span title="This default mapping will be used." ng-show="getDefaultStatus(c) == 'full'">
+                                                                            <i class="fa fa-circle" aria-hidden="true">&nbsp; Active</i>
                                                                         </span>
                                                                         <span ng-show="getDefaultStatus(c) == 'partial'">
                                                                             <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
                                                                         </span>
-                                                                        <span ng-show="getDefaultStatus(c) == 'empty'">
-                                                                            <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                                        <span title="This default mapping is deprecated."  ng-show="getDefaultStatus(c) == 'empty'">
+                                                                            <i class="fa fa-circle-o" aria-hidden="true">&nbsp; Inactive</i>
                                                                         </span>
                                                                     </td>
                                                                 </tr>
