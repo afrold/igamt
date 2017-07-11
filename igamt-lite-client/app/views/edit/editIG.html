@@ -41,12 +41,17 @@
              </div>
 
             <div class="col-md-12 ig-menu-bar">
-                <span>
-                <md-switch ng-model="filtering" aria-label="Switch 6" ng-change="displayTree(!filtering)" style="margin-bottom: 0px;margin-top: 3px !important;" class="md-primary col-md-4">
+                <div class="col-md-1" style="width:20px">
+                    <md-button ng-click="showToc = !showToc" class="md-icon-button md-primary" aria-label="Settings">
+                        <i class="fa fa-bars fa-2x white-color" style="margin-top:-3px !important;" aria-hidden="true"></i>
+                    </md-button>
+                 </div>
+                <div class="col-md-3" style="margin-left:10px">
+                <md-switch ng-model="filtering" aria-label="Filter" ng-change="displayTree(!filtering)" style="margin-bottom: 0px;margin-top: 3px !important;" class="md-primary">
                  <span class="white-color" ng-if="!filtering">FILTER OFF</span><span ng-if="filtering">FILTER ON</span>
                 </md-switch>
-                </span>
-                <div class="col-md-8">
+                </div>
+                <div  class="col-md-8">
                     <md-menu-bar class="pull-right">
 
                         <md-menu>
@@ -206,37 +211,34 @@
              </div>
 
         <div class="row" ng-show="showErrorCount(igdocument.id)  && showIgErrorNotification"
-             style="margin-right: 15px;margin-left: 5px;">
+             style="margin-right: 15px;margin-left: 5px;margin-top:10px">
             <div class="alert has-error" ng-show="errorCount(igdocument.id)>0">
                 <!--<button type="button" class="close" aria-label="Close" ><span aria-hidden="true">&times;</span></button> {{errorCount(igdocument.id)}} Errors-->
                 <button type="button" ng-click="setIgErrorNotification();" class="close" aria-label="Close">
                     <span>&times;</span></button>
-                {{errorCount(igdocument.id)}} Errors
+                <i class="fa fa-times fa-fw"></i> Invalid IG Document: {{errorCount(igdocument.id)}} Errors
 
             </div>
             <div class="alert alert-success" ng-show="errorCount(igdocument.id)===0">
                 <!--<button type="button" class="close" aria-label="Close" ><span aria-hidden="true">&times;</span></button> {{errorCount(igdocument.id)}} Errors-->
                 <button type="button" ng-click="setIgErrorNotification();" class="close" aria-label="Close">
                     <span>&times;</span></button>
-                {{errorCount(igdocument.id)}} Errors
+                <i class="fa fa-check fa-fw"></i> Valid IG Document
 
             </div>
         </div>
         <div>
-            <div layout="row">
-                <div flex="30">
+            <div class="row">
+                <div  ng-show="showToc" class="col-md-3">
                     <div class="tree-fixed">
                     <div ng-include="tocView"></div>
                     </div>
                 </div>
-
-                <div flex="70">
+                <div ng-class="{'col-md-12': !showToc, 'col-md-9': showToc}" class="col-md-9">
 
                             <div id="edit" ng-show="subview" class="subview-fixed">
                                 <div ng-include="subview"></div>
                             </div>
-
-
                 </div>
             </div>
         </div>
