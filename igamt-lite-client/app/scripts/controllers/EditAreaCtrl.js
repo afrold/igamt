@@ -1,7 +1,7 @@
 angular.module('igl')
     .controller('EditAreaCtrl', function ($scope, $rootScope, CloneDeleteSvc,SectionSvc,ElementUtils) {
 
-        $scope.init = function() {
+        $scope.initArea = function() {
             if ($scope.editForm) {
                 $rootScope.clearChanges();
                 $scope.editForm.$setPristine();
@@ -14,7 +14,7 @@ angular.module('igl')
 
         $rootScope.$on("event:initEditArea", function (event) {
 
-            $scope.init();
+            $scope.initArea();
         });
 
         $scope.$watch(

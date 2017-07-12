@@ -29,6 +29,13 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.initSegment = function() {
+        console.log("Calling Init")
+        if($scope.editForm){
+            console.log("Calling Init inside form")
+
+        }else{
+            console.log("we dont have a form");
+        }
 
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
@@ -3141,8 +3148,6 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
     $scope.isDeltaCalled = false;
     var ctrl = this;
     this.segmentId = -1;
-    $rootScope.test="test1";
-    $rootScope.segment.text1="tototototot";
 
     $scope.setDeltaToF = function() {
         console.log("setDeltaToF called");

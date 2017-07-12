@@ -12,7 +12,7 @@
     }
 </script>
 <script type="text/ng-template" id="EditSegments.html">
-    <div ng-controller="SegmentListCtrl" ng-init="init()" class="container">
+    <div ng-controller="SegmentListCtrl" ng-init="initSegment()" class="container">
         <div ng-show="loadingSelection" style="text-align: center;">
             <div layout="row" layout-sm="column" layout-align="space-around">
                 <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
@@ -30,7 +30,7 @@
                                     ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
                         </button>
-                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="segment.scope !== 'USER'" ng-click="saveBindingForSegment();cleanState();">
+                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="editForm.$invalid || !editForm.$dirty" ng-show="segment.scope !== 'USER'" ng-click="saveBindingForSegment();cleanState();">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </button>
                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="segment.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
@@ -38,7 +38,7 @@
                             </button>
                         <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
                                 <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                            </button>
+                        </button>
                         </span>
                     </div>
                 <div class="static_info">
@@ -588,7 +588,7 @@
                                             </md-tab-body>
                                         </md-tab>
 
-                                        <md-tab  ng-show="isDynamicMappingSegment">
+                                        <md-tab  ng-if="isDynamicMappingSegment">
                                             <md-tab-label>
                                                 Dynamic Mapping
                                             </md-tab-label>

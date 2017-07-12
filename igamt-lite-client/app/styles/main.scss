@@ -3214,7 +3214,7 @@ md-select.inside-table{
 //}
 .tree-fixed{
     width:100%;
-    max-height: 900px;
+    max-height: 960px;
     overflow: scroll;
     background-color: rgba(238, 238, 238, 0.46);
     padding-top: 20px;
@@ -3223,7 +3223,6 @@ md-select.inside-table{
 }
 .subview-fixed{
     width:100%;
-    max-height: 900px;
     background-color: white;
     overflow: hidden;
 
@@ -3375,7 +3374,9 @@ md-input-container > label {
 }
 .panel-primary{
     max-height:800px !important;
-    overflow-y: scroll !important;
+    overflow: auto !important;
+
+
 }
 .md-list-item {
     position: relative;

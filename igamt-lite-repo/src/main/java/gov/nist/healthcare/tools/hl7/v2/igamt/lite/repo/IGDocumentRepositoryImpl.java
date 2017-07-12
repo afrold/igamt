@@ -150,6 +150,7 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     return mongo.find(qry, IGDocument.class);
   }
 
+
   @Override
   public List<IGDocument> findByParticipantId(Long participantId) {
     Criteria accountCreteria = Criteria.where("scope").is(IGDocumentScope.USER).andOperator(

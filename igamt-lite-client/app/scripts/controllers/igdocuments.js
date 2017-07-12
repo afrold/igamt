@@ -1417,12 +1417,11 @@ angular.module('igl')
                                 $rootScope.currentData = $rootScope.segment;
                                 $rootScope.segment.ext = $rootScope.getSegmentExtension($rootScope.segment);
                                 $rootScope.segment["type"] = "segment";
-                                // $rootScope.tableWidth = null;
-                                // $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-                                // $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                                // $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
-                                // $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
                                 $scope.loadingSelection = false;
+                                console.log("edit Form");
+
+                                console.log($scope.editForm);
+
                                 try {
                                     if ($scope.segmentsParams)
                                         $scope.segmentsParams.refresh();
@@ -1446,9 +1445,12 @@ angular.module('igl')
                                 });
 
                                 $scope.loadingSelection = false;
-                                $rootScope.subview = "EditSegments.html";
                                 $rootScope.$emit("event:initEditArea");
                                 $rootScope.$emit("event:initSegment");
+                                console.log($scope.editForm);
+
+                                $rootScope.subview = "EditSegments.html";
+
                                 blockUI.stop();
 
                             }, function (error) {
