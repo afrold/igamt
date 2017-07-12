@@ -1396,7 +1396,7 @@ angular.module('igl')
                 function() {
                     try {
                         SegmentService.get(segment.id).then(function(result) {
-                            $rootScope.segment = angular.copy(result);
+                            $rootScope.segment = angular.copy(segment);
                             console.log("$rootscope.segment");
                             console.log($rootScope.segment);
                             $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
