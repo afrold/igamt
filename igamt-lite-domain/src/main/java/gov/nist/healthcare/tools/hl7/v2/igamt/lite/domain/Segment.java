@@ -425,272 +425,31 @@ public class Segment extends DataModelWithConstraints
                 .getThenColumnDefinitionList()) {
               index = index + 1;
               if (definitionThen != null && definitionThen.getId() != null) {
-                CoConstraintTHENColumnData thenData =
-                    this.coConstraintsTable.getThenMapData().get(definitionThen.getId()).get(i);
-
-                if (isOBX5(definitionThen.getPath()) || isValidData(thenData, definitionThen, tablesMap)) {
+                CoConstraintTHENColumnData thenData = this.coConstraintsTable.getThenMapData().get(definitionThen.getId()).get(i);
+                String ifDescription = this.generateIFDescription(definitionIF, ifData);
+                String ifAssertion = this.generateIFAssertion(definitionIF, ifData);
+                String thenDescription = null;
+                String thenAssertion = null;
+                if (isValidData(thenData, definitionThen, tablesMap)) {
                   String constraintId = this.getLabel() + "-CoConstraint-" + (i + 1) + "-" + index;
-
-                  String ifDescription = null;
-                  String ifAssertion = null;
-                  String thenDescription = null;
-                  String thenAssertion = null;
-
-                  ifDescription = "If the value of " + this.getName() + "-"
-                      + definitionIF.getConstraintPath() + " (" + definitionIF.getName() + ") is '"
-                      + ifData.getValueData().getValue() + "',";
-
-                  if (definitionIF.isPrimitive()) {
-                    ifAssertion =
-                        "<PlainText Path=\"" + definitionIF.getConstraintPath() + "\" Text=\""
-                            + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
-                  } else {
-                    if (ifData.getValueData().getBindingLocation() == null) {
-                      ifAssertion = "<PlainText Path=\"" + definitionIF.getConstraintPath()
-                          + ".1[1]" + "\" Text=\"" + ifData.getValueData().getValue()
-                          + "\" IgnoreCase=\"false\"/>";
-                    } else {
-                      // "1 or 4", "1 or 4 or 10"
-                      if (ifData.getValueData().getBindingLocation().equals("1 or 4")) {
-                        ifAssertion = "<OR>" + "<PlainText Path=\""
-                            + definitionIF.getConstraintPath() + ".1[1]" + "\" Text=\""
-                            + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-                            + "<PlainText Path=\"" + definitionIF.getConstraintPath() + ".4[1]"
-                            + "\" Text=\"" + ifData.getValueData().getValue()
-                            + "\" IgnoreCase=\"false\"/>" + "</OR>";
-                      } else if (ifData.getValueData().getBindingLocation()
-                          .equals("1 or 4 or 10")) {
-                        ifAssertion =
-                            "<OR><OR>" + "<PlainText Path=\"" + definitionIF.getConstraintPath()
-                                + ".1[1]" + "\" Text=\"" + ifData.getValueData().getValue()
-                                + "\" IgnoreCase=\"false\"/>" + "<PlainText Path=\""
-                                + definitionIF.getConstraintPath() + ".4[1]" + "\" Text=\""
-                                + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-                                + "</OR>" + "<PlainText Path=\"" + definitionIF.getConstraintPath()
-                                + ".10[1]" + "\" Text=\"" + ifData.getValueData().getValue()
-                                + "\" IgnoreCase=\"false\"/>" + "</OR>";
-                      } else {
-                        ifAssertion = "<PlainText Path=\"" + definitionIF.getConstraintPath() + "."
-                            + ifData.getValueData().getBindingLocation() + "[1]" + "\" Text=\""
-                            + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
-                      }
-                      ifAssertion = "<PlainText Path=\"" + definitionIF.getConstraintPath()
-                          + ".1[1]" + "\" Text=\"" + ifData.getValueData().getValue()
-                          + "\" IgnoreCase=\"false\"/>";
-                    }
-                  }
-
                   if(isOBX5(definitionThen.getPath())){
                     if(thenData.getValueSets() != null && thenData.getValueSets().size() > 0){
-                      
-                      thenDescription = "then the value of " + this.getName() + "-"
-                          + definitionThen.getConstraintPath() + " (" + definitionThen.getName()
-                          + ") should be one of codes in ";
-                      for (ValueSetData vs : thenData.getValueSets()) {
-                        Table t = tablesMap.get(vs.getTableId());
-                        if (t.getHl7Version() == null) {
-                          thenDescription = "'" + thenDescription + t.getBindingIdentifier() + "' ";
-                        } else {
-                          thenDescription = "'" + thenDescription + t.getBindingIdentifier() + "_"
-                              + t.getHl7Version().replaceAll("\\.", "-") + "' ";
-                        }
-                      }
-                      thenDescription = thenDescription + ".";
-
-                      if (thenData.getValueSets().size() == 1) {
-                        Table t = tablesMap.get(thenData.getValueSets().get(0).getTableId());
-                        String bid = t.getBindingIdentifier();
-                        if (t.getHl7Version() != null)
-                          bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
-
-                        if (thenData.getValueSets().get(0).getBindingLocation() == null) {
-                          thenAssertion = "<ValueSet Path=\"" + definitionThen.getConstraintPath()
-                              + "\" ValueSetID=\"" + bid
-                              + "\" BindingLocation=\"1\" BindingStrength=\""
-                              + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
-                        } else {
-                          String bindingLocation = thenData.getValueSets().get(0).getBindingLocation()
-                              .replaceAll(" or ", ":");
-                          thenAssertion = "<ValueSet Path=\"" + definitionThen.getConstraintPath()
-                              + "\" ValueSetID=\"" + bid + "\" BindingLocation=\"" + bindingLocation
-                              + "\" BindingStrength=\""
-                              + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
-                        }
-                      } else {
-                        thenAssertion = "<EXIST>";
-                        for (ValueSetData vs : thenData.getValueSets()) {
-                          Table t = tablesMap.get(vs.getTableId());
-                          String bid = t.getBindingIdentifier();
-                          if (t.getHl7Version() != null)
-                            bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
-                          String bindingLocation = null;
-                          if (vs.getBindingLocation() == null)
-                            bindingLocation = "1";
-                          bindingLocation = vs.getBindingLocation().replaceAll(" or ", ":");
-                          thenAssertion = thenAssertion + "<ValueSet Path=\""
-                              + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid
-                              + "\" BindingLocation=\"" + bindingLocation + "\" BindingStrength=\""
-                              + vs.getBindingStrength() + "\"/>";
-                        }
-                        thenAssertion = thenAssertion + "</EXIST>";
-                      }
+                      thenDescription = this.generateTHENDescirptionForValueSet(definitionThen, thenData, tablesMap);
+                      thenAssertion = this.generateTHENAssertionForValueSet(definitionThen, thenData, tablesMap);
                     }else if (thenData.getValueData() != null && thenData.getValueData().getValue() != null){
-                      thenDescription = "then the value of " + this.getName() + "-"
-                          + definitionThen.getConstraintPath() + " (" + definitionThen.getName()
-                          + ") should be '" + thenData.getValueData().getValue() + "'.";
-
-                      if (definitionThen.isPrimitive()) {
-                        thenAssertion =
-                            "<PlainText Path=\"" + definitionThen.getConstraintPath() + "\" Text=\""
-                                + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
-                      } else {
-                        if (thenData.getValueData().getBindingLocation() == null) {
-                          thenAssertion = "<PlainText Path=\"" + definitionThen.getConstraintPath()
-                              + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue()
-                              + "\" IgnoreCase=\"false\"/>";
-                        } else {
-                          // "1 or 4", "1 or 4 or 10"
-                          if (thenData.getValueData().getBindingLocation().equals("1 or 4")) {
-                            thenAssertion = "<OR>" + "<PlainText Path=\""
-                                + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\""
-                                + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-                                + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]"
-                                + "\" Text=\"" + thenData.getValueData().getValue()
-                                + "\" IgnoreCase=\"false\"/>" + "</OR>";
-                          } else if (thenData.getValueData().getBindingLocation()
-                              .equals("1 or 4 or 10")) {
-                            thenAssertion = "<OR><OR>" + "<PlainText Path=\""
-                                + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\""
-                                + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-                                + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]"
-                                + "\" Text=\"" + thenData.getValueData().getValue()
-                                + "\" IgnoreCase=\"false\"/>" + "</OR>" + "<PlainText Path=\""
-                                + definitionThen.getConstraintPath() + ".10[1]" + "\" Text=\""
-                                + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-                                + "</OR>";
-                          } else {
-                            thenAssertion = "<PlainText Path=\"" + definitionThen.getConstraintPath()
-                                + "." + thenData.getValueData().getBindingLocation() + "[1]"
-                                + "\" Text=\"" + thenData.getValueData().getValue()
-                                + "\" IgnoreCase=\"false\"/>";
-                          }
-                          thenAssertion = "<PlainText Path=\"" + definitionThen.getConstraintPath()
-                              + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue()
-                              + "\" IgnoreCase=\"false\"/>";
-                        }
-                      }
+                      thenDescription = this.generateTHENDescirptionForValue(definitionThen, thenData);
+                      thenAssertion = this.generateTHENAssertionForValue(definitionThen, thenData);     
                     }
-                  }else if (definitionThen.getConstraintType().equals("value")
-                      || definitionThen.getConstraintType().equals("dmr")) {
-                    thenDescription = "then the value of " + this.getName() + "-"
-                        + definitionThen.getConstraintPath() + " (" + definitionThen.getName()
-                        + ") should be '" + thenData.getValueData().getValue() + "'.";
-
-                    if (definitionThen.isPrimitive()) {
-                      thenAssertion =
-                          "<PlainText Path=\"" + definitionThen.getConstraintPath() + "\" Text=\""
-                              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
-                    } else {
-                      if (thenData.getValueData().getBindingLocation() == null) {
-                        thenAssertion = "<PlainText Path=\"" + definitionThen.getConstraintPath()
-                            + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue()
-                            + "\" IgnoreCase=\"false\"/>";
-                      } else {
-                        // "1 or 4", "1 or 4 or 10"
-                        if (thenData.getValueData().getBindingLocation().equals("1 or 4")) {
-                          thenAssertion = "<OR>" + "<PlainText Path=\""
-                              + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\""
-                              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-                              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]"
-                              + "\" Text=\"" + thenData.getValueData().getValue()
-                              + "\" IgnoreCase=\"false\"/>" + "</OR>";
-                        } else if (thenData.getValueData().getBindingLocation()
-                            .equals("1 or 4 or 10")) {
-                          thenAssertion = "<OR><OR>" + "<PlainText Path=\""
-                              + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\""
-                              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-                              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]"
-                              + "\" Text=\"" + thenData.getValueData().getValue()
-                              + "\" IgnoreCase=\"false\"/>" + "</OR>" + "<PlainText Path=\""
-                              + definitionThen.getConstraintPath() + ".10[1]" + "\" Text=\""
-                              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-                              + "</OR>";
-                        } else {
-                          thenAssertion = "<PlainText Path=\"" + definitionThen.getConstraintPath()
-                              + "." + thenData.getValueData().getBindingLocation() + "[1]"
-                              + "\" Text=\"" + thenData.getValueData().getValue()
-                              + "\" IgnoreCase=\"false\"/>";
-                        }
-                        thenAssertion = "<PlainText Path=\"" + definitionThen.getConstraintPath()
-                            + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue()
-                            + "\" IgnoreCase=\"false\"/>";
-                      }
-                    }
+                  }else if (definitionThen.getConstraintType().equals("value") || definitionThen.getConstraintType().equals("dmr")) {
+                    thenDescription = this.generateTHENDescirptionForValue(definitionThen, thenData);
+                    thenAssertion = this.generateTHENAssertionForValue(definitionThen, thenData);                    
                   } else if (definitionThen.getConstraintType().equals("valueset")) {
-                    thenDescription = "then the value of " + this.getName() + "-"
-                        + definitionThen.getConstraintPath() + " (" + definitionThen.getName()
-                        + ") should be one of codes in ";
-                    for (ValueSetData vs : thenData.getValueSets()) {
-                      Table t = tablesMap.get(vs.getTableId());
-                      if (t.getHl7Version() == null) {
-                        thenDescription = "'" + thenDescription + t.getBindingIdentifier() + "' ";
-                      } else {
-                        thenDescription = "'" + thenDescription + t.getBindingIdentifier() + "_"
-                            + t.getHl7Version().replaceAll("\\.", "-") + "' ";
-                      }
-                    }
-                    thenDescription = thenDescription + ".";
-
-                    if (thenData.getValueSets().size() == 1) {
-                      Table t = tablesMap.get(thenData.getValueSets().get(0).getTableId());
-                      String bid = t.getBindingIdentifier();
-                      if (t.getHl7Version() != null)
-                        bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
-
-                      if (thenData.getValueSets().get(0).getBindingLocation() == null) {
-                        thenAssertion = "<ValueSet Path=\"" + definitionThen.getConstraintPath()
-                            + "\" ValueSetID=\"" + bid
-                            + "\" BindingLocation=\"1\" BindingStrength=\""
-                            + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
-                      } else {
-                        String bindingLocation = thenData.getValueSets().get(0).getBindingLocation()
-                            .replaceAll(" or ", ":");
-                        thenAssertion = "<ValueSet Path=\"" + definitionThen.getConstraintPath()
-                            + "\" ValueSetID=\"" + bid + "\" BindingLocation=\"" + bindingLocation
-                            + "\" BindingStrength=\""
-                            + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
-                      }
-                    } else {
-                      thenAssertion = "<EXIST>";
-                      for (ValueSetData vs : thenData.getValueSets()) {
-                        Table t = tablesMap.get(vs.getTableId());
-                        String bid = t.getBindingIdentifier();
-                        if (t.getHl7Version() != null)
-                          bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
-                        String bindingLocation = null;
-                        if (vs.getBindingLocation() == null)
-                          bindingLocation = "1";
-                        bindingLocation = vs.getBindingLocation().replaceAll(" or ", ":");
-                        thenAssertion = thenAssertion + "<ValueSet Path=\""
-                            + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid
-                            + "\" BindingLocation=\"" + bindingLocation + "\" BindingStrength=\""
-                            + vs.getBindingStrength() + "\"/>";
-                      }
-                      thenAssertion = thenAssertion + "</EXIST>";
-                    }
+                    thenDescription = this.generateTHENDescirptionForValueSet(definitionThen, thenData, tablesMap);
+                    thenAssertion = this.generateTHENAssertionForValueSet(definitionThen, thenData, tablesMap);
                   }
 
-                  String description = "[CoConstraint-" + (i + 1) + "-" + index + "]"
-                      + ifDescription + thenDescription;
-                  // + "If the value of " +
-                  // definitionIF.getConstraintPath() + "(" +
-                  // definitionIF.getName() + ") is '"
-                  // + ifData.getValueData().getValue() + "',
-                  // then
-                  // "
-
-                  String assertion =
-                      "<Assertion><IMPLY>" + ifAssertion + thenAssertion + "</IMPLY></Assertion>";
+                  String description = "[CoConstraint-" + (i + 1) + "-" + index + "]" + ifDescription + thenDescription;
+                  String assertion ="<Assertion><IMPLY>" + ifAssertion + thenAssertion + "</IMPLY></Assertion>";
                   ConformanceStatement cs = new ConformanceStatement();
                   cs.setId(ObjectId.get().toString());
                   cs.setConstraintId(constraintId);
@@ -709,17 +468,180 @@ public class Segment extends DataModelWithConstraints
 
     return results;
   }
+  
+  private String generateTHENDescirptionForValue(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData){
+    return "then the value of " + this.getName() + "-"
+        + definitionThen.getConstraintPath() + " (" + definitionThen.getName()
+        + ") should be '" + thenData.getValueData().getValue() + "'.";
+  }
+  
+  private String generateTHENAssertionForValue(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData){
+    if (definitionThen.isPrimitive()) {
+      return
+          "<PlainText Path=\"" + definitionThen.getConstraintPath() + "\" Text=\""
+              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
+    } else {
+      if (thenData.getValueData().getBindingLocation() == null) {
+        return "<PlainText Path=\"" + definitionThen.getConstraintPath()
+            + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue()
+            + "\" IgnoreCase=\"false\"/>";
+      } else {
+        // "1 or 4", "1 or 4 or 10"
+        if (thenData.getValueData().getBindingLocation().equals("1 or 4")) {
+          return "<OR>" + "<PlainText Path=\""
+              + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\""
+              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
+              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]"
+              + "\" Text=\"" + thenData.getValueData().getValue()
+              + "\" IgnoreCase=\"false\"/>" + "</OR>";
+        } else if (thenData.getValueData().getBindingLocation()
+            .equals("1 or 4 or 10")) {
+          return "<OR><OR>" + "<PlainText Path=\""
+              + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\""
+              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
+              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]"
+              + "\" Text=\"" + thenData.getValueData().getValue()
+              + "\" IgnoreCase=\"false\"/>" + "</OR>" + "<PlainText Path=\""
+              + definitionThen.getConstraintPath() + ".10[1]" + "\" Text=\""
+              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
+              + "</OR>";
+        } else {
+          return "<PlainText Path=\"" + definitionThen.getConstraintPath()
+              + "." + thenData.getValueData().getBindingLocation() + "[1]"
+              + "\" Text=\"" + thenData.getValueData().getValue()
+              + "\" IgnoreCase=\"false\"/>";
+        }
+      }
+    }
+  }
+  
+  private String generateTHENDescirptionForValueSet(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap){
+    String thenDescription = "then the value of " + this.getName() + "-"
+        + definitionThen.getConstraintPath() + " (" + definitionThen.getName()
+        + ") should be one of codes in ";
+    for (ValueSetData vs : thenData.getValueSets()) {
+      Table t = tablesMap.get(vs.getTableId());
+      if (t.getHl7Version() == null) {
+        thenDescription = "'" + thenDescription + t.getBindingIdentifier() + "' ";
+      } else {
+        thenDescription = "'" + thenDescription + t.getBindingIdentifier() + "_"
+            + t.getHl7Version().replaceAll("\\.", "-") + "' ";
+      }
+    }
+    thenDescription = thenDescription + ".";
+    
+    return thenDescription;
+    
+  }
+  
+  private String generateTHENAssertionForValueSet(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap){
+    if (thenData.getValueSets().size() == 1) {
+      Table t = tablesMap.get(thenData.getValueSets().get(0).getTableId());
+      String bid = t.getBindingIdentifier();
+      if (t.getHl7Version() != null) bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
+      if (thenData.getValueSets().get(0).getBindingLocation() == null) {
+        return "<ValueSet Path=\"" + definitionThen.getConstraintPath()
+            + "\" ValueSetID=\"" + bid
+            + "\" BindingLocation=\"1\" BindingStrength=\""
+            + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
+      } else {
+        String bindingLocation = thenData.getValueSets().get(0).getBindingLocation()
+            .replaceAll(" or ", ":");
+        return "<ValueSet Path=\"" + definitionThen.getConstraintPath()
+            + "\" ValueSetID=\"" + bid + "\" BindingLocation=\"" + bindingLocation
+            + "\" BindingStrength=\""
+            + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
+      }
+    } else {
+      String thenAssertion = "<EXIST>";
+      for (ValueSetData vs : thenData.getValueSets()) {
+        Table t = tablesMap.get(vs.getTableId());
+        String bid = t.getBindingIdentifier();
+        if (t.getHl7Version() != null)
+          bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
+        String bindingLocation = null;
+        if (vs.getBindingLocation() == null)
+          bindingLocation = "1";
+        bindingLocation = vs.getBindingLocation().replaceAll(" or ", ":");
+        thenAssertion = thenAssertion + "<ValueSet Path=\""
+            + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid
+            + "\" BindingLocation=\"" + bindingLocation + "\" BindingStrength=\""
+            + vs.getBindingStrength() + "\"/>";
+      }
+      thenAssertion = thenAssertion + "</EXIST>";
+      
+      return thenAssertion;
+    }
+  }
 
+  private String generateIFDescription(CoConstraintColumnDefinition definitionIF, CoConstraintIFColumnData ifData){
+    return "If the value of " + this.getName() + "-"
+        + definitionIF.getConstraintPath() + " (" + definitionIF.getName() + ") is '"
+        + ifData.getValueData().getValue() + "',";
+  }
+  
+  private String generateIFAssertion(CoConstraintColumnDefinition definitionIF, CoConstraintIFColumnData ifData) {
+    if (definitionIF.isPrimitive()) {
+      return "<PlainText Path=\"" + definitionIF.getConstraintPath() + "\" Text=\"" + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
+    } else {
+      if (ifData.getValueData().getBindingLocation() == null) {
+        return "<PlainText Path=\"" + definitionIF.getConstraintPath()
+            + ".1[1]" + "\" Text=\"" + ifData.getValueData().getValue()
+            + "\" IgnoreCase=\"false\"/>";
+      } else {
+        // "1 or 4", "1 or 4 or 10"
+        if (ifData.getValueData().getBindingLocation().equals("1 or 4")) {
+          return "<OR>" + "<PlainText Path=\""
+              + definitionIF.getConstraintPath() + ".1[1]" + "\" Text=\""
+              + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
+              + "<PlainText Path=\"" + definitionIF.getConstraintPath() + ".4[1]"
+              + "\" Text=\"" + ifData.getValueData().getValue()
+              + "\" IgnoreCase=\"false\"/>" + "</OR>";
+        } else if (ifData.getValueData().getBindingLocation().equals("1 or 4 or 10")) {
+          return
+              "<OR><OR>" + "<PlainText Path=\"" + definitionIF.getConstraintPath()
+                  + ".1[1]" + "\" Text=\"" + ifData.getValueData().getValue()
+                  + "\" IgnoreCase=\"false\"/>" + "<PlainText Path=\""
+                  + definitionIF.getConstraintPath() + ".4[1]" + "\" Text=\""
+                  + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
+                  + "</OR>" + "<PlainText Path=\"" + definitionIF.getConstraintPath()
+                  + ".10[1]" + "\" Text=\"" + ifData.getValueData().getValue()
+                  + "\" IgnoreCase=\"false\"/>" + "</OR>";
+        } else {
+          return "<PlainText Path=\"" + definitionIF.getConstraintPath() + "."
+              + ifData.getValueData().getBindingLocation() + "[1]" + "\" Text=\""
+              + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
+        }
+      }
+    }
+  }
   private boolean isOBX5(String path) {
     if (this.getName().equals("OBX") && path.equals("5"))
       return true;
     return false;
   }
 
-  private boolean isValidData(CoConstraintTHENColumnData thenData,
-      CoConstraintColumnDefinition definitionThen, Map<String, Table> tablesMap) {
-    if (definitionThen.getConstraintType().equals("value")
-        || definitionThen.getConstraintType().equals("dmr")) {
+  private boolean isValidData(CoConstraintTHENColumnData thenData, CoConstraintColumnDefinition definitionThen, Map<String, Table> tablesMap) {
+    if(isOBX5(definitionThen.getPath())){
+      if (thenData.getValueSets() != null && thenData.getValueSets().size() > 0) {
+        boolean isValueSetValid = true;
+        for (ValueSetData vsd : thenData.getValueSets()) {
+          if (vsd.getTableId() != null) {
+            Table t = tablesMap.get(vsd.getTableId());
+            if (t == null) {
+              isValueSetValid = false;
+            }
+          } else {
+            isValueSetValid = false;
+          }
+        }
+        if (isValueSetValid)
+          return true;
+      }
+      if (thenData.getValueData() != null && thenData.getValueData().getValue() != null) {
+        return true;
+      }
+    }else if (definitionThen.getConstraintType().equals("value") || definitionThen.getConstraintType().equals("dmr")) {
       if (thenData.getValueData() != null && thenData.getValueData().getValue() != null) {
         return true;
       }
