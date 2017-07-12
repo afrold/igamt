@@ -124,7 +124,7 @@
                                     <md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">
                                         <md-tab>
                                             <md-tab-label>
-                                                Definition Pre-Text
+                                                Pre-Text
                                             </md-tab-label>
                                             <md-tab-body>
 
@@ -143,7 +143,7 @@
 
                                         <md-tab>
                                             <md-tab-label>
-                                                Segment Definition
+                                                Structure
                                             </md-tab-label>
                                             <md-tab-body>
 
@@ -229,7 +229,7 @@
 
                                         <md-tab>
                                             <md-tab-label>
-                                                Definition Post-Text
+                                                Post-Text
                                             </md-tab-label>
                                             <md-tab-body>
 
@@ -250,7 +250,7 @@
 
                                         <md-tab>
                                             <md-tab-label>
-                                                Conformance Statements
+                                                Conf. Statements
                                             </md-tab-label>
                                             <md-tab-body>
 
@@ -295,7 +295,7 @@
 
                                         <md-tab>
                                             <md-tab-label>
-                                                Conditional Predicates
+                                                Predicates
                                             </md-tab-label>
                                             <md-tab-body>
 
@@ -336,13 +336,13 @@
 
                                         </md-tab>
 
-                                        <md-tab>
+                                        <md-tab ng-if="!viewSettings.tableReadonly && segment.scope === 'USER'">
                                             <md-tab-label>
                                                 Co-constraints
                                             </md-tab-label>
                                             <md-tab-body>
 
-                                        <div class="panel-primary" ng-if="!viewSettings.tableReadonly && segment.scope === 'USER'">
+                                        <div class="panel-primary" >
                                             <div class="panel-body">
                                                 <div>
                                                     <div class="col-md-12" style="margin-bottom:20px">
@@ -725,7 +725,7 @@
                                     <md-tabs md-dynamic-height md-border-bottom md-selected="deltaTabStatus.active">
                                         <md-tab >
                                             <md-tab-label>
-                                                <i class="fa fa-cogs fa-fw"></i> Delta Configuration
+                                                <i class="fa fa-cog fa-fw"></i>Configuration
                                             </md-tab-label>
                                             <md-tab-body>
 
@@ -806,7 +806,7 @@
 
                                         <md-tab >
                                             <md-tab-label>
-                                                Delta Result
+                                                <i class="fa fa-check fa-fw"></i> Result
                                             </md-tab-label>
                                             <md-tab-body>
 
