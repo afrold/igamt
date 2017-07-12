@@ -560,9 +560,11 @@ public class Segment extends DataModelWithConstraints
         if (t.getHl7Version() != null)
           bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
         String bindingLocation = null;
-        if (vs.getBindingLocation() == null)
+        if (vs.getBindingLocation() == null){
           bindingLocation = "1";
-        bindingLocation = vs.getBindingLocation().replaceAll(" or ", ":");
+        }else {
+          bindingLocation = vs.getBindingLocation().replaceAll(" or ", ":");  
+        }
         thenAssertion = thenAssertion + "<ValueSet Path=\""
             + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid
             + "\" BindingLocation=\"" + bindingLocation + "\" BindingStrength=\""
