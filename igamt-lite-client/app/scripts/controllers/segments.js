@@ -28,7 +28,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         active: 1
     };
 
-    $scope.init = function() {
+    $scope.initSegment = function() {
 
         $scope.accordStatus = {
             isCustomHeaderOpen: false,
@@ -40,6 +40,14 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             isSixthOpen: false,
             isSeventhOpen: false,
             isFirstDisabled: false
+        };
+
+        $scope.defTabStatus = {
+            active:1
+        };
+
+        $scope.deltaTabStatus = {
+            active : 0
         };
 
         $scope.tabStatus = {
@@ -3133,7 +3141,13 @@ angular.module('igl').controller('cmpSegmentCtrl', function($scope, $modal, Obje
     $scope.isDeltaCalled = false;
     var ctrl = this;
     this.segmentId = -1;
+    $rootScope.test="test1";
+    $rootScope.segment.text1="tototototot";
+
     $scope.setDeltaToF = function() {
+        console.log("setDeltaToF called");
+        console.log($rootScope.segment);
+
         $scope.isDeltaCalled = false;
     }
 
