@@ -1766,7 +1766,7 @@ public class IGDocumentController extends CommonController {
         }
         return d;
       } else {
-        throw new IGDocumentException("you dont have the rights ");
+        throw new IGDocumentException("you don't have the rights to access these resources");
       }
 
     } catch (Exception e) {
