@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Transient;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -40,7 +42,10 @@ public class IGDocument extends DataModel implements java.io.Serializable, Clone
   private Set<ShareParticipantPermission> shareParticipantIds =
       new HashSet<ShareParticipantPermission>();
 
+  @Transient
   private List<ShareParticipant> realUsers = new ArrayList<ShareParticipant>();
+
+  @Transient
   private ShareParticipant owner;
 
 

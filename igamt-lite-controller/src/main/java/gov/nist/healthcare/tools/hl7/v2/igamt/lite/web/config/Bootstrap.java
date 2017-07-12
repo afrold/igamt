@@ -285,57 +285,57 @@ public class Bootstrap implements InitializingBean {
 
 
     // fixCodeSysLOINC();
-    
-    fixAllConstraints();
+
+    // fixAllConstraints();
   }
 
 
   private void fixAllConstraints() {
     List<Message> messages = messageService.findAll();
     for (Message m : messages) {
-      for(ConformanceStatement cs: m.getConformanceStatements()){
-        if(cs != null && cs.getDescription() != null){
-          cs.setDescription(cs.getDescription().replace("[1]", ""));          
+      for (ConformanceStatement cs : m.getConformanceStatements()) {
+        if (cs != null && cs.getDescription() != null) {
+          cs.setDescription(cs.getDescription().replace("[1]", ""));
         }
       }
-      for(Predicate p: m.getPredicates()){
-        if(p != null && p.getDescription() != null){
-          p.setDescription(p.getDescription().replace("[1]", ""));          
+      for (Predicate p : m.getPredicates()) {
+        if (p != null && p.getDescription() != null) {
+          p.setDescription(p.getDescription().replace("[1]", ""));
         }
       }
       messageService.save(m);
     }
-    
+
     List<Segment> segments = segmentService.findAll();
     for (Segment s : segments) {
-      for(ConformanceStatement cs: s.getConformanceStatements()){
-        if(cs != null && cs.getDescription() != null){
-          cs.setDescription(cs.getDescription().replace("[1]", ""));          
+      for (ConformanceStatement cs : s.getConformanceStatements()) {
+        if (cs != null && cs.getDescription() != null) {
+          cs.setDescription(cs.getDescription().replace("[1]", ""));
         }
       }
-      for(Predicate p: s.getPredicates()){
-        if(p != null && p.getDescription() != null){
-          p.setDescription(p.getDescription().replace("[1]", "")); 
+      for (Predicate p : s.getPredicates()) {
+        if (p != null && p.getDescription() != null) {
+          p.setDescription(p.getDescription().replace("[1]", ""));
         }
       }
       segmentService.save(s);
     }
-    
+
     List<Datatype> datatypes = datatypeService.findAll();
     for (Datatype d : datatypes) {
-      for(ConformanceStatement cs: d.getConformanceStatements()){
-        if(cs != null && cs.getDescription() != null){
-          cs.setDescription(cs.getDescription().replace("[1]", ""));          
+      for (ConformanceStatement cs : d.getConformanceStatements()) {
+        if (cs != null && cs.getDescription() != null) {
+          cs.setDescription(cs.getDescription().replace("[1]", ""));
         }
       }
-      for(Predicate p: d.getPredicates()){
-        if(p != null && p.getDescription() != null){
-          p.setDescription(p.getDescription().replace("[1]", "")); 
+      for (Predicate p : d.getPredicates()) {
+        if (p != null && p.getDescription() != null) {
+          p.setDescription(p.getDescription().replace("[1]", ""));
         }
       }
       datatypeService.save(d);
     }
-    
+
   }
 
 
