@@ -47,9 +47,10 @@ public class VersionAndUseController {
 
     List<VersionAndUse> toReturn = new ArrayList<VersionAndUse>();
 
-    List<VersionAndUse> result = versionAndUseService.findAll();
     User u = userService.getCurrentUser();
     Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    List<VersionAndUse> result = versionAndUseService.findByAccountId(account.getId());
+
 
 
     return result;

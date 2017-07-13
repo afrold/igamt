@@ -47,6 +47,19 @@ public class VersionAndUseServiceImp implements VersionAndUseService {
     return (List<VersionAndUse>) VersionAndUseRepository.findAll(ids);
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.VersionAndUseService#findByAccountId(java.
+   * lang.Long)
+   */
+  @Override
+  public List<VersionAndUse> findByAccountId(Long id) {
+    // TODO Auto-generated method stub
+    return VersionAndUseRepository.findByAccountId(id);
+  }
+
 
 
 }

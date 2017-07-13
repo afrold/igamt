@@ -29,15 +29,15 @@
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}
                         <span class="pull-right" ng-if="!typeOfSharing">
 
-                            <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'"
+                            <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'||datatype.status=='UNPUBLISHED'"
                                  style="margin-bottom: 0px;" ng-if="!igdocument">
-                              <md-button  ng-diasbled="datatype.status=='UNPUBLISHED'" type="button" class="btn btn-raised btn-primary btn-sm"
+                              <md-button   type="button" class="btn btn-raised btn-primary btn-sm" ng-class=""
                                       ng-click="shareModal(datatype)">
                                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
                                 <span class="badge" ng-bind="datatype.shareParticipantIds.length"
                                       style="margin-right:5px;"></span>
                               </md-button>
-                        <md-button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle"
+                             <md-button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle"
                                 data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span
                                 class="sr-only">Toggle Dropdown</span> </md-button>
                         <ul class="dropdown-menu igl-menu" role="menu">
@@ -77,6 +77,7 @@
                               <span> Publish </span>
                     </md-button>
                     </span>
+                    </div>
 
                     <div class="static_info">
 
@@ -87,7 +88,7 @@
                         <span ng-if="datatype.owner" style="font-style: italic;">
                          <i class="fa fa-user" aria-hidden="true"></i> 
                          ,{{datatype.owner}}
-                        </span>
+                    </span>
                         <span ng-if="datatype.hl7Version!=='*'">,HL7 Version: {{datatype.hl7Version}}</span>
                         <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
 
