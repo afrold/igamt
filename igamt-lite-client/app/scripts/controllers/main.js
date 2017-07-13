@@ -2519,10 +2519,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
                         $rootScope.editDatatype(dest);
 
                     });
-
                 });
-
-
             });
 
 

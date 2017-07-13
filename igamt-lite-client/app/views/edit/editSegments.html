@@ -12,7 +12,7 @@
     }
 </script>
 <script type="text/ng-template" id="EditSegments.html">
-    <div ng-controller="SegmentListCtrl" ng-init="initSegment()" class="container">
+    <div ng-controller="SegmentListCtrl" ng-init="initSegment()" class="container" ng-cloak>
         <div ng-show="loadingSelection" style="text-align: center;">
             <div layout="row" layout-sm="column" layout-align="space-around">
                 <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
@@ -1658,20 +1658,20 @@
                         </md-select>
 
                 </md-input-container>
-                            <div layout="row" layout-align="center center">
+                            <div layout="row" layout-align="start start">
                              <md-input-container flex  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block" flex-gt-sm>
                             <label class="input-left">Min Cardinality</label>
-                            <input name="cardMin" style="width:49%" id="cardMin"  ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
+                            <input name="cardMin"  id="cardMin"  ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
 
                             </md-input-container>
                             <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block" flex-gt-sm>
                                 <label class="input-left">Max Cardinality*</label>
-                                    <input  type="text"  style="width:50%" name="cardMax" id="cardMax"  ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
+                                    <input  type="text"  name="cardMax" id="cardMax"  ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
                             </md-input-container>
                             </div>
 
                             <md-content layout-padding>
-
+                                <label class="input-left"> Data Type </label>
                             <md-autocomplete
                             md-selected-item="DT"
 
@@ -1681,23 +1681,32 @@
                             md-min-length="0"
                             placeholder="Search Data Type "
                             md-autofocus>
-                        <md-item-template>
+                            <md-item-template>
                             <display-label of="item" desc="true"></display-label>
                         </md-item-template>
                         <md-not-found>
                             No Data type.
                         </md-not-found>
                         </md-autocomplete>
-                            </md-content>
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label class="input-left">ValueSet</label>
-                    <div class="controls col-md-11">
-                        <tags-input ng-model="vs" key-property="id" display-property="bindingIdentifier" placeholder="Select Value Sets" add-from-autocomplete-only="true" replace-spaces-with-dashes="false" on-tag-added="tagAdded($tag)" on-tag-removed="tagRemoved($tag)">
-                            <auto-complete source="loadVS($query)" min-length="0" load-on-focus="true" max-results-to-show="10"></auto-complete>
-                        </tags-input>
-                    </div>
 
-                </md-input-container>
+                            </md-content>
+
+
+                <!--<md-input-container class="md-block" flex-gt-sm>-->
+                    <!--<span class="input-left" style="margin:auto; font-weight: bold">Value Sets</span>-->
+                    <!--<div class="md-padding autocomplete">-->
+                        <!--<md-contact-chips style="width: 100%"-->
+                                          <!--ng-model="tableList"-->
+                                          <!--md-contacts="loadVS($query)"-->
+                                          <!--md-contact-name="bindingIdentifier"-->
+                                          <!--md-require-match="true"-->
+                                          <!--md-highlight-flags="i"-->
+                                          <!--placeholder="Search By Binding Identifier">-->
+                        <!--</md-contact-chips>-->
+                    <!--</div>-->
+
+
+                <!--</md-input-container>-->
                 <md-input-container class="md-block" flex-gt-sm>
                     <label class="input-left">Comment</label>
                     <input ng-model="newField.comment">
