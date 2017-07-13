@@ -12,7 +12,7 @@
     }
 </script>
 <script type="text/ng-template" id="EditSegments.html">
-    <div ng-controller="SegmentListCtrl" ng-init="initSegment()" class="container">
+    <div ng-controller="SegmentListCtrl" ng-init="initSegment()" class="container" ng-cloak>
         <div ng-show="loadingSelection" style="text-align: center;">
             <div layout="row" layout-sm="column" layout-align="space-around">
                 <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
@@ -1625,7 +1625,7 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
+                <div class="md-dialog-content large-dialog">
                     <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                         <md-content layout-padding>
 
@@ -1653,57 +1653,60 @@
                         </md-select>
 
                 </md-input-container>
-                <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block" flex-gt-sm>
-                    <label class="input-left">Cardinality*</label>
-                        <div class="form-inline">
-                            <input  placeholder="Min" name="cardMin" style="width:49%" id="cardMin" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
-                            <input  type="text" placeholder="Max" style="width:50%" name="cardMax" id="cardMax" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
-                        </div>
-                </md-input-container>
+                            <div layout="row" layout-align="start start">
+                             <md-input-container flex  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block" flex-gt-sm>
+                            <label class="input-left">Min Cardinality</label>
+                            <input name="cardMin"  id="cardMin"  ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
 
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label class="input-left">Datatype*</label>
-                    <div>
-                        <input  type="text" ng-model="searchDT.name" ng-hide="selectedDT()" />
-                        <li  ng-show="selectedDT()">
-                            {{DT.name}} <span ng-show="DT.ext">_{{DT.ext}}</span>
-                            <button type="button" class="close" aria-label="Close" ng-click="unselectDT()">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </li>
-                        <div ng-show="searchDT.name  && !selectedDT()">
-                            <li class="form-control" ng-class="{'active':isDTActive(datatype.id)}" ng-click="selectDT(datatype)" ng-repeat="datatype in datatypes | filter:searchDT">
-                                {{datatype.name}} <span ng-show="datatype.ext">_{{datatype.ext}}</span>
-                            </li>
-                        </div>
-                    </div>
-                </md-input-container>
-                <!--<md-input-container  ng-show="selectedDT() && DT.components.length===0" class="md-block" flex-gt-sm>-->
-                    <!--<label class="input-left" ng-class="{'igl-has-error has-feedback': !addFieldForm.minLength.$valid ||!addFieldForm.maxLength.$valid }">Length*</label>-->
-                    <!--<div class="controls col-md-9">-->
-                        <!--<div class="form-inline">-->
-                            <!--<input class="form-control" placeholder="Min Length" name="minLength" style="width:49%" id="minLength" ng-change="setDirty()" ng-pattern="/^\d+$/" ng-model="newField.minLength" required ng-minlength="0">-->
-                            <!--<input class="form-control" type="text" placeholder="Max Length" style="width:50%" name="maxLength" id="maxLength" ng-change="setDirty()" ng-pattern="/^\d+$|^\*?$/" ng-model="newField.maxLength" required>-->
-                        <!--</div>-->
+                            </md-input-container>
+                            <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block" flex-gt-sm>
+                                <label class="input-left">Max Cardinality*</label>
+                                    <input  type="text"  name="cardMax" id="cardMax"  ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
+                            </md-input-container>
+                            </div>
+
+                            <md-content layout-padding>
+                                <label class="input-left"> Data Type </label>
+                            <md-autocomplete
+                            md-selected-item="DT"
+
+                            md-search-text="searchText"
+                            md-items="item in querySearch(searchText)"
+                            md-item-text="item.label"
+                            md-min-length="0"
+                            placeholder="Search Data Type "
+                            md-autofocus>
+                            <md-item-template>
+                            <display-label of="item" desc="true"></display-label>
+                        </md-item-template>
+                        <md-not-found>
+                            No Data type.
+                        </md-not-found>
+                        </md-autocomplete>
+
+                            </md-content>
+
+
+                <!--<md-input-container class="md-block" flex-gt-sm>-->
+                    <!--<span class="input-left" style="margin:auto; font-weight: bold">Value Sets</span>-->
+                    <!--<div class="md-padding autocomplete">-->
+                        <!--<md-contact-chips style="width: 100%"-->
+                                          <!--ng-model="tableList"-->
+                                          <!--md-contacts="loadVS($query)"-->
+                                          <!--md-contact-name="bindingIdentifier"-->
+                                          <!--md-require-match="true"-->
+                                          <!--md-highlight-flags="i"-->
+                                          <!--placeholder="Search By Binding Identifier">-->
+                        <!--</md-contact-chips>-->
                     <!--</div>-->
-                <!--</md-input-container>-->
-                <!--<md-input-container class="md-block" flex-gt-sm ng-class="{'igl-has-error has-feedback': !addFieldForm.confLength.$valid}">-->
-                    <!--<label class="input-left">Conf Length</label>-->
-                        <!--<input class="form-control" name="confLength" id="confLength" ng-change="setDirty()" ng-model="newField.confLength">-->
-                <!--</md-input-container>-->
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label class="input-left">ValueSet</label>
-                    <div class="controls col-md-11">
-                        <tags-input ng-model="vs" key-property="id" display-property="bindingIdentifier" placeholder="Select Value Sets" add-from-autocomplete-only="true" replace-spaces-with-dashes="false" on-tag-added="tagAdded($tag)" on-tag-removed="tagRemoved($tag)">
-                            <auto-complete source="loadVS($query)" min-length="0" load-on-focus="true" max-results-to-show="10"></auto-complete>
-                        </tags-input>
-                    </div>
 
-                </md-input-container>
+
+                <!--</md-input-container>-->
                 <md-input-container class="md-block" flex-gt-sm>
                     <label class="input-left">Comment</label>
                     <input ng-model="newField.comment">
-                        </input></md-input-container>
+                        </input>
+                </md-input-container>
 
                         </md-content>
                     </div>

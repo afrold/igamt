@@ -522,7 +522,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         var modalInstance = $mdDialog.show({
             templateUrl: 'AddSegmentModal.html',
             controller: 'AddSegmentCtrl',
-            scope: $scope,
+            scope: $rootScope,
             preserveScope: true,
             locals: {
                 segments: $rootScope.segments,
@@ -544,7 +544,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     $scope.addGroupModal = function(place) {
         var modalInstance = $mdDialog.show({
             templateUrl: 'AddGroupModal.html',
-            scope: $scope,
+            scope: $rootScope,
             preserveScope: true,
             controller: 'AddGroupCtrl',
             locals: {
@@ -1627,9 +1627,7 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
         $rootScope.processMessageTree($rootScope.message);
         //console.log($rootScope.messageTree);
 
-        if ($scope.messagesParams) {
-            $scope.messagesParams.refresh();
-        }
+
         blockUI.stop();
         $mdDialog.hide();
 

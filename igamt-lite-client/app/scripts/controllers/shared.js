@@ -40,10 +40,6 @@ angular
                     if(type==='datatype'){
                         $scope.SharedtocView='sharedtocView.html';
                         $scope.getSharedDatatypes();
-                    } else if(type==='table') {
-                        $scope.SharedtocViewForTables='sharedTabletocView.html';
-                        $scope.SharedsubviewForTable="datatypePending.html";
-                        $scope.getSharedTables();
                     }
                 };
 
@@ -289,12 +285,8 @@ angular
                         blockUI.start();
                         $timeout(
                             function () {
-
-
                                 $rootScope.$emit("event:initDatatype");
-
                                 $rootScope.currentData = datatype;
-
                                 $scope.loadingSelection = false;
                                 $rootScope.datatype["type"] = "datatype";
                                 $rootScope.tableWidth = null;
@@ -329,40 +321,38 @@ angular
                             , 100);
 
                         setTimeout(function () {
-                            $scope.$broadcast('reCalcViewDimensions');
-                            console.log("refreshed Slider!!");
                         }, 1000);
                     }
                 };
 
-                $scope.selectTable = function (t) {
-                    $rootScope.Activate(t.id);
-                    $scope.SharedsubviewForTable = "ReadValueSets.html";
-
-                    $scope.loadingSelection = true;
-                    blockUI.start();
-
-                    $rootScope.table = t;
-                    $rootScope.table.smallCodes = $rootScope.table.codes.slice(0,1000);
-                    $rootScope.$emit("event:initTable");
-                    $rootScope.codeSystems = [];
-                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
-                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
-                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
-                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
-                            }
-                        }
-                    }
-                    $rootScope.references = [];
-
-                    angular.forEach($scope.datatypes, function (dt) {
-                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
-                    });
-
-                    $scope.loadingSelection = false;
-                    $rootScope.$emit("event:initEditArea");
-                    blockUI.stop();
-                };
+                // $scope.selectTable = function (t) {
+                //     $rootScope.Activate(t.id);
+                //     $scope.SharedsubviewForTable = "ReadValueSets.html";
+                //
+                //     $scope.loadingSelection = true;
+                //     blockUI.start();
+                //
+                //     $rootScope.table = t;
+                //     $rootScope.table.smallCodes = $rootScope.table.codes.slice(0,1000);
+                //     $rootScope.$emit("event:initTable");
+                //     $rootScope.codeSystems = [];
+                //     for (var i = 0; i < $rootScope.table.codes.length; i++) {
+                //         if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+                //             if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+                //                 $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+                //             }
+                //         }
+                //     }
+                //     $rootScope.references = [];
+                //
+                //     angular.forEach($scope.datatypes, function (dt) {
+                //         $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt), dt);
+                //     });
+                //
+                //     $scope.loadingSelection = false;
+                //     $rootScope.$emit("event:initEditArea");
+                //     blockUI.stop();
+                // };
 
 
 
