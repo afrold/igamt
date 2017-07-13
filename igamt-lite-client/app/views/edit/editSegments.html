@@ -69,8 +69,6 @@
                                                 </div>
                                             </md-input-container>
 
-
-
                                             <md-input-container class="md-block" flex-gt-sm>
                                                 <label class="input-left">Description</label>
                                                 <input type="text" disabled ng-change="setDirty()" name="description"
@@ -91,7 +89,6 @@
                                                 </div>
                                             </md-input-container>
 
-
                                             <md-input-container class="md-block" flex-gt-sm >
                                                 <label class="input-left">Comment</label>
                                                 <textarea rows="3"  md-select-on-focus
@@ -99,7 +96,6 @@
                                                          ng-model="segment.comment"
                                                 />
                                             </md-input-container>
-
 
                                             <md-input-container class="md-block" flex-gt-sm
                                                                 ng-show="segment.scope === 'HL7STANDARD' && segment.hl7Section != null && segment.hl7Section != ''">
@@ -597,7 +593,6 @@
                                              <div class="panel-primary panel-level1" is-open="accordStatus.isSeventhOpen" style="margin-top: 5px">
                                                 <div class="panel-body">
                                                     <div class="col-md-12">
-                                                        <h3 class="modal-title">Dynamic Mapping List</h3>
                                                         <span class="header3">
                                                             <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
                                                             Dynamic Datatype Field: {{segment.dynamicMappingDefinition.mappingStructure.segmentName}}-{{segment.dynamicMappingDefinition.mappingStructure.targetLocation}}
