@@ -334,15 +334,14 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         update: function(e, ui) {
         },
         stop: function(e, ui) {
+            console.log("STARTED!!!!");
+            blockUI.start();
             var newIfColumnData = [];
-
-
             for(var i=0, len1=$scope.coConRowIndexList.length; i < len1; i++){
                 var rowIndex = $scope.coConRowIndexList[i].rowIndex;
                 newIfColumnData.push($rootScope.segment.coConstraintsTable.ifColumnData[rowIndex]);
             }
             $rootScope.segment.coConstraintsTable.ifColumnData = newIfColumnData;
-
 
             for(var i in $rootScope.segment.coConstraintsTable.thenColumnDefinitionList) {
                 if ($rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id]) {
@@ -371,6 +370,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             }
             $scope.initRowIndexForCocon();
             $scope.setDirty();
+            blockUI.stop();
+            console.log("END!!!!");
         }
     };
    

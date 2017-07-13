@@ -287,7 +287,7 @@
                                             <div ng-repeat="node in listGlobalConformanceStatements">
                                                 <span ng-show="node.type =='group'">Group : {{node.name}}</span>
                                                 <span ng-show="node.type =='message'">Message : {{node.name}}</span>
-                                                <table st-table="displayed" st-safe-src="node.conformanceStatements" class="table table-striped table-bordered">
+                                                <table st-table="displayedCS" st-safe-src="node.conformanceStatements" class="table table-striped table-bordered">
                                                     <thead>
                                                         <tr class="tbl-header">
                                                             <th st-sort="constraintId" class="col-md-2">ID</th>
@@ -295,7 +295,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr ng-repeat="c in displayed">
+                                                        <tr ng-repeat="c in displayedCS">
                                                             <td class="col-md-2">{{c.constraintId}}</td>
                                                             <td class="col-md-10">{{c.description}}</td>
                                                         </tr>
@@ -321,7 +321,7 @@
                                             <div ng-repeat="node in listGlobalPredicates">
                                                 <span ng-show="node.type =='group'">Group : {{node.name}}</span>
                                                 <span ng-show="node.type =='message'">Message : {{node.name}}</span>
-                                                <table st-table="displayed" st-safe-src="node.predicates" class="table table-striped table-bordered">
+                                                <table st-table="displayedCP" st-safe-src="node.predicates" class="table table-striped table-bordered">
                                                     <thead>
                                                         <tr class="tbl-header">
                                                             <th st-sort="constraintTarget" class="col-md-2">Target</th>
@@ -331,7 +331,7 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr ng-repeat="c in displayed">
+                                                        <tr ng-repeat="c in displayedCP">
                                                             <td class="col-md-2">{{c.constraintTarget}}</td>
                                                             <td class="col-md-8">{{c.description}}</td>
                                                             <td class="col-md-1">{{c.trueUsage}}</td>

@@ -467,7 +467,7 @@
                                                                     <div>
                                                                         <span ng-show="currentNode.type =='group'">Group : {{currentNode.name}}</span>
                                                                         <span ng-show="currentNode.type =='message'">Message : {{currentNode.name}}</span>
-                                                                        <table st-table="displayed" st-safe-src="findingConfSt(currentNode)" class="table table-striped table-bordered">
+                                                                        <table st-table="displayedConf" st-safe-src="findingConfSt(currentNode)" class="table table-striped table-bordered">
                                                                             <thead>
                                                                             <tr class="tbl-header">
                                                                                 <th st-sort="constraintId" class="col-md-2">ID</th>
@@ -475,7 +475,7 @@
                                                                             </tr>
                                                                             </thead>
                                                                             <tbody>
-                                                                            <tr ng-repeat="c in displayed">
+                                                                            <tr ng-repeat="c in displayedConf">
                                                                                 <td class="col-md-2">{{c.constraintId}}</td>
                                                                                 <td class="col-md-10">{{c.description}}</td>
                                                                             </tr>

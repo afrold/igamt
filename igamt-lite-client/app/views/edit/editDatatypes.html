@@ -535,7 +535,7 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <span ng-hide="datatype.conformanceStatements.length> 0">No conformance statement</span>
-                                                        <table st-table="displayed"
+                                                        <table st-table="displayedCS"
                                                                st-safe-src="datatype.conformanceStatements"
                                                                class="table table-striped table-bordered"
                                                                ng-show="datatype.conformanceStatements.length > 0">
@@ -548,7 +548,7 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr ng-repeat="c in displayed ">
+                                                            <tr ng-repeat="c in displayedCS">
                                                                 <td class="col-md-1">
                                                                     {{c.constraintId}}
                                                                 </td>
@@ -586,7 +586,7 @@
                                                 <div class="panel-body">
                                                     <div class="col-md-12">
                                                         <span ng-hide="datatype.predicates.length > 0">No conditional predicate</span>
-                                                        <table st-table="displayed" st-safe-src="datatype.predicates"
+                                                        <table st-table="displayedCP" st-safe-src="datatype.predicates"
                                                                class="table table-striped table-bordered"
                                                                ng-show="datatype.predicates.length > 0">
                                                             <thead>
@@ -601,7 +601,7 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr ng-repeat="p in displayed">
+                                                            <tr ng-repeat="p in displayedCP">
                                                                 <td class="col-md-3">
                                                                     <span ng-bind="displayLocationForDatatype(datatype, p.constraintTarget)"/>
                                                                 </td>

@@ -32,7 +32,6 @@ angular.module('igl')
 
 
         $scope.setDirty = function() {
-            console.log("Called ============")
             $scope.editForm.$dirty = true;
         };
 

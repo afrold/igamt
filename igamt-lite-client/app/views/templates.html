@@ -1451,7 +1451,7 @@
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">Temporary Constraints</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                        <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
+                                        <table st-table="tempPredicatesDisplayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1" ng-show="constraintType === 'Complex'">Draggable</th>
@@ -1460,7 +1460,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="c in displayed">
+                                            <tr ng-repeat="c in tempPredicatesDisplayed">
                                                 <td class="col-md-1" align="center" ng-show="constraintType === 'Complex'">
                                                     <i class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingPredicate({nodeData: data})'}"></i>
                                                 </td>
@@ -1772,7 +1772,7 @@
                             <div class="col-md-12">
                                 <div class="panel panel-primary">
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                        <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
+                                        <table st-table="tempPredicatesDisplayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1"></th>
@@ -1780,7 +1780,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="c in displayed">
+                                            <tr ng-repeat="c in tempPredicatesDisplayed">
                                                 <td class="col-md-1" align="center">
                                                     <md-checkbox ng-checked="c.selected"  ng-click="selectPredicate(c);" aria-label="Select Constraint for Predicate" style="margin: 10px;"/>
                                                 </td>
@@ -1918,7 +1918,7 @@
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">Conformance Statements of {{selectedContextNode.name}}</div>
                                         <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                            <table st-table="displayed" st-safe-src="selectedContextNode.conformanceStatements" class="table table-striped table-bordered">
+                                            <table st-table="displayedCS" st-safe-src="selectedContextNode.conformanceStatements" class="table table-striped table-bordered">
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <th st-sort="constraintId" class="col-md-2">ID</th>
@@ -1926,7 +1926,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr ng-repeat="c in displayed">
+                                                <tr ng-repeat="c in displayedCS">
                                                     <td class="col-md-2">
                                                         <div layout="row">
                                                             <md-input-container flex="100" class="normal">
@@ -1983,7 +1983,7 @@
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">Conformance Statements of {{selectedContextNode.name}}</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                        <table st-table="displayed" st-safe-src="selectedContextNode.conformanceStatements" class="table table-striped table-bordered">
+                                        <table st-table="displayedCS" st-safe-src="selectedContextNode.conformanceStatements" class="table table-striped table-bordered">
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
@@ -1995,7 +1995,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="c in displayed">
+                                            <tr ng-repeat="c in displayedCS">
                                                 <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                                     <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                                                 </td>
@@ -2553,7 +2553,7 @@
                             <div class="panel panel-primary">
                                 <div class="panel-heading">Conformance Statements of {{selectedSegment.name}}</div>
                                 <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                    <table st-table="displayed" st-safe-src="selectedSegment.conformanceStatements" class="table table-striped table-bordered">
+                                    <table st-table="displayedCS" st-safe-src="selectedSegment.conformanceStatements" class="table table-striped table-bordered">
                                         <thead>
                                         <tr class="tbl-header">
                                             <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
@@ -2565,7 +2565,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="c in displayed">
+                                        <tr ng-repeat="c in displayedCS">
                                             <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                                 <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                                             </td>
@@ -3049,7 +3049,7 @@
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">Temporary Constraints</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                        <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
+                                        <table st-table="displayedCP" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1" ng-show="constraintType === 'Complex'">Draggable</th>
@@ -3058,7 +3058,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="c in displayed">
+                                            <tr ng-repeat="c in displayedCP">
                                                 <td class="col-md-1" align="center" ng-show="constraintType === 'Complex'">
                                                     <i class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingPredicate({nodeData: data})'}"></i>
                                                 </td>
@@ -3370,7 +3370,7 @@
                             <div class="col-md-12">
                                 <div class="panel panel-primary">
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                        <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
+                                        <table st-table="displayedCP" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1"></th>
@@ -3378,7 +3378,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="c in displayed">
+                                            <tr ng-repeat="c in displayedCP">
                                                 <td class="col-md-1" align="center">
                                                     <md-checkbox ng-checked="c.selected"  ng-click="selectPredicate(c);" aria-label="Select Constraint for Predicate" style="margin: 10px;"/>
                                                 </td>
@@ -3530,7 +3530,7 @@
                             <div class="panel panel-primary">
                                 <div class="panel-heading">Conformance Statements of {{selectedDatatype.name}}</div>
                                 <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                    <table st-table="displayed" st-safe-src="selectedDatatype.conformanceStatements" class="table table-striped table-bordered">
+                                    <table st-table="displayedCS" st-safe-src="selectedDatatype.conformanceStatements" class="table table-striped table-bordered">
                                         <thead>
                                         <tr class="tbl-header">
                                             <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
@@ -3542,7 +3542,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="c in displayed">
+                                        <tr ng-repeat="c in displayedCS">
                                             <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                                 <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                                             </td>
@@ -4026,7 +4026,7 @@
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">Temporary Constraints</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                        <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
+                                        <table st-table="displayedCP" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1" ng-show="constraintType === 'Complex'">Draggable</th>
@@ -4035,7 +4035,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="c in displayed">
+                                            <tr ng-repeat="c in displayedCP">
                                                 <td class="col-md-1" align="center" ng-show="constraintType === 'Complex'">
                                                     <i class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true, onStart:'draggingPredicate({nodeData: data})'}"></i>
                                                 </td>
@@ -4347,7 +4347,7 @@
                             <div class="col-md-12">
                                 <div class="panel panel-primary">
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                        <table st-table="displayed" st-safe-src="tempPredicates" class="table table-striped table-bordered">
+                                        <table st-table="displayedCP" st-safe-src="tempPredicates" class="table table-striped table-bordered">
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th class="col-md-1"></th>
@@ -4355,7 +4355,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="c in displayed">
+                                            <tr ng-repeat="c in displayedCP">
                                                 <td class="col-md-1" align="center">
                                                     <md-checkbox ng-checked="c.selected"  ng-click="selectPredicate(c);" aria-label="Select Constraint for Predicate" style="margin: 10px;"/>
                                                 </td>
@@ -5654,7 +5654,7 @@
                 <div class="md-dialog-content">
 
 
-                                            <table st-table="displayed" st-safe-src="selectedContextNode.conformanceStatements" class="table table-striped table-bordered">
+                                            <table st-table="displayedCS" st-safe-src="selectedContextNode.conformanceStatements" class="table table-striped table-bordered">
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <th st-sort="constraintId" class="col-md-2">ID</th>
@@ -5663,7 +5663,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr ng-repeat="c in selectedContextNode.conformanceStatements">
+                                                <tr ng-repeat="c in displayedCS">
                                                     <td class="col-md-2">
 
                                                          {{c.constraintId}}
@@ -6025,7 +6025,7 @@
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">List of Conformance Statements</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                        <table st-table="displayed" st-safe-src="tempComformanceStatements" class="table table-striped table-bordered">
+                                        <table st-table="displayedCS" st-safe-src="tempComformanceStatements" class="table table-striped table-bordered">
                                             <thead>
                                                 <tr class="tbl-header">
                                                     <th ng-show="constraintType === 'Complex'" class="col-md-1" style="width: 4.1667%">Draggable</th>
@@ -6035,7 +6035,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="c in displayed">
+                                                <tr ng-repeat="c in displayedCS">
                                                     <td ng-show="constraintType === 'Complex'" class="col-md-1" align="center" style="width: 4.1667%">
                                                         <i ng-show="c.assertion" class="glyphicon glyphicon-move cursorMove" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
                                                     </td>
