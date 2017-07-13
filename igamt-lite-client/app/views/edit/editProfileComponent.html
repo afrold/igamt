@@ -12,7 +12,7 @@
     }
 </script>
 <script type="text/ng-template" id="EditProfileComponent.html">
-    <div ng-show="isAuthenticated()" ng-controller="ListProfileComponentCtrl">
+    <div ng-show="isAuthenticated()" ng-controller="ListProfileComponentCtrl" ng-cloak>
         <!--<div class="row">-->
         <div ng-show="!isPending()">
             <div style="padding-top:10px">
@@ -20,7 +20,7 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Profile Component: {{profileComponent.name}} </span>
                         <div class="pull-right">
-                            <md-button ng-disabled="!editForm.$dirty||viewSettings.tableReadonly" title="Save Changes" type="button"
+                            <md-button ng-disabled="!editForm.$dirty||viewSettings.tableReadonly||editForm.$pristine" title="Save Changes" type="button"
                                     class="btn btn-raised btn-sm btn-success" ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </md-button>

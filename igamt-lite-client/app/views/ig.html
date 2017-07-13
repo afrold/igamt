@@ -1761,8 +1761,10 @@
 
                         <div class="row" >
                             <div class="md-padding autocomplete">
-
-                                <md-contact-chips style="width: 100%"
+                                <div layout="row">
+                                <span class="material-icons" flex="10" style="font-size: 39px;
+    margin-top: 15px;">search</span>
+                                <md-contact-chips  flex="90" style="width: 100%"
                                                   ng-model="tags"
                                                   md-contacts="loadUsernames($query)"
                                                   md-contact-name="fullname"
@@ -1773,10 +1775,10 @@
                                                   md-highlight-flags="i"
                                                   placeholder="Search By User Name">
                                 </md-contact-chips>
+                                </div>
 
-
-                                <md-list class="fixedRows">
-                                    <md-subheader class="md-no-sticky">Shared with</md-subheader>
+                                <md-list class="fixedRows" ng-if="igdocumentSelected.realUsers">
+                                    <md-subheader class="md-no-sticky">Participants</md-subheader>
                                     <md-list-item class="md-2-line contact-item" ng-repeat="contact in igdocumentSelected.realUsers">
                                         <img ng-src="{{generateHash(contact.email)}}" class="md-avatar" alt="{{contact.fullname}}" />
                                         <div class="md-list-item-text compact">

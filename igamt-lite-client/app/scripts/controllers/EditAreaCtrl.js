@@ -19,7 +19,7 @@ angular.module('igl')
 
         $scope.$watch(
             function() {
-                return $scope.editForm != undefined && $scope.editForm.$dirty;
+                return $scope.editForm != undefined && $scope.editForm.$dirty && !$scope.editForm.$pristine;
             },
             function handleFormState(newValue) {
                 if (newValue) {

@@ -12,7 +12,7 @@
     }
 </script>
 <script type="text/ng-template" id="EditMessages.html">
-    <div ng-controller="MessageListCtrl" ng-init="init()">
+    <div ng-controller="MessageListCtrl" ng-init="init()" ng-cloak>
         <div ng-show="loadingSelection" style="text-align: center;">
             <div layout="row" layout-sm="column" layout-align="space-around">
                 <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
@@ -1071,7 +1071,7 @@
         <form ng-cloak name="addSegForm" class="form-horizontal" novalidate id="addSegForm">
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2>Create Segment </h2>
+                    <h2>Add Segment </h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()">
                         <i class="material-icons">clear</i>
@@ -1080,7 +1080,7 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content large-dialogue">
+                <div class="md-dialog-content large-dialog">
                     <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                         <md-content layout-padding>
 
@@ -1192,7 +1192,7 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
+                <div class="md-dialog-content large-dialogue">
                 <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                     <md-content layout-padding>
                         <md-input-container class="md-block" flex-gt-sm>

@@ -3027,9 +3027,6 @@ body.modal-open {
 }
 label.input-left {
     text-align: left;
-    font-weight:bold;
-    color:black;
-    font-size: 14px;
 }
 //md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
 //    color: rgb(114, 127, 201) !important;
@@ -3242,6 +3239,8 @@ md-select.inside-table{
     overflow: auto;
 }
 .large-dialog{
+    min-height:700px;
+    min-width: 900px;
 
 }
 .metadata-scroll{
@@ -3358,13 +3357,12 @@ md-contact-chips {
 .table-striped>tbody>tr>td, .table-striped>tbody>tr>th {
     background-color: rgba(255,255,255,0.87) !important;
     color: black !important;
-    font-size: large !important;
 }
 .predictate-font{
     font-weight: bold;
     color:black;
 }
-md-input-container > label {
+md-input-container > label.input-left {
     color: black;
     font-weight: bold;
 }
@@ -3382,4 +3380,31 @@ md-input-container > label {
     position: relative;
     max-height: none !important;
     padding-bottom: 7px !important;
+}
+.md-input-container .md-placeholder, md-input-container label:not(.md-no-float):not(.md-container-ignore) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    -webkit-box-ordinal-group: 2;
+    -webkit-order: 1;
+    order: 1;
+    pointer-events: none;
+    -webkit-font-smoothing: antialiased;
+    padding-left: 6px;
+    padding-right: 0;
+    z-index: 1;
+    -webkit-transform: translate3d(0,28px,0) scale(1);
+    transform: translate3d(0,28px,0) scale(1);
+    -webkit-transition: -webkit-transform .4s cubic-bezier(0.25,.8,.25,1);
+    transition: -webkit-transform .4s cubic-bezier(0.25,.8,.25,1);
+    transition: transform .4s cubic-bezier(0.25,.8,.25,1);
+    transition: transform .4s cubic-bezier(0.25,.8,.25,1),-webkit-transform .4s cubic-bezier(0.25,.8,.25,1);
+    max-width: 100%;
+    -webkit-transform-origin: left top;
+    transform-origin: left top;
+    color: black;
+}
+md-input-container.md-default-theme .md-placeholder, md-input-container .md-placeholder, md-input-container.md-default-theme label, md-input-container label {
+    color: black;
 }
