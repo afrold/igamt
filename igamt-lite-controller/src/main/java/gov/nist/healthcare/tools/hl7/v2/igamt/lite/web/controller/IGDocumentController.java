@@ -1181,10 +1181,10 @@ public class IGDocumentController extends CommonController {
 
   @RequestMapping(value = "/{searchText}/PHINVADS/tables", method = RequestMethod.GET,
       produces = "application/json")
-  public Set<Table> findPHINVADSTables(@PathVariable("searchText") String searchText)
+  public List<Table> findPHINVADSTables(@PathVariable("searchText") String searchText)
       throws MalformedURLException {
     log.info("Fetching all Tables for " + searchText);
-    return new PhinvadsWSCallService().generateTableList(searchText);
+    return new TimerTaskForPHINVADSValueSetDigger().findAllpreloadedPHINVADSTablesBySearch(searchText);
   }
 
   // TODO Change to query as is but with $nin a list of messages that can be
