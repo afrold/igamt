@@ -334,44 +334,43 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         update: function(e, ui) {
         },
         stop: function(e, ui) {
-            console.log("STARTED!!!!");
-            blockUI.start();
-            var newIfColumnData = [];
-            for(var i=0, len1=$scope.coConRowIndexList.length; i < len1; i++){
-                var rowIndex = $scope.coConRowIndexList[i].rowIndex;
-                newIfColumnData.push($rootScope.segment.coConstraintsTable.ifColumnData[rowIndex]);
-            }
-            $rootScope.segment.coConstraintsTable.ifColumnData = newIfColumnData;
-
-            for(var i in $rootScope.segment.coConstraintsTable.thenColumnDefinitionList) {
-                if ($rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id]) {
-                    var oldThenMapData = $rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id];
-                    var newThenMapData = [];
-
-                    for(var j=0, len1=$scope.coConRowIndexList.length; j < len1; j++){
-                        var rowIndex = $scope.coConRowIndexList[j].rowIndex;
-                        newThenMapData.push(oldThenMapData[rowIndex]);
+            $timeout(
+                function () {
+                    var newIfColumnData = [];
+                    for(var i=0, len1=$scope.coConRowIndexList.length; i < len1; i++){
+                        var rowIndex = $scope.coConRowIndexList[i].rowIndex;
+                        newIfColumnData.push($rootScope.segment.coConstraintsTable.ifColumnData[rowIndex]);
                     }
-                    $rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id] = newThenMapData;
-                }
-            }
+                    $rootScope.segment.coConstraintsTable.ifColumnData = newIfColumnData;
 
-            for(var i in $rootScope.segment.coConstraintsTable.userColumnDefinitionList) {
-                if ($rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id]) {
-                    var oldUserMapData = $rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id];
-                    var newUserMapData = [];
+                    for(var i in $rootScope.segment.coConstraintsTable.thenColumnDefinitionList) {
+                        if ($rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id]) {
+                            var oldThenMapData = $rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id];
+                            var newThenMapData = [];
 
-                    for(var j=0, len1=$scope.coConRowIndexList.length; j < len1; j++){
-                        var rowIndex = $scope.coConRowIndexList[j].rowIndex;
-                        newUserMapData.push(oldUserMapData[rowIndex]);
+                            for(var j=0, len1=$scope.coConRowIndexList.length; j < len1; j++){
+                                var rowIndex = $scope.coConRowIndexList[j].rowIndex;
+                                newThenMapData.push(oldThenMapData[rowIndex]);
+                            }
+                            $rootScope.segment.coConstraintsTable.thenMapData[$rootScope.segment.coConstraintsTable.thenColumnDefinitionList[i].id] = newThenMapData;
+                        }
                     }
-                    $rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id] = newUserMapData;
-                }
-            }
-            $scope.initRowIndexForCocon();
-            $scope.setDirty();
-            blockUI.stop();
-            console.log("END!!!!");
+
+                    for(var i in $rootScope.segment.coConstraintsTable.userColumnDefinitionList) {
+                        if ($rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id]) {
+                            var oldUserMapData = $rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id];
+                            var newUserMapData = [];
+
+                            for(var j=0, len1=$scope.coConRowIndexList.length; j < len1; j++){
+                                var rowIndex = $scope.coConRowIndexList[j].rowIndex;
+                                newUserMapData.push(oldUserMapData[rowIndex]);
+                            }
+                            $rootScope.segment.coConstraintsTable.userMapData[$rootScope.segment.coConstraintsTable.userColumnDefinitionList[i].id] = newUserMapData;
+                        }
+                    }
+                    $scope.initRowIndexForCocon();
+                    $scope.setDirty();
+                }, 100);
         }
     };
    
