@@ -44,6 +44,7 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
@@ -54,6 +55,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
@@ -71,6 +73,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.PositionComparator;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentItemSource;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
@@ -83,6 +86,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ShareParticipantPermission;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
@@ -90,6 +95,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBi
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsTable;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
@@ -109,7 +117,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.PhinvadsWSCallService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
@@ -394,8 +401,7 @@ public class IGDocumentController extends CommonController {
       tableLibraryService.save(clonedTableLibrary);
       profileComponentLibraryService.save(clonedProfileComponentLibrary);
 
-      List<ProfileComponent> profilecomponents =
-          profileComponentLibraryService.findProfileComponentsById(profileComponentLibrary.getId());
+      List<ProfileComponent> profilecomponents = profileComponentLibraryService.findProfileComponentsById(profileComponentLibrary.getId());
       if (profilecomponents != null) {
         for (int i = 0; i < profilecomponents.size(); i++) {
           String oldPCId = null;
@@ -409,7 +415,6 @@ public class IGDocumentController extends CommonController {
           if (oldPCId != null) {
             profileComponentIdChangeMap.put(oldPCId, pc.getId());
           }
-
         }
       }
       for (CompositeProfileStructure cp : igDocument.getProfile().getCompositeProfiles()
@@ -425,6 +430,7 @@ public class IGDocumentController extends CommonController {
         compositeProfileStructureService.save(cp);
         compositeProfileIdChangeMap.put(oldCpId, cp.getId());
       }
+      
       for (ProfileComponent pc : profilecomponents) {
         List<String> newIds = new ArrayList<>();
         if (pc.getCompositeProfileStructureList() != null) {
@@ -534,8 +540,8 @@ public class IGDocumentController extends CommonController {
       igDocument.getProfile().setTableLibrary(clonedTableLibrary);
       igDocument.getProfile().setProfileComponentLibrary(clonedProfileComponentLibrary);
 
-      updateModifiedId(tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap,
-          igDocument.getProfile());
+      updateModifiedId(tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap, igDocument.getProfile());
+      updateModifiedIdForPC(profilecomponents,tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap, messageIdChangeMap);
       String sourceId = igDocument.getId();
       igDocument.setId(null);
       igDocument.getShareParticipantIds().clear();
@@ -549,6 +555,121 @@ public class IGDocumentController extends CommonController {
     } catch (CloneNotSupportedException e) {
       throw new IGDocumentException(e);
     }
+  }
+
+  private void updateModifiedIdForPC(List<ProfileComponent> profilecomponents,
+      HashMap<String, String> tableIdChangeMap, HashMap<String, String> datatypeIdChangeMap,
+      HashMap<String, String> segmentIdChangeMap, HashMap<String, String> messageIdChangeMap) {
+    
+    
+    for (ProfileComponent pc : profilecomponents) {
+
+      for(SubProfileComponent spc: pc.getChildren()){
+        ProfileComponentItemSource source = spc.getSource();
+        if(source.getComponentDt() != null){
+          source.setComponentDt(datatypeIdChangeMap.get(source.getComponentDt()));
+        }
+        if(source.getFieldDt() != null) {
+          source.setFieldDt(datatypeIdChangeMap.get(source.getFieldDt()));
+        }
+        if(source.getMessageId() != null) {
+          source.setMessageId(messageIdChangeMap.get(source.getMessageId()));
+        }
+        if(source.getSegmentId() != null) {
+          source.setSegmentId(segmentIdChangeMap.get(source.getSegmentId()));
+        }
+        
+        for (ValueSetOrSingleCodeBinding binding : spc.getOldValueSetBindings()) {
+          if (binding.getTableId() != null && tableIdChangeMap.containsKey(binding.getTableId())) {
+            binding.setTableId(tableIdChangeMap.get(binding.getTableId()));
+          }
+        }
+        
+        for (ValueSetOrSingleCodeBinding binding : spc.getValueSetBindings()) {
+          if (binding.getTableId() != null && tableIdChangeMap.containsKey(binding.getTableId())) {
+            binding.setTableId(tableIdChangeMap.get(binding.getTableId()));
+          }
+        }
+                
+        SubProfileComponentAttributes att = spc.getAttributes();
+        
+        for(TableLink tl:att.getTables()){
+          if (tl != null && tl.getId() != null && tableIdChangeMap.containsKey(tl.getId()))
+            tl.setId(tableIdChangeMap.get(tl.getId()));
+        }
+        for(TableLink tl:att.getOldTables()){
+          if (tl != null && tl.getId() != null && tableIdChangeMap.containsKey(tl.getId()))
+            tl.setId(tableIdChangeMap.get(tl.getId()));
+        }
+        if (att.getDatatype() != null && att.getDatatype().getId() != null && datatypeIdChangeMap.containsKey(att.getDatatype().getId()))
+          att.getDatatype().setId(datatypeIdChangeMap.get(att.getDatatype().getId()));
+        
+        if (att.getOldDatatype() != null && att.getOldDatatype().getId() != null && datatypeIdChangeMap.containsKey(att.getOldDatatype().getId()))
+          att.getOldDatatype().setId(datatypeIdChangeMap.get(att.getOldDatatype().getId()));
+        
+        if (att.getRef() != null && att.getRef().getId() != null && segmentIdChangeMap.containsKey(att.getRef().getId()))
+          att.getRef().setId(segmentIdChangeMap.get(att.getRef().getId()));
+        
+        if (att.getOldRef() != null && att.getOldRef().getId() != null && segmentIdChangeMap.containsKey(att.getOldRef().getId()))
+          att.getOldRef().setId(segmentIdChangeMap.get(att.getOldRef().getId()));
+        
+        
+        if (att.getDynamicMappingDefinition() != null) {
+          for (DynamicMappingItem dmi : att.getDynamicMappingDefinition().getDynamicMappingItems()) {
+            if (dmi.getDatatypeId() != null && datatypeIdChangeMap.containsKey(dmi.getDatatypeId())) {
+              dmi.setDatatypeId(datatypeIdChangeMap.get(dmi.getDatatypeId()));
+            }
+
+          }
+        }
+        
+        if (att.getOldDynamicMappingDefinition() != null) {
+          for (DynamicMappingItem dmi : att.getOldDynamicMappingDefinition().getDynamicMappingItems()) {
+            if (dmi.getDatatypeId() != null && datatypeIdChangeMap.containsKey(dmi.getDatatypeId())) {
+              dmi.setDatatypeId(datatypeIdChangeMap.get(dmi.getDatatypeId()));
+            }
+
+          }
+        }
+        
+        if (att.getCoConstraintsTable() != null && att.getCoConstraintsTable().getThenMapData() != null) {
+          for (String key : att.getCoConstraintsTable().getThenMapData().keySet()) {
+            List<CoConstraintTHENColumnData> dataList =
+                att.getCoConstraintsTable().getThenMapData().get(key);
+
+            for (CoConstraintTHENColumnData data : dataList) {
+              if (data.getValueSets() != null) {
+                for (ValueSetData vsd : data.getValueSets()) {
+                  if (vsd.getTableId() != null && tableIdChangeMap.containsKey(vsd.getTableId())) {
+                    vsd.setTableId(tableIdChangeMap.get(vsd.getTableId()));
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+        if (att.getOldCoConstraintsTable() != null && att.getOldCoConstraintsTable().getThenMapData() != null) {
+          for (String key : att.getOldCoConstraintsTable().getThenMapData().keySet()) {
+            List<CoConstraintTHENColumnData> dataList =
+                att.getOldCoConstraintsTable().getThenMapData().get(key);
+
+            for (CoConstraintTHENColumnData data : dataList) {
+              if (data.getValueSets() != null) {
+                for (ValueSetData vsd : data.getValueSets()) {
+                  if (vsd.getTableId() != null && tableIdChangeMap.containsKey(vsd.getTableId())) {
+                    vsd.setTableId(tableIdChangeMap.get(vsd.getTableId()));
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+    }
+    profileComponentService.saveAll(profilecomponents);
+    
   }
 
   private void updateModifiedId(HashMap<String, String> tableIdChangeMap,
