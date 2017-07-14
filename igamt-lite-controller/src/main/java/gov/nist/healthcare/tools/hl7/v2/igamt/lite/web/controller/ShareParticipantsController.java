@@ -123,6 +123,8 @@ public class ShareParticipantsController {
       user = new ShareParticipant(account.getId());
       user.setUsername(account.getUsername());
       user.setFullname(account.getFullName());
+      user.setEmail(account.getEmail());
+
     }
     return user;
   }

@@ -3365,7 +3365,6 @@ md-contact-chips {
 }
 md-input-container > label.input-left {
     color: black;
-    font-weight: bold;
 }
 .scroll-definition{
     //max-height: 500px !important;
@@ -3373,6 +3372,7 @@ md-input-container > label.input-left {
 }
 .panel-primary{
     max-height:800px !important;
+    padding: 7px !important;
     overflow: auto !important;
 
 
@@ -3382,34 +3382,15 @@ md-input-container > label.input-left {
     max-height: none !important;
     padding-bottom: 7px !important;
 }
-.md-input-container .md-placeholder, md-input-container label:not(.md-no-float):not(.md-container-ignore) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 100%;
-    -webkit-box-ordinal-group: 2;
-    -webkit-order: 1;
-    order: 1;
-    pointer-events: none;
-    -webkit-font-smoothing: antialiased;
-    padding-left: 6px;
-    padding-right: 0;
-    z-index: 1;
-    -webkit-transform: translate3d(0,28px,0) scale(1);
-    transform: translate3d(0,28px,0) scale(1);
-    -webkit-transition: -webkit-transform .4s cubic-bezier(0.25,.8,.25,1);
-    transition: -webkit-transform .4s cubic-bezier(0.25,.8,.25,1);
-    transition: transform .4s cubic-bezier(0.25,.8,.25,1);
-    transition: transform .4s cubic-bezier(0.25,.8,.25,1),-webkit-transform .4s cubic-bezier(0.25,.8,.25,1);
-    max-width: 100%;
-    -webkit-transform-origin: left top;
-    transform-origin: left top;
-    color: black;
-}
+
 md-input-container.md-default-theme .md-placeholder, md-input-container .md-placeholder, md-input-container.md-default-theme label, md-input-container label {
     color: black;
 }
-
+.panel.panel-default>.panel-heading, .panel>.panel-heading {
+    background-color: #eee;
+    /* color: black; */
+    font-weight: bold;
+}
 .igl-md-button-green {
     background-color:green !important;
 }
