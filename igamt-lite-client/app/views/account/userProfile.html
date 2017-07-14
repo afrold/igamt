@@ -11,7 +11,16 @@
   <div class="row">
     <div class="col-md-12">
       <!--Body content-->
-        <h3 class="page-header"><div msg key="account.resetMessage"></div></h3>
+        <div style="margin-top: 20px;margin-buttom: 20px" layout="row">
+            <md-toolbar  flex="100" class="ig-menu-bar">
+                <div class="md-toolbar-tools">
+                    <h2 flex md-truncate> <span msg key="account.resetMessage"></span></h2>
+                </div>
+            </md-toolbar>
+
+        </div>
+
+
         <div ng-form name="changePasswordForm" class="form-horizontal" novalidate>
             <div class="control-group form-group"  ng-class="{'has-success has-feedback': changePasswordForm.inputCurrentPassword.$valid, 'igl-has-error has-feedback': !changePasswordForm.inputCurrentPassword.$valid}">
                 <label class="control-label col-sm-2" for="inputCurrentPassword"><div msg key='account.currentPassword'></div></label>
@@ -57,7 +66,17 @@
             </div>
         </div>
 
-        <h3 class="page-header"><div msg key="account.message"></div></h3>
+
+        <div style="margin-top: 20px;margin-buttom: 20px" layout="row">
+            <md-toolbar  flex="100" class="ig-menu-bar">
+                <div class="md-toolbar-tools">
+                    <h2 flex md-truncate> <span msg key="account.message"></span></h2>
+                </div>
+            </md-toolbar>
+
+        </div>
+
+
         <div ng-form name="editAccountForm" class="form-horizontal" novalidate>
 
             <div class="control-group form-group" ng-class="{'has-success has-feedback': editAccountForm.inputUsername.$valid, 'igl-has-error has-feedback': !editAccountForm.inputUsername.$valid}">
@@ -160,7 +179,17 @@
             </div>
         </div>
 
-        <h3><div msg key="account.deleteSectionTitle"></div></h3>
+
+        <div style="margin-top: 20px;margin-buttom: 20px" layout="row">
+            <md-toolbar  flex="100" class="ig-menu-bar">
+                <div class="md-toolbar-tools">
+                    <h2 flex md-truncate> <span msg key="account.deleteSectionTitle"></span></h2>
+                </div>
+            </md-toolbar>
+
+        </div>
+
+
         <div ng-form name="deleteAccountForm" class="form-horizontal" novalidate>
             <p>
                 <div msg key="account.deleteMessage"></div>

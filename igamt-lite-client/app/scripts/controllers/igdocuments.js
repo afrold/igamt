@@ -3133,16 +3133,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
     $scope.preloadedPhinvadsTables = [];
     $scope.phinvadsTables = [];
     $scope.selectedTables = [];
-
-    $scope.loadPhinvads = function () {
-        $scope.loading = true;
-        return $http.get('api/igdocuments/PHINVADS/tables', {
-            timeout: 600000
-        }).then(function (response) {
-            $scope.phinvadsTables = response.data;
-            $scope.loading = false;
-        });
-    };
+    $scope.searched = false;
 
     $scope.cancel = function () {
         $mdDialog.hide();
@@ -3156,9 +3147,9 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
         }).then(function (response) {
             $scope.phinvadsTables = response.data;
             $scope.loading = false;
+            $scope.searched = true;
         });
     };
-
     $scope.isAlreadyIn = function (table) {
         if ($rootScope.tablesMap[table.id] == null) return false;
         return true;
@@ -3220,9 +3211,6 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
 
 
     };
-
-
-    $scope.loadPhinvads();
 });
 
 

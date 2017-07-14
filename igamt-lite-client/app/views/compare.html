@@ -242,9 +242,12 @@
         </div>
     </div>
 </div>
-<div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto">
-    <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
+
+<div class="login-required-page" ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto; width:90%; height:90%">
+    <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can also
+        <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
 </div>
+
 <script type="text/ng-template" id="tree_node">
     <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined)">
         <td class="col-xs-1" style="width:14%">

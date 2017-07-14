@@ -8,6 +8,18 @@
     }
 </script>
 <div class="container">
+
+
+    <div style="margin-top: 20px;margin-buttom: 20px" layout="row">
+        <md-toolbar  flex="100" class="ig-menu-bar">
+            <div class="md-toolbar-tools">
+                <h2 flex md-truncate><span msg key="forgotten.title"></span></h2>
+            </div>
+        </md-toolbar>
+
+    </div>
+
+
     <div class="row">
         <div class="col-md-10">
             <!--Body content-->
@@ -15,9 +27,9 @@
 
             <form name="forgottenPasswordForm" class="form-horizontal" novalidate>
 
-                <h3 class="page-header">
-                    <div msg key="forgotten.title"></div>
-                </h3>
+                <!--<h3 class="page-header">-->
+                    <!--<div msg key="forgotten.title"></div>-->
+                <!--</h3>-->
                 <h5><div msg key="forgotten.message"></div></h5>
 
                 <div class="form-group control-group" ng-class="{'has-success has-feedback': forgottenPasswordForm.inputUsername.$valid, 'igl-has-error has-feedback': !forgottenPasswordForm.inputUsername.$valid && !forgottenPasswordForm.inputUsername.$pristine}">

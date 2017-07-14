@@ -17,6 +17,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     //         }
     //     }
     // });
+
+    $rootScope.goNav = function(path){
+        $location.url(path);
+    };
+
     $rootScope.generateHash=function(string){
          var hash = md5.createHash(string);
          var link="//www.gravatar.com/avatar/"+hash+"?s=50&d=retro";

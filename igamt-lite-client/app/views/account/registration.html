@@ -10,12 +10,17 @@
     }
 </script>
 <div class="container">
+    <div style="margin-top: 20px;margin-buttom: 20px" layout="row">
+        <md-toolbar  flex="100" class="ig-menu-bar">
+            <div class="md-toolbar-tools">
+                <h2 flex md-truncate><i class="fa fa-user fa-fw"></i>  <span msg key="registration.titleMessage"></span></h2>
+            </div>
+        </md-toolbar>
+
+    </div>
+
 <div class="row">
 <div class="col-md-10">
-<!--Body content-->
-<h3 class="page-header">
-    <div msg key="registration.titleMessage"></div>
-</h3>
 <form name="addAccountForm" class="form-horizontal" novalidate>
 <div class="form-group control-group"
      ng-class="{'has-success has-feedback': addAccountForm.inputFullName.$valid, 'igl-has-error has-feedback': !addAccountForm.inputFullName.$valid}">
