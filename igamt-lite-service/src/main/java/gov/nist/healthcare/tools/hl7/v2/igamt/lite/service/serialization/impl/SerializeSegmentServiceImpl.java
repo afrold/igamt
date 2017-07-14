@@ -118,6 +118,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
             Map<Field, Datatype> fieldDatatypeMap = new HashMap<>();
             Map<Field, List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap = new HashMap<>();
             Map<String, Table> coConstraintValueTableMap = new HashMap<>();
+            Map<String, Datatype> coConstraintDatatypeMap = new HashMap<>();
             List<Table> tables = new ArrayList<>();
             for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()){
                 if(valueSetOrSingleCodeBinding.getTableId()!=null && !valueSetOrSingleCodeBinding.getTableId().isEmpty()){
@@ -183,6 +184,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
                       }
                     }
                   }
+                  
+                  if(coConstraintTHENColumnData.getDatatypeId() != null) {
+                    Datatype dt = datatypeService.findById(coConstraintTHENColumnData.getDatatypeId());
+                    if(dt != null){
+                      coConstraintDatatypeMap.put(coConstraintTHENColumnData.getDatatypeId(), dt); 
+                    }
+                  }
                 }
               }
             }
@@ -199,7 +207,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
                 }
               }
             }
-            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables, coConstraintValueTableMap, dynamicMappingDatatypeMap, showConfLength, showInnerLinks, host);
+            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables, coConstraintValueTableMap, dynamicMappingDatatypeMap, showConfLength, showInnerLinks, host, coConstraintDatatypeMap);
             serializableSegmentSection.addSection(serializableSegment);
             return serializableSegmentSection;
         }

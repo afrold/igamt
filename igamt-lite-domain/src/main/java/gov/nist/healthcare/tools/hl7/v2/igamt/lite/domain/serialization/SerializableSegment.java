@@ -32,6 +32,7 @@ public class SerializableSegment extends SerializableSection {
   private Map<Field, List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap;
   private List<Table> tables;
   private Map<String, Table> coConstraintValueTableMap;
+  private Map<String, Datatype> coConstraintDatatypeMap;
   private Boolean showConfLength;
   private Map<String, Datatype> dynamicMappingDatatypeMap;
   private Boolean showInnerLinks;
@@ -43,7 +44,7 @@ public class SerializableSegment extends SerializableSection {
       String defPreText, String defPostText, List<SerializableConstraint> constraints,
       Map<Field, Datatype> fieldDatatypeMap,
       Map<Field, List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap, List<Table> tables,
-      Map<String, Table> coConstraintValueTableMap, Map<String, Datatype> dynamicMappingDatatypeMap, Boolean showConfLength, Boolean showInnerLinks, String host) {
+      Map<String, Table> coConstraintValueTableMap, Map<String, Datatype> dynamicMappingDatatypeMap, Boolean showConfLength, Boolean showInnerLinks, String host, Map<String, Datatype> coConstraintDatatypeMap) {
     super(id, prefix, position, headerLevel, title);
     this.segment = segment;
     this.name = name;
@@ -61,6 +62,7 @@ public class SerializableSegment extends SerializableSection {
     this.showConfLength = showConfLength;
     this.showInnerLinks = showInnerLinks;
     this.host = host;
+    this.coConstraintDatatypeMap = coConstraintDatatypeMap;
   }
 
 
@@ -236,7 +238,7 @@ public class SerializableSegment extends SerializableSection {
     th.appendChild("IF");
     tr.appendChild(th);
     th = new Element("th");
-    th.addAttribute(new Attribute("colspan",String.valueOf(coConstraintsTable.getThenColumnDefinitionList().size())));
+    th.addAttribute(new Attribute("colspan",String.valueOf(calSize(coConstraintsTable.getThenColumnDefinitionList()))));
     th.appendChild("THEN");
     tr.appendChild(th);
     th = new Element("th");
@@ -250,9 +252,18 @@ public class SerializableSegment extends SerializableSection {
     th.appendChild(this.segment.getName()+"-"+coConstraintsTable.getIfColumnDefinition().getPath());
     tr.appendChild(th);
     for(CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getThenColumnDefinitionList()){
-      Element thThen = new Element("th");
-      thThen.appendChild(this.segment.getName()+"-"+coConstraintColumnDefinition.getPath());
-      tr.appendChild(thThen);
+      if(this.segment.getName().equals("OBX") && coConstraintColumnDefinition.getPath().equals("2")){
+        Element thThen1 = new Element("th");
+        thThen1.appendChild(this.segment.getName()+"-"+coConstraintColumnDefinition.getPath() + "(Value)");
+        tr.appendChild(thThen1);
+        Element thThen2 = new Element("th");
+        thThen2.appendChild(this.segment.getName()+"-"+coConstraintColumnDefinition.getPath() + "(Flavor)");
+        tr.appendChild(thThen2);
+      }else{
+        Element thThen = new Element("th");
+        thThen.appendChild(this.segment.getName()+"-"+coConstraintColumnDefinition.getPath());
+        tr.appendChild(thThen); 
+      }
     }
     for(CoConstraintUserColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getUserColumnDefinitionList()){
       Element thUser = new Element("th");
@@ -278,25 +289,44 @@ public class SerializableSegment extends SerializableSection {
           td.appendChild(coConstraintsTable.getIfColumnData().get(i).getValueData().getValue());
           tr.appendChild(td);
           for(CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getThenColumnDefinitionList()){
-            CoConstraintTHENColumnData coConstraintTHENColumnData = coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);
-            td = new Element("td");
-            if(coConstraintTHENColumnData.getValueSets().isEmpty()){
-              if(coConstraintTHENColumnData.getValueData() == null || coConstraintTHENColumnData.getValueData().getValue() == null || coConstraintTHENColumnData.getValueData().getValue().isEmpty()){
+            if(this.segment.getName().equals("OBX") && coConstraintColumnDefinition.getPath().equals("2")){
+              CoConstraintTHENColumnData coConstraintTHENColumnData = coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);
+              td = new Element("td");
+              Element td2 = new Element("td");
+              if(coConstraintTHENColumnData.getValueData() == null || coConstraintTHENColumnData.getValueData().getValue() == null || coConstraintTHENColumnData.getValueData().getValue().isEmpty() || coConstraintTHENColumnData.getDatatypeId() == null){
                 td.addAttribute(new Attribute("class","greyCell"));
+                td2.addAttribute(new Attribute("class","greyCell"));
               } else {
                 td.appendChild(coConstraintTHENColumnData.getValueData().getValue());
+                td2.appendChild(coConstraintDatatypeMap.get(coConstraintTHENColumnData.getDatatypeId()).getLabel());
               }
-            } else {
-              ArrayList<String> valueSetsList = new ArrayList<>();
-              for(ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()){
-                Table table = coConstraintValueTableMap.get(valueSetData.getTableId());
-                if(table!=null){
-                  valueSetsList.add(table.getBindingIdentifier());
+              tr.appendChild(td);
+              tr.appendChild(td2);
+              
+              
+              
+              
+            }else {
+              CoConstraintTHENColumnData coConstraintTHENColumnData = coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);
+              td = new Element("td");
+              if(coConstraintTHENColumnData.getValueSets().isEmpty()){
+                if(coConstraintTHENColumnData.getValueData() == null || coConstraintTHENColumnData.getValueData().getValue() == null || coConstraintTHENColumnData.getValueData().getValue().isEmpty()){
+                  td.addAttribute(new Attribute("class","greyCell"));
+                } else {
+                  td.appendChild(coConstraintTHENColumnData.getValueData().getValue());
                 }
+              } else {
+                ArrayList<String> valueSetsList = new ArrayList<>();
+                for(ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()){
+                  Table table = coConstraintValueTableMap.get(valueSetData.getTableId());
+                  if(table!=null){
+                    valueSetsList.add(table.getBindingIdentifier());
+                  }
+                }
+                td.appendChild(StringUtils.join(valueSetsList,","));
               }
-              td.appendChild(StringUtils.join(valueSetsList,","));
+              tr.appendChild(td);              
             }
-            tr.appendChild(td);
           }
           for(CoConstraintUserColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getUserColumnDefinitionList()){
             CoConstraintUSERColumnData coConstraintUSERColumnData = coConstraintsTable.getUserMapData().get(coConstraintColumnDefinition.getId()).get(i);
@@ -317,6 +347,20 @@ public class SerializableSegment extends SerializableSection {
     return coConstraintsElement;
   }
 
+  private int calSize(List<CoConstraintColumnDefinition> thenColumnDefinitionList) {
+    int count = 0;
+    for(CoConstraintColumnDefinition coConstraintColumnDefinition : thenColumnDefinitionList){
+      if(this.segment.getName().equals("OBX") && coConstraintColumnDefinition.getPath().equals("2")){
+        count = count + 2;
+      }else {
+        count = count + 1;
+      }
+    }
+    return count;
+  }
+
+
+
   private String getFullUsage(Segment segment, int i) {
     List<Predicate> predicates = super.findPredicate(i + 1, segment.getPredicates());
     if (predicates == null || predicates.isEmpty()) {
@@ -334,5 +378,17 @@ public class SerializableSegment extends SerializableSection {
 
   public Segment getSegment() {
     return segment;
+  }
+
+
+
+  public Map<String, Datatype> getCoConstraintDatatypeMap() {
+    return coConstraintDatatypeMap;
+  }
+
+
+
+  public void setCoConstraintDatatypeMap(Map<String, Datatype> coConstraintDatatypeMap) {
+    this.coConstraintDatatypeMap = coConstraintDatatypeMap;
   }
 }
