@@ -33,6 +33,7 @@ angular.module('igl')
 
         $scope.setDirty = function() {
             $scope.editForm.$dirty = true;
+
         };
 
         $scope.setUsage = function(node) {
