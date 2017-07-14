@@ -28,11 +28,15 @@
                         Management Tool (IGAMT)
                         </span>
                         <span class="pull-right">
-                                <button title="Login" ng-show="!isAuthenticated()" type="button" class="btn btn-raised btn-md btn-success"
-                                        ng-click="loginReq()">
-                                    <span><i
-                                            class="fa fa-user"></i> Login</span>
-                                </button>
+                                <!--<button title="Login" ng-show="!isAuthenticated()" type="button" class="btn btn-raised btn-md btn-success"-->
+                                        <!--ng-click="loginReq()">-->
+                                    <!---->
+                                <!--</button>-->
+
+                            <md-button title="Login"  class="md-raised md-primary igl-md-button-green" ng-click="loginReq()" ng-show="!isAuthenticated()" type="button" ><span><i
+                                    class="fa fa-user"></i> Login</span></md-button>
+
+
                                 </span>
                     </div>
                 </div>
@@ -40,65 +44,66 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <div class="panel panel-primary home-page-panel">
-                    <div class="panel-heading" style="background-color:#4FC3F7; border:1px #4FC3F7;">
-                        <span style="font-size: 14px; font-weight: bold"> Note to Users</span>
+                <md-toolbar>
+                    <div class="md-toolbar-tools home-page-toolbar">
+                        <h2 class="md-flex"> Note to Users</h2>
                     </div>
-                    <div class="panel-body">
-                        <div class="home-page-panel-content">
-                            <p style="text-align:left">IGAMT is a tool used to create HL7 v2.x implementation guides that contain one or more conformance profiles. The tool provides capabilities to create both narrative text (akin to a word processing program) and messaging requirements in a structured environment. IGAMT contains a model of all the message events for every version of the HL7 v2 standard. Users begin by selecting the version of the HL7 v2 standard and the message events they want to include and refine (constrain) in their implementation guide.
-                            </p>
-                            <p style="color:red; font-weight: bold;text-align:left">
-                                IGAMT is a work-in-progress and is in a constant state of change. Many core features exist and IGAMT has been used to create complete Implementation Guides in pilot projects. However, be aware that new features may not be completely functionality and some existing features will change. Also, we are currently working on integration with the NIST validation tool. If you have issues, please contact us or join the IGAMT Google Group to post questions.
-                            </p>
-                        </div>
+                </md-toolbar>
+
+                <md-content flex layout-padding class="home-page-panel" md-whiteframe>
+                    <div class="home-page-panel-content">
+                        <p style="text-align:justify">IGAMT is a tool used to create HL7 v2.x implementation guides that contain one or more conformance profiles. The tool provides capabilities to create both narrative text (akin to a word processing program) and messaging requirements in a structured environment. IGAMT contains a model of all the message events for every version of the HL7 v2 standard. Users begin by selecting the version of the HL7 v2 standard and the message events they want to include and refine (constrain) in their implementation guide.
+                        </p>
+                        <p style="color:red; font-weight: bold;text-align:justify">
+                            IGAMT is a work-in-progress and is in a constant state of change. Many core features exist and IGAMT has been used to create complete Implementation Guides in pilot projects. However, be aware that new features may not be completely functionality and some existing features will change. Also, we are currently working on integration with the NIST validation tool. If you have issues, please contact us or join the IGAMT Google Group to post questions.
+                        </p>
                     </div>
-                </div>
+                </md-content>
             </div>
 
             <div class="col-md-4">
-                <div class="panel panel-primary home-page-panel">
-                    <div class="panel-heading" style="background-color:#4FC3F7; border:1px #4FC3F7;">
-                        <span style="font-size: 14px; font-weight: bold">Have a Question?</span>
+                <md-toolbar class="">
+                    <div class="md-toolbar-tools home-page-toolbar">
+                        <h2 class="md-flex">Have a Question?</h2>
                     </div>
-                    <div class="panel-body">
-                        <div class="home-page-panel-content">
-                            <p style="text-align: left;">A Google Group <a class="point"
-                                                                           ng-href="https://groups.google.com/forum/#!forum/nist-igamt"
-                                                                           target="_blank">NIST-IGAMT</a>
-                                has been established for discussion/questions about the tool. No
-                                membership is required. A Google account is required for posting.</p>
-                            <ul>
-                                <li>Site: <a class="point" target="_blank"
-                                             ng-href="https://groups.google.com/forum/#!forum/nist-igamt">https://groups.google.com/forum/#!forum/nist-igamt</a>
-                                </li>
-                                <li>Email: nist-igamt@googlegroups.com</li>
-                            </ul>
-                        </div>
+                </md-toolbar>
+                <md-content flex layout-padding class="home-page-panel" md-whiteframe>
+                    <div class="home-page-panel-content">
+                        <p style="text-align: justify;">A Google Group <a class="point"
+                                                                       ng-href="https://groups.google.com/forum/#!forum/nist-igamt"
+                                                                       target="_blank">NIST-IGAMT</a>
+                            has been established for discussion/questions about the tool. No
+                            membership is required. A Google account is required for posting.</p>
+                        <ul>
+                            <li>Site: <a class="point" target="_blank"
+                                         ng-href="https://groups.google.com/forum/#!forum/nist-igamt">https://groups.google.com/forum/#!forum/nist-igamt</a>
+                            </li>
+                            <li>Email: nist-igamt@googlegroups.com</li>
+                        </ul>
                     </div>
-                </div>
+                </md-content>
             </div>
 
             <div class="col-md-4">
-                <div class="panel panel-primary home-page-panel">
-                    <div class="panel-heading" style="background-color:#4FC3F7; border:1px #4FC3F7;">
-                        <span style="font-size: 14px; font-weight: bold">Supported Browsers</span>
+                <md-toolbar class="">
+                    <div class="md-toolbar-tools home-page-toolbar">
+                        <h2 class="md-flex">Supported Browsers</h2>
                     </div>
-                    <div class="panel-body">
-                        <div class="home-page-panel-content">
-                            <p style="text-align: left">The following browsers are supported:
-                            <ul>
-                                <li>Chrome <span style="color:red">(Recommended)</span></li>
-                                <li>Firefox <span style="color:red"></span></li>
-                                <li>Safari</li>
-                            </ul>
-                            </p>
+                </md-toolbar>
 
-                        </div>
+                <md-content flex layout-padding class="home-page-panel" md-whiteframe>
+                    <div class="home-page-panel-content">
+                        <p style="text-align: justify">The following browsers are supported:
+                        <ul>
+                            <li>Chrome <span style="color:red">(Recommended)</span></li>
+                            <li>Firefox <span style="color:red"></span></li>
+                            <li>Safari</li>
+                        </ul>
+                        </p>
+
                     </div>
-                </div>
+                </md-content>
             </div>
-
 
         </div>
     </div>
@@ -107,36 +112,59 @@
     <!-- Three columns of text below the carousel -->
     <div class="row" style="text-align: center; margin-top: 20px">
         <div class="col-md-3" style="width:25%">
-            <a style="border:0px" class="btn  btn-default" href="#/registration" role="button">
-                <p>
-                            <span style="margin-top:5px" class="btn btn-raised btn-info btn-lg" role="button"><i
-                                    class="fa fa-user fa-fw"></i>&nbsp; Create an Account</span>
-                </p>
-            </a>
+            <!--<a style="border:0px" class="btn btn-default" href="#/registration" role="button">-->
+                <!--<p>-->
+                            <!--<span style="margin-top:5px" class="btn btn-raised btn-info btn-lg" role="button"><i-->
+                                    <!--class="fa fa-user fa-fw"></i>&nbsp; Create an Account</span>-->
+                <!--</p>-->
+            <!--</a>-->
+            <md-button title="About"  class="md-raised md-primary igl-md-button-blue" type="button" ng-click="goNav('/registration')">
+                <i
+                        class="fa fa-user fa-fw"></i>&nbsp; Create an Account
+
+            </md-button>
         </div>
         <!-- /.col-lg-4 -->
         <div class="col-md-3" style="width:25%">
-            <a style="border:0px" class="btn  btn-default" href="#/ig" role="button">
-                <p><span style="margin-top:5px" class="btn btn-raised btn-info btn-lg" role="button"><i
-                        class="fa fa-book fa-fw"></i>&nbsp;IG Documents</span>
-                </p>
-            </a>
+            <!--<a style="border:0px" class="btn btn-default" href="#/ig" role="button">-->
+                <!--<p><span style="margin-top:5px" class="btn btn-raised btn-info btn-lg" role="button"><i-->
+                        <!--class="fa fa-book fa-fw"></i>&nbsp;IG Documents</span>-->
+                <!--</p>-->
+            <!--</a>-->
+            <md-button title="About"  class="md-raised md-primary igl-md-button-blue" type="button" ng-click="goNav('/ig')">
+                <i
+                        class="fa fa-book fa-fw"></i>&nbsp;IG Documents
+
+            </md-button>
         </div>
         <!-- /.col-lg-4 -->
         <div class="col-md-3" style="width:25%">
-            <a style="border:0px" style="border:0px" class="btn  btn-default" href="#/issue" role="button">
-                <p><span style="margin-top:5px" class="btn btn-raised btn-info btn-lg" role="button"><i
-                        class="fa fa-question fa-fw"></i>&nbsp;Issue</span>
-                </p>
-            </a>
+            <!--<a style="border:0px" style="border:0px" class="btn btn-default" href="#/issue" role="button">-->
+                <!--<p><span style="margin-top:5px" class="btn btn-raised btn-info btn-lg" role="button"><i-->
+                        <!--class="fa fa-question fa-fw"></i>&nbsp;Issue</span>-->
+                <!--</p>-->
+            <!--</a>-->
+            <md-button title="About"  class="md-raised md-primary igl-md-button-blue" type="button" ng-click="goNav('/issue')">
+                <i
+                        class="fa fa-question fa-fw"></i>&nbsp;Issue
+
+            </md-button>
         </div>
         <!-- /.col-lg-4 -->
         <div class="col-md-3" style="width:25%">
-            <a style="border:0px" class="btn btn-default" href="#/about" role="button">
-                <p><span style="margin-top:5px" class="btn btn-raised btn-info btn-lg" role="button"><i
-                        class="fa fa-info fa-fw"></i>&nbsp;About</span>
-                </p>
-            </a>
+            <!--<a style="border:0px" class="btn btn-default" href="#/about" role="button">-->
+                <!--<p><span style="margin-top:5px" class="btn btn-raised btn-info btn-lg" role="button"><i-->
+                        <!--class="fa fa-info fa-fw"></i>&nbsp;About</span>-->
+                <!--</p>-->
+            <!--</a>-->
+
+            <md-button title="About"  class="md-raised md-primary igl-md-button-blue" type="button" ng-click="goNav('/about')">
+                <i
+                        class="fa fa-info fa-fw"></i>&nbsp;About
+
+            </md-button>
+
+
         </div>
     </div>
     <!-- /.row -->

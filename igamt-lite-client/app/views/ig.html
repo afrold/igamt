@@ -42,9 +42,21 @@
             <div msg key='account.pendingSection'></div>
         </div>
     </div>
-    <div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto">
-        <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You
-            can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
+    <div ng-show="!isAuthenticated()" class="login-required-page" style="font-size: 18px;text-align: center;margin:auto">
+
+        <div style="margin-top: 20px;margin-bottom: 20px" layout="row">
+            <md-toolbar  flex="100" class="ig-menu-bar">
+                <div class="md-toolbar-tools">
+                    <h2 flex md-truncate> <span msg key="loginAccess.Required"></span></h2>
+                </div>
+            </md-toolbar>
+        </div>
+        <md-content flex layout-padding class="home-page-panel" md-whiteframe>
+            <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You
+                can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
+        </md-content>
+
+
     </div>
 <script type="text/ng-template" id="hl7VersionsDlgMD.html">
 
@@ -1773,12 +1785,14 @@
                                                   md-contact-image="image"
                                                   md-require-match="true"
                                                   md-highlight-flags="i"
-                                                  placeholder="Search By User Name">
+                                                  placeholder="Search by username">
                                 </md-contact-chips>
                                 </div>
 
                                 <md-list class="fixedRows" ng-if="igdocumentSelected.realUsers">
-                                    <md-subheader class="md-no-sticky">Participants</md-subheader>
+                                    <!--<md-subheader class="md-no-sticky">List of Participants</md-subheader>-->
+                                    <h5>List of Participants</h5>
+                                    <hr />
                                     <md-list-item class="md-2-line contact-item" ng-repeat="contact in igdocumentSelected.realUsers">
                                         <img ng-src="{{generateHash(contact.email)}}" class="md-avatar" alt="{{contact.fullname}}" />
                                         <div class="md-list-item-text compact">

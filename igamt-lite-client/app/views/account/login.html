@@ -50,7 +50,7 @@
         </md-dialog-content>
 
         <md-dialog-actions layout="row">
-            <md-button md-autofocus ng-click="login()" type="submit" ng-disabled='!loginForm.$valid'>
+            <md-button md-autofocus ng-click="login()" class="md-raised md-primary" type="submit" ng-disabled='!loginForm.$valid'>
                 <i class="fa fa-sign-in"></i> <span msg key="login.button.login"></span>
             </md-button>
         </md-dialog-actions>
@@ -58,8 +58,8 @@
            <a href="#/forgotten" ng-click="cancel()" style="text-align:center">
                 <span msg key="login.forgotPwd"></span>
             </a>
-            <br />
-            <a href="#/registration" ng-click="cancel()" style="text-align:center">
+            <br/>
+             <a href="#/registration" ng-click="cancel()" style="text-align:center">
                 <span msg key="login.newAccount"></span>
             </a>
 

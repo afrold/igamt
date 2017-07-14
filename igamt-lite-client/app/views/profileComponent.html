@@ -104,6 +104,7 @@
                                 </form>
                             </div>
 
+                        </div>
                     </accordion>
 
 
@@ -114,9 +115,10 @@
                 </div>
             </div>
         </div>
-        <div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto">
-            <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
-        </div>
+    <div class="login-required-page" ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center;margin:auto; width:90%; height:90%">
+        <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can also
+            <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
+    </div>
     </div>
 </script>
 

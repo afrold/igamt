@@ -2154,7 +2154,8 @@ input.form-control-short80 {
 }
 
 .home-page-panel {
-    height: 300px;
+    height: 500px;
+    text-align:justify;
 }
 
 .home-page-panel>.panel-heading {
@@ -3407,4 +3408,17 @@ md-input-container > label.input-left {
 }
 md-input-container.md-default-theme .md-placeholder, md-input-container .md-placeholder, md-input-container.md-default-theme label, md-input-container label {
     color: black;
+}
+
+.igl-md-button-green {
+    background-color:green !important;
+}
+
+.igl-md-button-blue {
+    background-color:#2d9de7 !important;
+}
+
+.home-page-toolbar {
+    background-color: #2d9de7!important;
+    color: #fff;
 }
