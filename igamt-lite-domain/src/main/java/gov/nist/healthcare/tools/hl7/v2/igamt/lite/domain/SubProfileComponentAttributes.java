@@ -40,8 +40,6 @@ public class SubProfileComponentAttributes {
   private List<TableLink> oldTables = new ArrayList<TableLink>();
   private DatatypeLink datatype;
   private DatatypeLink oldDatatype;
-  // private String comment = "";
-  // private String oldComment = "";
   private List<Comment> oldComments = new ArrayList<Comment>();
   private List<Comment> comments = new ArrayList<Comment>();
   private String text = "";

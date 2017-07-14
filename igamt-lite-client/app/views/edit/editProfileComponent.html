@@ -498,7 +498,7 @@
                                             <md-tab-body>
                                         <div class="panel-primary">
                                             <div class="panel-body">
-                                                <div ng-if=!viewSettings.tableReadonly" >
+                                                <div ng-if="!viewSettings.tableReadonly">
                                                     <textarea froala="froalaEditorOptions" ng-model="profileComponent.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
                                                 </div>
 
