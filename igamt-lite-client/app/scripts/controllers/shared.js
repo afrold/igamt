@@ -119,10 +119,11 @@ angular
                     });
 
                     DatatypeService.getPendingSharedDatatypes().then(function(result){
-                        $scope.processListOfshared($scope.datatypes);
+                        $scope.pendingDatatypes=result;
+                        $scope.processListOfshared($scope.pendingDatatypes);
 
 
-                        angular.forEach($scope.datatypes, function(datatype){
+                        angular.forEach($scope.pendingDatatypes, function(datatype){
                             $scope.getOwnerName(datatype);
 
 
