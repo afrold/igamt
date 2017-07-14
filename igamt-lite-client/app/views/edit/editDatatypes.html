@@ -77,6 +77,7 @@
                               <span> Publish </span>
                     </md-button>
                     </span>
+                        </span>
                     </div>
 
                     <div class="static_info">
@@ -86,9 +87,8 @@
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                         Updated :{{datatype.dateUpdated | date:dateFormat}}
                         <span ng-if="datatype.owner" style="font-style: italic;">
-                         <i class="fa fa-user" aria-hidden="true"></i> 
-                         ,{{datatype.owner}}
-                    </span>
+<span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
+</span>
                         <span ng-if="datatype.hl7Version!=='*'">,HL7 Version: {{datatype.hl7Version}}</span>
                         <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
 

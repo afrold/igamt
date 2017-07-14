@@ -118,21 +118,36 @@
 
 <script type="text/ng-template" id="sharedtocView.html">
     <div ui-tree ng-controller="TreeCtrl" style="margin-left:5px;">
-      <div>
-        <span style="font-size:18px;" data-nodrag ng-click="showPending()"><strong>Pending requests</strong></span>
-      </div>
+      <!--<div>-->
+        <!--<span style="font-size:18px;" data-nodrag ng-click="showPending()"><strong>Pending requests</strong></span>-->
+      <!--</div>-->
         <ol ui-tree-nodes="" ng-model="SharedDataTypeTree">
             <li ng-repeat="dataLibrary in SharedDataTypeTree" ui-tree-node>
-                <!--<div ui-tree-handle data-nodrag>-->
-                    <!--<i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Data Types: <span class="badge">{{datatypes.length}}</span>-->
-                <!--</div>-->
+                <div ui-tree-handle data-nodrag>
+                    <i data-nodrag ng-click="toggle(this)" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsed, 'fa-caret-right': collapsed}"></i> Data Types: <span class="badge">{{datatypes.length}}</span>
+                </div>
 
                 <ol ui-tree-nodes="" ng-model="datatypes">
                     <li ng-repeat="data in datatypes track by $index" ui-tree-node ng-if="!collapsed">
 
-						<div ui-tree-handle data-nodrag context-menu="unshareDatatype" style="font-weight:normal;cursor:pointer;">
+						<div ui-tree-handle data-nodrag context-menu="unshareDatatype" style="font-weight:normal;cursor:pointer;" ng-click="editDatatype(data); Activate(data.id)" ng-class="{selected : data.id===activeModel}">
 
-                            <span data-nodrag ng-class="{selected : data.id===activeModel}" ng-click="editDatatype(data); Activate(data.id)">
+                            <span data-nodrag  >
+                                <display-label of="data" desc="true"></display-label>
+                            </span>
+                        </div>
+                    </li>
+                </ol>
+                <div ui-tree-handle data-nodrag>
+                    <i data-nodrag ng-click="pendingcollapsed=!pendingcollapsed" class="fa fa-caret-down" ng-class="{'fa-caret-down': !pendingcollapsed, 'fa-caret-right': !pendingcollapsed}"></i> Pending Datatypes <span class="badge">{{pendingDatatypes.length}}</span>
+                </div>
+
+                <ol ui-tree-nodes="" ng-model="pendingDatatypes">
+                    <li ng-repeat="data in pendingDatatypes track by $index" ui-tree-node ng-if="!pendingcollapsed">
+
+                        <div ui-tree-handle data-nodrag context-menu="pendingContext" style="font-weight:normal;cursor:pointer;" ng-click="editDatatype(data); Activate(data.id)" ng-class="{selected : data.id===activeModel}">
+
+                            <span data-nodrag>
                                 <display-label of="data" desc="true"></display-label>
                             </span>
                         </div>

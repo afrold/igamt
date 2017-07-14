@@ -195,7 +195,8 @@
                                                             ng-if="datatype.scope!=='INTERMASTER'">
 
                                                             <td class="col-md-7">
-                                                                <display-label of="datatype"></display-label>
+                                                                <display-label of="datatype"></display-label> <span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
+
                                                             </td>
                                                             <td class="col-md-3">
 
@@ -215,7 +216,7 @@
                                                             <td class="col-md-2">
                                                                 <button class="btn btn-raised btn-primary btn-xs"
                                                                         type="button" ng-click="addDtFlv(datatype)"
-                                                                        ng-disabled="checkImported(datatype,datatype.hl7Version)">
+                                                                        ng-disabled="checkImported(datatype,datatype.hl7Version)||datatype.hl7Version=='*'">
                                                                     <i class="fa fa-plus fa-fw"></i>
                                                                 </button>
                                                             </td>

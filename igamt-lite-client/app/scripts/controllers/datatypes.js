@@ -1254,6 +1254,10 @@ angular.module('igl')
 
             $http.get('api/usernames').then(function(response) {
                 var userList = response.data;
+                angular.forEach(userList, function (user) {
+                    $rootScope.generateHash(user.email);
+
+                });
                 var filteredUserList = userList.filter(function(user) {
                     // Add accountId var
                     user.accountId = user.id;
@@ -3016,6 +3020,7 @@ angular.module('igl').controller('ShareDatatypeCtrl', function($scope, $mdDialog
                         participant.username = response.data.username;
                         participant.fullname = response.data.fullname;
                         participant.email=response.data.email;
+                        participant.image = $rootScope.generateHash(participant.email);
 
                     },
                     function(error) {

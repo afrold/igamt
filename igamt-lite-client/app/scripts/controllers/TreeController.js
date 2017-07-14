@@ -1142,6 +1142,9 @@ angular
 
                             },
                             parent: angular.element(document).find('body'),
+                            scope:$rootScope,
+                            preserveScope:true,
+
                             controller: 'addSharedDts'
                         });
 
@@ -2420,6 +2423,32 @@ angular.module('igl').controller('AddDatatypeCtrlFromUserLib',
 angular.module('igl').controller('addSharedDts',
     function($scope, $rootScope, hl7Version, DatatypeLibrarySvc, DatatypeService, TableLibrarySvc, TableService, $http, datatypeLibrary, tableLibrary, versionAndUseMap,$mdDialog, datatypes) {
         $scope.versionAndUseMap = versionAndUseMap;
+
+        $scope.getOwnerName = function(element) {
+            if(!element.accountId) {
+                return null;
+            }
+            return $http.get('api/shareparticipant', { params: { id: element.accountId } })
+                .then(
+                    function(response) {
+
+                        console.log("Response is Here")
+                        console.log(response.data)
+
+                        element.owner = response.data;
+
+                    },
+                    function(error) {
+                        console.log(error);
+                    });
+        };
+
+
+
+        angular.forEach(datatypes,function(datatype){
+            $scope.getOwnerName(datatype);
+
+        });
         $scope.hl7Datatypes=datatypes;
 
         $scope.TablesIds=[];

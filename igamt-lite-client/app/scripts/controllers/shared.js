@@ -69,13 +69,12 @@ angular
                                 console.log("Response is Here")
                                 console.log(response.data)
 
-                                element.owner = response.data.username + " - " + response.data.fullname;
+                                element.owner = response.data;
 
                             },
                             function(error) {
                                 console.log(error);
-                            }
-                        );
+                            });
                 };
 
                 $scope.init=function(){
@@ -120,11 +119,18 @@ angular
                     });
 
                     DatatypeService.getPendingSharedDatatypes().then(function(result){
-                        $scope.pendingDatatypes = result;
-                        angular.forEach($scope.pendingDatatypes, function(datatype){
+                        $scope.processListOfshared($scope.datatypes);
+
+
+                        angular.forEach($scope.datatypes, function(datatype){
                             $scope.getOwnerName(datatype);
-                            $rootScope.datatypesMap[datatype.id]=datatype;
+
+
+                            //$rootScope.datatypesMap[datatype.id]=datatype;
+                            //$scope.processDatatype(datatype);
+
                         });
+                        blockUI.stop();
 
                         if($scope.pendingDatatypes.length > 0) {
                             $scope.hasPending = true;
@@ -386,6 +392,22 @@ angular
                         }
 
                     ]
+                ];
+                $scope.pendingContext=[
+                    ['Confirm Share',
+                        function ($itemScope) {
+                            $scope.confirmShareDocument($itemScope.data);
+
+                        }
+
+                    ],
+                    ['Reject Share',
+                        function ($itemScope) {
+                            $scope.rejectShareDocument($itemScope.data);
+                        }
+
+                    ]
+
                 ];
 
                 $scope.unshareTable=[
