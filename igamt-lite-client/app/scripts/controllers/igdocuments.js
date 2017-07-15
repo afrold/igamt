@@ -1439,10 +1439,24 @@ angular.module('igl')
                                     $scope.coConRowIndexList.push(rowIndexObj);
                                 }
 
-                                $rootScope.references = [];
-                                angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
-                                    $rootScope.findSegmentRefs($rootScope.segment, message, '', '', message);
+                                // $rootScope.references = [];
+                                // angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
+                                //     $rootScope.findSegmentRefs($rootScope.segment, message, '', '', message);
+                                // });
+
+                                $rootScope.crossRef = {};
+
+                                SegmentService.crossRef($rootScope.segment.id,$rootScope.igdocument.id).then(function (result) {
+                                    $rootScope.crossRef = result;
+                                    console.log("Cross REF Found!!![" + $rootScope.segment.id + "][" + $rootScope.igdocument.id + "]");
+                                    console.log($rootScope.crossRef);
+                                }, function (error) {
+                                    $scope.loadingSelection = false;
+                                    $rootScope.msg().text = error.data.text;
+                                    $rootScope.msg().type = error.data.type;
+                                    $rootScope.msg().show = true;
                                 });
+
 
                                 $scope.loadingSelection = false;
                                 $rootScope.$emit("event:initEditArea");

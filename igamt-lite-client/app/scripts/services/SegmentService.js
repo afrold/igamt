@@ -184,6 +184,21 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
             });
             return delay.promise;
         },
+
+        crossRef: function(segmentId, igDocumentId) {
+            var delay = $q.defer();
+            var wrapper = {};
+            wrapper.segmentId = segmentId;
+            wrapper.igDocumentId = igDocumentId;
+            $http.post('api/crossRefs/segment', wrapper).then(function(response) {
+                var ref = angular.fromJson(response.data);
+                delay.resolve(ref);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
+
         saves: function(segments) {
             var delay = $q.defer();
             for (var i = 0; i < segments.length; i++) {

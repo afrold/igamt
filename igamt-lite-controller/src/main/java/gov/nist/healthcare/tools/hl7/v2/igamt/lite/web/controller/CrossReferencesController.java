@@ -33,11 +33,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.VariesMapItem;
@@ -60,6 +63,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.M
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.MessageFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.MessagePredicateFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.MessageValueSetBindingFound;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.ProfileComponentFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentConformanceStatmentFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentPredicateFound;
@@ -69,6 +73,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 
@@ -80,8 +85,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 @RequestMapping("/crossRefs")
 
 public class CrossReferencesController {
-
-
   @Autowired
   private IGDocumentService igDocumentService;
   @Autowired
@@ -98,31 +101,62 @@ public class CrossReferencesController {
   ExportFontService exportFontService;
   @Autowired
   private DatatypeService datatypeService;
-
+  @Autowired
+  private ProfileComponentService profileComponentService;
   @Autowired
   private SegmentService segmentService;
 
-
   @RequestMapping(value = "/segment", method = RequestMethod.POST, produces = "application/json")
-  public SegmentCrossReference findSegmentReferences(@RequestBody SegmentCrossRefWrapper wrapper)
-      throws Exception {
-    List<MessageFound> founds = new ArrayList<MessageFound>();
+  public SegmentCrossReference findSegmentReferences(@RequestBody SegmentCrossRefWrapper wrapper) throws Exception {
+    List<MessageFound> messageFounds = new ArrayList<MessageFound>();
+    List<ProfileComponentFound>  profileComponentFounds = new ArrayList<ProfileComponentFound>();
     SegmentCrossReference ret = new SegmentCrossReference();
     IGDocument ig = igDocumentService.findById(wrapper.getIgDocumentId());
-
     Set<Message> messages = ig.getProfile().getMessages().getChildren();
     for (Message m : messages) {
-
-      findSegmentInsideMessage(wrapper.getSegmentId(), m, founds);
+      findSegmentInsideMessage(wrapper.getSegmentId(), m, messageFounds);
     }
-
-    ret.setMessageFounds(founds);
+    for(ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()){
+      ProfileComponent pc = profileComponentService.findById(link.getId());
+      for(SubProfileComponent spc : pc.getChildren()){
+        
+        if(spc.getType().equals("segment") || spc.getType().equals("segmentRef")){
+          if(spc.getAttributes().getOldRef().getId().equals(wrapper.getSegmentId())){
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("oldRef of " + spc.getType());
+            profileComponentFounds.add(pcf);
+          }else if(spc.getAttributes().getRef().getId().equals(wrapper.getSegmentId())){
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("newRef of " + spc.getType());
+            profileComponentFounds.add(pcf);
+          }
+        }else{
+          if(spc.getSource() != null && spc.getSource().getSegmentId() != null){
+            if(spc.getSource().getSegmentId().equals(wrapper.getSegmentId())){
+              ProfileComponentFound pcf = new ProfileComponentFound();
+              pcf.setDescription(pc.getDescription());
+              pcf.setId(pc.getId());
+              pcf.setName(pc.getName());
+              pcf.setTargetPosition(spc.getPosition());
+              pcf.setWhere("From " + spc.getFrom() + ", Type: " + spc.getType());
+              profileComponentFounds.add(pcf);
+            }  
+          }          
+        }
+      }
+    }
+    ret.setMessageFounds(messageFounds);
+    ret.setProfileComponentFound(profileComponentFounds);
     ret.setEmpty();
-
     return ret;
-
-
-
   }
 
   /**
@@ -133,10 +167,7 @@ public class CrossReferencesController {
   private void findSegmentInsideMessage(String segmentId, Message m, List<MessageFound> founds) {
     // TODO Auto-generated method stub
     for (int i = 0; i < m.getChildren().size(); i++) {
-
-      findReferenceInsideGroup(segmentId, m.getChildren().get(i), i, founds, m.getName(),
-          m.getName(), m);
-
+      findReferenceInsideGroup(segmentId, m.getChildren().get(i), i, founds, null,null, m);
     }
   }
 
@@ -151,15 +182,16 @@ public class CrossReferencesController {
       int i, List<MessageFound> founds, String path, String positionPath, Message m) {
 
     if (segmentRefOrGroup instanceof SegmentRef) {
-
-      if (((SegmentRef) segmentRefOrGroup).getId().equals(segmentId)) {
+      Segment s = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
+      if (s.getId().equals(segmentId)) {
         MessageFound found = new MessageFound();
-        Segment s = segmentService.findById(((SegmentRef) segmentRefOrGroup).getId());
-        if (s != null) {
+        if(path == null){
+          found.setPath(s.getLabel());
+          found.setPositionPath("" + segmentRefOrGroup.getPosition());   
+        }else {
           found.setPath(path + "." + s.getLabel());
+          found.setPositionPath(positionPath + "." + segmentRefOrGroup.getPosition());
         }
-
-        found.setPositionPath(positionPath + "." + segmentRefOrGroup.getPosition());
         found.setDescription(m.getDescription());
         found.setIdentifier(m.getIdentifier());
         found.setName(m.getName());
@@ -170,14 +202,14 @@ public class CrossReferencesController {
     } else if (segmentRefOrGroup instanceof Group) {
       List<SegmentRefOrGroup> children = ((Group) segmentRefOrGroup).getChildren();
       for (int j = 0; j < children.size(); j++) {
-        findReferenceInsideGroup(segmentId, children.get(j), j, founds,
-            path + "." + ((Group) segmentRefOrGroup).getName(),
-            positionPath + "." + segmentRefOrGroup.getPosition(), m);
+        if(path == null){
+          findReferenceInsideGroup(segmentId, children.get(j), j, founds, ((Group) segmentRefOrGroup).getName(), "" + segmentRefOrGroup.getPosition(), m);
+        }else {
+          findReferenceInsideGroup(segmentId, children.get(j), j, founds, path + "." + ((Group) segmentRefOrGroup).getName(), positionPath + "." + segmentRefOrGroup.getPosition(), m);
+        }
       }
     }
-
   }
-
 
   @RequestMapping(value = "/datatype", method = RequestMethod.POST, produces = "application/json")
   public DatatypeCrossReference findDatatypeCrossReference(
