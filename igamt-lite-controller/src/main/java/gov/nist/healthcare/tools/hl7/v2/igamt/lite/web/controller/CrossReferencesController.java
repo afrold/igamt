@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingDefinition;
@@ -49,10 +50,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstrai
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.DatatypeCrossReference;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.MessageCrossReference;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.ProfileComponentCrossReference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.SegmentCrossReference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.ValueSetCrossReference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.CoConstraintFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.ComponentFound;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.CompositeProfileFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.DatatypeConformanceStatmentFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.DatatypeFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.DatatypePredicateFound;
@@ -106,6 +110,78 @@ public class CrossReferencesController {
   @Autowired
   private SegmentService segmentService;
 
+  @RequestMapping(value = "/profilecomponent", method = RequestMethod.POST, produces = "application/json")
+  public ProfileComponentCrossReference findProfileComponentReferences(@RequestBody ProfileComponentCrossRefWrapper wrapper) throws Exception {
+    List<CompositeProfileFound> compositeProfileFounds = new ArrayList<CompositeProfileFound>();
+    ProfileComponentCrossReference ret = new ProfileComponentCrossReference();
+    IGDocument ig = igDocumentService.findById(wrapper.getIgDocumentId());
+    Set<CompositeProfileStructure> compositeProfileStructures = ig.getProfile().getCompositeProfiles().getChildren();
+    for (CompositeProfileStructure cps : compositeProfileStructures) {
+      if(cps.getProfileComponentIds().contains(wrapper.getProfileComponentId())){
+        CompositeProfileFound cpFound = new CompositeProfileFound();
+        cpFound.setId(cps.getId());
+        cpFound.setName(cps.getName());
+        cpFound.setDescription(cps.getDescription());
+        compositeProfileFounds.add(cpFound);
+      }
+    }
+    ret.setCompositeProfileFound(compositeProfileFounds);
+    ret.setEmpty();
+    return ret;
+  }
+  
+  @RequestMapping(value = "/message", method = RequestMethod.POST, produces = "application/json")
+  public MessageCrossReference findMessageReferences(@RequestBody MessageCrossRefWrapper wrapper) throws Exception {
+    List<ProfileComponentFound>  profileComponentFounds = new ArrayList<ProfileComponentFound>();
+    List<CompositeProfileFound> compositeProfileFounds = new ArrayList<CompositeProfileFound>();
+    MessageCrossReference ret = new MessageCrossReference();
+    IGDocument ig = igDocumentService.findById(wrapper.getIgDocumentId());
+    Set<CompositeProfileStructure> compositeProfileStructures = ig.getProfile().getCompositeProfiles().getChildren();
+    for (CompositeProfileStructure cps : compositeProfileStructures) {
+      if(wrapper.getMessageId().equals(cps.getCoreProfileId())){
+        CompositeProfileFound cpFound = new CompositeProfileFound();
+        cpFound.setId(cps.getId());
+        cpFound.setName(cps.getName());
+        cpFound.setDescription(cps.getDescription());
+        compositeProfileFounds.add(cpFound);
+      }
+    }
+    for(ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()){
+      ProfileComponent pc = profileComponentService.findById(link.getId());
+      for(SubProfileComponent spc : pc.getChildren()){
+        if(spc.getType().equals("message")){
+          if(spc.getSource() != null && spc.getSource().getMessageId() != null){
+            if(spc.getSource().getMessageId().equals(wrapper.getMessageId())){
+              ProfileComponentFound pcf = new ProfileComponentFound();
+              pcf.setDescription(pc.getDescription());
+              pcf.setId(pc.getId());
+              pcf.setName(pc.getName());
+              pcf.setTargetPosition(spc.getPosition());
+              pcf.setWhere(spc.getType());
+              profileComponentFounds.add(pcf);  
+            }
+          }
+        }else{
+          if(spc.getSource() != null && spc.getSource().getMessageId() != null){
+            if(spc.getSource().getMessageId().equals(wrapper.getMessageId())){
+              ProfileComponentFound pcf = new ProfileComponentFound();
+              pcf.setDescription(pc.getDescription());
+              pcf.setId(pc.getId());
+              pcf.setName(pc.getName());
+              pcf.setTargetPosition(spc.getPosition());
+              pcf.setWhere(spc.getType());
+              profileComponentFounds.add(pcf);  
+            } 
+          }          
+        }
+      }
+    }
+    ret.setCompositeProfileFound(compositeProfileFounds);
+    ret.setProfileComponentFound(profileComponentFounds);
+    ret.setEmpty();
+    return ret;
+  }
+  
   @RequestMapping(value = "/segment", method = RequestMethod.POST, produces = "application/json")
   public SegmentCrossReference findSegmentReferences(@RequestBody SegmentCrossRefWrapper wrapper) throws Exception {
     List<MessageFound> messageFounds = new ArrayList<MessageFound>();

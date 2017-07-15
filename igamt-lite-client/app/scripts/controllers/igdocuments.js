@@ -2,10 +2,7 @@
  * Created by haffo on 1/12/15.
  */
 
-angular.module('igl')
-
-    .controller('IGDocumentListCtrl', function (TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService, orderByFilter, $mdDialog) {
-
+angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService, orderByFilter, $mdDialog) {
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
         $scope.uiGrid = {};
@@ -1439,11 +1436,6 @@ angular.module('igl')
                                     $scope.coConRowIndexList.push(rowIndexObj);
                                 }
 
-                                // $rootScope.references = [];
-                                // angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
-                                //     $rootScope.findSegmentRefs($rootScope.segment, message, '', '', message);
-                                // });
-
                                 $rootScope.crossRef = {};
 
                                 SegmentService.crossRef($rootScope.segment.id,$rootScope.igdocument.id).then(function (result) {
@@ -1612,6 +1604,18 @@ angular.module('igl')
                         } catch (e) {
 
                         }
+
+                        MessageService.crossRef($rootScope.message.id,$rootScope.igdocument.id).then(function (result) {
+                            $rootScope.crossRef = result;
+                            console.log("Cross REF Found!!![" + $rootScope.message.id + "][" + $rootScope.igdocument.id + "]");
+                            console.log($rootScope.crossRef);
+                        }, function (error) {
+                            $scope.loadingSelection = false;
+                            $rootScope.msg().text = error.data.text;
+                            $rootScope.msg().type = error.data.type;
+                            $rootScope.msg().show = true;
+                        });
+
                         $rootScope.subview = "EditMessages.html";
                         $rootScope.$emit("event:initEditArea");
 
@@ -1692,8 +1696,6 @@ angular.module('igl')
             $timeout(
                 function () {
                     try {
-
-
                         $rootScope.originalPcLib = $rootScope.igdocument.profile.profileComponentLibrary;
                         //$rootScope.profileComponentLib = angular.copy($rootScope.igdocument.profile.profileComponentLibrary);
                         $rootScope.currentData = $rootScope.profileComponent;
@@ -1712,6 +1714,18 @@ angular.module('igl')
                         } catch (e) {
 
                         }
+
+                        PcService.crossRef($rootScope.profileComponent.id,$rootScope.igdocument.id).then(function (result) {
+                            $rootScope.crossRef = result;
+                            console.log("Cross REF Found!!![" + $rootScope.profileComponent.id + "][" + $rootScope.igdocument.id + "]");
+                            console.log($rootScope.crossRef);
+                        }, function (error) {
+                            $scope.loadingSelection = false;
+                            $rootScope.msg().text = error.data.text;
+                            $rootScope.msg().type = error.data.type;
+                            $rootScope.msg().show = true;
+                        });
+
                         $rootScope.$emit("event:initEditArea");
                         $rootScope.subview = "EditProfileComponent.html";
 

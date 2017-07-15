@@ -76,6 +76,19 @@ angular.module('igl').factory('PcService', ['$rootScope', 'ViewSettings', 'Eleme
             });
             return delay.promise;
         },
+        crossRef: function(profileComponentId, igDocumentId) {
+            var delay = $q.defer();
+            var wrapper = {};
+            wrapper.profileComponentId = profileComponentId;
+            wrapper.igDocumentId = igDocumentId;
+            $http.post('api/crossRefs/profilecomponent', wrapper).then(function(response) {
+                var ref = angular.fromJson(response.data);
+                delay.resolve(ref);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
         saveAll: function(profileComponents) {
             //$rootScope.saved = false;
             var delay = $q.defer();
