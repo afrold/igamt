@@ -110,14 +110,17 @@ public class CrossReferencesController {
   @Autowired
   private SegmentService segmentService;
 
-  @RequestMapping(value = "/profilecomponent", method = RequestMethod.POST, produces = "application/json")
-  public ProfileComponentCrossReference findProfileComponentReferences(@RequestBody ProfileComponentCrossRefWrapper wrapper) throws Exception {
+  @RequestMapping(value = "/profilecomponent", method = RequestMethod.POST,
+      produces = "application/json")
+  public ProfileComponentCrossReference findProfileComponentReferences(
+      @RequestBody ProfileComponentCrossRefWrapper wrapper) throws Exception {
     List<CompositeProfileFound> compositeProfileFounds = new ArrayList<CompositeProfileFound>();
     ProfileComponentCrossReference ret = new ProfileComponentCrossReference();
     IGDocument ig = igDocumentService.findById(wrapper.getIgDocumentId());
-    Set<CompositeProfileStructure> compositeProfileStructures = ig.getProfile().getCompositeProfiles().getChildren();
+    Set<CompositeProfileStructure> compositeProfileStructures =
+        ig.getProfile().getCompositeProfiles().getChildren();
     for (CompositeProfileStructure cps : compositeProfileStructures) {
-      if(cps.getProfileComponentIds().contains(wrapper.getProfileComponentId())){
+      if (cps.getProfileComponentIds().contains(wrapper.getProfileComponentId())) {
         CompositeProfileFound cpFound = new CompositeProfileFound();
         cpFound.setId(cps.getId());
         cpFound.setName(cps.getName());
@@ -129,16 +132,18 @@ public class CrossReferencesController {
     ret.setEmpty();
     return ret;
   }
-  
+
   @RequestMapping(value = "/message", method = RequestMethod.POST, produces = "application/json")
-  public MessageCrossReference findMessageReferences(@RequestBody MessageCrossRefWrapper wrapper) throws Exception {
-    List<ProfileComponentFound>  profileComponentFounds = new ArrayList<ProfileComponentFound>();
+  public MessageCrossReference findMessageReferences(@RequestBody MessageCrossRefWrapper wrapper)
+      throws Exception {
+    List<ProfileComponentFound> profileComponentFounds = new ArrayList<ProfileComponentFound>();
     List<CompositeProfileFound> compositeProfileFounds = new ArrayList<CompositeProfileFound>();
     MessageCrossReference ret = new MessageCrossReference();
     IGDocument ig = igDocumentService.findById(wrapper.getIgDocumentId());
-    Set<CompositeProfileStructure> compositeProfileStructures = ig.getProfile().getCompositeProfiles().getChildren();
+    Set<CompositeProfileStructure> compositeProfileStructures =
+        ig.getProfile().getCompositeProfiles().getChildren();
     for (CompositeProfileStructure cps : compositeProfileStructures) {
-      if(wrapper.getMessageId().equals(cps.getCoreProfileId())){
+      if (wrapper.getMessageId().equals(cps.getCoreProfileId())) {
         CompositeProfileFound cpFound = new CompositeProfileFound();
         cpFound.setId(cps.getId());
         cpFound.setName(cps.getName());
@@ -146,33 +151,33 @@ public class CrossReferencesController {
         compositeProfileFounds.add(cpFound);
       }
     }
-    for(ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()){
+    for (ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()) {
       ProfileComponent pc = profileComponentService.findById(link.getId());
-      for(SubProfileComponent spc : pc.getChildren()){
-        if(spc.getType().equals("message")){
-          if(spc.getSource() != null && spc.getSource().getMessageId() != null){
-            if(spc.getSource().getMessageId().equals(wrapper.getMessageId())){
+      for (SubProfileComponent spc : pc.getChildren()) {
+        if (spc.getType().equals("message")) {
+          if (spc.getSource() != null && spc.getSource().getMessageId() != null) {
+            if (spc.getSource().getMessageId().equals(wrapper.getMessageId())) {
               ProfileComponentFound pcf = new ProfileComponentFound();
               pcf.setDescription(pc.getDescription());
               pcf.setId(pc.getId());
               pcf.setName(pc.getName());
               pcf.setTargetPosition(spc.getPosition());
               pcf.setWhere(spc.getType());
-              profileComponentFounds.add(pcf);  
+              profileComponentFounds.add(pcf);
             }
           }
-        }else{
-          if(spc.getSource() != null && spc.getSource().getMessageId() != null){
-            if(spc.getSource().getMessageId().equals(wrapper.getMessageId())){
+        } else {
+          if (spc.getSource() != null && spc.getSource().getMessageId() != null) {
+            if (spc.getSource().getMessageId().equals(wrapper.getMessageId())) {
               ProfileComponentFound pcf = new ProfileComponentFound();
               pcf.setDescription(pc.getDescription());
               pcf.setId(pc.getId());
               pcf.setName(pc.getName());
               pcf.setTargetPosition(spc.getPosition());
               pcf.setWhere(spc.getType());
-              profileComponentFounds.add(pcf);  
-            } 
-          }          
+              profileComponentFounds.add(pcf);
+            }
+          }
         }
       }
     }
@@ -181,23 +186,24 @@ public class CrossReferencesController {
     ret.setEmpty();
     return ret;
   }
-  
+
   @RequestMapping(value = "/segment", method = RequestMethod.POST, produces = "application/json")
-  public SegmentCrossReference findSegmentReferences(@RequestBody SegmentCrossRefWrapper wrapper) throws Exception {
+  public SegmentCrossReference findSegmentReferences(@RequestBody SegmentCrossRefWrapper wrapper)
+      throws Exception {
     List<MessageFound> messageFounds = new ArrayList<MessageFound>();
-    List<ProfileComponentFound>  profileComponentFounds = new ArrayList<ProfileComponentFound>();
+    List<ProfileComponentFound> profileComponentFounds = new ArrayList<ProfileComponentFound>();
     SegmentCrossReference ret = new SegmentCrossReference();
     IGDocument ig = igDocumentService.findById(wrapper.getIgDocumentId());
     Set<Message> messages = ig.getProfile().getMessages().getChildren();
     for (Message m : messages) {
       findSegmentInsideMessage(wrapper.getSegmentId(), m, messageFounds);
     }
-    for(ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()){
+    for (ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()) {
       ProfileComponent pc = profileComponentService.findById(link.getId());
-      for(SubProfileComponent spc : pc.getChildren()){
-        
-        if(spc.getType().equals("segment") || spc.getType().equals("segmentRef")){
-          if(spc.getAttributes().getOldRef().getId().equals(wrapper.getSegmentId())){
+      for (SubProfileComponent spc : pc.getChildren()) {
+
+        if (spc.getType().equals("segment") || spc.getType().equals("segmentRef")) {
+          if (spc.getAttributes().getOldRef().getId().equals(wrapper.getSegmentId())) {
             ProfileComponentFound pcf = new ProfileComponentFound();
             pcf.setDescription(pc.getDescription());
             pcf.setId(pc.getId());
@@ -205,7 +211,7 @@ public class CrossReferencesController {
             pcf.setTargetPosition(spc.getPosition());
             pcf.setWhere("oldRef of " + spc.getType());
             profileComponentFounds.add(pcf);
-          }else if(spc.getAttributes().getRef().getId().equals(wrapper.getSegmentId())){
+          } else if (spc.getAttributes().getRef().getId().equals(wrapper.getSegmentId())) {
             ProfileComponentFound pcf = new ProfileComponentFound();
             pcf.setDescription(pc.getDescription());
             pcf.setId(pc.getId());
@@ -214,9 +220,9 @@ public class CrossReferencesController {
             pcf.setWhere("newRef of " + spc.getType());
             profileComponentFounds.add(pcf);
           }
-        }else{
-          if(spc.getSource() != null && spc.getSource().getSegmentId() != null){
-            if(spc.getSource().getSegmentId().equals(wrapper.getSegmentId())){
+        } else {
+          if (spc.getSource() != null && spc.getSource().getSegmentId() != null) {
+            if (spc.getSource().getSegmentId().equals(wrapper.getSegmentId())) {
               ProfileComponentFound pcf = new ProfileComponentFound();
               pcf.setDescription(pc.getDescription());
               pcf.setId(pc.getId());
@@ -224,8 +230,8 @@ public class CrossReferencesController {
               pcf.setTargetPosition(spc.getPosition());
               pcf.setWhere("From " + spc.getFrom() + ", Type: " + spc.getType());
               profileComponentFounds.add(pcf);
-            }  
-          }          
+            }
+          }
         }
       }
     }
@@ -243,7 +249,7 @@ public class CrossReferencesController {
   private void findSegmentInsideMessage(String segmentId, Message m, List<MessageFound> founds) {
     // TODO Auto-generated method stub
     for (int i = 0; i < m.getChildren().size(); i++) {
-      findReferenceInsideGroup(segmentId, m.getChildren().get(i), i, founds, null,null, m);
+      findReferenceInsideGroup(segmentId, m.getChildren().get(i), i, founds, null, null, m);
     }
   }
 
@@ -261,10 +267,10 @@ public class CrossReferencesController {
       Segment s = segmentService.findById(((SegmentRef) segmentRefOrGroup).getRef().getId());
       if (s.getId().equals(segmentId)) {
         MessageFound found = new MessageFound();
-        if(path == null){
+        if (path == null) {
           found.setPath(s.getLabel());
-          found.setPositionPath("" + segmentRefOrGroup.getPosition());   
-        }else {
+          found.setPositionPath("" + segmentRefOrGroup.getPosition());
+        } else {
           found.setPath(path + "." + s.getLabel());
           found.setPositionPath(positionPath + "." + segmentRefOrGroup.getPosition());
         }
@@ -278,10 +284,13 @@ public class CrossReferencesController {
     } else if (segmentRefOrGroup instanceof Group) {
       List<SegmentRefOrGroup> children = ((Group) segmentRefOrGroup).getChildren();
       for (int j = 0; j < children.size(); j++) {
-        if(path == null){
-          findReferenceInsideGroup(segmentId, children.get(j), j, founds, ((Group) segmentRefOrGroup).getName(), "" + segmentRefOrGroup.getPosition(), m);
-        }else {
-          findReferenceInsideGroup(segmentId, children.get(j), j, founds, path + "." + ((Group) segmentRefOrGroup).getName(), positionPath + "." + segmentRefOrGroup.getPosition(), m);
+        if (path == null) {
+          findReferenceInsideGroup(segmentId, children.get(j), j, founds,
+              ((Group) segmentRefOrGroup).getName(), "" + segmentRefOrGroup.getPosition(), m);
+        } else {
+          findReferenceInsideGroup(segmentId, children.get(j), j, founds,
+              path + "." + ((Group) segmentRefOrGroup).getName(),
+              positionPath + "." + segmentRefOrGroup.getPosition(), m);
         }
       }
     }

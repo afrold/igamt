@@ -1442,14 +1442,13 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                                     $rootScope.crossRef = result;
                                     console.log("Cross REF Found!!![" + $rootScope.segment.id + "][" + $rootScope.igdocument.id + "]");
                                     console.log($rootScope.crossRef);
+
                                 }, function (error) {
                                     $scope.loadingSelection = false;
                                     $rootScope.msg().text = error.data.text;
                                     $rootScope.msg().type = error.data.type;
                                     $rootScope.msg().show = true;
                                 });
-
-
                                 $scope.loadingSelection = false;
                                 $rootScope.$emit("event:initEditArea");
                                 $rootScope.$emit("event:initSegment");
@@ -1458,6 +1457,8 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                                 $rootScope.subview = "EditSegments.html";
 
                                 blockUI.stop();
+
+
 
                             }, function (error) {
                                 $scope.loadingSelection = false;
@@ -1535,21 +1536,18 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                                 } catch (e) {
 
                                 }
-                                $rootScope.references = [];
-                                $rootScope.tmpReferences = [].concat($rootScope.references);
-                                angular.forEach($rootScope.segments, function (segment) {
-                                    if (segment && segment != null) {
-                                        $rootScope.findDatatypeRefs($rootScope.datatype, segment, $rootScope.getSegmentLabel(segment), segment);
-                                    }
-                                });
-                                angular.forEach($rootScope.datatypes, function (dt) {
-                                    if (dt && dt != null && dt.id !== $rootScope.datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt), dt);
-                                });
-                                angular.forEach($rootScope.profileComponents, function (pc) {
-                                    $rootScope.findDatatypeRefs(datatype, pc, pc.name, pc);
-                                });
+                                $rootScope.crossRef = null;
 
-                                $rootScope.tmpReferences = [].concat($rootScope.references);
+                                DatatypeService.crossRef($rootScope.datatype.id,$rootScope.igdocument.id).then(function (result) {
+                                    $rootScope.crossRef = result;
+                                    console.log($rootScope.crossRef);
+
+                                }, function (error) {
+                                    $scope.loadingSelection = false;
+                                    $rootScope.msg().text = error.data.text;
+                                    $rootScope.msg().type = error.data.type;
+                                    $rootScope.msg().show = true;
+                                });
 
                                 $rootScope.subview = "EditDatatypes.html";
                                 $rootScope.$emit("event:initEditArea");
@@ -2034,6 +2032,16 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                     $rootScope.table.smallCodes.sort($scope.codeCompare);
                     $rootScope.findValueSetBindings();
                     $scope.loadingSelection = false;
+                    TableServiceService.crossRef($rootScope.table,$rootScope.igdocument.id).then(function (result) {
+                        $rootScope.crossRef = result;
+                        console.log($rootScope.crossRef);
+
+                    }, function (error) {
+                        $scope.loadingSelection = false;
+                        $rootScope.msg().text = error.data.text;
+                        $rootScope.msg().type = error.data.type;
+                        $rootScope.msg().show = true;
+                    });
                     $rootScope.$emit("event:initEditArea");
                     blockUI.stop();
                 }, function (errr) {

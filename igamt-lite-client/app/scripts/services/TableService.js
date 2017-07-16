@@ -132,7 +132,22 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
                 delay.reject(error);
             });
             return delay.promise;
-        }
+        },
+        crossRef: function(table, igDocumentId) {
+            var delay = $q.defer();
+            var wrapper = {};
+            wrapper.tableId= table.id;
+            wrapper.igDocumentId= igDocumentId;
+            var value= $rootScope.getUpdatedBindingIdentifier(table);
+            wrapper.assertionId="ValueSetID="+"\""+value+"\"";
+            $http.post('api/crossRefs/table', wrapper).then(function(response) {
+                var ref = angular.fromJson(response.data);
+                delay.resolve(ref);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        },
 
     };
     return TableService;

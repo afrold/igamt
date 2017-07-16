@@ -12,6 +12,7 @@ public class DatatypeCrossReference {
   private List<ComponentFound> componentFounds;
   private List<DynamicMappingFound> dynamicMappingFounds;
   private List<CoConstraintFound> coConstraintFounds;
+
   private boolean empty;
 
   public List<FieldFound> getFieldFounds() {
@@ -58,7 +59,7 @@ public class DatatypeCrossReference {
    */
   public void setEmpty() {
     this.empty = fieldFounds.isEmpty() && coConstraintFounds.isEmpty() && fieldFounds.isEmpty()
-        && componentFounds.isEmpty();
+        && componentFounds.isEmpty() && this.dynamicMappingFounds.isEmpty();
   }
 
 
