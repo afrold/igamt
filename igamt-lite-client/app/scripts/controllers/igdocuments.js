@@ -988,7 +988,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
         };
         $rootScope.cantDeleteMsg = function (msg) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'CantDeleteMsgCtrl.html',
                 controller: 'CantDeleteMsgCtrl',
                 resolve: {
@@ -2376,7 +2376,7 @@ angular.module('igl').controller('CantDeletePcCtrl', function ($scope, $mdDialog
 });
 
 
-angular.module('igl').controller('CantDeleteMsgCtrl', function ($scope, ngTreetableParams, $modalInstance, msg, $rootScope) {
+angular.module('igl').controller('CantDeleteMsgCtrl', function ($scope, ngTreetableParams, $mdDialog, msg, $rootScope) {
     $scope.msg = msg;
     $scope.loading = false;
     var getAppliedProfileComponentsById = function (cp) {
@@ -2415,7 +2415,7 @@ angular.module('igl').controller('CantDeleteMsgCtrl', function ($scope, ngTreeta
     });
 
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
 

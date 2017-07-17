@@ -352,11 +352,20 @@
     </md-dialog>
 </script>
 <script type="text/ng-template" id="CantDeleteMsgCtrl.html ">
-    <div class="modal-header ">
-        <h3 class="modal-title ">Can't Delete Conformance Profile
-        </h3>
-    </div>
-    <div class="modal-body ">
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Delete Confirmation</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
 
             <p> Conformance Profile:"{{msg.name}} " cannot be deleted because it is used in the following Composite
                 Profiles: </p>
@@ -373,29 +382,56 @@
                 </thead>
                 <tbody></tbody>
             </table>
+                    <pre>{{crossRefsForDelete}}</pre>
+                    <div ng-show="crossRefsForDelete.profileComponentFounds.length">
+                        <h4>Profile Components Cross References</h4>
 
-        </div>
-        </div>
-        <div class="modal-footer ">
-            <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                    class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
-            </button>
 
-            <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                <div layout="row" layout-sm="column" layout-align="space-around">
-                    <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+                        <table  class="table table-striped table-bordered table-condensed">
+                            <thead>
+                            <tr class="tbl-header">
+                                <td st-ratio="5">#</td>
+                                <th st-ratio="25">Name</th>
+                                <th st-ratio="40">Description</th>
+                                <th st-ratio="10">Target Position</th>
+                                <th st-ratio="20">Where</th>
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+                            <tr ng-repeat="ref in crossRefsForDelete.profileComponentFounds track by $index">
+                                <td st-ratio="5">{{$index + 1}}
+                                </td>
+                                <td st-ratio="25">
+                                    <span ng-bind="ref.name"></span>
+                                </td>
+                                <td st-ratio="40">
+                                    <span ng-bind="ref.description"></span>
+                                </td>
+                                <td st-ratio="10">
+                                    {{::ref.targetPosition}}
+                                </td>
+                                <td st-ratio="20">
+                                    {{::ref.where}}
+                                </td>
+
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    </div>
+            </md-dialog-content>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="CantDeletePcCtrl.html ">
     <md-dialog aria-label="confirmation">
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2>Can't Delete Profile Component</h2>
+                    <h2>Can't Delete Profile Component </h2>
 
                 </div>
             </md-toolbar>

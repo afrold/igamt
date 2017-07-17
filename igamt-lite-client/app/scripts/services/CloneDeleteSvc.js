@@ -1038,7 +1038,7 @@ angular.module('igl').factory(
                         confirmMessageDelete(message);
                     }else{
                         $rootScope.crossRefsForDelete=result;
-                        abortSegmentDelete(message);
+                        $rootScope.cantDeleteMsg(message);
                     }
 
                 }, function (error) {

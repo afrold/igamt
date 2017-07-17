@@ -861,13 +861,16 @@ angular
                     null, [
                         'Delete',
                         function($itemScope) {
-                            if ($itemScope.msg.compositeProfileStructureList === null || ($itemScope.msg.compositeProfileStructureList && $itemScope.msg.compositeProfileStructureList.length === 0)) {
+                            if ($rootScope.hasChanges()) {
 
-                                CloneDeleteSvc.deleteMessage($itemScope.msg);
+                                $rootScope.openConfirmLeaveDlg().then(function() {
+                                    CloneDeleteSvc.deleteMessage($itemScope.msg);
+                                });
                             } else {
-                                $rootScope.cantDeleteMsg($itemScope.msg);
-
+                                CloneDeleteSvc.deleteMessage($itemScope.msg);
                             }
+
+
                         }
                     ]
                 ];
