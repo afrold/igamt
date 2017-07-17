@@ -80,6 +80,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.DatatypeCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.MessageCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ProfileComponentCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.SegmentCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.TableCrossRefWrapper;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
@@ -109,6 +115,8 @@ public class CrossReferencesController {
   private ProfileComponentService profileComponentService;
   @Autowired
   private SegmentService segmentService;
+  @Autowired
+  private TableService tableService;
 
   @RequestMapping(value = "/profilecomponent", method = RequestMethod.POST,
       produces = "application/json")
@@ -302,25 +310,17 @@ public class CrossReferencesController {
     List<FieldFound> fieldFounds = new ArrayList<FieldFound>();
     List<ComponentFound> componentFounds = new ArrayList<ComponentFound>();
     List<DynamicMappingFound> dynamicMappingFounds = new ArrayList<DynamicMappingFound>();;
-    List<CoConstraintFound> coConstraintFounds = new ArrayList<CoConstraintFound>();;
+    List<CoConstraintFound> coConstraintFounds = new ArrayList<CoConstraintFound>();
+    List<ProfileComponentFound> profileComponentFounds = new ArrayList<ProfileComponentFound>();
 
     IGDocument ig = igDocumentService.findById(wrapper.getIgDocumentId());
     Set<String> segmentIds = new HashSet<String>();
     SegmentLibrary lib = ig.getProfile().getSegmentLibrary();
     for (SegmentLink link : lib.getChildren()) {
-      System.out.println("Debug");
       segmentIds.add(link.getId());
-
     }
-
     List<Segment> allSegments = segmentService.findByIds(segmentIds);
 
-    Set<String> datatypeIds = new HashSet<String>();
-    for (DatatypeLink link : ig.getProfile().getDatatypeLibrary().getChildren()) {
-      datatypeIds.add(link.getId());
-
-    }
-    List<Datatype> allDatatypes = datatypeService.findByIds(datatypeIds);
     for (Segment s : allSegments) {
       for (Field f : s.getFields()) {
         if (f.getDatatype().getId().equals(wrapper.getDatatypeId())) {
@@ -357,7 +357,6 @@ public class CrossReferencesController {
             VariesMapItem mapStructure = df.getMappingStructure();
             found.setMappingStructure(mapStructure);
             dynamicMappingFounds.add(found);
-
           }
         }
       }
@@ -370,7 +369,6 @@ public class CrossReferencesController {
             if (coconstraints.getThenMapData().get(thn.getId()) != null
                 && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
               for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
-
                 if (coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId() != null
                     && coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId()
                         .equals(wrapper.getDatatypeId())) {
@@ -387,20 +385,19 @@ public class CrossReferencesController {
                     found.setIfData(coconstraints.getIfColumnData().get(0));
                   found.setThenData(coconstraints.getThenMapData().get(thn.getId()).get(i));
                   coConstraintFounds.add(found);
-
                 }
               }
             }
           }
         }
-
       }
-
-
-
     }
+    Set<String> datatypeIds = new HashSet<String>();
+    for (DatatypeLink link : ig.getProfile().getDatatypeLibrary().getChildren()) {
+      datatypeIds.add(link.getId());
+    }
+    List<Datatype> allDatatypes = datatypeService.findByIds(datatypeIds);
     for (Datatype d : allDatatypes) {
-
       for (Component c : d.getComponents()) {
         if (c.getDatatype().getId().equals(wrapper.getDatatypeId())) {
           ComponentFound found = new ComponentFound();
@@ -419,11 +416,154 @@ public class CrossReferencesController {
         }
       }
     }
+    for (ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()) {
+      ProfileComponent pc = profileComponentService.findById(link.getId());
+      for (SubProfileComponent spc : pc.getChildren()) {
+        if (spc.getSource() != null
+            && (spc.getSource().getFieldDt() != null || spc.getSource().getComponentDt() != null)) {
+          if (spc.getSource().getFieldDt().equals(wrapper.getDatatypeId())
+              || spc.getSource().getComponentDt().equals(wrapper.getDatatypeId())) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("From " + spc.getFrom() + ", Type: " + spc.getType());
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getAttributes().getOldDatatype() != null
+            && spc.getAttributes().getOldDatatype().getId().equals(wrapper.getDatatypeId())) {
+          ProfileComponentFound pcf = new ProfileComponentFound();
+          pcf.setDescription(pc.getDescription());
+          pcf.setId(pc.getId());
+          pcf.setName(pc.getName());
+          pcf.setTargetPosition(spc.getPosition());
+          pcf.setWhere(
+              "From " + spc.getFrom() + ", Type: " + spc.getType() + " is using as old DT.");
+          profileComponentFounds.add(pcf);
+        }
+
+        if (spc.getAttributes().getDatatype() != null
+            && spc.getAttributes().getDatatype().getId().equals(wrapper.getDatatypeId())) {
+          ProfileComponentFound pcf = new ProfileComponentFound();
+          pcf.setDescription(pc.getDescription());
+          pcf.setId(pc.getId());
+          pcf.setName(pc.getName());
+          pcf.setTargetPosition(spc.getPosition());
+          pcf.setWhere(
+              "From " + spc.getFrom() + ", Type: " + spc.getType() + " is using as new DT.");
+          profileComponentFounds.add(pcf);
+        }
+
+        if (spc.getAttributes().getDynamicMappingDefinition() != null && !spc.getAttributes()
+            .getDynamicMappingDefinition().getDynamicMappingItems().isEmpty()) {
+          DynamicMappingDefinition df = spc.getAttributes().getDynamicMappingDefinition();
+          boolean isFound = false;
+          for (DynamicMappingItem item : df.getDynamicMappingItems()) {
+            if (item.getDatatypeId().equals(wrapper.getDatatypeId())) {
+              isFound = true;
+            }
+          }
+          if (isFound) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent new Dynamic Mapping is using this datatype.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getAttributes().getOldDynamicMappingDefinition() != null && !spc.getAttributes()
+            .getOldDynamicMappingDefinition().getDynamicMappingItems().isEmpty()) {
+          DynamicMappingDefinition df = spc.getAttributes().getOldDynamicMappingDefinition();
+          boolean isFound = false;
+          for (DynamicMappingItem item : df.getDynamicMappingItems()) {
+            if (item.getDatatypeId().equals(wrapper.getDatatypeId())) {
+              isFound = true;
+            }
+          }
+
+          if (isFound) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent old Dynamic Mapping is using this datatype.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getAttributes().getCoConstraintsTable() != null) {
+          CoConstraintsTable coconstraints = spc.getAttributes().getCoConstraintsTable();
+          boolean isFound = false;
+          if (coconstraints != null && coconstraints.getThenColumnDefinitionList() != null
+              && !coconstraints.getThenColumnDefinitionList().isEmpty()) {
+            for (CoConstraintColumnDefinition thn : coconstraints.getThenColumnDefinitionList()) {
+              if (coconstraints.getThenMapData().get(thn.getId()) != null
+                  && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
+                for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
+                  if (coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId() != null
+                      && coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId()
+                          .equals(wrapper.getDatatypeId())) {
+                    isFound = true;
+                  }
+                }
+              }
+            }
+          }
+          if (isFound) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent new CoConstraintTable is using this datatype.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getAttributes().getOldCoConstraintsTable() != null) {
+          CoConstraintsTable coconstraints = spc.getAttributes().getOldCoConstraintsTable();
+          boolean isFound = false;
+          if (coconstraints != null && coconstraints.getThenColumnDefinitionList() != null
+              && !coconstraints.getThenColumnDefinitionList().isEmpty()) {
+            for (CoConstraintColumnDefinition thn : coconstraints.getThenColumnDefinitionList()) {
+              if (coconstraints.getThenMapData().get(thn.getId()) != null
+                  && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
+                for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
+                  if (coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId() != null
+                      && coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId()
+                          .equals(wrapper.getDatatypeId())) {
+                    isFound = true;
+                  }
+                }
+              }
+            }
+          }
+          if (isFound) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent old CoConstraintTable is using this datatype.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+      }
+    }
+
     DatatypeCrossReference ret = new DatatypeCrossReference();
     ret.setCoConstraintFounds(coConstraintFounds);
     ret.setComponentFounds(componentFounds);
     ret.setDynamicMappingFounds(dynamicMappingFounds);
     ret.setFieldFounds(fieldFounds);
+    ret.setProfileComponentFound(profileComponentFounds);
     ret.setEmpty();
     return ret;
   }
@@ -447,9 +587,8 @@ public class CrossReferencesController {
     List<MessagePredicateFound> messagePredicateFounds = new ArrayList<MessagePredicateFound>();
     List<SegmentPredicateFound> segmentPredicateFounds = new ArrayList<SegmentPredicateFound>();
     List<DatatypePredicateFound> datatypePredicateFounds = new ArrayList<DatatypePredicateFound>();
-
+    List<ProfileComponentFound> profileComponentFounds = new ArrayList<ProfileComponentFound>();
     IGDocument ig = igDocumentService.findById(wrapper.getIgDocumentId());
-
     Set<Message> messages = ig.getProfile().getMessages().getChildren();
     for (Message m : messages) {
       for (ValueSetOrSingleCodeBinding vs : m.getValueSetBindings()) {
@@ -465,7 +604,6 @@ public class CrossReferencesController {
             found.setId(m.getId());
             messageRef.setMessageFound(found);
             messageValueSetBindingfounds.add(messageRef);
-
           }
         }
       }
@@ -503,16 +641,12 @@ public class CrossReferencesController {
 
         }
       }
-
-
-
     }
 
     SegmentLibrary lib = ig.getProfile().getSegmentLibrary();
     Set<String> segmentIds = new HashSet<String>();
 
     for (SegmentLink link : lib.getChildren()) {
-      System.out.println("Debug");
       segmentIds.add(link.getId());
 
     }
@@ -686,6 +820,189 @@ public class CrossReferencesController {
         }
       }
     }
+
+    for (ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()) {
+      ProfileComponent pc = profileComponentService.findById(link.getId());
+      for (SubProfileComponent spc : pc.getChildren()) {
+        if (spc.getOldValueSetBindings() != null) {
+          boolean isFound = false;
+          for (ValueSetOrSingleCodeBinding vs : spc.getOldValueSetBindings()) {
+            if (vs.getTableId().equals(wrapper.getTableId())) {
+              if (vs instanceof ValueSetBinding) {
+                isFound = true;
+              }
+            }
+          }
+
+          if (isFound) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent Old ValueSetBinding is using this Table.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getValueSetBindings() != null) {
+          boolean isFound = false;
+          for (ValueSetOrSingleCodeBinding vs : spc.getValueSetBindings()) {
+            if (vs.getTableId().equals(wrapper.getTableId())) {
+              if (vs instanceof ValueSetBinding) {
+                isFound = true;
+              }
+            }
+          }
+
+          if (isFound) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent New ValueSetBinding is using this Table.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getAttributes().getOldConformanceStatements() != null) {
+          boolean isFound = false;
+          for (ConformanceStatement p : spc.getAttributes().getOldConformanceStatements()) {
+            if (p.getAssertion().contains(wrapper.getAssertionId())) {
+              isFound = true;
+            }
+          }
+          if (isFound) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent Old Conformnce Statement is using this Table.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getAttributes().getConformanceStatements() != null) {
+          boolean isFound = false;
+          for (ConformanceStatement p : spc.getAttributes().getConformanceStatements()) {
+            if (p.getAssertion().contains(wrapper.getAssertionId())) {
+              isFound = true;
+            }
+          }
+          if (isFound) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent New Conformnce Statement is using this Table.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getOldPredicate() != null) {
+          if (spc.getOldPredicate().getAssertion().contains(wrapper.getAssertionId())) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent Old Predicate is using this Table.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getAttributes().getPredicate() != null) {
+          if (spc.getAttributes().getPredicate().getAssertion()
+              .contains(wrapper.getAssertionId())) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent New Predicate is using this Table.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getAttributes().getCoConstraintsTable() != null) {
+          CoConstraintsTable coconstraints = spc.getAttributes().getCoConstraintsTable();
+          boolean isFound = false;
+          if (coconstraints != null && coconstraints.getThenColumnDefinitionList() != null
+              && !coconstraints.getThenColumnDefinitionList().isEmpty()) {
+            for (CoConstraintColumnDefinition thn : coconstraints.getThenColumnDefinitionList()) {
+              if (coconstraints.getThenMapData().get(thn.getId()) != null
+                  && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
+                for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
+                  if (coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets() != null
+                      && !coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets()
+                          .isEmpty()) {
+                    for (int j = 0; j < coconstraints.getThenMapData().get(thn.getId()).get(i)
+                        .getValueSets().size(); j++) {
+                      String tableId = coconstraints.getThenMapData().get(thn.getId()).get(i)
+                          .getValueSets().get(j).getTableId();
+                      if (tableId != null && tableId.equals(wrapper.getTableId())) {
+                        isFound = true;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if (isFound) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent new CoConstraintTable is using this Table.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+
+        if (spc.getAttributes().getOldCoConstraintsTable() != null) {
+          CoConstraintsTable coconstraints = spc.getAttributes().getOldCoConstraintsTable();
+          boolean isFound = false;
+          if (coconstraints != null && coconstraints.getThenColumnDefinitionList() != null
+              && !coconstraints.getThenColumnDefinitionList().isEmpty()) {
+            for (CoConstraintColumnDefinition thn : coconstraints.getThenColumnDefinitionList()) {
+              if (coconstraints.getThenMapData().get(thn.getId()) != null
+                  && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
+                for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
+                  if (coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets() != null
+                      && !coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets()
+                          .isEmpty()) {
+                    for (int j = 0; j < coconstraints.getThenMapData().get(thn.getId()).get(i)
+                        .getValueSets().size(); j++) {
+                      String tableId = coconstraints.getThenMapData().get(thn.getId()).get(i)
+                          .getValueSets().get(j).getTableId();
+                      if (tableId != null && tableId.equals(wrapper.getTableId())) {
+                        isFound = true;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if (isFound) {
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This ProfileComponent Old CoConstraintTable is using this Table.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+      }
+    }
+
+
+
     ValueSetCrossReference ret = new ValueSetCrossReference();
     ret.setCoConstraintFounds(coConstraintFounds);
     ret.setMessageValueSetBindingfounds(messageValueSetBindingfounds);
@@ -697,6 +1014,7 @@ public class CrossReferencesController {
     ret.setSegmentPredicateFounds(segmentPredicateFounds);
     ret.setMessageConformanceStatmentFounds(messageConformanceStatmentFounds);
     ret.setMessagePredicateFounds(messagePredicateFounds);
+    ret.setProfileComponentFound(profileComponentFounds);
     ret.setEmpty();
     return ret;
   }

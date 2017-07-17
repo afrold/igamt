@@ -2809,8 +2809,6 @@ angular.module('igl').controller('addComponentsCtrl', function($scope, $rootScop
                 appliedTo: [],
                 version: ""
             };
-
-
         };
         if (newPc.type !== "segmentRef") {
             newPc.oldValueSetBindings = $scope.findingBindings(newPc);

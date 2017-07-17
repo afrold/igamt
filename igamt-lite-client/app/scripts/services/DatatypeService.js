@@ -552,6 +552,19 @@ angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettin
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+            crossRef: function(datatypeId, igDocumentId) {
+                var delay = $q.defer();
+                var wrapper = {};
+                wrapper.datatypeId = datatypeId;
+                wrapper.igDocumentId = igDocumentId;
+                $http.post('api/crossRefs/datatype', wrapper).then(function(response) {
+                    var ref = angular.fromJson(response.data);
+                    delay.resolve(ref);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
         };

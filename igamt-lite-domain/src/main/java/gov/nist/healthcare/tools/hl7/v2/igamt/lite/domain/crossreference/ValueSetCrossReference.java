@@ -9,6 +9,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.D
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.MessageConformanceStatmentFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.MessagePredicateFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.MessageValueSetBindingFound;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.ProfileComponentFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentConformanceStatmentFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentPredicateFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentValueSetBindingFound;
@@ -25,6 +26,7 @@ public class ValueSetCrossReference {
   private List<MessagePredicateFound> messagePredicateFounds;
   private List<SegmentPredicateFound> segmentPredicateFounds;
   private List<DatatypePredicateFound> datatypePredicateFounds;
+  private List<ProfileComponentFound> profileComponentFound;
   private boolean empty;
 
 
@@ -113,6 +115,14 @@ public class ValueSetCrossReference {
   public void setDatatypePredicateFounds(List<DatatypePredicateFound> datatypePredicateFounds) {
     this.datatypePredicateFounds = datatypePredicateFounds;
   }
+  
+  public List<ProfileComponentFound> getProfileComponentFound() {
+    return profileComponentFound;
+  }
+
+  public void setProfileComponentFound(List<ProfileComponentFound> profileComponentFound) {
+    this.profileComponentFound = profileComponentFound;
+  }
 
   /**
    * @return the empty
@@ -129,8 +139,7 @@ public class ValueSetCrossReference {
         && datatypeValueSetBindingfounds.isEmpty() && coConstraintFounds.isEmpty()
         && messageConformanceStatmentFounds.isEmpty() && segmentConformanceStatmentFounds.isEmpty()
         && datatypeConformanceStatmentFounds.isEmpty() && messagePredicateFounds.isEmpty()
-        && segmentPredicateFounds.isEmpty() && datatypePredicateFounds.isEmpty();
+        && segmentPredicateFounds.isEmpty() && datatypePredicateFounds.isEmpty()
+        && profileComponentFound.isEmpty();
   }
-
-
 }
