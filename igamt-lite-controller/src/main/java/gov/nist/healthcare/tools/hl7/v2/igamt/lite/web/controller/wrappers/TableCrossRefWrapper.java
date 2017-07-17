@@ -7,18 +7,32 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Abdelghani EL OUAKILI (NIST) Jun 6, 2017
+ * that they have been modified. Abdelghani EL OUAKILI (NIST) Jun 7, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public class SegmentCrossRefWrapper {
-
-  private String segmentId;
+public class TableCrossRefWrapper {
+  private String tableId;
   private String igDocumentId;
+  private String assertionId;
+
+  /**
+   * @return the tableId
+   */
+  public String getTableId() {
+    return tableId;
+  }
+
+  /**
+   * @param tableId the tableId to set
+   */
+  public void setTableId(String tableId) {
+    this.tableId = tableId;
+  }
 
   /**
    * @return the igDocumentId
@@ -35,18 +49,17 @@ public class SegmentCrossRefWrapper {
   }
 
   /**
-   * @return the segmentId
+   * @return the assertionId
    */
-  public String getSegmentId() {
-    return segmentId;
+  public String getAssertionId() {
+    return assertionId;
   }
 
   /**
-   * @param segmentId the segmentId to set
+   * @param assertionId the assertionId to set
    */
-  public void setSegmentId(String segmentId) {
-    this.segmentId = segmentId;
+  public void setAssertionId(String assertionId) {
+    this.assertionId = assertionId;
   }
-
 
 }

@@ -9,15 +9,15 @@
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified. Abdelghani EL OUAKILI (NIST) Jun 6, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public class MessageCrossRefWrapper {
+public class SegmentCrossRefWrapper {
 
-  private String messageId;
+  private String segmentId;
   private String igDocumentId;
 
   /**
@@ -37,15 +37,15 @@ public class MessageCrossRefWrapper {
   /**
    * @return the segmentId
    */
-  public String getMessageId() {
-    return messageId;
+  public String getSegmentId() {
+    return segmentId;
   }
 
   /**
    * @param segmentId the segmentId to set
    */
-  public void setMessageId(String messageId) {
-    this.messageId = messageId;
+  public void setSegmentId(String segmentId) {
+    this.segmentId = segmentId;
   }
 
 

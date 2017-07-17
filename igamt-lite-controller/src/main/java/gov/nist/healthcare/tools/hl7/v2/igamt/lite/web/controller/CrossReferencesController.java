@@ -80,6 +80,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.DatatypeCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.MessageCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ProfileComponentCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.SegmentCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.TableCrossRefWrapper;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
@@ -288,30 +293,21 @@ public class CrossReferencesController {
   }
 
   @RequestMapping(value = "/datatype", method = RequestMethod.POST, produces = "application/json")
-  public DatatypeCrossReference findDatatypeCrossReference(
-      @RequestBody DatatypeCrossRefWrapper wrapper) throws Exception {
+  public DatatypeCrossReference findDatatypeCrossReference(@RequestBody DatatypeCrossRefWrapper wrapper) throws Exception {
     List<FieldFound> fieldFounds = new ArrayList<FieldFound>();
     List<ComponentFound> componentFounds = new ArrayList<ComponentFound>();
     List<DynamicMappingFound> dynamicMappingFounds = new ArrayList<DynamicMappingFound>();;
-    List<CoConstraintFound> coConstraintFounds = new ArrayList<CoConstraintFound>();;
+    List<CoConstraintFound> coConstraintFounds = new ArrayList<CoConstraintFound>();
+    List<ProfileComponentFound> profileComponentFounds = new ArrayList<ProfileComponentFound>();
 
     IGDocument ig = igDocumentService.findById(wrapper.getIgDocumentId());
     Set<String> segmentIds = new HashSet<String>();
     SegmentLibrary lib = ig.getProfile().getSegmentLibrary();
     for (SegmentLink link : lib.getChildren()) {
-      System.out.println("Debug");
       segmentIds.add(link.getId());
-
     }
-
     List<Segment> allSegments = segmentService.findByIds(segmentIds);
 
-    Set<String> datatypeIds = new HashSet<String>();
-    for (DatatypeLink link : ig.getProfile().getDatatypeLibrary().getChildren()) {
-      datatypeIds.add(link.getId());
-
-    }
-    List<Datatype> allDatatypes = datatypeService.findByIds(datatypeIds);
     for (Segment s : allSegments) {
       for (Field f : s.getFields()) {
         if (f.getDatatype().getId().equals(wrapper.getDatatypeId())) {
@@ -331,8 +327,7 @@ public class CrossReferencesController {
         }
       }
 
-      if (s.getDynamicMappingDefinition() != null
-          && !s.getDynamicMappingDefinition().getDynamicMappingItems().isEmpty()) {
+      if (s.getDynamicMappingDefinition() != null && !s.getDynamicMappingDefinition().getDynamicMappingItems().isEmpty()) {
         DynamicMappingDefinition df = s.getDynamicMappingDefinition();
         for (DynamicMappingItem item : df.getDynamicMappingItems()) {
           if (item.getDatatypeId().equals(wrapper.getDatatypeId())) {
@@ -348,7 +343,6 @@ public class CrossReferencesController {
             VariesMapItem mapStructure = df.getMappingStructure();
             found.setMappingStructure(mapStructure);
             dynamicMappingFounds.add(found);
-
           }
         }
       }
@@ -361,10 +355,7 @@ public class CrossReferencesController {
             if (coconstraints.getThenMapData().get(thn.getId()) != null
                 && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
               for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
-
-                if (coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId() != null
-                    && coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId()
-                        .equals(wrapper.getDatatypeId())) {
+                if (coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId() != null && coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId().equals(wrapper.getDatatypeId())) {
                   SegmentFound segFound = new SegmentFound();
                   segFound.setDescription(s.getDescription());
                   segFound.setExt(s.getExt());
@@ -378,20 +369,19 @@ public class CrossReferencesController {
                     found.setIfData(coconstraints.getIfColumnData().get(0));
                   found.setThenData(coconstraints.getThenMapData().get(thn.getId()).get(i));
                   coConstraintFounds.add(found);
-
                 }
               }
             }
           }
         }
-
       }
-
-
-
     }
+    Set<String> datatypeIds = new HashSet<String>();
+    for (DatatypeLink link : ig.getProfile().getDatatypeLibrary().getChildren()) {
+      datatypeIds.add(link.getId());
+    }
+    List<Datatype> allDatatypes = datatypeService.findByIds(datatypeIds);
     for (Datatype d : allDatatypes) {
-
       for (Component c : d.getComponents()) {
         if (c.getDatatype().getId().equals(wrapper.getDatatypeId())) {
           ComponentFound found = new ComponentFound();
@@ -410,11 +400,138 @@ public class CrossReferencesController {
         }
       }
     }
+    for(ProfileComponentLink link : ig.getProfile().getProfileComponentLibrary().getChildren()){
+      ProfileComponent pc = profileComponentService.findById(link.getId());
+      for(SubProfileComponent spc : pc.getChildren()){
+        if(spc.getSource() != null && (spc.getSource().getFieldDt() != null || spc.getSource().getComponentDt() != null)){
+          if(spc.getSource().getFieldDt().equals(wrapper.getDatatypeId()) || spc.getSource().getComponentDt().equals(wrapper.getDatatypeId())){
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("From " + spc.getFrom() + ", Type: " + spc.getType());
+            profileComponentFounds.add(pcf);
+          }
+        }
+        
+        if(spc.getAttributes().getOldDatatype() != null && spc.getAttributes().getOldDatatype().getId().equals(wrapper.getDatatypeId())){
+          ProfileComponentFound pcf = new ProfileComponentFound();
+          pcf.setDescription(pc.getDescription());
+          pcf.setId(pc.getId());
+          pcf.setName(pc.getName());
+          pcf.setTargetPosition(spc.getPosition());
+          pcf.setWhere("From " + spc.getFrom() + ", Type: " + spc.getType() + " is using as old DT.");
+          profileComponentFounds.add(pcf);
+        }
+        
+        if(spc.getAttributes().getDatatype() != null && spc.getAttributes().getDatatype().getId().equals(wrapper.getDatatypeId())){
+          ProfileComponentFound pcf = new ProfileComponentFound();
+          pcf.setDescription(pc.getDescription());
+          pcf.setId(pc.getId());
+          pcf.setName(pc.getName());
+          pcf.setTargetPosition(spc.getPosition());
+          pcf.setWhere("From " + spc.getFrom() + ", Type: " + spc.getType() + " is using as new DT.");
+          profileComponentFounds.add(pcf);
+        }
+        
+        if (spc.getAttributes().getDynamicMappingDefinition() != null && !spc.getAttributes().getDynamicMappingDefinition().getDynamicMappingItems().isEmpty()) {
+          DynamicMappingDefinition df = spc.getAttributes().getDynamicMappingDefinition();
+          boolean isFound = false;
+          for (DynamicMappingItem item : df.getDynamicMappingItems()) {
+            if (item.getDatatypeId().equals(wrapper.getDatatypeId())) {
+              isFound = true;
+            }
+          }
+          if(isFound){
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This segment new Dynamic Mapping is usng this datatype.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+        
+        if (spc.getAttributes().getOldDynamicMappingDefinition() != null && !spc.getAttributes().getOldDynamicMappingDefinition().getDynamicMappingItems().isEmpty()) {
+          DynamicMappingDefinition df = spc.getAttributes().getOldDynamicMappingDefinition();
+          boolean isFound = false;
+          for (DynamicMappingItem item : df.getDynamicMappingItems()) {
+            if (item.getDatatypeId().equals(wrapper.getDatatypeId())) {
+              isFound = true;
+            }
+          }
+          
+          if(isFound){
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This segment old Dynamic Mapping is usng this datatype.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+        
+        if (spc.getAttributes().getCoConstraintsTable() != null) {
+          CoConstraintsTable coconstraints = spc.getAttributes().getCoConstraintsTable();
+          boolean isFound = false;
+          if (coconstraints != null && coconstraints.getThenColumnDefinitionList() != null && !coconstraints.getThenColumnDefinitionList().isEmpty()) {
+            for (CoConstraintColumnDefinition thn : coconstraints.getThenColumnDefinitionList()) {
+              if (coconstraints.getThenMapData().get(thn.getId()) != null && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
+                for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
+                  if (coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId() != null && coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId().equals(wrapper.getDatatypeId())) {
+                    isFound = true;
+                  }
+                }
+              }
+            }
+          }
+          if(isFound){
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This segment new CoConstraintTable is usng this datatype.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+        
+        if (spc.getAttributes().getOldCoConstraintsTable() != null) {
+          CoConstraintsTable coconstraints = spc.getAttributes().getOldCoConstraintsTable();
+          boolean isFound = false;
+          if (coconstraints != null && coconstraints.getThenColumnDefinitionList() != null && !coconstraints.getThenColumnDefinitionList().isEmpty()) {
+            for (CoConstraintColumnDefinition thn : coconstraints.getThenColumnDefinitionList()) {
+              if (coconstraints.getThenMapData().get(thn.getId()) != null && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
+                for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
+                  if (coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId() != null && coconstraints.getThenMapData().get(thn.getId()).get(i).getDatatypeId().equals(wrapper.getDatatypeId())) {
+                    isFound = true;
+                  }
+                }
+              }
+            }
+          }
+          if(isFound){
+            ProfileComponentFound pcf = new ProfileComponentFound();
+            pcf.setDescription(pc.getDescription());
+            pcf.setId(pc.getId());
+            pcf.setName(pc.getName());
+            pcf.setTargetPosition(spc.getPosition());
+            pcf.setWhere("This segment old CoConstraintTable is usng this datatype.");
+            profileComponentFounds.add(pcf);
+          }
+        }
+      }
+    }
+    
     DatatypeCrossReference ret = new DatatypeCrossReference();
     ret.setCoConstraintFounds(coConstraintFounds);
     ret.setComponentFounds(componentFounds);
     ret.setDynamicMappingFounds(dynamicMappingFounds);
     ret.setFieldFounds(fieldFounds);
+    ret.setProfileComponentFound(profileComponentFounds);
     ret.setEmpty();
     return ret;
   }
@@ -494,9 +611,6 @@ public class CrossReferencesController {
 
         }
       }
-
-
-
     }
 
     SegmentLibrary lib = ig.getProfile().getSegmentLibrary();

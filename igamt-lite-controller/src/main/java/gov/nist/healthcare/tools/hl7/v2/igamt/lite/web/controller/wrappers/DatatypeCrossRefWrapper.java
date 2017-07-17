@@ -7,31 +7,30 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
- * that they have been modified. Abdelghani EL OUAKILI (NIST) Jun 7, 2017
+ * that they have been modified. Abdelghani EL OUAKILI (NIST) Jun 6, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public class TableCrossRefWrapper {
-  private String tableId;
+public class DatatypeCrossRefWrapper {
+  private String datatypeId;
   private String igDocumentId;
-  private String assertionId;
 
   /**
-   * @return the tableId
+   * @return the datatypeId
    */
-  public String getTableId() {
-    return tableId;
+  public String getDatatypeId() {
+    return datatypeId;
   }
 
   /**
-   * @param tableId the tableId to set
+   * @param datatypeId the datatypeId to set
    */
-  public void setTableId(String tableId) {
-    this.tableId = tableId;
+  public void setDatatypeId(String datatypeId) {
+    this.datatypeId = datatypeId;
   }
 
   /**
@@ -48,18 +47,5 @@ public class TableCrossRefWrapper {
     this.igDocumentId = igDocumentId;
   }
 
-  /**
-   * @return the assertionId
-   */
-  public String getAssertionId() {
-    return assertionId;
-  }
-
-  /**
-   * @param assertionId the assertionId to set
-   */
-  public void setAssertionId(String assertionId) {
-    this.assertionId = assertionId;
-  }
 
 }
