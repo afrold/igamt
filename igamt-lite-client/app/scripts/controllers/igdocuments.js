@@ -991,14 +991,14 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
             var modalInstance = $mdDialog.show({
                 templateUrl: 'CantDeleteMsgCtrl.html',
                 controller: 'CantDeleteMsgCtrl',
-                resolve: {
-                    msg: function () {
-                        return msg;
-                    },
+                scope: $rootScope,
+                preserveScope: true,
+                locals: {
+                    msg: msg
+                    }
 
-                }
             });
-            modalInstance.result.then(function (msg) {
+            modalInstance.then(function (msg) {
 
             }, function () {
             });
@@ -2032,7 +2032,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                     $rootScope.table.smallCodes.sort($scope.codeCompare);
                     $rootScope.findValueSetBindings();
                     $scope.loadingSelection = false;
-                    TableServiceService.crossRef($rootScope.table,$rootScope.igdocument.id).then(function (result) {
+                    TableService.crossRef($rootScope.table,$rootScope.igdocument.id).then(function (result) {
                         $rootScope.crossRef = result;
                         console.log($rootScope.crossRef);
 

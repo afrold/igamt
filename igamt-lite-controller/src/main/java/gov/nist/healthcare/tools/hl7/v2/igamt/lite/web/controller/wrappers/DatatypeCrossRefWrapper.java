@@ -19,6 +19,7 @@ public class DatatypeCrossRefWrapper {
   private String datatypeId;
   private String igDocumentId;
 
+
   /**
    * @return the datatypeId
    */

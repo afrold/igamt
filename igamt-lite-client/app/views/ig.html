@@ -366,7 +366,7 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content">
-
+<div ng-if="crossRefsForDelete.compositeProfileFound.length">
             <p> Conformance Profile:"{{msg.name}} " cannot be deleted because it is used in the following Composite
                 Profiles: </p>
             <table id="applyPcToTable" tt-table tt-params="cantDeleteMsgParams"
@@ -382,8 +382,9 @@
                 </thead>
                 <tbody></tbody>
             </table>
-                    <pre>{{crossRefsForDelete}}</pre>
-                    <div ng-show="crossRefsForDelete.profileComponentFounds.length">
+</div>
+
+                    <div ng-show="crossRefsForDelete.profileComponentFound.length">
                         <h4>Profile Components Cross References</h4>
 
 
@@ -400,7 +401,7 @@
                             </thead>
 
                             <tbody>
-                            <tr ng-repeat="ref in crossRefsForDelete.profileComponentFounds track by $index">
+                            <tr ng-repeat="ref in crossRefsForDelete.profileComponentFound track by $index">
                                 <td st-ratio="5">{{$index + 1}}
                                 </td>
                                 <td st-ratio="25">

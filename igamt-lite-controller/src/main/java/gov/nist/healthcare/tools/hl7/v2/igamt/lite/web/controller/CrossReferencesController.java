@@ -27,6 +27,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
@@ -72,6 +73,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.S
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentPredicateFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentValueSetBindingFound;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
@@ -117,6 +119,8 @@ public class CrossReferencesController {
   private SegmentService segmentService;
   @Autowired
   private TableService tableService;
+  @Autowired
+  private DatatypeLibraryService datatypeLibrayService;
 
   @RequestMapping(value = "/profilecomponent", method = RequestMethod.POST,
       produces = "application/json")
@@ -557,6 +561,54 @@ public class CrossReferencesController {
         }
       }
     }
+
+    DatatypeCrossReference ret = new DatatypeCrossReference();
+    ret.setCoConstraintFounds(coConstraintFounds);
+    ret.setComponentFounds(componentFounds);
+    ret.setDynamicMappingFounds(dynamicMappingFounds);
+    ret.setFieldFounds(fieldFounds);
+    ret.setProfileComponentFound(profileComponentFounds);
+    ret.setEmpty();
+    return ret;
+  }
+
+  @RequestMapping(value = "/datatypeInLibrary", method = RequestMethod.POST,
+      produces = "application/json")
+  public DatatypeCrossReference findDatatypeCrossReferenceInLibrary(
+      @RequestBody DatatypeCrossRefWrapper wrapper) throws Exception {
+    List<FieldFound> fieldFounds = new ArrayList<FieldFound>();
+    List<ComponentFound> componentFounds = new ArrayList<ComponentFound>();
+    List<DynamicMappingFound> dynamicMappingFounds = new ArrayList<DynamicMappingFound>();;
+    List<CoConstraintFound> coConstraintFounds = new ArrayList<CoConstraintFound>();
+    List<ProfileComponentFound> profileComponentFounds = new ArrayList<ProfileComponentFound>();
+    DatatypeLibrary dtl = datatypeLibrayService.findById(wrapper.getIgDocumentId());
+
+
+    Set<String> datatypeIds = new HashSet<String>();
+    for (DatatypeLink link : dtl.getChildren()) {
+      datatypeIds.add(link.getId());
+    }
+    List<Datatype> allDatatypes = datatypeService.findByIds(datatypeIds);
+    for (Datatype d : allDatatypes) {
+      for (Component c : d.getComponents()) {
+        if (c.getDatatype().getId().equals(wrapper.getDatatypeId())) {
+          ComponentFound found = new ComponentFound();
+          found.setName(c.getName());
+          found.setId(c.getId());
+          found.setPosition(c.getPosition());
+          found.setUsage(c.getUsage());
+          DatatypeFound dt = new DatatypeFound();
+          dt.setDescription(dt.getDescription());
+          dt.setId(d.getId());
+          dt.setExt(d.getExt());
+          dt.setLabel(d.getLabel());
+          dt.setName(d.getName());
+          found.setDatatypeFound(dt);
+          componentFounds.add(found);
+        }
+      }
+    }
+
 
     DatatypeCrossReference ret = new DatatypeCrossReference();
     ret.setCoConstraintFounds(coConstraintFounds);

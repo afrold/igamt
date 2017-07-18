@@ -602,9 +602,10 @@ angular.module('igl').factory(
         svc.deleteValueSet = function (table) {
             TableService.crossRef(table,$rootScope.igdocument.id).then(function (result) {
                 if(result.empty){
-                    $rootScope.referencesForDelete=result;
+
                     confirmValueSetDelete(table);
                 }else{
+                    $rootScope.referencesForDelete=result;
                     abortValueSetDelete(table);
 
                 }
@@ -695,21 +696,42 @@ angular.module('igl').factory(
         }
 
         svc.deleteDatatype = function (datatype) {
+            if ($rootScope.igdocument) {
+                DatatypeService.crossRef(datatype.id, $rootScope.igdocument.id).then(function (result) {
+                    if (result.empty) {
+                        // $rootScope.referencesForDelete=result;
+                        confirmDatatypeDelete(datatype);
+                    } else {
+                        $rootScope.referencesForDelete = result;
 
-            DatatypeService.crossRef(datatype.id,$rootScope.igdocument.id).then(function (result) {
-                if(result.empty){
-                    $rootScope.referencesForDelete=result;
-                    confirmDatatypeDelete(datatype);
-                }else{
-                    abortDatatypeDelete(datatype);
-                }
-            }, function (error) {
-                $scope.loadingSelection = false;
-                $rootScope.msg().text = error.data.text;
-                $rootScope.msg().type = error.data.type;
-                $rootScope.msg().show = true;
-            });
-        }
+                        abortDatatypeDelete(datatype, $rootScope.referencesForDelete);
+                    }
+                }, function (error) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
+            } else {
+
+
+                DatatypeService.crossRefInLibrary(datatype.id, $rootScope.datatypeLibrary.id).then(function (result) {
+                    if (result.empty) {
+                        // $rootScope.referencesForDelete=result;
+                        confirmDatatypeDelete(datatype);
+                    } else {
+                        $rootScope.referencesForDelete = result;
+
+                        abortDatatypeDelete(datatype, $rootScope.referencesForDelete);
+                    }
+                }, function (error) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
+            }
+        };
 
         svc.deleteTableAndTableLink = function (table) {
             TableService.delete(table).then(function (result) {
@@ -838,15 +860,17 @@ angular.module('igl').factory(
             });
         };
 
-        function abortDatatypeDelete(datatype) {
+        function abortDatatypeDelete(datatype,refs) {
             var dtToDelete;
             var modalInstance = $mdDialog.show({
-                templateUrl: 'DatatypeReferencesCtrl.html',
-                controller: 'DatatypeReferencesCtrl',
+                templateUrl: 'DatatypeReferencesCtrlMd.html',
+                controller: 'DatatypeReferencesCtrlMd',
                 scope:$rootScope,
                 preserveScope:true,
                 locals: {
-                    dtToDelete: datatype
+                    dtToDelete: datatype,
+                    refs:refs
+
                     }
 
             });
