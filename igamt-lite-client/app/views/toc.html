@@ -85,7 +85,7 @@
                             <div ui-tree-handle class="messageContent" style="margin-left:15px;">
                                 <i data-nodrag ng-click="switcherpc()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapseprofilecomponent, 'fa-caret-right': collapseprofilecomponent}"></i>
                                 <span data-nodrag ng-class="{selected :activeModel ==='Profile Components'}" context-menu="ProfileComponentsRootOption" confirm-click>
-                {{ig.childSections.length+1}}.1.Profile Components <span style="color:red;font-weight: bold; font-size:10px">BETA</span></span>
+                {{ig.childSections.length+1}}.1.Profile Components </span>
                             </div>
                             <li ng-repeat="pc in ig.profile.profileComponentLibrary.children | orderBy :'name'" ui-tree-node ng-if="!collapseprofilecomponent" data-type="profileComponents">
                                 <div ui-tree-handle data-nodrag confirm-click style="margin-left:30px;">
@@ -119,7 +119,7 @@
                             <div ui-tree-handle class="messageContent" style="margin-left:15px;">
                                 <i data-nodrag ng-click="switchercm()" class="fa fa-caret-down" ng-class="{'fa-caret-down': !collapsecompositemessage, 'fa-caret-right': collapsecompositemessage}"></i>
                                 <span data-nodrag ng-class="{selected :activeModel ==='Composite Messages'}" context-menu="CompositeMessagesRootOption" confirm-click>
-                {{ig.childSections.length+1}}.3.Composite Profiles <span style="color:red;font-weight: bold; font-size:10px">BETA</span></span>
+                {{ig.childSections.length+1}}.3.Composite Profiles</span>
                             </div>
                             <li ng-repeat="cm in ig.profile.compositeProfiles.children | orderBy :'name'" ui-tree-node ng-if="!collapsecompositemessage" data-type="compositeMessages">
                                 <div ui-tree-handle data-nodrag confirm-click style="margin-left:30px;">

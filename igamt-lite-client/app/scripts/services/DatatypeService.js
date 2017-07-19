@@ -222,6 +222,19 @@ angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettin
                 });
                 return delay.promise;
             },
+            crossRefInLibrary:function(datatypeId, igDocumentId) {
+                var delay = $q.defer();
+                var wrapper = {};
+                wrapper.datatypeId= datatypeId;
+                wrapper.igDocumentId= igDocumentId;
+                $http.post('api/crossRefs/datatypeInLibrary', wrapper).then(function(response) {
+                    var ref = angular.fromJson(response.data);
+                    delay.resolve(ref);
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
             getOne: function(id) {
                 var delay = $q.defer();
                 if ($rootScope.datatypesMap[id] === undefined || $rootScope.datatypesMap[id] === null) {
@@ -536,6 +549,19 @@ angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettin
                 $http.get('api/datatypes/findPendingShared').then(function (response) {
                     delay.resolve(response.data);
                  }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            crossRef: function(datatypeId, igDocumentId) {
+                var delay = $q.defer();
+                var wrapper = {};
+                wrapper.datatypeId = datatypeId;
+                wrapper.igDocumentId = igDocumentId;
+                $http.post('api/crossRefs/datatype', wrapper).then(function(response) {
+                    var ref = angular.fromJson(response.data);
+                    delay.resolve(ref);
+                }, function(error) {
                     delay.reject(error);
                 });
                 return delay.promise;

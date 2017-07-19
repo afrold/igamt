@@ -225,8 +225,8 @@ public class Bootstrap implements InitializingBean {
     // or unpublished
     // CreateCollectionOfUnchanged(); // group datatype by sets of versions
     // Colorate(); // genenerates the datatypes evolution matrix.
-
-    // setDtsStatus();// sets the status of all the datatypes to published
+    //
+    // // setDtsStatus();// sets the status of all the datatypes to published
     // CreateIntermediateFromUnchanged();
     // MergeComponents();
     // setSegmentStatus();
@@ -275,17 +275,17 @@ public class Bootstrap implements InitializingBean {
     // refactorCoConstrint();
     // updateUserExportConfigs();
     // hotfix();
-    // // Need to run ONE TIME
+    // // // Need to run ONE TIME
     // fixConfLength();
     // fixWrongConstraints();
     // updateSegmentDatatypeDescription();
     // updateGroupName();
     // fixProfielComponentConfLength();
     // updateGroupName();
-
-
+    //
+    //
     // fixCodeSysLOINC();
-
+    //
     // fixAllConstraints();
   }
 
@@ -2230,14 +2230,16 @@ public class Bootstrap implements InitializingBean {
       List<String> version2 = new ArrayList<String>();
       version2.add(version);
       temp.add(version2);
-      // DatatypeMap.put(dt.getName(), temp);
       if (!DatatypeMap.containsKey(dt.getName())) {
         DatatypeMap.put(dt.getName(), temp);
       } else {
         for (int i = 0; i < DatatypeMap.get(dt.getName()).size(); i++) {
           List<Datatype> datatypes = datatypeService.findByNameAndVersionAndScope(dt.getName(),
               DatatypeMap.get(dt.getName()).get(i).get(0), "HL7STANDARD");
-          Datatype d = datatypes != null && !datatypes.isEmpty() ? datatypes.get(0) : null;
+          Datatype d = null;
+          if (datatypes != null && !datatypes.isEmpty()) {
+            d = datatypes.get(0);
+          }
           if (d != null && !Visited.containsKey(dt.getName())) {
             if (deltaService.CompareDatatypes(d, dt)) {
               DatatypeMap.get(dt.getName()).get(i).add(version);
@@ -2262,7 +2264,7 @@ public class Bootstrap implements InitializingBean {
     String[] versions = {"2.4", "2.5", "2.5.1", "2.6", "2.7", "2.7.1", "2.8", "2.8.1", "2.8.2"};
     // String[] versions = {"2.2","2.3"};
     for (int i = 0; i < versions.length; i++) {
-      AddVersiontoMap(versions[i].toString());
+      AddVersiontoMap(versions[i]);
     }
   }
 

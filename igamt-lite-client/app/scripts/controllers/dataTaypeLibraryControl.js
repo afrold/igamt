@@ -1691,16 +1691,18 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                                 } catch (e) {
 
                                 }
-                                $rootScope.references = [];
-                                $rootScope.tmpReferences = [].concat($rootScope.references);
 
-                                angular.forEach($rootScope.datatypes, function(dt) {
-                                    if (dt && dt != null && dt.id !== $rootScope.datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt), dt);
-                                });
+            DatatypeService.crossRefInLibrary($rootScope.datatype.id,$rootScope.datatypeLibrary.id).then(function (result) {
+                $rootScope.crossRef = result;
 
-                                $rootScope.tmpReferences = [].concat($rootScope.references);
+            }, function (error) {
+                $scope.loadingSelection = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
 
-                                $rootScope.$emit("event:initEditArea");
+            $rootScope.$emit("event:initEditArea");
 
 
         };

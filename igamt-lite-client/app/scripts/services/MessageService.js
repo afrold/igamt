@@ -2,8 +2,7 @@
  * Created by haffo on 3/9/16.
  */
 'use strict';
-angular.module('igl').factory('MessageService',
-    function($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, SegmentLibrarySvc, TableLibrarySvc, DatatypeLibrarySvc) {
+angular.module('igl').factory('MessageService', function($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, SegmentLibrarySvc, TableLibrarySvc, DatatypeLibrarySvc) {
         var MessageService = {
             save: function(message) {
                 var delay = $q.defer();
@@ -13,6 +12,19 @@ angular.module('igl').factory('MessageService',
                     var saved = angular.fromJson(response.data);
                     delay.resolve(saved);
                     return saved;
+                }, function(error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            crossRef: function(messageId, igDocumentId) {
+                var delay = $q.defer();
+                var wrapper = {};
+                wrapper.messageId = messageId;
+                wrapper.igDocumentId = igDocumentId;
+                $http.post('api/crossRefs/message', wrapper).then(function(response) {
+                    var ref = angular.fromJson(response.data);
+                    delay.resolve(ref);
                 }, function(error) {
                     delay.reject(error);
                 });

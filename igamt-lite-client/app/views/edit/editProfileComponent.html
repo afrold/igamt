@@ -536,7 +536,6 @@
                                             <tbody/>
                                         </table>
                                     </div>
-
                                 </div>
                             </md-tab-body>
                         </md-tab>
@@ -777,11 +776,7 @@
             <md-dialog-content>
                 <div class="md-dialog-content">
                     <div>
-                    <textarea ng-if="!viewSettings.tableReadonly" rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus
-                              ng-model="field.attributes.text" id="globalEditor " name="content "></textarea>
-
-
-
+                    <textarea ng-if="!viewSettings.tableReadonly" rows="10 " froala="froalaEditorOptions" style="width:100%;" autofocus ng-model="field.attributes.text" id="globalEditor" name="content"></textarea>
                         <div class="fr-view" ng-if="viewSettings.tableReadonly">
                             <div froala-view="field.attributes.text"></div>
                         </div>
