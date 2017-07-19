@@ -609,16 +609,18 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
 ;
 
 
-angular.module('igl').controller('DatatypeReferencesCtrl', function ($scope, $modalInstance, dtToDelete) {
+angular.module('igl').controller('DatatypeReferencesCtrlMd', function ($scope, $mdDialog, dtToDelete, $rootScope,refs) {
 
     $scope.dtToDelete = dtToDelete;
+    console.log($rootScope.crossRefsForDelete);
 
-    $scope.ok = function () {
-        $modalInstance.close($scope.dtToDelete);
-    };
+    $scope.crossRefsForDelete=refs;
+
 
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        console.log($rootScope.crossRefsForDelete);
+            console.log(refs);
+        $mdDialog.hide('cancel');
     };
 });
 

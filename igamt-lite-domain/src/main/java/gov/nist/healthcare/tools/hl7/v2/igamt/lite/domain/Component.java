@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.ArrayList;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
@@ -74,15 +72,19 @@ public class Component extends DataElement implements Cloneable {
     }
     if (!c.getUsage().toString().equalsIgnoreCase(this.getUsage().toString())) {
       return false;
-    } else if (!c.getMaxLength().equalsIgnoreCase(this.getMaxLength())) {
+    }
+    if (!c.getMaxLength().toLowerCase().equals(this.getMaxLength().toLowerCase())) {
       return false;
-    } else if (c.getMinLength() != this.getMinLength()) {
+    }
+    if (!c.getMinLength().toLowerCase().equals(this.getMinLength().toLowerCase())) {
       return false;
-    } else if (this.getDatatype() == null || c.getDatatype().getName() == null
-        || !c.getDatatype().getName().equals(this.datatype.getName())) {
-      return false;
-    } else
-      return true;
-  }
+    }
+    // if (c.getMinLength().toString().trim()
+    // .equalsIgnoreCase(this.getMinLength().toString().trim())) {
+    // return false;
+    //
+    // }
+    return true;
 
+  }
 }

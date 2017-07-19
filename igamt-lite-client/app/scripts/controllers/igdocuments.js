@@ -2,10 +2,7 @@
  * Created by haffo on 1/12/15.
  */
 
-angular.module('igl')
-
-    .controller('IGDocumentListCtrl', function (TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService, orderByFilter, $mdDialog) {
-
+angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService, orderByFilter, $mdDialog) {
         $scope.loading = false;
         $scope.tocView = 'views/toc.html';
         $scope.uiGrid = {};
@@ -991,17 +988,17 @@ angular.module('igl')
 
         };
         $rootScope.cantDeleteMsg = function (msg) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'CantDeleteMsgCtrl.html',
                 controller: 'CantDeleteMsgCtrl',
-                resolve: {
-                    msg: function () {
-                        return msg;
-                    },
+                scope: $rootScope,
+                preserveScope: true,
+                locals: {
+                    msg: msg
+                    }
 
-                }
             });
-            modalInstance.result.then(function (msg) {
+            modalInstance.then(function (msg) {
 
             }, function () {
             });
@@ -1439,11 +1436,19 @@ angular.module('igl')
                                     $scope.coConRowIndexList.push(rowIndexObj);
                                 }
 
-                                $rootScope.references = [];
-                                angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
-                                    $rootScope.findSegmentRefs($rootScope.segment, message, '', '', message);
-                                });
+                                $rootScope.crossRef = {};
 
+                                SegmentService.crossRef($rootScope.segment.id,$rootScope.igdocument.id).then(function (result) {
+                                    $rootScope.crossRef = result;
+                                    console.log("Cross REF Found!!![" + $rootScope.segment.id + "][" + $rootScope.igdocument.id + "]");
+                                    console.log($rootScope.crossRef);
+
+                                }, function (error) {
+                                    $scope.loadingSelection = false;
+                                    $rootScope.msg().text = error.data.text;
+                                    $rootScope.msg().type = error.data.type;
+                                    $rootScope.msg().show = true;
+                                });
                                 $scope.loadingSelection = false;
                                 $rootScope.$emit("event:initEditArea");
                                 $rootScope.$emit("event:initSegment");
@@ -1452,6 +1457,8 @@ angular.module('igl')
                                 $rootScope.subview = "EditSegments.html";
 
                                 blockUI.stop();
+
+
 
                             }, function (error) {
                                 $scope.loadingSelection = false;
@@ -1529,21 +1536,18 @@ angular.module('igl')
                                 } catch (e) {
 
                                 }
-                                $rootScope.references = [];
-                                $rootScope.tmpReferences = [].concat($rootScope.references);
-                                angular.forEach($rootScope.segments, function (segment) {
-                                    if (segment && segment != null) {
-                                        $rootScope.findDatatypeRefs($rootScope.datatype, segment, $rootScope.getSegmentLabel(segment), segment);
-                                    }
-                                });
-                                angular.forEach($rootScope.datatypes, function (dt) {
-                                    if (dt && dt != null && dt.id !== $rootScope.datatype.id) $rootScope.findDatatypeRefs(datatype, dt, $rootScope.getDatatypeLabel(dt), dt);
-                                });
-                                angular.forEach($rootScope.profileComponents, function (pc) {
-                                    $rootScope.findDatatypeRefs(datatype, pc, pc.name, pc);
-                                });
+                                $rootScope.crossRef = null;
 
-                                $rootScope.tmpReferences = [].concat($rootScope.references);
+                                DatatypeService.crossRef($rootScope.datatype.id,$rootScope.igdocument.id).then(function (result) {
+                                    $rootScope.crossRef = result;
+                                    console.log($rootScope.crossRef);
+
+                                }, function (error) {
+                                    $scope.loadingSelection = false;
+                                    $rootScope.msg().text = error.data.text;
+                                    $rootScope.msg().type = error.data.type;
+                                    $rootScope.msg().show = true;
+                                });
 
                                 $rootScope.subview = "EditDatatypes.html";
                                 $rootScope.$emit("event:initEditArea");
@@ -1598,6 +1602,18 @@ angular.module('igl')
                         } catch (e) {
 
                         }
+
+                        MessageService.crossRef($rootScope.message.id,$rootScope.igdocument.id).then(function (result) {
+                            $rootScope.crossRef = result;
+                            console.log("Cross REF Found!!![" + $rootScope.message.id + "][" + $rootScope.igdocument.id + "]");
+                            console.log($rootScope.crossRef);
+                        }, function (error) {
+                            $scope.loadingSelection = false;
+                            $rootScope.msg().text = error.data.text;
+                            $rootScope.msg().type = error.data.type;
+                            $rootScope.msg().show = true;
+                        });
+
                         $rootScope.subview = "EditMessages.html";
                         $rootScope.$emit("event:initEditArea");
 
@@ -1678,8 +1694,6 @@ angular.module('igl')
             $timeout(
                 function () {
                     try {
-
-
                         $rootScope.originalPcLib = $rootScope.igdocument.profile.profileComponentLibrary;
                         //$rootScope.profileComponentLib = angular.copy($rootScope.igdocument.profile.profileComponentLibrary);
                         $rootScope.currentData = $rootScope.profileComponent;
@@ -1698,6 +1712,18 @@ angular.module('igl')
                         } catch (e) {
 
                         }
+
+                        PcService.crossRef($rootScope.profileComponent.id,$rootScope.igdocument.id).then(function (result) {
+                            $rootScope.crossRef = result;
+                            console.log("Cross REF Found!!![" + $rootScope.profileComponent.id + "][" + $rootScope.igdocument.id + "]");
+                            console.log($rootScope.crossRef);
+                        }, function (error) {
+                            $scope.loadingSelection = false;
+                            $rootScope.msg().text = error.data.text;
+                            $rootScope.msg().type = error.data.type;
+                            $rootScope.msg().show = true;
+                        });
+
                         $rootScope.$emit("event:initEditArea");
                         $rootScope.subview = "EditProfileComponent.html";
 
@@ -2006,6 +2032,16 @@ angular.module('igl')
                     $rootScope.table.smallCodes.sort($scope.codeCompare);
                     $rootScope.findValueSetBindings();
                     $scope.loadingSelection = false;
+                    TableService.crossRef($rootScope.table,$rootScope.igdocument.id).then(function (result) {
+                        $rootScope.crossRef = result;
+                        console.log($rootScope.crossRef);
+
+                    }, function (error) {
+                        $scope.loadingSelection = false;
+                        $rootScope.msg().text = error.data.text;
+                        $rootScope.msg().type = error.data.type;
+                        $rootScope.msg().show = true;
+                    });
                     $rootScope.$emit("event:initEditArea");
                     blockUI.stop();
                 }, function (errr) {
@@ -2340,7 +2376,7 @@ angular.module('igl').controller('CantDeletePcCtrl', function ($scope, $mdDialog
 });
 
 
-angular.module('igl').controller('CantDeleteMsgCtrl', function ($scope, ngTreetableParams, $modalInstance, msg, $rootScope) {
+angular.module('igl').controller('CantDeleteMsgCtrl', function ($scope, ngTreetableParams, $mdDialog, msg, $rootScope) {
     $scope.msg = msg;
     $scope.loading = false;
     var getAppliedProfileComponentsById = function (cp) {
@@ -2379,7 +2415,7 @@ angular.module('igl').controller('CantDeleteMsgCtrl', function ($scope, ngTreeta
     });
 
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 });
 

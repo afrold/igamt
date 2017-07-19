@@ -9,16 +9,30 @@
  * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified. Abdelghani EL OUAKILI (NIST) Jun 6, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public class SegmentCrossRefWrapper {
-
-  private String segmentId;
+public class DatatypeCrossRefWrapper {
+  private String datatypeId;
   private String igDocumentId;
+
+
+  /**
+   * @return the datatypeId
+   */
+  public String getDatatypeId() {
+    return datatypeId;
+  }
+
+  /**
+   * @param datatypeId the datatypeId to set
+   */
+  public void setDatatypeId(String datatypeId) {
+    this.datatypeId = datatypeId;
+  }
 
   /**
    * @return the igDocumentId
@@ -32,20 +46,6 @@ public class SegmentCrossRefWrapper {
    */
   public void setIgDocumentId(String igDocumentId) {
     this.igDocumentId = igDocumentId;
-  }
-
-  /**
-   * @return the segmentId
-   */
-  public String getSegmentId() {
-    return segmentId;
-  }
-
-  /**
-   * @param segmentId the segmentId to set
-   */
-  public void setSegmentId(String segmentId) {
-    this.segmentId = segmentId;
   }
 
 

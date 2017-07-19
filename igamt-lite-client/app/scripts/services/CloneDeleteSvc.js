@@ -600,23 +600,23 @@ angular.module('igl').factory(
 
 
         svc.deleteValueSet = function (table) {
-                 $rootScope.referencesForMenu = [];
-                angular.forEach($rootScope.segments, function (segment) {
-                    $rootScope.findTableRefsForMenu(table, segment, $rootScope.getSegmentLabel(segment),segment);
-                });
-                angular.forEach($rootScope.datatypes, function (dt) {
-                    $rootScope.findTableRefsForMenu(table, dt, $rootScope.getDatatypeLabel(dt),dt);
-                });
-                 angular.forEach($rootScope.profileComponents, function (pc) {
-                $rootScope.findTableRefsForMenu(table, pc, pc.name,pc);
-                });
+            TableService.crossRef(table,$rootScope.igdocument.id).then(function (result) {
+                if(result.empty){
 
-                if ($rootScope.referencesForMenu != null && $rootScope.referencesForMenu.length > 0) {
-                    abortValueSetDelete(table);
-                } else {
                     confirmValueSetDelete(table);
+                }else{
+                    $rootScope.referencesForDelete=result;
+                    abortValueSetDelete(table);
+
                 }
-         }
+            }, function (error) {
+                $scope.loadingSelection = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+
+         };
 
 
         svc.exportDisplayXML = function (messageID) {
@@ -696,27 +696,42 @@ angular.module('igl').factory(
         }
 
         svc.deleteDatatype = function (datatype) {
-            $rootScope.referencesForMenu = [];
-            angular.forEach($rootScope.segments, function (segment) {
-                if(segment && segment != null) {
-                    $rootScope.findDatatypeRefsForMenu(datatype, segment, $rootScope.getSegmentLabel(segment),segment);
-                }
-            });
-            angular.forEach($rootScope.segments, function (segment) {
-                if(segment && segment != null) {
-                    $rootScope.findDatatypeRefsForMenu(datatype, segment, $rootScope.getSegmentLabel(segment),segment);
-                }
-            });
-            angular.forEach($rootScope.profileComponents, function (pc) {
-               $rootScope.findDatatypeRefsForMenu(datatype, pc, pc.name,pc);
-            });
-            if ($rootScope.referencesForMenu != null && $rootScope.referencesForMenu.length > 0) {
-                console.log($rootScope.referencesForMenu);
-                abortDatatypeDelete(datatype);
+            if ($rootScope.igdocument) {
+                DatatypeService.crossRef(datatype.id, $rootScope.igdocument.id).then(function (result) {
+                    if (result.empty) {
+                        // $rootScope.referencesForDelete=result;
+                        confirmDatatypeDelete(datatype);
+                    } else {
+                        $rootScope.referencesForDelete = result;
+
+                        abortDatatypeDelete(datatype, $rootScope.referencesForDelete);
+                    }
+                }, function (error) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
             } else {
-                confirmDatatypeDelete(datatype);
+
+
+                DatatypeService.crossRefInLibrary(datatype.id, $rootScope.datatypeLibrary.id).then(function (result) {
+                    if (result.empty) {
+                        // $rootScope.referencesForDelete=result;
+                        confirmDatatypeDelete(datatype);
+                    } else {
+                        $rootScope.referencesForDelete = result;
+
+                        abortDatatypeDelete(datatype, $rootScope.referencesForDelete);
+                    }
+                }, function (error) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
             }
-        }
+        };
 
         svc.deleteTableAndTableLink = function (table) {
             TableService.delete(table).then(function (result) {
@@ -845,15 +860,17 @@ angular.module('igl').factory(
             });
         };
 
-        function abortDatatypeDelete(datatype) {
+        function abortDatatypeDelete(datatype,refs) {
             var dtToDelete;
             var modalInstance = $mdDialog.show({
-                templateUrl: 'DatatypeReferencesCtrl.html',
-                controller: 'DatatypeReferencesCtrl',
+                templateUrl: 'DatatypeReferencesCtrlMd.html',
+                controller: 'DatatypeReferencesCtrlMd',
                 scope:$rootScope,
                 preserveScope:true,
                 locals: {
-                    dtToDelete: datatype
+                    dtToDelete: datatype,
+                    refs:refs
+
                     }
 
             });
@@ -907,18 +924,25 @@ angular.module('igl').factory(
         }
 
         svc.deleteSegment = function (segment) {
-            $rootScope.referencesForMenu = [];
-            angular.forEach($rootScope.igdocument.profile.messages.children, function (message) {
-                $rootScope.findSegmentRefsForMenu(segment, message, '', '', message);
+            $rootScope.crossRefsForDelete=null;
+            SegmentService.crossRef(segment.id,$rootScope.igdocument.id).then(function (result) {
+
+
+                if(result.empty){
+                    confirmSegmentDelete(segment);
+                }else{
+                    $rootScope.crossRefsForDelete=result;
+                    abortSegmentDelete(segment);
+                }
+
+            }, function (error) {
+                $scope.loadingSelection = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
             });
 
-            if ($rootScope.referencesForMenu != null && $rootScope.referencesForMenu.length > 0) {
-                abortSegmentDelete(segment);
-            } else {
-
-                confirmSegmentDelete(segment);
-            }
-        }
+        };
 
         function abortSegmentDelete(segment) {
             var segToDelete;
@@ -1025,8 +1049,31 @@ angular.module('igl').factory(
             return rval;
         }
 
+
         svc.deleteMessage = function (message) {
-            confirmMessageDelete(message);
+
+
+
+                $rootScope.crossRefsForDelete=null;
+                MessageService.crossRef(message.id,$rootScope.igdocument.id).then(function (result) {
+
+
+                    if(result.empty){
+                        confirmMessageDelete(message);
+                    }else{
+                        $rootScope.crossRefsForDelete=result;
+                        $rootScope.cantDeleteMsg(message);
+                    }
+
+                }, function (error) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
+
+
+
         }
 
         svc.deleteSection = function (section) {
@@ -1044,7 +1091,7 @@ angular.module('igl').factory(
                 $rootScope.msg().show = true;
                 $rootScope.manualHandle = true;
             });
-        }
+        };
 
         svc.findMessageIndex = function (messages, id) {
             var idxT = _.findIndex(messages.children, function (child) {

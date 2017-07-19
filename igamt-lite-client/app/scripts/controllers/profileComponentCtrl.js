@@ -1576,6 +1576,27 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
 
 
     };
+
+
+    $scope.isDual = function (def){
+        if(def) {
+            if($scope.seg.name === 'OBX' && def.path + "" === "5") return true;
+        }
+        return false;
+    };
+
+    $scope.editValueSetForVaries = function (id, index){
+        $scope.coConstraintsTable.thenMapData[id][index].valueData = {};
+        $scope.editValueSetThenMapData(id,index);
+    };
+
+    $scope.editValueForVaries = function (id, index){
+        $scope.coConstraintsTable.thenMapData[id][index].valueData = {};
+        $scope.coConstraintsTable.thenMapData[id][index].valueData.value = " ";
+        $scope.coConstraintsTable.thenMapData[id][index].valueSets = [];
+    };
+
+
     $scope.editValueSetThenMapData = function(currentId, currentIndex) {
         $scope.currentId = currentId;
         $scope.currentIndex = currentIndex;
@@ -2788,8 +2809,6 @@ angular.module('igl').controller('addComponentsCtrl', function($scope, $rootScop
                 appliedTo: [],
                 version: ""
             };
-
-
         };
         if (newPc.type !== "segmentRef") {
             newPc.oldValueSetBindings = $scope.findingBindings(newPc);
