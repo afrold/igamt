@@ -13,27 +13,23 @@
 </script>
 <!-- <!-- Fixed navbar -->
 <div class="navbar navbar-default navbar-static-top" role="navigation" style="z-index: inherit">
+    <!--<div class="brand" id="appheader">-->
+        <!--<a style="display: inline-block; text-shadow:none" href="#">-->
+            <!--<div id="apptitle">-->
+                <!--<div><span msg key="app.title"></span>-->
+                    <!--<span class="badge" style="background-color: rgb(152, 45, 18); font-size:10px"> {{appInfo.version}}</span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<span id="appsubtitle">-->
+                <!--<span msg key="app.subtitle"></span>-->
+            <!--</span>-->
+        <!--</a>-->
+    <!--</div>-->
     <div class="brand" id="appheader">
         <a style="display: inline-block; text-shadow:none" href="#">
-            <div id="apptitle">
-                <div><span msg key="app.title"></span>
-                    <span class="badge" style="background-color: rgb(152, 45, 18); font-size:10px"> {{appInfo.version}}</span>
-                </div>
-            </div>
-            <div id="appsubtitle">
-            <div msg key="app.subtitle"></div>
-            </div>
+            <div id="apptitle">NIST IGAMT <span style="color:white" msg key="app.subtitle">{{app.subtitle}}</span><span style="color:red; font-size:12px"> {{appInfo.version}}</span></div>
+            <!-- ngIf: appInfo.domain != '' && appInfo.domain  != null -->
         </a>
-        <!--<div id="userInfo" ng-show="isAuthenticated()">-->
-        <!--<div>-->
-        <!--<span>Welcome, </span>-->
-        <!--<span class="userInfoValue" ng-bind="getFullName()"></span>-->
-        <!--</div>-->
-        <!--&lt;!&ndash;<div>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span>Role: </span>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span class="userInfoValue" ng-bind="getRoleAsString()"></span>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--</div>-->
     </div>
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">

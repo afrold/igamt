@@ -838,7 +838,8 @@ public class CrossReferencesController {
 
       if (d.getPredicates() != null && !d.getPredicates().isEmpty()) {
         for (Predicate p : d.getPredicates()) {
-          if (p.getAssertion().contains(wrapper.getAssertionId())) {
+
+          if (p.getAssertion() != null && p.getAssertion().contains(wrapper.getAssertionId())) {
             DatatypePredicateFound confFound = new DatatypePredicateFound();
             DatatypeFound dt = new DatatypeFound();
             dt.setDescription(dt.getDescription());

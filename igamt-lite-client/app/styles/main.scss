@@ -3376,10 +3376,8 @@ md-input-container > label.input-left {
 }
 .panel-primary{
     max-height:800px !important;
-    padding: 7px !important;
+    padding: 0px !important;
     overflow: auto !important;
-
-
 }
 .md-list-item {
     position: relative;
@@ -3413,4 +3411,52 @@ md-input-container.md-default-theme .md-placeholder, md-input-container .md-plac
 }
 .md-sidenav-right{
     position: fixed !important;
+}
+md-tabs-canvas {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    height: 40px !important;
+    /* margin-top: 0px; */
+}
+md-ink-bar{
+    height: 2px !important;
+    bottom: 8px !important;
+}
+.menu-table{
+    width: 100px !important;
+    min-width: 68px !important;
+    padding: 0px !important;
+    margin: 0 px !important;
+    height: 31px !important;
+    min-height: 17px !important;
+    font-size: inherit !important;
+    padding-top: initial !important;
+    line-height: inherit;
+    color: white;
+
+}
+
+.menu-table-display{
+
+background-color: #0f44f2;
+}
+.menu-table-add{
+    background-color: #0b3e6f;
+
+}
+.menu-table-verify{
+    background-color: #02aa8f;
+
+}
+.btn-group, .btn-group-vertical {
+    position: relative;
+    margin: 0px;
+}
+.table-context{
+    font-size: large;
+    padding: 5px;
+}
+.page-header{
+    margin: 0px 0 10px !important;
 }

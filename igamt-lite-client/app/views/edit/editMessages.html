@@ -169,8 +169,51 @@
                                                 Structure
                                             </md-tab-label>
                                             <md-tab-body>
+                                                <div layout="column">
+                                                    <div flex layout="row" layout-align="start start">
+                                                        <div class="table-context">
+                                                            <strong> Context :</strong>
+                                                            <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            message
+                                                            <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            segment
+                                                            <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            Field
+                                                            <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            Component
+                                                        </div>
+                                                        <div flex class="pull-right">
+                                                            <md-menu class="pull-right">
+                                                                <md-button ng-click="$mdMenu.open()" class="menu-table menu-table-add">
+                                                                    <i class="fa fa-plus fa-fw"></i> ADD
+                                                                </md-button>
+                                                                <md-menu-content>
+                                                                    <md-menu-item>
+                                                                        <md-button   ng-click="addGroupModal(message)">
+                                                                            Add Group
+                                                                        </md-button>
+                                                                    </md-menu-item>
+                                                                    <md-menu-item>
+                                                                        <md-button ng-click="addSegmentModal(message)" >
+                                                                            Add Segment
+                                                                        </md-button>
+                                                                    </md-menu-item>
+                                                                </md-menu-content>
 
-                                        <div class="panel-primary">
+                                                            </md-menu>
+                                                                <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
+                                                                <md-button ng-if="message.scope!=='HL7STANDARD'" title="Verify Message" type="button" ng-click="validateMessage()" class="pull-right menu-table menu-table-verify"><i class="fa fa-check fa-fw"></i> Verify</md-button>
+
+
+
+                                                                <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
+                                                                <span class="pull-right" ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>
+                                                        </div>
+
+
+                                                </div>
+
+
                                             <div class="igl-def-table-container">
 
                                                 <div style="margin:5px 5px 5px 5px">
@@ -185,44 +228,62 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="pull-left">
-                                                    <ul class="list-group">
-                                                        <li class="list-group-item">
-                                                           <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
-                                                                Context is the current message
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
-                                                            Context is the segment
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
-                                                            Context is the field's data type
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span>
-                                                            Context is the component's data type
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                                <div class="btn-group pull-right" ng-show="!viewSettings.tableReadonly">
-                                                    <button type="button" class="btn btn-raised btn-sm btn-info">
-                                                        <span><i class="fa fa-plus"></i> Add</span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-raised btn-sm btn-info" data-toggle="dropdown" aria-expanded="false">
-                                                        <span class="caret"></span>
-                                                        <span class="sr-only">Toggle Dropdown</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu igl-menu" role="menu">
-                                                        <li><a class="point" ng-click="addSegmentModal(message)"><i class="fa fa-plus fa-fw"></i> Add Segment</a></li>
-                                                        <li><a class="point" ng-click="addGroupModal(message)"><i class="fa fa-plus fa-fw"></i> Add Group</a></li>
-                                                    </ul>
-                                                </div>
-                                                <button ng-if="message.scope!=='HL7STANDARD'" class="pull-right" title="Verify Message" type="button" ng-class="'btn btn-raised btn-sm btn-primary'" ng-click="validateMessage()"><i class="fa fa-check fa-fw"></i> Verify</button>
-                                                <div ng-dropdown-multiselect="" class="pull-right" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>
 
 
+                                                <span class="pull-right" ng-show="!viewSettings.tableReadonly">
+                                                    <!--<md-menu-bar>-->
+                                                        <!--<md-menu>-->
+                                                            <!--<button ng-click="$mdMenu.open()" type="button">-->
+                                                                <!--<i class="fa fa-plus fa-fw"></i> ADD-->
+                                                            <!--</button>-->
+                                                            <!--<md-menu-content>-->
+                                                                <!--<md-menu-item>-->
+                                                                    <!--<md-button  ng-click="addGroupModal(message)">-->
+                                                                        <!--Add Group-->
+                                                                    <!--</md-button>-->
+                                                                <!--</md-menu-item>-->
+                                                                <!--<md-menu-item>-->
+                                                                    <!--<md-button ng-click="addSegmentModal(message)" >-->
+                                                                        <!--Add Segment-->
+                                                                    <!--</md-button>-->
+                                                                <!--</md-menu-item>-->
+                                                            <!--</md-menu-content>-->
+
+                                                        <!--</md-menu>-->
+                                                        <!--<md-menu>-->
+                                                            <!--&lt;!&ndash;<md-button ng-click="close()" md-colors="{background:'orange'}">&ndash;&gt;-->
+                                                            <!--<button ng-if="message.scope!=='HL7STANDARD'" title="Verify Message" type="button" ng-click="validateMessage()"><i class="fa fa-check fa-fw"></i> Verify</button>-->
+
+                                                            <!--<md-menu-content>-->
+                                                            <!--</md-menu-content>-->
+                                                        <!--</md-menu>-->
+
+                                                        <!--<md-menu>-->
+                                                            <!--&lt;!&ndash;<md-button ng-click="close()" md-colors="{background:'orange'}">&ndash;&gt;-->
+                                                            <!--<span ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>-->
+
+                                                            <!--<md-menu-content>-->
+                                                            <!--</md-menu-content>-->
+                                                        <!--</md-menu>-->
+
+                                                    <!--</md-menu-bar>-->
+                                                </span>
+
+                                                    <!--<button type="button" class="btn btn-raised btn-sm btn-info">-->
+                                                        <!--<span><i class="fa fa-plus"></i> Add</span>-->
+                                                    <!--</button>-->
+                                                    <!--<button type="button" class="btn btn-raised btn-sm btn-info" data-toggle="dropdown" aria-expanded="false">-->
+                                                        <!--<span class="caret"></span>-->
+                                                        <!--<span class="sr-only">Toggle Dropdown</span>-->
+                                                    <!--</button>-->
+                                                    <!--<ul class="dropdown-menu igl-menu" role="menu">-->
+                                                        <!--<li><a class="point" ng-click="addSegmentModal(message)"><i class="fa fa-plus fa-fw"></i> Add Segment</a></li>-->
+                                                        <!--<li><a class="point" ng-click="addGroupModal(message)"><i class="fa fa-plus fa-fw"></i> Add Group</a></li>-->
+                                                    <!--</ul>-->
+                                                <!--</div>-->
+                                                <!--<button ng-if="message.scope!=='HL7STANDARD'" class="pull-right" title="Verify Message" type="button" ng-class="'btn btn-raised btn-sm btn-primary'" ng-click="validateMessage()"><i class="fa fa-check fa-fw"></i> Verify</button>-->
+                                                <!--<div ng-dropdown-multiselect="" class="pull-right" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>-->
+                                                <div class="panel-primary">
                                             <table id="treeTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                 <thead>
                                                     <tr class="tbl-header" style="">
@@ -241,8 +302,8 @@
                                                         <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">Comment</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody></tbody>
-                                            </table>
+                                                <tbody style="max-height: 200px;"></tbody>
+                                            </table></div>
                                         </div>
                                 </div>
                                             </md-tab-body>
