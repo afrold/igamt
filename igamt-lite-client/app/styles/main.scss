@@ -3244,6 +3244,10 @@ md-select.inside-table{
     min-width: 900px;
 
 }
+.constraint-dialog{
+
+
+}
 .metadata-scroll{
     width:100%;
     max-height: 900px;
@@ -3402,4 +3406,11 @@ md-input-container.md-default-theme .md-placeholder, md-input-container .md-plac
 .home-page-toolbar {
     background-color: #2d9de7!important;
     color: #fff;
+}
+.md-backdrop{
+    height: 1957px !important;
+
+}
+.md-sidenav-right{
+    position: fixed !important;
 }
