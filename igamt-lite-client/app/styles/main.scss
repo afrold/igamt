@@ -3416,24 +3416,24 @@ md-tabs-canvas {
     position: relative;
     overflow: hidden;
     display: block;
-    height: 40px !important;
+    height: 28px !important;
     /* margin-top: 0px; */
 }
 md-ink-bar{
     height: 2px !important;
-    bottom: 8px !important;
+    bottom: 20px !important;
 }
 .menu-table{
-    width: 100px !important;
+    width: 68px !important;
     min-width: 68px !important;
     padding: 0px !important;
-    margin: 0 px !important;
-    height: 31px !important;
+    height: 20px !important;
     min-height: 17px !important;
     font-size: inherit !important;
     padding-top: initial !important;
     line-height: inherit;
     color: white;
+    text-transform: initial;
 
 }
 
@@ -3454,9 +3454,29 @@ background-color: #0f44f2;
     margin: 0px;
 }
 .table-context{
-    font-size: large;
+    font-size: normal;
     padding: 5px;
 }
 .page-header{
     margin: 0px 0 10px !important;
+}
+md-dialog{
+    max-height:none !important;
+}
+.md-tab {
+    font-size: 12px;
+    text-align: center;
+    line-height: 0px;
+    padding: 12px 24px;
+    -webkit-transition: background-color .35s cubic-bezier(0.35,0,.25,1);
+    transition: background-color .35s cubic-bezier(0.35,0,.25,1);
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    text-transform: initial;
+    float: left;
+    font-weight: 500;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
