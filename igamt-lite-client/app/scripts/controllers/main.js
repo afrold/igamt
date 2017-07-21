@@ -4496,7 +4496,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
 
     $scope.error = null;
     $scope.cancel = function() {
-        $mdDialog.hide('cancel');
+        $mdDialog.hide();
     };
 
     $scope.save = function() {

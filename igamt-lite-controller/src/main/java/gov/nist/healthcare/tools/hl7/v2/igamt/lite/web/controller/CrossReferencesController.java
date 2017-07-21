@@ -858,7 +858,7 @@ public class CrossReferencesController {
 
       if (d.getConformanceStatements() != null && !d.getConformanceStatements().isEmpty()) {
         for (ConformanceStatement p : d.getConformanceStatements()) {
-          if (p.getAssertion().contains(wrapper.getAssertionId())) {
+          if (p.getAssertion() != null && p.getAssertion().contains(wrapper.getAssertionId())) {
             DatatypeConformanceStatmentFound confFound = new DatatypeConformanceStatmentFound();
             DatatypeFound dt = new DatatypeFound();
             dt.setDescription(dt.getDescription());

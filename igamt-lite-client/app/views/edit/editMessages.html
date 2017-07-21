@@ -153,14 +153,14 @@
                                              <div class="panel-body">
                                                 <div ng-show="!viewSettings.tableReadonly">
                                                     <textarea froala="froalaEditorOptions" ng-model="message.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
-                                                  </div>
+                                                </div>
                                                 <div ng-show="viewSettings.tableReadonly">
                                                     <div class="fr-view">
                                                         <div froala-view="message.defPreText"></div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                         </div>
                                             </md-tab-body>
                                         </md-tab>
 
@@ -210,7 +210,7 @@
                                                                 <span class="pull-right" ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>
                                                         </div>
 
-
+                                                    </div>
                                                 </div>
 
 
@@ -228,64 +228,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
-                                                <span class="pull-right" ng-show="!viewSettings.tableReadonly">
-                                                    <!--<md-menu-bar>-->
-                                                        <!--<md-menu>-->
-                                                            <!--<button ng-click="$mdMenu.open()" type="button">-->
-                                                                <!--<i class="fa fa-plus fa-fw"></i> ADD-->
-                                                            <!--</button>-->
-                                                            <!--<md-menu-content>-->
-                                                                <!--<md-menu-item>-->
-                                                                    <!--<md-button  ng-click="addGroupModal(message)">-->
-                                                                        <!--Add Group-->
-                                                                    <!--</md-button>-->
-                                                                <!--</md-menu-item>-->
-                                                                <!--<md-menu-item>-->
-                                                                    <!--<md-button ng-click="addSegmentModal(message)" >-->
-                                                                        <!--Add Segment-->
-                                                                    <!--</md-button>-->
-                                                                <!--</md-menu-item>-->
-                                                            <!--</md-menu-content>-->
-
-                                                        <!--</md-menu>-->
-                                                        <!--<md-menu>-->
-                                                            <!--&lt;!&ndash;<md-button ng-click="close()" md-colors="{background:'orange'}">&ndash;&gt;-->
-                                                            <!--<button ng-if="message.scope!=='HL7STANDARD'" title="Verify Message" type="button" ng-click="validateMessage()"><i class="fa fa-check fa-fw"></i> Verify</button>-->
-
-                                                            <!--<md-menu-content>-->
-                                                            <!--</md-menu-content>-->
-                                                        <!--</md-menu>-->
-
-                                                        <!--<md-menu>-->
-                                                            <!--&lt;!&ndash;<md-button ng-click="close()" md-colors="{background:'orange'}">&ndash;&gt;-->
-                                                            <!--<span ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>-->
-
-                                                            <!--<md-menu-content>-->
-                                                            <!--</md-menu-content>-->
-                                                        <!--</md-menu>-->
-
-                                                    <!--</md-menu-bar>-->
-                                                </span>
-
-                                                    <!--<button type="button" class="btn btn-raised btn-sm btn-info">-->
-                                                        <!--<span><i class="fa fa-plus"></i> Add</span>-->
-                                                    <!--</button>-->
-                                                    <!--<button type="button" class="btn btn-raised btn-sm btn-info" data-toggle="dropdown" aria-expanded="false">-->
-                                                        <!--<span class="caret"></span>-->
-                                                        <!--<span class="sr-only">Toggle Dropdown</span>-->
-                                                    <!--</button>-->
-                                                    <!--<ul class="dropdown-menu igl-menu" role="menu">-->
-                                                        <!--<li><a class="point" ng-click="addSegmentModal(message)"><i class="fa fa-plus fa-fw"></i> Add Segment</a></li>-->
-                                                        <!--<li><a class="point" ng-click="addGroupModal(message)"><i class="fa fa-plus fa-fw"></i> Add Group</a></li>-->
-                                                    <!--</ul>-->
-                                                <!--</div>-->
-                                                <!--<button ng-if="message.scope!=='HL7STANDARD'" class="pull-right" title="Verify Message" type="button" ng-class="'btn btn-raised btn-sm btn-primary'" ng-click="validateMessage()"><i class="fa fa-check fa-fw"></i> Verify</button>-->
-                                                <!--<div ng-dropdown-multiselect="" class="pull-right" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>-->
                                                 <div class="panel-primary">
-                                            <table id="treeTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
-                                                <thead>
+                                                <table id="treeTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
+                                                    <thead>
                                                     <tr class="tbl-header" style="">
                                                         <th class="col-md-2 col-fixed-250">Name</th>
                                                         <th class="col-md-1 col-fixed-80" style="text-align:center">Usage
@@ -301,11 +246,11 @@
                                                         <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">Definition Text</th>
                                                         <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">Comment</th>
                                                     </tr>
-                                                </thead>
-                                                <tbody style="max-height: 200px;"></tbody>
-                                            </table></div>
-                                        </div>
-                                </div>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                                </div>
+                                             </div>
                                             </md-tab-body>
                                         </md-tab>
 
@@ -315,18 +260,18 @@
                                             </md-tab-label>
                                             <md-tab-body>
 
-                                <div class="panel-primary" >
-                                     <div class="panel-body">
-                                        <div ng-show="!viewSettings.tableReadonly">
-                                            <textarea froala="froalaEditorOptions" ng-model="message.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
-                                          </div>
-                                        <div ng-show="viewSettings.tableReadonly">
+                                    <div class="panel-primary" >
+                                        <div class="panel-body">
+                                            <div ng-show="!viewSettings.tableReadonly">
+                                                <textarea froala="froalaEditorOptions" ng-model="message.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
+                                            </div>
+                                                <div ng-show="viewSettings.tableReadonly">
                                             <div class="fr-view">
                                                 <div froala-view="message.defPostText"></div>
                                             </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                             </md-tab-body>
                                         </md-tab>
 
@@ -407,7 +352,6 @@
                                             </md-tab-body>
                                         </md-tab>
                                     </md-tabs>
-                    </div>
                                 </md-tab-body>
                             </md-tab>
                             <md-tab md-on-select="callMsgDelta()">
@@ -416,16 +360,16 @@
                                 </md-tab-label>
                                 <md-tab-body class="metadata-scroll">
 
-                        <div class="panel-body metadata-scroll" style="margin:5px;">
+                                 <div class="panel-body metadata-scroll" style="margin:5px;">
 
-                            <md-tabs md-dynamic-height md-border-bottom md-selected="deltaTabStatus.active">
-                                <md-tab>
+                                 <md-tabs md-dynamic-height md-border-bottom md-selected="deltaTabStatus.active">
+                                   <md-tab>
                                     <md-tab-label>
                                         <span><i class="fa fa-cog fa-fw"></i> Configuration </span>
                                     </md-tab-label>
                                     <md-tab-body>
 
-                            <div class="panel-primary">
+                                <div class="panel-primary">
                                  <div class="panel-body">
                                     <table class="table table-stripped table-borderless table-condensed">
                                         <thead>

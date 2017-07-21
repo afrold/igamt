@@ -4,36 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CoConstraintTHENColumnData {
-	private ValueData valueData;
-	private List<ValueSetData> valueSets = new ArrayList<ValueSetData>();
-	private String datatypeId;
+  private ValueData valueData = new ValueData();
+  private List<ValueSetData> valueSets = new ArrayList<ValueSetData>();
+  private String datatypeId;
 
-	public CoConstraintTHENColumnData() {
-		super();
-	}
+  public CoConstraintTHENColumnData() {
+    super();
+  }
 
-	public ValueData getValueData() {
-		return valueData;
-	}
+  public ValueData getValueData() {
+    return valueData;
+  }
 
-	public void setValue(ValueData valueData) {
-		this.valueData = valueData;
-	}
+  public void setValue(ValueData valueData) {
+    this.valueData = valueData;
+  }
 
-	public List<ValueSetData> getValueSets() {
-		return valueSets;
-	}
+  public List<ValueSetData> getValueSets() {
+    return valueSets;
+  }
 
-	public void setValueSets(List<ValueSetData> valueSets) {
-		this.valueSets = valueSets;
-	}
+  public void setValueSets(List<ValueSetData> valueSets) {
+    this.valueSets = valueSets;
+  }
 
-	public String getDatatypeId() {
-		return datatypeId;
-	}
+  public String getDatatypeId() {
+    return datatypeId;
+  }
 
-	public void setDatatypeId(String datatypeId) {
-		this.datatypeId = datatypeId;
-	}
+  public void setDatatypeId(String datatypeId) {
+    this.datatypeId = datatypeId;
+  }
 
 }

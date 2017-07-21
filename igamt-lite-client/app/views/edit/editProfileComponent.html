@@ -87,34 +87,32 @@
                                                 <span>Structure</span>
                                             </md-tab-label>
                                             <md-tab-body>
+                                                <div layout="column">
+                                                    <div flex layout="row" layout-align="start start">
+                                                        <div class="table-context">
+                                                            <strong> Context :</strong>
+                                                            <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            message
+                                                            <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            segment
+                                                            <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            Field
+                                                            <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            Component
+                                                        </div>
+                                                        <div flex class="pull-right">
+                                                                <md-button ng-click="addPComponents()" class="menu-table menu-table-add pull-right">
+                                                                    <i class="fa fa-plus fa-fw"></i> ADD Items
+                                                                </md-button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
 
                                         <div class="panel-primary">
 
                                             <div class="panel-body">
                                                 <div>
-                                                    <div class="pull-left">
-                                                        <ul class="list-group">
-                                                            <li class="list-group-item">
-                                                                <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span> Context is the message
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span> Context is the segment
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span> Context is the field's data type
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span> Context is the component's data Type
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-12 " style="margin-bottom:20px">
-                                                        <div class="pull-left">
-                                                            <md-button class="md-primary md-raised" md-autofocus ng-click="addPComponents()" ng-if="!viewSettings.tableReadonly">
-                                                                <i class="fa fa-plus "></i> Add Items
-                                                            </md-button>
-                                                        </div>
-                                                    </div>
                                                     <div class="col-md-12 " ng-show="profileComponent.children.length>0" style="overflow-y:auto;">
                                                         <table class="table table-bordered table-fix-header table-condensed profile-table">
                                                             <thead>
