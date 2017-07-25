@@ -142,49 +142,48 @@
                                                 Structure
                                             </md-tab-label>
                                             <md-tab-body>
-
-                                        <div class="panel-primary panel-level1">
-                                            <div class="" style="margin:5px 5px 5px 5px">
-                                                <div class="row" ng-show="showErrorCount(segment.id)  && showSegErrorNotification" style="margin-right: 15px;margin-left: 5px;">
-                                                    <div class="alert has-error" ng-show="errorCount(segment.id)>0" >
-                                                        <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
-
-                                                    </div>
-                                                    <div class="alert alert-success" ng-show="errorCount(segment.id)===0">
-                                                        <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
-
-                                                    </div>
-                                                </div>
-
-                                                <div class="pull-left">
-                                                    <ul class="list-group">
-                                                        <li class="list-group-item">
+                                                <div layout="column">
+                                                    <div flex layout="row" layout-align="start start">
+                                                        <div class="table-context">
+                                                            <strong> Context :</strong>
                                                             <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
-                                                            Context is the current segment
-                                                        </li>
-                                                        <li class="list-group-item">
+                                                            segment
                                                             <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
-                                                            Context is the field's data type
-                                                        </li>
-                                                        <li class="list-group-item">
+                                                            Field
                                                             <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span>
-                                                            Context is the component's data type
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                            Component
+                                                        </div>
+                                                        <div flex class="pull-right">
 
-                                                <div ng-show="segment.scope!=='HL7STANDARD' && !viewSettings.tableReadonly" class="btn-group pull-right">
-                                                    <button ng-click="addFieldModal(segment)" type="button" class="btn btn-raised btn-info btn-sm">
-                                                        <span><i class="glyphicon glyphicon-plus"></i> Add Field</span>
-                                                    </button>
-                                                </div>
-                                                <button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right" title="Validate Segment" type="button" ng-class="'btn btn-raised btn-sm btn-primary'"
-                                                        ng-click="validateSegment()">
-                                                    <i class="fa fa-check fa-fw"></i> Verify
-                                                </button>
-                                                <div class="pull-right"  ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
+                                                                <md-button ng-click="addFieldModal(segment)" class="menu-table menu-table-add pull-right">
+                                                                    <i class="fa fa-plus fa-fw"></i> ADD
+                                                                </md-button>
+                                                            <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
 
-                                                <div class="igl-def-table-container">
+
+                                                            <md-button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right menu-table menu-table-verify" title="Validate Segment" type="button"
+                                                                    ng-click="validateSegment()">
+                                                                <i class="fa fa-check fa-fw"></i> Verify
+                                                            </md-button>
+                                                            <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
+                                                            <span class="pull-right" ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    <div class="" style="margin:5px 5px 5px 5px">
+                                                      <div class="row" ng-show="showErrorCount(segment.id)  && showSegErrorNotification" style="margin-right: 15px;margin-left: 5px;">
+                                                        <div class="alert has-error" ng-show="errorCount(segment.id)>0" >
+                                                        <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
+
+                                                        </div>
+                                                       <div class="alert alert-success" ng-show="errorCount(segment.id)===0">
+                                                        <button type="button" ng-click="setErrorNotification();" class="close" aria-label="Close"><span>&times;</span></button>{{errorCount(segment.id)}} Errors
+
+                                                         </div>
+                                                    </div>
+
+                                                     </div>
+                                                <div class="igl-def-table-container panel-primary">
                                                     <table id="treeTable" tt-table tt-params="segmentsParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                         <thead>
                                                             <tr class="tbl-header" style="">
@@ -216,10 +215,6 @@
                                                         <tbody></tbody>
                                                     </table>
                                                 </div>
-                                            </div>
-
-                                        </div>
-
                                             </md-tab-body>
                                         </md-tab>
 
@@ -723,9 +718,8 @@
                                                 </div>
                                             </div>
                                             </md-tab-body>
-                             </md-tab>
-                        </md-tabs>
-                                </div>
+                                        </md-tab>
+                                    </md-tabs>
                                 </md-tab-body>
                             </md-tab>
                             <md-tab md-on-select="callSegDelta()">
@@ -1637,7 +1631,6 @@
                     </md-button>
                 </div>
             </md-toolbar>
-        <p>We cannot delete this segment because it is being referenced by the messages below:</p>
         <div class="igl-table" ng-if="crossRefsForDelete.messageFounds.length">
             <h4>Message</h4>
             <table class="table table-striped table-bordered table-condensed">

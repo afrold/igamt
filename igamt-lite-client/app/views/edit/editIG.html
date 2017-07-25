@@ -27,17 +27,24 @@
             </div>
             <div class="col-md-12">
                 <div class="page-header">
-                    <span class="header4">{{igdocument.metaData.title}}</span>
-                </div>
-                <div class="static_info">
-                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                    <span class="header4">{{igdocument.metaData.title}}
+                    <i class="material-icons">info</i>
+                    <md-tooltip md-direction="right">
+
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
                     Updated {{igdocument.dateUpdated | date:dateFormat}}
 
                     <span>,HL7 Version: {{igdocument.profile.metaData.hl7Version}}</span>
                     <span ng-if="igdocument.owner" style="font-style: italic;">
                         <span ng-if="igdocument.owner">, Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(igdocument.owner.email)}}"/> {{igdocument.owner.fullname}}</span>
+                    </span></md-tooltip>
                     </span>
+
+                    <!--<span class="pull-right" ng-click="toggleScreen()"><i ng-if="!fullscreen" class="material-icons">fullscreen</i>-->
+                        <!--<i ng-if="fullscreen" class="material-icons">fullscreen</i><md-tooltip md-direction="right"> Exit Full Screen</md-tooltip>-->
+                    <!--</span>-->
                 </div>
+
              </div>
 
             <div class="col-md-12 ig-menu-bar">

@@ -1335,7 +1335,7 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
+                <div class="constraint-dialog">
                     <div ng-show="dialogStep === 0">
                         <form novalidate ng-cloak>
                             <div class="col-md-6">
@@ -1897,7 +1897,7 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
+                <div class="constraint-dialog">
                     <div ng-show="dialogStep === 0">
                         <form novalidate ng-cloak>
                             <div class="col-md-4">
@@ -2535,7 +2535,7 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
+                <div class="constraint-dialog">
                     <form novalidate ng-cloak>
                         <div class="col-md-4">
                             <div class="panel panel-primary">
@@ -2956,7 +2956,7 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
+                <div class="constraint-dialog">
                     <div ng-show="dialogStep === 0">
                         <form novalidate ng-cloak>
                             <div class="col-md-6">
@@ -3512,7 +3512,7 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
+                <div class="constraint-dialog">
                     <form novalidate ng-cloak>
                         <div class="col-md-4">
                             <div class="panel panel-primary">
@@ -3933,7 +3933,7 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
+                <div class="constraint-dialog">
                     <div ng-show="dialogStep === 0">
                         <form novalidate ng-cloak>
                             <div class="col-md-6">
@@ -4438,7 +4438,7 @@
         <form ng-cloak name="addDT" id="addDT">
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2> Add {{datatypeLibrary.scope}} Datatype </h2>
+                    <h2> Add Data Types  </h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()">
                         <i class="material-icons">clear</i>
@@ -4467,7 +4467,7 @@
                                     <div class="container">
                                         <table class="fixed_headers table-bordered">
                                             <thead>
-                                                <tr class="tbl-header">
+                                                <tr class="tbl-header" style="color:white !important;font-weight: bold">
                                                     <th class="widthInside">Name</th>
                                                     <th class="widthInside">Versions</th>
                                                     <th class="widthInside"></th>
@@ -4504,7 +4504,7 @@
                                     <div class="container">
                                         <table class="fixed_headers table-bordered">
                                             <thead>
-                                                <tr class="tbl-header">
+                                                <tr class="tbl-header" style="color:white !important;font-weight: bold">
                                                     <th class="widthInside2">Name</th>
                                                     <th class="widthInside2">Extension</th>
                                                     <th class="widthInside2">Compatible HL7 Version</th>
@@ -4520,7 +4520,7 @@
                                                     </td>
                                                     <td class="widthInside2">
                                                         <input type="text" class="form-control" ng-model="data.ext" required></input>
-                                                        <span style="color:red;" ng-if="existingExtension(data,addedDatatypes)">Extesion already exists</span>
+                                                        <span style="color:red;" ng-if="existingExtension(data,addedDatatypes)">Extension already exists</span>
                                                     </td>
                                                     <td class="widthInside2">
                                                         <ul>

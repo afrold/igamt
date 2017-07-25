@@ -1,14 +1,27 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.*;
-import nu.xom.Attribute;
-import nu.xom.Element;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintColumnDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintUSERColumnData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintUserColumnDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsTable;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
+import nu.xom.Attribute;
+import nu.xom.Element;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -44,7 +57,9 @@ public class SerializableSegment extends SerializableSection {
       String defPreText, String defPostText, List<SerializableConstraint> constraints,
       Map<Field, Datatype> fieldDatatypeMap,
       Map<Field, List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap, List<Table> tables,
-      Map<String, Table> coConstraintValueTableMap, Map<String, Datatype> dynamicMappingDatatypeMap, Boolean showConfLength, Boolean showInnerLinks, String host, Map<String, Datatype> coConstraintDatatypeMap) {
+      Map<String, Table> coConstraintValueTableMap, Map<String, Datatype> dynamicMappingDatatypeMap,
+      Boolean showConfLength, Boolean showInnerLinks, String host,
+      Map<String, Datatype> coConstraintDatatypeMap) {
     super(id, prefix, position, headerLevel, title);
     this.segment = segment;
     this.name = name;
@@ -114,10 +129,10 @@ public class SerializableSegment extends SerializableSection {
         Datatype datatype = fieldDatatypeMap.get(field);
         if (field.getDatatype() != null && datatype != null) {
           fieldElement.addAttribute(new Attribute("Datatype", datatype.getLabel()));
-          if(this.showInnerLinks){
-            String link = this.generateInnerLink(datatype,host);
-            if(!"".equals(link)){
-              fieldElement.addAttribute(new Attribute("InnerLink",link));
+          if (this.showInnerLinks) {
+            String link = this.generateInnerLink(datatype, host);
+            if (!"".equals(link)) {
+              fieldElement.addAttribute(new Attribute("InnerLink", link));
             }
           }
           if (datatype.getComponents().size() > 0) {
@@ -145,10 +160,10 @@ public class SerializableSegment extends SerializableSection {
                   && valueSetOrSingleCodeBinding.getTableId() != null
                   && !valueSetOrSingleCodeBinding.getTableId().isEmpty()) {
                 Table table = super.findTable(tables, valueSetOrSingleCodeBinding.getTableId());
-                if(table != null){
-                  String link = this.generateInnerLink(table,host);
-                  if(this.showInnerLinks && !"".equals(link)){
-                    String wrappedLink = this.wrapLink(link,table.getBindingIdentifier());
+                if (table != null) {
+                  String link = this.generateInnerLink(table, host);
+                  if (this.showInnerLinks && !"".equals(link)) {
+                    String wrappedLink = this.wrapLink(link, table.getBindingIdentifier());
                     bindingIdentifierList.add(wrappedLink);
                   } else {
                     bindingIdentifierList.add(table.getBindingIdentifier());
@@ -184,14 +199,16 @@ public class SerializableSegment extends SerializableSection {
         }
       }
       CoConstraintsTable coConstraintsTable = segment.getCoConstraintsTable();
-      if(coConstraintsTable.getIfColumnData()!=null && !coConstraintsTable.getIfColumnData().isEmpty()){
+      if (coConstraintsTable.getIfColumnData() != null
+          && !coConstraintsTable.getIfColumnData().isEmpty()) {
         Element coConstraintsElement = generateCoConstraintsTable();
         segmentElement.appendChild(coConstraintsElement);
       }
       DynamicMappingDefinition dynamicMappingDefinition = segment.getDynamicMappingDefinition();
-      if(dynamicMappingDefinition != null && !dynamicMappingDefinition.getDynamicMappingItems().isEmpty()){
+      if (dynamicMappingDefinition != null
+          && !dynamicMappingDefinition.getDynamicMappingItems().isEmpty()) {
         Element dynamicMappingElement = generateDynamicMappingElement();
-        if(dynamicMappingElement!=null){
+        if (dynamicMappingElement != null) {
           segmentElement.appendChild(dynamicMappingElement);
         }
       }
@@ -199,23 +216,29 @@ public class SerializableSegment extends SerializableSection {
 
     return segmentElement;
   }
-  
+
   private Element generateDynamicMappingElement() {
     DynamicMappingDefinition dynamicMappingDefinition = segment.getDynamicMappingDefinition();
     Element dynamicMappingElement = new Element("DynamicMapping");
-    String basePath = dynamicMappingDefinition.getMappingStructure().getSegmentName()+"-";
-    dynamicMappingElement.addAttribute(new Attribute("DynamicDatatypeField",basePath + dynamicMappingDefinition.getMappingStructure().getTargetLocation()));
-    dynamicMappingElement.addAttribute(new Attribute("Reference",basePath + dynamicMappingDefinition.getMappingStructure().getReferenceLocation()));
-    for(DynamicMappingItem dynamicMappingItem : dynamicMappingDefinition.getDynamicMappingItems()){
-      if(dynamicMappingItem != null){
+    String basePath = dynamicMappingDefinition.getMappingStructure().getSegmentName() + "-";
+    dynamicMappingElement.addAttribute(new Attribute("DynamicDatatypeField",
+        basePath + dynamicMappingDefinition.getMappingStructure().getTargetLocation()));
+    dynamicMappingElement.addAttribute(new Attribute("Reference",
+        basePath + dynamicMappingDefinition.getMappingStructure().getReferenceLocation()));
+    for (DynamicMappingItem dynamicMappingItem : dynamicMappingDefinition
+        .getDynamicMappingItems()) {
+      if (dynamicMappingItem != null) {
         Element dynamicMappingItemElement = new Element("DynamicMappingItem");
-        dynamicMappingItemElement.addAttribute(new Attribute("FirstReferenceValue",dynamicMappingItem.getFirstReferenceValue()));
-        if(dynamicMappingItem.getSecondReferenceValue()!=null && !dynamicMappingItem.getSecondReferenceValue().isEmpty()){
-          dynamicMappingItemElement.addAttribute(new Attribute("SecondReferenceValue",dynamicMappingItem.getSecondReferenceValue()));
+        dynamicMappingItemElement.addAttribute(
+            new Attribute("FirstReferenceValue", dynamicMappingItem.getFirstReferenceValue()));
+        if (dynamicMappingItem.getSecondReferenceValue() != null
+            && !dynamicMappingItem.getSecondReferenceValue().isEmpty()) {
+          dynamicMappingItemElement.addAttribute(
+              new Attribute("SecondReferenceValue", dynamicMappingItem.getSecondReferenceValue()));
         }
         Datatype datatype = this.dynamicMappingDatatypeMap.get(dynamicMappingItem.getDatatypeId());
-        if(datatype!=null){
-          dynamicMappingItemElement.addAttribute(new Attribute("Datatype",datatype.getLabel()));
+        if (datatype != null) {
+          dynamicMappingItemElement.addAttribute(new Attribute("Datatype", datatype.getLabel()));
         }
         dynamicMappingElement.appendChild(dynamicMappingItemElement);
       }
@@ -225,7 +248,7 @@ public class SerializableSegment extends SerializableSection {
 
 
 
-  private Element generateCoConstraintsTable(){
+  private Element generateCoConstraintsTable() {
     CoConstraintsTable coConstraintsTable = segment.getCoConstraintsTable();
     Element coConstraintsElement = new Element("coconstraints");
     Element tableElement = new Element("table");
@@ -234,38 +257,46 @@ public class SerializableSegment extends SerializableSection {
     thead.addAttribute(new Attribute("class", "contentThead"));
     Element tr = new Element("tr");
     Element th = new Element("th");
-    th.addAttribute(new Attribute("class","ifContentThead"));
+    th.addAttribute(new Attribute("class", "ifContentThead"));
     th.appendChild("IF");
     tr.appendChild(th);
     th = new Element("th");
-    th.addAttribute(new Attribute("colspan",String.valueOf(calSize(coConstraintsTable.getThenColumnDefinitionList()))));
+    th.addAttribute(new Attribute("colspan",
+        String.valueOf(calSize(coConstraintsTable.getThenColumnDefinitionList()))));
     th.appendChild("THEN");
     tr.appendChild(th);
     th = new Element("th");
-    th.addAttribute(new Attribute("colspan",String.valueOf(coConstraintsTable.getUserColumnDefinitionList().size())));
+    th.addAttribute(new Attribute("colspan",
+        String.valueOf(coConstraintsTable.getUserColumnDefinitionList().size())));
     th.appendChild("USER");
     tr.appendChild(th);
     thead.appendChild(tr);
     tr = new Element("tr");
     th = new Element("th");
-    th.addAttribute(new Attribute("class","ifContentThead"));
-    th.appendChild(this.segment.getName()+"-"+coConstraintsTable.getIfColumnDefinition().getPath());
+    th.addAttribute(new Attribute("class", "ifContentThead"));
+    th.appendChild(
+        this.segment.getName() + "-" + coConstraintsTable.getIfColumnDefinition().getPath());
     tr.appendChild(th);
-    for(CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getThenColumnDefinitionList()){
-      if(this.segment.getName().equals("OBX") && coConstraintColumnDefinition.getPath().equals("2")){
+    for (CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable
+        .getThenColumnDefinitionList()) {
+      if (this.segment.getName().equals("OBX")
+          && coConstraintColumnDefinition.getPath().equals("2")) {
         Element thThen1 = new Element("th");
-        thThen1.appendChild(this.segment.getName()+"-"+coConstraintColumnDefinition.getPath() + "(Value)");
+        thThen1.appendChild(
+            this.segment.getName() + "-" + coConstraintColumnDefinition.getPath() + "(Value)");
         tr.appendChild(thThen1);
         Element thThen2 = new Element("th");
-        thThen2.appendChild(this.segment.getName()+"-"+coConstraintColumnDefinition.getPath() + "(Flavor)");
+        thThen2.appendChild(
+            this.segment.getName() + "-" + coConstraintColumnDefinition.getPath() + "(Flavor)");
         tr.appendChild(thThen2);
-      }else{
+      } else {
         Element thThen = new Element("th");
-        thThen.appendChild(this.segment.getName()+"-"+coConstraintColumnDefinition.getPath());
-        tr.appendChild(thThen); 
+        thThen.appendChild(this.segment.getName() + "-" + coConstraintColumnDefinition.getPath());
+        tr.appendChild(thThen);
       }
     }
-    for(CoConstraintUserColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getUserColumnDefinitionList()){
+    for (CoConstraintUserColumnDefinition coConstraintColumnDefinition : coConstraintsTable
+        .getUserColumnDefinitionList()) {
       Element thUser = new Element("th");
       thUser.appendChild(coConstraintColumnDefinition.getTitle());
       tr.appendChild(thUser);
@@ -273,68 +304,89 @@ public class SerializableSegment extends SerializableSection {
     thead.appendChild(tr);
     tableElement.appendChild(thead);
     Element tbody = new Element("tbody");
-    for(int i=0;i<coConstraintsTable.getRowSize();i++){
-      if(coConstraintsTable.getIfColumnData().get(i).getValueData().getValue()!=null && !coConstraintsTable.getIfColumnData().get(i).getValueData().getValue().isEmpty()){
+    for (int i = 0; i < coConstraintsTable.getRowSize(); i++) {
+      if (coConstraintsTable.getIfColumnData().get(i).getValueData().getValue() != null
+          && !coConstraintsTable.getIfColumnData().get(i).getValueData().getValue().isEmpty()) {
         boolean thenEmpty = true;
-        for(CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getThenColumnDefinitionList()){
-          if(!coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i).getValueSets().isEmpty() 
-              || !coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i).getValueData().getValue().isEmpty()){
+        for (CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable
+            .getThenColumnDefinitionList()) {
+
+          if (!coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i)
+              .getValueSets().isEmpty()
+              || coConstraintsTable.getThenMapData() != null
+                  && coConstraintsTable.getThenMapData()
+                      .containsKey(coConstraintColumnDefinition.getId())
+                  && (coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId())
+                      .get(i).getValueData().getValue()) != null
+                  && !(coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId())
+                      .get(i).getValueData().getValue()).isEmpty()) {
             thenEmpty = false;
             break;
           }
         }
-        if(!thenEmpty){
+        if (!thenEmpty) {
           tr = new Element("tr");
           Element td = new Element("td");
           td.appendChild(coConstraintsTable.getIfColumnData().get(i).getValueData().getValue());
           tr.appendChild(td);
-          for(CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getThenColumnDefinitionList()){
-            if(this.segment.getName().equals("OBX") && coConstraintColumnDefinition.getPath().equals("2")){
-              CoConstraintTHENColumnData coConstraintTHENColumnData = coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);
+          for (CoConstraintColumnDefinition coConstraintColumnDefinition : coConstraintsTable
+              .getThenColumnDefinitionList()) {
+            if (this.segment.getName().equals("OBX")
+                && coConstraintColumnDefinition.getPath().equals("2")) {
+              CoConstraintTHENColumnData coConstraintTHENColumnData = coConstraintsTable
+                  .getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);
               td = new Element("td");
               Element td2 = new Element("td");
-              if(coConstraintTHENColumnData.getValueData() == null || coConstraintTHENColumnData.getValueData().getValue() == null || coConstraintTHENColumnData.getValueData().getValue().isEmpty() || coConstraintTHENColumnData.getDatatypeId() == null){
-                td.addAttribute(new Attribute("class","greyCell"));
-                td2.addAttribute(new Attribute("class","greyCell"));
+              if (coConstraintTHENColumnData.getValueData() == null
+                  || coConstraintTHENColumnData.getValueData().getValue() == null
+                  || coConstraintTHENColumnData.getValueData().getValue().isEmpty()
+                  || coConstraintTHENColumnData.getDatatypeId() == null) {
+                td.addAttribute(new Attribute("class", "greyCell"));
+                td2.addAttribute(new Attribute("class", "greyCell"));
               } else {
                 td.appendChild(coConstraintTHENColumnData.getValueData().getValue());
-                td2.appendChild(coConstraintDatatypeMap.get(coConstraintTHENColumnData.getDatatypeId()).getLabel());
+                td2.appendChild(coConstraintDatatypeMap
+                    .get(coConstraintTHENColumnData.getDatatypeId()).getLabel());
               }
               tr.appendChild(td);
               tr.appendChild(td2);
-              
-              
-              
-              
-            }else {
-              CoConstraintTHENColumnData coConstraintTHENColumnData = coConstraintsTable.getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);
+
+
+
+            } else {
+              CoConstraintTHENColumnData coConstraintTHENColumnData = coConstraintsTable
+                  .getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);
               td = new Element("td");
-              if(coConstraintTHENColumnData.getValueSets().isEmpty()){
-                if(coConstraintTHENColumnData.getValueData() == null || coConstraintTHENColumnData.getValueData().getValue() == null || coConstraintTHENColumnData.getValueData().getValue().isEmpty()){
-                  td.addAttribute(new Attribute("class","greyCell"));
+              if (coConstraintTHENColumnData.getValueSets().isEmpty()) {
+                if (coConstraintTHENColumnData.getValueData() == null
+                    || coConstraintTHENColumnData.getValueData().getValue() == null
+                    || coConstraintTHENColumnData.getValueData().getValue().isEmpty()) {
+                  td.addAttribute(new Attribute("class", "greyCell"));
                 } else {
                   td.appendChild(coConstraintTHENColumnData.getValueData().getValue());
                 }
               } else {
                 ArrayList<String> valueSetsList = new ArrayList<>();
-                for(ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()){
+                for (ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()) {
                   Table table = coConstraintValueTableMap.get(valueSetData.getTableId());
-                  if(table!=null){
+                  if (table != null) {
                     valueSetsList.add(table.getBindingIdentifier());
                   }
                 }
-                td.appendChild(StringUtils.join(valueSetsList,","));
+                td.appendChild(StringUtils.join(valueSetsList, ","));
               }
-              tr.appendChild(td);              
+              tr.appendChild(td);
             }
           }
-          for(CoConstraintUserColumnDefinition coConstraintColumnDefinition : coConstraintsTable.getUserColumnDefinitionList()){
-            CoConstraintUSERColumnData coConstraintUSERColumnData = coConstraintsTable.getUserMapData().get(coConstraintColumnDefinition.getId()).get(i);
+          for (CoConstraintUserColumnDefinition coConstraintColumnDefinition : coConstraintsTable
+              .getUserColumnDefinitionList()) {
+            CoConstraintUSERColumnData coConstraintUSERColumnData = coConstraintsTable
+                .getUserMapData().get(coConstraintColumnDefinition.getId()).get(i);
             td = new Element("td");
-            if(!coConstraintUSERColumnData.getText().isEmpty()){
+            if (!coConstraintUSERColumnData.getText().isEmpty()) {
               td.appendChild(coConstraintUSERColumnData.getText());
             } else {
-              td.addAttribute(new Attribute("class","greyCell"));
+              td.addAttribute(new Attribute("class", "greyCell"));
             }
             tr.appendChild(td);
           }
@@ -349,10 +401,11 @@ public class SerializableSegment extends SerializableSection {
 
   private int calSize(List<CoConstraintColumnDefinition> thenColumnDefinitionList) {
     int count = 0;
-    for(CoConstraintColumnDefinition coConstraintColumnDefinition : thenColumnDefinitionList){
-      if(this.segment.getName().equals("OBX") && coConstraintColumnDefinition.getPath().equals("2")){
+    for (CoConstraintColumnDefinition coConstraintColumnDefinition : thenColumnDefinitionList) {
+      if (this.segment.getName().equals("OBX")
+          && coConstraintColumnDefinition.getPath().equals("2")) {
         count = count + 2;
-      }else {
+      } else {
         count = count + 1;
       }
     }

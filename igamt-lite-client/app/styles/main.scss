@@ -3244,6 +3244,10 @@ md-select.inside-table{
     min-width: 900px;
 
 }
+.constraint-dialog{
+
+
+}
 .metadata-scroll{
     width:100%;
     max-height: 900px;
@@ -3372,10 +3376,8 @@ md-input-container > label.input-left {
 }
 .panel-primary{
     max-height:800px !important;
-    padding: 7px !important;
+    padding: 0px !important;
     overflow: auto !important;
-
-
 }
 .md-list-item {
     position: relative;
@@ -3402,4 +3404,79 @@ md-input-container.md-default-theme .md-placeholder, md-input-container .md-plac
 .home-page-toolbar {
     background-color: #2d9de7!important;
     color: #fff;
+}
+.md-backdrop{
+    height: 1957px !important;
+
+}
+.md-sidenav-right{
+    position: fixed !important;
+}
+md-tabs-canvas {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    height: 28px !important;
+    /* margin-top: 0px; */
+}
+md-ink-bar{
+    height: 2px !important;
+    bottom: 20px !important;
+}
+.menu-table{
+    width: 68px !important;
+    min-width: 68px !important;
+    padding: 0px !important;
+    height: 20px !important;
+    min-height: 17px !important;
+    font-size: inherit !important;
+    padding-top: initial !important;
+    line-height: inherit;
+    color: white;
+    text-transform: initial;
+
+}
+
+.menu-table-display{
+
+background-color: #0f44f2;
+}
+.menu-table-add{
+    background-color: #0b3e6f;
+
+}
+.menu-table-verify{
+    background-color: #02aa8f;
+
+}
+.btn-group, .btn-group-vertical {
+    position: relative;
+    margin: 0px;
+}
+.table-context{
+    font-size: normal;
+    padding: 5px;
+}
+.page-header{
+    margin: 0px 0 10px !important;
+}
+md-dialog{
+    max-height:none !important;
+}
+.md-tab {
+    font-size: 12px;
+    text-align: center;
+    line-height: 0px;
+    padding: 12px 24px;
+    -webkit-transition: background-color .35s cubic-bezier(0.35,0,.25,1);
+    transition: background-color .35s cubic-bezier(0.35,0,.25,1);
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    text-transform: initial;
+    float: left;
+    font-weight: 500;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

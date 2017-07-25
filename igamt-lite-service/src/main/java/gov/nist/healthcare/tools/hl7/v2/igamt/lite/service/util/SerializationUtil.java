@@ -146,10 +146,13 @@ public class SerializationUtil {
       removeDoubleBrTag(element);
     }
     Node bodyNode = doc.childNode(0).childNode(1);
-    Node lastNode = bodyNode.childNode(bodyNode.childNodeSize() - 1);
-    if (lastNode instanceof Element) {
-      removeEndingBrTag((Element) lastNode);
+    if (bodyNode.childNodeSize() > 0) {
+      Node lastNode = bodyNode.childNode(bodyNode.childNodeSize() - 1);
+      if (lastNode instanceof Element) {
+        removeEndingBrTag((Element) lastNode);
+      }
     }
+
     // Renaming strong to work as html4
     doc.select("strong").tagName("b");
     String html = doc.body().html();

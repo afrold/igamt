@@ -210,7 +210,7 @@
                                 <i class="fa fa-table fa-fw" aria-hidden="true "></i>Definition
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px " class="">
+                                <div>
                                     <md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">
                                     <md-tab>
                                         <md-tab-label>
@@ -238,28 +238,25 @@
                                                 Structure
                                             </md-tab-label>
                                             <md-tab-body>
+                                                <div layout="column">
+                                                    <div flex layout="row" layout-align="start start">
+                                                        <div class="table-context">
+                                                            <strong> Context :</strong>
+                                                            <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            message
+                                                            <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            segment
+                                                            <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            Field
+                                                            <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span>
+                                                            Component
+                                                        </div>
+                                                    </div>
+                                                </div>
                                         <div class="panel-primary">
 
                                             <div class="panel-body">
                                                 <div>
-                                                    <div class="pull-left">
-                                                        <ul class="list-group">
-                                                            <li class="list-group-item">
-                                                                <span class="label-message-icon"><i class="fa fa-circle fa-fw"/></span> Context is the composite profile
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="label-field-icon"><i class="fa fa-circle fa-fw"/></span> Context is the segment
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="label-component-icon"><i class="fa fa-circle fa-fw"/></span> Context is the field's data type
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="label-sub-component-icon"><i class="fa fa-circle fa-fw"/></span> Context is the component's data type
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-
-
                                                     <div class="col-md-12 " ng-show="compositeProfile.children.length>0" style="overflow-y:auto;">
                                                         <table id="compositeProfileTable" tt-table tt-params="compositeProfileParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                             <thead>
