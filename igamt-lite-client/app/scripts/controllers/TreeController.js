@@ -474,8 +474,11 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    process();
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel'){
+                                        process();
+                                    }
+
                                 });
                             } else {
                                 process();
@@ -550,8 +553,11 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    processAddSection();
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel'){
+                                        processAddSection();
+                                    }
+
                                 });
                             } else {
                                 processAddSection();
@@ -572,8 +578,11 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    CloneDeleteSvc.copySegment($itemScope.segment);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        CloneDeleteSvc.copySegment($itemScope.segment);
+                                    }
                                 });
                             } else {
                                 console.log($itemScope.segment);
@@ -598,8 +607,11 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    CloneDeleteSvc.copyDatatype($itemScope.data);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        CloneDeleteSvc.copyDatatype($itemScope.data);
+                                    }
                                 });
                             } else {
                                 CloneDeleteSvc.copyDatatype($itemScope.data);
@@ -622,8 +634,11 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    CloneDeleteSvc.copyDatatype($itemScope.data);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        CloneDeleteSvc.copyDatatype($itemScope.data);
+                                    }
                                 });
                             } else {
                                 CloneDeleteSvc.copyDatatype($itemScope.data);
@@ -644,11 +659,14 @@ angular
                             console.log($rootScope.versionAndUseMap[$itemScope.data.id]);
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    if ($rootScope.readyForNewVersion($itemScope.data)) {
-                                        CloneDeleteSvc.upgradeDatatype($itemScope.data);
-                                    } else {
-                                        $scope.showCannotPublish($itemScope.data);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        if ($rootScope.readyForNewVersion($itemScope.data)) {
+                                            CloneDeleteSvc.upgradeDatatype($itemScope.data);
+                                        } else {
+                                            $scope.showCannotPublish($itemScope.data);
+                                        }
                                     }
 
                                 });
@@ -669,8 +687,11 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    CloneDeleteSvc.copyDatatype($itemScope.data);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        CloneDeleteSvc.copyDatatype($itemScope.data);
+                                    }
                                 });
                             } else {
                                 CloneDeleteSvc.copyDatatype($itemScope.data);
@@ -694,13 +715,15 @@ angular
                             console.log($rootScope.versionAndUseMap[$itemScope.table.id]);
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    if ($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.table.id])) {
-                                        CloneDeleteSvc.upgradeTable($itemScope.table);
-                                    } else {
-                                        $scope.showCannotPublish($itemScope.table);
-                                    }
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
 
+                                        if ($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.table.id])) {
+                                            CloneDeleteSvc.upgradeTable($itemScope.table);
+                                        } else {
+                                            $scope.showCannotPublish($itemScope.table);
+                                        }
+                                    }
                                 });
                             } else {
 
@@ -728,8 +751,11 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    CloneDeleteSvc.copyTable($itemScope.table);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel'){
+
+                                        CloneDeleteSvc.copyTable($itemScope.table);
+                                    }
                                 });
                             } else {
                                 CloneDeleteSvc.copyTable($itemScope.table);
@@ -793,8 +819,11 @@ angular
                     ['Create Flavor',
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    CloneDeleteSvc.copyTable($itemScope.table);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        CloneDeleteSvc.copyTable($itemScope.table);
+                                    }
                                 });
                             } else {
                                 CloneDeleteSvc.copyTable($itemScope.table);
@@ -821,10 +850,13 @@ angular
                     ['Create Flavor',
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    console.log($scope.tableLibrary);
-                                    console.log("table in lib");
-                                    CloneDeleteSvc.copyTableINLIB($itemScope.table, $rootScope.tableLibrary);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        console.log($scope.tableLibrary);
+                                        console.log("table in lib");
+                                        CloneDeleteSvc.copyTableINLIB($itemScope.table, $rootScope.tableLibrary);
+                                    }
                                 });
                             } else {
                                 console.log("table in lib");
@@ -850,8 +882,11 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    CloneDeleteSvc.copyMessage($itemScope.msg);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        CloneDeleteSvc.copyMessage($itemScope.msg);
+                                    }
                                 });
                             } else {
                                 CloneDeleteSvc.copyMessage($itemScope.msg);
@@ -863,8 +898,11 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    CloneDeleteSvc.deleteMessage($itemScope.msg);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        CloneDeleteSvc.deleteMessage($itemScope.msg);
+                                    }
                                 });
                             } else {
                                 CloneDeleteSvc.deleteMessage($itemScope.msg);
@@ -881,8 +919,11 @@ angular
                     ['Add Profile', function($itemScope) {
                         if ($rootScope.hasChanges()) {
 
-                            $rootScope.openConfirmLeaveDlg().then(function() {
-                                $scope.create('ctx');
+                            $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                if(result&&result!=='cancel') {
+
+                                    $scope.create('ctx');
+                                }
                             });
                         } else {
                             $scope.create('ctx');
@@ -900,8 +941,11 @@ angular
                     ['Create Profile Component', function($itemScope) {
                         if ($rootScope.hasChanges()) {
 
-                            $rootScope.openConfirmLeaveDlg().then(function() {
-                                $scope.createProfileComponent();
+                            $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                if(result&&result!=='cancel') {
+
+                                    $scope.createProfileComponent();
+                                }
                             });
                         } else {
                             $scope.createProfileComponent();
@@ -914,8 +958,11 @@ angular
                     ['Create Composite Profile', function($itemScope) {
                         if ($rootScope.hasChanges()) {
 
-                            $rootScope.openConfirmLeaveDlg().then(function() {
-                                $scope.createCompositeProfile();
+                            $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                if(result&&result!=='cancel') {
+
+                                    $scope.createCompositeProfile();
+                                }
                             });
                         } else {
                             $scope.createCompositeProfile();
@@ -932,8 +979,11 @@ angular
                             console.log(profileComponent);
                             if (profileComponent.compositeProfileStructureList === null || (profileComponent.compositeProfileStructureList && profileComponent.compositeProfileStructureList.length === 0)) {
                                 if ($rootScope.hasChanges()) {
-                                    $rootScope.openConfirmLeaveDlg().then(function() {
-                                        $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
+                                    $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                        if(result&&result!=='cancel') {
+
+                                            $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
+                                        }
                                     });
                                 } else {
                                     $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
@@ -955,8 +1005,11 @@ angular
                     ['Add Profile Components', function($itemScope) {
                         console.log($itemScope.cm);
                         if ($rootScope.hasChanges()) {
-                            $rootScope.openConfirmLeaveDlg().then(function() {
-                                $rootScope.addMorePcsToCompositeProfile($itemScope.cm);
+                            $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                if(result&&result!=='cancel') {
+
+                                    $rootScope.addMorePcsToCompositeProfile($itemScope.cm);
+                                }
                             });
                         } else {
                             $rootScope.addMorePcsToCompositeProfile($itemScope.cm);
@@ -972,8 +1025,11 @@ angular
                         console.log($itemScope.cm);
 
                         if ($rootScope.hasChanges()) {
-                            $rootScope.openConfirmLeaveDlg().then(function() {
-                                $rootScope.deleteCompositeProfile($itemScope.cm);
+                            $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                if(result&&result!=='cancel') {
+
+                                    $rootScope.deleteCompositeProfile($itemScope.cm);
+                                }
                             });
                         } else {
                             $rootScope.deleteCompositeProfile($itemScope.cm);
@@ -993,8 +1049,11 @@ angular
                     ['Add Value Sets', function($itemScope) {
                         if ($rootScope.hasChanges()) {
 
-                            $rootScope.openConfirmLeaveDlg().then(function() {
-                                $scope.addTable($rootScope.igdocument);
+                            $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                if(result&&result!=='cancel') {
+
+                                    $scope.addTable($rootScope.igdocument);
+                                }
                             });
                         } else {
                             $scope.addTable($rootScope.igdocument);
@@ -1011,8 +1070,11 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    $scope.copyDatatype($itemScope.data);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        $scope.copyDatatype($itemScope.data);
+                                    }
                                 });
                             } else {
                                 $scope.copyDatatype($itemScope.data);
@@ -1035,9 +1097,12 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
 
-                                    $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);
+
+                                        $scope.addSegments($rootScope.igdocument.profile.metaData.hl7Version);
+                                    }
                                 });
                             } else {
 
@@ -1054,8 +1119,11 @@ angular
 
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        $scope.addDatatypes($rootScope.igdocument.profile.metaData.hl7Version);
+                                    }
 
                                 });
                             } else {
@@ -1068,12 +1136,10 @@ angular
                             console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-
-                                    $rootScope.addDatatypesFromUserLib("2.1");
-
-
-
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+                                        $rootScope.addDatatypesFromUserLib("2.1");
+                                    }
                                 });
 
                             } else {
@@ -1088,9 +1154,10 @@ angular
                             console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-
-                                    $rootScope.addDatatypeFromMasterLib("2.1");
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+                                        $rootScope.addDatatypeFromMasterLib("2.1");
+                                    }
 
 
 
@@ -1108,11 +1175,10 @@ angular
                             console.log("adding datatype");
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-
-                                    $rootScope.addSharedDatatypes();
-
-
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+                                        $rootScope.addSharedDatatypes();
+                                    }
 
                                 });
 
@@ -1165,10 +1231,12 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    $scope.addDatatypeTemplate();
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
 
+                                        $scope.addDatatypeTemplate();
 
+                                    }
 
                                 });
 
@@ -1185,11 +1253,10 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    $scope.addDatatypeTemplate();
-
-
-
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+                                        $scope.addDatatypeTemplate();
+                                    }
                                 });
 
                             } else {
@@ -1265,8 +1332,11 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                                    }
 
                                 });
                             } else {
@@ -1282,8 +1352,11 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    $rootScope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel'){
+
+                                        $rootScope.addHL7Table($rootScope.igdocument.profile.tableLibrary, $rootScope.igdocument.metaData.hl7Version);
+                                    }
 
                                 });
                             } else {
@@ -1299,8 +1372,11 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    $rootScope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        $rootScope.addPHINVADSTables($rootScope.igdocument.profile.tableLibrary);
+                                    }
 
                                 });
                             } else {
@@ -1315,8 +1391,11 @@ angular
                         function($itemScope) {
                             if ($rootScope.hasChanges()) {
 
-                                $rootScope.openConfirmLeaveDlg().then(function() {
-                                    $rootScope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                                $rootScope.openConfirmLeaveDlg().then(function(result) {
+                                    if(result&&result!=='cancel') {
+
+                                        $rootScope.addCSVTables($rootScope.igdocument.profile.tableLibrary);
+                                    }
 
                                 });
                             } else {
@@ -1409,9 +1488,10 @@ angular
 
                     if ($rootScope.hasChanges()) {
 
-                        $rootScope.openConfirmLeaveDlg().then(function() {
-
-                            processEditSeg(seg);
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
+                            if(result&&result!=='cancel') {
+                                processEditSeg(seg);
+                            }
                         });
                     } else {
                         processEditSeg(seg);
@@ -1432,8 +1512,11 @@ angular
 
                     if ($rootScope.hasChanges()) {
 
-                        $rootScope.openConfirmLeaveDlg().then(function() {
-                            processEditIg(ig);
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
+                            if(result&&result!=='cancel'){
+
+                                processEditIg(ig);
+                            }
                         });
                     } else {
                         processEditIg(ig);
@@ -1455,8 +1538,11 @@ angular
                     }
                     if ($rootScope.hasChanges()) {
 
-                        $rootScope.openConfirmLeaveDlg().then(function() {
-                            processEditSection(section);
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
+                            if(result&&result!=='cancel') {
+
+                                processEditSection(section);
+                            }
                         });
                     } else {
                         processEditSection(section);
@@ -1479,8 +1565,11 @@ angular
                 $scope.editRoutSection = function(param) {
                     if ($rootScope.hasChanges()) {
 
-                        $rootScope.openConfirmLeaveDlg().then(function() {
-                            processEditRoutSection(param);
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
+                            if(result&&result!=='cancel') {
+
+                                processEditRoutSection(param);
+                            }
                         });
                     } else {
                         processEditRoutSection(param);
@@ -1551,9 +1640,12 @@ angular
                     if ($rootScope.hasChanges()||$scope.editForm&&$scope.editForm.$dirty) {
                         console.log("found changes");
 
-                        $rootScope.openConfirmLeaveDlg().then(function() {
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
                             console.log("dialog opened");
-                            processEditDataType(data);
+                            if(result&&result!=='cancel') {
+
+                                processEditDataType(data);
+                            }
                         });
                     } else {
                         processEditDataType(data);
@@ -1568,8 +1660,11 @@ angular
 
                 $rootScope.editTable = function(table) {
                     if ($rootScope.hasChanges()) {
-                        $rootScope.openConfirmLeaveDlg().then(function() {
-                            processEditTable(table);
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
+                            if(result&&result!=='cancel'){
+                                processEditTable(table);
+
+                            }
                         });
                     } else {
                         processEditTable(table);
@@ -1585,8 +1680,11 @@ angular
 
                 $scope.editTableINLIB = function(table) {
                     if ($rootScope.hasChanges()) {
-                        $rootScope.openConfirmLeaveDlg().then(function() {
-                            processEditTableInLib(table);
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
+                            if(result&&result!=='cancel') {
+
+                                processEditTableInLib(table);
+                            }
                         });
                     } else {
                         processEditTableInLib(table);
@@ -1607,8 +1705,11 @@ angular
                 $scope.editMessage = function(message) {
 
                     if ($rootScope.hasChanges()) {
-                        $rootScope.openConfirmLeaveDlg().then(function() {
-                            processEditMessage(message);
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
+                            if(result&&result!=='cancel'){
+                                processEditMessage(message);
+
+                            }
                         });
                     } else {
                         processEditMessage(message);
@@ -1644,8 +1745,11 @@ angular
                 $rootScope.editPC = function(pc) {
 
                     if ($rootScope.hasChanges()) {
-                        $rootScope.openConfirmLeaveDlg().then(function() {
-                            processEditPC(pc);
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
+                            if(result&&result!=='cancel'){
+                                processEditPC(pc);
+                            }
+
                         });
                     } else {
                         processEditPC(pc);
@@ -1655,8 +1759,11 @@ angular
                 $rootScope.editCM = function(cm) {
 
                     if ($rootScope.hasChanges()) {
-                        $rootScope.openConfirmLeaveDlg().then(function() {
-                            processEditCM(cm);
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
+                            if(result&&result!=='cancel'){
+                                processEditCM(cm);
+
+                            }
                         });
                     } else {
                         processEditCM(cm);
@@ -1675,8 +1782,11 @@ angular
 
                     if ($rootScope.hasChanges()) {
 
-                        $rootScope.openConfirmLeaveDlg().then(function() {
-                            processEditProfile();
+                        $rootScope.openConfirmLeaveDlg().then(function(result) {
+                            if(result&&result!=='cancel'){
+                                processEditProfile();
+                            }
+
                         });
                     } else {
                         processEditProfile();

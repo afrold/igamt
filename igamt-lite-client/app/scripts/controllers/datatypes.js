@@ -42,12 +42,14 @@ angular.module('igl')
             $rootScope.datatype.conformanceStatements.splice($rootScope.datatype.conformanceStatements.indexOf(c), 1);
 
             $scope.setDirty();
+            $rootScope.recordChanged();
         };
 
         $scope.deletePredicateFromList = function(p) {
             $rootScope.datatype.predicates.splice($rootScope.datatype.predicates.indexOf(p), 1);
 
             $scope.setDirty();
+            $rootScope.recordChanged();
         };
         $scope.validateDatatype = function() {
             ValidationService.validatedatatype($rootScope.datatype, $rootScope.igdocument.profile.metaData.hl7Version).then(function(result) {
@@ -166,6 +168,7 @@ angular.module('igl')
             showSelectionBar: true,
             onChange: function(id) {
                 $scope.setDirty();
+                $rootScope.recordChanged();
             },
             showTicks: true,
             getTickColor: function(value) {
@@ -204,6 +207,7 @@ angular.module('igl')
             modalInstance.result.then(function() {
 
                 $scope.setDirty();
+                $rootScope.recordChanged();
                 try {
                     if ($scope.datatypesParams)
                         $scope.datatypesParams.refresh();
@@ -232,6 +236,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function() {
                 $scope.setDirty();
+                $rootScope.recordChanged();
             });
         };
 
@@ -260,6 +265,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function() {
                 $scope.setDirty();
+                $rootScope.recordChanged();
                 try {
                     if ($scope.datatypesParams)
                         $scope.datatypesParams.refresh();
@@ -385,6 +391,7 @@ angular.module('igl')
                 MessageService.updatePosition(datatype.components, component.position - 1, position - 1);
             }
             $scope.setDirty();
+            $rootScope.recordChanged();
 
             if ($scope.datatypesParams)
                 $scope.datatypesParams.refresh();
@@ -410,6 +417,7 @@ angular.module('igl')
                 field.datatype.label = JSON.parse(datatype).label;
                 field.datatype.name = JSON.parse(datatype).name;
                 $scope.setDirty();
+                $rootScope.recordChanged();
                 // $rootScope.processElement(field);
 
                 if ($scope.datatypesParams)
@@ -443,6 +451,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function(field) {
                 $scope.setDirty();
+                $rootScope.recordChanged();
                 $scope.editableDT = '';
                 if ($scope.datatypesParams) {
                     $scope.datatypesParams.refresh();
@@ -559,6 +568,7 @@ angular.module('igl')
             field.table.id = $scope.selectedValueSet.id;
             field.table.bindingIdentifier = $scope.selectedValueSet.bindingIdentifier;
             $scope.setDirty();
+            $rootScope.recordChanged();
             $scope.VSselected = false;
 
 
@@ -769,6 +779,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function(datatype) {
                 $scope.setDirty();
+                $rootScope.recordChanged();
 
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
@@ -866,6 +877,7 @@ angular.module('igl')
                 if (datatype) {
                     $rootScope.datatype = datatype;
                     $scope.setDirty();
+                    $rootScope.recordChanged();
                 }
             });
         };
@@ -884,6 +896,7 @@ angular.module('igl')
                 if (datatype) {
                     $rootScope.datatype = datatype;
                     $scope.setDirty();
+                    $rootScope.recordChanged();
                 }
             });
         };
@@ -1131,6 +1144,7 @@ angular.module('igl')
             });
             modalInstance.result.then(function() {
                 $scope.setDirty();
+                $rootScope.recordChanged();
             });
         };
 
@@ -1242,6 +1256,7 @@ angular.module('igl')
                 component.datatype.ext = datatype.ext;
                 $rootScope.processElement(component);
                 $scope.setDirty();
+                $rootScope.recordChanged();
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
 
@@ -1342,6 +1357,7 @@ angular.module('igl')
 
             modalInstance.then(function(node) {
                 $scope.setDirty();
+                $rootScope.recordChanged();
             });
         };
 
@@ -1360,6 +1376,7 @@ angular.module('igl')
 
             modalInstance.then(function() {
                 $scope.setDirty();
+                $rootScope.recordChanged();
             });
         };
 
@@ -1378,6 +1395,7 @@ angular.module('igl')
                 $scope.addSev(node);
                 node.sev.value = value;
                 $scope.setDirty();
+                $rootScope.recordChanged();
             });
         };
 
@@ -1473,6 +1491,7 @@ angular.module('igl')
             if (index >= 0) {
                 $rootScope.datatype.valueSetBindings.splice(index, 1);
                 $scope.setDirty();
+                $rootScope.recordChanged();
             }
         };
 
@@ -1481,6 +1500,7 @@ angular.module('igl')
             if (index >= 0) {
                 $rootScope.datatype.comments.splice(index, 1);
                 $scope.setDirty();
+                $rootScope.recordChanged();
             }
         };
 
@@ -1495,6 +1515,7 @@ angular.module('igl')
             node.sev = sev;
             node.sev.isMain = true;
             $scope.setDirty();
+            $rootScope.recordChanged();
         };
 
         $scope.deleteSev = function (node, parent){
@@ -1502,6 +1523,7 @@ angular.module('igl')
             if (index >= 0) {
                 $rootScope.datatype.singleElementValues.splice(index, 1);
                 $scope.setDirty();
+                $rootScope.recordChanged();
             }
             if(parent){
                 node.sev = _.find(parent.singleElementValues, function(sev){ return sev.location  ==  node.position; });
