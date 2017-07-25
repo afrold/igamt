@@ -17,31 +17,36 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     //         }
     //     }
     // });
-    $mdSidenav('right')
-        .toggle()
-        .then(function () {
-        });
-
-    $scope.close = function () {
-        // Component lookup should always be available since we are not using `ng-if`
-        $mdSidenav('right').close()
-            .then(function () {
-            });
-    };
-    $scope.toggleRight = buildToggler('right');
-    function buildToggler(navID) {
-        return function() {
-            // Component lookup should always be available since we are not using `ng-if`
-            $mdSidenav(navID)
-                .toggle()
-                .then(function () {
-                });
-        };
+    // $mdSidenav('right')
+    //     .toggle()
+    //     .then(function () {
+    //     });
+    $rootScope.fullScreen=false;
+    $rootScope.toggleScreen=function(){
+        $rootScope.fullScreen=!$rootScope.fullScreen;
     }
 
-    $scope.isOpenRight = function(){
-        return $mdSidenav('right').isOpen();
-    };
+
+    // $scope.close = function () {
+    //     // Component lookup should always be available since we are not using `ng-if`
+    //     $mdSidenav('right').close()
+    //         .then(function () {
+    //         });
+    // };
+    // $scope.toggleRight = buildToggler('right');
+    // function buildToggler(navID) {
+    //     return function() {
+    //         // Component lookup should always be available since we are not using `ng-if`
+    //         $mdSidenav(navID)
+    //             .toggle()
+    //             .then(function () {
+    //             });
+    //     };
+    // }
+    //
+    // $scope.isOpenRight = function(){
+    //     return $mdSidenav('right').isOpen();
+    // };
     $rootScope.goNav = function(path){
         $location.url(path);
     };
