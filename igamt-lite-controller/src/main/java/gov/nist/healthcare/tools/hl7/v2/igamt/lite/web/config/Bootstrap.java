@@ -264,7 +264,7 @@ public class Bootstrap implements InitializingBean {
     // fixDatatypeRecursion();
     // fixDuplicateValueSets();
     // createDefaultExportFonts();
-    updateInitAndCreateBindingAndCommentsVSForDatatype();
+    // updateInitAndCreateBindingAndCommentsVSForDatatype();
     // updateInitAndCreateBindingAndCommentsVSForSegment();
     // updateInitAndCreateCommentsForMessage();
     // fixUserDatatypesScope();
