@@ -120,7 +120,7 @@
                             ng-if="!collapsemessage" data-type="message">
                             <div ui-tree-handle 
                                  context-menu="MessagesOption" style ="margin-left:30px;">
-                                <input data-nodrag type="radio" name="messagesRadio" value="msg" title="filter by this conformance profile" ng-model="msg.checked" ng-click="selectedSegment=null;resetSegments();processMessageTree(msg, null)"/>
+                                <input  no-dirty-check data-nodrag type="radio" name="messagesRadio" value="msg" title="filter by this conformance profile" ng-model="msg.checked" ng-click="selectedSegment=null;resetSegments();processMessageTree(msg, null)"/>
 
                                 <span class="glyphicon glyphicon-move"></span> 
                                 
@@ -177,7 +177,7 @@
                             <div ui-tree-handle  data-nodrag 
                                  confirm-click style ="margin-left:30px;"
                                  context-menu="SegmentOptions">
-                                 <input type="radio" name="segmentsRadio" value="segments" ng-model="segment.checked" ng-click="processSegmentsTree(segment, null)"/>
+                                 <input no-dirty-check type="radio" name="segmentsRadio" value="segments" ng-model="segment.checked" ng-click="processSegmentsTree(segment, null)"/>
                                  
 								<span data-nodrag style ="font-weight: normal;"
                                       ng-class="{selected : segment.id===activeModel}"

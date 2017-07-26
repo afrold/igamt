@@ -661,7 +661,7 @@ public class CrossReferencesController {
       }
       if (m.getPredicates() != null && !m.getPredicates().isEmpty()) {
         for (Predicate p : m.getPredicates()) {
-          if (p.getAssertion().contains(wrapper.getAssertionId())) {
+          if (p.getAssertion() != null && p.getAssertion().contains(wrapper.getAssertionId())) {
             MessagePredicateFound confFound = new MessagePredicateFound();
             MessageFound found = new MessageFound();
             found.setDescription(m.getDescription());
@@ -678,7 +678,8 @@ public class CrossReferencesController {
       }
       if (m.getConformanceStatements() != null && !m.getConformanceStatements().isEmpty()) {
         for (ConformanceStatement p : m.getConformanceStatements()) {
-          if (p.getAssertion().contains(wrapper.getAssertionId())) {
+
+          if (p.getAssertion() != null && p.getAssertion().contains(wrapper.getAssertionId())) {
             MessageConformanceStatmentFound confFound = new MessageConformanceStatmentFound();
             MessageFound found = new MessageFound();
             found.setDescription(m.getDescription());
@@ -776,7 +777,7 @@ public class CrossReferencesController {
 
       if (s.getPredicates() != null && !s.getPredicates().isEmpty()) {
         for (Predicate p : s.getPredicates()) {
-          if (p.getAssertion().contains(wrapper.getAssertionId())) {
+          if (p.getAssertion() != null && p.getAssertion().contains(wrapper.getAssertionId())) {
             SegmentPredicateFound confFound = new SegmentPredicateFound();
             SegmentFound segFound = new SegmentFound();
             segFound.setDescription(s.getDescription());
@@ -795,7 +796,7 @@ public class CrossReferencesController {
 
       if (s.getConformanceStatements() != null && !s.getConformanceStatements().isEmpty()) {
         for (ConformanceStatement p : s.getConformanceStatements()) {
-          if (p.getAssertion().contains(wrapper.getAssertionId())) {
+          if (p.getAssertion() != null && p.getAssertion().contains(wrapper.getAssertionId())) {
             SegmentConformanceStatmentFound confFound = new SegmentConformanceStatmentFound();
             SegmentFound segFound = new SegmentFound();
             segFound.setDescription(s.getDescription());
@@ -922,7 +923,7 @@ public class CrossReferencesController {
         if (spc.getAttributes().getOldConformanceStatements() != null) {
           boolean isFound = false;
           for (ConformanceStatement p : spc.getAttributes().getOldConformanceStatements()) {
-            if (p.getAssertion().contains(wrapper.getAssertionId())) {
+            if (p.getAssertion() != null && p.getAssertion().contains(wrapper.getAssertionId())) {
               isFound = true;
             }
           }
@@ -940,7 +941,7 @@ public class CrossReferencesController {
         if (spc.getAttributes().getConformanceStatements() != null) {
           boolean isFound = false;
           for (ConformanceStatement p : spc.getAttributes().getConformanceStatements()) {
-            if (p.getAssertion().contains(wrapper.getAssertionId())) {
+            if (p.getAssertion() != null && p.getAssertion().contains(wrapper.getAssertionId())) {
               isFound = true;
             }
           }
@@ -956,7 +957,8 @@ public class CrossReferencesController {
         }
 
         if (spc.getOldPredicate() != null) {
-          if (spc.getOldPredicate().getAssertion().contains(wrapper.getAssertionId())) {
+          if (spc.getOldPredicate().getAssertion() != null
+              && spc.getOldPredicate().getAssertion().contains(wrapper.getAssertionId())) {
             ProfileComponentFound pcf = new ProfileComponentFound();
             pcf.setDescription(pc.getDescription());
             pcf.setId(pc.getId());
@@ -968,8 +970,8 @@ public class CrossReferencesController {
         }
 
         if (spc.getAttributes().getPredicate() != null) {
-          if (spc.getAttributes().getPredicate().getAssertion()
-              .contains(wrapper.getAssertionId())) {
+          if (spc.getAttributes().getPredicate().getAssertion() != null && spc.getAttributes()
+              .getPredicate().getAssertion().contains(wrapper.getAssertionId())) {
             ProfileComponentFound pcf = new ProfileComponentFound();
             pcf.setDescription(pc.getDescription());
             pcf.setId(pc.getId());
