@@ -54,7 +54,7 @@
                     </md-button>
                  </div>
                 <div class="col-md-3" style="margin-left:10px">
-                <md-switch ng-model="filtering" aria-label="Filter" ng-change="displayTree(!filtering)" style="margin-bottom: 0px;margin-top: 3px !important;" class="md-primary">
+                <md-switch no-dirty-check ng-model="filtering" aria-label="Filter" ng-change="displayTree(!filtering)" style="margin-bottom: 0px;margin-top: 3px !important;" class="md-primary">
                  <span class="white-color" ng-if="!filtering">FILTER OFF</span><span ng-if="filtering">FILTER ON</span>
                 </md-switch>
                 </div>

@@ -4466,7 +4466,7 @@ angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$mdDialog", "$
 angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDialog, $rootScope, $http, SectionSvc, FilteringSvc, MessageService, SegmentService, SegmentLibrarySvc, DatatypeLibrarySvc, DatatypeService, IgDocumentService, ProfileSvc, TableService, TableLibrarySvc, DocumentationService, PcService, CompositeProfileService) {
     $scope.continue = function() {
         $rootScope.clearChanges();
-        $mdDialog.hide();
+        $mdDialog.hide('continue');
     };
 
 
@@ -4501,7 +4501,7 @@ angular.module('igl').controller('ConfirmLeaveDlgCtrl', function($scope, $mdDial
 
     $scope.error = null;
     $scope.cancel = function() {
-        $mdDialog.hide();
+        $mdDialog.hide('cancel');
     };
 
     $scope.save = function() {

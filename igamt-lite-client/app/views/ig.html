@@ -435,7 +435,10 @@
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2>Can't Delete Profile Component </h2>
-
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
                 </div>
             </md-toolbar>
             <md-dialog-content>
@@ -447,22 +450,12 @@
                             <th class="col-md-3">Composite Profile Name</th>
                             <th class="col-md-3">Core Profile Name</th>
                             <th class="col-md-3">Applied Profile Components</th>
-
                         </tr>
-
                         </thead>
                         <tbody></tbody>
                     </table>
-            <md-dialog-actions layout="row">
-                <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
-                        class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
-                </button>
-                <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                    <div layout="row" layout-sm="column" layout-align="space-around">
-                        <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
-                    </div>
                 </div>
-            </md-dialog-actions>
+            </md-dialog-content>
         </form>
     </md-dialog>
 </script>
@@ -552,14 +545,14 @@
             <h3 class="modal-title ">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}
             </h3>
         </div>
-        <div class="modal-body ">
+        <div class="modal-body">
             <div class="row ">
-                <div class="col-md-12 ">
+                <div class="col-md-12">
                     <div ng-if="!editorTarget.disabled ">
                         <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus
                                   ng-model="editorTarget.obj[editorTarget.key] " id="globalEditor " name="content "
-                                  ng-change="recordChanged() "></textarea>
-                      </div>
+                                  ng-change="recordChanged()"></textarea>
+                    </div>
                     <div ng-if="editorTarget.disabled " style="width:100%; ">
                         <div froala-view="editorTarget.obj[editorTarget.key] "></div>
                     </div>
@@ -572,7 +565,6 @@
             </button>
         </div>
     </script>
-
     <script type="text/ng-template" id="SelectMessagesForExportCtrlMd.html">
         <md-dialog aria-label="exportXml" style="width: 50%">
             <form ng-cloak>

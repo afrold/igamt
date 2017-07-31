@@ -2197,10 +2197,13 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
                 var childNodeName = c.name;
                 var childInstanceNumber = "1";
                 var childisInstanceNumberEditable = false;
-                var child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
-                child.id = new ObjectId().toString();
-                c.child = child;
-                $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
+                if($rootScope.datatypesMap[c.datatype.id]){
+                    var child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
+                    child.id = new ObjectId().toString();
+                    c.child = child;
+                    $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
+                }
+
             }
         }
     };
@@ -2532,10 +2535,13 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
                 childNodeName = c.name;
                 childInstanceNumber = "1";
                 childisInstanceNumberEditable = false;
-                child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
-                child.id = new ObjectId().toString();
-                c.child = child;
-                $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
+                if($rootScope.datatypesMap[c.datatype.id]){
+                    child = angular.copy($rootScope.datatypesMap[c.datatype.id]);
+                    child.id = new ObjectId().toString();
+                    c.child = child;
+                    $scope.generatePathInfo(c, childPositionNumber, childLocationName, childInstanceNumber, childisInstanceNumberEditable, childNodeName);
+                }
+
             }
         }
     };

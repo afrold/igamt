@@ -1401,6 +1401,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
         };
 
         $scope.selectSegment = function (segment) {
+            console.log($rootScope);
             $rootScope.Activate(segment.id);
             if (segment && segment != null) {
                 $scope.loadingSelection = true;
