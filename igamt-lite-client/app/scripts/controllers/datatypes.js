@@ -510,16 +510,37 @@ angular.module('igl')
             $scope.editableDT = field.id;
 
             $scope.results = [];
-            angular.forEach($rootScope.datatypeLibrary.children, function(dtLink) {
-                if (dtLink.name && dtLink.name === field.datatype.name) {
-                    if(!$scope.editDTMap[dtLink.id]){
-                        $scope.editDTMap[dtLink.id]=dtLink;
+            if($rootScope.igdocument){
+                angular.forEach($rootScope.datatypeLibrary.children, function(dtLink) {
+                    if (dtLink.name && dtLink.name === field.datatype.name) {
+                        if(!$scope.editDTMap[dtLink.id]){
+                            $scope.editDTMap[dtLink.id]=dtLink;
 
-                        $scope.results.push(dtLink);
+                            $scope.results.push(dtLink);
+                        }
+
+                    }
+                });
+            }else{
+                var dt= $rootScope.datatypesMap[field.datatype.id];
+                var versions =dt.hl7versions;
+                angular.forEach($rootScope.datatypes,function(d){
+                    if(d.name===dt.name&&_.intersection(d.hl7versions, versions).length===versions.length){
+                        var dtLink={};
+                        dtLink.id=d.id;
+                        dtLink.name=d.name;
+                        dtLink.ext=d.ext;
+                        if(!$scope.editDTMap[d.id]){
+                            $scope.editDTMap[d.id]=dtLink;
+                            $scope.results.push(dtLink);
+                        }
                     }
 
-                }
-            });
+                });
+
+
+            }
+
         };
 
 
