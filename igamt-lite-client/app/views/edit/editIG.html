@@ -26,25 +26,25 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="page-header" style="margin: 0px !important">
-                    <span class="header4">{{igdocument.metaData.title}}
-                    <i class="material-icons">info</i>
-                    <md-tooltip md-direction="right">
+                <span style="margin: 0px !important">
+                    <span style="font-size: x-large;">{{igdocument.metaData.title}}</span>
+                    <span class="glyphicon glyphicon-info-sign ig-info">
+                    <md-tooltip md-direction="right" style="max-height:none !important;height: 100px" layout="column">
 
-                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                    Updated {{igdocument.dateUpdated | date:dateFormat}}
+                        <span flex><i class="fa fa-calendar" aria-hidden="true"></i>
+                           <strong> Updated: </strong> {{igdocument.dateUpdated | date:dateFormat}}</span>
 
-                    <span>,HL7 Version: {{igdocument.profile.metaData.hl7Version}}</span>
-                    <span ng-if="igdocument.owner" style="font-style: italic;">
-                        <span ng-if="igdocument.owner">, Author : <img style="max-width:20px !important;border-radius: 50% " src="{{generateHash(igdocument.owner.email)}}"/> {{igdocument.owner.fullname}}</span>
-                    </span></md-tooltip>
+                        <span flex>HL7 Version: {{igdocument.profile.metaData.hl7Version}}</span>
+                         <span flex ng-if="igdocument.owner" style="font-style: italic;">
+                             <span ng-if="igdocument.owner"> <strong>Author: </strong> <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(igdocument.owner.email)}}"/> {{igdocument.owner.fullname}}</span>
+                        </span>
+                    </md-tooltip>
                     </span>
-
+                </span>
                     <!--<span class="pull-right" ng-click="toggleScreen()"><i ng-if="!fullscreen" class="material-icons">fullscreen</i>-->
                         <!--<i ng-if="fullscreen" class="material-icons">fullscreen</i><md-tooltip md-direction="right"> Exit Full Screen</md-tooltip>-->
                     <!--</span>-->
                 </div>
-
              </div>
 
             <div class="col-md-12 ig-menu-bar">
