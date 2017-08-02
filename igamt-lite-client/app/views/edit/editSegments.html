@@ -24,21 +24,21 @@
                     <div class="page-header">
                         <span class="header4">Segment: {{getSegmentLabel(segment)}}</span>
                         <span class="pull-right">
-                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                            <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
                                     ng-disabled="editForm.$invalid || !editForm.$dirty"
                                     ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'"
                                     ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
-                        </button>
-                        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="segment.scope !== 'USER'" ng-click="saveBindingForSegment();cleanState();">
+                        </md-button>
+                        <md-button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success" ng-disabled="!editForm.$dirty" ng-show="segment.scope !== 'USER'" ng-click="saveBindingForSegment();cleanState();">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
-                            </button>
-                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="segment.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                            </md-button>
+                        <md-button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-show="segment.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
                                 <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                            </button>
-                        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
+                            </md-button>
+                        <md-button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-hide="viewSettings.tableReadonly || segment.scope !== 'USER'" ng-disabled="!editForm.$dirty" ng-click="reset()">
                                 <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                            </button>
+                            </md-button>
                         </span>
                     </div>
                 <div class="static_info">

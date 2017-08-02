@@ -72,19 +72,17 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.selectedChildren = [];
     $scope.saving = false;
     $scope.OtoX = function(message) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'OtoX.html',
             controller: 'OtoXCtrl',
             size: 'md',
-            resolve: {
-                message: function() {
-                    return message;
-                }
-
-
+            scope:$scope,
+            preserveScope:true,
+            locals: {
+                message: message
             }
         });
-        modalInstance.result.then(function() {
+        modalInstance.then(function() {
             $scope.setDirty();
 
             if ($scope.segmentsParams)

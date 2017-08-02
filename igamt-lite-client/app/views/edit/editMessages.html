@@ -1385,20 +1385,27 @@
     </div>
 </script>
 <script type="text/ng-template" id="OtoX.html">
-    <div class="modal-header">
-        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Change Usage O to X Confirmation
-        </p>
-    </div>
-    <div class="modal-body">
-        <p>Are you sure you want to change Usage from O to X and Cardinality form 0..1(*) to 0..0 ? </p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-primary btn-sm" ng-click="confirm(message)"><span><i class="fa fa-check fa-fw">&nbsp; </i>OK</span>
-        </button>
-    </div>
+    <md-dialog>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Change Usage O to X Confirmation</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="material-icons">clear</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <p>Are you sure you want to change Usage from O to X and Cardinality form 0..1(*) to 0..0 ? </p>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button class="md-primary md-raised" ng-click="confirm(message)"><span><i
+                    class="fa fa-times fa-fw">&nbsp; </i>OK</span>
+            </md-button>
+        </md-dialog-actions>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="redirectCtrl.html">
     <div class="modal-header">

@@ -146,17 +146,18 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
 
     $scope.OtoX = function(message) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'OtoX.html',
             controller: 'OtoXCtrl',
-            size: 'md',
-            resolve: {
-                message: function() {
-                    return message;
-                }
-            }
+            locals: {
+                message: message
+                },
+            scope: $scope,
+            preserveScope:true
+
+
         });
-        modalInstance.result.then(function() {
+        modalInstance.then(function() {
             $scope.setDirty();
 
             if ($scope.messagesParams)
@@ -1802,7 +1803,7 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
 
 });
 
-angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, message, $rootScope, blockUI) {
+angular.module('igl').controller('OtoXCtrl', function($scope, $mdDialog, message, $rootScope, blockUI) {
     console.log(message);
     $scope.message = message;
     $scope.loading = false;
@@ -1860,12 +1861,12 @@ angular.module('igl').controller('OtoXCtrl', function($scope, $modalInstance, me
         $rootScope.messageTree = null;
         $rootScope.processMessageTree($rootScope.message);
         blockUI.stop();
-        $modalInstance.close($scope.message);
+        $mdDialog.hide($scope.message);
     };
 
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 
 

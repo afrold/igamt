@@ -1664,6 +1664,15 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         }
         return false;
     };
+    $scope.toggleVs=function (v) {
+        if(!$scope.isSelected(v)){
+            $scope.selectValueSet(v);
+        }else{
+            $scope.unselectValueSet(v);
+        }
+    };
+
+
     $scope.selectValueSet = function(v) {
         if (!$scope.data) $scope.data = {};
         if (!$scope.data.valueSets) $scope.data.valueSets = [];

@@ -253,17 +253,18 @@ angular.module('igl')
         };
 
         $scope.OtoX = function(message) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
+                scope: $scope,
+                preserveScope:true,
                 size: 'md',
-                resolve: {
-                    message: function() {
-                        return message;
-                    }
+                locals: {
+                    message: message
+
                 }
             });
-            modalInstance.result.then(function() {
+            modalInstance.then(function() {
                 $scope.setDirty();
                 $rootScope.recordChanged();
                 try {
