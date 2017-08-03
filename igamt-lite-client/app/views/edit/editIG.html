@@ -18,7 +18,7 @@
         </div>
     </div>
     <form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form ng-show="isEditing" ng-controller="EditAreaCtrl" ng-init="init" ng-cloak>
-        <div class="row">
+        <div>
             <div class="col-md-12" ng-show="igDocumentMsg !== null">
                 <div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">
                     <md-button type="button" class="close" ng-click="igDocumentMsg.show = false">×</md-button>
@@ -34,18 +34,18 @@
                         <span flex><i class="fa fa-calendar" aria-hidden="true"></i>
                            <strong> Updated: </strong> {{igdocument.dateUpdated | date:dateFormat}}</span>
 
-                        <span flex>HL7 Version: {{igdocument.profile.metaData.hl7Version}}</span>
+                        <span flex> <strong>HL7 Version:</strong> {{igdocument.profile.metaData.hl7Version}}</span>
                          <span flex ng-if="igdocument.owner" style="font-style: italic;">
                              <span ng-if="igdocument.owner"> <strong>Author: </strong> <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(igdocument.owner.email)}}"/> {{igdocument.owner.fullname}}</span>
                         </span>
                     </md-tooltip>
                     </span>
                 </span>
+            </div>
+
                     <!--<span class="pull-right" ng-click="toggleScreen()"><i ng-if="!fullscreen" class="material-icons">fullscreen</i>-->
                         <!--<i ng-if="fullscreen" class="material-icons">fullscreen</i><md-tooltip md-direction="right"> Exit Full Screen</md-tooltip>-->
                     <!--</span>-->
-                </div>
-             </div>
 
             <div class="col-md-12 ig-menu-bar">
                 <div class="col-md-1" style="width:20px">
@@ -215,7 +215,7 @@
                 </div>
 
             </div>
-             </div>
+        </div>
 
         <div class="row" ng-show="showErrorCount(igdocument.id)  && showIgErrorNotification"
              style="margin-right: 15px;margin-left: 5px;margin-top:10px">
