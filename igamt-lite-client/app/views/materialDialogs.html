@@ -194,7 +194,7 @@
                                                         <tr ng-repeat="datatype in hl7Datatypes | orderBy: 'name' | filter:search:strict"
                                                             ng-if="datatype.scope!=='INTERMASTER'">
 
-                                                            <td class="col-md-7">
+                                                            <td class="col-md-7" ng-if="!igdocument">
                                                                 <display-label of="datatype"></display-label> <span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
 
                                                             </td>
