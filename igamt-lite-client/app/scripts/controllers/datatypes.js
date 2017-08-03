@@ -253,17 +253,18 @@ angular.module('igl')
         };
 
         $scope.OtoX = function(message) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
+                scope: $scope,
+                preserveScope:true,
                 size: 'md',
-                resolve: {
-                    message: function() {
-                        return message;
-                    }
+                locals: {
+                    message: message
+
                 }
             });
-            modalInstance.result.then(function() {
+            modalInstance.then(function() {
                 $scope.setDirty();
                 $rootScope.recordChanged();
                 try {
@@ -1899,6 +1900,14 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
         }
         return false;
     };
+    $scope.toggle=function(v){
+        if(!$scope.isSelected(v)){
+            $scope.selectValueSet(v);
+        }else{
+            $scope.unselectValueSet(v);
+        }
+        
+    };
 
     $scope.selectValueSet = function (v){
         if($scope.isSingleValueSetAllowed) $scope.selectedValueSetBindings = [];
@@ -1937,7 +1946,13 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function($scope, $m
         }
         return false;
     };
-
+    $scope.toggleCode=function(c){
+        if(!$scope.isCodeSelected(c)){
+            $scope.selectCode(c);
+        }else{
+            $scope.unselectCode(c);
+        }
+    }
     $scope.selectCode = function (c){
         $scope.selectedValueSetBindings = [];
         $scope.selectedValueSetBindings.push({ tableId: $scope.valueSetSelectedForSingleCode.id, location: currentNode.path, usage: currentNode.usage, type: "singlecode", code : c});

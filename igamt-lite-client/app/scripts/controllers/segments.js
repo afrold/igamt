@@ -72,19 +72,17 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.selectedChildren = [];
     $scope.saving = false;
     $scope.OtoX = function(message) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'OtoX.html',
             controller: 'OtoXCtrl',
             size: 'md',
-            resolve: {
-                message: function() {
-                    return message;
-                }
-
-
+            scope:$scope,
+            preserveScope:true,
+            locals: {
+                message: message
             }
         });
-        modalInstance.result.then(function() {
+        modalInstance.then(function() {
             $scope.setDirty();
 
             if ($scope.segmentsParams)
@@ -1403,26 +1401,20 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
 
     $scope.openDialogForEditValueSetThenMapData = function(id, index) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'EditThenData.html',
             controller: 'EditThenDataCtrl',
-            backdrop: true,
-            keyboard: true,
-            windowClass: 'app-modal-window',
-            backdropClick: false,
-            resolve: {
-                currentId: function() {
-                    return id;
-                },
-                currentIndex: function() {
-                    return index;
+            scope:$rootScope,
+            preserveScope:true,
+            locals: {
+                currentId:  id,
+                currentIndex:  index
                 }
 
-            }
         });
 
-        modalInstance.result.then(function(value) {
-            if(value){
+        modalInstance.then(function(value) {
+            if(value&&value!=='cancel'){
                 $rootScope.segment.coConstraintsTable.thenMapData[id][index] = value;
                 $scope.setDirty();
             }
@@ -3597,6 +3589,14 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $md
         }
         $scope.changed = true;
     };
+    $scope.toggle=function(v){
+        if(!$scope.isSelected(v)){
+            $scope.selectValueSet(v);
+        }else{
+            $scope.unselectValueSet(v);
+        }
+
+    };
 
     $scope.unselectValueSet = function (v){
         var toBeDelBinding =_.find($scope.selectedValueSetBindings, function(binding){
@@ -3609,11 +3609,20 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function($scope, $md
         $scope.changed = true;
     };
 
+
+
     $scope.selectValueSetForSingleCode = function (v){
         TableService.getOne(v.id).then(function(tbl) {
             $scope.valueSetSelectedForSingleCode = tbl;
         }, function() {
         });
+    };
+    $scope.toggleCode=function(c){
+        if(!$scope.isCodeSelected(c)){
+            $scope.selectCode(c);
+        }else{
+            $scope.unselectCode(c);
+        }
     };
 
     $scope.isCodeSelected = function (c){

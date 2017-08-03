@@ -82,8 +82,9 @@
             if (this.initialized && this.settings.onNodeExpand != null) {
                 this.settings.onNodeExpand.apply(this);
             }
+            console.log("called");
 
-            if ($(this.row).is(":visible")) {
+            if (!this.row[0].hidden) {
                 this._showChildren();
             }
 
@@ -497,7 +498,6 @@
             return this;
         },
         draggable: function() {
-            console.log("hereeerre");
             console.log(this.data("treetable"));
 
             this.data("treetable").draggable();

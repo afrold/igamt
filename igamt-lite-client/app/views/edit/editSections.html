@@ -16,18 +16,18 @@
                     <span class="header4">{{section.sectionTitle}} </span>
                         <span class="pull-right">
          
-         <button title="Save Changes" type="submit" class="btn btn-raised btn-sm btn-success"
-                 ng-disabled="editForm.$invalid || editForm.$pristine"
+         <md-button title="Save Changes" type="submit" class="btn btn-raised btn-sm btn-success"
+                 ng-disabled="editForm.$invalid || !editForm.$dirty"
                  ng-click="save()"
                  ng-hide="viewSettings.tableReadonly">
              <span><i class="fa fa-check fa-fw"></i> Save</span>
-         </button>
-        <button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+         </md-button>
+        <md-button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                                  ng-hide="viewSettings.tableReadonly"
-                                 ng-disabled="editForm.$pristine"
+                                 ng-disabled="!editForm.$dirty"
                                   ng-click="reset()">
                              <span><i class="fa fa-times fa-fw"></i> Reset</span>
-        </button>
+        </md-button>
                 </span>
                 </div>
                 <div class="static_info">
@@ -39,7 +39,7 @@
                     <label class="col-md-2 control-label">Title</label>
                     <div class="col-md-10">
                         <input type="text"
-                               ng-change="recordChanged()"
+                               ng-change="setDirty()"
                                name="title" id="title" class="form-control"
                                ng-model="section.sectionTitle"
                                required

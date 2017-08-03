@@ -3461,7 +3461,7 @@ background-color: #0f44f2;
     margin: 0px 0 10px !important;
 }
 md-dialog{
-    max-height:none !important;
+   max-height:100% !important;
 }
 .md-tab {
     font-size: 12px;
@@ -3479,4 +3479,15 @@ md-dialog{
     box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.normal-table>tbody>tr>td{
+        line-height: 1.428571429 !important;
+        vertical-align: middle!important;
+        border-top: 1px solid !important;
+        height: 21px!important;
+    padding:0px !important;
+}
+md-dialog .md-dialog-content {
+    padding-bottom: 0px;
 }
