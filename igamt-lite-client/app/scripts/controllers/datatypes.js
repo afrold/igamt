@@ -253,6 +253,7 @@ angular.module('igl')
         };
 
         $scope.OtoX = function(message) {
+            console.log("========kor3raycha");
             var modalInstance = $mdDialog.show({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
@@ -265,6 +266,7 @@ angular.module('igl')
                 }
             });
             modalInstance.then(function() {
+
                 $scope.setDirty();
                 $rootScope.recordChanged();
                 try {

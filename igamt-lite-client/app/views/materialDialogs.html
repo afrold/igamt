@@ -157,11 +157,8 @@
                     </md-button>
                 </div>
             </md-toolbar>
-
             <md-dialog-content>
                 <div class="md-dialog-content">
-
-
                     <form name="addDT">
                         <div class="modal-body">
                             <div class="container" style="margin-bottom: 20px;margin-top: 10px">
@@ -184,9 +181,12 @@
                                                         <thead>
                                                         <tr class="tbl-header">
 
-                                                            <th class="col-md-3">Name</th>
-                                                            <th class="col-md-7">Compatible HL7 Versions</th>
-                                                            <th class="col-md-2">Actions</th>
+                                                            <th class="col-md-7" ng-if="igdocument"> Name</th>
+                                                            <th class="col-md-10" ng-if="!igdocument"> Data Type</th>
+                                                            <th class="col-md-3" ng-if="igdocument"> Compatible HL7 Versions</th>
+                                                            <th class="col-md-2" ng-if="igdocument"> Actions</th>
+                                                            <th class="col-md-2" ng-if="!igdocument"> Actions</th>
+
                                                         </tr>
 
                                                         </thead>
@@ -198,9 +198,13 @@
                                                                 <display-label of="datatype"></display-label> <span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
 
                                                             </td>
-                                                            <td class="col-md-3">
 
-                                                                <md-radio-group ng-model="datatype.hl7Version">
+                                                            <td class="col-md-10" ng-if="!igdocument">
+                                                                <display-label of="datatype"></display-label> <span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
+
+                                                            </td>
+                                                            <td class="col-md-3" ng-if="igdocument">
+                                                                <md-radio-group ng-model="datatype.hl7Version" >
 
                                                                     <md-radio-button
                                                                             ng-repeat="vr in datatype.hl7versions"
@@ -210,15 +214,19 @@
                                                                     </md-radio-button>
 
                                                                 </md-radio-group>
-
-
                                                             </td>
-                                                            <td class="col-md-2">
-                                                                <button class="btn btn-raised btn-primary btn-xs"
+                                                            <td class="col-md-2" ng-if="igdocument">
+                                                                <md-button class="btn btn-raised btn-primary btn-xs"
                                                                         type="button" ng-click="addDtFlv(datatype)"
                                                                         ng-disabled="checkImported(datatype,datatype.hl7Version)||datatype.hl7Version=='*'">
                                                                     <i class="fa fa-plus fa-fw"></i>
-                                                                </button>
+                                                                </md-button>
+                                                            </td>
+                                                            <td class="col-md-2" ng-if="!igdocument">
+                                                                <md-button class="btn btn-raised btn-primary btn-xs"
+                                                                           type="button" ng-click="addDtFlvForLib(datatype)">
+                                                                    <i class="fa fa-plus fa-fw"></i>
+                                                                </md-button>
                                                             </td>
                                                         </tr>
                                                         </tbody>
@@ -910,6 +918,142 @@
                         </md-button>
                     </md-dialog-actions>
          </form>
+        </div>
+    </md-dialog>
+</script>
+<script type="text/ng-template" id="addFromLibtoLib.html">
+    <md-dialog aria-label="Adding Data types">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Add Datatypes From {{scopeTag}} Library </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <form name="addDT">
+                        <div class="modal-body">
+                            <div class="container" style="margin-bottom: 20px;margin-top: 10px">
+                                <div class="row" style="padding-top:10px">
+
+                                    <div layout-padding>
+                                        <md-select ng-model="masLib" ng-change="selectMasterDtLib(masLib)"
+                                                   placeholder="Select Library" class="md-primary">
+                                            <md-option> {{masLib.metaData.name}}</md-option>
+
+                                            <md-option ng-repeat="masLib in masterLib" ng-value="masLib">
+                                                {{masLib.metaData.name}}
+                                            </md-option>
+                                        </md-select>
+
+                                    </div>
+
+                                    <div layout="row" style="padding-top:10px" layout-align="center start">
+                                        <div class="panel panel-default" flex="50">
+                                            <div class="panel-heading">Source</div>
+                                            <div class="panel-body container">
+
+                                                <div align="right" class="container" style="margin-top: 8px;">
+                                                    <i class="icon-search"></i>
+                                                    <input type="search" class="form-control" placeholder="Search Datatypes"
+                                                           ng-model="search.name"/>
+                                                </div>
+                                                <div>
+                                                    <table class="table table-bordered table-stripped container">
+                                                        <thead>
+                                                        <tr class="tbl-header" layout="row">
+
+                                                            <th flex="60">Data Type</th>
+                                                            <th flex="20">As is</th>
+                                                            <th flex="20">As Flavor</th>
+
+                                                        </tr>
+
+                                                        </thead>
+                                                        <tbody style="display: block; max-height: 300px; overflow: scroll">
+                                                        <tr ng-repeat="datatype in hl7Datatypes | orderBy: 'name' | filter:search:strict"
+                                                            layout="row">
+
+                                                            <td flex="60">
+                                                                <display-label of="datatype" desc="true"></display-label>
+                                                            </td>
+                                                            <td flex="20"><a class="pointer" ng-show="!checkExist(datatype)"
+                                                                             ng-click="addDt(datatype)"><i
+                                                                    class="fa fa-plus fa-fw"></i></a>
+                                                                <p ng-show="checkExist(datatype)">Selected</p>
+                                                            </td>
+                                                            <td flex="20"><a class="pointer" ng-click="addDtFlv(datatype)"><i
+                                                                    class="fa fa-plus fa-fw"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default" flex="50" style="margin-left:5px;">
+                                            <div class="panel-heading">Selected Data Types</div>
+                                            <div class="panel-body container">
+                                                <div align="right" class="container" style="margin-top: 8px;">
+                                                    <i class="icon-search"></i>
+                                                    <input type="search" class="form-control" placeholder="Search"
+                                                           ng-model="search1.name"/>
+                                                </div>
+                                                <table class="table table-bordered table-stripped container">
+                                                    <thead>
+                                                    <tr class="tbl-header" layout="row">
+                                                        <th flex="40">Data Type</th>
+                                                        <th flex="40">Edit Extension</th>
+                                                        <th flex="20">Actions</th>
+
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody style="display: block; max-height: 300px; overflow: scroll">
+                                                    <tr ng-repeat="dt in selectedDatatypes" layout="row">
+                                                        <td flex="40">
+                                                            <display-label of="dt" desc="false"></display-label>
+                                                        </td>
+                                                        <td flex="40"><span ng-show="!edit">{{dt.ext}}</span>
+                                                            <a class="pointer"
+                                                               ng-show="!edit && dt.ext!==null && dt.ext!==''&& dt.status!=='PUBLISHED'"
+                                                               ng-click="edit=true;checkExt(dt)"><i
+                                                                    class="fa fa-pencil fa-fw"></i></a>
+                                                            <input ng-show="edit" ng-change="checkExt(dt)" ng-model="dt.ext"/>
+                                                            <a class="pointer" ng-show="edit && checkedExt && NocheckedExt"
+                                                               ng-click="edit=false"><i class="fa fa-check-circle"></i></a>
+                                                            <span ng-if="edit && !checkedExt" class="danger">This extension already exists</span>
+                                                            <span ng-if="edit && !NocheckedExt" class="danger">A flavor must have an extension</span>
+                                                        </td>
+
+
+                                                        <td flex="20"><a class="pointer" ng-click="deleteDt(dt)"><i
+                                                                class="fa fa-times fa-fw"></i></a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <md-dialog-actions layout="row">
+                    <md-button class="md-primary md-raised" md-autofocus ng-click="ok()"
+                               ng-disabled="!checkedExt||!NocheckedExt||selectedDatatypes.length===0">
+                        Add
+                    </md-button>
+                </md-dialog-actions>
+            </md-dialog-content>
+        </form>
         </div>
     </md-dialog>
 </script>

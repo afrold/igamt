@@ -114,6 +114,25 @@ public class DatatypeLibraryController extends CommonController {
     return result;
   }
 
+  @RequestMapping(value = "/{dtLibId}/publishedDtsForLibrary", method = RequestMethod.POST,
+      produces = "application/json")
+  public List<Datatype> getPublishedDatatypesByLibraryPublished(
+      @PathVariable("dtLibId") String dtLibId) {
+
+    log.info("Fetching datatypeByLibrary..." + dtLibId);
+
+    List<Datatype> temp = datatypeLibraryService.findDatatypesById(dtLibId);
+    List<Datatype> result = new ArrayList<Datatype>();
+
+    for (Datatype dt : temp) {
+      if (!dt.getScope().toString().equals("INTERMASTER")
+          && dt.getStatus().equals(STATUS.PUBLISHED)) {
+        result.add(dt);
+      }
+    }
+    return result;
+  }
+
   @RequestMapping(value = "/findByScope", method = RequestMethod.POST,
       produces = "application/json")
   public List<DatatypeLibrary> findByScope(@RequestBody String scope_) {
@@ -317,10 +336,7 @@ public class DatatypeLibraryController extends CommonController {
       @RequestBody Set<Datatype> datatypes) throws Exception {
     log.debug("Adding a link to the library");
     checked = new HashMap<String, Datatype>();
-
-
     List<Datatype> datatypeInLib = new ArrayList<Datatype>();
-
     DatatypeLibrary lib = datatypeLibraryService.findById(libId);
     if (!lib.getChildren().isEmpty()) {
       for (DatatypeLink link : lib.getChildren()) {
@@ -330,19 +346,14 @@ public class DatatypeLibraryController extends CommonController {
           if (temp.getParentVersion() != null) {
             String v = (temp.getParentVersion() + temp.getHl7Version()).replace(".", "V");
             checked.put(v, temp);
-
           }
           datatypeInLib.add(temp);
-
         }
       }
     }
     Set<String> sts = checked.keySet();
     System.out.println(sts);
-
     Set<Datatype> datatypesToAdd = new HashSet<Datatype>();
-
-
     for (Datatype dt : datatypes) {
       processDatatypes(dt, datatypesToAdd);
     }
@@ -359,13 +370,9 @@ public class DatatypeLibraryController extends CommonController {
         links.add(link);
         lib.setChildren(links);
         result.put(link, dt);
-
       }
     }
     datatypeLibraryService.save(lib);
-
-
-
     return finallyAdded;
   }
 
