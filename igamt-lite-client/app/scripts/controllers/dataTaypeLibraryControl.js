@@ -25,6 +25,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.AllUnchanged=[];
         $rootScope.interMediates=[];
         $scope.tabs = [{active: true}, {active: false}, {active: false}];
+        $scope.dtList = [{active: true}, {active: false}, {active: false}];
+
         // list of segment level predicates of
         $rootScope.segmentConformanceStatements = []; // list of segment level
 
@@ -86,6 +88,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
         $scope.tableCollapsed = false;
         $scope.datatypeLibrariesConfig = {};
         $scope.AllUnchanged=[];
+
         //$scope.accountId =userInfoService.accountId;
 
         $rootScope.readOnly = false;
@@ -128,6 +131,21 @@ angular.module('igl').controller('DatatypeLibraryCtl',
     		}
     	    
     	};
+
+        $scope.make_active_dtList = function(x) {
+            console.log(x);
+
+            console.log($scope.dtList);
+
+            for(i=0; i<$scope.dtList.length;i++){
+                if(i==x){
+                    $scope.dtList[i].active = true;
+                }else{
+                    $scope.dtList[i].active=false;
+                }
+            }
+
+        };
     	$scope.getColor= function(index){
     		if(index===undefined){
     			return "";
@@ -283,7 +301,8 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             $rootScope.datatypesMap={};
             $rootScope.libraryDoc= null;
 
-            $scope.make_active(0);
+            $scope.dtList = [{active: true}, {active: false}, {active: false}];
+
 
             $rootScope.tables = [];
             $scope.tablesIds = [];
@@ -468,7 +487,7 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 $rootScope.datatype=null;
                 $rootScope.filteringModeON = false;
                 $rootScope.initMaps();
-                $scope.make_active(1);
+                $scope.make_active_dtList(1);
                 //DTLibDetails=true;
                 $rootScope.datatypes = [];
                 $rootScope.datatypesMap = {};
@@ -1539,19 +1558,22 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
             });
             modalInstance.then(function(datatypeLibraryDocument) {
-                DatatypeLibraryDocumentSvc.delete(datatypeLibraryDocument.id).then(function(result) {
-                	$rootScope.datatypeLibrary=null;
-                    $rootScope.msg().text = "LibraryDeleteSuccess";
-                    var idxP = _.findIndex($scope.datatypeLibsStruct, function(child) {
-                        return child.id === datatypeLibrary.id;
+                if(datatypeLibraryDocument){
+                    DatatypeLibraryDocumentSvc.delete(datatypeLibraryDocument.id).then(function(result) {
+                        $rootScope.datatypeLibrary=null;
+                        $rootScope.msg().text = "LibraryDeleteSuccess";
+                        var idxP = _.findIndex($scope.datatypeLibsStruct, function(child) {
+                            return child.id === datatypeLibrary.id;
+                        });
+                        $scope.datatypeLibsStruct.splice(idxP, 1);
+                        $scope.DataTypeTree = [];
+                        $scope.datatypeLibCopy = {};
+                        $scope.datatypeLibMetaDataCopy = {};
+                        $scope.accordi.dtDetails = false;
+                        $rootScope.isEditing = false;
                     });
-                    $scope.datatypeLibsStruct.splice(idxP, 1);
-                    $scope.DataTypeTree = [];
-                    $scope.datatypeLibCopy = {};
-                    $scope.datatypeLibMetaDataCopy = {};
-                    $scope.accordi.dtDetails = false;
-                    $rootScope.isEditing = false;
-                });
+                }
+
             });
         };
 
