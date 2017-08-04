@@ -3491,3 +3491,20 @@ md-dialog{
 md-dialog .md-dialog-content {
     padding-bottom: 0px;
 }
+.badge-cp-list{
+    display: inline-block;
+    padding: 3px 2px!important;
+    font-family: "Source Sans Pro",Helvetica,Arial,sans-serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 11px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+.panel-body{
+    padding:1px;
+    margin:1px;
+}
+.select-inside-table md-select.md-default-theme .md-select-value, md-select .md-select-value {
+    margin-top: -19px;
+}

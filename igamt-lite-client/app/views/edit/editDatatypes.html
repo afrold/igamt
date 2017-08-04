@@ -1101,22 +1101,21 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.minLength === 'NA' || node.maxLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
-                    <md-input-container flex="45" class="withoutMargin">
+                    <md-input-container flex="40" class="withoutMargin">
                     <input  name="minLength" ng-change="setDirty()" type="text"
-                            style="width:25px"
                            ng-pattern="/^\d+$/"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.minLength.$invalid}"
                            ng-model="node.minLength" required ng-minlength="1"/>
                     </md-input-container>
-                    <md-input-container flex="45" class="withoutMargin">
+                    <md-input-container flex="40" class="withoutMargin">
                     <input  type="text" name="maxLength" ng-change="setDirty()"
-                            style="width:25px"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.maxLength.$invalid}"
                            ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required/>
                     </md-input-container>
-                    <span ng-click="clearLength(node)" class="point"><i class="fa fa-times fa-fw edit-icon"></i></span>
 
                 </ng-form>
+                    <span flex="20" ng-click="clearLength(node)" class="point pull-right"><i class="fa fa-times fa-fw edit-icon"></i></span>
+
                 </div>
                 <div layout="row" ng-show="node.minLength === 'NA' || node.maxLength === 'NA'">
                     <span ng-click="editLength(node)" class="point"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
@@ -1129,10 +1128,9 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.confLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
-                    <md-input-container flex="90" class="withoutMargin">
+                    <md-input-container flex="80" class="withoutMargin">
                         <input  autofocus
                                 name="confLength"
-                                style="width:50px; margin-top:-5px"
                                 ng-change="setDirty()"
                                 ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                 ng-pattern="confLengthPattern"
@@ -1140,11 +1138,12 @@
                                 ng-model="node.confLength"
                                 ng-model-options="{allowInvalid:true}">
                     </md-input-container>
-                    <span  ng-click="clearConfLength(node)" class="point" ><i class="fa fa-times fa-fw edit-icon"></i></span>
                 </ng-form>
+                    <span flex="20" ng-click="clearConfLength(node)" class="point pull-right" ><i class="fa fa-times fa-fw edit-icon"></i></span>
+
                 </div>
                 <div ng-show="node.confLength === 'NA'" layout="row">
-                    <span ng-click="editConfLength(node)" class="point"><i class="fa fa-pencil fa-fw edit-icon" ></i></span>
+                    <span ng-click="editConfLength(node)" class="point "><i class="fa fa-pencil fa-fw edit-icon" ></i></span>
                 </div>
             </div>
         </td>
