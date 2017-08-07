@@ -1658,7 +1658,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                            ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                            ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -1895,7 +1895,7 @@
     </tr>
 </script>
 <script type="text/ng-template" id="GlobalConformanceStatementCtrl.html">
-    <md-dialog aria-label="Conformance Statements for Message/Group" style="width: 90%">
+    <md-dialog aria-label="Conformance Statements for Message/Group" style="width: 90%" ng-init="init()">
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
@@ -2237,7 +2237,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                        ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                        ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -2807,7 +2807,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                            ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                            ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -3256,7 +3256,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                            ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                            ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -3784,7 +3784,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                            ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                            ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -4233,7 +4233,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                            ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                            ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -5898,7 +5898,7 @@
                                                         <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
                                             <span>ValueSet ID: </span>
                                                         <select class="form-control form-control-short" ng-class="{'form-control-invalid': $root.isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
-                                                <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">{{getTableLabel(tablesMap[table.id])}}</option>
+                                                <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">{{getTableLabel(tablesMap[table.id])}}</option>
                                             </select>
                                                         <span style="color:red;" ng-show="$root.isEmptyConstraintValueSet(newConstraint)">Empty valueset</span>
                                                         <br/>

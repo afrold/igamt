@@ -708,7 +708,6 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
     $scope.openAddGlobalConformanceStatementDialog = function(message) {
         $mdDialog.show({
-            parent: angular.element(document).find('body'),
             templateUrl: 'GlobalConformanceStatementCtrl.html',
             controller: 'GlobalConformanceStatementCtrl',
             locals: {
@@ -727,7 +726,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
                 console.log($rootScope.message);
 
-                $scope.findAllGlobalConstraints();
+               $scope.findAllGlobalConstraints();
                 console.log("AFTER");
 
                 console.log($rootScope.message);
@@ -2854,6 +2853,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     }
 
     $scope.addConformanceStatement = function() {
+
         var cs = $rootScope.generateConformanceStatement($scope.newConstraint);
         if(!$scope.selectedContextNode.conformanceStatements) $scope.selectedContextNode.conformanceStatements = [];
         $scope.selectedContextNode.conformanceStatements.push(cs);
@@ -2925,19 +2925,27 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
 
     };
 
+    $scope.init=function(){
+        console.log("called");
     $scope.initConformanceStatement();
-    $scope.initComplexStatement();
+        console.log("called");
 
-    if(contextPath){
-        if(contextPath.indexOf('.') < 0){
+        $scope.initComplexStatement();
+        console.log("called");
+
+
+        if(contextPath){
+            console.log("called");
+
+            if(contextPath.indexOf('.') < 0){
             $scope.treeDataForContext = [];
             $scope.contextKey = new ObjectId().toString();
             $scope.selectedContextNode = $scope.selectedMessage;
             $scope.selectedContextNode.conformanceStatements = angular.copy(currentConformanceStatements);
             $scope.selectedContextNode.contextKey = $scope.contextKey;
             $scope.selectedContextNode.pathInfoSet = [];
-            $scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
-            $scope.initConformanceStatement();
+            //$scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
+            //$scope.initConformanceStatement();
             $scope.treeDataForContext.push($scope.selectedContextNode);
             $scope.dialogStep = 1;
         }else {
@@ -2945,6 +2953,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         }
     }else {
         $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
+    }
     }
 });
 
