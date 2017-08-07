@@ -3437,7 +3437,7 @@ angular.module('igl').controller('addMAsterInLibrary',
 
                 })
              }
-        }
+        };
 
 
         $scope.processDatatype= function (datatype) {

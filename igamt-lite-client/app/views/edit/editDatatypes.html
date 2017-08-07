@@ -797,10 +797,9 @@
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <td st-ratio="5">#</td>
-                                                    <th st-ratio="25">Usage</th>
+                                                    <th st-ratio="25">Path</th>
                                                     <th st-ratio="40">Name</th>
-                                                    <th st-ratio="10">Position</th>
-                                                    <th st-ratio="20">Segment</th>
+                                                    <th st-ratio="30">Segment</th>
                                                 </tr>
 
                                                 </thead>
@@ -810,15 +809,12 @@
                                                     <td st-ratio="5">{{$index + 1}}
                                                     </td>
                                                     <td st-ratio="25">
-                                                        <span ng-bind="ref.usage"></span>
+                                                        <span>{{ref.segmentFound.label}}.{{ref.position}}</span>
                                                     </td>
                                                     <td st-ratio="40">
                                                         <span ng-bind="ref.name"></span>
                                                     </td>
-                                                    <td st-ratio="10">
-                                                        {{::ref.position}}
-                                                    </td>
-                                                    <td st-ratio="20">
+                                                    <td st-ratio="30">
                                                         <display-label of="segmentsMap[ref.segmentFound.id]" desc="true"></display-label>
                                                     </td>
 
@@ -837,10 +833,9 @@
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <td st-ratio="5">#</td>
-                                                    <th st-ratio="25">Usage</th>
+                                                    <th st-ratio="25">Path</th>
                                                     <th st-ratio="40">Name</th>
-                                                    <th st-ratio="10">Position</th>
-                                                    <th st-ratio="20">Data Type</th>
+                                                    <th st-ratio="30">Data Type</th>
                                                 </tr>
 
                                                 </thead>
@@ -850,15 +845,12 @@
                                                     <td st-ratio="5">{{$index + 1}}
                                                     </td>
                                                     <td st-ratio="25">
-                                                        <span ng-bind="ref.usage"></span>
+                                                        <span>{{ref.datatypeFound.label}}.{{ref.position}}</span>
                                                     </td>
                                                     <td st-ratio="40">
                                                         <span ng-bind="ref.name"></span>
                                                     </td>
-                                                    <td st-ratio="10">
-                                                        {{::ref.position}}
-                                                    </td>
-                                                    <td st-ratio="20">
+                                                    <td st-ratio="30">
                                                         <display-label of="datatypesMap[ref.datatypeFound.id]" desc="true"></display-label>
                                                     </td>
 
@@ -2041,10 +2033,9 @@
                                 <thead>
                                 <tr class="tbl-header">
                                     <td st-ratio="5">#</td>
-                                    <th st-ratio="25">Usage</th>
+                                    <th st-ratio="25">Path</th>
                                     <th st-ratio="40">Name</th>
-                                    <th st-ratio="10">Position</th>
-                                    <th st-ratio="20">Segment</th>
+                                    <th st-ratio="30">Segment</th>
                                 </tr>
 
                                 </thead>
@@ -2054,15 +2045,12 @@
                                     <td st-ratio="5">{{$index + 1}}
                                     </td>
                                     <td st-ratio="25">
-                                        <span ng-bind="ref.usage"></span>
+                                        <span>{{ref.segmentFound.label}}.{{ref.position}}</span>
                                     </td>
                                     <td st-ratio="40">
                                         <span ng-bind="ref.name"></span>
                                     </td>
-                                    <td st-ratio="10">
-                                        {{::ref.position}}
-                                    </td>
-                                    <td st-ratio="20">
+                                    <td st-ratio="30">
                                         <display-label of="segmentsMap[ref.segmentFound.id]" desc="true"></display-label>
                                     </td>
 
@@ -2081,10 +2069,9 @@
                                 <thead>
                                 <tr class="tbl-header">
                                     <td st-ratio="5">#</td>
-                                    <th st-ratio="25">Usage</th>
+                                    <th st-ratio="25">Path</th>
                                     <th st-ratio="40">Name</th>
-                                    <th st-ratio="10">Position</th>
-                                    <th st-ratio="20">Data Type</th>
+                                    <th st-ratio="30">Data Type</th>
                                 </tr>
 
                                 </thead>
@@ -2094,7 +2081,7 @@
                                     <td st-ratio="5">{{$index + 1}}
                                     </td>
                                     <td st-ratio="25">
-                                        <span ng-bind="ref.usage"></span>
+                                        <span>{{ref.datatypeFound.label}}.{{ref.position}}</span>
                                     </td>
                                     <td st-ratio="40">
                                         <span ng-bind="ref.name"></span>
@@ -2102,7 +2089,7 @@
                                     <td st-ratio="10">
                                         {{::ref.position}}
                                     </td>
-                                    <td st-ratio="20">
+                                    <td st-ratio="30">
                                         <display-label of="datatypesMap[ref.datatypeFound.id]" desc="true"></display-label>
                                     </td>
 

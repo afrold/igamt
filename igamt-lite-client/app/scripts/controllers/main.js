@@ -811,9 +811,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     $rootScope.hasChanges = function() {
         // return Object.getOwnPropertyNames($rootScope.changes).length !== 0;
         if($scope.editForm){
-            return $scope.editForm.$dirty;
+            return $scope.editForm.$dirty&&!$scope.editForm.$pristine&&$rootScope.igChanged;
+        }else{
+            return $rootScope.igChanged;
         }
-        return $rootScope.igChanged;
+        //return $rootScope.igChanged;
     };
 
     $rootScope.recordChanged = function() {
