@@ -28,7 +28,6 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}
                         <span class="pull-right" ng-if="!typeOfSharing">
-
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'||datatype.status=='UNPUBLISHED'"
                                  style="margin-bottom: 0px;" ng-if="!igdocument">
                               <md-button   type="button" class="btn btn-raised btn-primary btn-sm" ng-class=""
@@ -37,14 +36,6 @@
                                 <span class="badge" ng-bind="datatype.shareParticipantIds.length"
                                       style="margin-right:5px;"></span>
                               </md-button>
-                             <md-button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle"
-                                data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span
-                                class="sr-only">Toggle Dropdown</span> </md-button>
-                        <ul class="dropdown-menu igl-menu" role="menu">
-                            <li ng-repeat="participant in datatype.shareParticipantIds"><a><i class="fa fa-user"
-                                                                                              aria-hidden="true"></i> {{participant.username}} <span
-                                    ng-if="participant.pendingApproval">(Pending...)</span></a></li>
-                        </ul>
                     </div>
 
 
@@ -87,8 +78,8 @@
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                         Updated :{{datatype.dateUpdated | date:dateFormat}}
                         <span ng-if="datatype.owner" style="font-style: italic;">
-<span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
-</span>
+                     <span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
+                     </span>
                         <span ng-if="datatype.hl7Version!=='*'">,HL7 Version: {{datatype.hl7Version}}</span>
                         <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
 
@@ -299,7 +290,7 @@
                                                                 <th class="col-md-2 col-fixed-250">Name</th>
                                                                 <th class="col-md-1 col-fixed-80"
                                                                     style="text-align:center">Usage
-                                                                    <button type="button "
+                                                                    <button type="button"
                                                                             class="btn btn-raised btn-info btn-xs "
                                                                             ng-show="(datatype.scope==='USER' )&& !viewSettings.tableReadonly && (datatype.components.length>0)"
                                                                             ng-hide="typeOfSharing || datatype.status==='PUBLISHED'"
@@ -1110,22 +1101,21 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.minLength === 'NA' || node.maxLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
-                    <md-input-container flex="45" class="withoutMargin">
+                    <md-input-container flex="40" class="withoutMargin">
                     <input  name="minLength" ng-change="setDirty()" type="text"
-                            style="width:25px"
                            ng-pattern="/^\d+$/"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.minLength.$invalid}"
                            ng-model="node.minLength" required ng-minlength="1"/>
                     </md-input-container>
-                    <md-input-container flex="45" class="withoutMargin">
+                    <md-input-container flex="40" class="withoutMargin">
                     <input  type="text" name="maxLength" ng-change="setDirty()"
-                            style="width:25px"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.maxLength.$invalid}"
                            ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required/>
                     </md-input-container>
-                    <span ng-click="clearLength(node)" class="point"><i class="fa fa-times fa-fw edit-icon"></i></span>
 
                 </ng-form>
+                    <span flex="20" ng-click="clearLength(node)" class="point pull-right"><i class="fa fa-times fa-fw edit-icon"></i></span>
+
                 </div>
                 <div layout="row" ng-show="node.minLength === 'NA' || node.maxLength === 'NA'">
                     <span ng-click="editLength(node)" class="point"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
@@ -1138,10 +1128,9 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.confLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
-                    <md-input-container flex="90" class="withoutMargin">
+                    <md-input-container flex="80" class="withoutMargin">
                         <input  autofocus
                                 name="confLength"
-                                style="width:50px; margin-top:-5px"
                                 ng-change="setDirty()"
                                 ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                 ng-pattern="confLengthPattern"
@@ -1149,11 +1138,12 @@
                                 ng-model="node.confLength"
                                 ng-model-options="{allowInvalid:true}">
                     </md-input-container>
-                    <span  ng-click="clearConfLength(node)" class="point" ><i class="fa fa-times fa-fw edit-icon"></i></span>
                 </ng-form>
+                    <span flex="20" ng-click="clearConfLength(node)" class="point pull-right" ><i class="fa fa-times fa-fw edit-icon"></i></span>
+
                 </div>
                 <div ng-show="node.confLength === 'NA'" layout="row">
-                    <span ng-click="editConfLength(node)" class="point"><i class="fa fa-pencil fa-fw edit-icon" ></i></span>
+                    <span ng-click="editConfLength(node)" class="point "><i class="fa fa-pencil fa-fw edit-icon" ></i></span>
                 </div>
             </div>
         </td>

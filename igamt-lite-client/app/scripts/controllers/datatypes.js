@@ -253,6 +253,7 @@ angular.module('igl')
         };
 
         $scope.OtoX = function(message) {
+            console.log("========kor3raycha");
             var modalInstance = $mdDialog.show({
                 templateUrl: 'OtoX.html',
                 controller: 'OtoXCtrl',
@@ -265,6 +266,7 @@ angular.module('igl')
                 }
             });
             modalInstance.then(function() {
+
                 $scope.setDirty();
                 $rootScope.recordChanged();
                 try {
@@ -277,8 +279,6 @@ angular.module('igl')
         };
 
         $scope.getAllVersionsOfDT = function(id) {
-
-            console.log("CALLUNg");
             $scope.checked = {};
             var ancestors = [];
             if (!$rootScope.versionAndUseMap[id]) {
@@ -308,7 +308,7 @@ angular.module('igl')
 
             });
 
-        }
+        };
 
         $scope.dynamicDt_Evolution = new ngTreetableParams({
             getNodes: function(parent) {
@@ -340,13 +340,8 @@ angular.module('igl')
             $scope.checked = id;
             $rootScope.clearChanges();
             $scope.cleanState();
-
             DatatypeService.getOne($rootScope.datatype.parentVersion).then(function(sourceParent) {
-
-
                 DatatypeService.getOne(id).then(function (result) {
-
-
                     $scope.dtChanged = false;
                     $scope.vsTemplate = false;
                     $scope.dataList = CompareService.cmpDatatype(sourceParent, result, [], [], [], []);
@@ -358,17 +353,8 @@ angular.module('igl')
                         $scope.dynamicDt_Evolution.refresh();
                     }
                 });
-
-
             });
-
-
         };
-
-
-
-
-
 
         $scope.editableComp = '';
         $scope.editComponent = function(component) {
@@ -385,15 +371,12 @@ angular.module('igl')
             $scope.editableComp = '';
             if (component) {
                 component.name = name;
-
-
             }
             if (position) {
                 MessageService.updatePosition(datatype.components, component.position - 1, position - 1);
             }
             $scope.setDirty();
             $rootScope.recordChanged();
-
             if ($scope.datatypesParams)
                 $scope.datatypesParams.refresh();
             $scope.Posselected = false;
@@ -401,14 +384,8 @@ angular.module('igl')
 
         };
         $scope.selectPos = function() {
-
             $scope.Posselected = true;
         };
-
-
-
-
-
         $scope.selectDT = function(field, datatype) {
             if (datatype) {
                 $scope.DTselected = true;
@@ -420,7 +397,6 @@ angular.module('igl')
                 $scope.setDirty();
                 $rootScope.recordChanged();
                 // $rootScope.processElement(field);
-
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
                 $scope.editableDT = '';
@@ -429,9 +405,6 @@ angular.module('igl')
             } else {
                 $scope.otherDT(field);
             }
-
-
-
         };
         $scope.otherDT = function(field) {
             var modalInstance = $modal.open({
@@ -439,15 +412,12 @@ angular.module('igl')
                 controller: 'otherDTCtrl',
                 windowClass: 'edit-VS-modal',
                 resolve: {
-
                     datatypes: function() {
                         return $rootScope.datatypes;
                     },
-
                     field: function() {
                         return field;
                     }
-
                 }
             });
             modalInstance.result.then(function(field) {
@@ -458,7 +428,6 @@ angular.module('igl')
                     $scope.datatypesParams.refresh();
                 }
             });
-
         };
         $scope.redirectSeg = function(segmentRef) {
             SegmentService.get(segmentRef.id).then(function(segment) {
@@ -471,16 +440,10 @@ angular.module('igl')
                             return segment;
                         }
                     }
-
-
-
                 });
                 modalInstance.result.then(function() {
                     $rootScope.editSeg(segment);
                 });
-
-
-
             });
         };
         $scope.redirectDT = function(datatype) {
@@ -494,18 +457,12 @@ angular.module('igl')
                             return datatype;
                         }
                     }
-
-
-
                 });
                 modalInstance.result.then(function() {
                     $rootScope.editDatatype(datatype);
                 });
-
             });
         };
-
-
         $scope.editDT = function(field) {
             $scope.editDTMap={};
             $scope.editableDT = field.id;
@@ -516,10 +473,8 @@ angular.module('igl')
                     if (dtLink.name && dtLink.name === field.datatype.name) {
                         if(!$scope.editDTMap[dtLink.id]){
                             $scope.editDTMap[dtLink.id]=dtLink;
-
                             $scope.results.push(dtLink);
                         }
-
                     }
                 });
             }else{
@@ -536,23 +491,14 @@ angular.module('igl')
                             $scope.results.push(dtLink);
                         }
                     }
-
                 });
-
-
             }
-
         };
-
-
-
         $scope.backDT = function() {
             $scope.editableDT = '';
             if ($scope.datatypesParams)
                 $scope.datatypesParams.refresh();
         };
-
-
         $scope.getLabel = function(name, ext) {
             var label = name;
             if (ext && ext !== null && ext !== "") {
@@ -560,7 +506,6 @@ angular.module('igl')
             }
             return label;
         };
-
         $scope.editVS = function(field) {
             $scope.editableVS = field.id;
             if (field.table !== null) {
@@ -568,13 +513,11 @@ angular.module('igl')
                 $scope.selectedValueSet = field.table;
             } else {
                 $scope.VSselected = false;
-
             }
         };
         $scope.backVS = function() {
             $scope.editableVS = '';
         };
-
         $scope.selectVS = function(field, valueSet) {
             $scope.selectedValueSet = valueSet;
             $scope.VSselected = true;
@@ -583,32 +526,22 @@ angular.module('igl')
                 field.table = {
                     id: '',
                     bindingIdentifier: ''
-
                 };
             }
-
             field.table.id = $scope.selectedValueSet.id;
             field.table.bindingIdentifier = $scope.selectedValueSet.bindingIdentifier;
             $scope.setDirty();
             $rootScope.recordChanged();
             $scope.VSselected = false;
-
-
-
         };
      
         $scope.ContainUnpublished = function(element) {
-
             if (element && element.type && element.type === "datatype") {
-
                 angular.forEach(element.components, function(component) {
                     component.location = element.name + "_" + element.ext + "." + component.position
                     $scope.ContainUnpublished(component);
                 });
-
-
             } else if (element && element.type && element.type === "component") {
-
                 if (element.tables && element.tables != null) {
                     angular.forEach(element.tables, function(table) {
                         if ($rootScope.tablesMap[table.id] && $rootScope.tablesMap[table.id]) {
@@ -620,16 +553,12 @@ angular.module('igl')
                     });
                 }
                 if (element.datatype !== null || element.datatype !== undefined) {
-
-
                     if ($rootScope.datatypesMap[element.datatype.id] && $rootScope.datatypesMap[element.datatype.id]) {
                         if ($rootScope.datatypesMap[element.datatype.id].status !== "PUBLISHED" && $rootScope.datatypesMap[element.datatype.id].scope !== "HL7STANDARD") {
                             $scope.containUnpublished = true;
                             $scope.unpublishedDatatypes.push({ datatype: element.datatype, location: element.location });
                         }
                     }
-
-
                 }
             }
         };
@@ -641,12 +570,10 @@ angular.module('igl')
                 controller: 'ConfirmDatatypePublishCtlMd',
                 locals: {
                     datatypeToPublish: datatypeCopy
-
                 }
             });
             modalInstance.then(function(datatypetoPublish) {
                 var ext = $rootScope.datatype.ext;
-
                 DatatypeService.publish($rootScope.datatype).then(function(result) {
                     var oldLink = DatatypeLibrarySvc.findOneChild(result.id, $rootScope.datatypeLibrary.children);
                     var newLink = DatatypeService.getDatatypeLink(result);
@@ -655,12 +582,10 @@ angular.module('igl')
                         DatatypeService.merge($rootScope.datatypesMap[result.id], result);
                         $rootScope.datatypesMap[result.id].status = "PUBLISHED";
                         $rootScope.datatype.status = "PUBLISHED";
-
                         if ($scope.editForm) {
                             $scope.editForm.$setPristine();
                             $scope.editForm.$dirty = false;
                             $scope.editForm.$invalid = false;
-
                         }
                         $rootScope.clearChanges();
                         DatatypeService.merge($rootScope.datatype, result);
@@ -672,7 +597,6 @@ angular.module('igl')
                             if ($rootScope.versionAndUseMap[inf.sourceId]) {
                                 $rootScope.versionAndUseMap[inf.sourceId].deprecated = true;
                             }
-
                         });
                         oldLink.ext = newLink.ext;
                         oldLink.name = newLink.name;
@@ -706,31 +630,21 @@ angular.module('igl')
                     unpublishedTables: function() {
                         return $scope.unpublishedTables;
                     }
-
                 }
             });
-
         };
-
-
-
-
         $scope.publishDatatype = function(datatype) {
-
             $scope.containUnpublished = false;
             $scope.unpublishedTables = [];
             $scope.unpublishedDatatypes = [];
             $scope.ContainUnpublished(datatype);
-
             if ($scope.containUnpublished) {
                 $scope.abortPublish(datatype);
                 datatype.status = "UNPUBLISHED";
             } else {
                 $scope.confirmPublish(datatype);
-
             }
         };
-
         $scope.redirectVS = function(binding) {
             TableService.getOne(binding.tableId).then(function(valueSet) {
                 var modalInstance = $modal.open({
@@ -742,9 +656,6 @@ angular.module('igl')
                             return valueSet;
                         }
                     }
-
-
-
                 });
                 modalInstance.result.then(function() {
                     if (!$rootScope.SharingScope) {
@@ -752,29 +663,22 @@ angular.module('igl')
                     } else {
                         $scope.editTable(valueSet);
                     }
-
                 });
-
-
-
             });
         };
-
-
         $scope.selectedVS = function() {
             return ($scope.selectedValueSet !== undefined);
         };
         $scope.unselectVS = function() {
             $scope.selectedValueSet = undefined;
             $scope.VSselected = false;
-            };
+        };
         $scope.isVSActive = function(id) {
             if ($scope.selectedValueSet) {
                 return $scope.selectedValueSet.id === id;
             } else {
                 return false;
             }
-
         };
 
         $scope.addComponentModal = function(datatype) {
@@ -825,7 +729,6 @@ angular.module('igl')
             angular.forEach($rootScope.datatypes, function(dt) {
                 $rootScope.findDatatypeRefs($rootScope.datatype, dt, $rootScope.getDatatypeLabel(dt), dt);
             });
-
             blockUI.stop();
         };
 
@@ -944,7 +847,6 @@ angular.module('igl')
                     if ($rootScope.datatype.conformanceStatements[i].constraintTarget.indexOf(position + '[') === 0)
                         count = count + 1;
                 }
-
             return count;
         };
 
@@ -1094,16 +996,8 @@ angular.module('igl')
                     $mdDialog.hide();
                 }
             }
-        }
+        };
 
-
-
-
-
-
-        /**
-         * TODO: update master map
-         */
         $scope.createNewComponent = function() {
             if ($rootScope.datatype != null) {
                 if (!$rootScope.datatype.components || $rootScope.datatype.components === null)
@@ -1119,9 +1013,6 @@ angular.module('igl')
             }
         };
 
-        /**
-         * TODO: update master map
-         */
         $scope.deleteComponents = function() {
             if ($rootScope.datatype != null && $scope.selectedChildren != null && $scope.selectedChildren.length > 0) {
                 ComponentService.deleteList($scope.selectedChildren, $rootScope.datatype);
@@ -1149,10 +1040,12 @@ angular.module('igl')
             if ($scope.datatypesParams)
                 $scope.datatypesParams.refresh();
         };
+
         $scope.callDTDelta = function() {
 
             $rootScope.$emit("event:openDTDelta");
         };
+
         $scope.AddBindingForDatatype = function(datatype) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddBindingForDatatype.html',
@@ -1219,7 +1112,8 @@ angular.module('igl')
                 });
                 $rootScope.saveBindingForDatatype();
             });
-        }
+        };
+
         $scope.cancel = function() {
             //TODO: remove changes from master ma
             angular.forEach($rootScope.datatype.components, function(child) {
@@ -1250,7 +1144,6 @@ angular.module('igl')
             }
             return -1;
         };
-
 
         $scope.showSelectDatatypeFlavorDlg = function(component) {
             var modalInstance = $modal.open({

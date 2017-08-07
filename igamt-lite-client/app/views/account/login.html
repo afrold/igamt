@@ -30,7 +30,7 @@
             <div class="md-dialog-content" style="min-width: 800px !important">
                 <div ng-class="'alert alert-'+loginMessage().type" ng-show="loginMessage().show" id="ehrloginalert">
                     <button type="button" class="close" ng-click="loginMessage().show=false">×</button>
-                    {{loginMessage().text}}></div>
+                    {{loginMessage().text}}>
                 </div>
 
                 <div ng-class="{'has-success has-feedback': loginForm.username.$valid, 'igl-has-error has-feedback': !loginForm.username.$valid}">

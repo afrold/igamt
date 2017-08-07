@@ -187,10 +187,10 @@ input.igl-has-error,select.igl-has-error {
     margin: 0px;
     padding: 0px;
 }
-.panel-body{
-    margin: 0px;
-    padding: 0px;
-}
+/*.panel-body{*/
+    /*margin: 0px;*/
+    /*padding: 0px;*/
+/*}*/
 
 .panel-header{
     margin: 0px;

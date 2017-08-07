@@ -583,13 +583,25 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     $scope.editDT = function(field) {
         $scope.editableDT = field.id;
+        $scope.editDTMap={};
 
         $scope.results = [];
+
         angular.forEach($rootScope.datatypeLibrary.children, function(dtLink) {
             if (dtLink.name && dtLink.name === field.datatype.name) {
-                $scope.results.push(dtLink);
+                if(!$scope.editDTMap[dtLink.id]){
+                    $scope.editDTMap[dtLink.id]=dtLink;
+                    $scope.results.push(dtLink);
+                }
             }
         });
+        //
+        // angular.forEach($rootScope.datatypeLibrary.children, function(dtLink) {
+        //     if (dtLink.name && dtLink.name === field.datatype.name) {
+        //         $scope.results.push(dtLink);
+        //     }
+        // });
+
     };
 
     $scope.backDT = function() {
