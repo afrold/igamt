@@ -14,10 +14,13 @@ angular.module('igl').directive('confirmOnLeave', function ($rootScope,$location
             $scope.$on('$locationChangeStart', function (event, next, current) {
                 if ($rootScope.hasChanges()) {
                     event.preventDefault();
-                    $rootScope.openConfirmLeaveDlg().result.then(function () {
-                        $rootScope.clearChanges();
-                        var go = next.substring(next.indexOf("#")+1,next.length);
-                        $location.path(go);
+                    $rootScope.openConfirmLeaveDlg().then(function (result) {
+                        if(result&&result!=='cancel'){
+                            $rootScope.clearChanges();
+                            var go = next.substring(next.indexOf("#")+1,next.length);
+                            $location.path(go);
+                        }
+
                     },function(){
 
                     });

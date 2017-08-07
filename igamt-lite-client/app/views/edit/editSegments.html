@@ -1115,8 +1115,8 @@
 
                     <div ng-if="editableDT===node.id" style="text-align:left">
                         <md-select placeholder="Select Data type"  class="inside-table" ng-model="node.datatype" ng-change="backDT();setDirty()"  ng-controller="FormRowCtrl" ng-init="init(node)">
-                            <md-option ng-value="datatype" ng-repeat="datatype in results">
-                                <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
+                            <md-option  ng-repeat="dt in results" ng-value="dt">
+                                <display-label of="datatypesMap[dt.id]" desc="false"></display-label>
                             </md-option>
                             <md-option ng-click="otherDT(node)" value="none"> Change Data Type root</md-option>
 
