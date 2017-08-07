@@ -38,8 +38,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableCompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraints;
@@ -616,13 +618,26 @@ import nu.xom.Document;
                       }
                     }
                 }
-                //TODO replace with parameter
-                if(true && segment.getDynamicMappingDefinition() != null && segment.getDynamicMappingDefinition().getDynamicMappingItems() != null){
+                if(segment.getDynamicMappingDefinition() != null && segment.getDynamicMappingDefinition().getDynamicMappingItems() != null){
                   for(DynamicMappingItem dynamicMappingItem : segment.getDynamicMappingDefinition().getDynamicMappingItems()){
                     if(dynamicMappingItem.getDatatypeId() !=null){
-                      Datatype datatype = datatypeService.findById(dynamicMappingItem.getDatatypeId());
-                      DatatypeLink datatypeLink = new DatatypeLink(datatype.getId(), datatype.getName(), datatype.getExt());
-                      this.bindedDatatypes.add(datatypeLink);
+                      this.doBindDatatype(dynamicMappingItem.getDatatypeId());
+                    }
+                  }
+                }
+                
+                if(segment.getCoConstraintsTable() != null && segment.getCoConstraintsTable().getThenMapData() != null){
+                  for(String key : segment.getCoConstraintsTable().getThenMapData().keySet()){
+                    for(CoConstraintTHENColumnData coConstraintTHENColumnData : segment.getCoConstraintsTable().getThenMapData().get(key)){
+                      if(coConstraintTHENColumnData.getDatatypeId() != null){
+                        doBindDatatype(coConstraintTHENColumnData.getDatatypeId());
+                      } else if (coConstraintTHENColumnData.getValueSets() != null && !coConstraintTHENColumnData.getValueSets().isEmpty()){
+                        for(ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()){
+                          if(!bindedTables.contains(valueSetData.getTableId())){
+                            bindedTables.add(valueSetData.getTableId());
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -638,7 +653,13 @@ import nu.xom.Document;
             }
         }
     }
-    
+
+    private void doBindDatatype(String datatypeId) {
+      Datatype datatype = datatypeService.findById(datatypeId);
+      DatatypeLink datatypeLink = new DatatypeLink(datatype.getId(), datatype.getName(), datatype.getExt());
+      this.bindedDatatypes.add(datatypeLink);
+    }
+
     private void identifyUnbindedValueSets(SegmentRefOrGroup segmentRefOrGroup,
         CompositeProfile compositeProfile) {
       if(segmentRefOrGroup instanceof SegmentRef){
