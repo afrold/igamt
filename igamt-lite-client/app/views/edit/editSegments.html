@@ -867,10 +867,7 @@
                                             <thead>
                                                 <tr class="tbl-header">
                                                     <td st-ratio="5">#</td>
-                                                    <th st-ratio="20">Position Path</th>
-                                                    <th st-ratio="40">Path</th>
-                                                    <th st-ratio="10">Usage</th>
-                                                    <th st-ratio="20">Segment</th>
+                                                    <th st-ratio="70">Path</th>
                                                     <th st-ratio="5">Status</th>
                                                 </tr>
 
@@ -880,21 +877,13 @@
                                                 <tr ng-repeat="ref in crossRef.messageFounds track by $index">
                                                     <td st-ratio="5">{{$index + 1}}
                                                     </td>
+                                                    <td st-ratio="70"><span>{{ref.name}}-{{ref.identifier}}.{{ref.path}}</span></td>
                                                     <td st-ratio="20">
-                                                        <span ng-bind="ref.positionPath"></span>
-                                                    </td>
-                                                    <td st-ratio="40">
-                                                        <span ng-bind="ref.path"></span>
-                                                    </td>
-                                                    <td st-ratio="10">
-                                                        {{::ref.usage}}
-                                                    </td>
-                                                    <td st-ratio="20">
-                                                        <select class="form-control" ng-change="changeSegmentLink(ref.segmentLink)" ng-model="ref.segmentLink.id">
-                                                        <option ng-repeat="seg in segments |orderBy:'+name'" ng-hide="seg.name != segment.name" value="{{seg.id}}">
+                                                        <md-select ng-change="changeSegmentLink(ref.segmentLink)" ng-model="ref.segmentLink.id">
+                                                        <md-option ng-repeat="seg in segments |orderBy:'+name'" ng-hide="seg.name != segment.name" value="{{seg.id}}">
                                                             {{::getSegmentLabel(seg)}}
-                                                        </option>
-                                                        </select>
+                                                        </md-option>
+                                                        </md-select>
                                                     </td>
                                                     <td st-ratio="5">
                                                         <span ng-show="ref.segmentLink.isNew">New</span>
@@ -1639,8 +1628,7 @@
                 <thead>
                 <tr class="tbl-header">
                     <td st-ratio="5">#</td>
-                    <th st-ratio="55">Position Path</th>
-                    <th st-ratio="40">Path</th>
+                    <th st-ratio="95">Path</th>
                 </tr>
 
                 </thead>
@@ -1649,11 +1637,9 @@
                 <tr ng-repeat="ref in crossRefsForDelete.messageFounds track by $index">
                     <td st-ratio="5">{{$index + 1}}
                     </td>
-                    <td st-ratio="55">
-                        <span ng-bind="ref.positionPath"></span>
-                    </td>
-                    <td st-ratio="40">
-                        <span ng-bind="ref.path"></span>
+
+                    <td st-ratio="95">
+                        <span>{{ref.name}}-{{ref.identifier}}.{{ref.path}}</span>
                     </td>
                 </tr>
                 </tbody>
