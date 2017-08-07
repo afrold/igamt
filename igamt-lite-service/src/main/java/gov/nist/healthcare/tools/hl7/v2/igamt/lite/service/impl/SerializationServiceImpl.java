@@ -17,6 +17,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
@@ -614,6 +615,16 @@ import nu.xom.Document;
                         removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
                       }
                     }
+                }
+                //TODO replace with parameter
+                if(true && segment.getDynamicMappingDefinition() != null && segment.getDynamicMappingDefinition().getDynamicMappingItems() != null){
+                  for(DynamicMappingItem dynamicMappingItem : segment.getDynamicMappingDefinition().getDynamicMappingItems()){
+                    if(dynamicMappingItem.getDatatypeId() !=null){
+                      Datatype datatype = datatypeService.findById(dynamicMappingItem.getDatatypeId());
+                      DatatypeLink datatypeLink = new DatatypeLink(datatype.getId(), datatype.getName(), datatype.getExt());
+                      this.bindedDatatypes.add(datatypeLink);
+                    }
+                  }
                 }
             }
         } else if(segmentRefOrGroup instanceof Group){
