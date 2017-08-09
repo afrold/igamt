@@ -557,11 +557,12 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     // };
     $scope.otherDT = function(field) {
+        console.log("Changing a data type from field")
         var modalInstance = $mdDialog.show({
             templateUrl: 'otherDTModal.html',
             controller: 'otherDTCtrl',
-            scope: $scope,        // use parent scope in template
-            preserveScope: true,
+            // scope: $scope,        // use parent scope in template
+            // preserveScope: true,
             locals: {
 
                 datatypes:  $rootScope.datatypes,
