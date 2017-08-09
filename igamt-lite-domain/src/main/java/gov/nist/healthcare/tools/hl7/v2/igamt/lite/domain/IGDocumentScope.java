@@ -16,6 +16,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
  */
 public enum IGDocumentScope {
 
-  USER, PRELOADED, HL7STANDARD;
+  USER, PRELOADED, HL7STANDARD, ARCHIVED;
 
 }

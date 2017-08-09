@@ -44,7 +44,6 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ApplyInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfiles;
@@ -55,7 +54,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
@@ -95,9 +93,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBi
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CCValue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintTHENColumnData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.CoConstraintsTable;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
@@ -276,11 +271,11 @@ public class IGDocumentController extends CommonController {
         throw new UserAccountNotFoundException();
       }
 
-      if (scopesAndVersion.getScopes().get(0).toString() == "HL7STANDARD") {
+      if (scopesAndVersion.getScopes().get(0).toString().equals("HL7STANDARD")) {
         igDocuments.addAll(igDocumentService.findByScopesAndVersion(scopesAndVersion.getScopes(),
             scopesAndVersion.getHl7Version()));
-      }
-      if (scopesAndVersion.getScopes().get(0).toString() == "USER") {
+      }else 
+      if (scopesAndVersion.getScopes().get(0).toString().equals("USER")) {
         System.out.println("==================");
         igDocuments.addAll(igDocumentService.findByAccountIdAndScopesAndVersion(account.getId(),
             scopesAndVersion.getScopes(), scopesAndVersion.getHl7Version()));
@@ -401,7 +396,8 @@ public class IGDocumentController extends CommonController {
       tableLibraryService.save(clonedTableLibrary);
       profileComponentLibraryService.save(clonedProfileComponentLibrary);
 
-      List<ProfileComponent> profilecomponents = profileComponentLibraryService.findProfileComponentsById(profileComponentLibrary.getId());
+      List<ProfileComponent> profilecomponents =
+          profileComponentLibraryService.findProfileComponentsById(profileComponentLibrary.getId());
       if (profilecomponents != null) {
         for (int i = 0; i < profilecomponents.size(); i++) {
           String oldPCId = null;
@@ -430,7 +426,7 @@ public class IGDocumentController extends CommonController {
         compositeProfileStructureService.save(cp);
         compositeProfileIdChangeMap.put(oldCpId, cp.getId());
       }
-      
+
       for (ProfileComponent pc : profilecomponents) {
         List<String> newIds = new ArrayList<>();
         if (pc.getCompositeProfileStructureList() != null) {
@@ -540,8 +536,10 @@ public class IGDocumentController extends CommonController {
       igDocument.getProfile().setTableLibrary(clonedTableLibrary);
       igDocument.getProfile().setProfileComponentLibrary(clonedProfileComponentLibrary);
 
-      updateModifiedId(tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap, igDocument.getProfile());
-      updateModifiedIdForPC(profilecomponents,tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap, messageIdChangeMap);
+      updateModifiedId(tableIdChangeMap, datatypeIdChangeMap, segmentIdChangeMap,
+          igDocument.getProfile());
+      updateModifiedIdForPC(profilecomponents, tableIdChangeMap, datatypeIdChangeMap,
+          segmentIdChangeMap, messageIdChangeMap);
       String sourceId = igDocument.getId();
       igDocument.setId(null);
       igDocument.getShareParticipantIds().clear();
@@ -560,79 +558,88 @@ public class IGDocumentController extends CommonController {
   private void updateModifiedIdForPC(List<ProfileComponent> profilecomponents,
       HashMap<String, String> tableIdChangeMap, HashMap<String, String> datatypeIdChangeMap,
       HashMap<String, String> segmentIdChangeMap, HashMap<String, String> messageIdChangeMap) {
-    
-    
+
+
     for (ProfileComponent pc : profilecomponents) {
 
-      for(SubProfileComponent spc: pc.getChildren()){
+      for (SubProfileComponent spc : pc.getChildren()) {
         ProfileComponentItemSource source = spc.getSource();
-        if(source.getComponentDt() != null){
+        if (source.getComponentDt() != null) {
           source.setComponentDt(datatypeIdChangeMap.get(source.getComponentDt()));
         }
-        if(source.getFieldDt() != null) {
+        if (source.getFieldDt() != null) {
           source.setFieldDt(datatypeIdChangeMap.get(source.getFieldDt()));
         }
-        if(source.getMessageId() != null) {
+        if (source.getMessageId() != null) {
           source.setMessageId(messageIdChangeMap.get(source.getMessageId()));
         }
-        if(source.getSegmentId() != null) {
+        if (source.getSegmentId() != null) {
           source.setSegmentId(segmentIdChangeMap.get(source.getSegmentId()));
         }
-        
+
         for (ValueSetOrSingleCodeBinding binding : spc.getOldValueSetBindings()) {
           if (binding.getTableId() != null && tableIdChangeMap.containsKey(binding.getTableId())) {
             binding.setTableId(tableIdChangeMap.get(binding.getTableId()));
           }
         }
-        
+
         for (ValueSetOrSingleCodeBinding binding : spc.getValueSetBindings()) {
           if (binding.getTableId() != null && tableIdChangeMap.containsKey(binding.getTableId())) {
             binding.setTableId(tableIdChangeMap.get(binding.getTableId()));
           }
         }
-                
+
         SubProfileComponentAttributes att = spc.getAttributes();
-        
-        for(TableLink tl:att.getTables()){
+
+        for (TableLink tl : att.getTables()) {
           if (tl != null && tl.getId() != null && tableIdChangeMap.containsKey(tl.getId()))
             tl.setId(tableIdChangeMap.get(tl.getId()));
         }
-        for(TableLink tl:att.getOldTables()){
+        for (TableLink tl : att.getOldTables()) {
           if (tl != null && tl.getId() != null && tableIdChangeMap.containsKey(tl.getId()))
             tl.setId(tableIdChangeMap.get(tl.getId()));
         }
-        if (att.getDatatype() != null && att.getDatatype().getId() != null && datatypeIdChangeMap.containsKey(att.getDatatype().getId()))
+        if (att.getDatatype() != null && att.getDatatype().getId() != null
+            && datatypeIdChangeMap.containsKey(att.getDatatype().getId()))
           att.getDatatype().setId(datatypeIdChangeMap.get(att.getDatatype().getId()));
-        
-        if (att.getOldDatatype() != null && att.getOldDatatype().getId() != null && datatypeIdChangeMap.containsKey(att.getOldDatatype().getId()))
+
+        if (att.getOldDatatype() != null && att.getOldDatatype().getId() != null
+            && datatypeIdChangeMap.containsKey(att.getOldDatatype().getId()))
           att.getOldDatatype().setId(datatypeIdChangeMap.get(att.getOldDatatype().getId()));
-        
-        if (att.getRef() != null && att.getRef().getId() != null && segmentIdChangeMap.containsKey(att.getRef().getId()))
+
+        if (att.getRef() != null && att.getRef().getId() != null
+            && segmentIdChangeMap.containsKey(att.getRef().getId()))
           att.getRef().setId(segmentIdChangeMap.get(att.getRef().getId()));
-        
-        if (att.getOldRef() != null && att.getOldRef().getId() != null && segmentIdChangeMap.containsKey(att.getOldRef().getId()))
+
+        if (att.getOldRef() != null && att.getOldRef().getId() != null
+            && segmentIdChangeMap.containsKey(att.getOldRef().getId()))
           att.getOldRef().setId(segmentIdChangeMap.get(att.getOldRef().getId()));
-        
-        
+
+
         if (att.getDynamicMappingDefinition() != null) {
-          for (DynamicMappingItem dmi : att.getDynamicMappingDefinition().getDynamicMappingItems()) {
-            if (dmi.getDatatypeId() != null && datatypeIdChangeMap.containsKey(dmi.getDatatypeId())) {
+          for (DynamicMappingItem dmi : att.getDynamicMappingDefinition()
+              .getDynamicMappingItems()) {
+            if (dmi.getDatatypeId() != null
+                && datatypeIdChangeMap.containsKey(dmi.getDatatypeId())) {
               dmi.setDatatypeId(datatypeIdChangeMap.get(dmi.getDatatypeId()));
             }
 
           }
         }
-        
+
         if (att.getOldDynamicMappingDefinition() != null) {
-          for (DynamicMappingItem dmi : att.getOldDynamicMappingDefinition().getDynamicMappingItems()) {
-            if (dmi.getDatatypeId() != null && datatypeIdChangeMap.containsKey(dmi.getDatatypeId())) {
+          for (DynamicMappingItem dmi : att.getOldDynamicMappingDefinition()
+              .getDynamicMappingItems()) {
+            if (dmi.getDatatypeId() != null
+                && datatypeIdChangeMap.containsKey(dmi.getDatatypeId())) {
               dmi.setDatatypeId(datatypeIdChangeMap.get(dmi.getDatatypeId()));
             }
 
           }
         }
-        
-        if (att.getCoConstraintsTable() != null && att.getCoConstraintsTable().getThenMapData() != null) {
+
+        if (att.getCoConstraintsTable() != null
+            && att.getCoConstraintsTable().getThenMapData() != null) {
           for (String key : att.getCoConstraintsTable().getThenMapData().keySet()) {
             List<CoConstraintTHENColumnData> dataList =
                 att.getCoConstraintsTable().getThenMapData().get(key);
@@ -648,8 +655,9 @@ public class IGDocumentController extends CommonController {
             }
           }
         }
-        
-        if (att.getOldCoConstraintsTable() != null && att.getOldCoConstraintsTable().getThenMapData() != null) {
+
+        if (att.getOldCoConstraintsTable() != null
+            && att.getOldCoConstraintsTable().getThenMapData() != null) {
           for (String key : att.getOldCoConstraintsTable().getThenMapData().keySet()) {
             List<CoConstraintTHENColumnData> dataList =
                 att.getOldCoConstraintsTable().getThenMapData().get(key);
@@ -669,7 +677,7 @@ public class IGDocumentController extends CommonController {
 
     }
     profileComponentService.saveAll(profilecomponents);
-    
+
   }
 
   private void updateModifiedId(HashMap<String, String> tableIdChangeMap,
@@ -875,13 +883,14 @@ public class IGDocumentController extends CommonController {
       log.info("Delete IGDocument with id=" + id);
       IGDocument d = findIGDocument(id);
       if (d.getAccountId() == account.getId()) {
-        deleteSegmentLibrary(d.getProfile().getSegmentLibrary());
-        deleteTableLibrary(d.getProfile().getTableLibrary());
-        deleteDatatypeLibrary(d.getProfile().getDatatypeLibrary());
-        deleteProfileComponentLibrary(d.getProfile().getProfileComponentLibrary());
-        deleteConformanceProfiles(d.getProfile().getMessages());
-        deleteCompositeProfileStructure(d.getProfile().getCompositeProfiles());
-        igDocumentService.delete(id);
+        d.setScope(IGDocumentScope.ARCHIVED);
+        // deleteSegmentLibrary(d.getProfile().getSegmentLibrary());
+        // deleteTableLibrary(d.getProfile().getTableLibrary());
+        // deleteDatatypeLibrary(d.getProfile().getDatatypeLibrary());
+        // deleteProfileComponentLibrary(d.getProfile().getProfileComponentLibrary());
+        // deleteConformanceProfiles(d.getProfile().getMessages());
+        // deleteCompositeProfileStructure(d.getProfile().getCompositeProfiles());
+        // igDocumentService.delete(id);
         return new ResponseMessage(ResponseMessage.Type.success, "igDocumentDeletedSuccess", null);
       } else {
         throw new OperationNotAllowException("delete");
@@ -1305,7 +1314,8 @@ public class IGDocumentController extends CommonController {
   public List<Table> findPHINVADSTables(@PathVariable("searchText") String searchText)
       throws MalformedURLException {
     log.info("Fetching all Tables for " + searchText);
-    return new TimerTaskForPHINVADSValueSetDigger().findAllpreloadedPHINVADSTablesBySearch(searchText);
+    return new TimerTaskForPHINVADSValueSetDigger()
+        .findAllpreloadedPHINVADSTablesBySearch(searchText);
   }
 
   // TODO Change to query as is but with $nin a list of messages that can be
