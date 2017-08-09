@@ -102,7 +102,7 @@
 
 
                         <md-input-container class="md-block" flex-gt-sm>
-                            <label class="input-left">Title</label>
+                            <label class="input-left">Title <i class="pull-right fa fa-info" aria-hidden="true" title="This is the title of your the guide. This section will be exported"></i></label>
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
                                    name="title"
@@ -114,7 +114,7 @@
                         </md-input-container>
 
                         <md-input-container class="md-block" flex-gt-sm>
-                            <label class="input-left">Sub-Title</label>
+                            <label class="input-left">Sub-Title <i class="pull-right fa fa-info" aria-hidden="true" title="This is the sub-title of your guide. This section will exported"></i></label>
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
                                    name="subTitle"
@@ -125,7 +125,7 @@
                         </md-input-container>
 
                         <md-input-container class="md-block" flex-gt-sm>
-                            <label class="input-left">Organization</label>
+                            <label class="input-left">Organization <i class="pull-right fa fa-info" aria-hidden="true" title="This is organization sponsoring the creation of the guide. This section will be exported "></i> </label>
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
                                    name="orgName"
@@ -137,7 +137,7 @@
 
 
                         <md-input-container class="md-block" flex-gt-sm>
-                            <label class="input-left">Extension</label>
+                            <label class="input-left">Extension <i class="pull-right fa fa-info" aria-hidden="true" title="This is the extension of your ig document. Ex. CDC, MU etc..."></i> </label>
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
                                    name="ext"
@@ -146,6 +146,20 @@
                             <div ng-messages="editForm.ext.$error">
                             </div>
                         </md-input-container>
+
+
+                        <md-input-container class="md-block" flex-gt-sm >
+                            <label class="input-left">Implementation Notes <i class="pull-right fa fa-info" aria-hidden="true" title="This contains your notes about this ig document. This section will not be exported"></i> </label>
+                            <div  ng-if="!viewSettings.tableReadonly">
+                                                         <textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus
+                                                                   ng-model="metaData.implementationNotes" name="igNotes"
+                                                                   id="igNotes" ng-change="setDirty()"></textarea>
+                            </div>
+                            <div class="fr-view" ng-if="viewSettings.tableReadonly">
+                                <div froala-view="metaData.implementationNotes"></div>
+                            </div>
+                        </md-input-container>
+
 
                         <!--<md-input-container class="md-block" flex-gt-sm>-->
                             <!--<label class="input-left">Specification</label>-->
