@@ -1329,9 +1329,8 @@
                 </p>
             </div>
         </td>
-        <td>
-            <div>-</div>
-        </td>
+        <td class="emptyCol">
+         </td>
         <td ng-show="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.minLength !== 'NA' && node.maxLength !== 'NA'">
                 [{{::node.minLength}},{{::node.maxLength}}]
