@@ -24,7 +24,12 @@ body {
 				<accordion-heading style="color:black !important;">
 				<i class="pull-left fa" style="color: black;"
 					ng-class="{'fa-chevron-down':isOpen2, 'fa-chevron-right': !isOpen2}"></i>
-				User Guides </accordion-heading>
+				User Guides
+
+					<i class="pull-right fa fa-info" aria-hidden="true" title="How to use IGAMT ?"></i>
+
+
+				</accordion-heading>
 				<div style="margin-bottom: 25px;">
 					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
 						aria-hidden="true" ng-click="addDocumentation('userGuide')"
@@ -40,12 +45,38 @@ body {
 
 				</ul>
 			</div>
+
+
+				<div accordion-group class="panel panel-default" is-open="isOpen3">
+					<accordion-heading style="color:black !important;">
+						<i class="pull-left fa" style="color: black;"
+						   ng-class="{'fa-chevron-down': isOpen3, 'fa-chevron-right': !isOpen3}"></i>
+
+						FAQs 					<i class="pull-right fa fa-info" aria-hidden="true" title="Frequently Asked Questions"></i>
+					</accordion-heading>
+
+					<div style="margin-bottom: 25px;">
+						<i ng-if="isAdmin()" class="fa fa-plus pull-right"
+						   aria-hidden="true" ng-click="addDocumentation('FAQ')"
+						   style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
+					</div>
+
+					<ul class="nav nav-pills nav-stacked"
+						style="margin-left: 5px !important;">
+
+						<li ng-repeat="documentation in FAQs"
+							ng-click="editDocumentation(documentation)"
+							ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
+
+					</ul>
+				</div>
+
 				<div accordion-group="" ng-init="isOpen1=true"
 				class="panel panel-default" is-open="isOpen1">
 				<accordion-heading style="color:white !important;">
 				<i class="pull-left fa" style="color: black;"
 					ng-class="{'fa-chevron-down': isOpen1, 'fa-chevron-right': !isOpen1}"></i>
-				Developer Decisions </accordion-heading>
+					IGAMT Implementation Decisions <i class="pull-right fa fa-info" aria-hidden="true" title="Implementation decisions made the developers AND Stakeholders of IGAMT"></i> </accordion-heading>
 				<div style="margin-bottom: 25px;">
 					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
 						aria-hidden="true" ng-click="addDocumentation('decision')"
@@ -61,32 +92,12 @@ body {
 
 				</ul>
 			</div>
-			<div accordion-group class="panel panel-default" is-open="isOpen3">
-				<accordion-heading style="color:black !important;">
-				<i class="pull-left fa" style="color: black;"
-					ng-class="{'fa-chevron-down': isOpen3, 'fa-chevron-right': !isOpen3}"></i>
-				FAQ </accordion-heading>
 
-							<div style="margin-bottom: 25px;">
-					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
-						aria-hidden="true" ng-click="addDocumentation('FAQ')"
-						style="margin-top: 5px; margin-right: 10px; cursor: pointer; font-size: 17px"></i>
-				</div>
-
-				<ul class="nav nav-pills nav-stacked"
-					style="margin-left: 5px !important;">
-
-					<li ng-repeat="documentation in FAQs"
-						ng-click="editDocumentation(documentation)"
-						ng-class="{'current':activeId==documentation.id}"><a>{{documentation.title}}</a></li>
-
-				</ul>
-			</div>
 			<div accordion-group class="panel panel-default" is-open="isOpen5">
 				<accordion-heading style="color:black !important;">
 				<i class="pull-left fa" style="color: black;"
 					ng-class="{'fa-chevron-down': isOpen5, 'fa-chevron-right': !isOpen5}"></i>
-				Release Notes </accordion-heading>
+				Releases Notes <i class="pull-right fa fa-info" aria-hidden="true" title="Notes for each release of IGAMT"></i> </accordion-heading>
 
 							<div style="margin-bottom: 25px;">
 					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
@@ -107,8 +118,7 @@ body {
 				<div accordion-group class="panel panel-default" is-open="isOpen4" ng-if="isAuthenticated()">
 				<accordion-heading style="color:black !important;">
 				<i class="pull-left fa" style="color: black;"
-					ng-class="{'fa-chevron-down': isOpen4, 'fa-chevron-right': !isOpen4}"></i>
-				User Notes</accordion-heading>
+					ng-class="{'fa-chevron-down': isOpen4, 'fa-chevron-right': !isOpen4}"></i>My Notes <i class="pull-right fa fa-info" aria-hidden="true" title="Your general notes. This is visible only to you"></i></accordion-heading>
 
 							<div style="margin-bottom: 25px;">
 					<i ng-if="isAdmin()" class="fa fa-plus pull-right"
