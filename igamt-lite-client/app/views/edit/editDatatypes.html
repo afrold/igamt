@@ -28,7 +28,6 @@
                     <div class="page-header" style="margin-bottom: 20px">
                         <span class="header4">Data Type: {{getDatatypeLabel(datatype)}}
                         <span class="pull-right" ng-if="!typeOfSharing">
-
                             <div class="btn-group" ng-hide="viewSettings.tableReadonly || datatype.scope !== 'USER'||datatype.status=='UNPUBLISHED'"
                                  style="margin-bottom: 0px;" ng-if="!igdocument">
                               <md-button   type="button" class="btn btn-raised btn-primary btn-sm" ng-class=""
@@ -37,14 +36,6 @@
                                 <span class="badge" ng-bind="datatype.shareParticipantIds.length"
                                       style="margin-right:5px;"></span>
                               </md-button>
-                             <md-button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle"
-                                data-toggle="dropdown" aria-expanded="false"> <span class="caret"></span> <span
-                                class="sr-only">Toggle Dropdown</span> </md-button>
-                        <ul class="dropdown-menu igl-menu" role="menu">
-                            <li ng-repeat="participant in datatype.shareParticipantIds"><a><i class="fa fa-user"
-                                                                                              aria-hidden="true"></i> {{participant.username}} <span
-                                    ng-if="participant.pendingApproval">(Pending...)</span></a></li>
-                        </ul>
                     </div>
 
 
@@ -87,8 +78,8 @@
                         <i class="fa fa-calendar" aria-hidden="true"></i>
                         Updated :{{datatype.dateUpdated | date:dateFormat}}
                         <span ng-if="datatype.owner" style="font-style: italic;">
-<span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
-</span>
+                     <span ng-if="datatype.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(datatype.owner.email)}}"/> {{datatype.owner.fullname}}</span>
+                     </span>
                         <span ng-if="datatype.hl7Version!=='*'">,HL7 Version: {{datatype.hl7Version}}</span>
                         <span ng-if="datatype.publicationVersion">,Version: {{datatype.publicationVersion}}</span>
 
@@ -299,7 +290,7 @@
                                                                 <th class="col-md-2 col-fixed-250">Name</th>
                                                                 <th class="col-md-1 col-fixed-80"
                                                                     style="text-align:center">Usage
-                                                                    <button type="button "
+                                                                    <button type="button"
                                                                             class="btn btn-raised btn-info btn-xs "
                                                                             ng-show="(datatype.scope==='USER' )&& !viewSettings.tableReadonly && (datatype.components.length>0)"
                                                                             ng-hide="typeOfSharing || datatype.status==='PUBLISHED'"
@@ -806,10 +797,9 @@
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <td st-ratio="5">#</td>
-                                                    <th st-ratio="25">Usage</th>
+                                                    <th st-ratio="25">Path</th>
                                                     <th st-ratio="40">Name</th>
-                                                    <th st-ratio="10">Position</th>
-                                                    <th st-ratio="20">Segment</th>
+                                                    <th st-ratio="30">Segment</th>
                                                 </tr>
 
                                                 </thead>
@@ -819,15 +809,12 @@
                                                     <td st-ratio="5">{{$index + 1}}
                                                     </td>
                                                     <td st-ratio="25">
-                                                        <span ng-bind="ref.usage"></span>
+                                                        <span>{{ref.segmentFound.label}}.{{ref.position}}</span>
                                                     </td>
                                                     <td st-ratio="40">
                                                         <span ng-bind="ref.name"></span>
                                                     </td>
-                                                    <td st-ratio="10">
-                                                        {{::ref.position}}
-                                                    </td>
-                                                    <td st-ratio="20">
+                                                    <td st-ratio="30">
                                                         <display-label of="segmentsMap[ref.segmentFound.id]" desc="true"></display-label>
                                                     </td>
 
@@ -846,10 +833,9 @@
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <td st-ratio="5">#</td>
-                                                    <th st-ratio="25">Usage</th>
+                                                    <th st-ratio="25">Path</th>
                                                     <th st-ratio="40">Name</th>
-                                                    <th st-ratio="10">Position</th>
-                                                    <th st-ratio="20">Data Type</th>
+                                                    <th st-ratio="30">Data Type</th>
                                                 </tr>
 
                                                 </thead>
@@ -859,15 +845,12 @@
                                                     <td st-ratio="5">{{$index + 1}}
                                                     </td>
                                                     <td st-ratio="25">
-                                                        <span ng-bind="ref.usage"></span>
+                                                        <span>{{ref.datatypeFound.label}}.{{ref.position}}</span>
                                                     </td>
                                                     <td st-ratio="40">
                                                         <span ng-bind="ref.name"></span>
                                                     </td>
-                                                    <td st-ratio="10">
-                                                        {{::ref.position}}
-                                                    </td>
-                                                    <td st-ratio="20">
+                                                    <td st-ratio="30">
                                                         <display-label of="datatypesMap[ref.datatypeFound.id]" desc="true"></display-label>
                                                     </td>
 
@@ -1110,22 +1093,21 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.minLength === 'NA' || node.maxLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
-                    <md-input-container flex="45" class="withoutMargin">
+                    <md-input-container flex="40" class="withoutMargin">
                     <input  name="minLength" ng-change="setDirty()" type="text"
-                            style="width:25px"
                            ng-pattern="/^\d+$/"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.minLength.$invalid}"
                            ng-model="node.minLength" required ng-minlength="1"/>
                     </md-input-container>
-                    <md-input-container flex="45" class="withoutMargin">
+                    <md-input-container flex="40" class="withoutMargin">
                     <input  type="text" name="maxLength" ng-change="setDirty()"
-                            style="width:25px"
                            ng-class="{ 'has-error has-feedback' : {{formName}}.maxLength.$invalid}"
                            ng-pattern="/^\d+$|^\*?$/" ng-model="node.maxLength" required/>
                     </md-input-container>
-                    <span ng-click="clearLength(node)" class="point"><i class="fa fa-times fa-fw edit-icon"></i></span>
 
                 </ng-form>
+                    <span flex="20" ng-click="clearLength(node)" class="point pull-right"><i class="fa fa-times fa-fw edit-icon"></i></span>
+
                 </div>
                 <div layout="row" ng-show="node.minLength === 'NA' || node.maxLength === 'NA'">
                     <span ng-click="editLength(node)" class="point"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
@@ -1138,10 +1120,9 @@
             <div ng-if="datatypesMap[node.datatype.id].components.length == 0">
                 <div ng-hide="node.confLength === 'NA'">
                 <ng-form name="{{formName}}" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)" layout="row" layout-align="center center">
-                    <md-input-container flex="90" class="withoutMargin">
+                    <md-input-container flex="80" class="withoutMargin">
                         <input  autofocus
                                 name="confLength"
-                                style="width:50px; margin-top:-5px"
                                 ng-change="setDirty()"
                                 ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                 ng-pattern="confLengthPattern"
@@ -1149,11 +1130,12 @@
                                 ng-model="node.confLength"
                                 ng-model-options="{allowInvalid:true}">
                     </md-input-container>
-                    <span  ng-click="clearConfLength(node)" class="point" ><i class="fa fa-times fa-fw edit-icon"></i></span>
                 </ng-form>
+                    <span flex="20" ng-click="clearConfLength(node)" class="point pull-right" ><i class="fa fa-times fa-fw edit-icon"></i></span>
+
                 </div>
                 <div ng-show="node.confLength === 'NA'" layout="row">
-                    <span ng-click="editConfLength(node)" class="point"><i class="fa fa-pencil fa-fw edit-icon" ></i></span>
+                    <span ng-click="editConfLength(node)" class="point "><i class="fa fa-pencil fa-fw edit-icon" ></i></span>
                 </div>
             </div>
         </td>
@@ -1179,8 +1161,8 @@
 
                         <md-select placeholder="Select Data type" ng-model="node.datatype" class="inside-table"
                                    ng-change="backDT();setDirty()">
-                            <md-option ng-value="datatype" ng-repeat="datatype in results">
-                                <display-label of="datatypesMap[datatype.id]" desc="false"></display-label>
+                            <md-option ng-repeat="dt in results" ng-value="dt">
+                                <display-label of="datatypesMap[dt.id]" desc="false"></display-label>
                             </md-option>
                         </md-select>
 
@@ -2051,10 +2033,9 @@
                                 <thead>
                                 <tr class="tbl-header">
                                     <td st-ratio="5">#</td>
-                                    <th st-ratio="25">Usage</th>
+                                    <th st-ratio="25">Path</th>
                                     <th st-ratio="40">Name</th>
-                                    <th st-ratio="10">Position</th>
-                                    <th st-ratio="20">Segment</th>
+                                    <th st-ratio="30">Segment</th>
                                 </tr>
 
                                 </thead>
@@ -2064,15 +2045,12 @@
                                     <td st-ratio="5">{{$index + 1}}
                                     </td>
                                     <td st-ratio="25">
-                                        <span ng-bind="ref.usage"></span>
+                                        <span>{{ref.segmentFound.label}}.{{ref.position}}</span>
                                     </td>
                                     <td st-ratio="40">
                                         <span ng-bind="ref.name"></span>
                                     </td>
-                                    <td st-ratio="10">
-                                        {{::ref.position}}
-                                    </td>
-                                    <td st-ratio="20">
+                                    <td st-ratio="30">
                                         <display-label of="segmentsMap[ref.segmentFound.id]" desc="true"></display-label>
                                     </td>
 
@@ -2091,10 +2069,9 @@
                                 <thead>
                                 <tr class="tbl-header">
                                     <td st-ratio="5">#</td>
-                                    <th st-ratio="25">Usage</th>
+                                    <th st-ratio="25">Path</th>
                                     <th st-ratio="40">Name</th>
-                                    <th st-ratio="10">Position</th>
-                                    <th st-ratio="20">Data Type</th>
+                                    <th st-ratio="30">Data Type</th>
                                 </tr>
 
                                 </thead>
@@ -2104,7 +2081,7 @@
                                     <td st-ratio="5">{{$index + 1}}
                                     </td>
                                     <td st-ratio="25">
-                                        <span ng-bind="ref.usage"></span>
+                                        <span>{{ref.datatypeFound.label}}.{{ref.position}}</span>
                                     </td>
                                     <td st-ratio="40">
                                         <span ng-bind="ref.name"></span>
@@ -2112,7 +2089,7 @@
                                     <td st-ratio="10">
                                         {{::ref.position}}
                                     </td>
-                                    <td st-ratio="20">
+                                    <td st-ratio="30">
                                         <display-label of="datatypesMap[ref.datatypeFound.id]" desc="true"></display-label>
                                     </td>
 
@@ -2197,19 +2174,19 @@
                         <md-content>
                             <div ng-show="selectedValueSetBindings.length > 0">
                                 <div ng-show="selectedValueSetBindings[0].type == 'singlecode'">
-                                    <h1 class="md-display-1">Single Code selected</h1>
+                                    <h4 >Single Code selected</h4>
                                 </div>
                                 <div ng-show="selectedValueSetBindings[0].type == 'valueset'">
-                                    <h1 class="md-display-1">{{selectedValueSetBindings.length}} Value Set(s)
-                                        selected</h1>
+                                    <h4>{{selectedValueSetBindings.length}} Value Set(s)
+                                        selected</h4>
                                 </div>
                             </div>
                             <div ng-show="selectedValueSetBindings.length == 0">
-                                <h1 class="md-display-1">No Value Set or Single Code selected</h1>
+                                <h4>No Value Set or Single Code selected</h4>
                             </div>
                             <div ng-if="selectedValueSetBindings.length > 0 && selectedValueSetBindings[0].type == 'valueset'">
                                 <table st-table="displayedSelectedValueSetBindings"
-                                       st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered"
+                                       st-safe-src="selectedValueSetBindings" class="table table-striped table-bordered normal-table"
                                        ng-show="selectedValueSetBindings.length > 0">
                                     <thead>
                                     <tr class="tbl-header">
@@ -2234,20 +2211,19 @@
                                             {{tablesMap[b.tableId].description}}
                                         </td>
                                         <td class="col-md-2">
-                                            <select ng-model='b.bindingStrength' class="form-control"
+                                            <md-select ng-model='b.bindingStrength'
                                                     ng-change="setChanged()">
-                                                <option value="R">Required</option>
-                                                <option value="S">Suggested</option>
-                                                <option value="U">Unspecified</option>
-                                            </select>
+                                                <md-option value="R">Required</md-option>
+                                                <md-option value="S">Suggested</md-option>
+                                                <md-option value="U">Unspecified</md-option>
+                                            </md-select>
                                         </td>
                                         <td class="col-md-2">
-                                            <select ng-show="listOfBindingLocations" ng-model='b.bindingLocation'
-                                                    class="form-control" ng-change="setChanged()">
-                                                <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">
+                                            <md-select ng-show="listOfBindingLocations" ng-model='b.bindingLocation' ng-change="setChanged()">
+                                                <md-option ng-repeat="bl in listOfBindingLocations" ng-value="bl">
                                                     {{bl}}
-                                                </option>
-                                            </select>
+                                                </md-option>
+                                            </md-select>
                                         </td>
                                         <td class="col-md-1" align="center">
                                             <a ng-click="deleteBinding(b)" class="point">
@@ -2262,7 +2238,7 @@
                             <div ng-if="selectedValueSetBindings.length > 0 && selectedValueSetBindings[0].type == 'singlecode'">
                                 <table st-table="displayedSelectedValueSetBindings"
                                        st-safe-src="selectedValueSetBindings"
-                                       class="table table-striped table-bordered">
+                                       class="table table-bordered normal-table">
                                     <thead>
                                     <tr class="tbl-header">
                                         <th class="col-md-11">Conformance Statement for Single Code</th>
@@ -2312,7 +2288,7 @@
                                 <md-tab label="Value Set">
                                     <md-content class="md-padding">
                                         <table st-safe-src="tables" st-table="displayCollection"
-                                               class="table table-striped table-condensed table-bordered">
+                                               class="table table-striped table-bordered normal-table">
                                             <thead>
                                             <tr class="tbl-header">
                                                 <th st-sort="scope" class="col-md-1">Scope/Version</th>
@@ -2342,14 +2318,7 @@
                                                     {{v.description}}
                                                 </td>
                                                 <td class="col-md-1" align="center">
-                                                    <a ng-show="!isSelected(v)" ng-click="selectValueSet(v)"
-                                                       class="point">
-                                                        <i class="icon-size-15 fa-circle-thin fa"></i>
-                                                    </a>
-                                                    <a ng-show="isSelected(v)" ng-click="unselectValueSet(v)"
-                                                       class="point">
-                                                        <i class="icon-size-15 fa-check-circle fa"></i>
-                                                    </a>
+                                                    <span><md-checkbox ng-checked="isSelected(v)" ng-click="toggle(v);"></md-checkbox></span>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -2365,13 +2334,13 @@
                                 <md-tab label="Single Code" ng-disabled="!isSingleValueSetAllowed" md-on-select="singleCodeInit();">
                                     <md-content class="md-padding">
                                         <div ng-if="selectedValueSetBindings.length == 0 || selectedValueSetBindings[0].type == 'valueset'">
-                                            <a ng-click="addManualCode();" class="point">
-                                                <i class="icon-size-15 fa-plus fa"> Create Single Code directly</i>
-                                            </a>
+                                            <md-button ng-click="addManualCode()" class="md-primary">
+                                                <i class="fa fa-plus fa-fw"></i> Create Single Code directly
+                                            </md-button>
                                         </div>
                                         <div ng-show="!valueSetSelectedForSingleCode">
                                             <table st-safe-src="tables" st-table="displayTables"
-                                                   class="table table-striped table-condensed table-bordered">
+                                                   class="table table-striped table-bordered normal-table">
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <th st-sort="scope" class="col-md-1">Scope/Version</th>
@@ -2403,9 +2372,11 @@
                                                         {{v.description}}
                                                     </td>
                                                     <td class="col-md-1" align="center">
-                                                        <a ng-click="selectValueSetForSingleCode(v);" class="point">
-                                                            <i class="icon-size-15 fa-circle-thin fa"></i>
-                                                        </a>
+                                                        <span><md-checkbox ng-checked="valueSetSelectedForSingleCode" ng-click="selectValueSetForSingleCode(v)" ></md-checkbox></span>
+                                                        <!--<a ng-click="selectValueSetForSingleCode(v);" class="point">-->
+                                                            <!---->
+                                                            <!--<i class="icon-size-15 fa-circle-thin fa"></i>-->
+                                                        <!--</a>-->
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -2420,7 +2391,7 @@
                                             </table>
                                         </div>
                                         <div ng-show="valueSetSelectedForSingleCode">
-                                            <table class="table table-striped table-condensed table-bordered">
+                                            <table class="table table-striped table-bordered normal-table">
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <th class="col-md-1">Scope/Version</th>
@@ -2441,16 +2412,14 @@
                                                         {{valueSetSelectedForSingleCode.description}}
                                                     </td>
                                                     <td class="col-md-1" align="center">
-                                                        <a ng-click="valueSetSelectedForSingleCode = null;"
-                                                           class="point">
-                                                            <i class="icon-size-15 fa-check-circle fa"></i>
-                                                        </a>
+                                                       <span><md-checkbox ng-checked="valueSetSelectedForSingleCode" ng-click="valueSetSelectedForSingleCode = null;">
+                                                       </md-checkbox></span>
                                                     </td>
                                                 </tr>
                                             </table>
                                             <table st-safe-src="valueSetSelectedForSingleCode.codes"
                                                    st-table="displayCodes"
-                                                   class="table table-striped table-condensed table-bordered">
+                                                   class="table table-striped table-condensed table-bordered normal-table ">
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <th st-sort="value" class="col-md-3">Code</th>
@@ -2471,14 +2440,9 @@
                                                         <span>{{c.codeSystem}}</span>
                                                     </td>
                                                     <td class="col-md-1" style="text-align:center">
-                                                        <a ng-show="!isCodeSelected(c)" ng-click="selectCode(c)"
-                                                           class="point">
-                                                            <i class="icon-size-15 fa-circle-thin fa"></i>
-                                                        </a>
-                                                        <a ng-show="isCodeSelected(c)" ng-click="unselectCode(c)"
-                                                           class="point">
-                                                            <i class="icon-size-15 fa-check-circle fa"></i>
-                                                        </a>
+                                                        <span>
+                                                            <md-checkbox ng-checked="isCodeSelected(c)" ng-click="toggleCode(c)"> </md-checkbox>
+                                                        </span>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -2500,7 +2464,7 @@
                 </div>
             </md-dialog-content>
             <md-dialog-actions layout="row">
-                <md-button ng-show="changed" type="button" ng-click="saveMapping()" class="md-primary md-raised"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</md-button>
+                <md-button ng-disabled="!changed" type="button" ng-click="saveMapping()" class="md-primary md-raised"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</md-button>
 
             </md-dialog-actions>
         </form>

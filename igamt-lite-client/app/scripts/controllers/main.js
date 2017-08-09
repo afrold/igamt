@@ -810,7 +810,12 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     $rootScope.hasChanges = function() {
         // return Object.getOwnPropertyNames($rootScope.changes).length !== 0;
-        return $rootScope.igChanged;
+        if($scope.editForm){
+            return $scope.editForm.$dirty&&!$scope.editForm.$pristine&&$rootScope.igChanged;
+        }else{
+            return $rootScope.igChanged;
+        }
+        //return $rootScope.igChanged;
     };
 
     $rootScope.recordChanged = function() {
@@ -4862,7 +4867,7 @@ angular.module('igl').controller('EditSingleElementCtrl', function($scope, $root
     };
 });
 
-angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope, $modalInstance, userInfoService, currentId, currentIndex) {
+angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope, $mdDialog, userInfoService, currentId, currentIndex) {
     $scope.data = angular.copy($rootScope.segment.coConstraintsTable.thenMapData[currentId][currentIndex]);
 
     $scope.listOfBindingLocations = null;
@@ -4895,6 +4900,15 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
         }
         return false;
     };
+
+    $scope.toggle=function (v) {
+        if($scope.isSelected(v)){
+            $scope.unselectValueSet(v);
+        }else{
+            $scope.selectValueSet(v);
+        }
+
+    }
 
     $scope.selectValueSet = function(v) {
         if (!$scope.data) $scope.data = {};
@@ -4947,11 +4961,11 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
     }
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 
     $scope.close = function() {
-        $modalInstance.close($scope.data);
+        $mdDialog.hide($scope.data);
     };
 });
 

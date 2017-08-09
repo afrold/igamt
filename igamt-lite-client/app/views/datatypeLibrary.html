@@ -159,7 +159,7 @@ if (self === top) {
         <form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form  ng-controller="EditAreaCtrl" ng-init="init">
             <div style="padding-left: 10px;">
                 <md-tabs md-dynamic-height md-border-bottom ng-init="getDataTypeLibraryByScope('USER');">
-                <md-tab md-active="tabs[0].active" md-on-select="selectList()">
+                <md-tab md-active="dtList[0].active" md-on-select="dtList[0].active=true; dtList[1].active=false;dtList[2].active=false">
                     <md-tab-label>
                         <i class="fa fa-file-text-o fa-fw"></i>Library List
                     </md-tab-label>
@@ -168,7 +168,7 @@ if (self === top) {
                         <md-tabs md-dynamic-height md-border-bottom>
                             <md-tab md-active="ttype==='USER'" md-on-select="getDataTypeLibraryByScope('USER')" ng-init="getDataTypeLibraryByScope('USER');">
                                 <md-tab-label>
-                                    <i class="fa fa-file-text-o fa-fw"></i> My Libraries
+                                 My Libraries
                                 </md-tab-label>
                                 <md-tab-body>
 
@@ -346,7 +346,7 @@ if (self === top) {
 
                     </md-tab-body>
                 </md-tab>
-                <md-tab md-active="tabs[1].active" ng-if="datatypeLibrary" md-on-select="make_active(1)">
+                <md-tab md-active="dtList[1].active" ng-if="datatypeLibrary" md-on-select="dtList[0].active=false; dtList[1].active=true;dtList[2].active=false"">
                     <md-tab-label>
                         <span ng-if="!readOnly"><i class="fa fa-pencil fa-fw"></i>Edit Library</span>
                         <span ng-if="readOnly"> <i class="fa fa-search fa-fw"></i>Read Library</span>
@@ -449,7 +449,7 @@ if (self === top) {
                     </md-tab-body>
 
                 </md-tab>
-            <md-tab  md-active="tabs[2].active" md-on-select="initMatrix();make_active(2)">
+            <md-tab  md-active="dtList[2].active" md-on-select="initMatrix();dtList[0].active=false; dtList[1].active=false;dtList[2].active=true"">
             <md-tab-label>
                 <i class="fa fa-file-text-o fa-fw"></i> Data Types Evolution
             </md-tab-label>

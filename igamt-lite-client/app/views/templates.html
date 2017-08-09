@@ -929,14 +929,22 @@
     </div>
 </script>
 <script type="text/ng-template" id="EditThenData.html">
-    <div class="modal-header">
-        <h3>Edit Value Set bindings for CoConstraint</h3>
-    </div>
-    <div class="modal-body">
-        <form class="form-horizontal" novalidate>
-            <div class="row ">
+    <md-dialog aria-label="confirmation">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h3>Edit Value Set bindings for CoConstraint</h3>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+        <div class="row ">
                 <div class="col-md-12">
-                    <table class="table table-striped table-condensed table-bordered">
+                    <table class="table table-striped table-bordered normal-table">
                         <thead>
                             <tr class="tbl-header">
                                 <th class="col-md-1" style="text-align:center">#</th>
@@ -960,16 +968,16 @@
                                     {{tablesMap[vs.tableId].description}}
                                 </td>
                                 <td class="col-md-2">
-                                    <select placeholder="Select BindingStrength" ng-model='vs.bindingStrength'>
-                                        <option value="R">Required</option>
-                                        <option value="S">Suggested</option>
-                                        <option value="U">Unspecified</option>
-                                    </select>
+                                    <md-select placeholder="Select BindingStrength" ng-model='vs.bindingStrength'>
+                                        <md-option value="R">Required</md-option>
+                                        <md-option value="S">Suggested</md-option>
+                                        <md-option value="U">Unspecified</md-option>
+                                    </md-select>
                                 </td>
                                 <td class="col-md-2">
-                                    <select placeholder="Select BindingLocation" ng-show="listOfBindingLocations" ng-model='vs.bindingLocation'>
-                                        <option ng-repeat="bl in listOfBindingLocations" value="{{bl}}">{{bl}}</option>
-                                    </select>
+                                    <md-select placeholder="Select BindingLocation" ng-show="listOfBindingLocations" ng-model='vs.bindingLocation'>
+                                        <md-option ng-repeat="bl in listOfBindingLocations" ng-value="bl">{{bl}}</md-option>
+                                    </md-select>
                                 </td>
                                 <td class="col-md-1" style="text-align:center">
                                     <span ng-click="deleteValueSet($index);"><i class="fa fa-times" aria-hidden="true"></i></span>
@@ -979,7 +987,7 @@
                     </table>
 
 
-                    <table st-safe-src="tables" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
+                    <table st-safe-src="tables" st-table="displayCollection" class="table table-striped table-bordered normal-table">
                         <thead>
                             <tr class="tbl-header">
                                 <th st-sort="scope" class="col-md-1">Scope/Version</th>
@@ -1006,12 +1014,12 @@
                                     {{v.description}}
                                 </td>
                                 <td class="col-md-1" align="center">
-                                    <a ng-show="!isSelected(v)" ng-click="selectValueSet(v)" class="point">
-                                        <i class="icon-size-15 fa-circle-thin fa"></i>
-                                    </a>
-                                    <a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">
-                                        <i class="icon-size-15 fa-check-circle fa"></i>
-                                    </a>
+                                    <span>
+                                        <md-checkbox md-checked="isSelected(v)" ng-click="toggle(v)">
+                                </md-checkbox></span>
+                                    <!--<a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">-->
+                                        <!--<i class="icon-size-15 fa-check-circle fa"></i>-->
+                                    <!--</a>-->
                                 </td>
                             </tr>
                         </tbody>
@@ -1022,17 +1030,15 @@
                         </tr>
                     </table>
                 </div>
+        </div>
             </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button  class="md-primary md-raised" md-autofocus ng-click="close()">save
+            </md-button>
+        </md-dialog-actions>
         </form>
-    </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
-            &nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
-            &nbsp; </i>Save</span>
-        </button>
-    </div>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="EditDescription.html">
     <div class="modal-header ">
@@ -1652,7 +1658,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                            ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                            ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -1889,7 +1895,7 @@
     </tr>
 </script>
 <script type="text/ng-template" id="GlobalConformanceStatementCtrl.html">
-    <md-dialog aria-label="Conformance Statements for Message/Group" style="width: 90%">
+    <md-dialog aria-label="Conformance Statements for Message/Group" style="width: 90%" ng-init="init()">
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
@@ -2231,7 +2237,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                        ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                        ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -2801,7 +2807,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                            ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                            ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -3250,7 +3256,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                            ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                            ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -3778,7 +3784,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                            ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                            ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -4227,7 +4233,7 @@
                                                                 <md-select placeholder="Select ValueSet" class="inside-table"
                                                                            ng-class="{'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                            ng-model="newConstraint.valueSetId">
-                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">
+                                                                    <md-option ng-repeat="table in tables track by table.id|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">
                                                                         {{::table.bindingIdentifier}}
                                                                     </md-option>
                                                                 </md-select>
@@ -5892,7 +5898,7 @@
                                                         <span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
                                             <span>ValueSet ID: </span>
                                                         <select class="form-control form-control-short" ng-class="{'form-control-invalid': $root.isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
-                                                <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="getUpdatedBindingIdentifier(table)">{{getTableLabel(tablesMap[table.id])}}</option>
+                                                <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" ng-value="getUpdatedBindingIdentifier(table)">{{getTableLabel(tablesMap[table.id])}}</option>
                                             </select>
                                                         <span style="color:red;" ng-show="$root.isEmptyConstraintValueSet(newConstraint)">Empty valueset</span>
                                                         <br/>

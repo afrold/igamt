@@ -1664,6 +1664,15 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         }
         return false;
     };
+    $scope.toggleVs=function (v) {
+        if(!$scope.isSelected(v)){
+            $scope.selectValueSet(v);
+        }else{
+            $scope.unselectValueSet(v);
+        }
+    };
+
+
     $scope.selectValueSet = function(v) {
         if (!$scope.data) $scope.data = {};
         if (!$scope.data.valueSets) $scope.data.valueSets = [];
@@ -3126,10 +3135,25 @@ angular.module('igl').controller('TableBindingForPcCtrl', function($scope, $mdDi
         $scope.selectedValueSetBindings.push({ tableId: $scope.valueSetSelectedForSingleCode.id, location: positionPath, usage: currentNode.usage, type: "singlecode", code: c });
         $scope.changed = true;
     };
+    $scope.toggle=function(v){
+        if(!$scope.isSelected(v)){
+            $scope.selectValueSet(v);
+        }else{
+            $scope.unselectValueSet(v);
+        }
+
+    };
     $scope.unselectCode = function(c) {
         $scope.selectedValueSetBindings = [];
         $scope.changed = true;
     };
+    $scope.toggleCode=function(c){
+        if(!$scope.isCodeSelected(c)){
+            $scope.selectCode(c);
+        }else{
+            $scope.unselectCode(c);
+        }
+    }
 
 
     $scope.saveMapping = function() {
