@@ -12,6 +12,7 @@ public class DocumentMetaData extends MetaData implements java.io.Serializable, 
   private String topics;
   private String specificationName;
   private String identifier;
+  private String implementationNotes;
 
   public String getTitle() {
     return title;
@@ -60,12 +61,13 @@ public class DocumentMetaData extends MetaData implements java.io.Serializable, 
     clonedDocumentMetaData.setSubTitle(subTitle);
     clonedDocumentMetaData.setTitle(title);
     clonedDocumentMetaData.setVersion(this.getHl7Version());
-     clonedDocumentMetaData.setExt(this.getExt());
+    clonedDocumentMetaData.setExt(this.getExt());
     clonedDocumentMetaData.setIdentifier(identifier);
     clonedDocumentMetaData.setOrgName(this.getOrgName());
     clonedDocumentMetaData.setSpecificationName(specificationName);
     clonedDocumentMetaData.setStatus(status);
     clonedDocumentMetaData.setTopics(topics);
+    clonedDocumentMetaData.setImplementationNotes(implementationNotes);
 
     return clonedDocumentMetaData;
   }
@@ -77,6 +79,15 @@ public class DocumentMetaData extends MetaData implements java.io.Serializable, 
   public void setSubTitle(String subTitle) {
     this.subTitle = subTitle;
   }
+
+  public String getImplementationNotes() {
+    return implementationNotes;
+  }
+
+  public void setImplementationNotes(String implementationNotes) {
+    this.implementationNotes = implementationNotes;
+  }
+
 
 
 }
