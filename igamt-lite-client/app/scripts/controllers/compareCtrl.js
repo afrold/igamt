@@ -831,8 +831,7 @@ angular.module('igl').controller('compareCtrl', function($scope, $modal, ObjectD
         if (childArray.changed === "object change") {
             if (childArray.value.position && childArray.value.position.changed === "equal") {
                 result.position = {
-                    element: childArray.value.position.value,
-
+                    element: childArray.value.position.value
                 };
             }
 

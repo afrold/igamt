@@ -1077,14 +1077,18 @@
                     </ng-form>
                 </span>
 
+
+                <span ng-if="node.usage === 'C' && countPredicate(node.position) !== 0" >
                 <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
                     <span class="badge label-white">
                         <span>C({{p.trueUsage}}/{{p.falseUsage}})</span>
-                        <span title="Delete Predicate and Change Usage"
-                              ng-click="deletePredicate(node.position, datatype)"><i
-                                class="fa fa-pencil fa-fw edit-icon"></i></span>
+                        <span ng-click="managePredicate(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                        <span ng-click="deletePredicate(node.position, datatype)"><i
+                                    class="fa fa-times fa-fw edit-icon"></i></span>
+
                     </span>
                 </p>
+                </span>
 
             </div>
         </td>

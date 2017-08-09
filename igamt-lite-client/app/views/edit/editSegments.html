@@ -1019,12 +1019,15 @@
                              </md-select>
                 </ng-form>
             </span>
-            <p ng-show="node.usage==='C' && countPredicate(node.position) !==0" ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+            <span ng-show="node.usage==='C' && countPredicate(node.position) !==0">
+            <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span class="badge label-white">
                     <span>C({{p.trueUsage}}/{{p.falseUsage}})</span>
-                    <span title="Delete Predicate and Change Usage" ng-click="deletePredicateByPosition(node.position, segment)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                     <span ng-click="managePredicate(node)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                     <span ng-click="deletePredicateByPosition(node.position, segment)"><i class="fa fa-times fa-fw edit-icon"></i></span>
                 </span>
             </p>
+            </span>
         </td>
         <td ng-class="{'has-validation-error':hasCardinalityError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'CARDINALITY')}}">
 
@@ -1318,9 +1321,8 @@
                 </p>
             </div>
         </td>
-        <td>
-            <div>-</div>
-        </td>
+        <td class="emptyCol">
+         </td>
         <td ng-show="viewSettings.isVisibleColumn('length')" ng-class="{'emptyCol':datatypesMap[node.datatype.id].components.length >0 || node.minLength === 'NA' || node.maxLength === 'NA','has-validation-error':hasLengthError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'LENGTH')}}">
             <div ng-show="datatypesMap[node.datatype.id].components.length == 0 && node.minLength !== 'NA' && node.maxLength !== 'NA'">
                 [{{::node.minLength}},{{::node.maxLength}}]

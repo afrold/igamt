@@ -3,8 +3,15 @@
  */
 'use strict';
 angular.module('igl').factory('CompareService',
-    function($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, SegmentLibrarySvc, TableLibrarySvc, DatatypeLibrarySvc, ObjectDiff) {
+    function($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, SegmentLibrarySvc, TableLibrarySvc, DatatypeLibrarySvc, ObjectDiff,$filter) {
         var CompareService = {
+
+            orderBy: function(list, criteria) {
+                if(list == null || list == undefined)
+                    return list;
+                return $filter('orderBy')(list, criteria);
+            },
+
 
             getNodes: function(parent, root) {
                 if (!parent || parent == null) {
@@ -51,6 +58,9 @@ angular.module('igl').factory('CompareService',
 
             },
             cmpMessage: function(msg1, msg2, dtList1, dtList2, segList1, segList2) {
+                msg1.children = CompareService.orderBy(msg1.children, 'position');
+                msg1.children =  CompareService.orderBy(msg2.children, 'position');
+
                 var msg1 = CompareService.fMsg(msg1, dtList1, segList1);
                 var msg2 = CompareService.fMsg(msg2, dtList2, segList2);
                 var diff = ObjectDiff.diffOwnProperties(msg1, msg2);
@@ -85,6 +95,10 @@ angular.module('igl').factory('CompareService',
 
             },
             cmpSegment: function(segment1, segment2, dtList1, dtList2, segList1, segList2) {
+
+                segment1.fields = CompareService.orderBy(segment1.fields, 'position');
+                segment2.fields =  CompareService.orderBy(segment2.fields, 'position');
+
                 var seg1 = CompareService.fSegment(segment1, dtList1, segList1);
                 var seg2 = CompareService.fSegment(segment2, dtList2, segList2);
                 //var diff = ObjectDiff.diffOwnProperties(seg1, seg2);
@@ -99,6 +113,10 @@ angular.module('igl').factory('CompareService',
                 return dataList;
             },
             cmpDatatype: function(datatype1, datatype2, dtList1, dtList2, segList1, segList2) {
+
+
+                datatype1.components = CompareService.orderBy(datatype1.components, 'position');
+                datatype2.components = CompareService.orderBy(datatype2.components, 'position');
 
                 var dt1 = CompareService.fDatatype(datatype1, dtList1, segList1);
                 var dt2 = CompareService.fDatatype(datatype2, dtList2, segList2);
@@ -115,6 +133,9 @@ angular.module('igl').factory('CompareService',
 
             },
             cmpValueSet: function(table1, table2) {
+
+                table1.codes =  CompareService.orderBy(table1.codes, 'value');
+                table2.codes =  CompareService.orderBy(table2.codes, 'value');
 
                 var vs1 = table1;
                 var vs2 = table2;
