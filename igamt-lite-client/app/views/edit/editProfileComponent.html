@@ -199,7 +199,7 @@
                                                                             </md-option>
                                                                         </md-select>
                                                                     </div>
-                                                                    <span ng-if="findPredicate(node)" class="badge label-white">
+                                                                    <span ng-if="node.usage === 'C' && findPredicate(node) != null && findPredicate(node) != undefined" class="badge label-white">
                                                                         <span>C({{findPredicate(node).trueUsage}}/{{findPredicate(node).falseUsage}})</span>
                                                                     </span>
                                                                     <a ng-show="node.attributes.usage && !findPredicate(node)" ng-click="cancelUsage(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>

@@ -1019,12 +1019,14 @@
                              </md-select>
                 </ng-form>
             </span>
-            <p ng-show="node.usage==='C' && countPredicate(node.position) !==0" ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+            <span ng-show="node.usage==='C' && countPredicate(node.position) !==0">
+            <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span class="badge label-white">
                     <span>C({{p.trueUsage}}/{{p.falseUsage}})</span>
                     <span title="Delete Predicate and Change Usage" ng-click="deletePredicateByPosition(node.position, segment)"><i class="fa fa-pencil fa-fw edit-icon"></i></span>
                 </span>
             </p>
+            </span>
         </td>
         <td ng-class="{'has-validation-error':hasCardinalityError(node.id)}" data-toggle="tooltip" title="{{displayMessageError(node.id,'CARDINALITY')}}">
 

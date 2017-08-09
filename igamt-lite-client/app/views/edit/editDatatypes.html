@@ -1077,6 +1077,8 @@
                     </ng-form>
                 </span>
 
+
+                <span ng-if="node.usage === 'C' && countPredicate(node.position) !== 0" >
                 <p ng-repeat="p in datatype.predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
                     <span class="badge label-white">
                         <span>C({{p.trueUsage}}/{{p.falseUsage}})</span>
@@ -1085,6 +1087,7 @@
                                 class="fa fa-pencil fa-fw edit-icon"></i></span>
                     </span>
                 </p>
+                </span>
 
             </div>
         </td>
