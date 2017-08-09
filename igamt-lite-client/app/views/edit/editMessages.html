@@ -491,9 +491,9 @@
             <a ng-show="editableSeg!==node.obj.id" ng-click="editSgmt(node,message)" class="point">
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
-            <!--<a ng-show="editableSeg!==node.obj.id" ng-click="deleteSeg(node)" class="point">
-                <span><i class="glyphicon glyphicon-trash"></i></span>
-            </a>-->
+            <a ng-show="editableSeg!==node.obj.id" ng-click="deleteSeg(node)" class="point">
+                <span><i class="fa fa-trash fa-fw"></i></span>
+            </a>
             <ng-form class="form-inline">
                 <span id="segEditTree" class="label label-segment label-icon">S</span>
                 <a ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref)" class="point">{{getSegmentRefNodeName(node.obj)}}</a>
@@ -667,7 +667,7 @@
                 <span><i class="fa fa-pencil fa-fw"></i></span>
             </a>
             <a ng-show="editableGrp!==node.obj.id" ng-click="deleteSeg(node)" class="point">
-                <span><i class="glyphicon glyphicon-trash"></i></span>
+                <span><i class="fa fa-trash fa-fw"></i></span>
             </a>
             <ng-form class="form-inline">
                 <span class="label label-success label-icon">G</span>
@@ -1113,7 +1113,7 @@
 
 
                                 <div ng-messages="addSegForm.name.$error">
-                                    <div ng-message="required">Name is required.</div>
+                                    <div ng-message="required">Segment is required.</div>
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center">
@@ -1123,8 +1123,8 @@
                                     <md-option ng-show="segmentParent.obj && segmentParent.obj.type==='group'" ng-repeat="child in segmentParent.children" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>
                                     <md-option ng-value="{{segmentParent.children.length+1}}">{{segmentParent.children.length+1}}</md-option>
                                 </md-select>
-                                <div ng-messages="addSegForm.name.$error">
-                                    <div ng-message="required">Name is required.</div>
+                                <div ng-messages="addSegForm.inputPosition.$error">
+                                    <div ng-message="required">Position is required.</div>
                                 </div>
                             </md-input-container>
 
@@ -1136,11 +1136,12 @@
                                 </md-select>
 
                                 <div ng-messages="addSegForm.usage.$error">
-                                    <div ng-message="required">Name is required.</div>
+                                    <div ng-message="required">Usage is required.</div>
                                 </div>
                             </md-input-container>
 
-                            <div class="md-block" flex-gt-sm layout="row" layout-align="center center" ng-class="{'igl-has-error has-feedback': !addSegForm.segCardMin.$valid ||!addSegForm..segCardMax.$valid }">
+                            <div class="md-block" flex-gt-sm layout="row" layout-align="center center" ng-class="{'igl-has-error has-feedback': !addSegForm.segCardMin.$valid ||!addSegForm.segCardMax.$valid }">
+
                                 <div layout="row" layout-align="center center" >
                             <md-input-container class="md-block" flex="50">
                                 <label class="input-left"> Min Cardinality</label>
