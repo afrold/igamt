@@ -81,13 +81,15 @@
 	</sec:http>
 	
 <!-- 	<sec:http>
-    	<sec:session-management invalid-session-url="/views/sessionTimeout.html">
+    	<sec:session-management session-fixation-protection="none" invalid-session-url="/views/sessionTimeout.html">
         	<sec:concurrency-control max-sessions="2" expired-url="/views/sessionTimeout.html"/>
      	</sec:session-management>
-	</sec:http> -->
-
+	</sec:http>
+ -->
 	<bean id="restAuthenticationEntryPoint"
 		class="gov.nist.healthcare.nht.acmgt.web.RestAuthenticationEntryPoint" />
+
+ 
 
 	<sec:global-method-security
 		pre-post-annotations="enabled">

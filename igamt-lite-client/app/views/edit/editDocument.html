@@ -55,19 +55,19 @@
                 <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                     <md-content layout-padding>
 
+                        <label class="input-left igamt-label">Cover Picture</label>
                         <md-input-container class="md-block" flex-gt-sm >
-                            <label class="input-left">Cover Picture</label>
                             <div class="vertical-align" style="margin-top:40px" ng-if="!viewSettings.tableReadonly" flow-init flow-name="uploader.flow" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()" flow-file-success="successUpload($file, $message, $data)">
 
                                 <div class="col-md-10 upload_drop" flow-drop flow-drag-enter="class='upload_drop_hover'" flow-drag-leave="class=''" ng-class="class">
                                     <div class="col-md-5">
-                                        <span class="btn btn-raised btn-sm btn-primary upload_button" ng-hide="$flow.files.length || metaData.coverPicture" flow-btn flow-attrs="{accept:'image/*'}" tooltip="Only PNG,GIF,JPG files allowed.">Select image</span>
+                                        <span class="btn btn-raised btn-sm btn-primary upload_button" ng-hide="$flow.files.length || metaData.coverPicture" flow-btn flow-attrs="{accept:'image/*'}" tooltip="Only PNG,GIF,JPG files allowed.">Browse</span>
                                         <span class="btn btn-raised btn-sm btn-primary upload_button" ng-show="$flow.files.length || metaData.coverPicture" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
                                         <span class="btn btn-raised btn-sm btn-danger upload_button" ng-show="$flow.files.length || metaData.coverPicture"
                                               ng-click="$flow.cancel();removeCover()">
                                   Remove
                                 </span>
-                                        <span ng-hide="$flow.files.length || metaData.coverPicture"><b>OR</b> Drag And Drop your images here</span>
+                                        <span ng-hide="$flow.files.length || metaData.coverPicture"><b>OR</b> Drag And Drop here</span>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="upload_thumbnail" ng-hide="$flow.files.length || metaData.coverPicture">
@@ -101,9 +101,10 @@
 
 
 
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label class="input-left">Title
-                                 </label>
+                        <label class="input-left igamt-label">Title*
+                        </label>
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
+
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
                                    name="title"
@@ -114,9 +115,14 @@
                             </div>
                         </md-input-container>
 
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label class="input-left">Sub-Title
-                                     </label>
+
+
+
+
+                        <label class="input-left igamt-label">Sub-Title
+                        </label>
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
+
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
                                    name="subTitle"
@@ -126,8 +132,8 @@
                              </div>
                         </md-input-container>
 
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label class="input-left">Organization   </label>
+                        <label class="input-left igamt-label">Organization   </label>
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
                                    name="orgName"
@@ -138,8 +144,9 @@
                         </md-input-container>
 
 
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label class="input-left">Extension </label>
+
+                        <label class="input-left igamt-label">Extension </label>
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
                                    ng-change="setDirty()"
                                    name="ext"
@@ -150,10 +157,10 @@
                         </md-input-container>
 
 
+                        <label class="input-left igamt-label igamt-input-block">Notes</label>
                         <md-input-container class="md-block" flex-gt-sm >
-                            <label class="input-left">Notes</label>
                             <div  ng-if="!viewSettings.tableReadonly">
-                                                         <textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus
+                                                         <textarea style="margin-top:20px" froala="froalaEditorOptions" md-select-on-focus
                                                                    ng-model="metaData.implementationNotes" name="igNotes"
                                                                    id="igNotes" ng-change="setDirty()"></textarea>
                             </div>

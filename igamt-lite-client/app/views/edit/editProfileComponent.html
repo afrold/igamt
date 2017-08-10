@@ -37,16 +37,19 @@
                             <md-tab-body>
                                 <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                     <md-content layout-padding>
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Name</label>
+                                        <label class="input-left igamt-label">Name*</label>
+
+                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="name" ng-change="setDirty()" ng-model="profileComponent.name" required ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Description</label>
+                                        <label class="input-left igamt-label">Description</label>
+
+                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="description" ng-change="setDirty()" ng-model="profileComponent.description" ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Comment</label>
+                                        <label class="input-left igamt-label">Comment</label>
+
+                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                             <textarea rows="3" ng-change="setDirty()" name="comment" id="comment" ng-model="profileComponent.comment" ng-disabled="viewSettings.tableReadonly"/>
                                         </md-input-container>
                                     </md-content>
