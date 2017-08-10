@@ -1713,17 +1713,18 @@
                 <div class="md-dialog-content large-dialog">
                     <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                         <md-content layout-padding>
+                            <label class=" input-left igamt-label">Name *</label>
 
-                <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.inputName.$valid}" class="md-block" flex-gt-sm>
-                    <label class="col-md-3 input-left">Name</label>
+                <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.inputName.$valid}" class="md-block igamt-input-block" flex-gt-sm>
 
                         <input name="inputName" id="inputName" ng-model="newField.name" autofocus required/>
                     <div ng-messages="addFieldForm.inputName.$error">
                         <div ng-message="required">Name is required.</div>
                     </div>
                 </md-input-container>
-                <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputPosition.$valid}" class="md-block" flex-gt-sm>
-                    <label class="input-left">Position</label>
+                            <label class="input-left igamt-label">Position *</label>
+
+                            <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputPosition.$valid}" class="md-block igamt-input-block" flex-gt-sm>
 
                         <md-select ng-model="position" name="inputPosition" id="inputPosition" ng-change="selectPos()" required>
                             <md-option ng-repeat="field in segment.fields track by field.id" ng-value="{{::field.position}}"> {{::field.position}}</md-option>
@@ -1731,28 +1732,29 @@
                         </md-select>
 
                 </md-input-container>
-                <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputUsage.$valid}" class="md-block" flex-gt-sm>
-                    <label class="input-left">Usage</label>
+                            <label class="input-left igamt-label">Usage*</label>
+
+                            <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputUsage.$valid}" class="md-block igamt-input-block" flex-gt-sm>
                         <md-select name="inputUsage" id="inputUsage"  name="inputUsage" ng-change="selectUsage(newField.usage)" ng-model="newField.usage"  required class="select-inside-table">
                             <md-option ng-repeat="usage in config.usages" ng-value="usage">{{usage}}</md-option>
                         </md-select>
 
                 </md-input-container>
+                            <label class="input-left igamt-label">Cardinality*</label>
+
                             <div layout="row" layout-align="start start">
-                             <md-input-container flex  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block" flex-gt-sm>
-                            <label class="input-left">Min Cardinality</label>
+                             <md-input-container flex  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block igamt-input-block" flex-gt-sm>
                             <input name="cardMin"  id="cardMin"  ng-pattern="/^\d+$/" ng-model="newField.min" ng-disabled="disableMin" required>
 
                             </md-input-container>
-                            <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block" flex-gt-sm>
-                                <label class="input-left">Max Cardinality</label>
-                                    <input  type="text"  name="cardMax" id="cardMax"  ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
+                            <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block igamt-input-block" flex-gt-sm>
+                                     <input  type="text"  name="cardMax" id="cardMax"  ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
                             </md-input-container>
                             </div>
 
+                            <label class="input-left igamt-label"> Data Type </label>
                             <md-content layout-padding>
-                                <label class="input-left"> Data Type </label>
-                            <md-autocomplete
+                                <md-autocomplete
                             md-selected-item="DT"
 
                             md-search-text="searchText"
