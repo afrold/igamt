@@ -60,5 +60,13 @@ public interface IGDocumentOperations {
    */
   List<IGDocument> findByScopeAndVersion(IGDocumentScope scope, String hl7Version);
 
+  /**
+   * 
+   * @param accountId
+   * @param scope
+   * @return
+   */
+  List<IGDocument> findByAccountIdAndScope(Long accountId, IGDocumentScope scope);
+
 
 }

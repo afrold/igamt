@@ -55,7 +55,7 @@ var
     spinner,
 
 //The list of messages we don't want to displat
-    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded', 'igDocumentNotSaved', 'igDocumentSaved', 'uploadImageFailed','fullNameNotFound','fullNameFound', 'gvtLoginFailed'];
+    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded', 'igDocumentNotSaved', 'igDocumentSaved', 'uploadImageFailed','fullNameNotFound','fullNameFound', 'gvtLoginFailed', 'gvtExportFailed'];
 
 //the message to be shown to the user
 var msg = {};

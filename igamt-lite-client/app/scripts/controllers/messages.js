@@ -720,14 +720,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         }).then(function(message) {
             if (message) {
                 $rootScope.message = message;
-                console.log("BEFORE");
-
-                console.log($rootScope.message);
-
                $scope.findAllGlobalConstraints();
-                console.log("AFTER");
-
-                console.log($rootScope.message);
                 $scope.setDirty();
             }
         });
@@ -2607,7 +2600,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.segmentsMap = segmentsMap;
     $scope.config = config;
     $scope.tables = tables;
-    $scope.selectedMessage = angular.copy(selectedMessage);
+    $scope.selectedMessage = null;
     $scope.constraints = [];
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -2621,9 +2614,6 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.firstNodeData = null;
     $scope.secondNodeData = null;
     $scope.changed = false;
-    $scope.selectedMessage.pathInfoSet = [];
-    $rootScope.processMessageTree($scope.selectedMessage);
-    $scope.treeDataForMessage.push($scope.selectedMessage);
     $scope.draggingStatus = null;
     $scope.contextKey = null;
     $scope.mode = mode;
@@ -2953,17 +2943,24 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     };
 
     $scope.init=function(){
-        console.log("called");
-    $scope.initConformanceStatement();
-        console.log("called");
+        $scope.selectedMessage = angular.copy(selectedMessage);
+        $scope.selectedMessage.pathInfoSet = [];
+        console.log("processed");
+
+        $scope.treeDataForMessage.push($scope.selectedMessage);
+        console.log("processed");
+
+        $rootScope.processMessageTree($scope.selectedMessage);
+        console.log("processed");
+
+     $scope.initConformanceStatement();
+        console.log("processed");
 
         $scope.initComplexStatement();
-        console.log("called");
 
+        console.log("processed");
 
         if(contextPath){
-            console.log("called");
-
             if(contextPath.indexOf('.') < 0){
             $scope.treeDataForContext = [];
             $scope.contextKey = new ObjectId().toString();

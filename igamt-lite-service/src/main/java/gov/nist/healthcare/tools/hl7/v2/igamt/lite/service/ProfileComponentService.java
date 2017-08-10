@@ -22,4 +22,6 @@ public interface ProfileComponentService {
 
   void delete(List<ProfileComponent> profileComponents);
 
+
+
 }
