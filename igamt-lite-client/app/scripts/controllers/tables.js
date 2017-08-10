@@ -394,6 +394,12 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         $scope.setDirty();
     };
 
+
+    /**
+     * @deprecated. Use $scope.setSelectedCodesUsage
+     * @param table
+     * @param usage
+     */
     $scope.setAllCodeUsage = function(table, usage) {
         for (var i = 0, len = table.codes.length; i < len; i++) {
             if (table.codes[i].codeUsage !== usage) {
@@ -405,6 +411,20 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         }
         $scope.setDirty();
     };
+
+    $scope.setSelectedCodesUsage = function(table, usage) {
+        for (var i = 0, len = $scope.selectedCodes.length; i < len; i++) {
+            if ($scope.selectedCodes[i].codeUsage !== usage) {
+                $scope.selectedCodes[i].codeUsage = usage;
+                if (!$scope.isNewTable(table.id) && !$scope.isNewValue($scope.selectedCodes[i].id)) {
+                    $rootScope.recordChangeForEdit2('value', 'edit', $scope.selectedCodes[i].id, 'codeUsage', usage);
+                }
+            }
+        }
+        $scope.setDirty();
+    };
+
+
 
     $scope.delete = function(table) {
         CloneDeleteSvc.deleteValueSet(table);

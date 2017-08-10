@@ -64,9 +64,9 @@
                                                                 <div flex="40" class="ig-list-info">
                                                                           <i class="fa fa-calendar" aria-hidden="true"></i>
                                                                              Updated {{row.dateUpdated | date:dateFormat}}
-                                                                            <span>,HL7 Version: {{row.profile.metaData.hl7Version}},</span>
-                                                                            <span ng-if="row.owner"> Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(row.owner.email)}}"/> {{row.owner.fullname}}</span>
-                                                                            <span ng-if="row.metaData.orgName&&row.metaData.orgName!==''"> {{row.metaData.orgName}}</span>
+                                                                            <span>,HL7 Version: {{row.profile.metaData.hl7Version}}</span>
+                                                                            <span ng-if="row.owner">, Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(row.owner.email)}}"/> {{row.owner.fullname}}</span>
+                                                                            <span ng-if="row.metaData.orgName&&row.metaData.orgName!==''">, {{row.metaData.orgName}}</span>
                                                                 </div>
 
 
