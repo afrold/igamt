@@ -274,8 +274,7 @@ public class IGDocumentController extends CommonController {
       if (scopesAndVersion.getScopes().get(0).toString().equals("HL7STANDARD")) {
         igDocuments.addAll(igDocumentService.findByScopesAndVersion(scopesAndVersion.getScopes(),
             scopesAndVersion.getHl7Version()));
-      }else 
-      if (scopesAndVersion.getScopes().get(0).toString().equals("USER")) {
+      } else if (scopesAndVersion.getScopes().get(0).toString().equals("USER")) {
         System.out.println("==================");
         igDocuments.addAll(igDocumentService.findByAccountIdAndScopesAndVersion(account.getId(),
             scopesAndVersion.getScopes(), scopesAndVersion.getHl7Version()));
@@ -1925,11 +1924,11 @@ public class IGDocumentController extends CommonController {
 
     SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
-    msg.setSubject("NIST IGAMT IGDocument Shared with you.");
+    msg.setSubject("NIST IGAMT IG Document Shared with you.");
     msg.setTo(target.getEmail());
     msg.setText("Dear " + target.getUsername() + ", \n\n" + source.getFullName() + "("
         + source.getUsername() + ")"
-        + " wants to share the following Implementation Guide Document with you: \n" + "\n Title: "
+        + " wants to share the following Implementation Guide with you: \n" + "\n Title: "
         + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
         + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
         + doc.getMetaData().getHl7Version()
@@ -1948,10 +1947,9 @@ public class IGDocumentController extends CommonController {
 
     msg.setSubject("NIST IGAMT IGDocument unshare");
     msg.setTo(target.getEmail());
-    msg.setText("Dear " + target.getUsername() + " \n\n"
-        + "This is an automatic email to let you know that " + source.getFullName() + "("
-        + source.getUsername()
-        + ") has stopped sharing the following Implementation Guide Document\n" + "\n Title: "
+    msg.setText("Dear " + target.getUsername() + " \n\n" + "This is to let you know that "
+        + source.getFullName() + "(" + source.getUsername()
+        + ") has stopped sharing the following Implementation Guide \n" + "\n Title: "
         + doc.getMetaData().getTitle() + "\n Sub Title: " + doc.getMetaData().getSubTitle()
         + "\n Description:" + doc.getMetaData().getDescription() + "\n HL7 Version:"
         + doc.getMetaData().getHl7Version() + "\n\n" + "P.S: If you need help, contact us at '"
