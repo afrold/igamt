@@ -345,13 +345,18 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     $.FroalaEditor.DefineIcon('caption', {NAME: 'cc'});
     $.FroalaEditor.RegisterCommand('caption', {
         title: 'Caption',
-        focus: false,
-        undo: false,
+          focus: true,
+          undo: true,
         refreshAfterCallback: false,
         callback: function () {
+          if(this.format.is('figcaption')){
+            this.paragraphFormat.apply("p");
+          } else {
             this.paragraphFormat.apply("figcaption");
-            this.restoreSelectionByMarkers();
-            this.saveUndoStep();
+          }
+        },
+        refresh: function ($btn) {
+            $btn.toggleClass('fr-active',this.format.is('figcaption'))
         }
     });
 
