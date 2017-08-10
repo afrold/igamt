@@ -644,7 +644,7 @@ public class CrossReferencesController {
     Set<Message> messages = ig.getProfile().getMessages().getChildren();
     for (Message m : messages) {
       for (ValueSetOrSingleCodeBinding vs : m.getValueSetBindings()) {
-        if (vs.getTableId().equals(wrapper.getTableId())) {
+        if (vs.getTableId() != null && vs.getTableId().equals(wrapper.getTableId())) {
           if (vs instanceof ValueSetBinding) {
             ValueSetBinding binding = (ValueSetBinding) vs;
             MessageValueSetBindingFound messageRef = new MessageValueSetBindingFound();
@@ -717,7 +717,7 @@ public class CrossReferencesController {
     for (Segment s : allSegments) {
 
       for (ValueSetOrSingleCodeBinding vs : s.getValueSetBindings()) {
-        if (vs.getTableId().equals(wrapper.getTableId())) {
+        if (vs.getTableId() != null && vs.getTableId().equals(wrapper.getTableId())) {
           if (vs instanceof ValueSetBinding) {
             ValueSetBinding binding = (ValueSetBinding) vs;
             SegmentValueSetBindingFound segmentRef = new SegmentValueSetBindingFound();
@@ -818,7 +818,7 @@ public class CrossReferencesController {
     }
     for (Datatype d : allDatatypes) {
       for (ValueSetOrSingleCodeBinding vs : d.getValueSetBindings()) {
-        if (vs.getTableId().equals(wrapper.getTableId())) {
+        if (vs.getTableId() != null && vs.getTableId().equals(wrapper.getTableId())) {
           if (vs instanceof ValueSetBinding) {
             ValueSetBinding binding = (ValueSetBinding) vs;
             DatatypeValueSetBindingFound datatypeFound = new DatatypeValueSetBindingFound();
@@ -881,7 +881,7 @@ public class CrossReferencesController {
         if (spc.getOldValueSetBindings() != null) {
           boolean isFound = false;
           for (ValueSetOrSingleCodeBinding vs : spc.getOldValueSetBindings()) {
-            if (vs.getTableId().equals(wrapper.getTableId())) {
+            if (vs.getTableId() != null && vs.getTableId().equals(wrapper.getTableId())) {
               if (vs instanceof ValueSetBinding) {
                 isFound = true;
               }
@@ -902,7 +902,7 @@ public class CrossReferencesController {
         if (spc.getValueSetBindings() != null) {
           boolean isFound = false;
           for (ValueSetOrSingleCodeBinding vs : spc.getValueSetBindings()) {
-            if (vs.getTableId().equals(wrapper.getTableId())) {
+            if (vs.getTableId() != null && vs.getTableId().equals(wrapper.getTableId())) {
               if (vs instanceof ValueSetBinding) {
                 isFound = true;
               }
