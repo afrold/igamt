@@ -1088,7 +1088,7 @@
                 <div class="md-dialog-content large-dialog">
                     <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                         <md-content layout-padding>
-
+                                                        <label>  Segment </label>
 
                                     <md-autocomplete
                                             md-selected-item="newSeg"
@@ -1118,9 +1118,9 @@
                             </md-input-container>
                             <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center">
                                 <label class="input-left"> Position</label>
-                                <md-select ng-model="position" ng-change="selectPos()" class="point" required  id="inputPosition" name="inputPosition">
-                                    <md-option ng-show="segmentParent.type==='message'" ng-repeat="child in segmentParent.children" ng-value="{{child.position}}"> {{child.position}}</md-option>
-                                    <md-option ng-show="segmentParent.obj && segmentParent.obj.type==='group'" ng-repeat="child in segmentParent.children" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>
+                                <md-select ng-model="newSegment.position" ng-change="selectPos()" class="point" required  id="inputPosition" name="inputPosition">
+                                    <md-option  ng-repeat="child in segmentParent.children" ng-value="{{$index+1}}"> {{$index+1}}</md-option>
+                                    <!--<md-option ng-show="segmentParent.obj && segmentParent.obj.type==='group'" ng-repeat="child in segmentParent.children" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>-->
                                     <md-option ng-value="{{segmentParent.children.length+1}}">{{segmentParent.children.length+1}}</md-option>
                                 </md-select>
                                 <div ng-messages="addSegForm.inputPosition.$error">
@@ -1140,36 +1140,34 @@
                                 </div>
                             </md-input-container>
 
-                            <div class="md-block" flex-gt-sm layout="row" layout-align="center center" ng-class="{'igl-has-error has-feedback': !addSegForm.segCardMin.$valid ||!addSegForm.segCardMax.$valid }">
-
-                                <div layout="row" layout-align="center center" >
-                            <md-input-container class="md-block" flex="50">
+                            <div class="md-block" layout="row" layout-align="start start" ng-class="{'igl-has-error has-feedback': !addSegForm.segCardMin.$valid ||!addSegForm.segCardMax.$valid }">
+                            <md-input-container flex class="md-block" flex-gt-sm>
                                 <label class="input-left"> Min Cardinality</label>
-                                                <input  style="width:49%;margin-right: 1px"
+                                                <input  style=margin-right: 1px;
                                                         name="segCardMin"
                                                         id="segCardMin"
                                                         ng-change="setDirty()"
                                                         ng-pattern="/^\d+$/"
 
-                                                        ng-model="newSegment.min" ng-disabled="disableMin" required >
+                                                        ng-model="newSegment.min" ng-disabled="disableMin" required>
                             </md-input-container>
 
-                                    <md-input-container class="md-block" flex="50">
+                                    <md-input-container flex class="md-block" flex-gt-sm>
                                         <label class="input-left"> Max Cardinality</label>
 
-                                        <input  style="width:50%"  type="text"
+                                        <input type="text"
                                                         name="segCardMax"
                                                         id="segCardMax"
                                                         ng-change="setDirty()"
                                                         ng-pattern="/^\d+$|^\*?$/"
                                                         ng-model="newSegment.max" ng-disabled="disableMax" required>
                                     </md-input-container>
-                                </div>
                             </div>
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label class="input-left"> Comment</label>
-                                <input type="text" id="comment" name="comment" ng-model="newSegment.comment">
-                            </md-input-container>
+
+                            <!--<md-input-container class="md-block" flex-gt-sm>-->
+                                <!--<label class="input-left"> Comment</label>-->
+                                <!--<input type="text" id="comment" name="comment" ng-model="newSegment.comment">-->
+                            <!--</md-input-container>-->
                         </md-content>
                     </div>
                 </div>
@@ -1198,7 +1196,7 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content large-dialogue">
+                <div class="md-dialog-content large-dialog">
                 <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                     <md-content layout-padding>
                         <md-input-container class="md-block" flex-gt-sm>
@@ -1233,10 +1231,10 @@
                             </div>
                         </md-input-container>
 
-                <div class="md-block" flex-gt-sm layout="row" layout-align="center center" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
+                <div layout="row" layout-align="start start" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
 
 
-                        <md-input-container flex="50">
+                        <md-input-container flex class="md-block" flex-gt-sm >
                             <label class="input-left"> Min Cardinality </label>
                                                 <input  style="width:49%;margin-right: 1px"
                                                        name="grCardMin"
@@ -1245,7 +1243,7 @@
                                                        ng-pattern="/^\d+$/"
                                                        ng-model="newGroup.min" ng-disabled="disableMin" required >
                         </md-input-container>
-                        <md-input-container flex="50">
+                        <md-input-container flex class="md-block" flex-gt-sm >
                             <label class="input-left"> Max Cardinality </label>
 
                         <input  style="width:50%"  type="text"
@@ -1258,14 +1256,6 @@
 
                     </div>
                 </md-input-container>
-                                <md-input-container class="md-block" flex-gt-sm>
-                                    <label class="input-left"> Comment</label>
-                                    <input type="text" id="comment" name="comment" ng-model="newGroup.comment">
-                                    <div ng-messages="addGrpForm.comment.$error">
-                                        <div ng-message="required">Name is required.</div>
-                                    </div>
-
-                                </md-input-container>
                     </md-content>
         </div>
                 </div>
@@ -1369,21 +1359,26 @@
     </md-dialog>
 </script>
 <script type="text/ng-template" id="DeleteSegmentRefOrGrp.html">
-    <div class="modal-header">
-        <p class="modal-title" style="font-size:20px; font-weight:bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Delete Confirmation
-        </p>
-    </div>
-    <div class="modal-body">
-        <p ng-show="segOrGrpToDelete.obj.type==='segmentRef'">Are you sure you want to delete Segment Ref: {{::segOrGrpToDelete.obj.ref.name}} ? </p>
-        <p ng-show="segOrGrpToDelete.obj.type==='group'">Are you sure you want to delete Group: {{::segOrGrpToDelete.obj.name}} ? </p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-    </div>
+    <md-dialog>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Delete Confirmation</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="material-icons">clear</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <p ng-show="segOrGrpToDelete.obj.type==='segmentRef'">Are you sure you want to delete Segment Ref: {{::segOrGrpToDelete.obj.ref.name}} ? </p>
+                <p ng-show="segOrGrpToDelete.obj.type==='group'">Are you sure you want to delete Group: {{::segOrGrpToDelete.obj.name}} ? </p>
+            </div>
+        </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span></md-button>
+                </md-dialog-actions>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="OtoX.html">
     <md-dialog>

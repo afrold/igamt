@@ -394,26 +394,22 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     };
     
     $scope.deleteField = function(fieldToDelete, segment) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'DeleteField.html',
             controller: 'DeleteFieldCtrl',
-            size: 'md',
-            resolve: {
-                fieldToDelete: function() {
-                    return fieldToDelete;
-                },
-                segment: function() {
-                    return segment;
+            locals: {
+                fieldToDelete: fieldToDelete,
+                segment: segment
                 }
-
-
-            }
         });
-        modalInstance.result.then(function() {
-            $scope.setDirty();
+        modalInstance.then(function(result) {
+            if(result&&result!=='cancel'){
+                $scope.setDirty();
 
-            if ($scope.segmentsParams)
-                $scope.segmentsParams.refresh();
+                if ($scope.segmentsParams)
+                    $scope.segmentsParams.refresh();
+            }
+
         });
     };
     $scope.editableField = '';
@@ -2991,7 +2987,7 @@ angular.module('igl').controller('AddFieldCtrl', function($scope, $mdDialog, dat
 
 
 });
-angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInstance, fieldToDelete, segment, $rootScope, SegmentService, blockUI) {
+angular.module('igl').controller('DeleteFieldCtrl', function($scope, $mdDialog, fieldToDelete, segment, $rootScope, SegmentService, blockUI) {
     $scope.fieldToDelete = fieldToDelete;
     $scope.loading = false;
     $scope.updatePosition = function(node) {
@@ -3015,12 +3011,12 @@ angular.module('igl').controller('DeleteFieldCtrl', function($scope, $modalInsta
         $scope.loading = false;
         $scope.updatePosition(segment);
         blockUI.stop();
-        $modalInstance.close($scope.fieldToDelete);
+        $mdDialog.hide($scope.fieldToDelete);
     };
 
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 
 
