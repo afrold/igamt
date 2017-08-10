@@ -352,7 +352,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
           if(this.format.is('figcaption')){
             this.paragraphFormat.apply("p");
           } else {
-            this.paragraphFormat.apply("figcaption");
+            this.paragraphFormat.apply("figcaption style='text-align:center'");
           }
         },
         refresh: function ($btn) {
