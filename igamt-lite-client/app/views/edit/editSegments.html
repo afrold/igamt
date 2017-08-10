@@ -61,16 +61,18 @@
                                 <md-tab-body>
                                     <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                         <md-content layout-padding>
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Name</label>
+                                            <label class="input-left igamt-label">Name*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input type="text" disabled name="identifier"  ng-model="segment.name" ng-change="setDirty()" required>
                                                 <div ng-messages="editForm.name.$error">
                                                     <div ng-message="required">Name is required.</div>
                                                 </div>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Description</label>
+                                            <label class="input-left igamt-label">Description*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input type="text" disabled ng-change="setDirty()" name="description"
                                                        ng-model="segment.description" required>
                                                 <div ng-messages="editForm.description.$error">
@@ -78,8 +80,9 @@
                                                 </div>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm ng-hide="segment.scope === 'HL7STANDARD'">
-                                                <label class="input-left">Extension</label>
+                                            <label class="input-left igamt-label">Extension*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-hide="segment.scope === 'HL7STANDARD'">
                                                 <input type="text" ng-disabled="viewSettings.tableReadonly || (segment.scope !== 'USER' && segment.scope !== 'MASTER')" ng-change="setDirty()" name="label" ng-model="segment.ext" required>
                                                 <div role="alert"  style="color:red" ng-show="isDuplicatedTwoContexts(segment,'name', 'ext', segments)">
                                                     <div class="my-message">Extension is already used.</div>
@@ -89,17 +92,20 @@
                                                 </div>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm >
-                                                <label class="input-left">Comment</label>
+
+                                            <label class="input-left igamt-label">Comment</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm >
                                                 <textarea rows="3"  md-select-on-focus
                                                           ng-disabled="viewSettings.tableReadonly || segment.scope === 'HL7STANDARD' || segment.scope === 'MASTER'" ng-change="setDirty()" name="comment" id="comment"
                                                          ng-model="segment.comment"
                                                 />
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm
+                                            <label class="input-left igamt-label" ng-show="segment.scope === 'HL7STANDARD' && segment.hl7Section != null && segment.hl7Section != ''">HL7 Section</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm
                                                                 ng-show="segment.scope === 'HL7STANDARD' && segment.hl7Section != null && segment.hl7Section != ''">
-                                                <label class="input-left" >HL7 Section</label>
                                                 <input type="text" disabled
                                                        name="hl7Section"
                                                        id="hl7Section"
