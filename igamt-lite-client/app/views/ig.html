@@ -687,10 +687,20 @@
                             </div>
 
                             <div ng-show="info.type === 'danger'">
-                                <div ng-class="'alert alert-danger'" style="font-size:14px;font-weight: bold">
-                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                    Transaction Failed
+
+                                <div ng-if="info.details === null || !info.details">
+                                    <div ng-class="'alert alert-danger'" style="font-size:14px;font-weight: bold">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                        <span msg key="info.text"></span>
+                                    </div>
                                 </div>
+
+                                <div ng-if="info.details != null && info.details">
+
+                                    <div ng-class="'alert alert-danger'" style="font-size:14px;font-weight: bold">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                        Export Failed
+                                    </div>
 
                                 <form name="gvtErrorForm" id="gvtErrorForm" novalidate class="form-horizontal">
                                     <md-tabs md-dynamic-height md-border-bottom>
@@ -803,6 +813,7 @@
                                         </md-tab>
                                     </md-tabs>
                                 </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -956,10 +967,19 @@
                             </div>
 
                             <div ng-show="info.type === 'danger'">
-                                <div ng-class="'alert alert-danger'" style="font-size:14px;font-weight: bold;">
-                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                   Transaction Failed
+                                <div ng-if="info.details === null || !info.details">
+                                    <div ng-class="'alert alert-danger'" style="font-size:14px;font-weight: bold">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                        <span msg key="info.text"></span>
+                                    </div>
                                 </div>
+
+                                <div ng-if="info.details != null && info.details">
+
+                                    <div ng-class="'alert alert-danger'" style="font-size:14px;font-weight: bold">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                        Export Failed
+                                    </div>
 
                             <form name="gvtErrorForm" id="gvtErrorForm" novalidate class="form-horizontal">
                                 <h3 class="page-header">
@@ -1076,6 +1096,7 @@
                                     </md-tab>
                                 </md-tabs>
                             </form>
+                                </div>
                             </div>
                         </div>
                     </div>

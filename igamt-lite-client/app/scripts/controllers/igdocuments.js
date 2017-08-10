@@ -2734,6 +2734,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
         $scope.info.text = null;
         $scope.info.show = false;
         $scope.info.type = 'danger';
+        $scope.info['details'] =null;
         $scope.generatedSelectedMessagesIDs();
         GVTSvc.login($scope.user.username, $scope.user.password).then(function (auth) {
             GVTSvc.exportToGVTForCompositeProfile($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, auth).then(function (map) {
@@ -2855,6 +2856,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.info.text = null;
         $scope.info.show = false;
         $scope.info.type = 'danger';
+        $scope.info['details'] = null;
         $scope.generatedSelectedMessagesIDs();
         GVTSvc.login($scope.user.username, $scope.user.password).then(function (auth) {
             GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function (map) {
