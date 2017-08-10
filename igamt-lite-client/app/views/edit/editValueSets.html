@@ -182,18 +182,24 @@
                                                 <div class="igl-def-table-container">
                                                     <div class="">
                                                         <span class="pull-left">
-                                                            <span>Values # of Page : </span>
+                                                            <span>Codes Per Page : </span>
                                                             <md-input-container class="normal">
                                                                 <label></label>
                                                                 <input type="number" ng-model="itemsByPage" no-dirty-check/>
                                                             </md-input-container>
                                                         </span>
                                                         <span class="pull-right" style="margin-bottom: 10px">
-											                <button title="Add new Value" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
-												                <span><i class="fa fa-plus fa-fw"></i>Add Value</span>
+											                 <span class="btn-group btn-group-sm btn-warning" role="group" aria-label="..." style="margin-top:10px">
+                                                                            <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'R'" type="button" ng-click="setSelectedCodesUsage(table, 'R')" class="btn btn-raised btn-sm btn-warning">R</button>
+                                                                            <button ng-disabled="selectedCodes.length===0"  title="Set selected codes usage to 'P'" type="button" ng-click="setSelectedCodesUsage(table, 'P')" class="btn btn-raised btn-sm btn-warning">P</button>
+                                                                            <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'E'" type="button" ng-click="setSelectedCodesUsage(table, 'E')" class="btn btn-raised btn-sm btn-warning">E</button>
+                                                             </span>
+
+                                                            <button title="Add New Code" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
+												                <span><i class="fa fa-plus fa-fw"></i>Add Code</span>
                                                             </button>
-                                                            <button title="Delete Values" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
-                                                                <i class="fa fa-trash-o fa-fw"></i>Delete Values <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
+                                                            <button title="Delete selected codes" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
+                                                                <i class="fa fa-trash-o fa-fw"></i>Delete Codes <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
                                                             </button>
                                                         </span>
 
@@ -206,11 +212,14 @@
                                                             <table st-safe-src="table.smallCodes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
                                                                 <thead>
                                                                 <tr class="tbl-header">
-                                                                    <th class="col-md-1">
-                                                                        <input type="checkbox" ng-model="checkAll" ng-change="ProcessChecking(checkAll)">
-                                                                        <span ng-if="checkAll">UnCheck All</span>
-                                                                        <span ng-if="!checkAll">Check All</span>
-                                                                        </input>
+                                                                    <th class="col-md-1" srtyle="align:center; padding:5 auto">
+                                                                        <md-checkbox ng-model="checkAll" title="select or unselect codes" ng-change="ProcessChecking(checkAll)" aria-label="selectCheckBox">
+                                                                        </md-checkbox>
+                                                                        <!---->
+                                                                        <!--<input type="checkbox" ng-model="checkAll" ng-change="ProcessChecking(checkAll)">-->
+                                                                        <!--<span ng-if="checkAll">UnCheck All</span>-->
+                                                                        <!--<span ng-if="!checkAll">Check All</span>-->
+                                                                        <!--</input>-->
                                                                     </th>
                                                                     <th st-sort="value" class="col-md-2">Value</th>
                                                                     <th st-sort="label" class="col-md-3">Description</th>
@@ -251,11 +260,7 @@
                                                                         </div>
                                                                     </th>
                                                                     <th>
-                                                                        <span class="btn-group btn-group-xs btn-info" role="group" aria-label="...">
-                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'R')" class="btn btn-raised btn-default btn-info">R</button>
-                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'P')" class="btn btn-raised btn-default btn-info">P</button>
-                                                                            <button type="button" ng-click="setAllCodeUsage(table, 'E')" class="btn btn-raised btn-default btn-info">E</button>
-                                                                        </span>
+
                                                                     </th>
                                                                     <th/>
                                                                 </tr>
