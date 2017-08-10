@@ -47,6 +47,8 @@ public interface IGDocumentService {
 
   public List<IGDocument> findByAccountId(Long accountId);
 
+  public List<IGDocument> findByAccountIdAndScope(Long accountId, IGDocumentScope scope);
+
   public List<IGDocument> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
   public List<IGDocument> findByScopeAndVersions(IGDocumentScope scope, List<String> hl7Versions);

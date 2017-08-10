@@ -112,6 +112,8 @@ public class IGDocumentServiceImpl implements IGDocumentService {
   }
 
   @Override
+  @Deprecated
+  /** Use findByAccountIdAndAScope **/
   public List<IGDocument> findByAccountId(Long accountId) {
     List<IGDocument> igDocuments = documentRepository.findByAccountId(accountId);
     // if (profiles != null && !profiles.isEmpty()) {
@@ -238,6 +240,12 @@ public class IGDocumentServiceImpl implements IGDocumentService {
   public int updatePosition(String id, int position) {
     // TODO Auto-generated method stub
     return documentRepository.updatePosition(id, position);
+  }
+
+  @Override
+  public List<IGDocument> findByAccountIdAndScope(Long accountId, IGDocumentScope scope) {
+    // TODO Auto-generated method stub
+    return documentRepository.findByAccountIdAndScope(accountId, scope);
   }
 
 

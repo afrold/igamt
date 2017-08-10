@@ -6,6 +6,8 @@ import java.util.Set;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+
 @Document(collection = "profileComponent-library")
 public class ProfileComponentLibrary extends TextbasedSectionModel
     implements java.io.Serializable, Cloneable {
@@ -15,6 +17,7 @@ public class ProfileComponentLibrary extends TextbasedSectionModel
   private String id;
   private String name;
 
+  private SCOPE scope;
 
   private Long accountId;
 
@@ -110,5 +113,15 @@ public class ProfileComponentLibrary extends TextbasedSectionModel
   public void merge(ProfileComponentLibrary pcLib) {
     pcLib.getChildren().addAll(pcLib.getChildren());
   }
+
+  public SCOPE getScope() {
+    return scope;
+  }
+
+  public void setScope(SCOPE scope) {
+    this.scope = scope;
+  }
+
+
 
 }

@@ -270,12 +270,10 @@ public class IGDocumentController extends CommonController {
       if (account == null) {
         throw new UserAccountNotFoundException();
       }
-
       if (scopesAndVersion.getScopes().get(0).toString().equals("HL7STANDARD")) {
         igDocuments.addAll(igDocumentService.findByScopesAndVersion(scopesAndVersion.getScopes(),
             scopesAndVersion.getHl7Version()));
       } else if (scopesAndVersion.getScopes().get(0).toString().equals("USER")) {
-        System.out.println("==================");
         igDocuments.addAll(igDocumentService.findByAccountIdAndScopesAndVersion(account.getId(),
             scopesAndVersion.getScopes(), scopesAndVersion.getHl7Version()));
       }
@@ -328,7 +326,8 @@ public class IGDocumentController extends CommonController {
       throw new UserAccountNotFoundException();
     }
 
-    List<IGDocument> d = igDocumentService.findByAccountId(account.getId());
+    List<IGDocument> d =
+        igDocumentService.findByAccountIdAndScope(account.getId(), IGDocumentScope.USER);
     if (!d.isEmpty()) {
       for (IGDocument ig : d) {
         SetUserInfos(ig);
@@ -883,13 +882,13 @@ public class IGDocumentController extends CommonController {
       IGDocument d = findIGDocument(id);
       if (d.getAccountId() == account.getId()) {
         d.setScope(IGDocumentScope.ARCHIVED);
-        // deleteSegmentLibrary(d.getProfile().getSegmentLibrary());
-        // deleteTableLibrary(d.getProfile().getTableLibrary());
-        // deleteDatatypeLibrary(d.getProfile().getDatatypeLibrary());
-        // deleteProfileComponentLibrary(d.getProfile().getProfileComponentLibrary());
-        // deleteConformanceProfiles(d.getProfile().getMessages());
-        // deleteCompositeProfileStructure(d.getProfile().getCompositeProfiles());
-        // igDocumentService.delete(id);
+        deleteSegmentLibrary(d.getProfile().getSegmentLibrary());
+        deleteTableLibrary(d.getProfile().getTableLibrary());
+        deleteDatatypeLibrary(d.getProfile().getDatatypeLibrary());
+        deleteProfileComponentLibrary(d.getProfile().getProfileComponentLibrary());
+        deleteConformanceProfiles(d.getProfile().getMessages());
+        deleteCompositeProfileStructure(d.getProfile().getCompositeProfiles());
+        igDocumentService.save(d);
         return new ResponseMessage(ResponseMessage.Type.success, "igDocumentDeletedSuccess", null);
       } else {
         throw new OperationNotAllowException("delete");
@@ -904,8 +903,10 @@ public class IGDocumentController extends CommonController {
   private void deleteConformanceProfiles(Messages messages) {
     if (messages != null && messages.getChildren() != null) {
       for (Message m : messages.getChildren()) {
-        if (m != null)
-          messageService.delete(m);
+        if (m != null) {
+          m.setScope(SCOPE.ARCHIVED);
+          messageService.save(m);
+        }
       }
     }
   }
@@ -917,14 +918,16 @@ public class IGDocumentController extends CommonController {
       for (int i = 0; i < datatypes.size(); i++) {
         Datatype d = datatypes.get(i);
         if (d.getStatus().equals(STATUS.UNPUBLISHED) && d.getScope().equals(SCOPE.USER)) {
+          d.setScope(SCOPE.ARCHIVED);
           toremove.add(d);
         }
       }
       if (!toremove.isEmpty()) {
-        datatypeService.delete(toremove);
+        datatypeService.save(toremove);
       }
     }
-    datatypeLibraryService.delete(datatypeLibrary);
+    datatypeLibrary.setScope(SCOPE.ARCHIVED);
+    datatypeLibraryService.save(datatypeLibrary);
   }
 
   private void deleteTableLibrary(TableLibrary tableLibrary) {
@@ -935,14 +938,16 @@ public class IGDocumentController extends CommonController {
       for (int i = 0; i < tables.size(); i++) {
         Table t = tables.get(i);
         if (t.getStatus().equals(STATUS.UNPUBLISHED) && (t.getScope().equals(SCOPE.USER))) {
+          t.setScope(SCOPE.ARCHIVED);
           toremove.add(t);
         }
       }
       if (!toremove.isEmpty()) {
-        tableService.delete(toremove);
+        tableService.save(toremove);
       }
     }
-    tableLibraryService.delete(tableLibrary);
+    tableLibrary.setScope(SCOPE.ARCHIVED);
+    tableLibraryService.save(tableLibrary);
   }
 
   private void deleteSegmentLibrary(SegmentLibrary segmentLibrary) {
@@ -953,27 +958,41 @@ public class IGDocumentController extends CommonController {
         Segment t = segments.get(i);
         if (t.getScope().equals(SCOPE.USER)) {
           toremove.add(t);
+          t.setScope(SCOPE.ARCHIVED);
         }
       }
       if (!toremove.isEmpty()) {
-        segmentService.delete(toremove);
+        segmentService.save(toremove);
       }
     }
-    segmentLibraryService.delete(segmentLibrary);
+    segmentLibrary.setScope(SCOPE.ARCHIVED);
+    segmentLibraryService.save(segmentLibrary);
   }
 
   private void deleteProfileComponentLibrary(ProfileComponentLibrary profileComponentLibrary) {
     List<ProfileComponent> profilecomponents =
         profileComponentLibraryService.findProfileComponentsById(profileComponentLibrary.getId());
-    profileComponentService.delete(profilecomponents);
-    profileComponentLibraryRepository.delete(profileComponentLibrary);
+
+    if (profilecomponents != null) {
+      for (ProfileComponent pc : profilecomponents) {
+        if (pc != null) {
+          pc.setScope(SCOPE.ARCHIVED);
+        }
+      }
+    }
+
+    profileComponentService.saveAll(profilecomponents);
+    profileComponentLibrary.setScope(SCOPE.ARCHIVED);
+    profileComponentLibraryRepository.save(profileComponentLibrary);
   }
 
   private void deleteCompositeProfileStructure(CompositeProfiles cps) {
     if (cps != null && cps.getChildren() != null) {
       for (CompositeProfileStructure cp : cps.getChildren()) {
-        if (cp != null)
-          compositeProfileStructureService.delete(cp.getId());
+        if (cp != null) {
+          cp.setScope(SCOPE.ARCHIVED);
+          compositeProfileStructureService.save(cp);
+        }
       }
     }
   }
