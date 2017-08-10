@@ -265,19 +265,17 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
 
     $scope.deleteSeg = function(segmentRefOrGrp) {
-        var modalInstance = $modal.open({
+        var modalInstance = $mdDialog.show({
             templateUrl: 'DeleteSegmentRefOrGrp.html',
             controller: 'DeleteSegmentRefOrGrpCtrl',
-            windowClass: 'flavor-modal-window',
-            resolve: {
-                segOrGrpToDelete: function() {
-                    return segmentRefOrGrp;
+            locals: {
+                segOrGrpToDelete:segmentRefOrGrp
                 }
 
 
-            }
+
         });
-        modalInstance.result.then(function() {
+        modalInstance.then(function() {
             $scope.setDirty();
 
             if ($scope.messagesParams)
@@ -1509,7 +1507,7 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
         max: "",
         min: "",
         participants: [],
-        position: "",
+        position: place.children.length+1,
         predicates: [],
         ref: {
             ext: null,
@@ -1531,22 +1529,21 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
             $scope.newSegment.ref.id = $scope.newSeg.id;
             $scope.newSegment.ref.name = $scope.newSeg.name;
 
-            if (place.type === "message") {
-
-                $scope.newSegment.position = place.children[place.children.length - 1].position + 1;
-            } else if (place.obj && place.obj.type === "group") {
-                if (place.children.length !== 0) {
-
-                    $scope.newSegment.position = place.children[place.children.length - 1].obj.position + 1;
-                    console.log("position");
-                    console.log($scope.newSegment.position);
-
-                } else {
-                    $scope.newSegment.position = 1;
-                }
-
-            }
-
+            // if (place.type === "message") {
+            //
+            //     $scope.newSegment.position = place.children[place.children.length - 1].position + 1;
+            // } else if (place.obj && place.obj.type === "group") {
+            //     if (place.children.length !== 0) {
+            //
+            //         $scope.newSegment.position = place.children[place.children.length - 1].obj.position + 1;
+            //         console.log("position");
+            //         console.log($scope.newSegment.position);
+            //
+            //     } else {
+            //         $scope.newSegment.position = 1;
+            //     }
+            $scope.newSegment.position=place.children.length+1;
+            //}
         }
 
     }, true);
@@ -1605,19 +1602,24 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
 
 
     $scope.addSegment = function() {
+        console.log($scope.newSegment);
         blockUI.start();
         if (place.type === "message") {
+            // $rootScope.message.children.push($scope.newSegment);
+            $rootScope.message.children.splice($scope.newSegment.position - 1,0, $scope.newSegment);
+            for(i=0;i<$rootScope.message.children.length; i++){
+                $rootScope.message.children[i].position=i+1;
+            }
 
-
-            $rootScope.message.children.push($scope.newSegment);
-            MessageService.updatePosition(place.children, $scope.newSegment.position - 1, $scope.position - 1);
-
+            // MessageService.updatePosition(place.children, $scope.newSegment.position - 1, $scope.position - 1);
+        //
         } else if (place.obj && place.obj.type === "group") {
 
-            $scope.path = place.path.replace(/\[[0-9]+\]/g, '');
-            $scope.path = $scope.path.split(".");
+           var path = place.path.replace(/\[[0-9]+\]/g, '');
+            path = path.split(".");
+            $scope.insertInPath(path,$rootScope.message,$scope.newSegment);
 
-            MessageService.addSegToPath($scope.path, $rootScope.message, $scope.newSegment, $scope.newSegment.position - 1, $scope.position - 1);
+            //MessageService.addSegToPath($scope.path, $rootScope.message, $scope.newSegment, $scope.newSegment.position - 1, $scope.position - 1);
         }
 
 
@@ -1633,7 +1635,32 @@ angular.module('igl').controller('AddSegmentCtrl', function($scope, $mdDialog, s
 
 
     };
+    $scope.insertInPath=function(path,messageOrGroup,segment){
 
+        if(path.length===1){
+            var list=messageOrGroup.children[path[0]-1].children;
+            var position=segment.position;
+            var element= segment;
+            $scope.insertInList(position,list, element);
+            }
+            else{
+            var oldPAth=angular.copy(path);
+            var newPath=path.splice(0,1);
+
+
+            $scope.insertInPath(newPath,messageOrGroup.children[oldPath[0]-1],segment);
+
+        }
+    };
+
+
+    $scope.insertInList=function(position,list, element){
+        list.splice(position-1,0, element);
+        for(i=0;i<list.length; i++){
+            list[i].position=i+1;
+        }
+
+    };
 
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -1750,7 +1777,7 @@ angular.module('igl').controller('AddGroupCtrl', function($scope, $mdDialog, seg
 
 });
 
-angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $modalInstance, segOrGrpToDelete, $rootScope, MessageService, blockUI) {
+angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $mdDialog, segOrGrpToDelete, $rootScope, MessageService, blockUI) {
     $scope.segOrGrpToDelete = segOrGrpToDelete;
     $scope.loading = false;
     $scope.updatePosition = function(node) {
@@ -1781,7 +1808,7 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
             $rootScope.messageTree = null;
             $rootScope.processMessageTree($rootScope.message);
             blockUI.stop();
-            $modalInstance.close($scope.segOrGrpToDelete);
+            $mdDialog.hide($scope.segOrGrpToDelete);
         }, function(error) {
             $rootScope.msg().text = error.data.text;
             $rootScope.msg().type = "danger";
@@ -1796,7 +1823,7 @@ angular.module('igl').controller('DeleteSegmentRefOrGrpCtrl', function($scope, $
 
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 
 

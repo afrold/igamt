@@ -155,7 +155,7 @@
                                                         </div>
                                                         <div flex class="pull-right">
 
-                                                                <md-button ng-click="addFieldModal(segment)" class="menu-table menu-table-add pull-right">
+                                                                <md-button ng-click="addFieldModal(segment)" class="menu-table menu-table-add pull-right" ng-if="segment.scope=='USER'">
                                                                     <i class="fa fa-plus fa-fw"></i> ADD
                                                                 </md-button>
                                                             <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
@@ -1709,7 +1709,7 @@
                         <md-content layout-padding>
 
                 <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.inputName.$valid}" class="md-block" flex-gt-sm>
-                    <label class="col-md-3 input-left">Name*</label>
+                    <label class="col-md-3 input-left">Name</label>
 
                         <input name="inputName" id="inputName" ng-model="newField.name" autofocus required/>
                     <div ng-messages="addFieldForm.inputName.$error">
@@ -1717,7 +1717,7 @@
                     </div>
                 </md-input-container>
                 <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputPosition.$valid}" class="md-block" flex-gt-sm>
-                    <label class="input-left">Position*</label>
+                    <label class="input-left">Position</label>
 
                         <md-select ng-model="position" name="inputPosition" id="inputPosition" ng-change="selectPos()" required>
                             <md-option ng-repeat="field in segment.fields track by field.id" ng-value="{{::field.position}}"> {{::field.position}}</md-option>
@@ -1726,7 +1726,7 @@
 
                 </md-input-container>
                 <md-input-container ng-class="{'igl-has-error has-feedback': !addFieldForm.inputUsage.$valid}" class="md-block" flex-gt-sm>
-                    <label class="input-left">Usage*</label>
+                    <label class="input-left">Usage</label>
                         <md-select name="inputUsage" id="inputUsage"  name="inputUsage" ng-change="selectUsage(newField.usage)" ng-model="newField.usage"  required class="select-inside-table">
                             <md-option ng-repeat="usage in config.usages" ng-value="usage">{{usage}}</md-option>
                         </md-select>
@@ -1739,7 +1739,7 @@
 
                             </md-input-container>
                             <md-input-container  ng-class="{'igl-has-error has-feedback': !addFieldForm.cardMin.$valid ||!addFieldForm.cardMax.$valid }" class="md-block" flex-gt-sm>
-                                <label class="input-left">Max Cardinality*</label>
+                                <label class="input-left">Max Cardinality</label>
                                     <input  type="text"  name="cardMax" id="cardMax"  ng-pattern="/^\d+$|^\*?$/" ng-model="newField.max" ng-disabled="disableMax" required>
                             </md-input-container>
                             </div>
@@ -1781,13 +1781,13 @@
 
 
                 <!--</md-input-container>-->
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label class="input-left">Comment</label>
-                    <input ng-model="newField.comment">
-                        </input>
-                </md-input-container>
+                <!--<md-input-container class="md-block" flex-gt-sm>-->
+                    <!--<label class="input-left">Comment</label>-->
+                    <!--<input ng-model="newField.comment">-->
+                        <!--</input>-->
+                <!--</md-input-container>-->
 
-                        </md-content>
+                        <!--</md-content>-->
                     </div>
                 </div>
             </md-dialog-content>
@@ -1802,19 +1802,33 @@
     </md-dialog>
 </script>
 <script type="text/ng-template" id="DeleteField.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Delete Confirmation</h3>
-    </div>
-    <div class="modal-body">
-        <p>Are you sure you want to delete Field: {{::fieldToDelete.name}} ? </p>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-raised btn-danger btn-sm" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-    </div>
+    <md-dialog aria-label="Delete Field">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Delete Confirmation</h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <p>Are you sure you want to delete Field: {{::fieldToDelete.name}} ? </p>
+                </div>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+
+                <md-button class="md-primary md-raised btn-danger" ng-click="delete()"><span><i
+                        class="fa fa-check">
+                &nbsp; </i>Delete </span>
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
 </script>
 <script type="text/ng-template" id="otherDTModal.html">
 
