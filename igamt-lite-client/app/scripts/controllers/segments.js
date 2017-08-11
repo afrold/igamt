@@ -3103,6 +3103,7 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, data
     $scope.dtChanged = false;
     $scope.field = field;
     $scope.searchText="";
+    $scope.newDt = null;
     var oldDt = angular.copy(field.datatype);
     $scope.datatypes = datatypes;
     $scope.querySearch=function (query) {

@@ -3245,8 +3245,7 @@ md-select.inside-table{
 
 }
 .constraint-dialog{
-
-
+    padding-top: 20px;
 }
 .metadata-scroll{
     width:100%;
@@ -3507,4 +3506,20 @@ md-dialog .md-dialog-content {
 }
 .select-inside-table md-select.md-default-theme .md-select-value, md-select .md-select-value {
     margin-top: -19px;
+}
+
+
+.igamt-label {
+    font-weight: bold;
+    color: black;
+    font-size: 15px;
+}
+
+.igamt-input-block{
+    margin-top:0px;
+}
+
+.igamt-vs-meta-input {
+    margin-top: 15px;
+    margin-left: 10px;
 }

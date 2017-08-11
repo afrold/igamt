@@ -118,15 +118,17 @@
                             <md-tab-body>
                                 <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                     <md-content layout-padding>
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Name</label>
+                                        <label class="input-left igamt-label">Name*</label>
+
+                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
                                             <input ng-disabled="viewSettings.tableReadonly" type="text" name="name" ng-change="setDirty()" ng-model="compositeProfileStructure.name" required>
                                             <div ng-messages="editForm.name.$error">
                                                 <div ng-message="required">Name is required.</div>
                                             </div>
                                         </md-input-container>
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Extension</label>
+                                        <label class="input-left igamt-label">Extension*</label>
+
+                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
                                             <input ng-disabled="viewSettings.tableReadonly" type="text" name="ext" ng-change="setDirty()" ng-model="compositeProfileStructure.ext" required ng-checkcompext property="old">
 
                                             <div ng-messages="editForm.ext.$error">
@@ -137,24 +139,25 @@
                                             </div>
                                         </md-input-container>
 
+                                        <label class="input-left igamt-label">Identifier*</label>
 
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Identifier</label>
+                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="identifier" ng-model="compositeProfile.identifier" disabled required>
                                             <div ng-messages="editForm.identifier.$error">
                                                 <div ng-message="required">Identifier is required.</div>
                                             </div>
                                         </md-input-container>
 
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Description</label>
+                                        <label class="input-left igamt-label">Description</label>
+
+                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
                                             <input  ng-disabled="viewSettings.tableReadonly" type="text" name="description" ng-change="setDirty()" ng-model="compositeProfileStructure.description">
 
                                         </md-input-container>
 
+                                        <label class="input-left igamt-label"> Type*</label>
 
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Message Type</label>
+                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
                                             <input ng-disabled="viewSettings.tableReadonly" type="text" name="messageType" ng-model="compositeProfile.messageType" disabled required>
                                             <div ng-messages="editForm.messageType.$error">
                                                 <div ng-message="required">Message Type is required.</div>
@@ -162,31 +165,33 @@
                                         </md-input-container>
 
 
+                                        <label class="input-left igamt-label">Message Event*</label>
 
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Message Event</label>
+                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="messageType" ng-model="compositeProfile.event" required disabled>
                                             <div ng-messages="editForm.event.$error">
                                                 <div ng-message="required">Message Event is required.</div>
                                             </div>
                                         </md-input-container>
 
+                                        <label class="input-left igamt-label"> Message Structure ID*</label>
 
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Message Structure ID</label>
+                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="structID" ng-model="compositeProfile.structID" required disabled>
                                             <div ng-messages="editForm.structID.$error">
-                                                <div ng-message="required">Message Event is required.</div>
+                                                <div ng-message="required">Message Structure is required.</div>
                                             </div>
                                         </md-input-container>
 
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Comment</label>
+
+                                        <label class="input-left igamt-label">Comment</label>
+                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
                                             <textarea rows="3" ng-change="setDirty()" name="comment" id="comment" ng-model="compositeProfileStructure.comment" />
                                         </md-input-container>
 
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label style="margin-bottom:15px;" class="input-left">Usage Note </label>
+                                        <label  class="input-left igamt-label">Usage Note </label>
+
+                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
 
                                             <!--<textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus ng-model="compositeProfileStructure.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>-->
 
@@ -195,8 +200,9 @@
                                             </div>
                                         </md-input-container>
 
-                                        <md-input-container class="md-block" flex-gt-sm ng-show="compositeProfile.hl7Section != null && compositeProfile.hl7Section != ''">
-                                            <label class="input-left">HL7 Section</label>
+                                        <label ng-show="compositeProfile.hl7Section != null && compositeProfile.hl7Section != ''" class="input-left igamt-label">HL7 Section</label>
+
+                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm ng-show="compositeProfile.hl7Section != null && compositeProfile.hl7Section != ''">
                                             <input type="text" disabled name="hl7Section" id="hl7Section" ng-model="compositeProfile.hl7Section">
                                         </md-input-container>
 

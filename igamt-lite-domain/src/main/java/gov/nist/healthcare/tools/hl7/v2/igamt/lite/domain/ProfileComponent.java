@@ -7,6 +7,8 @@ import java.util.Set;
 
 import org.springframework.data.annotation.Id;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+
 public class ProfileComponent
     implements java.io.Serializable, Cloneable, Comparable<ProfileComponent> {
 
@@ -27,6 +29,7 @@ public class ProfileComponent
   private List<String> compositeProfileStructureList = new ArrayList<String>();
   private List<SubProfileComponent> children = new ArrayList<SubProfileComponent>();
   private String type;
+  private SCOPE scope;
 
 
 
@@ -155,6 +158,16 @@ public class ProfileComponent
   public int compareTo(ProfileComponent o) {
     // TODO Auto-generated method stub
     return 0;
+  }
+
+
+
+  public SCOPE getScope() {
+    return scope;
+  }
+
+  public void setScope(SCOPE scope) {
+    this.scope = scope;
   }
 
   @Override

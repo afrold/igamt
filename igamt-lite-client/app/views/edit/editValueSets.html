@@ -61,33 +61,37 @@
                                 <md-tab-body>
                                     <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                         <md-content layout-padding>
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Mapping Identifier</label>
+                                            <label class="input-left igamt-label">Mapping Identifier*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input ng-disabled="versionAndUseMap[table.id].sourceId" type="text" name="tableIdentifier" ng-model="table.bindingIdentifier" required ng-change="setDirty()">
                                                 <div ng-messages="editForm.tableIdentifier.$error">
                                                     <div ng-message="required">Mapping Identifier is required.</div>
                                                 </div>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Name</label>
+                                            <label class="input-left igamt-label">Name*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input type="text"  ng-disabled="versionAndUseMap[table.id].sourceId" name="name"  ng-model="table.name" required ng-change="setDirty()">
                                                 <div ng-messages="editForm.name.$error">
                                                     <div ng-message="required">Name is required.</div>
                                                 </div>
                                             </md-input-container>
+                                            <label class="input-left igamt-label">Description*</label>
 
 
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Description</label>
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input type="text" name="description" ng-disabled="versionAndUseMap[table.id].sourceId"  ng-model="table.description" ng-change="setDirty()">
                                                 <div ng-messages="editForm.description.$error">
                                                     <div ng-message="required">description is required.</div>
                                                 </div>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">OID</label>
+
+                                            <label class="input-left igamt-label">OID*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input type="text" name="oid" ng-disabled="versionAndUseMap[table.id].sourceId" ng-model="table.oid" ng-change="setDirty()">
                                                 <div ng-messages="editForm.oid.$error">
                                                     <div ng-message="required">OID is required.</div>
@@ -95,26 +99,27 @@
                                             </md-input-container>
 
                                             <div layout-gt-sm="row">
-                                                <md-input-container class="md-block" flex-gt-sm>
-                                                    <label class="input-left">Extensibility</label>
+                                                <label class="input-left igamt-label">Extensibility</label>
+
+                                                <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                     <md-select ng-change="setDirty()" ng-model="table.extensibility">
                                                         <md-option ng-repeat="extensibility in config.tableExtensibilities" value="{{extensibility}}">
                                                             {{extensibility}}
                                                         </md-option>
                                                     </md-select>
                                                 </md-input-container>
+                                                <label class="input-left igamt-label">Stability</label>
 
-                                                <md-input-container class="md-block" flex-gt-sm>
-                                                    <label class="input-left">Stability</label>
+                                                <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                     <md-select ng-change="setDirty()" ng-model="table.stability">
                                                         <md-option ng-repeat="stability in config.tableStabilities" value="{{stability}}">
                                                             {{stability}}
                                                         </md-option>
                                                     </md-select>
                                                 </md-input-container>
+                                                <label class="input-left igamt-label">Content Definition</label>
 
-                                                <md-input-container class="md-block" flex-gt-sm>
-                                                    <label class="input-left">Content Definition</label>
+                                                <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                     <md-select ng-change="setDirty()" ng-model="table.contentDefinition">
                                                         <md-option ng-repeat="contentDefinition in config.tableContentDefinitions" value="{{contentDefinition}}">
                                                             {{contentDefinition}}
@@ -122,19 +127,21 @@
                                                     </md-select>
                                                 </md-input-container>
                                             </div>
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Code Systems</label>
+                                            <label class="input-left igamt-label">Code Systems</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input ng-model="codeSystems" type="text" disabled />
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm >
-                                                <label class="input-left">Comment</label>
+                                            <label class="input-left igamt-label">Comment</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm >
                                                 <textarea rows="3"  md-select-on-focus  ng-change="setDirty()" name="comment" id="comment" ng-model="table.comment"/>
                                             </md-input-container>
+                                            <label class="input-left igamt-label" ng-show="table.scope === 'HL7STANDARD' && table.hl7Section != null && table.hl7Section != '' && table.hl7Section != undefined" >HL7 Section</label>
 
-                                            <md-input-container class="md-block" flex-gt-sm
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm
                                                                 ng-show="table.scope === 'HL7STANDARD' && table.hl7Section != null && table.hl7Section != '' && table.hl7Section != undefined">
-                                                <label class="input-left" >HL7 Section</label>
                                                 <input type="text" disabled
                                                        name="hl7Section"
                                                        id="hl7Section"
@@ -1009,70 +1016,78 @@
                                 <md-tab-body>
                                     <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                         <md-content layout-padding>
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Mapping Identifier</label>
+                                            <label class="input-left igamt-label">Mapping Identifier*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input disabled type="text" name="tableIdentifier" ng-model="table.bindingIdentifier"  required ng-change="setDirty()" disabled>
                                                 <div ng-messages="editForm.tableIdentifier.$error">
                                                     <div ng-message="required">Mapping Identifier is required.</div>
                                                 </div>
                                             </md-input-container>
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Name</label>
+                                            <label class="input-left igamt-label">Name*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input type="text" disabled name="name"  ng-model="table.name" required>
                                                 <div ng-messages="editForm.name.$error">
                                                     <div ng-message="required">Name is required.</div>
                                                 </div>
                                             </md-input-container>
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Description</label>
+                                            <label class="input-left igamt-label">Description*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input type="text" name="description" disabled ng-model="table.description">
                                                 <div ng-messages="editForm.description.$error">
                                                     <div ng-message="required">description is required.</div>
                                                 </div>
                                             </md-input-container>
                                             <div layout-gt-sm="row">
-                                                <md-input-container class="md-block" flex-gt-sm ng-if="table.publicationVersion">
-                                                    <label class="input-left">Publication version</label>
+                                                <label ng-if="table.publicationVersion" class="input-left igamt-label">Publication version*</label>
+
+                                                <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-if="table.publicationVersion">
                                                     <input type="text" name="publicationVersion" disabled ng-model="table.publicationVersion">
                                                     <div ng-messages="editForm.publicationVersion.$error">
                                                         <div ng-message="required">Publication version is required.</div>
                                                     </div>
                                                 </md-input-container>
-                                                <md-input-container class="md-block" flex-gt-sm ng-if="table.publicationDate">
-                                                    <label class="input-left">Publication date</label>
+                                                <label class="input-left igamt-label" ng-if="table.publicationDate">Publication date</label>
+
+                                                <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-if="table.publicationDate">
                                                     <input type="text" name="publicationDate" disabled ng-model="table.publicationDate">
                                                     <div ng-messages="editForm.publicationDate.$error">
                                                         <div ng-message="required">Publication date is required.</div>
                                                     </div>
                                                 </md-input-container>
                                             </div>
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">OID</label>
+                                            <label class="input-left igamt-label">OID*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input type="text" name="oid" disabled ng-model="table.oid" ng-change="setDirty()">
                                                 <div ng-messages="editForm.oid.$error">
                                                     <div ng-message="required">OID is required.</div>
                                                 </div>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Version</label>
+                                            <label class="input-left igamt-label" ng-show="table.version">Version*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-show="table.version">
                                                 <input type="text" name="version" disabled ng-model="table.version" ng-change="setDirty()">
                                                 <div ng-messages="editForm.version.$error">
                                                     <div ng-message="required">Version is required.</div>
                                                 </div>
                                             </md-input-container>
                                             <div layout-gt-sm="row">
+                                                <label class="input-left igamt-label">Extensibility</label>
 
-                                                <md-input-container class="md-block" flex-gt-sm>
-                                                    <label class="input-left">Extensibility</label>
+                                                <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                     <md-select disabled ng-change="setDirty()" ng-model="table.extensibility">
                                                         <md-option ng-repeat="extensibility in config.tableExtensibilities" value="{{extensibility}}">
                                                             {{extensibility}}
                                                         </md-option>
                                                     </md-select>
                                                 </md-input-container>
-                                                <md-input-container class="md-block" flex-gt-sm>
-                                                    <label class="input-left">Stability</label>
+                                                <label class="input-left igamt-label">Stability</label>
+
+                                                <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                     <md-select disabled ng-change="setDirty()" ng-model="table.stability">
                                                         <md-option ng-repeat="stability in config.tableStabilities" value="{{stability}}">
                                                             {{stability}}
@@ -1080,8 +1095,9 @@
                                                     </md-select>
                                                 </md-input-container>
 
-                                                <md-input-container class="md-block" flex-gt-sm>
-                                                    <label class="input-left">Content Definition</label>
+                                                <label class="input-left igamt-label">Content Definition</label>
+
+                                                <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                     <md-select ng-change="setDirty()" disabled ng-model="table.contentDefinition">
                                                         <md-option ng-repeat="contentDefinition in config.tableContentDefinitions" value="{{contentDefinition}}">
                                                             {{contentDefinition}}
@@ -1089,22 +1105,25 @@
                                                     </md-select>
                                                 </md-input-container>
                                             </div>
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Code Systems</label>
+
+                                            <label class="input-left igamt-label">Code Systems</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <span ng-repeat="cs in codeSystems">
 													<span ng-hide="codeSysEditMode">{{cs}}</span>
                                                 <span ng-hide="$last">,</span>
                                                 </span>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm >
-                                                <label class="input-left">Comment</label>
+                                            <label class="input-left igamt-label" ng-show="table.scope === 'HL7STANDARD' && table.hl7Section != null && table.hl7Section != '' && table.hl7Section != undefined">Comment</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm >
                                                 <textarea rows="3" disabled md-select-on-focus disabled
                                                           ng-change="setDirty()" name="comment" id="comment" class="form-control" ng-model="table.comment"/>
                                             </md-input-container>
-                                            <md-input-container class="md-block" flex-gt-sm
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm
                                                                 ng-show="table.scope === 'HL7STANDARD' && table.hl7Section != null && table.hl7Section != '' && table.hl7Section != undefined">
-                                                <label class="input-left" >HL7 Section</label>
+                                                <label class="input-left igamt-label" >HL7 Section</label>
                                                 <input type="text" disabled
                                                        name="hl7Section"
                                                        id="hl7Section"

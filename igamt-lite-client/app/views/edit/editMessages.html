@@ -54,31 +54,35 @@
                                 <md-tab-body class="metadata-scroll">
                                     <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
                                         <md-content layout-padding>
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Name</label>
+                                            <label class="input-left igamt-label">Name*</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input type="text"  name="name" ng-change="setDirty()" ng-model="message.name" ng-disabled="viewSettings.tableReadonly" required>
                                                 <div ng-messages="editForm.name.$error">
                                                     <div ng-message="required">Name is required.</div>
                                                 </div>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Identifier</label>
+                                            <label class="input-left igamt-label">Identifier</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input  type="text"  name="identifier" ng-change="setDirty()" ng-model="message.identifier" ng-disabled="viewSettings.tableReadonly" required>
                                                 <div ng-messages="editForm.identifier.$error">
                                                     <div ng-message="required">Identifier is required.</div>
                                                 </div>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Description</label>
+                                            <label class="input-left igamt-label">Description</label>
+
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input  type="text"  name="description" ng-change="setDirty()" ng-model="message.description" ng-disabled="viewSettings.tableReadonly" required>
 
                                             </md-input-container>
 
+                                            <label class="input-left igamt-label">Message Type</label>
 
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Message Type</label>
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input  type="text"  name="messageType" ng-change="setDirty()" ng-model="message.messageType" disabled required>
                                                 <div ng-messages="editForm.messageType.$error">
                                                     <div ng-message="required">Message Type is required.</div>
@@ -86,33 +90,35 @@
                                             </md-input-container>
 
 
+                                            <label class="input-left igamt-label">Message Event</label>
 
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Message Event</label>
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input  type="text"  name="messageType" ng-change="setDirty()" ng-model="message.event"  required>
                                                 <div ng-messages="editForm.event.$error">
                                                     <div ng-message="required">Message Event is required.</div>
                                                 </div>
                                             </md-input-container>
 
+                                            <label class="input-left igamt-label">Message Structure ID</label>
 
-                                            <md-input-container class="md-block" flex-gt-sm>
-                                                <label class="input-left">Message Structure ID</label>
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input  type="text"  name="structID" ng-change="setDirty()" ng-model="message.structID"  required>
                                                 <div ng-messages="editForm.structID.$error">
                                                     <div ng-message="required">Message Event is required.</div>
                                                 </div>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm >
-                                                <label class="input-left">Comment </label>
+                                            <label class="input-left igamt-label">Comment </label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm >
                                                 <textarea rows="3"  ng-disabled="viewSettings.tableReadonly" ng-change="recordDatatypeChange('message','edit',message.id,'message', message.comment)" name="comment" id="comment"  ng-model="message.comment" />
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm >
-                                                <label class="input-left">Usage Note </label>
+                                            <label class="input-left igamt-label">Usage Note </label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm >
                                                 <div  ng-show="!viewSettings.tableReadonly">
-                                                         <textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus
+                                                         <textarea style="margin-top:20px" froala="froalaEditorOptions" md-select-on-focus
                                                                    ng-model="message.usageNote" name="usageNote"
                                                                    id="usageNote" ng-change="setDirty()"></textarea>
                                                   </div>
@@ -121,9 +127,10 @@
                                                 </div>
                                             </md-input-container>
 
-                                            <md-input-container class="md-block" flex-gt-sm
+                                            <label class="input-left igamt-label" ng-show="message.hl7Section != null && message.hl7Section != ''">HL7 Section</label>
+
+                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm
                                                                 ng-show="message.hl7Section != null && message.hl7Section != ''">
-                                                <label class="input-left" >HL7 Section</label>
                                                 <input type="text" disabled
                                                        name="hl7Section"
                                                        id="hl7Section"
@@ -284,8 +291,8 @@
                                 <div  class="panel-primary">
                                     <div class="panel-body">
                                         <span class="pull-right" class="margin-right:5px">
-                                                    <button title="Add/Edit Conformance Statements" type="button" class="btn btn-raised btn-sm btn-success" ng-hide="viewSettings.tableReadonly" ng-click="openAddGlobalConformanceStatementDialog(message)">
-                                                        <span><i class="fa fa-plus fa-fw"></i> Add/Edit Conformance Statements</span>
+                                                    <button title="Conformance Statements" type="button" class="btn btn-raised btn-sm btn-success" ng-hide="viewSettings.tableReadonly" ng-click="openAddGlobalConformanceStatementDialog(message)">
+                                                        <span>Conformance Statements</span>
                                         </button>
                                         </span>
                                         <div class="col-md-12">
@@ -1072,7 +1079,7 @@
 </script>
 
 <script type="text/ng-template" id="AddSegmentModal.html">
-    <md-dialog aria-label="create group">
+    <md-dialog aria-label="create  segment">
         <form ng-cloak name="addSegForm" class="form-horizontal" novalidate id="addSegForm">
             <md-toolbar>
                 <div class="md-toolbar-tools">
@@ -1088,8 +1095,7 @@
                 <div class="md-dialog-content large-dialog">
                     <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                         <md-content layout-padding>
-                                                        <label>  Segment </label>
-
+                                <label class="input-left igamt-label">  Segment </label>
                                     <md-autocomplete
                                             md-selected-item="newSeg"
 
@@ -1106,18 +1112,14 @@
                                             No Segment found.
                                         </md-not-found>
                                     </md-autocomplete>
-
-
-
-
-
-
                                 <div ng-messages="addSegForm.name.$error">
                                     <div ng-message="required">Segment is required.</div>
                                 </div>
                             </md-input-container>
-                            <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center">
-                                <label class="input-left"> Position</label>
+
+                            <label class="input-left igamt-label"> Position*</label>
+
+                            <md-input-container class="md-block igamt-input-block" flex-gt-sm layout="row" layout-align="center center">
                                 <md-select ng-model="newSegment.position" ng-change="selectPos()" class="point" required  id="inputPosition" name="inputPosition">
                                     <md-option  ng-repeat="child in segmentParent.children" ng-value="{{$index+1}}"> {{$index+1}}</md-option>
                                     <!--<md-option ng-show="segmentParent.obj && segmentParent.obj.type==='group'" ng-repeat="child in segmentParent.children" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>-->
@@ -1128,8 +1130,8 @@
                                 </div>
                             </md-input-container>
 
-                            <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center">
-                                <label class="input-left"> Usage</label>
+                            <label class="input-left igamt-label"> Usage*</label>
+                            <md-input-container class="md-block igamt-input-block" flex-gt-sm layout="row" layout-align="center center">
                                 <md-select name="grUsage" id="grUsage" ng-change="selectUsage(newSegment.usage)" ng-model="newSegment.usage" required>
                                     <md-option ng-repeat="usage in config.usages" ng-value="usage">{{usage}}
                                     </md-option>
@@ -1140,9 +1142,9 @@
                                 </div>
                             </md-input-container>
 
+                            <label class="input-left igamt-label">Cardinality*</label>
                             <div class="md-block" layout="row" layout-align="start start" ng-class="{'igl-has-error has-feedback': !addSegForm.segCardMin.$valid ||!addSegForm.segCardMax.$valid }">
-                            <md-input-container flex class="md-block" flex-gt-sm>
-                                <label class="input-left"> Min Cardinality</label>
+                            <md-input-container flex class="md-block igamt-input-block" flex-gt-sm>
                                                 <input  style=margin-right: 1px;
                                                         name="segCardMin"
                                                         id="segCardMin"
@@ -1152,9 +1154,7 @@
                                                         ng-model="newSegment.min" ng-disabled="disableMin" required>
                             </md-input-container>
 
-                                    <md-input-container flex class="md-block" flex-gt-sm>
-                                        <label class="input-left"> Max Cardinality</label>
-
+                                    <md-input-container flex class="md-block igamt-input-block" flex-gt-sm>
                                         <input type="text"
                                                         name="segCardMax"
                                                         id="segCardMax"
@@ -1199,16 +1199,18 @@
                 <div class="md-dialog-content large-dialog">
                 <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
                     <md-content layout-padding>
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label class="input-left"> Group Name</label>
+                        <label class="input-left igamt-label"> Group Name*</label>
+
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                             <input type="text" id="name" name="name" ng-model="grpName"
                                    required>
                             <div ng-messages="addGrpForm.name.$error">
                                 <div ng-message="required">Name is required.</div>
                             </div>
                         </md-input-container>
-                        <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center">
-                            <label class="input-left"> Position</label>
+                        <label class="input-left igamt-label"> Position*</label>
+
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm layout="row" layout-align="center center">
                             <md-select ng-model="position" ng-change="selectPos()" class="point" required  name="grPosition">
                                 <md-option ng-show="groupParent.type==='message'" ng-repeat="child in groupParent.children" ng-value="{{child.position}}"> {{child.position}}</md-option>
                                 <md-option ng-show="groupParent.obj && groupParent.obj.type==='group'" ng-repeat="child in groupParent.children" ng-value="{{child.obj.position}}"> {{child.obj.position}}</md-option>
@@ -1219,8 +1221,10 @@
                             </div>
                         </md-input-container>
 
-                        <md-input-container class="md-block" flex-gt-sm layout="row" layout-align="center center">
-                            <label class="input-left"> Usage</label>
+                        <label class="input-left igamt-label"> Usage*</label>
+
+
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm layout="row" layout-align="center center">
                             <md-select name="grUsage" id="grUsage" ng-change="selectUsage(newGroup.usage)" ng-model="newGroup.usage" required>
                                 <md-option ng-repeat="usage in config.usages" ng-value="usage">{{usage}}
                                 </md-option>
@@ -1231,11 +1235,13 @@
                             </div>
                         </md-input-container>
 
-                <div layout="row" layout-align="start start" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
+
+                        <label class="input-left igamt-label">Cardinality*</label>
+
+                        <div layout="row igamt-input-block" layout-align="start start" ng-class="{'igl-has-error has-feedback': !addGrpForm.grCardMin.$valid ||!addGrpForm.grCardMax.$valid }">
 
 
-                        <md-input-container flex class="md-block" flex-gt-sm >
-                            <label class="input-left"> Min Cardinality </label>
+                        <md-input-container flex class="md-block igamt-input-block" flex-gt-sm >
                                                 <input  style="width:49%;margin-right: 1px"
                                                        name="grCardMin"
                                                        id="grCardMin"
@@ -1243,9 +1249,7 @@
                                                        ng-pattern="/^\d+$/"
                                                        ng-model="newGroup.min" ng-disabled="disableMin" required >
                         </md-input-container>
-                        <md-input-container flex class="md-block" flex-gt-sm >
-                            <label class="input-left"> Max Cardinality </label>
-
+                        <md-input-container flex class="md-block igamt-input-block" flex-gt-sm >
                         <input  style="width:50%"  type="text"
                                                        name="grCardMax"
                                                        id="grCardMax"

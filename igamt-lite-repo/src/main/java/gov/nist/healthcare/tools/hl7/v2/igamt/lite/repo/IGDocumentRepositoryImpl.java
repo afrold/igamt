@@ -127,6 +127,16 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations {
     return mongo.find(qry, IGDocument.class);
   }
 
+  @Override
+  public List<IGDocument> findByAccountIdAndScope(Long accountId, IGDocumentScope scope) {
+    Criteria where = Criteria.where("scope").is(scope);
+    // where.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Version));
+    where.andOperator(Criteria.where("accountId").is(accountId));
+    Query qry = Query.query(where);
+    return mongo.find(qry, IGDocument.class);
+  }
+
+
   /**
    * TODO: Refactor this to not load IG Doc in memory
    */
