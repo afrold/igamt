@@ -3523,3 +3523,34 @@ md-dialog .md-dialog-content {
     margin-top: 15px;
     margin-left: 10px;
 }
+.col-fixed-name{
+    min-width: 200px !important;
+}
+.col-fixed-usage{
+    min-width: 80px !important;
+}
+.col-fixed-cardinality{
+    min-width: 160px !important;
+}
+.col-fixed-length{
+    min-width: 160px !important;
+}
+.col-fixed-confLength{
+    min-width: 100px !important;
+}
+
+.col-fixed-valueSet{
+    min-width: 120px !important;
+}
+.col-fixed-constantValue{
+    min-width: 80px !important;
+}
+.col-fixed-predicate{
+    min-width: 100px !important;
+}
+.col-fixed-definitionText{
+    min-width: 85px !important;
+}
+.col-fixed-comment{
+    min-width: 85px !important;
+}
