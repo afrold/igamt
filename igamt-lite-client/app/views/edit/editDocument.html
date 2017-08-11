@@ -157,10 +157,10 @@
                         </md-input-container>
 
 
-                        <label class="input-left igamt-label igamt-input-block">Notes</label>
-                        <md-input-container class="md-block" flex-gt-sm >
+                        <label class="input-left igamt-label">Notes</label>
+                        <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px" >
                             <div  ng-if="!viewSettings.tableReadonly">
-                                                         <textarea style="margin-top:20px" froala="froalaEditorOptions" md-select-on-focus
+                                                         <textarea froala="froalaEditorOptions" md-select-on-focus
                                                                    ng-model="metaData.implementationNotes" name="igNotes"
                                                                    id="igNotes" ng-change="setDirty()"></textarea>
                             </div>

@@ -159,31 +159,29 @@ body {
 				ng-init="init">
 				<form name="editForm" id="editForm">
 					<div class="row" style="margin-left: 0px; margin-right: 10px">
-						<div class="form-group control-group"
-							ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
-							<label class="col-md-2 control-label">Title</label>
-							<div class="col-md-10">
-								<input type="text" name="title" required id="title"
-									class="form-control" ng-model="documentation.title"
-									ng-change="setDirty()" />
-							</div>
-						</div>
+
+						<md-content layout-padding>
+
+						<label  class="input-left igamt-label">Title*</label>
+
+						<md-input-container class=" md-block igamt-input-block" flex-gt-sm>
+							<input type="text" name="title" required id="title"
+								   class="form-control" ng-model="documentation.title"
+								   ng-change="setDirty()" />
+						</md-input-container>
 
 
-						<div class="form-group control-group"
-							ng-class="{'igl-has-error has-feedback' : editForm.content.$invalid}">
-							<label class="col-md-2 control-label">Contents</label>
+							<label  class="input-left igamt-label">Content*</label>
+							<md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px" >
+                                                         <textarea froala="froalaEditorOptions" required
+																  ng-model="documentation.content" id="content" name="content"
+																  ng-change="setDirty()"></textarea>
+							</md-input-container>
 
-							<div class="col-md-10">
-								<div>
-									<textarea froala="froalaEditorOptions" required
-										ng-model="documentation.content" id="content" name="content"
-										ng-change="setDirty()"></textarea>
-  								</div>
-							</div>
-						</div>
+						</md-content>
 
-						<span class="pull-right">
+						<div class="row" style="margin-left: 0px; margin-right: 10px">
+						<div class="pull-right">
 							<button title="Cancel Changes" type="button"
 								class="btn btn-raised btn-sm btn-warning"
 								ng-disabled="editForm.$invalid ||!editForm.$dirty"
@@ -196,7 +194,8 @@ body {
 								ng-click="saveDocumentation(documentation)">
 								<span><i class="fa fa-check fa-fw"></i> Save</span>
 							</button>
-						</span>
+						</div>
+						</div>
 					</div>
 				</form>
 			</div>

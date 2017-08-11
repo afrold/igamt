@@ -13,7 +13,7 @@
     <div ng-controller="SectionsListCtrl" ng-init="init()" class="container" ng-cloak>
        <div class="container">
                     <div class="page-header">
-                    <span class="header4">{{section.sectionTitle}} </span>
+                    <span class="header4">Section: {{section.sectionTitle}} </span>
                         <span class="pull-right">
          
          <md-button title="Save Changes" type="submit" class="btn btn-raised btn-sm btn-success"
@@ -34,39 +34,38 @@
                  <i class="fa fa-calendar" aria-hidden="true"></i>
 				    Updated	{{section.dateUpdated | date:dateFormat}}
                 </div>
-                <div class="form-group control-group"
-                     ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
-                    <label class="col-md-2 control-label">Title</label>
-                    <div class="col-md-10">
-                        <input type="text"
-                               ng-change="setDirty()"
-                               name="title" id="title" class="form-control"
-                               ng-model="section.sectionTitle"
-                               required
-                               ng-disabled="viewSettings.tableReadonly || isFixedSectionTitle(section)"
-                               aria-describedby="helpBlock2"/>
-                    </div>
-                </div>
 
 
-                <div class="form-group control-group"
-                     ng-class="{'igl-has-error has-feedback' : editForm.content.$invalid}">
-                    <label class="col-md-2 control-label">Contents</label>
+           <md-content layout-padding>
+               <label class="input-left igamt-label">Title*</label>
+               <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-class="{'igl-has-error has-feedback' : editForm.title.$invalid}">
+                   <input type="text"
+                          ng-change="setDirty()"
+                          name="title" id="title"
+                          ng-model="section.sectionTitle"
+                          required
+                          ng-disabled="viewSettings.tableReadonly || isFixedSectionTitle(section)"
+                          />
 
-                    <div class="col-md-10">
-                        <div ng-if="!viewSettings.tableReadonly">
+                   <div ng-messages="editForm.title.$invalid">
+                       <div ng-message="required">Title is required.</div>
+                   </div>
+               </md-input-container>
+
+               <label class="input-left igamt-label">Content</label>
+               <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
+                   <div ng-if="!viewSettings.tableReadonly">
                             <textarea froala="froalaEditorOptions" ng-model="section.sectionContents"
                                       id="content"
-                                      name="content" 
+                                      name="content"
                                       ng-change="setDirty()"></textarea>
-                        </div>
-                        <div ng-if="viewSettings.tableReadonly">
-                            <div class="fr-view">
-                                <div froala-view="section.sectionContents"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                   </div>
+                   <div ng-if="viewSettings.tableReadonly">
+                       <div class="fr-view">
+                           <div froala-view="section.sectionContents"></div>
+                       </div>
+                   </div>
+               </md-input-container>
             </div>
 
     </div>
