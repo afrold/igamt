@@ -2158,17 +2158,18 @@
 
                                     <md-content layout-padding>
 
+                                        <label class="input-left igamt-label">Name*</label>
 
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Name</label>
+                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="name" ng-model="name" required>
                                             <div ng-messages="newForm.name.$error">
                                                 <div ng-message="required">Name is required.</div>
                                             </div>
 
                                         </md-input-container>
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Extension</label>
+                                        <label class="input-left igamt-label">Extension*</label>
+
+                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="ext" ng-model="ext" required ng-checkcompext
                                                    property="new">
 
@@ -2179,12 +2180,14 @@
 
                                             </div>
                                         </md-input-container>
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Description</label>
+                                        <label class="input-left igamt-label">Description</label>
+
+                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="description" ng-model="description">
                                         </md-input-container>
-                                        <md-input-container class="md-block" flex-gt-sm>
-                                            <label class="input-left">Comment</label>
+
+                                        <label class="input-left igamt-label">Comment</label>
+                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                             <textarea rows="3" name="comment" id="comment" ng-model="comment"/>
                                         </md-input-container>
                                     </md-content>
@@ -2286,7 +2289,7 @@
 
 
                                     </div>
-                                    <div flex="70">
+                                    <div flex="70" style="padding-left:10px">
 
                                         <div class=" panel panel-default" style="margin-top:10px;">
                                             <div class="panel-heading">Composite Profile</div>

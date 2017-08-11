@@ -569,8 +569,8 @@ if (self === top) {
         <div style="margin-top: 20px" ng-cloak class="md-inline-form" layout="column">
             <md-content layout-padding>
 
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label class="input-left">Title</label>
+                <label class="input-left igamt-label">Title</label>
+                <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                     <input type="text" ng-disabled="viewSettings.tableReadonly"
                            ng-change="setDirty()"
                            name="title"
@@ -581,8 +581,9 @@ if (self === top) {
                     </div>
                 </md-input-container>
 
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label class="input-left">Steward</label>
+                <label class="input-left igamt-label">Steward</label>
+
+                <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                     <input type="text" ng-disabled="viewSettings.tableReadonly"
                            ng-change="setDirty()"
                            name="orgName"
@@ -625,15 +626,12 @@ if (self === top) {
                     <!--</div>-->
                 <!--</md-input-container>-->
 
-
-                <md-input-container class="md-block" flex-gt-sm >
-                    <label class="input-left" style="margin-bottom: 22px">Description </label>
-                    <div>
-                                                         <textarea froala="froalaEditorOptions" md-select-on-focus ng-change="setDirty()"
+                <label class="input-left igamt-label" style="margin-bottom: 20px">Description </label>
+                <md-input-container class="md-block igamt-input-block" flex-gt-sm >
+                                                          <textarea froala="froalaEditorOptions" md-select-on-focus ng-change="setDirty()"
                                                                    ng-model="datatypeLibMetaDataCopy.description" name="description"
                                                                    id="description"></textarea>
-                     </div>
-                </md-input-container>
+                 </md-input-container>
 
             </md-content>
         </div>
