@@ -406,29 +406,57 @@ angular.module('igl')
                 $scope.otherDT(field);
             }
         };
+        // $scope.otherDT = function(field) {
+        //     var modalInstance = $modal.open({
+        //         templateUrl: 'otherDTModal.html',
+        //         controller: 'otherDTCtrl',
+        //         windowClass: 'edit-VS-modal',
+        //         resolve: {
+        //             datatypes: function() {
+        //                 return $rootScope.datatypes;
+        //             },
+        //             field: function() {
+        //                 return field;
+        //             }
+        //         }
+        //     });
+        //     modalInstance.result.then(function(field) {
+        //         $scope.setDirty();
+        //         $rootScope.recordChanged();
+        //         $scope.editableDT = '';
+        //         if ($scope.datatypesParams) {
+        //             $scope.datatypesParams.refresh();
+        //         }
+        //     });
+        // };
+
         $scope.otherDT = function(field) {
-            var modalInstance = $modal.open({
+            console.log("Changing a data type from field")
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'otherDTModal.html',
                 controller: 'otherDTCtrl',
-                windowClass: 'edit-VS-modal',
-                resolve: {
-                    datatypes: function() {
-                        return $rootScope.datatypes;
-                    },
-                    field: function() {
-                        return field;
-                    }
+                scope: $scope,        // use parent scope in template
+                preserveScope: true,
+                locals: {
+
+                    datatypes:  $rootScope.datatypes,
+
+                    field:  field
                 }
+
+
             });
-            modalInstance.result.then(function(field) {
+            modalInstance.then(function(field) {
                 $scope.setDirty();
-                $rootScope.recordChanged();
-                $scope.editableDT = '';
-                if ($scope.datatypesParams) {
-                    $scope.datatypesParams.refresh();
-                }
+                        $rootScope.recordChanged();
+                        $scope.editableDT = '';
+                         if ($scope.datatypesParams) {
+                           $scope.datatypesParams.refresh();
+                         }
             });
+
         };
+
         $scope.redirectSeg = function(segmentRef) {
             SegmentService.get(segmentRef.id).then(function(segment) {
                 var modalInstance = $modal.open({
