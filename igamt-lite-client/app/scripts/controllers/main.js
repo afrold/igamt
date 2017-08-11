@@ -3982,7 +3982,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
         return _.find(_.without(list, obj), function(item) {
             if (item[context1] == obj[context1]) {
-                return item[context2] == obj[context2] && item.id != obj.id;
+                return obj[context2] != null && obj[context2] != '' && item[context2] == obj[context2] && item.id != obj.id;
             } else {
                 return false;
             }
