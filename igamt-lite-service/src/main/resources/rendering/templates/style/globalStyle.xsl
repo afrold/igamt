@@ -27,6 +27,7 @@
         <xsl:text>.contentTable { width:100%; border-spacing: 0px;border-collapse: collapse; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px ; border-left-width: 1px; }</xsl:text>
         <xsl:text>.contentThead { background:#F0F0F0; color:#B21A1C; align:center; }</xsl:text>
         <xsl:text>.ifContentThead { background:#b3b3b3;}</xsl:text>
+        <xsl:text>img {text-align:center;}</xsl:text>
         <xsl:text>.contentTr { background-color:white; text-decoration:normal; }</xsl:text>
         <xsl:text>.constraintTr { background-color:#E8E8E8; text-decoration:normal; }</xsl:text>
         <xsl:text>.metadata { text-align:center; }</xsl:text>
