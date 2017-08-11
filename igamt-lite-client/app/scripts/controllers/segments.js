@@ -557,8 +557,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         var modalInstance = $mdDialog.show({
             templateUrl: 'otherDTModal.html',
             controller: 'otherDTCtrl',
-            // scope: $scope,        // use parent scope in template
-            // preserveScope: true,
+             scope: $scope,        // use parent scope in template
+             preserveScope: true,
             locals: {
 
                 datatypes:  $rootScope.datatypes,
