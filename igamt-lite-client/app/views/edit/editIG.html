@@ -18,7 +18,7 @@
         </div>
     </div>
     <form name="editForm" id="editForm" class="form-horizontal" novalidate unsaved-warning-form ng-show="isEditing" ng-controller="EditAreaCtrl" ng-init="init" ng-cloak>
-        <div>
+        <div class="row">
             <div class="col-md-12" ng-show="igDocumentMsg !== null">
                 <div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">
                     <md-button type="button" class="close" ng-click="igDocumentMsg.show = false">×</md-button>

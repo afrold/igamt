@@ -88,7 +88,7 @@
                                                     <div class="my-message">Extension is already used.</div>
                                                 </div>
                                                 <div ng-messages="editForm.ext.$error">
-                                                    <div ng-message="required">Extension is required.</div>
+                                                    <div class="message-error" ng-message="required">Extension is required.</div>
                                                 </div>
                                             </md-input-container>
 
@@ -1844,7 +1844,7 @@
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2> Select Datatype for {{::field.type}} : {{::field.name}} </h2>
+                    <h2> Change Data type for {{::field.type}} : {{::field.name}} </h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()">
                         <i class="material-icons">clear</i>
@@ -1867,7 +1867,7 @@
                             <display-label of="item" desc="true"></display-label>
                         </md-item-template>
                         <md-not-found>
-                            No Datatype matching were found.
+                            Data type not found.
                         </md-not-found>
                     </md-autocomplete>
 
