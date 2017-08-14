@@ -584,35 +584,35 @@ public class Segment extends DataModelWithConstraints
   
   private String generateIFAssertion(CoConstraintColumnDefinition definitionIF, CoConstraintIFColumnData ifData) {
     if (definitionIF.isPrimitive()) {
-      return "<PlainText Path=\"" + definitionIF.getConstraintPath() + "\" Text=\"" + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
+      return "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + "\" Text=\"" + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>";
     } else {
       if (ifData.getValueData().getBindingLocation() == null) {
-        return "<PlainText Path=\"" + definitionIF.getConstraintPath()
+        return "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".1[1]" + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath()
             + ".1[1]" + "\" Text=\"" + ifData.getValueData().getValue()
-            + "\" IgnoreCase=\"false\"/>";
+            + "\" IgnoreCase=\"false\"/></AND>";
       } else {
         // "1 or 4", "1 or 4 or 10"
         if (ifData.getValueData().getBindingLocation().equals("1 or 4")) {
-          return "<OR>" + "<PlainText Path=\""
+          return "<OR><AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".1[1]" + "\"/><PlainText Path=\""
               + definitionIF.getConstraintPath() + ".1[1]" + "\" Text=\""
-              + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-              + "<PlainText Path=\"" + definitionIF.getConstraintPath() + ".4[1]"
+              + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>"
+              + "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".4[1]" + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + ".4[1]"
               + "\" Text=\"" + ifData.getValueData().getValue()
-              + "\" IgnoreCase=\"false\"/>" + "</OR>";
+              + "\" IgnoreCase=\"false\"/></AND>" + "</OR>";
         } else if (ifData.getValueData().getBindingLocation().equals("1 or 4 or 10")) {
           return
-              "<OR><OR>" + "<PlainText Path=\"" + definitionIF.getConstraintPath()
+              "<OR><OR><AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".1[1]" + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath()
                   + ".1[1]" + "\" Text=\"" + ifData.getValueData().getValue()
-                  + "\" IgnoreCase=\"false\"/>" + "<PlainText Path=\""
+                  + "\" IgnoreCase=\"false\"/></AND>" + "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".4[1]" + "\"/><PlainText Path=\""
                   + definitionIF.getConstraintPath() + ".4[1]" + "\" Text=\""
-                  + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-                  + "</OR>" + "<PlainText Path=\"" + definitionIF.getConstraintPath()
+                  + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>"
+                  + "</OR><AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".10[1]" + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath()
                   + ".10[1]" + "\" Text=\"" + ifData.getValueData().getValue()
-                  + "\" IgnoreCase=\"false\"/>" + "</OR>";
+                  + "\" IgnoreCase=\"false\"/></AND></OR>";
         } else {
-          return "<PlainText Path=\"" + definitionIF.getConstraintPath() + "."
+          return "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + "." + ifData.getValueData().getBindingLocation() + "[1]" + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + "."
               + ifData.getValueData().getBindingLocation() + "[1]" + "\" Text=\""
-              + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
+              + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>";
         }
       }
     }
