@@ -339,7 +339,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     };
 
     $scope.logout = function() {
-        if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
+        if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.nges()) {
             var modalInstance = $mdDialog.show({
                 templateUrl: 'ConfirmLogout.html',
                 controller: 'ConfirmLogoutCtrl',
@@ -810,11 +810,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
     $rootScope.hasChanges = function() {
         // return Object.getOwnPropertyNames($rootScope.changes).length !== 0;
-        if($scope.editForm){
-            return $scope.editForm.$dirty&&!$scope.editForm.$pristine&&$rootScope.igChanged;
-        }else{
+        // if($scope.editForm){
+        //     return $scope.editForm.$dirty&&!$scope.editForm.$pristine&&$rootScope.igChanged;
+        // }else{
             return $rootScope.igChanged;
-        }
+        //}
         //return $rootScope.igChanged;
     };
 
