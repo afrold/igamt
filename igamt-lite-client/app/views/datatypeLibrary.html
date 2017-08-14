@@ -354,47 +354,28 @@ if (self === top) {
                     <md-tab-body>
 
                     <div  ng-controller="EditAreaCtrl" ng-init="init()">
-
-                        <div class="row">
-                            <div style="margin-top:0px; margin-left: 15px">
+                         <div style="margin-top:0px; margin-left: 15px">
                             <div class="page-header">
                                 <span class="header5">{{datatypeLibMetaDataCopy.name}}</span>
                             </div>
 
-                            <div class="static_info">
-                                <i class="fa fa-calendar" aria-hidden="true"></i>
-                                Updated {{datatypeLibMetaDataCopy.date | date:dateFormat}}
-                                <span ng-if="datatypeLibMetaDataCopy.orgName" style="font-style: italic;">
-                             <i class="fa fa-user" aria-hidden="true"></i>
-                             {{datatypeLibMetaDataCopy.orgName}}
-                           </span>
+                            <!--<div class="static_info">-->
+                                <!--<i class="fa fa-calendar" aria-hidden="true"></i>-->
+                                <!--Updated {{datatypeLibMetaDataCopy.dateUpdated}}-->
+                                <!--<span ng-if="datatypeLibMetaDataCopy.orgName" style="font-style: italic;">-->
+                             <!--<i class="fa fa-user" aria-hidden="true"></i>-->
+                             <!--{{datatypeLibMetaDataCopy.orgName}}-->
+                           <!--</span>-->
 
-                            </div>
-                            </div>
-                            <div class="col-md-12">
-
-
-
-                <!--<div class="btn-group">-->
-                    <!--<button type="button" class="btn btn-raised btn-info btn-sm"><span><i-->
-                            <!--class="fa fa-download fa-fw"></i> Export</span>-->
-                                <!--</button>-->
-                                <!--<button type="button" class="btn btn-raised btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">-->
-                        <!--<span class="caret"></span>-->
-                        <!--<span class="sr-only">Toggle Dropdown</span>-->
-                    <!--</button>-->
-                                <!--<ul class="dropdown-menu igl-menu" role="menu">-->
-                                    <!--<li><a class="point" ng-click="exportAs(libraryDoc.id,'docx')">As WORD()</a></li>-->
-                                    <!--<li><a class="point" ng-click="exportAs(libraryDoc.id,'html')">As HTML</a></li>-->
-                                <!--</ul>-->
                             <!--</div>-->
-                            <!--</span>-->
-                        <!--</div>-->
-                    <!---->
-                                <div layout="row">
-
-                                <md-menu-bar class=" ig-menu-bar " flex="100">
-                                    <md-menu class="pull-right">
+                         </div>
+                        <md-menu-bar class="ig-menu-bar col-md-12">
+                                    <div class="col-md-1" style="width:20px">
+                                        <md-button ng-click="showToc = !showToc" class="md-icon-button md-primary" aria-label="Settings">
+                                            <i class="fa fa-bars fa-2x white-color" style="margin-top:-3px !important;" aria-hidden="true"></i>
+                                        </md-button>
+                                    </div>
+                                    <md-menu flex class="pull-right">
                                         <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
                                         <button ng-click="confirmClose()" class="white-color">
 
@@ -423,26 +404,41 @@ if (self === top) {
                                     </md-menu>
 
 
-                                </md-menu-bar>
-                                </div>
-
-                    <div layout="row">
+                        </md-menu-bar>
 
 
-                                <div flex="30" class="tree-fixed" style="width:100%; max-height: 800px; overflow: scroll;background-color: rgba(238, 238, 238, 0.46); padding-top: 20px;">
-                                    <ng-include src="datatypeListView" />
-                                </div>
+                    <!--<div layout="row">-->
 
 
-                        <div flex="70">
-
-                            <div id="edit" class="subview-fixed" ng-show="subview" style="width:100%; max-height: 800px; background-color: white;overflow: scroll;">
-                                <div ng-include="subview"></div>
-                            </div>
+                                <!--<div flex="30" class="tree-fixed" style="width:100%; max-height: 800px; overflow: scroll;background-color: rgba(238, 238, 238, 0.46); padding-top: 20px;">-->
+                                    <!--<ng-include src="datatypeListView" />-->
+                                <!--</div>-->
 
 
-                        </div>
+                        <!--<div flex="70">-->
 
+                            <!--<div id="edit" class="subview-fixed" ng-show="subview" style="width:100%; max-height: 800px; background-color: white;overflow: scroll;">-->
+                                <!--<div ng-include="subview"></div>-->
+                            <!--</div>-->
+
+
+                        <!--</div>-->
+
+                        <!--</div>-->
+                    <!--</div>-->
+
+                        <div class="row">
+                                    <div  ng-show="showToc" class="col-md-3">
+                                        <div class="tree-fixed">
+                                            <ng-include src="datatypeListView">
+                                        </div>
+                                    </div>
+                                    <div ng-class="{'col-md-12': !showToc, 'col-md-9': showToc}" class="col-md-9">
+
+                                        <div id="edit" ng-show="subview" >
+                                            <div ng-include="subview"></div>
+                                        </div>
+                                    </div>
                         </div>
                     </div>
 
