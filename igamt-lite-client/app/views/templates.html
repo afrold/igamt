@@ -360,13 +360,11 @@
                 <div class="md-dialog-content">
                     <form class="form-horizontal" novalidate>
                         <div class="form-group">
-                            <div class="col-sm-11">
+                            <div class="col-sm-8">
                                 <input type="text" name="searchText" ng-model="searchText" class="form-control" placeholder="Search by Binding Indentifier">
                             </div>
-                            <div class="col-sm-1">
-                                <a ng-click="searchPhinvads(searchText)" class="point">
-                                    <span><i class="fa fa-search fa-fw"></i></span>
-                                </a>
+                            <div class="col-sm-2">
+                                <md-button class="btn btn-raised btn-primary btn-sm" ng-click="searchPhinvads(searchText)" > <i class="fa fa-search fa-fw"></i> Search</md-button>
                             </div>
                         </div>
                         
@@ -450,8 +448,8 @@
                     </form>
                 </div>
             </md-dialog-content>
-            <md-dialog-actions layout="row">
-                <md-button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading || selectedTables.length === 0" ng-click="save()"> save</md-button>
+            <md-dialog-actions layout="row" ng-if="searched">
+                <md-button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading || selectedTables.length === 0" ng-click="save()">Save</md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>
@@ -1014,7 +1012,7 @@
                                     {{v.description}}
                                 </td>
                                 <td class="col-md-1" align="center">
-                                    <span>
+                                    <span style="paddding-top:2px">
                                         <md-checkbox md-checked="isSelected(v)" ng-click="toggle(v)">
                                 </md-checkbox></span>
                                     <!--<a ng-show="isSelected(v)" ng-click="unselectValueSet(v)" class="point">-->
