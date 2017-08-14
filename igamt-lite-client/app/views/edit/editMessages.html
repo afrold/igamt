@@ -191,9 +191,9 @@
                                                         </div>
                                                         <div flex class="pull-right">
                                                             <md-menu class="pull-right">
-                                                                <md-button ng-click="$mdMenu.open()" class="menu-table menu-table-add">
+                                                                <button ng-click="$mdMenu.open()" class="btn btn-raised btn-sm menu-table menu-table-add">
                                                                     <i class="fa fa-plus fa-fw"></i> ADD
-                                                                </md-button>
+                                                                </button>
                                                                 <md-menu-content>
                                                                     <md-menu-item>
                                                                         <md-button   ng-click="addGroupModal(message)">
@@ -209,12 +209,17 @@
 
                                                             </md-menu>
                                                                 <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                                                <md-button ng-if="message.scope!=='HL7STANDARD'" title="Verify Message" type="button" ng-click="validateMessage()" class="pull-right menu-table menu-table-verify"><i class="fa fa-check fa-fw"></i> Verify</md-button>
+                                                                <button ng-if="message.scope!=='HL7STANDARD'" title="Verify Message" type="button" ng-click="validateMessage()" class="btn btn-raised btn-sm pull-right menu-table menu-table-verify"><i class="fa fa-check fa-fw"></i> Verify</button>
 
 
 
                                                                 <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                                                <span class="pull-right" ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>
+                                                            <md-select class="pull-right"  ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check>
+                                                                <md-optgroup label="Columns">
+                                                                    <md-option ng-repeat="opt in  viewSettings.columnOptions track by $index" ng-value="opt">{{opt.label}}</md-option>
+                                                                </md-optgroup>
+                                                            </md-select>
+
                                                         </div>
 
                                                     </div>
@@ -235,23 +240,23 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="panel-primary">
+                                                <div class="panel-primary" style="overflow-y: auto">
                                                 <table id="treeTable" tt-table tt-params="messagesParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                     <thead>
                                                     <tr class="tbl-header" style="">
-                                                        <th class="col-md-2 col-fixed-250">Name</th>
-                                                        <th class="col-md-1 col-fixed-80" style="text-align:center">Usage
+                                                        <th class="col-fixed-name">Name</th>
+                                                        <th class="col-fixed-usage" style="text-align:center">Usage
                                                             <button type="button" ng-show="(message.scope === 'USER') && !viewSettings.tableReadonly && (message.children.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(message)">O to X</button>
                                                         </th>
-                                                        <th class="col-md-1 col-fixed-100" style="text-align:center">Cardinality</th>
-                                                        <th class="col-md-1 col-fixed-100" style="text-align:center" ng-show="viewSettings.isVisibleColumn('length')">Length</th>
-                                                        <th class="col-md-1 col-fixed-80" ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')" style="text-align:center">ConfLength</th>
-                                                        <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:center">Data Type</th>
-                                                        <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Value Set/Single Code</th>
-                                                        <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">Constant Value</th>
-                                                        <th class="col-md-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('predicate')" style="text-align:center">Predicate</th>
-                                                        <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">Definition Text</th>
-                                                        <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">Comment</th>
+                                                        <th class="col-fixed-cardinality" style="text-align:center">Cardinality</th>
+                                                        <th class="col-fixed-length" style="text-align:center" ng-show="viewSettings.isVisibleColumn('length')">Length</th>
+                                                        <th class="col-fixed-confLength" ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')" style="text-align:center">ConfLength</th>
+                                                        <th class="col-fixed-dataType" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:center">Data Type</th>
+                                                        <th class="col-fixed-valueSet" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">Value Set/Single Code</th>
+                                                        <th class="col-fixed-constantValue" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:center">Constant Value</th>
+                                                        <th class="col-fixed-predicate" ng-show="viewSettings.isVisibleColumn('predicate')" style="text-align:center">Predicate</th>
+                                                        <th class="col-fixed-definitionText" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">Definition Text</th>
+                                                        <th class="col-fixed-comment" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:center">Comment</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody></tbody>

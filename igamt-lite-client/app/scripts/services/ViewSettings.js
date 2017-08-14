@@ -71,7 +71,12 @@ angular.module('igl').factory('ViewSettings',
                 StorageService.set(StorageService.TABLE_READONLY_SETTINGS, ViewSettings.tableReadonly);
             },
             isVisibleColumn: function (column) {
-                return ViewSettings.selectedColumns[column];
+
+
+               return  _.contains(_.map(ViewSettings.visibleColumns, function(col){ return col.id;}) ,column);
+            },
+            getPlaceHolder:function(){
+                return "Display Column"
             }
         };
         return ViewSettings;
