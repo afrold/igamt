@@ -161,18 +161,22 @@
                                                         </div>
                                                         <div flex class="pull-right">
 
-                                                                <md-button ng-click="addFieldModal(segment)" class="menu-table menu-table-add pull-right" ng-if="segment.scope=='USER'">
+                                                                <button ng-click="addFieldModal(segment)" class="btn btn-sm btn-raised menu-table menu-table-add pull-right" ng-if="segment.scope=='USER'">
                                                                     <i class="fa fa-plus fa-fw"></i> ADD
-                                                                </md-button>
+                                                                </button>
                                                             <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
 
 
-                                                            <md-button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right menu-table menu-table-verify" title="Validate Segment" type="button"
+                                                            <button ng-if="segment.scope!=='HL7STANDARD'" class="pull-right btn btn-sm btn-raised menu-table menu-table-verify" title="Validate Segment" type="button"
                                                                     ng-click="validateSegment()">
                                                                 <i class="fa fa-check fa-fw"></i> Verify
-                                                            </md-button>
+                                                            </button>
+                                                            <md-select class="pull-right"  ng-model="viewSettings.visibleColumns"  md-selected-text="viewSettings.getPlaceHolder()" multiple ng-model-options="{trackBy: '$value.id'}" no-dirty-check>
+                                                                <md-optgroup label="Columns">
+                                                                    <md-option ng-repeat="opt in  viewSettings.columnOptions track by $index" ng-value="opt">{{opt.label}}</md-option>
+                                                                </md-optgroup>
+                                                            </md-select>
                                                             <!--<md-button ng-click="close()" md-colors="{background:'orange'}">-->
-                                                            <span class="pull-right" ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns" events="viewSettings.events" extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -189,32 +193,32 @@
                                                     </div>
 
                                                      </div>
-                                                <div class="igl-def-table-container panel-primary">
+                                                <div class="igl-def-table-container panel-primary" style="overflow-x: scroll">
                                                     <table id="treeTable" tt-table tt-params="segmentsParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                                         <thead>
                                                             <tr class="tbl-header" style="">
-                                                                <th class="col-md-2 col-fixed-250">Name</th>
-                                                                <th class="col-md-1 col-fixed-80">Usage
+                                                                <th class="col-fixed-name">Name</th>
+                                                                <th class="col-fixed-usage">Usage
                                                                     <button type="button" ng-show="(segment.scope === 'USER') && !viewSettings.tableReadonly && (segment.fields.length>0)" class="btn btn-raised btn-info btn-xs" ng-click="OtoX(segment)">O to X
                                                                     </button>
                                                                 </th>
-                                                                <th  style="text-align:left">Cardinality
+                                                                <th  style="text-align:left" class="col-fixed-cardinality">Cardinality
                                                                 </th>
-                                                                <th style="text-align:left" ng-show="viewSettings.isVisibleColumn('length')">Length
+                                                                <th style="text-align:left" class="col-fixed-length" ng-show="viewSettings.isVisibleColumn('length')">Length
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-80" ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')" style="text-align:left">Conf. Length
+                                                                <th class="col-fixed-confLength" ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')" style="text-align:left">Conf. Length
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:left">Data Type
+                                                                <th class="col-fixed-dataType" ng-show="viewSettings.isVisibleColumn('datatype')" style="text-align:left">Data Type
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:left">Value Set/Single Code
+                                                                <th class="col-fixed-valueSet" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:left">Value Set/Single Code
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:left">Constant Value
+                                                                <th class="col-fixed-constantValue" ng-show="viewSettings.isVisibleColumn('singleElm')" style="text-align:left">Constant Value
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('predicate')" style="text-align:left">Predicate
+                                                                <th class="col-fixed-predicate" ng-show="viewSettings.isVisibleColumn('predicate')" style="text-align:left">Predicate
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:left">Definition Text
+                                                                <th class="col-fixed-definitionText" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:left">Definition Text
                                                                 </th>
-                                                                <th class="col-md-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:left">Comment
+                                                                <th class="col-fixed-comment" ng-show="viewSettings.isVisibleColumn('comment')" style="text-align:left">Comment
                                                                 </th>
                                                             </tr>
                                                         </thead>

@@ -7,7 +7,7 @@ angular.module('igl').factory('ViewSettings',
         var columnOptions = [
             { id: "length", label: "Length"},
             { id: "confLength", label: "Conf. Length"},
-            // { id: "datatype", label: "Datatype"},
+            { id: "datatype", label: "Datatype"},
             { id: "valueSet", label: "Value Set"},
             { id: "singleElm", label: "Constant Value"},
             { id: "predicate", label: "Predicate"},
@@ -71,7 +71,12 @@ angular.module('igl').factory('ViewSettings',
                 StorageService.set(StorageService.TABLE_READONLY_SETTINGS, ViewSettings.tableReadonly);
             },
             isVisibleColumn: function (column) {
-                return ViewSettings.selectedColumns[column];
+
+
+               return  _.contains(_.map(ViewSettings.visibleColumns, function(col){ return col.id;}) ,column);
+            },
+            getPlaceHolder:function(){
+                return "Display Column"
             }
         };
         return ViewSettings;

@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -255,11 +252,13 @@ public class ExportUtil {
 		return tmpHtmlFile;
 	}
 
-	private ByteArrayOutputStream cleanHtml(InputStream html) {
-		Tidy tidy = new Tidy();
+	public ByteArrayOutputStream cleanHtml(InputStream html) {
+			Properties oProps = new Properties();
+			oProps.setProperty("new-blocklevel-tags", "figcaption");
+			Tidy tidy = new Tidy();
+			tidy.setConfigurationFromProps(oProps);
 		tidy.setWraplen(Integer.MAX_VALUE);
 		tidy.setDropEmptyParas(true);
-		tidy.setCharEncoding(org.w3c.tidy.Configuration.UTF8);
 		tidy.setXHTML(true);
 		tidy.setShowWarnings(false); // to hide errors
 		tidy.setQuiet(true); // to hide warning
