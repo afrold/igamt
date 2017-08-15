@@ -28,21 +28,21 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         node.attributes.maxLength = null;
         node.minLength =  node.attributes.oldMinLength != 'NA' ? node.attributes.oldMinLength: '';
         node.maxLength =  node.attributes.oldMaxLength != 'NA' ? node.attributes.oldMaxLength: '';
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
 
     $scope.editConfL = function(node){
         node.confLength =  node.attributes.oldConfLength != 'NA' ? node.attributes.oldConfLength : '';
         node.attributes.confLength =  null;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
 
     $scope.clearConfL = function(node){
         node.confLength = "NA";
         node.attributes.confLength = "NA";
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
 
@@ -51,7 +51,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         node.maxLength = "NA";
         node.attributes.minLength = "NA";
         node.attributes.maxLength = "NA";
-        $scope.setDirty();
+       $rootScope.recordChanged ();
     };
 
     $scope.confLengthPattern= '[1-9]\\d*[#=]{0,1}';
@@ -100,10 +100,9 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         }
     };
 
-    $scope.print=function(node){
-        console.log(node);
-        console.log("=====================")
-        console.log($scope.findingBindings2(node));
+    $scope.print=function(x){
+
+        console.log(x);
     }
     $scope.findingBindingsPc = function(node) {
         var result = [];
@@ -295,7 +294,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         });
 
         modalInstance.then(function() {
-            $scope.setDirty();
+           $rootScope.recordChanged();
             $scope.editForm.$pristine=false;
         });
     };
@@ -314,7 +313,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         modalInstance.then(function(node) {
             console.log("node");
             console.log(node);
-            $scope.setDirty();
+           $rootScope.recordChanged ();
             $scope.editForm.$pristine=false;
         });
     };
@@ -363,7 +362,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             if (mapping) {
                 console.log(mapping);
                 node.attributes.dynamicMappingDefinition = mapping;
-                $scope.setDirty()
+               $rootScope.recordChanged ()
                 $scope.editForm.$pristine=false;
             }
         });
@@ -399,7 +398,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             if (coCon) {
                 console.log(coCon);
                 node.attributes.coConstraintsTable = coCon;
-                $scope.setDirty();
+               $rootScope.recordChanged ();
                 $scope.editForm.$pristine=false;
             }
         });
@@ -423,7 +422,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         }).then(function(obj) {
             if (obj) {
                 node.attributes.conformanceStatements = obj.conformanceStatements;
-                $scope.setDirty();
+               $rootScope.recordChanged ();
             }
         });
     };
@@ -447,7 +446,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         }).then(function(obj) {
             if (obj) {
                 node.attributes.conformanceStatements = obj.conformanceStatements;
-                $scope.setDirty();
+               $rootScope.recordChanged ();
                 $scope.editForm.$pristine=false;
             }
         });
@@ -478,7 +477,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 node.attributes.predicate = predicate;
 
                 console.log(predicate);
-                $scope.setDirty();
+               $rootScope.recordChanged ();
                 $scope.editForm.$pristine=false;
             }
         }, function() {});
@@ -509,7 +508,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         }).then(function(predicate) {
             if (predicate) {
                 node.attributes.predicate = predicate;
-                $scope.setDirty();
+               $rootScope.recordChanged ();
                 $scope.editForm.$pristine=false;
             }
             node.path = oldPath;
@@ -526,8 +525,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         sev.name = node.name;
         console.log(sev);
         node.singleElementValues = sev;
-        $scope.setDirty();
-        $scope.editForm.$pristine=false;
+       $rootScope.recordChanged ();
+        // $scope.editForm.$pristine=false;
     };
     $scope.findAllGlobalConstraints = function() {
         $scope.listGlobalConformanceStatements = [];
@@ -575,8 +574,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             // node.singleElementValues = angular.copy(node.oldSingleElementValues);
             node.singleElementValues.value = value;
             $scope.initSev(node);
-            $scope.setDirty();
-            $scope.editForm.$pristine=false;
+           $rootScope.recordChanged ();
+            //$scope.editForm.$pristine=false;
         });
     };
     $scope.hasChildren = function(node) {
@@ -620,7 +619,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
 
         }).then(function(results) {
-            $scope.setDirty();
+           $rootScope.recordChanged ();
             $scope.editForm.$pristine=false;
             if ($scope.profileComponentParams) {
                 $scope.profileComponentParams.refresh();
@@ -635,8 +634,8 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         for (var i = index; i < $rootScope.profileComponent.children.length; i++) {
             $rootScope.profileComponent.children[i].position--;
         }
-        $scope.setDirty();
-        $scope.editForm.$pristine=false;
+       $rootScope.recordChanged ();
+      //  $scope.editForm.$pristine=false;
         if ($scope.profileComponentParams) {
             $scope.profileComponentParams.refresh();
         }
@@ -694,35 +693,35 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
     $scope.cancelBinding = function(node) {
         node.valueSetBindings = null;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
 
     };
     $scope.cancelComments = function(node) {
         node.comments = null;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
 
     };
     $scope.cancelPredicate = function(node) {
         node.attributes.predicate = null;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
 
     };
     $scope.cancelConfSt = function(node) {
         node.attributes.conformanceStatements = null;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
     $scope.cancelDynMap = function(node) {
         node.attributes.dynamicMappingDefinition = null;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
     $scope.cancelCoCon = function(node) {
         node.attributes.coConstraintsTable = null;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
     $scope.initUsage = function(node) {
@@ -742,7 +741,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.cancelUsage = function(field) {
         field.attributes.usage = null;
         field.usage = field.attributes.oldUsage;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
     $scope.initMinCard = function(node) {
@@ -763,7 +762,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.cancelMinCard = function(field) {
         field.attributes.min = null;
         field.min = field.attributes.oldMin;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
 
@@ -772,7 +771,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.min = field.attributes.oldMin;
         field.attributes.max = null;
         field.max = field.attributes.oldMax;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
 
@@ -796,7 +795,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.attributes.max = null;
         field.max = field.attributes.oldMax;
 
-        $scope.setDirty()
+       $rootScope.recordChanged ()
         $scope.editForm.$pristine=false;
     };
     $scope.initMinL = function(node) {
@@ -839,7 +838,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.maxLength = field.attributes.oldMaxLength;
         // field.attributes.confLength = null;
         // field.confLength = field.attributes.oldConfLength;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
 
@@ -847,7 +846,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.attributes.minLength = null;
         field.minLength = field.attributes.oldMinLength;
 
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
     $scope.initMaxL = function(node) {
@@ -872,7 +871,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.cancelMaxL = function(field) {
         field.attributes.maxLength = null;
         field.maxLength = field.attributes.oldMaxLength;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
 
@@ -905,7 +904,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         // field.maxLength = field.attributes.oldMaxLength;
         field.attributes.confLength = null;
         field.confLength = field.attributes.oldConfLength;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
     $scope.initDatatype = function(node) {
@@ -930,7 +929,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             field.attributes.datatype = null;
             field.datatype = field.attributes.oldDatatype;
             $scope.editableDT = '';
-            $scope.setDirty();
+           $rootScope.recordChanged ();
             $scope.editForm.$pristine=false;
         }else{
             $scope.cannotFindOldValue(field.attributes.oldDatatype);
@@ -952,19 +951,19 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
     $scope.cancelDefText = function(field) {
         field.attributes.text = null;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
     $scope.cancelTables = function(field) {
         field.attributes.tables = field.attributes.oldTables;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
 
 
     $scope.cancelRef = function(field) {
         field.attributes.ref = field.attributes.oldRef;
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     }
     $scope.editableDT = '';
@@ -993,7 +992,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
 
 
-            $scope.setDirty();
+           $rootScope.recordChanged ();
             $scope.editForm.$pristine=false;
             if ($scope.profileComponentParams)
                 $scope.profileComponentParams.refresh();
@@ -1025,7 +1024,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
         });
         modalInstance.result.then(function(field) {
-            $scope.setDirty();
+           $rootScope.recordChanged ();
             $scope.editForm.$pristine=false;
 
         });
@@ -1048,7 +1047,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
         });
         modalInstance.result.then(function(field) {
-            $scope.setDirty();
+           $rootScope.recordChanged ();
             $scope.editForm.$pristine=true;
 
         });
@@ -1066,7 +1065,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
 
         });
         modalInstance.then(function(field) {
-            $scope.setDirty();
+           $rootScope.recordChanged ();
             $scope.editForm.$pristine=false;
 
         });
@@ -1094,7 +1093,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             console.log(attr);
             console.log(field);
             field.datatype = attr.datatype;
-            $scope.setDirty();
+           $rootScope.recordChanged ();
             $scope.editForm.$pristine=false;
             $scope.editableDT = '';
             if ($scope.profileComponentParams) {
@@ -1128,7 +1127,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
                 label: flavor.label
             };
 
-            $scope.setDirty();
+           $rootScope.recordChanged ();
             $scope.editForm.$pristine=false;
             $scope.editableRef = '';
         };
@@ -1164,7 +1163,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         });
         modalInstance.result.then(function(node) {
             $scope.selectedNode = node;
-            $scope.setDirty();
+           $rootScope.recordChanged ();
             $scope.editForm.$pristine=false;
             $scope.segmentsParams.refresh();
         }, function() {});
@@ -1336,9 +1335,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
     $scope.node = angular.copy(node);
     $scope.seg = angular.copy($rootScope.segmentsMap[node.attributes.ref.id]);
     $scope.changed = false;
-    $scope.setDirty = function() {
-        $scope.changed = true;
-    };
+
     $scope.findCoConstraints = function() {
         if ($scope.node.type === "segmentRef") {
             if ($scope.node.attributes.coConstraintsTable && $scope.node.attributes.coConstraintsTable.rowSize > 0) {
@@ -1397,7 +1394,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
 
             $scope.coConstraintsTable.ifColumnDefinition = ifColumnDefinition;
         }
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.coConTable = true;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
@@ -1695,7 +1692,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
     $scope.saveValueSet = function() {
         if ($scope.data) {
             $scope.coConstraintsTable.thenMapData[$scope.currentId][$scope.currentIndex] = angular.copy($scope.data);
-            $scope.setDirty();
+           $rootScope.recordChanged ();
 
         }
         $scope.coConTable = true;
@@ -1708,7 +1705,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
     $scope.saveUSERData = function() {
         if ($scope.data) {
             $scope.coConstraintsTable.userMapData[$scope.currentId][$scope.currentIndex] = angular.copy($scope.data);
-            $scope.setDirty();
+           $rootScope.recordChanged ();
         }
         $scope.coConTable = true;
         $scope.ifAddCoCon = false;
@@ -1760,7 +1757,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
                 }
             }
         }
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.coConTable = true;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
@@ -1913,7 +1910,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
             }
         }
         $scope.initCoConstraintsTable();
-        $scope.setDirty();
+       $rootScope.recordChanged ();
         $scope.coConTable = true;
         $scope.ifAddCoCon = false;
         $scope.thenAddCoCon = false;
@@ -1926,7 +1923,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         $scope.coConstraintsTable.ifColumnData = [];
 
         $scope.resetCoConstraintsTable();
-        $scope.setDirty();
+       $rootScope.recordChanged ();
     };
     $scope.delCoConstraintTHENDefinition = function(columnDefinition) {
         var index = $scope.coConstraintsTable.thenColumnDefinitionList.indexOf(columnDefinition);
@@ -1937,7 +1934,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         };
 
         $scope.resetCoConstraintsTable();
-        $scope.setDirty();
+       $rootScope.recordChanged ();
     };
     $scope.delCoConstraintUSERDefinition = function(columnDefinition) {
         console.log(columnDefinition);
@@ -1949,7 +1946,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         };
 
         $scope.resetCoConstraintsTable();
-        $scope.setDirty();
+       $rootScope.recordChanged ();
     };
     $scope.resetCoConstraintsTable = function() {
         if (!$scope.coConstraintsTable.ifColumnDefinition) {
@@ -2075,7 +2072,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         if(isAdded) {
             $scope.coConstraintsTable.rowSize = $scope.coConstraintsTable.rowSize + 1;
             $scope.initRowIndexForCocon();
-            $scope.setDirty();
+           $rootScope.recordChanged ();
         }
     };
     $scope.cloneCoConstraintRow = function (rowIndex){
@@ -2113,7 +2110,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
 
         $scope.coConstraintsTable.rowSize = $scope.coConstraintsTable.rowSize + 1;
         $scope.initRowIndexForCocon();
-        $scope.setDirty();
+       $rootScope.recordChanged ();
     };
     $scope.delCoConstraintRow = function (rowIndex){
         if($scope.coConstraintsTable.ifColumnDefinition){
@@ -2142,7 +2139,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
 
         $scope.coConstraintsTable.rowSize = $scope.coConstraintsTable.rowSize - 1;
         $scope.initRowIndexForCocon();
-        $scope.setDirty();
+       $rootScope.recordChanged ();
     };
     $scope.cancel = function() {
         $mdDialog.hide();
@@ -2155,7 +2152,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         var index = array.indexOf(item);
         if (index >= 0) {
             array.splice(index, 1);
-            $scope.setDirty();
+           $rootScope.recordChanged ();
         }
     };
     $scope.coConSortableOption = {
@@ -2198,7 +2195,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
                 }
             }
             $scope.initRowIndexForCocon();
-            $scope.setDirty();
+           $rootScope.recordChanged ();
         }
     };
     $scope.editUserData = function (currentId, currentIndex) {
@@ -2218,7 +2215,7 @@ angular.module('igl').controller('AddDynamicMappingCtrlInPc', function($scope, $
     $scope.node = angular.copy(node);
     console.log($rootScope.dynamicMappingTable);
     $scope.changed = false;
-    $scope.setDirty = function() {
+   $rootScope.recordChanged  = function() {
         $scope.changed = true;
     };
     $scope.findDynamicMapping = function(node) {
@@ -2282,7 +2279,7 @@ angular.module('igl').controller('AddDynamicMappingCtrlInPc', function($scope, $
         var index = $scope.dynamicMappingDefinition.dynamicMappingItems.indexOf(item);
         if (index >= 0) {
             $scope.dynamicMappingDefinition.dynamicMappingItems.splice(index, 1);
-            $scope.setDirty();
+           $rootScope.recordChanged ();
         }
     };
 
@@ -2292,7 +2289,7 @@ angular.module('igl').controller('AddDynamicMappingCtrlInPc', function($scope, $
         newItem.secondReferenceValue = null;
         newItem.datatypeId = null;
         $scope.dynamicMappingDefinition.dynamicMappingItems.push(newItem);
-        $scope.setDirty();
+       $rootScope.recordChanged ();
     };
 
     $scope.getDefaultStatus = function(code) {

@@ -3,10 +3,11 @@ angular.module('igl')
 
         $scope.initArea = function() {
             if ($scope.editForm) {
-                $rootScope.clearChanges();
                 $scope.editForm.$setPristine();
                 $scope.editForm.$dirty = false;
                 console.log("=====> set $dirty to false")
+                $rootScope.clearChanges();
+
             }
         };
 
@@ -22,11 +23,24 @@ angular.module('igl')
                 return $scope.editForm != undefined && $scope.editForm.$dirty;
             },
             function handleFormState(newValue) {
-                console.log($scope.editForm);
+                // console.log($scope.editForm);
                 if (newValue) {
                     $rootScope.recordChanged();
                 } else {
                     $rootScope.clearChanges();
+                }
+            }
+        );
+        $scope.$watch(
+            function() {
+                return $rootScope.igChanged;
+            },
+            function handleFormState(newValue) {
+                // console.log($scope.editForm);
+                if (newValue) {
+                    $scope.setDirty();
+                } else {
+                    $scope.clearDirty();
                 }
             }
         );
