@@ -57,7 +57,7 @@ public class SerializeTableServiceImpl implements SerializeTableService {
 
 	@Override
 	public SerializableTable serializeTable(Table table) {
-		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig("table");
+		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig("table", true);
 		return serializeTable(table,String.valueOf(0),String.valueOf(1),1,defaultConfig.getCodesExport(),defaultConfig.getValueSetsMetadata());
 	}
 	

@@ -112,7 +112,7 @@ public class ExportServiceImpl implements ExportService {
 		if(document!=null){
 			try {
 				ExportFontConfig exportFontConfig = exportFontConfigService.getDefaultExportFontConfig();
-				ExportParameters exportParameters = exportUtil.setExportParameters(title, false, false, EXPORT_FORMAT_HTML, ExportConfig.getBasicExportConfig("table"), exportFontConfig);
+				ExportParameters exportParameters = exportUtil.setExportParameters(title, false, false, EXPORT_FORMAT_HTML, ExportConfig.getBasicExportConfig("table",true), exportFontConfig);
 				return IOUtils.toString(exportUtil.exportAsHtmlFromXsl(document.toXML(), GLOBAL_STYLESHEET, exportParameters, null));
 			} catch (Exception e) {
 				e.printStackTrace();

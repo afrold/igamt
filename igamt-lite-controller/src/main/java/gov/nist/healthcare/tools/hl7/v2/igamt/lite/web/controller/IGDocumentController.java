@@ -1013,7 +1013,7 @@ public class IGDocumentController extends CommonController {
     ExportConfig exportConfig =
         exportConfigService.findOneByTypeAndAccountId(identifyType(type), account.getId());
     if (exportConfig == null) {
-      exportConfig = ExportConfig.getBasicExportConfig(type);
+      exportConfig = ExportConfig.getBasicExportConfig(type, false);
     }
     ExportFontConfig exportFontConfig = null;
     List<ExportFontConfig> existing = exportFontConfigService.findOneByAccountId(account.getId());
@@ -1196,7 +1196,7 @@ public class IGDocumentController extends CommonController {
     ExportConfig exportConfig =
         exportConfigService.findOneByTypeAndAccountId(identifyType(type), account.getId());
     if (exportConfig == null) {
-      exportConfig = ExportConfig.getBasicExportConfig(type);
+      exportConfig = ExportConfig.getBasicExportConfig(type, false);
     }
     ExportFontConfig exportFontConfig = null;
     List<ExportFontConfig> existing = exportFontConfigService.findOneByAccountId(account.getId());

@@ -97,7 +97,7 @@ public class ExportConfigController {
     } catch (Exception e) {
       logger.warn("Unable to restore the default config: " + e.getMessage());
     }
-    currentConfig = ExportConfig.getBasicExportConfig(exportConfig.getType());
+    currentConfig = ExportConfig.getBasicExportConfig(exportConfig.getType(), false);
     return currentConfig;
 
   }
@@ -116,7 +116,7 @@ public class ExportConfigController {
       logger.warn("Unable to find the current config: " + e.getMessage());
     }
     if (null == currentConfig) {
-      currentConfig = ExportConfig.getBasicExportConfig(type);
+      currentConfig = ExportConfig.getBasicExportConfig(type,false);
     }
     return currentConfig;
   }

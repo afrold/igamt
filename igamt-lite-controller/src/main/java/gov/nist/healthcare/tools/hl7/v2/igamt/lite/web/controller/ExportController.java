@@ -139,13 +139,18 @@ import io.swagger.annotations.ApiResponses;
         if(scope.equals(Constant.SCOPE.HL7STANDARD.name()) || scope.equals(Constant.SCOPE.PHINVADS.name())){
             if((bindingIdentifier != null && !bindingIdentifier.isEmpty()) || (hl7Version != null && !hl7Version.isEmpty())){
                 if(bindingIdentifier != null && !bindingIdentifier.isEmpty()){
-                    if(hl7Version != null && !hl7Version.isEmpty()){
-                        Table table = tableService.findByScopeAndVersionAndBindingIdentifier(Constant.SCOPE.HL7STANDARD,bindingIdentifier, hl7Version);
-                        if(table != null){
-	                        String html = exportService
-	                            .exportDataModelAsHtml(table, table.getName(), generateHost(request));
-	                        return new ExportableDataModel(html,table);
-                        }
+                	Table table = null;
+                	if(scope.equals(Constant.SCOPE.HL7STANDARD.name())){
+	                	if(hl7Version != null && !hl7Version.isEmpty()){
+	                        table = tableService.findByScopeAndVersionAndBindingIdentifier(Constant.SCOPE.HL7STANDARD, hl7Version, bindingIdentifier);
+	                    }
+                    } else if (scope.equals(Constant.SCOPE.PHINVADS.name())){
+                    	table = tableService.findOneByScopeAndBindingIdentifier(scope, bindingIdentifier);
+                    }
+                	if(table != null){
+                        String html = exportService
+                            .exportDataModelAsHtml(table, table.getName(), generateHost(request));
+                        return new ExportableDataModel(html,table);
                     }
                 }
             }
@@ -270,7 +275,7 @@ import io.swagger.annotations.ApiResponses;
             try {
                 return IOUtils.toString(exportService
                     .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,
-                        ExportConfig.getBasicExportConfig("table"),
+                        ExportConfig.getBasicExportConfig("table", true),
                         exportFontConfigService.getDefaultExportFontConfig()));
             } catch (Exception e) {
                 e.printStackTrace();
