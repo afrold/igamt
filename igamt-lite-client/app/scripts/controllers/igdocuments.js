@@ -2576,6 +2576,7 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
     $scope.uploader = {};
 
     $scope.successUpload = function ($file, $message, $data) {
+        console.log("====called successI")
         $scope.editForm.$dirty = true;
         var link = JSON.parse($message);
         $rootScope.metaData.coverPicture = link.link;
