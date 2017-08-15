@@ -10,6 +10,10 @@ angular.module('igl')
 
             }
         };
+        $scope.printForm=function () {
+            console.log("Print form ")
+            console.log($scope.editForm);
+        }
 
         $scope.confLengthPattern= '[1-9]\\d*[#=]{0,1}';
 
@@ -20,10 +24,11 @@ angular.module('igl')
 
         $scope.$watch(
             function() {
-                return $scope.editForm != undefined && $scope.editForm.$dirty;
+                return $scope.editForm&&$scope.modified();
             },
             function handleFormState(newValue) {
                 // console.log($scope.editForm);
+
                 if (newValue) {
                     $rootScope.recordChanged();
                 } else {
@@ -48,8 +53,11 @@ angular.module('igl')
 
         $scope.setDirty = function() {
             $scope.editForm.$dirty = true;
-
+            $scope.editForm.$pristine = false;
         };
+        $scope.modified=function () {
+            return $scope.editForm.$dirty&&!$scope.editForm.$pristine;
+        }
 
         $scope.setUsage = function(node) {
             ElementUtils.setUsage(node);

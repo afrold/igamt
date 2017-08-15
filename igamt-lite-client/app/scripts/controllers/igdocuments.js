@@ -2574,6 +2574,15 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
     $scope.saving = false;
     $scope.saved = false;
     $scope.uploader = {};
+    $scope.copy=angular.copy()
+
+    $scope.init=function(){
+        if(!$rootScope.metaData.implementationNotes){
+            $rootScope.metaData.implementationNotes="";
+        }
+    }
+
+
 
     $scope.successUpload = function ($file, $message, $data) {
         console.log("====called successI")

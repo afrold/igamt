@@ -820,7 +820,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     };
 
     $rootScope.recordChanged = function() {
-        console.log("Calling=============")
+        console.log("========");
         $rootScope.igChanged = true;
 
     };

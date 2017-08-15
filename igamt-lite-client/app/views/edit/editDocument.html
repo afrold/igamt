@@ -13,18 +13,18 @@
 </script>
 <script type="text/ng-template" id="EditDocumentMetadata.html">
 
-    <div ng-controller="DocumentMetaDataCtrl" class="container">
+    <div ng-controller="DocumentMetaDataCtrl" class="container" ng-cloak ng-init="init()">
         <div class="container">
             <div ng-show="metaData !== null">
                     <div class="page-header">
                         <span class="header4">IG Document Metadata</span>
             <span class="pull-right">
-            <md-button title="Save Changes" class="btn btn-raised btn-sm btn-success"
-                 ng-disabled="editForm.$invalid || !editForm.$dirty"
+                <md-button title="Save Changes" class="btn btn-raised btn-sm btn-success"
+                 ng-disabled="editForm.$invalid || !modified()"
                  ng-hide="viewSettings.tableReadonly"
                  ng-click="save()">
-             <span><i class="fa fa-check fa-fw"></i> Save</span>
-            </md-button>
+                 <span><i class="fa fa-check fa-fw"></i> Save </span>
+               </md-button>
 
                 <!--<button ng-show="editForm.$invalid" title="The data you entered are invalid. Please fix data before saving" class="btn btn-raised btn-sm btn-primary"-->
                         <!--ng-disabled="editForm.$invalid || !editForm.$dirty"-->
@@ -32,15 +32,16 @@
                         <!--ng-click="save()">-->
                     <!--<span><i class="fa fa-check fa-fw"></i> Save</span>-->
                 <!--</button>-->
-
-                         <md-button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
+                <md-button title="Cancel Changes" type="button" class="btn btn-raised btn-sm btn-warning"
                                  ng-disabled="!editForm.$dirty"
                                  ng-hide="viewSettings.tableReadonly"
                                  ng-click="reset()">
                              <span><i class="fa fa-times fa-fw"></i>Reset</span>
-                         </md-button>
-                    </span>
+                </md-button>
+            </span>
+
                     </div>
+
 
                 <!--<div class="static_info">-->
                  <!--<i class="fa fa-calendar" aria-hidden="true"></i>-->
@@ -52,7 +53,7 @@
                     <!--<span>,HL7 Version: {{igdocument.profile.metaData.hl7Version}}</span>-->
                 <!--</div>-->
 
-                <div style="margin-top: 20px" ng-cloak class="md-inline-form metadata-scroll" layout="column">
+                <div style="margin-top: 20px"  class="md-inline-form metadata-scroll" layout="column">
                     <md-content layout-padding>
 
                         <label class="input-left igamt-label">Cover Picture</label>
@@ -155,12 +156,12 @@
 
                         <label class="input-left igamt-label">Notes</label>
                         <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px" >
-                            <div  ng-if="!viewSettings.tableReadonly">
-                                                         <textarea froala="froalaEditorOptions" md-select-on-focus
-                                                                   ng-model="metaData.implementationNotes" name="igNotes"
+                            <div  ng-show="!viewSettings.tableReadonly">
+                                                         <textarea froala="froalaEditorOptions" no-dirty-check
+                                                                   ng-model="metaData.implementationNotes" name="igNotes" ng-change="recordChanged()"
                                                                    id="igNotes"></textarea>
                             </div>
-                            <div class="fr-view" ng-if="viewSettings.tableReadonly">
+                            <div class="fr-view" ng-show="viewSettings.tableReadonly">
                                 <div froala-view="metaData.implementationNotes"></div>
                             </div>
                         </md-input-container>
