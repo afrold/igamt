@@ -13,7 +13,7 @@
 </script>
 <script type="text/ng-template" id="EditDocumentMetadata.html">
 
-    <div ng-controller="DocumentMetaDataCtrl" ng-init="init()" class="container">
+    <div ng-controller="DocumentMetaDataCtrl" class="container">
         <div class="container">
             <div ng-show="metaData !== null">
                     <div class="page-header">
@@ -106,7 +106,6 @@
                         <md-input-container class="md-block igamt-input-block" flex-gt-sm>
 
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
-                                   ng-change="setDirty()"
                                    name="title"
                                    ng-model="metaData.title"
                                    required>
@@ -124,7 +123,6 @@
                         <md-input-container class="md-block igamt-input-block" flex-gt-sm>
 
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
-                                   ng-change="setDirty()"
                                    name="subTitle"
                                    ng-model="metaData.subTitle"
                                    >
@@ -135,7 +133,6 @@
                         <label class="input-left igamt-label">Organization   </label>
                         <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
-                                   ng-change="setDirty()"
                                    name="orgName"
                                    ng-model="metaData.orgName"
                                    >
@@ -148,7 +145,6 @@
                         <label class="input-left igamt-label">Extension </label>
                         <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                             <input type="text" ng-disabled="viewSettings.tableReadonly"
-                                   ng-change="setDirty()"
                                    name="ext"
                                    ng-model="metaData.ext"
                             >
@@ -162,47 +158,12 @@
                             <div  ng-if="!viewSettings.tableReadonly">
                                                          <textarea froala="froalaEditorOptions" md-select-on-focus
                                                                    ng-model="metaData.implementationNotes" name="igNotes"
-                                                                   id="igNotes" ng-change="setDirty()"></textarea>
+                                                                   id="igNotes"></textarea>
                             </div>
                             <div class="fr-view" ng-if="viewSettings.tableReadonly">
                                 <div froala-view="metaData.implementationNotes"></div>
                             </div>
                         </md-input-container>
-
-
-                        <!--<md-input-container class="md-block" flex-gt-sm>-->
-                            <!--<label class="input-left">Specification</label>-->
-                            <!--<input type="text" ng-disabled="viewSettings.tableReadonly"-->
-                                   <!--ng-change="setDirty()"-->
-                                   <!--name="specificationName"-->
-                                   <!--ng-model="metaData.specificationName"-->
-                            <!--&gt;-->
-                            <!--<div ng-messages="editForm.specificationName.$error">-->
-                            <!--</div>-->
-                        <!--</md-input-container>-->
-
-
-                        <!--<md-input-container class="md-block" flex-gt-sm>-->
-                            <!--<label class="input-left">Status</label>-->
-                            <!--<input type="text" ng-disabled="viewSettings.tableReadonly"-->
-                                   <!--ng-change="setDirty()"-->
-                                   <!--name="status"-->
-                                   <!--ng-model="metaData.status"-->
-                            <!--&gt;-->
-                            <!--<div ng-messages="editForm.status.$error">-->
-                            <!--</div>-->
-                        <!--</md-input-container>-->
-
-                        <!--<md-input-container class="md-block" flex-gt-sm>-->
-                            <!--<label class="input-left">Topics</label>-->
-                            <!--<input type="text" ng-disabled="viewSettings.tableReadonly"-->
-                                   <!--ng-change="setDirty()"-->
-                                   <!--name="topics"-->
-                                   <!--ng-model="metaData.topics"-->
-                            <!--&gt;-->
-                            <!--<div ng-messages="editForm.topics.$error">-->
-                            <!--</div>-->
-                        <!--</md-input-container>-->
                     </md-content>
                 </div>
             </div>
