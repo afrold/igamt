@@ -59,7 +59,7 @@ import java.util.ArrayList;
 
 
 
-    public static ExportConfig getBasicExportConfig(String type) {
+    public static ExportConfig getBasicExportConfig(String type, boolean setAllTrue) {
         ExportConfig defaultConfiguration = new ExportConfig();
         defaultConfiguration.setDefaultType(true);
         defaultConfiguration.setAccountId(null);
@@ -74,12 +74,12 @@ import java.util.ArrayList;
         UsageConfig displayAll = new UsageConfig();
         UsageConfig displaySelectives = new UsageConfig();
         displaySelectives.setC(true);
-        displaySelectives.setX(false);
-        displaySelectives.setO(false);
+        displaySelectives.setX(setAllTrue);
+        displaySelectives.setO(setAllTrue);
         displaySelectives.setR(true);
         displaySelectives.setRe(true);
         CodeUsageConfig codeUsageExport = new CodeUsageConfig();
-        codeUsageExport.setE(false);
+        codeUsageExport.setE(setAllTrue);
         codeUsageExport.setP(true);
         codeUsageExport.setR(true);
 
@@ -116,22 +116,22 @@ import java.util.ArrayList;
         messageColumnsDefaultList
             .add(new NameAndPositionAndPresence("Element Name", 3, true, true));
         messageColumnsDefaultList
-            .add(new NameAndPositionAndPresence("Cardinality", 4, true, false));
-        messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true, false));
-        messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true, false));
+            .add(new NameAndPositionAndPresence("Cardinality", 4, true, setAllTrue));
+        messageColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 5, true, setAllTrue));
+        messageColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 1, true, setAllTrue));
 
         ArrayList<NameAndPositionAndPresence> segmentColumnsDefaultList =
             new ArrayList<NameAndPositionAndPresence>();
         segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true, true));
         segmentColumnsDefaultList
-            .add(new NameAndPositionAndPresence("Conformance Length", 2, false, false));
-        segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, false));
-        segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, false));
+            .add(new NameAndPositionAndPresence("Conformance Length", 2, setAllTrue, setAllTrue));
+        segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, setAllTrue));
+        segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, setAllTrue));
         segmentColumnsDefaultList
-            .add(new NameAndPositionAndPresence("Cardinality", 5, true, false));
-        segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 6, false, false));
-        segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 7, true, false));
-        segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 8, true, false));
+            .add(new NameAndPositionAndPresence("Cardinality", 5, true, setAllTrue));
+        segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 6, setAllTrue, setAllTrue));
+        segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 7, true, setAllTrue));
+        segmentColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 8, true, setAllTrue));
 
 
 
@@ -140,12 +140,12 @@ import java.util.ArrayList;
 
         dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Name", 1, true, true));
         dataTypeColumnsDefaultList
-            .add(new NameAndPositionAndPresence("Conformance Length", 2, false, false));
-        dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, false));
-        dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, false));
-        dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, false, false));
-        dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, false));
-        dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, false));
+            .add(new NameAndPositionAndPresence("Conformance Length", 2, setAllTrue, setAllTrue));
+        dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Data Type", 3, true, setAllTrue));
+        dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Usage", 4, true, setAllTrue));
+        dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Length", 5, setAllTrue, setAllTrue));
+        dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Value Set", 6, true, setAllTrue));
+        dataTypeColumnsDefaultList.add(new NameAndPositionAndPresence("Comment", 7, true, setAllTrue));
 
 
 
@@ -160,9 +160,9 @@ import java.util.ArrayList;
 
         valueSetsDefaultList.add(new NameAndPositionAndPresence("Value", 1, true, true));
         valueSetsDefaultList.add(new NameAndPositionAndPresence("Code System", 2, true, true));
-        valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, false, false));
+        valueSetsDefaultList.add(new NameAndPositionAndPresence("Usage", 3, setAllTrue, setAllTrue));
         valueSetsDefaultList.add(new NameAndPositionAndPresence("Description", 4, true, true));
-        valueSetsDefaultList.add(new NameAndPositionAndPresence("Comment", 5, false, false));
+        valueSetsDefaultList.add(new NameAndPositionAndPresence("Comment", 5, setAllTrue, setAllTrue));
 
         defaultConfiguration.setValueSetColumn(new ColumnsConfig(valueSetsDefaultList));
         return defaultConfiguration;

@@ -950,7 +950,7 @@ public class Bootstrap implements InitializingBean {
     List<ExportConfig> exportConfigs = exportConfig.findAll();
     for (ExportConfig exportConfig : exportConfigs) {
       if (exportConfig != null && exportConfig.getType() != null) {
-        ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(exportConfig.getType());
+        ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(exportConfig.getType(),false);
         if (exportConfig.getCodesExport() == null) {
           exportConfig.setCodesExport(defaultConfig.getCodesExport());
         }

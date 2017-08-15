@@ -327,7 +327,7 @@ public class DatatypeLibraryDocumentController {
     ExportConfig exportConfig = exportConfigService
         .findOneByTypeAndAccountId(DATATYPE_LIBRARY_EXPORT_CONFIG_TYPE, account.getId());
     if (exportConfig == null) {
-      exportConfig = ExportConfig.getBasicExportConfig(DATATYPE_LIBRARY_EXPORT_CONFIG_TYPE);
+      exportConfig = ExportConfig.getBasicExportConfig(DATATYPE_LIBRARY_EXPORT_CONFIG_TYPE, false);
     }
     ExportFontConfig exportFontConfig = null;
     List<ExportFontConfig> existing = exportFontConfigService.findOneByAccountId(account.getId());
