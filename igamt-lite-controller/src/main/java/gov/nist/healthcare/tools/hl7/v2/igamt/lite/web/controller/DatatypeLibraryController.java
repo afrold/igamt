@@ -12,6 +12,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -97,16 +98,23 @@ public class DatatypeLibraryController extends CommonController {
       @PathVariable("dtLibId") String dtLibId, @RequestBody String version) {
 
     log.info("Fetching datatypeByLibrary..." + dtLibId);
+    DatatypeLibrary dtlib=datatypeLibraryService.findById(dtLibId);
+    
 
     List<Datatype> temp = datatypeLibraryService.findDatatypesById(dtLibId);
     List<Datatype> result = new ArrayList<Datatype>();
 
     for (Datatype dt : temp) {
       if (!dt.getHl7versions().isEmpty()) {
-        if (dt.getHl7versions().contains(version) && !dt.getScope().toString().equals("INTERMASTER")
-            && dt.getStatus().equals(STATUS.PUBLISHED)) {
 
-          result.add(dt);
+        if (dt.getScope().equals(dtlib.getScope())
+            && dt.getStatus().equals(STATUS.PUBLISHED)) {
+          if (dt.getHl7versions() != null && !dt.getHl7versions().isEmpty()) {
+            Collections.sort(dt.getHl7versions());
+            if (dt.getHl7versions().contains(version)
+                || dt.getHl7versions().get(0).compareTo(version) > 0)
+              result.add(dt);
+          }
         }
       }
 

@@ -2202,7 +2202,7 @@ angular
 
 
                 $rootScope.addDatatypeFromMasterLib = function() {
-                    $rootScope.scopeTag="User";
+                    $rootScope.scopeTag="Master";
                     DatatypeLibrarySvc.getDataTypeLibraryByScope('MASTER').then(function(masterLib) {
                             var dtlibs = [];
 
@@ -3076,8 +3076,11 @@ angular.module('igl').controller('addMAsterInLibrary',
                 $scope.masterDatatypes = datatypes
 
                 angular.forEach($scope.masterDatatypes,function (dt) {
-                    dt.hl7Version=$rootScope.igdocument.profile.metaData.hl7Version;
-                })
+                    if(_.contains(dt.hl7versions,$rootScope.igdocument.profile.metaData.hl7Version)){
+                        dt.hl7Version=$rootScope.igdocument.profile.metaData.hl7Version;
+
+                    }
+                });
                 console.log($scope.masterDatatypes);
             });
             }else{
