@@ -893,7 +893,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
         $scope.confirmDelete = function (igdocument) {
             var modalInstance = $mdDialog.show({
-                templateUrl: 'ConfirmIGDocumentDeleteCtrl.html',
+                templateUrl: 'ConfirmIGDocumentDeleteCtrlMd.html',
                 controller: 'ConfirmIGDocumentDeleteCtrl',
                 scope: $scope,
                 preserveScope: true,
