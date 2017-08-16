@@ -542,7 +542,7 @@ if (self === top) {
 
 </div>
 <script type="text/ng-template" id="LibraryMetaData.html">
-    <div class="row" style="margin-left:0px; margin-right: 20px" ng-init="initForm()">
+    <div class="row" style="margin-left:0px; margin-right: 20px">
 
         <div class="page-header" style="margin-bottom: 20px">
             <span class="header4"> Library Metadata</span>
@@ -568,7 +568,6 @@ if (self === top) {
                 <label class="input-left igamt-label">Title</label>
                 <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                     <input type="text" ng-disabled="viewSettings.tableReadonly"
-                           ng-change="setDirty()"
                            name="title"
                            ng-model="datatypeLibMetaDataCopy.name"
                            required>
@@ -581,7 +580,6 @@ if (self === top) {
 
                 <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                     <input type="text" ng-disabled="viewSettings.tableReadonly"
-                           ng-change="setDirty()"
                            name="orgName"
                            ng-model="datatypeLibMetaDataCopy.orgName">
                     <div ng-messages="editForm.orgName.$error">
@@ -624,8 +622,8 @@ if (self === top) {
 
                 <label class="input-left igamt-label" style="margin-bottom: 20px">Description </label>
                 <md-input-container class="md-block igamt-input-block" flex-gt-sm >
-                                                          <textarea froala="froalaEditorOptions" md-select-on-focus ng-change="setDirty()"
-                                                                   ng-model="datatypeLibMetaDataCopy.description" name="description"
+                                                          <textarea froala="froalaEditorOptions" md-select-on-focus no-dirty-check
+                                                                   ng-model="datatypeLibMetaDataCopy.description" name="description" ng-change="recordChanged()"
                                                                    id="description"></textarea>
                  </md-input-container>
 

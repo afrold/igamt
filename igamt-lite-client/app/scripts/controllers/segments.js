@@ -3105,9 +3105,20 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, data
     $scope.searchText="";
     $scope.newDt = null;
     var oldDt = angular.copy(field.datatype);
-    $scope.datatypes = datatypes;
+    $scope.datatypes = [];
+    if($rootScope.currentData.type==='datatype'){
+        angular.forEach(datatypes ,function(dt){
+            if(dt.name!==$rootScope.datatype.name){
+                $scope.datatypes.push(dt);
+            }
+        });
+    }else{
+        $scope.datatypes=datatypes;
+
+    }
+
     $scope.querySearch=function (query) {
-        return query? $scope.datatypes.filter( createFilterFor(query) ):$scope.datatypes;
+        return query? $scope.datatypes.filter(createFilterFor(query) ):$scope.datatypes;
     }
     function createFilterFor(query) {
         var lowercaseQuery = angular.lowercase(query);
@@ -3118,6 +3129,7 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, data
         };
 
     }
+
 
 
 

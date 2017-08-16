@@ -508,7 +508,8 @@ angular.module('igl')
             }else{
                 var dt= $rootScope.datatypesMap[field.datatype.id];
                 var versions =dt.hl7versions;
-                angular.forEach($rootScope.datatypes,function(d){
+                angular.forEach($rootScope.datatypeLibrary.children,function(dtLink){
+                    var d=$rootScope.datatypesMap[dtLink.id];
                     if(d.name===dt.name&&_.intersection(d.hl7versions, versions).length===versions.length){
                         var dtLink={};
                         dtLink.id=d.id;

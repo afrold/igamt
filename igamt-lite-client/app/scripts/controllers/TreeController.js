@@ -981,7 +981,6 @@ angular
                                 if ($rootScope.hasChanges()) {
                                     $rootScope.openConfirmLeaveDlg().then(function(result) {
                                         if(result&&result!=='cancel') {
-
                                             $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
                                         }
                                     });
@@ -992,13 +991,8 @@ angular
                                 //can't delete because it's used
                                 console.log("notHEEEEEEEREEEE");
                                 $rootScope.cantDeletePc(profileComponent);
-
                             }
-
                         });
-
-
-
                     }]
                 ];
                 $scope.compositeMessagesOption = [
