@@ -2579,7 +2579,7 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
     $scope.init=function(){
         if(!$rootScope.metaData.implementationNotes){
             $rootScope.metaData.implementationNotes="";
-        }
+        };
     }
 
 
