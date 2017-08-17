@@ -2065,7 +2065,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             $scope.tabs_dlg[i].active=false;
                         }
                     }
-
                 };
 
                 $scope.addedDatatypes=[];
