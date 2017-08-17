@@ -100,7 +100,7 @@
                                                 <label class="input-left igamt-label">Title*</label>
 
                                                 <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                    <input type="text" name="title"
+                                                    <input type="text" name="title" id="title"
                                                            ng-model="hl7VersionsDlgForm.metaData.title" required>
                                                     <div ng-messages="hl7VersionsDlgForm.title.$error">
                                                         <div ng-message="required">Title is required.</div>
@@ -110,7 +110,7 @@
                                                 <label class="input-left igamt-label">Sub-Title*</label>
 
                                                 <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                    <input type="text" name="subTitle"
+                                                    <input type="text" name="subTitle" id="subtitle"
                                                            ng-model="hl7VersionsDlgForm.metaData.subTitle" required>
                                                     <div ng-messages="hl7VersionsDlgForm.subTitle.$error">
                                                         <div ng-message="required">Sub-Title is required.</div>
@@ -119,14 +119,14 @@
 
                                                 <label class="input-left igamt-label">Organization</label>
                                                 <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                    <input type="text" name="orgName"
+                                                    <input type="text" name="orgName" id="orgName"
                                                            ng-model="hl7VersionsDlgForm.metaData.orgName">
 
                                                 </md-input-container>
 
                                                 <label class="input-left igamt-label">Extension</label>
                                                 <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                    <input type="text" name="ext"
+                                                    <input type="text" name="ext" id="ext"
                                                            ng-model="hl7VersionsDlgForm.metaData.ext">
                                                 </md-input-container>
 
@@ -230,8 +230,7 @@
                                    ng-if="tabs[1].active&&clickSource==='btn'">
                         <i class="fa fa-arrow-left fa-fw"></i> Back
                         </md-button>
-                        <md-button  class="btn btn-raised btn-primary btn-md" ng-click="make_active(1)" ng-if="tabs[0].active"
-                                   ng-disabled="hl7VersionsDlgForm.title.$error || hl7VersionsDlgForm.subTitle.$error">
+                        <md-button  class="btn btn-raised btn-primary btn-md" ng-click="make_active(1)" ng-if="tabs[0].active">
                             <i class="fa fa-arrow-right fa-fw"></i>  Next
                         </md-button>
 
@@ -484,7 +483,7 @@
                 </md-dialog-actions>
             </form>
         </md-dialog>
-    </script>
+ </script>
     <script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html ">
         <div class="modal-header ">
             <h3 class="modal-title ">Close Confirmation

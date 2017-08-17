@@ -354,10 +354,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
 
 
         };
-        $scope.initForm=function(){
-        	$scope.editForm={$dirty:false,
-        			$invalid:false};
-        }
         $scope.resetMetaDataOfLibrary = function() {
 
             $scope.datatypeLibMetaDataCopy = angular.copy($rootScope.datatypeLibrary.metaData);
@@ -462,7 +458,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 angular.forEach($rootScope.datatypeLibrary.children, function(datatypeLink) {
                     $scope.datatypesIds.push(datatypeLink.id);
                 });
-                $scope.subview = "LibraryMetaData.html";
                 $scope.addedDatatypes = [];
                 $scope.datataypestoAdd = [];
                 $rootScope.libEXT = $rootScope.datatypeLibrary.metaData.ext;
@@ -496,7 +491,9 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 $rootScope.tablesMap = {};
                 $rootScope.igdocument = null;
                 $scope.DataTypeTree.push($scope.datatypeLibCopy);
+                $scope.subview = "LibraryMetaData.html";
                 $rootScope.$emit("event:initEditArea");
+
 
                 DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {
                     $scope.AllUnchanged = res;
@@ -1996,6 +1993,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 });
             });
         };
+        $scope.preventNullDesc=function(metaData){
+            if(!metaData.description){
+                metaData.description="";
+            }
+        }
 
 
         $scope.createGeneralDatatypeLibrary = function() {
@@ -2013,9 +2015,9 @@ angular.module('igl').controller('DatatypeLibraryCtl',
             metaData.name="";
             metaData.description="";
             metaData.orgName="NIST";
-           datatypeLibrary.metaData=metaData;
-           datatypeLibrary.children=[];
-           datatypeLibrary.id=new ObjectId().toString();
+            datatypeLibrary.metaData=metaData;
+            datatypeLibrary.children=[];
+            datatypeLibrary.id=new ObjectId().toString();
             $rootScope.AllUnchanged=[];
 
             // DatatypeLibraryDocumentSvc.getAllDatatypesNames().then(function(res) {

@@ -13,7 +13,6 @@
 </script>
 <script type="text/ng-template" id="EditProfileComponent.html">
     <div ng-show="isAuthenticated()" ng-controller="ListProfileComponentCtrl" ng-cloak>
-        <!--<div class="row">-->
         <div ng-show="!isPending()">
             <div style="padding-top:10px">
                 <div style="margin:5px">
@@ -24,6 +23,9 @@
                                     class="btn btn-raised btn-sm btn-success" ng-click="save()">
                                 <span><i class="fa fa-check fa-fw"></i> Save</span>
                             </md-button>
+                            <!--<md-button ng-click="print(editForm)">-->
+                                <!--<span><i class="fa fa-check fa-fw"></i> print</span>-->
+                            <!--</md-button>-->
                         </div>
                     </div>
                     <div class="static_info">
@@ -40,17 +42,17 @@
                                         <label class="input-left igamt-label">Name*</label>
 
                                         <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                            <input type="text" name="name" ng-change="setDirty()" ng-model="profileComponent.name" required ng-disabled="viewSettings.tableReadonly">
+                                            <input type="text" name="name" ng-model="profileComponent.name" required ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
                                         <label class="input-left igamt-label">Description</label>
 
                                         <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                            <input type="text" name="description" ng-change="setDirty()" ng-model="profileComponent.description" ng-disabled="viewSettings.tableReadonly">
+                                            <input type="text" name="description" ng-model="profileComponent.description" ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
                                         <label class="input-left igamt-label">Comment</label>
 
                                         <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                            <textarea rows="3" ng-change="setDirty()" name="comment" id="comment" ng-model="profileComponent.comment" ng-disabled="viewSettings.tableReadonly"/>
+                                            <textarea rows="3"  name="comment" id="comment" ng-model="profileComponent.comment" ng-disabled="viewSettings.tableReadonly"/>
                                         </md-input-container>
                                     </md-content>
                                 </div>
@@ -73,7 +75,7 @@
                                         <div  class="panel-primary">
                                             <div class="panel-body">
                                                 <div ng-if="!viewSettings.tableReadonly">
-                                                    <textarea ng-disabled="viewSettings.tableReadonly" froala="froalaEditorOptions" ng-model="profileComponent.defPreText" name="text" id="defPreText" ng-change="setDirty()"></textarea>
+                                                    <textarea ng-disabled="viewSettings.tableReadonly" froala="froalaEditorOptions" ng-model="profileComponent.defPreText" name="text" id="defPreText"></textarea>
 
                                                 </div>
                                                 <div class="fr-view" ng-if="viewSettings.tableReadonly">
@@ -180,7 +182,7 @@
                                                                                    placeholder="Select Usage"
                                                                                    name="usage" id="usage"
                                                                                    class="inside-table"
-                                                                                   ng-change="setDirty();updateUsage(node);"
+                                                                                   ng-change="updateUsage(node);"
                                                                                    ng-if="node.from !== 'segment' || node.type !== 'segmentRef'"
                                                                                    required
                                                                                    ng-model="node.usage">
@@ -193,7 +195,7 @@
                                                                                    name="usage"
                                                                                    id="usage"
                                                                                    class="inside-table"
-                                                                                   ng-change="setDirty();updateUsage(node);"
+                                                                                   ng-change="updateUsage(node);"
                                                                                    ng-if="node.from === 'segment' && node.type === 'segmentRef'"
                                                                                    required
                                                                                    ng-model="node.usage" ng-disabled="viewSettings.tableReadonly">
@@ -213,7 +215,7 @@
                                                                             <input ng-disabled="viewSettings.tableReadonly" aria-label="minC" style="width:50px;"
                                                                                    name="min" type="text"
                                                                                    ng-init="initMinCard(node)"
-                                                                                   ng-change="setDirty();updateMinCard(node);"
+                                                                                   ng-change="updateMinCard(node);"
                                                                                    ng-pattern="/^\d+$/"
                                                                                    ng-model="node.min"
                                                                                    ng-minlength="1"/>
@@ -222,7 +224,7 @@
                                                                             <input ng-disabled="viewSettings.tableReadonly" aria-label="MaxC" style="width:50px;"
                                                                                    type="text" name="max"
                                                                                    ng-init="initMaxCard(node)"
-                                                                                   ng-change="setDirty();updateMaxCard(node);"
+                                                                                   ng-change="updateMaxCard(node);"
                                                                                    ng-pattern="/^\d+$|^\*?$/"
                                                                                    ng-model="node.max">
                                                                         </md-input-container>
@@ -237,7 +239,7 @@
                                                                                        style="width:50px;"
                                                                                        name="minLength"
                                                                                        ng-init="initMinL(node)"
-                                                                                       ng-change="setDirty();updateMinL(node);"
+                                                                                       ng-change="updateMinL(node);"
                                                                                        ng-pattern="/^\d+$/"
                                                                                        ng-model="node.minLength"
                                                                                        ng-minlength="1">
@@ -247,7 +249,7 @@
                                                                                        name="maxLength"
                                                                                        style="width:50px;"
                                                                                        ng-init="initMaxL(node)"
-                                                                                       ng-change="setDirty();updateMaxL(node);"
+                                                                                       ng-change="updateMaxL(node);"
                                                                                        ng-pattern="/^\d+$|^\*?$/"
                                                                                        ng-model="node.maxLength">
                                                                             </md-input-container>
@@ -267,7 +269,7 @@
                                                                                        name="confLength"
                                                                                        style="width:50px;"
                                                                                        ng-init="initConfL(node)"
-                                                                                       ng-change="setDirty();updateConfL(node);"
+                                                                                       ng-change="updateConfL(node);"
                                                                                        ng-pattern="confLengthPattern"
                                                                                        ng-model="node.confLength">
                                                                             </md-input-container>
@@ -285,7 +287,7 @@
                                                                         <ng-form name="innerForm" class="form-inline" ng-controller="FormRowCtrl" ng-init="initDatatype(node)">
                                                                             <div ng-if="node.datatype != null && datatypesMap[node.datatype.id] != null && datatypesMap[node.datatype.id] != undefined">
                                                                                 <span class="badge label-white" ng-show="editableDT!==node.id" style="text-align:left">
-                                                                                    <display-label of="datatypesMap[node.datatype.id]" desc="false" ng-click="redirectDT(node.datatype)"></display-label>
+                                                                                    <display-label of="datatypesMap[node.datatype.id]" desc="false" ng-click="redirectDT(datatypesMap[node.datatype.id])"></display-label>
                                                                                     <span title="Change Datatype" ng-click="editDatatype=true;editDT(node)" ng-if="!viewSettings.tableReadonly">
                                                                                     <i class="fa fa-pencil fa-fw edit-icon"></i></span>
                                                                                 </span>
@@ -500,7 +502,7 @@
                                         <div class="panel-primary">
                                             <div class="panel-body">
                                                 <div ng-if="!viewSettings.tableReadonly">
-                                                    <textarea froala="froalaEditorOptions" ng-model="profileComponent.defPostText" name="text" id="defPostText" ng-change="setDirty()"></textarea>
+                                                    <textarea froala="froalaEditorOptions" ng-model="profileComponent.defPostText" name="text" id="defPostText" ng-change="recordChanged()"></textarea>
                                                 </div>
 
                                                 <div class="fr-view" ng-if="viewSettings.tableReadonly">
@@ -589,9 +591,9 @@
 
         <td ng-class="{'col-md-2 col-fixed-80 select-change':node.attributes.usage,'col-md-2 col-fixed-80':!node.attributes.usage}">
             <!--<a ng-click="edit=true;" ng-hide="edit || node.attributes.usage "><i class="fa fa-plus fa-fw"></i></a>-->
-            <!--<select ng-change="setDirty()" class="form-control input-sm" ng-model="node.attributes.usage" name="usage" ng-options="usage for usage in config.usages" ng-selected="node.attributes.oldUsage" style="width: auto;">-->
+            <!--<select ng-change="recordChanged()" class="form-control input-sm" ng-model="node.attributes.usage" name="usage" ng-options="usage for usage in config.usages" ng-selected="node.attributes.oldUsage" style="width: auto;">-->
             <!--</select> ng-selected="node.attributes.usage===null && node.attributes.oldUsage===usage"-->
-            <select ng-init="initUsage(node)" name="usage" ng-change="setDirty();updateUsage(node);"
+            <select ng-init="initUsage(node)" name="usage" ng-change="updateUsage(node);"
                     class="form-control input-sm" ng-model="node.usage">
                 <option ng-repeat="usage in config.usages">{{usage}}</option>
             </select>
@@ -601,7 +603,7 @@
 
         <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.min,'col-md-1 col-fixed-100':!node.attributes.min,'emptyCol': node.type==='component'}">
             <div ng-if="node.type!=='component'">
-                <input ng-init="initMinCard(node)" ng-change="setDirty();updateMinCard(node);" class="form-control"
+                <input ng-init="initMinCard(node)" ng-change="recordChanged();updateMinCard(node);" class="form-control"
                        name="min" ng-pattern="/^\d+$/" ng-model="node.min" ng-minlength="1">
                 <a ng-click="cancelMinCard(node)"><i class="fa fa-remove fa-fw"></i></a>
             </div>
@@ -610,7 +612,7 @@
 
         <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.max,'col-md-1 col-fixed-100':!node.attributes.max,'emptyCol': node.type==='component'}">
             <div ng-if="node.type!=='component'">
-                <input ng-init="initMaxCard(node)" ng-change="setDirty();updateMaxCard(node);" class="form-control"
+                <input ng-init="initMaxCard(node)" ng-change="recordChanged();updateMaxCard(node);" class="form-control"
                        name="max" ng-pattern="/^\d+$|^\*?$/" ng-model="node.max">
                 <a ng-click="cancelMaxCard(node)"><i class="fa fa-remove fa-fw"></i></a>
             </div>
@@ -624,7 +626,7 @@
 
         <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.minLength,'col-md-1 col-fixed-100':!node.attributes.minLength,'emptyCol': node.type!=='field' && node.type!=='component'}">
             <div ng-if="node.type==='field' || node.type==='component'">
-                <input ng-init="initMinL(node)" ng-change="setDirty();updateMinL(node);" class="form-control"
+                <input ng-init="initMinL(node)" ng-change="recordChanged();updateMinL(node);" class="form-control"
                        name="minL" ng-model="node.minLength">
                 <a ng-click="cancelMinL(node)"><i class="fa fa-remove fa-fw"></i></a>
             </div>
@@ -632,7 +634,7 @@
 
         <td ng-class="{'col-md-1 col-fixed-100 input-change ':node.attributes.maxLength,'col-md-1 col-fixed-100':!node.attributes.maxLength,'emptyCol': node.type!=='field' && node.type!=='component'}">
             <div ng-if="node.type==='field' || node.type==='component'">
-                <input ng-init="initMaxL(node)" ng-change="setDirty();updateMaxL(node);" class="form-control"
+                <input ng-init="initMaxL(node)" ng-change="updateMaxL(node);" class="form-control"
                        name="maxL" ng-model="node.maxLength">
                 <a ng-click="cancelMaxL(node)"><i class="fa fa-remove fa-fw"></i></a>
             </div>
@@ -641,7 +643,7 @@
         <td ng-show="showConfLength()"
             ng-class="{'col-md-1 col-fixed-30 input-change ':node.attributes.confLength,'col-md-1 col-fixed-30':!node.attributes.confLength,'emptyCol': node.type!=='field' && node.type!=='component'}">
             <div ng-if="node.type==='field' || node.type==='component'">
-                <input ng-init="initConfL(node)" ng-change="setDirty();updateConfL(node);" class="form-control"
+                <input ng-init="initConfL(node)" ng-change="updateConfL(node);" class="form-control"
                        name="confL" ng-model="node.confLength">
                 <a ng-click="cancelConfL(node)"><i class="fa fa-remove fa-fw"></i></a>
             </div>
@@ -1237,19 +1239,19 @@
                                     <div layout="row" layout-align="start center">
                                         <md-input-container flex="100" ng-show="coConstraintsTable.ifColumnDefinition.primitive" style="margin:17px;font-weight: bold;">
                                             <input ng-model="coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value"
-                                                   ng-change="setDirty();"
+                                                   ng-change="recordChanged();"
                                                    style="font-weight: bold;"
                                                    ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
 
                                         <md-input-container flex="70" ng-show="!coConstraintsTable.ifColumnDefinition.primitive" style="margin:17px;font-weight: bold;">
                                             <input ng-model="coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value"
-                                                   ng-change="setDirty();"
+                                                   ng-change="recordChanged();"
                                                    style="font-weight: bold;"
                                                    ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
                                         <md-input-container flex="30" ng-show="!coConstraintsTable.ifColumnDefinition.primitive" style="margin-top: -5px;">
-                                            <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.bindingLocation' ng-change="setDirty()" ng-disabled="viewSettings.tableReadonly">
+                                            <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.bindingLocation' ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly">
                                                 <md-option ng-repeat="option in findOptions(coConstraintsTable.ifColumnDefinition.dtId)" ng-value="option">
                                                     {{option}}
                                                 </md-option>
@@ -1273,16 +1275,16 @@
                                         <div layout="row" layout-align="start center" ng-if="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData && coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value">
                                             <md-input-container flex="100" ng-show="columnDefinition.primitive" style="margin:17px;">
                                                 <input ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value"
-                                                       ng-change="setDirty();"
+                                                       ng-change="recordChanged();"
                                                        ng-disabled="viewSettings.tableReadonly">
                                             </md-input-container>
                                             <md-input-container flex="70" ng-show="!columnDefinition.primitive" style="margin:17px;">
                                                 <input ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value"
-                                                       ng-change="setDirty();"
+                                                       ng-change="recordChanged();"
                                                        ng-disabled="viewSettings.tableReadonly">
                                             </md-input-container>
                                             <md-input-container flex="30" ng-show="!columnDefinition.primitive" style="margin-top: -5px;">
-                                                <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.bindingLocation' ng-change="setDirty()" ng-disabled="viewSettings.tableReadonly">
+                                                <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.bindingLocation' ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly">
                                                     <md-option ng-repeat="option in findOptions(columnDefinition.dtId)" ng-value="option">
                                                         {{option}}
                                                     </md-option>
@@ -1307,16 +1309,16 @@
                                         <div layout="row" layout-align="start center">
                                             <md-input-container flex="100" ng-show="columnDefinition.primitive" style="margin:17px;">
                                                 <input ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value"
-                                                       ng-change="setDirty();"
+                                                       ng-change="recordChanged();"
                                                        ng-disabled="viewSettings.tableReadonly">
                                             </md-input-container>
                                             <md-input-container flex="70" ng-show="!columnDefinition.primitive" style="margin:17px;">
                                                 <input ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value"
-                                                       ng-change="setDirty();"
+                                                       ng-change="recordChanged();"
                                                        ng-disabled="viewSettings.tableReadonly">
                                             </md-input-container>
                                             <md-input-container flex="30" ng-show="!columnDefinition.primitive" style="margin-top: -5px;">
-                                                <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.bindingLocation' ng-change="setDirty()" ng-disabled="viewSettings.tableReadonly">
+                                                <md-select placeholder="Select BindingLocation" ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.bindingLocation' ng-change="recordChanged()" ng-disabled="viewSettings.tableReadonly">
                                                     <md-option ng-repeat="option in findOptions(columnDefinition.dtId)" ng-value="option">
                                                         {{option}}
                                                     </md-option>
@@ -1346,7 +1348,7 @@
                                             <md-input-container flex="100">
                                                 <md-select placeholder="Select DT BaseName"
                                                            ng-model='coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value'
-                                                           ng-change="setDirty()"
+                                                           ng-change="recordChanged()"
                                                            ng-disabled="viewSettings.tableReadonly">
                                                     <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value'" ng-value="c.value">
                                                         {{c.value}}
@@ -1360,7 +1362,7 @@
                                             <md-input-container flex="100">
                                                 <md-select placeholder="Select DT Flavor"
                                                            ng-model="coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].datatypeId"
-                                                           ng-change="setDirty()"
+                                                           ng-change="recordChanged()"
                                                            ng-disabled="viewSettings.tableReadonly">
                                                     <md-option ng-repeat="link in $root.igdocument.profile.datatypeLibrary.children | filter: {name: coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value}  : true" ng-value="link.id">
                                                         {{$root.getDatatypeLabel($root.datatypesMap[link.id])}}
@@ -1505,7 +1507,7 @@
                                 <form class="form-horizontal" novalidate>
                                     <md-input-container layout="row" style="margin-top:15px;margin-left:15px;">
                                         <label flex="30" class="input-left">Title</label>
-                                        <input flex="70" type="text" ng-change="setDirty()" name="title" ng-model="title" required>
+                                        <input flex="70" type="text" ng-change="recordChanged()" name="title" ng-model="title" required>
                                     </md-input-container>
                                 </form>
                             </div>
@@ -1685,7 +1687,7 @@
                             <tbody>
                             <tr ng-repeat="item in displayItems">
                                 <td class="col-md-3">
-                                    <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="seeOrEdit==='see'" ng-change="setDirty();">
+                                    <md-select ng-model="item.firstReferenceValue" placeholder="Select DT Base Name" ng-disabled="seeOrEdit==='see'" ng-change="recordChanged();">
                                         <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value'" value="{{c.value}}">
                                             {{c.value}}({{c.label}})
                                         </md-option>
@@ -1695,7 +1697,6 @@
                                     <md-select ng-model="item.datatypeId"
                                                ng-show="item.firstReferenceValue"
                                                placeholder="Select DT Flavor"
-                                               ng-change="setDirty()"
                                                ng-disabled="seeOrEdit==='see'">
                                         <md-option ng-repeat="link in $root.igdocument.profile.datatypeLibrary.children | filter: {name: item.firstReferenceValue}" value="{{link.id}}">
                                             {{$root.getDatatypeLabel($root.datatypesMap[link.id])}}

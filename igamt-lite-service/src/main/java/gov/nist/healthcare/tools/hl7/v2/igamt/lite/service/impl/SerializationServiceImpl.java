@@ -123,6 +123,8 @@ import nu.xom.Document;
     
     static final Logger logger = LoggerFactory.getLogger(SerializationService.class);
 
+    private List<String> bindedDatatypesId;
+
 
     @Override public Document serializeDatatypeLibrary(DatatypeLibraryDocument datatypeLibraryDocument, ExportConfig exportConfig) {
         this.exportConfig = exportConfig;
@@ -174,6 +176,7 @@ import nu.xom.Document;
         this.exportConfig = exportConfig;
         igDocumentMessages = igDocument.getProfile().getMessages();
         this.bindedDatatypes = new ArrayList<>();
+        this.bindedDatatypesId = new ArrayList<>();
         this.bindedTables = new ArrayList<>();
         this.bindedSegments = new ArrayList<>();
         this.unbindedTables = new ArrayList<>(igDocument.getProfile().getTableLibrary().getTables());
@@ -607,7 +610,7 @@ import nu.xom.Document;
                 for (Field field : segment.getFields()) {
                     if (!bindedDatatypes.contains(field.getDatatype()) && ExportUtil
                         .diplayUsage(field.getUsage(), this.exportConfig.getDatatypesExport())) {
-                        bindedDatatypes.add(field.getDatatype());
+                        doBindDatatype(field.getDatatype());
                     }
                     for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment.getValueSetBindings()){
                       if(valueSetOrSingleCodeBinding instanceof ValueSetBinding){
@@ -654,10 +657,17 @@ import nu.xom.Document;
         }
     }
 
+    private void doBindDatatype(DatatypeLink datatypeLink) {
+        if(!this.bindedDatatypesId.contains(datatypeLink.getId())){
+            this.bindedDatatypesId.add(datatypeLink.getId());
+            this.bindedDatatypes.add(datatypeLink);
+        }
+    }
+
     private void doBindDatatype(String datatypeId) {
       Datatype datatype = datatypeService.findById(datatypeId);
       DatatypeLink datatypeLink = new DatatypeLink(datatype.getId(), datatype.getName(), datatype.getExt());
-      this.bindedDatatypes.add(datatypeLink);
+      doBindDatatype(datatypeLink);
     }
 
     private void identifyUnbindedValueSets(SegmentRefOrGroup segmentRefOrGroup,

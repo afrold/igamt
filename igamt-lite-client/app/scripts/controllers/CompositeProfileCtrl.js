@@ -18,23 +18,42 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
     $scope.redirectVS = function(binding) {
 
         TableService.getOne(binding.tableId).then(function(valueSet) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'redirectCtrl.html',
                 controller: 'redirectCtrl',
                 size: 'md',
-                resolve: {
-                    destination: function() {
-                        return valueSet;
+                locals: {
+                    destination:  valueSet
                     }
+            });
+            modalInstance.then(function(result) {
+                if(result&&result!=='cancel'){
+                    $rootScope.editTable(valueSet);
                 }
 
-
-
-            });
-            modalInstance.result.then(function() {
-                $rootScope.editTable(valueSet);
             });
         });
+    };
+    $scope.redirectDT = function(datatype) {
+        DatatypeService.getOne(datatype.id).then(function(datatype) {
+            var modalInstance = $mdDialog.show({
+                templateUrl: 'redirectCtrl.html',
+                controller: 'redirectCtrl',
+                size: 'md',
+                locals: {
+                    destination:  datatype
+                }
+
+            });
+            modalInstance.then(function(result) {
+                if(result&&result!=='cancel') {
+                    $rootScope.editDatatype(datatype);
+                }
+            });
+
+
+        });
+
     };
     $scope.checkCompositeExt = function(ext) {
         for (var i = 0; i < $rootScope.compositeProfiles.length; i++) {
@@ -123,7 +142,12 @@ angular.module('igl').controller('ListCompositeProfileCtrl', function($scope, $r
                         }
                     }
                 }
-                $rootScope.editCM(result);
+                // if ($scope.compositeProfileParams){
+                //     $scope.compositeProfileParams.refresh();
+                //
+                // }
+                //
+                 $rootScope.editCM(result);
             });
 
         }, function(error) {

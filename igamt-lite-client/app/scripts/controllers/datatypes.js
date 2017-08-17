@@ -459,35 +459,44 @@ angular.module('igl')
 
         $scope.redirectSeg = function(segmentRef) {
             SegmentService.get(segmentRef.id).then(function(segment) {
-                var modalInstance = $modal.open({
+                var modalInstance = $mdDialog.show({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
                     size: 'md',
-                    resolve: {
-                        destination: function() {
-                            return segment;
+                    locals: {
+                        destination: segment
                         }
-                    }
+
                 });
-                modalInstance.result.then(function() {
-                    $rootScope.editSeg(segment);
+                modalInstance.result.then(function(result) {
+                    if(result&result!=='cancel'){
+                        $rootScope.editSeg(segment);
+                    }
+
                 });
             });
         };
         $scope.redirectDT = function(datatype) {
             DatatypeService.getOne(datatype.id).then(function(datatype) {
-                var modalInstance = $modal.open({
+                var modalInstance = $mdDialog.show({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
                     size: 'md',
-                    resolve: {
-                        destination: function() {
-                            return datatype;
+                    locals: {
+                        destination: datatype
+                        }
+
+                });
+                modalInstance.then(function(result) {
+                    if(result&&result!=='cancel') {
+
+                        if ($rootScope.libraryDoc) {
+                            $scope.$emit('event:openDatatypeInLib', datatype);
+                        } else if($rootScope.igdocument){
+                            $rootScope.editDatatype(datatype);
+
                         }
                     }
-                });
-                modalInstance.result.then(function() {
-                    $rootScope.editDatatype(datatype);
                 });
             });
         };
@@ -508,7 +517,8 @@ angular.module('igl')
             }else{
                 var dt= $rootScope.datatypesMap[field.datatype.id];
                 var versions =dt.hl7versions;
-                angular.forEach($rootScope.datatypes,function(d){
+                angular.forEach($rootScope.datatypeLibrary.children,function(dtLink){
+                    var d=$rootScope.datatypesMap[dtLink.id];
                     if(d.name===dt.name&&_.intersection(d.hl7versions, versions).length===versions.length){
                         var dtLink={};
                         dtLink.id=d.id;
@@ -675,21 +685,22 @@ angular.module('igl')
         };
         $scope.redirectVS = function(binding) {
             TableService.getOne(binding.tableId).then(function(valueSet) {
-                var modalInstance = $modal.open({
+                var modalInstance = $mdDialog.show({
                     templateUrl: 'redirectCtrl.html',
                     controller: 'redirectCtrl',
                     size: 'md',
-                    resolve: {
-                        destination: function() {
-                            return valueSet;
+                    locals: {
+                        destination: valueSet
                         }
-                    }
+
                 });
-                modalInstance.result.then(function() {
-                    if (!$rootScope.SharingScope) {
-                        $rootScope.editTable(valueSet);
-                    } else {
-                        $scope.editTable(valueSet);
+                modalInstance.then(function(result) {
+                    if(result&&result!=='cancel') {
+                        if (!$rootScope.SharingScope) {
+                            $rootScope.editTable(valueSet);
+                        } else {
+                            $scope.editTable(valueSet);
+                        }
                     }
                 });
             });

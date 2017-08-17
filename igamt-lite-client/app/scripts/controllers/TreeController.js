@@ -981,7 +981,6 @@ angular
                                 if ($rootScope.hasChanges()) {
                                     $rootScope.openConfirmLeaveDlg().then(function(result) {
                                         if(result&&result!=='cancel') {
-
                                             $rootScope.deleteProfileComponent($rootScope.igdocument.profile.profileComponentLibrary.id, profileComponent);
                                         }
                                     });
@@ -992,13 +991,8 @@ angular
                                 //can't delete because it's used
                                 console.log("notHEEEEEEEREEEE");
                                 $rootScope.cantDeletePc(profileComponent);
-
                             }
-
                         });
-
-
-
                     }]
                 ];
                 $scope.compositeMessagesOption = [
@@ -2202,7 +2196,7 @@ angular
 
 
                 $rootScope.addDatatypeFromMasterLib = function() {
-                    $rootScope.scopeTag="User";
+                    $rootScope.scopeTag="Master";
                     DatatypeLibrarySvc.getDataTypeLibraryByScope('MASTER').then(function(masterLib) {
                             var dtlibs = [];
 
@@ -3076,8 +3070,11 @@ angular.module('igl').controller('addMAsterInLibrary',
                 $scope.masterDatatypes = datatypes
 
                 angular.forEach($scope.masterDatatypes,function (dt) {
-                    dt.hl7Version=$rootScope.igdocument.profile.metaData.hl7Version;
-                })
+                    if(_.contains(dt.hl7versions,$rootScope.igdocument.profile.metaData.hl7Version)){
+                        dt.hl7Version=$rootScope.igdocument.profile.metaData.hl7Version;
+
+                    }
+                });
                 console.log($scope.masterDatatypes);
             });
             }else{

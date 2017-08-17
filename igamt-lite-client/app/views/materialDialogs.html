@@ -84,7 +84,7 @@
                                                             <td class="col-md-2">
                                                                 <button class="btn btn-raised btn-primary btn-xs"
                                                                         type="button" ng-click="addDtFlv(datatype)"
-                                                                        ng-disabled="checkImported(datatype,datatype.hl7Version)">
+                                                                        ng-disabled="checkImported(datatype,datatype.hl7Version)||datatype.hl7Version=='*'">
                                                                     <i class="fa fa-plus fa-fw"></i>
                                                                 </button>
                                                             </td>
@@ -779,9 +779,9 @@
 
                                         <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
                                             <div>
-                                                         <textarea froala="froalaEditorOptions" md-select-on-focus
+                                                         <textarea froala="froalaEditorOptions"  no-dirty-check
                                                                    ng-model="metaData.description" name="description"
-                                                                   id="description"></textarea>
+                                                                   id="descr"></textarea>
                                               </div>
                                         </md-input-container>
 
@@ -907,7 +907,7 @@
             </md-dialog-content>
 
             <md-dialog-actions layout="row">
-                        <md-button class="btn btn-raised btn-primary btn-md" ng-click="make_active_dlg(1)" ng-if="tabs_dlg[0].active" ng-disabled="createDtLibForm.$invalid">
+                        <md-button class="btn btn-raised btn-primary btn-md" ng-click="make_active_dlg(1)" ng-if="tabs_dlg[0].active">
                             <i class="fa fa-arrow-right fa-fw"></i>  Next
                         </md-button>
 

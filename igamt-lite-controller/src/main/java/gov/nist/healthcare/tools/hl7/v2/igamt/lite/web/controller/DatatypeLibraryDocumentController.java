@@ -49,6 +49,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.Libra
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 @RestController
@@ -76,7 +77,7 @@ public class DatatypeLibraryDocumentController {
   private ExportService exportService;
 
   private static final String DATATYPE_LIBRARY_EXPORT_CONFIG_TYPE = "Datatype Library";
-  
+
   private static final String EXPORT_FORMAT_HTML = "html";
   private static final String EXPORT_FORMAT_DOCX = "docx";
 
@@ -232,10 +233,24 @@ public class DatatypeLibraryDocumentController {
 
 
   @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
-  public ResponseMessage delete(@PathVariable String id) {
-    datatypeLibraryDocumentService.delete(id);
-    return new ResponseMessage(ResponseMessage.Type.success,
-        "datatypeLibraryDocumentDeletedSuccess", null);
+  public ResponseMessage delete(@PathVariable String id)
+      throws UserAccountNotFoundException, OperationNotAllowException {
+    User u = userService.getCurrentUser();
+    Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+    if (account == null)
+      throw new UserAccountNotFoundException();
+    DatatypeLibraryDocument d = datatypeLibraryDocumentService.findById(id);
+    if (d.getAccountId() == account.getId()) {
+      datatypeLibraryDocumentService.delete(id);
+      return new ResponseMessage(ResponseMessage.Type.success,
+          "datatypeLibraryDocumentDeletedSuccess", null);
+    } else {
+      throw new OperationNotAllowException("delete");
+
+    }
+
+
+
   }
 
   @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -297,7 +312,8 @@ public class DatatypeLibraryDocumentController {
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(datatypeLibraryDocument.getMetaData().getName()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "."+EXPORT_FORMAT_HTML);
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "."
+            + EXPORT_FORMAT_HTML);
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -312,7 +328,8 @@ public class DatatypeLibraryDocumentController {
         .setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     response.setHeader("Content-disposition",
         "attachment;filename=" + escapeSpace(datatypeLibraryDocument.getMetaData().getName()) + "-"
-            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "." +EXPORT_FORMAT_DOCX);
+            + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "."
+            + EXPORT_FORMAT_DOCX);
     FileCopyUtils.copy(content, response.getOutputStream());
   }
 
@@ -327,7 +344,7 @@ public class DatatypeLibraryDocumentController {
     ExportConfig exportConfig = exportConfigService
         .findOneByTypeAndAccountId(DATATYPE_LIBRARY_EXPORT_CONFIG_TYPE, account.getId());
     if (exportConfig == null) {
-      exportConfig = ExportConfig.getBasicExportConfig(DATATYPE_LIBRARY_EXPORT_CONFIG_TYPE);
+      exportConfig = ExportConfig.getBasicExportConfig(DATATYPE_LIBRARY_EXPORT_CONFIG_TYPE, false);
     }
     ExportFontConfig exportFontConfig = null;
     List<ExportFontConfig> existing = exportFontConfigService.findOneByAccountId(account.getId());

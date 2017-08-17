@@ -893,7 +893,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
         $scope.confirmDelete = function (igdocument) {
             var modalInstance = $mdDialog.show({
-                templateUrl: 'ConfirmIGDocumentDeleteCtrl.html',
+                templateUrl: 'ConfirmIGDocumentDeleteCtrlMd.html',
                 controller: 'ConfirmIGDocumentDeleteCtrl',
                 scope: $scope,
                 preserveScope: true,
@@ -1705,6 +1705,18 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                         $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
                         $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
                         $scope.loadingSelection = false;
+                        $rootScope.subview = "EditProfileComponent.html";
+                        $rootScope.$emit("event:initEditArea");
+                        console.log($scope.editForm);
+                        //temporary fix
+                        if ($scope.editForm) {
+                            $scope.editForm.$setPristine();
+                            $scope.editForm.$dirty = false;
+                        }
+                        $rootScope.clearChanges();
+
+                        //$rootScope.subview = "EditProfileComponent.html";
+
                         try {
                             if ($scope.profileComponentParams)
                                 $scope.profileComponentParams.refresh();
@@ -1725,8 +1737,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                             $rootScope.msg().show = true;
                         });
 
-                        $rootScope.$emit("event:initEditArea");
-                        $rootScope.subview = "EditProfileComponent.html";
 
                         blockUI.stop();
                     } catch (e) {
@@ -2564,8 +2574,18 @@ angular.module('igl').controller('DocumentMetaDataCtrl', function ($scope, $root
     $scope.saving = false;
     $scope.saved = false;
     $scope.uploader = {};
+    $scope.copy=angular.copy()
+
+    $scope.init=function(){
+        if(!$rootScope.metaData.implementationNotes){
+            $rootScope.metaData.implementationNotes="";
+        };
+    }
+
+
 
     $scope.successUpload = function ($file, $message, $data) {
+        console.log("====called successI")
         $scope.editForm.$dirty = true;
         var link = JSON.parse($message);
         $rootScope.metaData.coverPicture = link.link;

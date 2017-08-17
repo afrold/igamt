@@ -611,21 +611,18 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     $scope.redirectDT = function(datatype) {
         DatatypeService.getOne(datatype.id).then(function(datatype) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'redirectCtrl.html',
                 controller: 'redirectCtrl',
                 size: 'md',
-                resolve: {
-                    destination: function() {
-                        return datatype;
+                locals: {
+                    destination: datatype
                     }
-                }
-
-
-
             });
-            modalInstance.result.then(function() {
-                $rootScope.editDatatype(datatype);
+            modalInstance.then(function(result) {
+                if(result&&result!=='cancel'){
+                    $rootScope.editDatatype(datatype);
+                }
             });
 
 
@@ -699,18 +696,18 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
 
     $scope.redirectVS = function(binding) {
         TableService.getOne(binding.tableId).then(function(valueSet) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'redirectCtrl.html',
                 controller: 'redirectCtrl',
                 size: 'md',
-                resolve: {
-                    destination: function() {
-                        return valueSet;
+                locals: {
+                    destination: valueSet
                     }
-                }
             });
-            modalInstance.result.then(function() {
-                $rootScope.editTable(valueSet);
+            modalInstance.then(function(result) {
+                if(result&&result!=='cancel'){
+                    $rootScope.editTable(valueSet);
+                }
             });
         });
     };
@@ -3105,9 +3102,20 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, data
     $scope.searchText="";
     $scope.newDt = null;
     var oldDt = angular.copy(field.datatype);
-    $scope.datatypes = datatypes;
+    $scope.datatypes = [];
+    if($rootScope.currentData.type==='datatype'){
+        angular.forEach(datatypes ,function(dt){
+            if(dt.name!==$rootScope.datatype.name){
+                $scope.datatypes.push(dt);
+            }
+        });
+    }else{
+        $scope.datatypes=datatypes;
+
+    }
+
     $scope.querySearch=function (query) {
-        return query? $scope.datatypes.filter( createFilterFor(query) ):$scope.datatypes;
+        return query? $scope.datatypes.filter(createFilterFor(query) ):$scope.datatypes;
     }
     function createFilterFor(query) {
         var lowercaseQuery = angular.lowercase(query);
@@ -3118,6 +3126,7 @@ angular.module('igl').controller('otherDTCtrl', function($scope, $mdDialog, data
         };
 
     }
+
 
 
 
