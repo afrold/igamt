@@ -92,7 +92,7 @@ public class VocabClient {
     vsSearchCrit.setOidSearch(true);
     vsSearchCrit.setDefinitionSearch(false);
     vsSearchCrit.setSearchType(1);
-    vsSearchCrit.setSearchText("2.16.840.1.114222.4.11.819");
+    vsSearchCrit.setSearchText("2.16.840.1.114222.4.11.7574");
 
     ValueSetResultDto vsSearchResult = null;
 
