@@ -74,21 +74,20 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
 
     $scope.redirectSeg = function(segmentRef) {
         SegmentService.get(segmentRef.id).then(function(segment) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'redirectCtrl.html',
                 controller: 'redirectCtrl',
                 size: 'md',
-                resolve: {
-                    destination: function() {
-                        return segment;
-                    }
+                locals: {
+                    destination: segment
                 }
 
-
-
             });
-            modalInstance.result.then(function() {
-                $rootScope.editSeg(segment);
+            modalInstance.then(function(result) {
+                if(result&&result!=='cancel'){
+                    $rootScope.editSeg(segment);
+                }
+
             });
 
 
@@ -97,44 +96,39 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     };
     $scope.redirectDT = function(datatype) {
         DatatypeService.getOne(datatype.id).then(function(datatype) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'redirectCtrl.html',
                 controller: 'redirectCtrl',
                 size: 'md',
-                resolve: {
-                    destination: function() {
-                        return datatype;
+                locals: {
+                    destination:  datatype
                     }
+
+            });
+            modalInstance.then(function(result) {
+                if(result&&result!=='cancel') {
+                    $rootScope.editDatatype(datatype);
                 }
-
-
-
             });
-            modalInstance.result.then(function() {
-                $rootScope.editDatatype(datatype);
-            });
-
 
 
         });
+
     };
     $scope.redirectVS = function(binding) {
         TableService.getOne(binding.tableId).then(function(valueSet) {
-            var modalInstance = $modal.open({
+            var modalInstance = $mdDialog.show({
                 templateUrl: 'redirectCtrl.html',
                 controller: 'redirectCtrl',
                 size: 'md',
-                resolve: {
-                    destination: function() {
-                        return valueSet;
+                locals: {
+                    destination: valueSet
                     }
-                }
-
-
-
             });
-            modalInstance.result.then(function() {
-                $rootScope.editTable(valueSet);
+            modalInstance.then(function(result) {
+                if(result&&result!=='cancel') {
+                    $rootScope.editTable(valueSet);
+                }
             });
         });
     };
@@ -1891,22 +1885,17 @@ angular.module('igl').controller('OtoXCtrl', function($scope, $mdDialog, message
 
 });
 
-angular.module('igl').controller('redirectCtrl', function($scope, $modalInstance, destination, $rootScope) {
+angular.module('igl').controller('redirectCtrl', function($scope, $mdDialog, destination, $rootScope) {
     $scope.destination = destination;
     $scope.loading = false;
 
     $scope.confirm = function() {
-
-
-        $modalInstance.close($scope.destination);
-
-
-
+        $mdDialog.hide($scope.destination);
     };
 
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $mdDialog.hide('cancel');
     };
 
 

@@ -298,7 +298,7 @@ if (self === top) {
 
                                                     <div flex class="md-list-item-text" layout="column" style="margin-left: 5px; max-width: 100%">
 
-                                                        <span class="md-headline ig-title">{{row.datatypeLibrary.metaData.name}}
+                                                        <span class="md-headline ig-title"> <a class="point" ng-click="navToLibrary(row)">{{row.metaData.name}}</a>
                                                         </span>
                                                         <div class="md-subhead" flex layout="row" layout-align="start start">
                                                             <div flex="40" class="ig-list-info">
@@ -542,7 +542,7 @@ if (self === top) {
 
 </div>
 <script type="text/ng-template" id="LibraryMetaData.html">
-    <div class="row" style="margin-left:0px; margin-right: 20px">
+    <div class="row" style="margin-left:0px; margin-right: 20px" ng-init="preventNullDesc(datatypeLibMetaDataCopy)">
 
         <div class="page-header" style="margin-bottom: 20px">
             <span class="header4"> Library Metadata</span>
@@ -621,12 +621,23 @@ if (self === top) {
                 <!--</md-input-container>-->
 
                 <label class="input-left igamt-label" style="margin-bottom: 20px">Description </label>
-                <md-input-container class="md-block igamt-input-block" flex-gt-sm >
-                                                          <textarea froala="froalaEditorOptions" md-select-on-focus no-dirty-check
-                                                                   ng-model="datatypeLibMetaDataCopy.description" name="description" ng-change="recordChanged()"
-                                                                   id="description"></textarea>
-                 </md-input-container>
+                <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm >-->
+                                                          <!--<textarea froala="froalaEditorOptions"  no-dirty-check-->
+                                                                   <!--ng-model="datatypeLibMetaDataCopy.description" name="description" ng-change="recordChanged()"-->
+                                                                   <!--id="description"></textarea>-->
+                 <!--</md-input-container>-->
 
+
+                <md-input-container class="md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
+                    <div  ng-show="!viewSettings.tableReadonly">
+                                                         <textarea froala="froalaEditorOptions" no-dirty-check
+                                                                   ng-model="datatypeLibMetaDataCopy.description" name="desc" ng-change="recordChanged()"
+                                                                   id="desc"></textarea>
+                    </div>
+                    <div class="fr-view" ng-show="viewSettings.tableReadonly">
+                        <div froala-view="datatypeLibMetaDataCopy.description"></div>
+                    </div>
+                </md-input-container>
             </md-content>
         </div>
     </div>

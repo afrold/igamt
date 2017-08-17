@@ -1993,6 +1993,11 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                 });
             });
         };
+        $scope.preventNullDesc=function(metaData){
+            if(!metaData.description){
+                metaData.description="";
+            }
+        }
 
 
         $scope.createGeneralDatatypeLibrary = function() {
