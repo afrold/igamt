@@ -143,8 +143,19 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
             needUpdate = true;
             log.info(oid + " Table has no change! however local PHINVADS codes are missing");
           } else {
-            needUpdate = false;
-            log.info(oid + " Table has no change! because same version number and date.");
+            
+            ValueSetConceptResultDto vscByVSVid =
+                this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
+            List<ValueSetConcept> valueSetConcepts = vscByVSVid.getValueSetConcepts();
+            
+            if(valueSetConcepts.size() != table.getCodes().size()){
+              needUpdate = true;
+              log.info(oid + " Table has no change! hoever local codes size are diferenct.");
+            }else {
+              needUpdate = false;
+              log.info(oid + " Table has no change! because same version number and date.");  
+            }
+            
           }
         } else {
           needUpdate = true;
