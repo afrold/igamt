@@ -759,8 +759,6 @@ angular.module('igl')
             blockUI.start();
             DatatypeService.reset();
             $scope.cleanState();
-            $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
-
             $rootScope.references = [];
             angular.forEach($rootScope.segments, function(segment) {
                 $rootScope.findDatatypeRefs($rootScope.datatype, segment, $rootScope.getSegmentLabel(segment), segment);
