@@ -176,8 +176,8 @@
                                                                     <ng-form name="innerForm" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)">
                                                                     <div>
                                                                                 <span class="badge label-white" ng-show="editableRef!==node.id" style="text-align:left">
-                                                                                    <display-label of="segmentsMap[node.source.segmentId]" desc="false"></display-label>
-                                                                                    <span title="Change segment" ng-click="editRef(node)" ng-if="!viewSettings.tableReadonly">
+                                                                                    <display-label of="segmentsMap[node.attributes.ref.id]" desc="false"></display-label>
+                                                                                    <span title="Change segment" ng-click="editRef(node)" ng-if="!viewSettings.tableReadonly && node.from !== 'message'">
                                                                                     <i class="fa fa-pencil fa-fw edit-icon"></i></span>
                                                                                 </span>
                                                                         <div ng-if="editableRef===node.id" style="text-align:left">
