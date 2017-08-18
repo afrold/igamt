@@ -2,7 +2,7 @@
  * Created by haffo on 3/9/16.
  */
 'use strict';
-angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', 'ElementUtils', '$q', '$http', 'FilteringSvc', 'userInfoService', function($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, userInfoService) {
+angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', 'ElementUtils', '$q', '$http', 'FilteringSvc', 'userInfoService','$filter', function($rootScope, ViewSettings, ElementUtils, $q, $http, FilteringSvc, userInfoService,$filter) {
     var SegmentService = {
         getNodes: function(parent, root) {
             var children = [];
@@ -371,6 +371,7 @@ angular.module('igl').factory('SegmentService', ['$rootScope', 'ViewSettings', '
                 });
             }
             $rootScope.segment = angular.copy($rootScope.segmentsMap[$rootScope.segment.id]);
+            $rootScope.segment.fields = $filter('orderBy')($rootScope.segment.fields, 'position');
 
             $rootScope.initCoConstraintsTable();
         },
