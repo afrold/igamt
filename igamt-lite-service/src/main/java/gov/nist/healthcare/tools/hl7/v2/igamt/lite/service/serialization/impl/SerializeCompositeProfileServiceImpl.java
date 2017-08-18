@@ -1,15 +1,22 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.*;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeCompositeProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetOrSingleCodeBinding;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableCompositeProfile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableConstraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSection;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.SerializableSegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializeCompositeProfileService;
 
 /**
  * This software was developed at the National Institute of Standards and Technology by employees of
@@ -76,7 +83,7 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             if(serializationLayout.equals(SerializationLayout.PROFILE)){
                 serializeSegment(segmentRefOrGroup,
-                    compositeProfileSegments.getPrefix() + ".", compositeProfileSegments, segmentUsageConfig, fieldsUsageConfig);
+                    compositeProfileSegments.getPrefix() + ".", compositeProfileSegments, segmentUsageConfig, fieldsUsageConfig, exportConfig.isDuplicateOBXDataTypeWhenFlavorNull());
             }
         }
         if(!compositeProfileSegments.getSerializableSectionList().isEmpty()){

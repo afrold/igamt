@@ -34,7 +34,6 @@
 					ng-change="setChanged()" />Message Table Options</span>
 		</div>
 		<div layout="row" layout-align="center start" style="width: 100%">
-
 			<div class="panel panel-default" flex="50">
 				<div class="panel-heading beige">
 					<strong>USAGES</strong>
@@ -103,6 +102,7 @@
 					ng-change="setChanged()" />Segment Table Options</span>
 		</div>
 		<div layout="row" layout-align="center start" style="width: 100%">
+			<div layout="column">
 			<div class="panel panel-default" flex="50">
 				<div class="panel-heading beige">
 					<strong> USAGES </strong>
@@ -163,8 +163,21 @@
 				</div>
 
 			</div>
-
-
+			<div class="panel panel-default" flex="50">
+				<div class="panel-heading beige">
+					<strong>Co-Constraints</strong>
+				</div>
+				<div class="panel-body container">
+					<div class="container">
+						<md-checkbox class="md-primary"
+							ng-model="IGStyleExportConfig.duplicateOBXDataTypeWhenFlavorNull"
+							ng-change="setChanged()"> <label
+							style="color: black">Duplicate OBX datatype value when no flavor has been selected</label></md-checkbox>
+						<br />
+					</div>
+				</div>
+			</div>
+			</div>
 
 			<div class="panel panel-default" flex="50" style="margin-left: 10px;">
 				<div class="panel-heading beige">

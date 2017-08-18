@@ -65,19 +65,19 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
     @Autowired SerializeTableService serializeTableService;
 
     @Override
-    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig) {
+    public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix, Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull) {
         Segment segment = segmentService.findById(segmentLink.getId());
-        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,null,null, false, null);
+        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,null,null, false, duplicateOBXDataTypeWhenFlavorNull, null);
     }
 
     @Override public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
         Integer position, Integer headerLevel, UsageConfig segmentUsageConfig,
-        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables) {
+        Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull) {
         Segment segment = compositeProfileSegments.get(segmentLink.getId());
-        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables, false, null);
+        return this.serializeSegment(segment,prefix,position,headerLevel,segmentUsageConfig,compositeProfileDatatypes,compositeProfileTables, false, duplicateOBXDataTypeWhenFlavorNull, null);
     }
 
-    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean showInnerLinks, String host) {
+    private SerializableSection serializeSegment(Segment segment, String prefix, Integer position, Integer headerLevel, UsageConfig fieldUsageConfig, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean showInnerLinks, Boolean duplicateOBXDataTypeWhenFlavorNull, String host) {
         if (segment != null) {
             //Create section node
             String id = segment.getId();
@@ -207,7 +207,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
                 }
               }
             }
-            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables, coConstraintValueTableMap, dynamicMappingDatatypeMap, showConfLength, showInnerLinks, host, coConstraintDatatypeMap);
+            SerializableSegment serializableSegment = new SerializableSegment(id, prefix, segmentPosition, sectionHeaderLevel, title, segment, name, label, description, comment, defPreText, defPostText, constraints, fieldDatatypeMap, fieldValueSetBindingsMap, tables, coConstraintValueTableMap, dynamicMappingDatatypeMap, showConfLength, showInnerLinks, duplicateOBXDataTypeWhenFlavorNull, host, coConstraintDatatypeMap);
             serializableSegmentSection.addSection(serializableSegment);
             return serializableSegmentSection;
         }
@@ -222,7 +222,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.SerializationUti
 	@Override
 	public SerializableSection serializeSegment(Segment segment, String host) {
 		ExportConfig defaultConfig = ExportConfig.getBasicExportConfig("table", true);
-		return serializeSegment(segment, String.valueOf(0), 1, 1, defaultConfig.getFieldsExport(), null, null, true, host);
+		return serializeSegment(segment, String.valueOf(0), 1, 1, defaultConfig.getFieldsExport(), null, null, true, false, host);
 	}
 
 }

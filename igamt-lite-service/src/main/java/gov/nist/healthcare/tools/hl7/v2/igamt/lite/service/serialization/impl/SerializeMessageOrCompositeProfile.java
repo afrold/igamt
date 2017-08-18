@@ -45,11 +45,11 @@ public abstract class SerializeMessageOrCompositeProfile {
 
     protected int segmentPosition = 1;
 
-    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig) {
-        serializeSegment(segmentRefOrGroup, prefix, segmentsSection, segmentUsageConfig, fieldsUsageConfig, null);
+    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull) {
+        serializeSegment(segmentRefOrGroup, prefix, segmentsSection, segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull, null);
     }
 
-    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Map<String,Segment> compositeProfileSegments) {
+    protected void serializeSegment(SegmentRefOrGroup segmentRefOrGroup, String prefix, SerializableSection segmentsSection, UsageConfig segmentUsageConfig, UsageConfig fieldsUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull, Map<String,Segment> compositeProfileSegments) {
         this.compositeProfileSegments = compositeProfileSegments;
         if(ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),segmentUsageConfig)) {
             if (segmentRefOrGroup instanceof SegmentRef) {
@@ -57,7 +57,7 @@ public abstract class SerializeMessageOrCompositeProfile {
                 if (!messageSegmentsNameList.contains(segmentLink.getId())) {
                     segmentsSection.addSection(serializeSegmentService
                         .serializeSegment(segmentLink, prefix + String.valueOf(segmentPosition),
-                            segmentPosition, 5, fieldsUsageConfig));
+                            segmentPosition, 5, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull));
                     messageSegmentsNameList.add(segmentLink.getId());
                     segmentPosition++;
                 }
@@ -69,7 +69,7 @@ public abstract class SerializeMessageOrCompositeProfile {
                 for (SegmentRefOrGroup groupSegmentRefOrGroup : ((Group) segmentRefOrGroup)
                     .getChildren()) {
                     serializeSegment(groupSegmentRefOrGroup, prefix, segmentsSection,
-                        segmentUsageConfig, fieldsUsageConfig);
+                        segmentUsageConfig, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull);
                 }
             }
         }

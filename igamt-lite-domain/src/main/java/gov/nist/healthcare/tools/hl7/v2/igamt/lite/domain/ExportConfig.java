@@ -35,6 +35,9 @@ import java.util.ArrayList;
     private boolean includeValueSetsTable = true;
     private boolean includeCompositeProfileTable = true;
     private boolean includeProfileComponentTable = true;
+    
+    private boolean duplicateOBXDataTypeWhenFlavorNull = false;
+    
 
     private UsageConfig segmentORGroupsMessageExport;
     private UsageConfig segmentORGroupsCompositeProfileExport;
@@ -400,6 +403,13 @@ import java.util.ArrayList;
 	public void setValueSetsMetadata(ValueSetMetadataConfig valueSetsMetadata) {
 		this.valueSetsMetadata = valueSetsMetadata;
 	}
-    
+
+	public boolean isDuplicateOBXDataTypeWhenFlavorNull() {
+		return duplicateOBXDataTypeWhenFlavorNull;
+	}
+
+	public void setDuplicateOBXDataTypeWhenFlavorNull(boolean duplicateOBXDataTypeWhenFlavorNull) {
+		this.duplicateOBXDataTypeWhenFlavorNull = duplicateOBXDataTypeWhenFlavorNull;
+	}
     
 }
