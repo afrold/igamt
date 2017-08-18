@@ -2,7 +2,7 @@
  * Created by haffo on 3/9/16.
  */
 'use strict';
-angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc) {
+angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettings, ElementUtils, $http, $q, FilteringSvc, userInfoService, TableLibrarySvc, DatatypeLibrarySvc,$filter) {
         var DatatypeService = {
             getNodes: function(parent, root) {
                 var children = [];
@@ -475,6 +475,8 @@ angular.module('igl').factory('DatatypeService', function($rootScope, ViewSettin
                     });
                 }
                 $rootScope.datatype = angular.copy($rootScope.datatypesMap[$rootScope.datatype.id]);
+                $rootScope.datatype.components = $filter('orderBy')($rootScope.datatype.components, 'position');
+
             },
             resetLib: function() {
                 if ($rootScope.addedDatatypes != null && $rootScope.addedDatatypes.length > 0) {
