@@ -3184,7 +3184,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
     }
 });
 
-angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $mdDialog, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
+angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $mdDialog, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService,tablestoAdd) {
     $scope.loading = false;
     $scope.selectedTableLibary = selectedTableLibary;
     $scope.searchText = '';
@@ -3193,10 +3193,12 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
     $scope.phinvadsTables = [];
     $scope.selectedTables = [];
     $scope.searched = false;
+    $scope.tablestoAdd=tablestoAdd;
 
     $scope.cancel = function () {
         $mdDialog.hide();
     };
+
 
     $scope.searchPhinvads = function (searchText) {
         $scope.loading = true;
