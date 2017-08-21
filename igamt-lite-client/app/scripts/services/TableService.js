@@ -148,6 +148,16 @@ angular.module('igl').factory('TableService', ['$rootScope', 'ViewSettings', 'El
             });
             return delay.promise;
         },
+        findAllPhinvads: function() {
+            var delay = $q.defer();
+            $http.get('api/igdocuments/PHINVADS/tables').then(function(response) {
+                var tables = angular.fromJson(response.data);
+                delay.resolve(tables);
+            }, function(error) {
+                delay.reject(error);
+            });
+            return delay.promise;
+        }
 
     };
     return TableService;

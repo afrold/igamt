@@ -344,7 +344,7 @@
     </md-dialog>
 </script>
 <script type="text/ng-template" id="AddPHINVADSTableOpenCtrlMd.html">
-    <md-dialog aria-label="confirmation" style="width: 90%">
+    <md-dialog aria-label="confirmation" style="width:90%;">
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
@@ -357,31 +357,25 @@
             </md-toolbar>
 
             <md-dialog-content>
-                <div class="md-dialog-content">
-                    <form class="form-horizontal" novalidate>
-                        <div class="form-group">
-                            <div class="col-sm-11">
-                                <input type="text" name="searchText" ng-model="searchText" class="form-control" placeholder="Search by Binding Indentifier">
+                <div class="row" style="padding: 10px;">
+                        <div class="col-md-6">
+                            <div flex layout="row">
+                                <span class="material-icons" style="font-size: 33px;">search</span>
+                                <md-input-container flex style="margin: 0px !important">
+                                    <input type="search" class="input-search-border" ng-model="searchText.bindingIdentifier" placeholder="Search by Binding Identifier"/>
+                                </md-input-container>
                             </div>
-                            <div class="col-sm-1">
-                                <a ng-click="searchPhinvads(searchText)" class="point">
-                                    <span><i class="fa fa-search fa-fw"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6" ng-if="searched">
-                            <table ng-show="phinvadsTables.length > 0" st-safe-src="phinvadsTables" st-table="phinvadsTablesTemp" class="table table-striped table-condensed table-bordered">
+                            <table class="table table-striped table-bordered table-fixed-45">
                                 <thead>
-                                <tr class="tbl-header">
-                                    <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
-                                    <th flex="30" st-sort="name">Name</th>
+                                <tr class="tbl-header" layout="row" layout-align="start start">
+                                    <th flex="30">Binding Identifier</th>
+                                    <th flex="30">Name</th>
                                     <th flex="30">oid</th>
-                                    <th flex="10"></th>
+                                    <th flex="10">Actions</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr ng-repeat="table in phinvadsTablesTemp">
+                                <tbody style="display: block !important; max-height: 350px !important; overflow-y: scroll ">
+                                <tr ng-repeat="table in tablestoAdd| filter:searchText" layout="row" layout-align="start start">
                                     <td flex="30">
                                         {{table.bindingIdentifier}}
                                     </td>
@@ -398,31 +392,31 @@
                                     </td>
                                 </tr>
                                 </tbody>
-                                <tr style="float:center !important;" ng-if="phinvadsTables.length > 10">
-                                    <td colspan="6" class="text-center" style="float:center !important;">
-                                        <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
-                                    </td>
-                                </tr>
                             </table>
 
-                            <div ng-show="!phinvadsTables || phinvadsTables.length === 0 ">
-                                No table found.
-                            </div>
                         </div>
+                    <div class="col-md-1">
 
+                    </div>
 
-                        <div class="col-md-6" ng-if="searched">
-                            <table ng-show="selectedTables.length > 0" st-safe-src="selectedTables" st-table="selectedTablesTemp" class="table table-striped table-condensed table-bordered">
+                        <div class="col-md-5" ng-show="selectedTables.length > 0">
+                            <div flex layout="row">
+                                <span class="material-icons" style="font-size: 33px;">search</span>
+                                <md-input-container flex style="margin: 0px !important">
+                                    <input type="search" class="input-search-border" ng-model="searchText2.bindingIdentifier" placeholder="Search by Binding Identifier"/>
+                                </md-input-container>
+                            </div>
+                            <table class="table table-striped table-bordered table-fixed-45">
                                 <thead>
-                                <tr class="tbl-header">
-                                    <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
-                                    <th flex="30" st-sort="name">Name</th>
+                                <tr class="tbl-header" layout="row" layout-align="start start">
+                                    <th flex="30">Binding Identifier</th>
+                                    <th flex="30">Name</th>
                                     <th flex="30">oid</th>
-                                    <th flex="10"></th>
+                                    <th flex="10">Actions</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr ng-repeat="table in selectedTablesTemp">
+                                <tbody style="display: block; max-height: 350px !important; overflow-y: scroll ">
+                                <tr ng-repeat="table in selectedTables|filter:searchText2" layout="row" layout-align="start start" >
                                     <td flex="30">
                                         {{table.bindingIdentifier}}
                                     </td>
@@ -437,21 +431,12 @@
                                     </td>
                                 </tr>
                                 </tbody>
-                                <tr style="float:center !important;" ng-if="selectedTables.length > 10">
-                                    <td colspan="6" class="text-center" style="float:center !important;">
-                                        <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
-                                    </td>
-                                </tr>
                             </table>
-                            <div ng-show="!selectedTables || selectedTables.length === 0 ">
-                                No table selected.
-                            </div>
                         </div>
-                    </form>
                 </div>
             </md-dialog-content>
             <md-dialog-actions layout="row">
-                <md-button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading || selectedTables.length === 0" ng-click="save()"> save</md-button>
+                <md-button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading || selectedTables.length === 0" ng-click="save()"> ADD </md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>
