@@ -188,7 +188,7 @@
                 <xsl:element name="br"/>
                 <xsl:element name="span">
                     <xsl:element name="b">
-                        <xsl:text>Components Definition Texts</xsl:text>
+                        <xsl:text>Component Definitions</xsl:text>
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="br"/>
