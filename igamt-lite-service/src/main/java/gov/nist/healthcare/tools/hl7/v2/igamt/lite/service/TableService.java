@@ -29,7 +29,8 @@ public interface TableService {
 
   List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
-  Table findByScopeAndVersionAndBindingIdentifier(SCOPE scope, String hl7Version, String bindingIdentifier);
+  Table findByScopeAndVersionAndBindingIdentifier(SCOPE scope, String hl7Version,
+      String bindingIdentifier);
 
   List<Table> findShared(Long accountId);
 
@@ -62,5 +63,7 @@ public interface TableService {
   Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier);
 
   List<Table> findByScopeAndVersion(String scope, String hl7Version);
+
+  public void updateDescription(String id, String description);
 
 }

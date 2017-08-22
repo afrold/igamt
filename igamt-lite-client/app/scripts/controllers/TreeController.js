@@ -1953,19 +1953,15 @@ angular
 
                 $rootScope.addPHINVADSTables = function(selectedTableLibary) {
 
-                        TableService.findAllPhinvads().then(function (result) {
-                            var tablestoAdd=result;
                             var modalInstance = $mdDialog.show({
                                 templateUrl: 'AddPHINVADSTableOpenCtrlMd.html',
                                 controller: 'AddPHINVADSTableOpenCtrl',
                                 locals: {
-                                    selectedTableLibary: selectedTableLibary,
-                                    tablestoAdd:tablestoAdd
+                                    selectedTableLibary: selectedTableLibary
                                 }
 
                             });
                             modalInstance.then(function() {}, function() {});
-                        });
 
 
                 };

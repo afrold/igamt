@@ -343,7 +343,7 @@
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="AddPHINVADSTableOpenCtrlMd.html">
+<script type="text/ng-template" id="AddPHINVADSTableOpenCtrlMd1.html">
     <md-dialog aria-label="confirmation" style="width:90%;">
         <form ng-cloak>
             <md-toolbar>
@@ -437,6 +437,121 @@
             </md-dialog-content>
             <md-dialog-actions layout="row">
                 <md-button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading || selectedTables.length === 0" ng-click="save()"> ADD </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+<script type="text/ng-template" id="AddPHINVADSTableOpenCtrlMd.html">
+    <md-dialog aria-label="confirmation" style="width: 90%">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Add PHINVADs Tables </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <form class="form-horizontal" novalidate>
+                        <div class="form-group">
+
+                            <div class="col-sm-11">
+                                <input type="text" name="searchText" ng-model="search.bindingIdentifier" class="form-control" placeholder="Search by Binding Indentifier">
+                            </div>
+
+                            <a class="col-sm-1" ng-click="searchPhinvads(search.bindingIdentifier)">
+                                <span><i class="fa fa-search fa-fw"></i></span>
+                            </a>
+
+                        </div>
+
+                        <div class="col-md-6" ng-if="searched">
+                            <table ng-show="phinvadsTables.length > 0" st-safe-src="phinvadsTables" st-table="phinvadsTablesTemp" class="table table-striped table-condensed table-bordered">
+                                <thead>
+                                <tr class="tbl-header">
+                                    <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
+                                    <th flex="30" st-sort="name">Name</th>
+                                    <th flex="30">oid</th>
+                                    <th flex="10"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="table in phinvadsTablesTemp|filter:search">
+                                    <td flex="30">
+                                        {{table.bindingIdentifier}}
+                                    </td>
+                                    <td flex="30">
+                                        {{table.name}}
+                                    </td>
+                                    <td flex="30">
+                                        {{table.oid}}
+                                    </td>
+                                    <td flex="10" style="text-align:center">
+                                        <a class="pointer" ng-hide="isAlreadyIn(table) || isAlreadySelected(table)" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
+                                        <span ng-show="isAlreadyIn(table)">Added</span>
+                                        <span ng-show="isAlreadySelected(table)">Selected</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tr style="float:center !important;" ng-if="phinvadsTables.length > 10">
+                                    <td colspan="6" class="text-center" style="float:center !important;">
+                                        <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div ng-show="!phinvadsTables || phinvadsTables.length === 0 ">
+                                No table found.
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6" ng-if="searched">
+                            <table ng-show="selectedTables.length > 0" st-safe-src="selectedTables" st-table="selectedTablesTemp" class="table table-striped table-condensed table-bordered">
+                                <thead>
+                                <tr class="tbl-header">
+                                    <th flex="30" st-sort="bindingIdentifier">Binding Identifier</th>
+                                    <th flex="30" st-sort="name">Name</th>
+                                    <th flex="30">oid</th>
+                                    <th flex="10"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="table in selectedTablesTemp">
+                                    <td flex="30">
+                                        {{table.bindingIdentifier}}
+                                    </td>
+                                    <td flex="30">
+                                        {{table.name}}
+                                    </td>
+                                    <td flex="30">
+                                        {{table.oid}}
+                                    </td>
+                                    <td flex="10" style="text-align:center;cursor: pointer;"><a class="pointer" ng-click="deleteTable(table)">
+                                        <i class="fa fa-times fa-fw"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tr style="float:center !important;" ng-if="selectedTables.length > 10">
+                                    <td colspan="6" class="text-center" style="float:center !important;">
+                                        <div st-pagination="" st-items-by-page="10" st-displayed-pages="7" style="float:center !important;"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div ng-show="!selectedTables || selectedTables.length === 0 ">
+                                No table selected.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+
+                <md-button class="btn btn-raised btn-primary btn-sm" ng-if="selectedTables.length" ng-click="save()"> Add </md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>

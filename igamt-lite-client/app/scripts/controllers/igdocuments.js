@@ -2016,14 +2016,22 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
             return 0;
         };
 
+        $rootScope.isNonEditableValueSet=function(table){
+            return $scope.viewSettings.tableReadonly||table.status == 'PUBLISHED';
+        };
+        $rootScope.definitionDisabled=function(table){
+           return $rootScope.isNonEditableValueSet(table)|| table.extensibility=='NA';
+        };
+
+
         $scope.selectTable = function (t) {
             $rootScope.Activate(t.id);
             var table = angular.copy(t);
-            if ($scope.viewSettings.tableReadonly || table.status == 'PUBLISHED') {
-                $rootScope.subview = "ReadValueSets.html";
-            } else {
+            // if ($scope.viewSettings.tableReadonly || table.status == 'PUBLISHED') {
+            //     $rootScope.subview = "ReadValueSets.html";
+            // } else {
                 $rootScope.subview = "EditValueSets.html";
-            }
+           // }
             $scope.loadingSelection = true;
             blockUI.start();
             try {
@@ -3184,7 +3192,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
     }
 });
 
-angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $mdDialog, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService,tablestoAdd) {
+angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $mdDialog, selectedTableLibary, $rootScope, $http, $cookies, TableLibrarySvc, TableService) {
     $scope.loading = false;
     $scope.selectedTableLibary = selectedTableLibary;
     $scope.searchText = '';
@@ -3193,7 +3201,7 @@ angular.module('igl').controller('AddPHINVADSTableOpenCtrl', function ($scope, $
     $scope.phinvadsTables = [];
     $scope.selectedTables = [];
     $scope.searched = false;
-    $scope.tablestoAdd=tablestoAdd;
+    // $scope.tablestoAdd=tablestoAdd;
 
     $scope.cancel = function () {
         $mdDialog.hide();

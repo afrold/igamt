@@ -3562,4 +3562,23 @@ md-dialog .md-dialog-content {
     border-bottom-width: medium;
     width: 100%;
 
+}md-select.margin-19 {
+    margin-top:-19px;
+ }
+ md-checkbox{
+     margin-bottom: 0px;
+     white-space: nowrap;
+ }
+ .valueset-ext-label{
+     margin-top: 10px;
+ }
+[disabled] md-input-container .md-input, md-input-container .md-input[disabled] {
+    background-position: bottom -1px left -2px;
+    background-size: 3px 1px;
+    background-repeat: repeat-x;
+    color: black;
+    border-bottom: none;
+}
+md-select[disabled] .md-select-value {
+    color: black;
 }

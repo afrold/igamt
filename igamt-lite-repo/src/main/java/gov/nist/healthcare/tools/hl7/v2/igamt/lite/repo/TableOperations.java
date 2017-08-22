@@ -26,7 +26,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 public interface TableOperations {
 
   List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
-  
+
   List<Table> findByScopeAndVersion(String scope, String hl7Version);
 
   List<Table> findBindingIdentifiers(List<String> tableIds);
@@ -46,12 +46,14 @@ public interface TableOperations {
 
   public void updateStatus(String id, STATUS status);
 
+  public void updateDescription(String id, String description);
+
   Table findOneShortById(String id);
 
   List<Table> findByScope(String scope);
-  
+
   public List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope);
-  
+
   public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier);
 
 }
