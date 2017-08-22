@@ -25,8 +25,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization.Serializ
  */
 public interface SerializeSegmentService {
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
-        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig);
+        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Boolean duplicateOBXDataTypeWhenFlavorNull);
     public SerializableSection serializeSegment(SegmentLink segmentLink, String prefix,
-        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables);
+        Integer position, Integer headerLevel, UsageConfig segmentUsageConfig, Map<String, Segment> compositeProfileSegments, Map<String, Datatype> compositeProfileDatatypes, Map<String, Table> compositeProfileTables, Boolean duplicateOBXDataTypeWhenFlavorNull);
 	public SerializableSection serializeSegment(Segment segment, String host);
 }
