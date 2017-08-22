@@ -287,6 +287,18 @@ public class Bootstrap implements InitializingBean {
     // fixCodeSysLOINC();
     //
     // fixAllConstraints();
+    // SetTablePreText();
+  }
+
+  private void SetTablePreText() {
+    List<Table> allPhinVades = tableService.findByScope(SCOPE.PHINVADS.toString());
+    for (Table t : allPhinVades) {
+      t.setDefPreText(t.getDescription());
+      tableService.updateDescription(t.getId(), t.getDescription());
+    }
+    // tableService.save(allPhinVades);
+
+
   }
 
 
@@ -950,7 +962,8 @@ public class Bootstrap implements InitializingBean {
     List<ExportConfig> exportConfigs = exportConfig.findAll();
     for (ExportConfig exportConfig : exportConfigs) {
       if (exportConfig != null && exportConfig.getType() != null) {
-        ExportConfig defaultConfig = ExportConfig.getBasicExportConfig(exportConfig.getType(),false);
+        ExportConfig defaultConfig =
+            ExportConfig.getBasicExportConfig(exportConfig.getType(), false);
         if (exportConfig.getCodesExport() == null) {
           exportConfig.setCodesExport(defaultConfig.getCodesExport());
         }

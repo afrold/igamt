@@ -279,8 +279,14 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     clonedTable.setOrder(order);
     clonedTable.setDefPreText(defPreText);
     clonedTable.setDefPostText(defPostText);
+    clonedTable.setAuthorNotes(super.getAuthorNotes());
     return clonedTable;
   }
+
+
+  /**
+   * @return
+   */
 
 
   @Override

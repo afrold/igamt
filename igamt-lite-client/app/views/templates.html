@@ -343,6 +343,104 @@
         </form>
     </md-dialog>
 </script>
+<script type="text/ng-template" id="AddPHINVADSTableOpenCtrlMd1.html">
+    <md-dialog aria-label="confirmation" style="width:90%;">
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2> Add PHINVADs Tables </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <i class="material-icons">clear</i>
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+            <md-dialog-content>
+                <div class="row" style="padding: 10px;">
+                        <div class="col-md-6">
+                            <div flex layout="row">
+                                <span class="material-icons" style="font-size: 33px;">search</span>
+                                <md-input-container flex style="margin: 0px !important">
+                                    <input type="search" class="input-search-border" ng-model="searchText.bindingIdentifier" placeholder="Search by Binding Identifier"/>
+                                </md-input-container>
+                            </div>
+                            <table class="table table-striped table-bordered table-fixed-45">
+                                <thead>
+                                <tr class="tbl-header" layout="row" layout-align="start start">
+                                    <th flex="30">Binding Identifier</th>
+                                    <th flex="30">Name</th>
+                                    <th flex="30">oid</th>
+                                    <th flex="10">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody style="display: block !important; max-height: 350px !important; overflow-y: scroll ">
+                                <tr ng-repeat="table in tablestoAdd| filter:searchText" layout="row" layout-align="start start">
+                                    <td flex="30">
+                                        {{table.bindingIdentifier}}
+                                    </td>
+                                    <td flex="30">
+                                        {{table.name}}
+                                    </td>
+                                    <td flex="30">
+                                        {{table.oid}}
+                                    </td>
+                                    <td flex="10" style="text-align:center">
+                                        <a class="pointer" ng-hide="isAlreadyIn(table) || isAlreadySelected(table)" ng-click="addTable(table)"><i class="fa fa-plus fa-fw"></i></a>
+                                        <span ng-show="isAlreadyIn(table)">Added</span>
+                                        <span ng-show="isAlreadySelected(table)">Selected</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    <div class="col-md-1">
+
+                    </div>
+
+                        <div class="col-md-5" ng-show="selectedTables.length > 0">
+                            <div flex layout="row">
+                                <span class="material-icons" style="font-size: 33px;">search</span>
+                                <md-input-container flex style="margin: 0px !important">
+                                    <input type="search" class="input-search-border" ng-model="searchText2.bindingIdentifier" placeholder="Search by Binding Identifier"/>
+                                </md-input-container>
+                            </div>
+                            <table class="table table-striped table-bordered table-fixed-45">
+                                <thead>
+                                <tr class="tbl-header" layout="row" layout-align="start start">
+                                    <th flex="30">Binding Identifier</th>
+                                    <th flex="30">Name</th>
+                                    <th flex="30">oid</th>
+                                    <th flex="10">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody style="display: block; max-height: 350px !important; overflow-y: scroll ">
+                                <tr ng-repeat="table in selectedTables|filter:searchText2" layout="row" layout-align="start start" >
+                                    <td flex="30">
+                                        {{table.bindingIdentifier}}
+                                    </td>
+                                    <td flex="30">
+                                        {{table.name}}
+                                    </td>
+                                    <td flex="30">
+                                        {{table.oid}}
+                                    </td>
+                                    <td flex="10" style="text-align:center;cursor: pointer;"><a class="pointer" ng-click="deleteTable(table)">
+                                        <i class="fa fa-times fa-fw"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading || selectedTables.length === 0" ng-click="save()"> ADD </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
 <script type="text/ng-template" id="AddPHINVADSTableOpenCtrlMd.html">
     <md-dialog aria-label="confirmation" style="width: 90%">
         <form ng-cloak>
@@ -360,16 +458,17 @@
                 <div class="md-dialog-content">
                     <form class="form-horizontal" novalidate>
                         <div class="form-group">
+
                             <div class="col-sm-11">
-                                <input type="text" name="searchText" ng-model="searchText" class="form-control" placeholder="Search by Binding Indentifier">
+                                <input type="text" name="searchText" ng-model="search.bindingIdentifier" class="form-control" placeholder="Search by Binding Indentifier">
                             </div>
-                            <div class="col-sm-1">
-                                <a ng-click="searchPhinvads(searchText)" class="point">
-                                    <span><i class="fa fa-search fa-fw"></i></span>
-                                </a>
-                            </div>
+
+                            <a class="col-sm-1" ng-click="searchPhinvads(search.bindingIdentifier)">
+                                <span><i class="fa fa-search fa-fw"></i></span>
+                            </a>
+
                         </div>
-                        
+
                         <div class="col-md-6" ng-if="searched">
                             <table ng-show="phinvadsTables.length > 0" st-safe-src="phinvadsTables" st-table="phinvadsTablesTemp" class="table table-striped table-condensed table-bordered">
                                 <thead>
@@ -381,7 +480,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="table in phinvadsTablesTemp">
+                                <tr ng-repeat="table in phinvadsTablesTemp|filter:search">
                                     <td flex="30">
                                         {{table.bindingIdentifier}}
                                     </td>
@@ -451,7 +550,8 @@
                 </div>
             </md-dialog-content>
             <md-dialog-actions layout="row">
-                <md-button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading || selectedTables.length === 0" ng-click="save()"> save</md-button>
+
+                <md-button class="btn btn-raised btn-primary btn-sm" ng-if="selectedTables.length" ng-click="save()"> Add </md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>
