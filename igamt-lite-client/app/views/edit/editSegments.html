@@ -1970,7 +1970,7 @@
                                     <tr class="tbl-header">
                                         <th class="col-md-1">Scope/Version</th>
                                         <th class="col-md-2">Mapping Identifier</th>
-                                        <th class="col-md-4">Description</th>
+                                        <th class="col-md-4">Name</th>
                                         <th class="col-md-2">Binding Strength</th>
                                         <th class="col-md-2">Binding Location</th>
                                         <th class="col-md-1"></th>
@@ -1985,7 +1985,7 @@
                                             {{tablesMap[b.tableId].bindingIdentifier}}
                                         </td>
                                         <td class="col-md-4">
-                                            {{tablesMap[b.tableId].description}}
+                                            {{tablesMap[b.tableId].name}}
                                         </td>
                                         <td class="col-md-2">
                                             <md-select ng-model='b.bindingStrength' ng-change="setChanged()">
@@ -2064,7 +2064,7 @@
                                             <tr class="tbl-header">
                                                 <th st-sort="scope" class="col-md-1">Scope/Version</th>
                                                 <th st-sort="bindingIdentifier" class="col-md-3">Binding Identifier</th>
-                                                <th class="col-md-7">Description</th>
+                                                <th class="col-md-7">Name</th>
                                                 <th class="col-md-1">Action</th>
                                             </tr>
                                             <tr>
@@ -2083,7 +2083,7 @@
                                                     {{v.bindingIdentifier}}
                                                 </td>
                                                 <td class="col-md-7">
-                                                    {{v.description}}
+                                                    {{v.name}}
                                                 </td>
                                                 <td class="col-md-1" align="center">
                                                     <span> <md-checkbox ng-checked="isSelected(v)" ng-click="toggle(v)"></md-checkbox></span>
@@ -2130,6 +2130,7 @@
                                                         {{v.bindingIdentifier}}
                                                     </td>
                                                     <td class="col-md-7">
+                                                        {{v.name}}
                                                     </td>
                                                     <td class="col-md-1">
                                                         <span> <md-checkbox ng-click="selectValueSetForSingleCode(v)" ng-checked="valueSetSelectedForSingleCode"></md-checkbox></span>
@@ -2149,7 +2150,7 @@
                                                 <tr class="tbl-header">
                                                     <th class="col-md-1">Scope/Version</th>
                                                     <th class="col-md-3">Binding Identifier</th>
-                                                    <th class="col-md-7">Description</th>
+                                                    <th class="col-md-7">Name</th>
                                                     <th class="col-md-1">Action</th>
                                                 </tr>
                                                 </thead>
@@ -2161,7 +2162,7 @@
                                                         {{valueSetSelectedForSingleCode.bindingIdentifier}}
                                                     </td>
                                                     <td class="col-md-7">
-                                                        {{valueSetSelectedForSingleCode.description}}
+                                                        {{valueSetSelectedForSingleCode.name}}
                                                     </td>
                                                     <td class="col-md-1">
 
