@@ -25,7 +25,7 @@
                     </xsl:choose>
                     <xsl:element name="tbody">
                         <xsl:for-each select="./Constraint">
-                            <xsl:sort select="@Position" data-type="number"></xsl:sort>
+                            <xsl:sort select="@Id" data-type="text" order="ascending"></xsl:sort>
                             <xsl:call-template name="ConstraintContent">
                                 <xsl:with-param name="mode">
                                     <xsl:text>standalone</xsl:text>
