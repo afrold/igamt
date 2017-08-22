@@ -1205,7 +1205,7 @@
                     <i class="fa fa-pencil fa-fw" ng-show="node.text !=='' && node.text !==null && node.text !==undefined "></i>
                     <i class="fa fa-plus fa-fw" ng-show="node.text==='' || node.text===null || node.text===undefined"></i>
                 </a>
-                <a ng-click="node.text=''" ng-show="node.text !=='' && node.text !==null && node.text !==undefined ">
+                <a ng-click="node.text=''; recordChanged()" ng-show="node.text !=='' && node.text !==null && node.text !==undefined ">
                     <i class="fa fa-times fa-fw"></i>
                 </a>
             </div>

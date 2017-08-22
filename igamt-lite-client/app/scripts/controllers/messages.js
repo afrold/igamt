@@ -952,8 +952,8 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
     $scope.deleteComment = function(comment){
         var index = $rootScope.message.comments.indexOf(comment);
         if (index >= 0) {
-            $rootScope.segment.comments.splice(index, 1);
-            $scope.setDirty();
+            $rootScope.message.comments.splice(index, 1);
+            $rootScope.recordChanged();
         }
     };
 
