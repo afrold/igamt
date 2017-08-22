@@ -33,7 +33,7 @@ public class SerializableCompositeProfile extends SerializableSection {
     private String defPostText;
     private List<Table> tables;
     private boolean showConfLength;
-    public SerializableCompositeProfile(CompositeProfile compositeProfile, String prefix,
+    public SerializableCompositeProfile(CompositeProfile compositeProfile, String prefix, String title,
         List<SerializableSegmentRefOrGroup> serializableSegmentRefOrGroups,
         SerializableConstraints serializableConformanceStatements,
         SerializableConstraints serializablePredicates, String usageNote, String defPreText,
@@ -41,11 +41,7 @@ public class SerializableCompositeProfile extends SerializableSection {
         super(compositeProfile.getIdentifier(),
             prefix + "." + String.valueOf(compositeProfile.getPosition()),
             String.valueOf(compositeProfile.getPosition() + 1),
-            String.valueOf("3"),
-            compositeProfile.getName() != null ?
-                compositeProfile.getName() + " - " + compositeProfile.getIdentifier() + " - " + compositeProfile.getDescription()
-                : compositeProfile.getMessageType() + "^" + compositeProfile.getEvent() + "^" + compositeProfile.getStructID() + " - " + compositeProfile.getIdentifier() + " - " + compositeProfile.getDescription()
-            );
+            String.valueOf("3"),title);
         this.compositeProfile = compositeProfile;
         this.serializableConformanceStatements = serializableConformanceStatements;
         this.serializablePredicates = serializablePredicates;

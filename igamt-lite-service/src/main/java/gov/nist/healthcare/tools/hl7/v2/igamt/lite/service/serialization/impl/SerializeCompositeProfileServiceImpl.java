@@ -64,7 +64,9 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
                 }
             }
         }
-        SerializableCompositeProfile serializableCompositeProfile = new SerializableCompositeProfile(compositeProfile,prefix,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,showConfLength);
+        String title = generateTitle(compositeProfile);
+
+        SerializableCompositeProfile serializableCompositeProfile = new SerializableCompositeProfile(compositeProfile,prefix,title,serializableSegmentRefOrGroups,serializableConformanceStatements,serializablePredicates,usageNote,defPreText,defPostText,tables,showConfLength);
         SerializableSection compositeProfileSegments = new SerializableSection(compositeProfile.getIdentifier()+"_segments",prefix+"."+String.valueOf(compositeProfile.getPosition())+"."+segmentSectionPosition,"1","4","Segment definitions");
         this.messageSegmentsNameList = new ArrayList<>();
         this.segmentPosition = 1;
@@ -83,6 +85,22 @@ public class SerializeCompositeProfileServiceImpl extends SerializeMessageOrComp
             serializableCompositeProfile.addSection(compositeProfileSegments);
         }
         return serializableCompositeProfile;
+    }
+
+    private String generateTitle(CompositeProfile compositeProfile) {
+        String title = "";
+        if(compositeProfile.getName() != null){
+            title = compositeProfile.getName();
+        } else {
+            title = compositeProfile.getMessageType() + "^" + compositeProfile.getEvent() + "^" + compositeProfile.getStructID();
+        }
+        if(compositeProfile.getIdentifier() != null && !compositeProfile.getIdentifier().isEmpty()){
+            title += " - " + compositeProfile.getIdentifier();
+        }
+        if(compositeProfile.getDescription() != null && !compositeProfile.getDescription().isEmpty()){
+            title += " - " + compositeProfile.getDescription();
+        }
+        return title;
     }
 
     private Table findTableInProfile(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding,
