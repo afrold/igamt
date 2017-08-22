@@ -13,17 +13,12 @@
             </xsl:attribute>
             <xsl:element name="col">
                 <xsl:attribute name="width">
-                    <xsl:text>33%</xsl:text>
+                    <xsl:text>30%</xsl:text>
                 </xsl:attribute>
             </xsl:element>
             <xsl:element name="col">
                 <xsl:attribute name="width">
-                    <xsl:text>33%</xsl:text>
-                </xsl:attribute>
-            </xsl:element>
-            <xsl:element name="col">
-                <xsl:attribute name="width">
-                    <xsl:text>33%</xsl:text>
+                    <xsl:text>70%</xsl:text>
                 </xsl:attribute>
             </xsl:element>
             <xsl:element name="thead">
@@ -33,9 +28,6 @@
                 <xsl:element name="tr">
                     <xsl:element name="th">
                         <xsl:text>Location</xsl:text>
-                    </xsl:element>
-                    <xsl:element name="th">
-                        <xsl:text>Date</xsl:text>
                     </xsl:element>
                     <xsl:element name="th">
                         <xsl:text>Description</xsl:text>
@@ -51,9 +43,6 @@
                         </xsl:attribute>
                         <xsl:element name="td">
                             <xsl:value-of select="@Location"/>
-                        </xsl:element>
-                        <xsl:element name="td">
-                            <xsl:value-of select="@Date"/>
                         </xsl:element>
                         <xsl:element name="td">
                             <xsl:value-of select="@Description"/>
