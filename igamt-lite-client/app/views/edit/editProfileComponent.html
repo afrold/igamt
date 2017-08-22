@@ -124,7 +124,7 @@
                                                             <tr class="tbl-header">
                                                                 <th class="col-md-1 col-fixed-250" rowspan="2">Position</th>
                                                                 <th class="col-md-1 col-fixed-250" rowspan="2">Location</th>
-                                                                <th class="col-md-1 col-fixed-40" rowspan="2">Name</th>
+                                                                <th>Name</th>
                                                                 <th class="col-md-2 col-fixed-80" rowspan="2">Usage</th>
                                                                 <th class="col-md-1 col-fixed-100" rowspan="2">Cardinality</th>
                                                                 <th class="col-md-1 col-fixed-100" rowspan="2">Length</th>
@@ -156,22 +156,48 @@
                                                                     <span class="label label-component label-icon" ng-if="node.type==='component'">C</span>
                                                                     <span ng-bind="node.path"></span>
                                                                 </td>
-                                                                <td ng-class="{'col-md-2 col-fixed-40 input-change ':node.attributes.ref.id!==node.attributes.oldRef.id,'col-md-2 col-fixed-40':node.attributes.ref.id===node.attributes.oldRef.id}" ng-if="node.type==='segment' || node.type==='segmentRef'">
-                                                                    <span ng-show="editableRef!==node.id && !node.attributes.ref">
-                                                                        <span>{{node.attributes.oldRef.name}}</span>
-                                                                        <span ng-if="node.attributes.oldRef.ext && node.attributes.oldRef.ext!==null">_{{node.attributes.oldRef.ext}}</span>
-                                                                    </span>
-                                                                    <span ng-show="editableRef!==node.id && node.attributes.ref">
-                                                                        <span>{{node.attributes.ref.name}}</span>
-                                                                        <span ng-if="node.attributes.ref.ext && node.attributes.ref.ext!==null">_{{node.attributes.ref.ext}}</span>
-                                                                    </span>
-                                                                    <select ng-disabled="viewSettings.tableReadonly" style="width:50px;"
-                                                                            ng-change="selectFlavor(node,segFlavor)"
-                                                                            ng-show="editableRef===node.id"
-                                                                            class="form-control input-sm"
-                                                                            name="flavor"
-                                                                            ng-model="segFlavor"
-                                                                            ng-options="segFlavor as segFlavor.label for segFlavor in segFlavors"></select>
+                                                                <td ng-class="{'input-change ':node.attributes.ref.id!==node.attributes.oldRef.id,'':node.attributes.ref.id===node.attributes.oldRef.id}" ng-if="node.type==='segment' || node.type==='segmentRef'">
+                                                                        <!--<display-label of="segmentsMap[node.source.segmentId]" desc="false"></display-label>-->
+
+                                                                        <!--<span title="Change Segment" ng-click="editRef(node)" ng-if="!viewSettings.tableReadonly">-->
+                                                                                    <!--<i class="fa fa-pencil fa-fw edit-icon"></i>-->
+
+                                                                        <!--</span>-->
+                                                                     <!--<md-select ng-disabled="viewSettings.tableReadonly" ng-model="node.attributes.ref" ng-show="editableRef===node.id"-->
+                                                                               <!--ng-change="selectFlavor()" placeholder="Select Flavor"-->
+                                                                        <!--<md-option ng-repeat="seg in segFlavors" ng-value="seg">-->
+                                                                            <!--<display-label of="segmentsMap[seg.id]" desc="false"></display-label>-->
+                                                                        <!--</md-option>-->
+                                                                     <!--</md-select>-->
+
+                                                                    <!--<a ng-show="editableRef===node.id && !viewSettings.tableReadonly" ng-click="backRef()" class="point">-->
+                                                                        <!--<span><i class="glyphicon glyphicon-remove"></i></span>-->
+                                                                    <!--</a>-->
+                                                                    <ng-form name="innerForm" class="form-inline" ng-controller="FormRowCtrl" ng-init="init(node)">
+                                                                    <div>
+                                                                                <span class="badge label-white" ng-show="editableRef!==node.id" style="text-align:left">
+                                                                                    <display-label of="segmentsMap[node.attributes.ref.id]" desc="false"></display-label>
+                                                                                    <span title="Change segment" ng-click="editRef(node)" ng-if="!viewSettings.tableReadonly && node.from !== 'message'">
+                                                                                    <i class="fa fa-pencil fa-fw edit-icon"></i></span>
+                                                                                </span>
+                                                                        <div ng-if="editableRef===node.id" style="text-align:left">
+                                                                            <md-select placeholder="Select Segment" ng-model="node.attributes.ref" ng-change="selectFlavor(node)" ng-disabled="viewSettings.tableReadonly">
+                                                                                <md-option ng-repeat="seg in segFlavors" ng-value="seg">
+                                                                                <display-label of="segmentsMap[seg.id]" desc="false"></display-label>
+                                                                                </md-option>
+                                                                            </md-select>
+                                                                        </div>
+                                                                        <div align="center">
+                                                                            <a ng-show="editableRef===node.id && !viewSettings.tableReadonly" ng-click="backRef()" class="point" >
+                                                                                <span><i class="glyphicon glyphicon-remove"></i></span>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                    </ng-form>
+
+
+
+
                                                                 </td>
                                                                 <td class="col-md-2 col-fixed-40" ng-if="node.type !== 'segment' &&  node.type !== 'segmentRef'">
                                                                     <span ng-bind="node.name"></span>
@@ -190,19 +216,19 @@
                                                                                 {{usage}}
                                                                             </md-option>
                                                                         </md-select>
-                                                                        <md-select ng-init="initUsage(node)"
-                                                                                   placeholder="Select Usage"
-                                                                                   name="usage"
-                                                                                   id="usage"
-                                                                                   class="inside-table"
-                                                                                   ng-change="updateUsage(node);"
-                                                                                   ng-if="node.from === 'segment' && node.type === 'segmentRef'"
-                                                                                   required
-                                                                                   ng-model="node.usage" ng-disabled="viewSettings.tableReadonly">
-                                                                            <md-option ng-repeat="usage in config.usages" ng-disabled="usage === 'C'" ng-value="usage">
-                                                                                {{usage}}
-                                                                            </md-option>
-                                                                        </md-select>
+                                                                        <!--<md-select ng-init="initUsage(node)"-->
+                                                                                   <!--placeholder="Select Usage"-->
+                                                                                   <!--name="usage"-->
+                                                                                   <!--id="usage"-->
+                                                                                   <!--class="inside-table"-->
+                                                                                   <!--ng-change="updateUsage(node);"-->
+                                                                                   <!--ng-if="node.from === 'segment' && node.type === 'segmentRef'"-->
+                                                                                   <!--required-->
+                                                                                   <!--ng-model="node.usage" ng-disabled="viewSettings.tableReadonly">-->
+                                                                            <!--<md-option ng-repeat="usage in config.usages" ng-disabled="usage === 'C'" ng-value="usage">-->
+                                                                                <!--{{usage}}-->
+                                                                            <!--</md-option>-->
+                                                                        <!--</md-select>-->
                                                                     </div>
                                                                     <span ng-if="node.usage === 'C' && findPredicate(node) != null && findPredicate(node) != undefined" class="badge label-white">
                                                                         <span>C({{findPredicate(node).trueUsage}}/{{findPredicate(node).falseUsage}})</span>
@@ -210,7 +236,7 @@
                                                                     <a ng-show="node.attributes.usage && !findPredicate(node)" ng-click="cancelUsage(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
                                                                 </td>
                                                                 <td class="col-md-1 col-fixed-100" ng-class="{'emptyCol': node.usage == 'X' || node.type==='component'|| node.type==='message', 'input-change':node.usage != 'X' && (node.attributes.min || node.attributes.max)}">
-                                                                    <div ng-show="node.usage != 'X' && node.type!=='component' && node.type!=='message'" class="form-inline" layout="row" layout-align="center center">
+                                                                    <div ng-show="node.usage != 'X' && node.type!=='component' && node.type!=='message' && (node.from !== 'segment'|| node.type !== 'segmentRef')" class="form-inline" layout="row" layout-align="center center" >
                                                                         <md-input-container flex="50" class="withoutMargin">
                                                                             <input ng-disabled="viewSettings.tableReadonly" aria-label="minC" style="width:50px;"
                                                                                    name="min" type="text"
