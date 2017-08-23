@@ -3582,3 +3582,9 @@ md-dialog .md-dialog-content {
 md-select[disabled] .md-select-value {
     color: black;
 }
+.break-content>tbody>tr>td, .break-content>tbody>tr>th, .break-content>tfoot>tr>td, .break-content>tfoot>tr>th, .break-content>thead>tr>td, .break-content>thead>tr>th {
+    padding: 5px;
+    word-break: break-word !important;
+    height: 49px;
+    overflow: scroll;
+}
