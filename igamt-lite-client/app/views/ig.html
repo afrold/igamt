@@ -609,9 +609,9 @@
                                    Select Conformance Profile(s)
                                 </div>
                                 <div class="table-responsive" style="width:100%">
-                                    <table class="table table-striped table-bordered table-condensed ">
+                                    <table class="table table-striped table-bordered break-content">
                                         <thead>
-                                        <tr class="tbl-header" layout="row">
+                                        <tr class="tbl-header" layout="row" layout-align="start start">
                                             <th flex="10">
                                                 <md-checkbox type="checkbox" ng-model="bool" arial-label="message"
                                                              ng-change="selectionAll(bool)"></md-checkbox>
@@ -623,7 +623,7 @@
                                         </thead>
                                         <tbody style="display:block; overflow-y: scroll;max-height: 400px;">
                                         <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id "
-                                            layout="row">
+                                            layout="row" layout-align="start start">
                                             <td flex="10">
                                                 <md-checkbox type="checkbox" ng-model="message.selected"
                                                              arial-label="message.id"
@@ -883,7 +883,7 @@
                                     Select Conformance Profile(s)
                                 </div>
                                 <div class="table-responsive" layout="row" style="width: 100%">
-                                    <table class="table table-striped table-bordered table-condensed ">
+                                    <table class="table table-striped table-bordered break-content">
                                         <thead>
                                         <tr class="tbl-header" layout="row">
                                             <th flex="10">

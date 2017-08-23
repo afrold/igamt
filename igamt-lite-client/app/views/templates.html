@@ -644,7 +644,7 @@
             <md-dialog-content>
                 <div class="md-dialog-content">
                     <div ng-show="!editorTarget.disabled ">
-                        <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus ng-model="editorTarget.obj[editorTarget.key] " id="globalEditor " name="content " ng-change="recordChanged() "></textarea>
+                        <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus ng-model="editorTarget.obj[editorTarget.key] " id="globalEditor " name="content "></textarea>
                       </div>
                     <div ng-show="editorTarget.disabled " style="width:100%; ">
                         <div froala-view="editorTarget.obj[editorTarget.key] "></div>
@@ -1052,7 +1052,7 @@
                             <tr class="tbl-header">
                                 <th class="col-md-1" style="text-align:center">#</th>
                                 <th class="col-md-3" style="text-align:center">Binding Identifier</th>
-                                <th class="col-md-3" style="text-align:center">Description</th>
+                                <th class="col-md-3" style="text-align:center">Name</th>
                                 <th class="col-md-2" style="text-align:center">Binding Strength</th>
                                 <th class="col-md-2" style="text-align:center">Binding Location</th>
                                 <th class="col-md-1" style="text-align:center">
@@ -1068,7 +1068,7 @@
                                     {{tablesMap[vs.tableId].bindingIdentifier}}
                                 </td>
                                 <td class="col-md-3">
-                                    {{tablesMap[vs.tableId].description}}
+                                    {{tablesMap[vs.tableId].name}}
                                 </td>
                                 <td class="col-md-2">
                                     <md-select placeholder="Select BindingStrength" ng-model='vs.bindingStrength'>
@@ -1095,7 +1095,7 @@
                             <tr class="tbl-header">
                                 <th st-sort="scope" class="col-md-1">Scope/Version</th>
                                 <th st-sort="bindingIdentifier" class="col-md-3">Binding Identifier</th>
-                                <th class="col-md-7">Description</th>
+                                <th class="col-md-7">Name</th>
                                 <th class="col-md-1">Action</th>
                             </tr>
                             <tr>
@@ -1114,7 +1114,7 @@
                                     {{v.bindingIdentifier}}
                                 </td>
                                 <td class="col-md-7">
-                                    {{v.description}}
+                                    {{v.name}}
                                 </td>
                                 <td class="col-md-1" align="center">
                                     <span>
