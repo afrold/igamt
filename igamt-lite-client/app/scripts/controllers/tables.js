@@ -35,11 +35,19 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         });
     };
 
+    $scope.codeCompare = function (a, b) {
+        if (a.value < b.value)
+            return -1;
+        if (a.value > b.value)
+            return 1;
+        return 0;
+    };
     $scope.reset = function() {
+        console.log("Reset Table")
         blockUI.start();
         cleanState();
-        $rootScope.table = angular.copy($rootScope.tablesMap[$rootScope.table.id]);
-        $rootScope.findValueSetBindings();
+        $rootScope.table = angular.copy($rootScope.entireTable);
+        //$rootScope.findValueSetBindings();
         blockUI.stop();
     };
     $scope.redirectSeg = function(segmentRef) {

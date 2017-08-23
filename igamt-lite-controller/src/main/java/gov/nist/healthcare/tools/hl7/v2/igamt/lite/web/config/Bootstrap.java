@@ -287,11 +287,11 @@ public class Bootstrap implements InitializingBean {
     // fixCodeSysLOINC();
     //
     // fixAllConstraints();
-    // SetTablePreText();
+    SetTablePreText();
   }
 
   private void SetTablePreText() {
-    List<Table> allPhinVades = tableService.findByScope(SCOPE.PHINVADS.toString());
+    List<Table> allPhinVades = tableService.findAll();
     for (Table t : allPhinVades) {
       t.setDefPreText(t.getDescription());
       tableService.updateDescription(t.getId(), t.getDescription());
