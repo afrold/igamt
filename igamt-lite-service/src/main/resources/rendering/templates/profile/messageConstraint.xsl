@@ -22,7 +22,7 @@
                     <xsl:element name="br"/>
                     <xsl:call-template name="Constraint">
                         <xsl:with-param name="title">
-                            <xsl:text>&lt;ul&gt;&lt;li&gt;Message:&lt;/li&gt;&lt;/ul&gt;</xsl:text>
+                            <xsl:text>Message:</xsl:text>
                         </xsl:with-param>
                         <xsl:with-param name="constraintMode">
                             <xsl:text>standalone</xsl:text>
@@ -36,26 +36,41 @@
                     </xsl:call-template>
                 </xsl:if>
             </xsl:for-each>
-            <xsl:for-each select="MessageGroup">
-                <xsl:if test="count(./Constraint[@Type=$constraintType]) &gt; 0">
-                    <xsl:element name="br"/>
-                    <xsl:call-template name="Constraint">
-                        <xsl:with-param name="title">
-                            <xsl:text>&lt;ul&gt;&lt;li&gt;Group:&lt;/li&gt;&lt;/ul&gt;</xsl:text>
-                        </xsl:with-param>
-                        <xsl:with-param name="constraintMode">
-                            <xsl:text>standalone</xsl:text>
-                        </xsl:with-param>
-                        <xsl:with-param name="type">
-                            <xsl:text>cs</xsl:text>
-                        </xsl:with-param>
-                        <xsl:with-param name="headerLevel">
-                            <xsl:text>h5</xsl:text>
-                        </xsl:with-param>
-                    </xsl:call-template>
-                </xsl:if>
-            </xsl:for-each>
+            <xsl:call-template name="MessageGroupConstraint">
+            	<xsl:with-param name="constraintType">
+                	<xsl:value-of select="$constraintType"></xsl:value-of>
+            	</xsl:with-param>
+            </xsl:call-template>
         </xsl:if>
+    </xsl:template>
+    
+    <xsl:template name="MessageGroupConstraint">
+    	<xsl:param name="constraintType"/>
+    	<xsl:for-each select="MessageGroup">
+            <xsl:if test="count(./Constraint[@Type=$constraintType]) &gt; 0">
+                <xsl:element name="br"/>
+                <xsl:call-template name="Constraint">
+                    <xsl:with-param name="title">
+                        <xsl:value-of select="concat('Group: ',./Constraint/@LocationName)"/>
+                    </xsl:with-param>
+                    <xsl:with-param name="constraintMode">
+                        <xsl:text>standalone</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="type">
+                        <xsl:text>cs</xsl:text>
+                    </xsl:with-param>
+                    <xsl:with-param name="headerLevel">
+                        <xsl:text>h5</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </xsl:if>
+            <xsl:call-template name="MessageGroupConstraint">
+            	<xsl:with-param name="constraintType">
+                	<xsl:value-of select="$constraintType"></xsl:value-of>
+            	</xsl:with-param>
+            </xsl:call-template>
+        </xsl:for-each>
+            
     </xsl:template>
 
 </xsl:stylesheet>

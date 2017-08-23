@@ -49,8 +49,8 @@ public class SerializableSegment extends SerializableSection {
   private Boolean showConfLength;
   private Map<String, Datatype> dynamicMappingDatatypeMap;
   private Boolean showInnerLinks;
+  private Boolean duplicateOBXDataTypeWhenFlavorNull;
   private String host;
-
 
   public SerializableSegment(String id, String prefix, String position, String headerLevel,
       String title, Segment segment, String name, String label, String description, String comment,
@@ -58,7 +58,7 @@ public class SerializableSegment extends SerializableSection {
       Map<Field, Datatype> fieldDatatypeMap,
       Map<Field, List<ValueSetOrSingleCodeBinding>> fieldValueSetBindingsMap, List<Table> tables,
       Map<String, Table> coConstraintValueTableMap, Map<String, Datatype> dynamicMappingDatatypeMap,
-      Boolean showConfLength, Boolean showInnerLinks, String host,
+      Boolean showConfLength, Boolean showInnerLinks, Boolean duplicateOBXDataTypeWhenFlavorNull, String host,
       Map<String, Datatype> coConstraintDatatypeMap) {
     super(id, prefix, position, headerLevel, title);
     this.segment = segment;
@@ -76,6 +76,7 @@ public class SerializableSegment extends SerializableSection {
     this.dynamicMappingDatatypeMap = dynamicMappingDatatypeMap;
     this.showConfLength = showConfLength;
     this.showInnerLinks = showInnerLinks;
+    this.duplicateOBXDataTypeWhenFlavorNull = duplicateOBXDataTypeWhenFlavorNull;
     this.host = host;
     this.coConstraintDatatypeMap = coConstraintDatatypeMap;
   }
@@ -339,20 +340,24 @@ public class SerializableSegment extends SerializableSection {
               Element td2 = new Element("td");
               if (coConstraintTHENColumnData.getValueData() == null
                   || coConstraintTHENColumnData.getValueData().getValue() == null
-                  || coConstraintTHENColumnData.getValueData().getValue().isEmpty()
-                  || coConstraintTHENColumnData.getDatatypeId() == null) {
-                td.addAttribute(new Attribute("class", "greyCell"));
-                td2.addAttribute(new Attribute("class", "greyCell"));
+                  || coConstraintTHENColumnData.getValueData().getValue().isEmpty()) {
+            	  td.addAttribute(new Attribute("class", "greyCell"));
               } else {
                 td.appendChild(coConstraintTHENColumnData.getValueData().getValue());
-                td2.appendChild(coConstraintDatatypeMap
-                    .get(coConstraintTHENColumnData.getDatatypeId()).getLabel());
+              }
+              if(coConstraintTHENColumnData.getDatatypeId() == null){
+            	  if(this.duplicateOBXDataTypeWhenFlavorNull && coConstraintTHENColumnData.getValueData() != null
+                          && coConstraintTHENColumnData.getValueData().getValue() != null && !coConstraintTHENColumnData.getValueData().getValue().isEmpty()){
+            		  td2.appendChild(coConstraintTHENColumnData.getValueData().getValue());
+            	  } else {
+            		  td2.addAttribute(new Attribute("class", "greyCell"));
+            	  }
+              } else {
+            	  td2.appendChild(coConstraintDatatypeMap
+                          .get(coConstraintTHENColumnData.getDatatypeId()).getLabel());
               }
               tr.appendChild(td);
               tr.appendChild(td2);
-
-
-
             } else {
               CoConstraintTHENColumnData coConstraintTHENColumnData = coConstraintsTable
                   .getThenMapData().get(coConstraintColumnDefinition.getId()).get(i);

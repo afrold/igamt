@@ -92,7 +92,7 @@ public class SerializeMessageServiceImpl extends SerializeMessageOrCompositeProf
             serializableSegmentRefOrGroups.add(serializableSegmentRefOrGroup);
             if(serializationLayout.equals(SerializationLayout.PROFILE)){
                 serializeSegment(segmentRefOrGroup,
-                    messageSegments.getPrefix() + ".", messageSegments, segmentUsageConfig, fieldsUsageConfig);
+                    messageSegments.getPrefix() + ".", messageSegments, segmentUsageConfig, fieldsUsageConfig,exportConfig.isDuplicateOBXDataTypeWhenFlavorNull());
             }
         }
         if(!messageSegments.getSerializableSectionList().isEmpty()){

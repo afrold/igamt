@@ -2164,6 +2164,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
         pathInfo.instanceNumber = instanceNumber;
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
         current.pathInfoSet.push(pathInfo);
+        current.childrenVisible = false;
 
         if (current.type === 'segment') {
             var seg = current;
@@ -2207,6 +2208,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
     };
 
     $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
+    $scope.treeDataForContext[0].childrenVisible = true;
 
     $scope.getDialogStyle = function(){
         if ($scope.dialogStep === 0) return "width: 70%";
@@ -2496,6 +2498,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
         pathInfo.instanceNumber = instanceNumber;
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
         current.pathInfoSet.push(pathInfo);
+        current.childrenVisible = false;
         var childPositionNumber;
         var childLocationName;
         var childNodeName;
@@ -2545,6 +2548,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($sc
     };
 
     $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
+    $scope.treeDataForContext[0].childrenVisible = true;
 
     $scope.isEmptyConstraintID = function(newConstraint) {
         if (newConstraint && newConstraint.constraintId === null) return true;

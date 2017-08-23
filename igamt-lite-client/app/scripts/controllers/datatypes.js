@@ -1938,7 +1938,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
         pathInfo.instanceNumber = instanceNumber;
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
         current.pathInfoSet.push(pathInfo);
-
+        current.childrenVisible = false;
         if (current.type == 'datatype') {
             var dt = current;
             for (var i in dt.components) {
@@ -1974,6 +1974,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function($s
     };
 
     $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
+    $scope.treeDataForContext[0].childrenVisible = true;
 
     $scope.isEmptyConstraintID = function(newConstraint) {
         if (newConstraint && newConstraint.constraintId === null) return true;
@@ -2190,6 +2191,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, confi
         pathInfo.instanceNumber = instanceNumber;
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
         current.pathInfoSet.push(pathInfo);
+        current.childrenVisible = false;
 
         if (current.type == 'datatype') {
             var dt = current;
@@ -2226,6 +2228,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, confi
     };
 
     $scope.generatePathInfo($scope.treeDataForContext[0], ".", ".", "1", false);
+    $scope.treeDataForContext[0].childrenVisible = true;
 
     $scope.getDialogStyle = function(){
         if ($scope.dialogStep === 0) return "width: 70%";

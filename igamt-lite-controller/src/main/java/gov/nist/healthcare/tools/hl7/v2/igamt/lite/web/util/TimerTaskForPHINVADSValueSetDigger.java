@@ -193,6 +193,7 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       table.setType(Constant.TABLE);
       table.setComment(vsvByVSOid.get(0).getDescription());
       table.setDate(vs.getStatusDate().toString());
+      table.setCodes(new ArrayList<Code>());
       for (ValueSetConcept pcode : valueSetConcepts) {
         Code code = new Code();
         code.setCodeUsage("P");

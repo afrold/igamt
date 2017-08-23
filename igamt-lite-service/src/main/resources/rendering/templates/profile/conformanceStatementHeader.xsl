@@ -16,7 +16,7 @@
             </xsl:attribute>
             <xsl:element name="tr">
                 <xsl:element name="th">
-                    <xsl:text>Id</xsl:text>
+                    <xsl:text>ID</xsl:text>
                 </xsl:element>
                 <xsl:element name="th">
                     <xsl:text>Description</xsl:text>

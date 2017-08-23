@@ -2065,7 +2065,6 @@ angular.module('igl').controller('DatatypeLibraryCtl',
                             $scope.tabs_dlg[i].active=false;
                         }
                     }
-
                 };
 
                 $scope.addedDatatypes=[];
@@ -2849,12 +2848,15 @@ angular.module('igl').controller('AddTableOpenCtrlLIB', function($scope, $modalI
     $scope.searchPhinvads = function(searchText) {
         $scope.loading = true;
         $scope.searchText = searchText;
-        return $http.get('api/igdocuments/' + searchText + "/PHINVADS/tables", {
-            timeout: 600000
-        }).then(function(response) {
-            $scope.phinvadsTables = response.data;
-            $scope.loading = false;
-        });
+        if($scope.searchText!==''){
+            return $http.get('api/igdocuments/' + searchText + "/PHINVADS/tables", {
+                timeout: 600000
+            }).then(function(response) {
+                $scope.phinvadsTables = response.data;
+                $scope.loading = false;
+            });
+        }
+
     }
     $scope.createNewExtension = function(ext) {
         if (tableLibrary != null) {

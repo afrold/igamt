@@ -60,43 +60,23 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.redirectVS = function(binding) {
 
         TableService.getOne(binding.tableId).then(function(valueSet) {
-            var modalInstance = $mdDialog.show({
+            var modalInstance = $modal.open({
                 templateUrl: 'redirectCtrl.html',
                 controller: 'redirectCtrl',
                 size: 'md',
-                locals: {
-                    destination: valueSet
+                resolve: {
+                    destination: function() {
+                        return valueSet;
                     }
+                }
+
+
 
             });
-            modalInstance.then(function(result) {
-                if(result&&result!=='cancel'){
-                    $rootScope.editTable(valueSet);
-
-                }
+            modalInstance.result.then(function() {
+                $rootScope.editTable(valueSet);
             });
         });
-    };
-    $scope.redirectDT = function(datatype) {
-        DatatypeService.getOne(datatype.id).then(function(datatype) {
-            var modalInstance = $mdDialog.show({
-                templateUrl: 'redirectCtrl.html',
-                controller: 'redirectCtrl',
-                size: 'md',
-                locals: {
-                    destination:  datatype
-                }
-
-            });
-            modalInstance.then(function(result) {
-                if(result&&result!=='cancel') {
-                    $rootScope.editDatatype(datatype);
-                }
-            });
-
-
-        });
-
     };
 
     $scope.findPredicate = function(node){
@@ -731,12 +711,12 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     };
     $scope.cancelConfSt = function(node) {
         node.attributes.conformanceStatements = null;
-       $rootScope.recordChanged ();
+        $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
     $scope.cancelDynMap = function(node) {
         node.attributes.dynamicMappingDefinition = null;
-       $rootScope.recordChanged ();
+        $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
     $scope.cancelCoCon = function(node) {
@@ -761,7 +741,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.cancelUsage = function(field) {
         field.attributes.usage = null;
         field.usage = field.attributes.oldUsage;
-       $rootScope.recordChanged ();
+        $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
     $scope.initMinCard = function(node) {
@@ -782,7 +762,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
     $scope.cancelMinCard = function(field) {
         field.attributes.min = null;
         field.min = field.attributes.oldMin;
-       $rootScope.recordChanged ();
+        $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
 
@@ -791,7 +771,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         field.min = field.attributes.oldMin;
         field.attributes.max = null;
         field.max = field.attributes.oldMax;
-       $rootScope.recordChanged ();
+        $rootScope.recordChanged ();
         $scope.editForm.$pristine=false;
     };
 
@@ -969,6 +949,16 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         $scope.editableDT = '';
 
     };
+    $scope.showSelect=function(node){
+        $scope.editableRef=node.id;
+
+    };
+    $scope.isSelectOpen=function (node) {
+        return $scope.editableRef&&$scope.editableRef==node.id;
+    };
+    $scope.backRef=function(){
+        $scope.editableRef=false;
+    };
     $scope.cancelDefText = function(field) {
         field.attributes.text = null;
        $rootScope.recordChanged ();
@@ -1122,7 +1112,7 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
         });
 
     };
-    $scope.editableRef = '';
+    $scope.editableRef = false;
     $scope.editRef = function(field) {
         $scope.editableRef = field.id;
         $scope.segFlavors = [];
@@ -1138,19 +1128,14 @@ angular.module('igl').controller('ListProfileComponentCtrl', function($scope, $m
             }
         }
     };
-    $scope.selectFlavor = function(field, flavor) {
-        if (flavor) {
-            field.attributes.ref = {
-                id: flavor.id,
-                name: flavor.name,
-                ext: flavor.ext,
-                label: flavor.label
-            };
+    $scope.selectFlavor = function(field) {
 
-           $rootScope.recordChanged ();
+            field.source.segmentId=field.attributes.ref.id;
+
+            $rootScope.recordChanged();
             $scope.editForm.$pristine=false;
-            $scope.editableRef = '';
-        };
+            $scope.editableRef = false;
+
 
     };
 
@@ -2789,7 +2774,7 @@ angular.module('igl').controller('addComponentsCtrl', function($scope, $rootScop
             var newPc = {
                 id: new ObjectId().toString(),
                 name: $rootScope.segmentsMap[pc.id].name,
-                ext: $rootScope.segmentsMap[pc.id].ex,
+                ext: $rootScope.segmentsMap[pc.id].ext,
                 type: "segmentRef",
                 path: $rootScope.segmentsMap[pc.id].label,
                 pathExp: $rootScope.segmentsMap[pc.id].label,

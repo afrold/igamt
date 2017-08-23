@@ -2349,7 +2349,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
         pathInfo.instanceNumber = instanceNumber;
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
         current.pathInfoSet.push(pathInfo);
-
+        current.childrenVisible = false;
         if (current.type === 'message' || current.type === 'group') {
             for (var i in current.children) {
                 var segGroup = current.children[i];
@@ -2578,7 +2578,7 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
     $scope.initComplexPredicate();
     $scope.findAllGlobalPredicates();
     $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
-
+    $scope.selectedMessage.childrenVisible = true;
 });
 /*
  contextPath: ".",
@@ -2764,6 +2764,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         pathInfo.instanceNumber = instanceNumber;
         pathInfo.isInstanceNumberEditable = isInstanceNumberEditable;
         current.pathInfoSet.push(pathInfo);
+        current.childrenVisible = false;
 
         if (current.type == 'message' || current.type == 'group') {
             for (var i in current.children) {
@@ -2856,7 +2857,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         $scope.compositeType = null;
         $scope.complexConstraint = null;
         $scope.newComplexConstraintId = null;
-    }
+    };
 
     $scope.addConformanceStatement = function() {
 
@@ -2934,21 +2935,10 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
     $scope.init=function(){
         $scope.selectedMessage = angular.copy(selectedMessage);
         $scope.selectedMessage.pathInfoSet = [];
-        console.log("processed");
-
         $scope.treeDataForMessage.push($scope.selectedMessage);
-        console.log("processed");
-
         $rootScope.processMessageTree($scope.selectedMessage);
-        console.log("processed");
-
-     $scope.initConformanceStatement();
-        console.log("processed");
-
+        $scope.initConformanceStatement();
         $scope.initComplexStatement();
-
-        console.log("processed");
-
         if(contextPath){
             if(contextPath.indexOf('.') < 0){
             $scope.treeDataForContext = [];
@@ -2957,16 +2947,15 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
             $scope.selectedContextNode.conformanceStatements = angular.copy(currentConformanceStatements);
             $scope.selectedContextNode.contextKey = $scope.contextKey;
             $scope.selectedContextNode.pathInfoSet = [];
-            //$scope.generatePathInfo($scope.selectedContextNode, ".", ".", "1", false, null);
-            //$scope.initConformanceStatement();
             $scope.treeDataForContext.push($scope.selectedContextNode);
             $scope.dialogStep = 1;
+            }else {
+                $scope.travelByContextPath($scope.selectedMessage, contextPath);
+            }
         }else {
-            $scope.travelByContextPath($scope.selectedMessage, contextPath);
+            $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
         }
-    }else {
-        $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
-    }
+        $scope.selectedMessage.childrenVisible = true;
     }
 });
 

@@ -278,7 +278,7 @@ import nu.xom.Document;
 
         //Segments serialization
         UsageConfig fieldsUsageConfig = exportConfig.getFieldsExport();
-        SerializableSection segmentsSection = this.serializeSegments(profile,fieldsUsageConfig, currentPosition);
+        SerializableSection segmentsSection = this.serializeSegments(profile,fieldsUsageConfig, currentPosition,exportConfig.isDuplicateOBXDataTypeWhenFlavorNull());
         if(exportConfig.isIncludeSegmentTable() && !serializationLayout.equals(SerializationLayout.PROFILE) && segmentsSection != null) {
             profileSection.addSection(segmentsSection);
             currentPosition ++;
@@ -705,7 +705,7 @@ import nu.xom.Document;
         }
     }
 
-    private SerializableSection serializeSegments(Profile profile, UsageConfig fieldsUsageConfig, int position) {
+    private SerializableSection serializeSegments(Profile profile, UsageConfig fieldsUsageConfig, int position, Boolean duplicateOBXDataTypeWhenFlavorNull) {
         String id = profile.getSegmentLibrary().getId();
         String sectionPosition = String.valueOf(position);
         String prefix = String.valueOf(profile.getSectionPosition() + 1) + "." + String
@@ -729,12 +729,12 @@ import nu.xom.Document;
                         .serializeSegment(segmentLink, prefix + "." + String
                                 .valueOf(this.bindedSegments.indexOf(segmentLink) + 1),
                             bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig,
-                            compositeProfile.getSegmentsMap(),compositeProfile.getDatatypesMap(),compositeProfile.getTablesMap()));
+                            compositeProfile.getSegmentsMap(),compositeProfile.getDatatypesMap(),compositeProfile.getTablesMap(), duplicateOBXDataTypeWhenFlavorNull));
                 } else {
                     segmentsSection.addSection(serializeSegmentService
                         .serializeSegment(segmentLink,
                             prefix + "." + String.valueOf(bindedSegments.indexOf(segmentLink) + 1),
-                            bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig));
+                            bindedSegments.indexOf(segmentLink), 3, fieldsUsageConfig, duplicateOBXDataTypeWhenFlavorNull));
                 }
             }
         }

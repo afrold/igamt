@@ -24,7 +24,22 @@ public abstract class DataModel {
   protected int publicationVersion = 0;
   protected String createdFrom;
   private String hl7Section;
+  protected String authorNotes = "";
 
+
+  /**
+   * @return the authorNotes
+   */
+  public String getAuthorNotes() {
+    return authorNotes;
+  }
+
+  /**
+   * @param authorNotes the authorNotes to set
+   */
+  public void setAuthorNotes(String authorNotes) {
+    this.authorNotes = authorNotes;
+  }
 
   public DataModel() {
     this.dateUpdated = new Date();

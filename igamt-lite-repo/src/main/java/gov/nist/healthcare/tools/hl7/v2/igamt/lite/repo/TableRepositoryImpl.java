@@ -136,40 +136,59 @@ public class TableRepositoryImpl implements TableOperations {
     return mongo.findOne(qry, Table.class);
   }
 
-@Override
-public List<Table> findByScope(String scope) {
-	Criteria where = Criteria.where("scope").is(scope);
+  @Override
+  public List<Table> findByScope(String scope) {
+    Criteria where = Criteria.where("scope").is(scope);
     Query qry = Query.query(where);
     List<Table> tables = mongo.find(qry, Table.class);
     return tables;
-}
+  }
 
-@Override
-public List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope) {
-	Criteria where = Criteria.where("bindingIdentifier").is(bindingIdentifier).andOperator(
-	        Criteria.where("scope").is(scope.toString()));
+  @Override
+  public List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope) {
+    Criteria where = Criteria.where("bindingIdentifier").is(bindingIdentifier)
+        .andOperator(Criteria.where("scope").is(scope.toString()));
     Query qry = Query.query(where);
     List<Table> tables = mongo.find(qry, Table.class);
     return tables;
-}
+  }
 
-@Override
-public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier) {
-	Criteria where = Criteria.where("bindingIdentifier").is(bindingIdentifier).andOperator(
-	        Criteria.where("scope").is(scope));
+  @Override
+  public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier) {
+    Criteria where = Criteria.where("bindingIdentifier").is(bindingIdentifier)
+        .andOperator(Criteria.where("scope").is(scope));
     Query qry = Query.query(where);
     Table table = mongo.findOne(qry, Table.class);
     return table;
-}
+  }
 
-@Override
-public List<Table> findByScopeAndVersion(String scope, String hl7Version) {
-	Criteria where = Criteria.where("hl7Version").is(hl7Version).andOperator(
-	        Criteria.where("scope").is(scope.toString()));
+  @Override
+  public List<Table> findByScopeAndVersion(String scope, String hl7Version) {
+    Criteria where = Criteria.where("hl7Version").is(hl7Version)
+        .andOperator(Criteria.where("scope").is(scope.toString()));
     Query qry = Query.query(where);
     List<Table> tables = mongo.find(qry, Table.class);
     return tables;
-}
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableOperations#updateDescription(java.lang.
+   * String, java.lang.String)
+   */
+  @Override
+  public void updateDescription(String id, String description) {
+    // TODO Auto-generated method stub
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    query.fields().include("defPreText");
+    Update update = new Update();
+    update.set("defPreText", description);
+    mongo.updateFirst(query, update, Table.class);
+
+  }
 
   // Query set4Brevis(Query qry) {
   // qry.fields().include("_id");

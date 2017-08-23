@@ -184,11 +184,19 @@
                 </xsl:if>
             </xsl:if>
             <xsl:apply-templates select="./ValueSetBindingList"/>
+            <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
+                <xsl:element name="br"/>
+                <xsl:call-template name="definitionText">
+                    <xsl:with-param name="type">
+                        <xsl:text>post</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </xsl:if>
             <xsl:if test="count(./Component/Text[@Type='Text']) &gt; 0">
                 <xsl:element name="br"/>
                 <xsl:element name="span">
                     <xsl:element name="b">
-                        <xsl:text>Components Definition Texts</xsl:text>
+                        <xsl:text>Component Definitions</xsl:text>
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="br"/>
@@ -208,14 +216,6 @@
                     </xsl:if>
                 </xsl:for-each>
             </xsl:if>
-        </xsl:if>
-        <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
-            <xsl:element name="br"/>
-            <xsl:call-template name="definitionText">
-                <xsl:with-param name="type">
-                    <xsl:text>post</xsl:text>
-                </xsl:with-param>
-            </xsl:call-template>
         </xsl:if>
         <xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
             <xsl:element name="br"/>

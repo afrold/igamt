@@ -16,7 +16,8 @@ angular
             'orderByFilter',
             '$mdDialog',
             'DatatypeService',
-            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService, CompositeProfileService,orderByFilter,$mdDialog,DatatypeService) {
+            'TableService',
+            function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService, CompositeProfileService,orderByFilter,$mdDialog,DatatypeService,TableService) {
 
                 $scope.collapsedata = false;
                 $scope.collapsePcs = true;
@@ -1951,15 +1952,18 @@ angular
                 };
 
                 $rootScope.addPHINVADSTables = function(selectedTableLibary) {
-                    var modalInstance = $mdDialog.show({
-                        templateUrl: 'AddPHINVADSTableOpenCtrlMd.html',
-                        controller: 'AddPHINVADSTableOpenCtrl',
-                        locals: {
-                            selectedTableLibary: selectedTableLibary
-                            }
 
-                    });
-                    modalInstance.then(function() {}, function() {});
+                            var modalInstance = $mdDialog.show({
+                                templateUrl: 'AddPHINVADSTableOpenCtrlMd.html',
+                                controller: 'AddPHINVADSTableOpenCtrl',
+                                locals: {
+                                    selectedTableLibary: selectedTableLibary
+                                }
+
+                            });
+                            modalInstance.then(function() {}, function() {});
+
+
                 };
 
                 $rootScope.getLabelOfData = function(name, ext) {
