@@ -965,14 +965,14 @@
                                     <li ng-repeat="participant in table.shareParticipantIds"><a><i class="fa fa-user" aria-hidden="true"></i> {{participant.username}} <span ng-if="participant.pendingApproval">(Pending...)</span></a></li>
                                 </ul>
                             </div>
-                            <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
-                                ng-disabled="!isBindingChanged()"
-                                ng-click="saveBindingForValueSet()">
-                                <span><i class="fa fa-check fa-fw"></i> Save</span>
-                            </button>
-                            <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!isBindingChanged()" ng-click="reset()">
-                                <span><i class="fa fa-times fa-fw"></i> Reset</span>
-                            </button>
+                            <!--<button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"-->
+                                <!--ng-disabled="!isBindingChanged()"-->
+                                <!--ng-click="saveBindingForValueSet()">-->
+                                <!--<span><i class="fa fa-check fa-fw"></i> Save</span>-->
+                            <!--</button>-->
+                            <!--<button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!isBindingChanged()" ng-click="reset()">-->
+                                <!--<span><i class="fa fa-times fa-fw"></i> Reset</span>-->
+                            <!--</button>-->
                         </span>
 
                         <span class="pull-right" ng-if="typeOfSharing && table.owner" style="font-style: italic;">

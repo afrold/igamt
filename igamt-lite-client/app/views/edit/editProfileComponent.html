@@ -1569,7 +1569,7 @@
                                                 <tr class="tbl-header">
                                                     <th class="col-md-1" style="text-align:center">#</th>
                                                     <th class="col-md-3" style="text-align:center">Binding Identifier</th>
-                                                    <th class="col-md-3" style="text-align:center">Description</th>
+                                                    <th class="col-md-3" style="text-align:center">Name</th>
                                                     <th class="col-md-2" style="text-align:center">Binding Strength</th>
                                                     <th class="col-md-2" style="text-align:center">Binding Location</th>
                                                     <th class="col-md-1" style="text-align:center"></th>
@@ -1581,7 +1581,7 @@
                                                         <span>{{$index + 1}}</span>
                                                     </td>
                                                     <td class="col-md-3">{{$root.tablesMap[vs.tableId].bindingIdentifier}}</td>
-                                                    <td class="col-md-3">{{$root.tablesMap[vs.tableId].description}}</td>
+                                                    <td class="col-md-3">{{$root.tablesMap[vs.tableId].name}}</td>
                                                     <td class="col-md-2">
                                                         <md-select class="inside-table" aria-label="if" ng-model='vs.bindingStrength'>
                                                             <md-option value="R">Required</md-option>
@@ -1605,7 +1605,7 @@
                                                 <tr class="tbl-header">
                                                     <th st-sort="scope" class="col-md-1">Scope/Version</th>
                                                     <th st-sort="bindingIdentifier" class="col-md-3">BindingIdentifier</th>
-                                                    <th class="col-md-7">Description</th>
+                                                    <th class="col-md-7">Name</th>
                                                     <th class="col-md-1">Action</th>
                                                 </tr>
                                                 <tr>

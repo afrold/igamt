@@ -2040,6 +2040,8 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                     $rootScope.$emit("event:initTable");
                     $rootScope.currentData = $rootScope.table;
                     $rootScope.codeSystems = [];
+                    console.log($rootScope.table);
+
                     for (var i = 0; i < $rootScope.table.codes.length; i++) {
                         if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
                             if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
@@ -2049,7 +2051,9 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                     }
                     $rootScope.table.smallCodes = $rootScope.table.codes.slice(0, 1000);
                     $rootScope.table.smallCodes.sort($scope.codeCompare);
-                    $rootScope.findValueSetBindings();
+                    $rootScope.entireTable=angular.copy($rootScope.table);
+
+                   // $rootScope.findValueSetBindings();
                     $scope.loadingSelection = false;
                     TableService.crossRef($rootScope.table,$rootScope.igdocument.id).then(function (result) {
                         $rootScope.crossRef = result;
