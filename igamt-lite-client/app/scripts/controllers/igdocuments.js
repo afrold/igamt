@@ -1042,17 +1042,10 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
         $scope.selectMessagesForExport = function (igdocument, toGVT) {
             if ($rootScope.hasChanges()) {
-                $rootScope.openConfirmLeaveDlg().then(function () {
-                    if ($scope.editForm) {
-                        console.log("Cleaning");
-                        $scope.editForm.$setPristine();
-                        $scope.editForm.$dirty = false;
-                        $scope.editForm.$invalid = false;
-
+                $rootScope.openConfirmLeaveDlg().then(function (result) {
+                    if(result&&result==='cancel'){
+                        $scope.processSelectMessagesForExport(igdocument, toGVT);
                     }
-                    $rootScope.clearChanges();
-                    $scope.processSelectMessagesForExport(igdocument, toGVT);
-
                 });
             } else {
                 $scope.processSelectMessagesForExport(igdocument, toGVT);
@@ -1061,16 +1054,12 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
         $scope.selectCompositeProfilesForExport = function (igdocument, toGVT) {
             if ($rootScope.hasChanges()) {
-                $rootScope.openConfirmLeaveDlg().result.then(function () {
-                    if ($scope.editForm) {
-                        console.log("Cleaning");
-                        $scope.editForm.$setPristine();
-                        $scope.editForm.$dirty = false;
-                        $scope.editForm.$invalid = false;
+                $rootScope.openConfirmLeaveDlg().result.then(function (result) {
+                    if(result&&result==='cancel') {
 
+                        $rootScope.clearChanges();
+                        $scope.processSelectCompositeProfilesForExport(igdocument, toGVT);
                     }
-                    $rootScope.clearChanges();
-                    $scope.processSelectCompositeProfilesForExport(igdocument, toGVT);
 
                 });
             } else {
