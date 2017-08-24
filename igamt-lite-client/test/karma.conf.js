@@ -38,7 +38,6 @@ module.exports = function(config) {
       'bower_components/ng-idle/angular-idle.js',
       'bower_components/lodash/lodash.js',
       'bower_components/restangular/dist/restangular.js',
-      'bower_components/sass-bootstrap/dist/js/bootstrap.js',
       'bower_components/angular-local-storage/dist/angular-local-storage.js',
       'bower_components/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js',
       'bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js',
@@ -91,6 +90,7 @@ module.exports = function(config) {
       'bower_components/angular-ui-sortable/sortable.js',
       'bower_components/crypto-js/index.js',
       'bower_components/angular-md5/angular-md5.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/angular-scenario/angular-scenario.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
