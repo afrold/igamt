@@ -12,7 +12,7 @@ angular.module('igl').controller('ErrorDetailsCtrl', function ($scope, $modalIns
     };
 });
 
-app.controller('ErrorCtrl', [ '$scope', '$modalInstance', 'StorageService', '$window',
+angular.module('igl').controller('ErrorCtrl', [ '$scope', '$modalInstance', 'StorageService', '$window',
     function ($scope, $modalInstance, StorageService, $window) {
         $scope.refresh = function () {
             $modalInstance.close($window.location.reload());
@@ -20,7 +20,7 @@ app.controller('ErrorCtrl', [ '$scope', '$modalInstance', 'StorageService', '$wi
     }
 ]);
 
-app.controller('FailureCtrl', [ '$scope', '$modalInstance', 'StorageService', '$window', 'error',
+angular.module('igl').controller('FailureCtrl', [ '$scope', '$modalInstance', 'StorageService', '$window', 'error',
     function ($scope, $modalInstance, StorageService, $window, error) {
         $scope.error = error;
         $scope.close = function () {
