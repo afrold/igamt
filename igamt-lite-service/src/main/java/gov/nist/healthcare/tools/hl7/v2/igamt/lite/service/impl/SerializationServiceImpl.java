@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -551,6 +552,16 @@ public class SerializationServiceImpl implements SerializationService {
     List<DatatypeLink> datatypeLinkList = new ArrayList<>(datatypeLibrary.getChildren());
     Collections.sort(datatypeLinkList);
     UsageConfig datatypeComponentsUsageConfig = this.exportConfig.getComponentExport();
+    if (!exportConfig.isIncludeVaries()) {
+      Iterator<DatatypeLink> itr = bindedDatatypes.iterator();
+      while (itr.hasNext()) {
+        DatatypeLink entry = itr.next();
+        if (entry.getName().toLowerCase().equals("varies")) {
+          itr.remove();
+        }
+      }
+    }
+
     if (bindedDatatypes != null && !bindedDatatypes.isEmpty()) {
       for (DatatypeLink datatypeLink : bindedDatatypes) {
         CompositeProfile compositeProfile = getDatatypeCompositeProfile(datatypeLink);
