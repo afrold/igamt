@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -221,9 +222,9 @@ public class SerializationServiceImpl implements SerializationService {
           for (SegmentRefOrGroup segmentRefOrGroup : compositeProfile.getChildren()) {
             if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),
                 this.exportConfig.getSegmentORGroupsCompositeProfileExport())) {
-              identifyBindedItems(segmentRefOrGroup, compositeProfile);
+            	identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup, compositeProfile);
             } else {
-              identifyUnbindedValueSets(segmentRefOrGroup, compositeProfile);
+              identifyUnbindedValueSetsFromSegmentOrGroup(segmentRefOrGroup, compositeProfile);
             }
           }
         }
@@ -233,11 +234,17 @@ public class SerializationServiceImpl implements SerializationService {
       for (SegmentRefOrGroup segmentRefOrGroup : message.getChildren()) {
         if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(),
             this.exportConfig.getSegmentORGroupsMessageExport())) {
-          identifyBindedItems(segmentRefOrGroup);
+        	identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup);
         } else {
-          identifyUnbindedValueSets(segmentRefOrGroup, null);
+        	identifyUnbindedValueSetsFromSegmentOrGroup(segmentRefOrGroup, null);
         }
       }
+    }
+    for(DatatypeLink datatypeLink : bindedDatatypes){
+    	Datatype datatype = datatypeService.findById(datatypeLink.getId());
+    	if(datatype != null){
+    		identifyBindedItemsFromDatatype(datatype);
+    	}
     }
     // IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
     SerializableStructure serializableStructure = new SerializableStructure();
@@ -638,11 +645,11 @@ public class SerializationServiceImpl implements SerializationService {
     return null;
   }
 
-  private void identifyBindedItems(SegmentRefOrGroup segmentRefOrGroup) {
-    identifyBindedItems(segmentRefOrGroup, null);
+  private void identifyBindedItemsFromSegmentOrGroup(SegmentRefOrGroup segmentRefOrGroup) {
+	  identifyBindedItemsFromSegmentOrGroup(segmentRefOrGroup, null);
   }
-
-  private void identifyBindedItems(SegmentRefOrGroup segmentRefOrGroup,
+  
+  private void identifyBindedItemsFromSegmentOrGroup(SegmentRefOrGroup segmentRefOrGroup,
       CompositeProfile compositeProfile) {
     if (segmentRefOrGroup instanceof SegmentRef) {
       if (ExportUtil.diplayUsage(segmentRefOrGroup.getUsage(), exportConfig.getSegmentsExport())) {
@@ -710,12 +717,38 @@ public class SerializationServiceImpl implements SerializationService {
             this.exportConfig.getSegmentORGroupsMessageExport()))
             || (compositeProfile == null && ExportUtil.diplayUsage(children.getUsage(),
                 this.exportConfig.getSegmentORGroupsCompositeProfileExport()))) {
-          identifyBindedItems(children, compositeProfile);
+        	identifyBindedItemsFromSegmentOrGroup(children, compositeProfile);
         } else {
-          identifyUnbindedValueSets(children, compositeProfile);
+          identifyUnbindedValueSetsFromSegmentOrGroup(children, compositeProfile);
         }
       }
     }
+  }
+
+  private void bindTablesFromValueSetBindings(List<ValueSetOrSingleCodeBinding> valueSetBindings) {
+	  for(ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : valueSetBindings){
+		  if(valueSetOrSingleCodeBinding instanceof ValueSetBinding){
+			  if(ExportUtil.diplayUsage(valueSetOrSingleCodeBinding.getUsage(), this.exportConfig.getValueSetsExport())){
+				  doBindTable(valueSetOrSingleCodeBinding.getTableId());
+			  }
+			  removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
+		  }
+	  }
+  }
+
+  private void doBindTable(String tableId) {
+	  if(!bindedTables.contains(tableId)){
+		  bindedTables.add(tableId);
+	  }
+  }
+
+  private void identifyBindedItemsFromDatatype(Datatype datatype) {
+	  bindTablesFromValueSetBindings(datatype.getValueSetBindings());
+	  for(Component component : datatype.getComponents()){
+		  if(component != null && component.getDatatype()!=null){
+			  doBindDatatype(component.getDatatype());
+		  }
+	  }
   }
 
   private void doBindDatatype(DatatypeLink datatypeLink) {
@@ -732,7 +765,7 @@ public class SerializationServiceImpl implements SerializationService {
     doBindDatatype(datatypeLink);
   }
 
-  private void identifyUnbindedValueSets(SegmentRefOrGroup segmentRefOrGroup,
+  private void identifyUnbindedValueSetsFromSegmentOrGroup(SegmentRefOrGroup segmentRefOrGroup,
       CompositeProfile compositeProfile) {
     if (segmentRefOrGroup instanceof SegmentRef) {
       Segment segment = null;
@@ -752,7 +785,7 @@ public class SerializationServiceImpl implements SerializationService {
       }
     } else if (segmentRefOrGroup instanceof Group) {
       for (SegmentRefOrGroup children : ((Group) segmentRefOrGroup).getChildren()) {
-        identifyUnbindedValueSets(children, compositeProfile);
+    	  identifyUnbindedValueSetsFromSegmentOrGroup(children, compositeProfile);
       }
     }
   }
@@ -789,7 +822,6 @@ public class SerializationServiceImpl implements SerializationService {
           serializationUtil.cleanRichtext(profile.getSegmentLibrary().getSectionContents()));
     }
     if (serializationLayout.equals(SerializationLayout.IGDOCUMENT)) {
-
       this.bindedSegments.sort(new SegmentLinkComparator());
     }
     for (SegmentLink segmentLink : this.bindedSegments) {
