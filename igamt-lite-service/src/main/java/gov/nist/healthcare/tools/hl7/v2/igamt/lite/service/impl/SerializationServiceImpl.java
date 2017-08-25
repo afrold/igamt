@@ -159,7 +159,7 @@ public class SerializationServiceImpl implements SerializationService {
         new ArrayList<>(datatypeLibraryDocument.getDatatypeLibrary().getChildren());
     this.bindedTables = new ArrayList<>();
     for (TableLink tableLink : datatypeLibraryDocument.getTableLibrary().getChildren()) {
-      this.bindedTables.add(tableLink.getId());
+    	doBindTable(tableLink.getId());
     }
 
     int datatypeSectionPosition = 1;
@@ -673,10 +673,9 @@ public class SerializationServiceImpl implements SerializationService {
           for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment
               .getValueSetBindings()) {
             if (valueSetOrSingleCodeBinding instanceof ValueSetBinding) {
-              if (!bindedTables.contains(valueSetOrSingleCodeBinding.getTableId())
-                  && ExportUtil.diplayUsage(valueSetOrSingleCodeBinding.getUsage(),
+              if (ExportUtil.diplayUsage(valueSetOrSingleCodeBinding.getUsage(),
                       this.exportConfig.getValueSetsExport())) {
-                bindedTables.add(valueSetOrSingleCodeBinding.getTableId());
+                doBindTable(valueSetOrSingleCodeBinding.getTableId());
               }
               removeFromUnbindedTables(valueSetOrSingleCodeBinding.getTableId());
             }
@@ -702,9 +701,7 @@ public class SerializationServiceImpl implements SerializationService {
               } else if (coConstraintTHENColumnData.getValueSets() != null
                   && !coConstraintTHENColumnData.getValueSets().isEmpty()) {
                 for (ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()) {
-                  if (!bindedTables.contains(valueSetData.getTableId())) {
-                    bindedTables.add(valueSetData.getTableId());
-                  }
+                  doBindTable(valueSetData.getTableId());
                 }
               }
             }
