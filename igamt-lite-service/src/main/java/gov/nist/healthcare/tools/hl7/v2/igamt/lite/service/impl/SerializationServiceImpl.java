@@ -240,12 +240,6 @@ public class SerializationServiceImpl implements SerializationService {
         }
       }
     }
-    for(DatatypeLink datatypeLink : bindedDatatypes){
-    	Datatype datatype = datatypeService.findById(datatypeLink.getId());
-    	if(datatype != null){
-    		identifyBindedItemsFromDatatype(datatype);
-    	}
-    }
     // IGDocument igDocument = filterIgDocumentMessages(originIgDocument, exportConfig);
     SerializableStructure serializableStructure = new SerializableStructure();
     igDocument.getMetaData().setHl7Version(igDocument.getProfile().getMetaData().getHl7Version());
@@ -668,7 +662,7 @@ public class SerializationServiceImpl implements SerializationService {
         for (Field field : segment.getFields()) {
           if (!bindedDatatypes.contains(field.getDatatype())
               && ExportUtil.diplayUsage(field.getUsage(), this.exportConfig.getDatatypesExport())) {
-            doBindDatatype(field.getDatatype());
+            doBindDatatype(field.getDatatype(),null);
           }
           for (ValueSetOrSingleCodeBinding valueSetOrSingleCodeBinding : segment
               .getValueSetBindings()) {
@@ -743,15 +737,23 @@ public class SerializationServiceImpl implements SerializationService {
 	  bindTablesFromValueSetBindings(datatype.getValueSetBindings());
 	  for(Component component : datatype.getComponents()){
 		  if(component != null && component.getDatatype()!=null){
-			  doBindDatatype(component.getDatatype());
+			  if(ExportUtil.diplayUsage(component.getUsage(), exportConfig.getDatatypesExport())){
+				  doBindDatatype(component.getDatatype(), null);
+			  }
 		  }
 	  }
   }
 
-  private void doBindDatatype(DatatypeLink datatypeLink) {
+  private void doBindDatatype(DatatypeLink datatypeLink, Datatype datatype) {
     if (!this.bindedDatatypesId.contains(datatypeLink.getId())) {
       this.bindedDatatypesId.add(datatypeLink.getId());
       this.bindedDatatypes.add(datatypeLink);
+      if(datatype == null){
+    	datatype = datatypeService.findById(datatypeLink.getId());
+      }
+  	  if(datatype != null){
+  		identifyBindedItemsFromDatatype(datatype);
+  	  }
     }
   }
 
@@ -759,7 +761,7 @@ public class SerializationServiceImpl implements SerializationService {
     Datatype datatype = datatypeService.findById(datatypeId);
     DatatypeLink datatypeLink =
         new DatatypeLink(datatype.getId(), datatype.getName(), datatype.getExt());
-    doBindDatatype(datatypeLink);
+    doBindDatatype(datatypeLink,datatype);
   }
 
   private void identifyUnbindedValueSetsFromSegmentOrGroup(SegmentRefOrGroup segmentRefOrGroup,
