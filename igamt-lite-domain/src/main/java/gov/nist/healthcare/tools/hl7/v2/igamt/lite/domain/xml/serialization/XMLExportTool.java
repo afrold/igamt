@@ -74,9 +74,11 @@ public class XMLExportTool {
     outputStream = new ByteArrayOutputStream();
     ZipOutputStream out = new ZipOutputStream(outputStream);
 
-    String profileXMLStr = this.serializeProfileToDoc(profile, metadata, segmentsMap, datatypesMap, tablesMap).toXML();
+    String profileXMLStr =
+        this.serializeProfileToDoc(profile, metadata, segmentsMap, datatypesMap, tablesMap).toXML();
     String valueSetXMLStr = this.serializeTableXML(profile, metadata, tablesMap).toXML();
-    String constraintXMLStr = this.serializeConstraintsXML(profile, metadata, segmentsMap, datatypesMap, tablesMap).toXML();
+    String constraintXMLStr = this
+        .serializeConstraintsXML(profile, metadata, segmentsMap, datatypesMap, tablesMap).toXML();
 
     this.generateProfileIS(out, profileXMLStr);
     this.generateValueSetIS(out, valueSetXMLStr);
@@ -86,6 +88,7 @@ public class XMLExportTool {
     bytes = outputStream.toByteArray();
     return new ByteArrayInputStream(bytes);
   }
+
   public InputStream exportXMLAsDisplayFormatForSelectedMessages(Profile profile,
       DocumentMetaData metadata, Map<String, Segment> segmentsMap,
       Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap)
@@ -101,7 +104,8 @@ public class XMLExportTool {
       String folderName = m.getIdentifier() + "(" + m.getName() + ")";
       byte[] buf = new byte[1024];
       out.putNextEntry(new ZipEntry(folderName + File.separator + "NIST_DisplayProfile.xml"));
-      InputStream inProfile = IOUtils.toInputStream(this.serializeProfileDisplayToXML(profile, m, metadata, segmentsMap, datatypesMap, tablesMap));
+      InputStream inProfile = IOUtils.toInputStream(this.serializeProfileDisplayToXML(profile, m,
+          metadata, segmentsMap, datatypesMap, tablesMap));
       int lenTP;
       while ((lenTP = inProfile.read(buf)) > 0) {
         out.write(buf, 0, lenTP);
@@ -113,6 +117,7 @@ public class XMLExportTool {
     bytes = outputStream.toByteArray();
     return new ByteArrayInputStream(bytes);
   }
+
   public Element serializeConstraintsXML(Profile profile, DocumentMetaData metadata,
       Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
       Map<String, Table> tablesMap) {
@@ -164,6 +169,7 @@ public class XMLExportTool {
 
     return e;
   }
+
   public Element serializeTableXML(Profile profile, DocumentMetaData metadata,
       Map<String, Table> tablesMap) {
 
@@ -211,7 +217,7 @@ public class XMLExportTool {
       Table t = tablesMap.get(key);
 
       if (t != null) {
-        if (t.getCodes() == null || t.getCodes().size() == 0
+        if (t.getCodes() == null || t.getCodes().size() == 0 || t.getCodes().size() > 9999
             || (t.getCodes().size() == 1 && t.getCodes().get(0).getValue().equals("..."))) {
           Element elmBindingIdentifier = new Element("BindingIdentifier");
           if (t.getHl7Version() != null && !t.getHl7Version().equals("")) {
@@ -230,13 +236,17 @@ public class XMLExportTool {
 
         Element elmValueSetDefinition = new Element("ValueSetDefinition");
         if (t.getHl7Version() != null && !t.getHl7Version().equals("")) {
-          if (t.getBindingIdentifier().startsWith("0396") || t.getBindingIdentifier().startsWith("HL70396")) {
-            elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", this.str(t.getBindingIdentifier())));
+          if (t.getBindingIdentifier().startsWith("0396")
+              || t.getBindingIdentifier().startsWith("HL70396")) {
+            elmValueSetDefinition.addAttribute(
+                new Attribute("BindingIdentifier", this.str(t.getBindingIdentifier())));
           } else {
-            elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", this.str(t.getBindingIdentifier() + "_" + t.getHl7Version().replaceAll("\\.", "-"))));
+            elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", this
+                .str(t.getBindingIdentifier() + "_" + t.getHl7Version().replaceAll("\\.", "-"))));
           }
         } else {
-          elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", this.str(t.getBindingIdentifier())));
+          elmValueSetDefinition
+              .addAttribute(new Attribute("BindingIdentifier", this.str(t.getBindingIdentifier())));
         }
 
         elmValueSetDefinition.addAttribute(new Attribute("Name", this.str(t.getName())));
@@ -279,7 +289,7 @@ public class XMLExportTool {
         }
         elmValueSetDefinitions.appendChild(elmValueSetDefinition);
 
-        if (t.getCodes() != null) {
+        if (t.getCodes() != null && t.getCodes().size() < 10000) {
           for (Code c : t.getCodes()) {
             Element elmValueElement = new Element("ValueElement");
             elmValueElement.addAttribute(new Attribute("Value", this.str(c.getValue())));
@@ -309,6 +319,7 @@ public class XMLExportTool {
 
     return elmTableLibrary;
   }
+
   public Document serializeProfileToDoc(Profile profile, DocumentMetaData metadata,
       Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
       Map<String, Table> tablesMap) {
@@ -332,7 +343,8 @@ public class XMLExportTool {
     Element ds = new Element("Datatypes");
     for (String key : datatypesMap.keySet()) {
       Datatype d = datatypesMap.get(key);
-      ds.appendChild(this.serializeDatatypeForValidation(d, tablesMap, datatypesMap));
+      Element dElm = this.serializeDatatypeForValidation(d, tablesMap, datatypesMap);
+      if(dElm != null) ds.appendChild(dElm);
     }
     e.appendChild(ds);
 
@@ -340,7 +352,10 @@ public class XMLExportTool {
 
     return doc;
   }
-  private String serializeProfileDisplayToXML(Profile p, Message m, DocumentMetaData metadata, Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
+
+  private String serializeProfileDisplayToXML(Profile p, Message m, DocumentMetaData metadata,
+      Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
+      Map<String, Table> tablesMap) {
     Element e = new Element("ConformanceProfile");
     this.serializeProfileMetaData(e, p, metadata, "Display");
     e.appendChild(this.serializeDisplayMessage(m, p, segmentsMap, datatypesMap, tablesMap));
@@ -348,7 +363,10 @@ public class XMLExportTool {
     Document doc = new Document(e);
     return doc.toXML();
   }
-  private Element serializeDisplayMessage(Message m, Profile profile, Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
+
+  private Element serializeDisplayMessage(Message m, Profile profile,
+      Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
+      Map<String, Table> tablesMap) {
     Element elmMessage = new Element("Message");
     if (m.getName() != null && !m.getName().equals(""))
       elmMessage.addAttribute(new Attribute("Name", this.str(m.getName())));
@@ -367,16 +385,19 @@ public class XMLExportTool {
       String path = i + "[1]";
       SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
       if (segmentRefOrGroup instanceof SegmentRef) {
-        elmMessage
-            .appendChild(serializeDisplaySegment((SegmentRef) segmentRefOrGroup, profile, m, path, segmentsMap, datatypesMap, tablesMap));
+        elmMessage.appendChild(serializeDisplaySegment((SegmentRef) segmentRefOrGroup, profile, m,
+            path, segmentsMap, datatypesMap, tablesMap));
       } else if (segmentRefOrGroup instanceof Group) {
-        elmMessage.appendChild(serializeDisplayGroup((Group) segmentRefOrGroup, profile, m, path, segmentsMap, datatypesMap, tablesMap));
+        elmMessage.appendChild(serializeDisplayGroup((Group) segmentRefOrGroup, profile, m, path,
+            segmentsMap, datatypesMap, tablesMap));
       }
     }
     return elmMessage;
   }
-  private Element serializeDisplayGroup(Group group, Profile profile, Message message,
-      String path, Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
+
+  private Element serializeDisplayGroup(Group group, Profile profile, Message message, String path,
+      Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
+      Map<String, Table> tablesMap) {
     Element elmGroup = new Element("Group");
     elmGroup.addAttribute(new Attribute("ID", this.str(group.getName())));
     elmGroup.addAttribute(new Attribute("Name", this.str(group.getName())));
@@ -436,11 +457,11 @@ public class XMLExportTool {
       String childPath = path + "." + i + "[1]";
       SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
       if (segmentRefOrGroup instanceof SegmentRef) {
-        elmStructure.appendChild(
-            serializeDisplaySegment((SegmentRef) segmentRefOrGroup, profile, message, childPath, segmentsMap, datatypesMap, tablesMap));
+        elmStructure.appendChild(serializeDisplaySegment((SegmentRef) segmentRefOrGroup, profile,
+            message, childPath, segmentsMap, datatypesMap, tablesMap));
       } else if (segmentRefOrGroup instanceof Group) {
-        elmStructure.appendChild(
-            serializeDisplayGroup((Group) segmentRefOrGroup, profile, message, childPath, segmentsMap, datatypesMap, tablesMap));
+        elmStructure.appendChild(serializeDisplayGroup((Group) segmentRefOrGroup, profile, message,
+            childPath, segmentsMap, datatypesMap, tablesMap));
       }
     }
 
@@ -448,8 +469,10 @@ public class XMLExportTool {
 
     return elmGroup;
   }
-  private Element serializeDisplaySegment(SegmentRef segmentRef, Profile profile,
-      Message message, String path, Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
+
+  private Element serializeDisplaySegment(SegmentRef segmentRef, Profile profile, Message message,
+      String path, Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
+      Map<String, Table> tablesMap) {
     Element elmSegment = new Element("Segment");
 
     Segment segment = segmentsMap.get(segmentRef.getRef().getId());
@@ -510,15 +533,16 @@ public class XMLExportTool {
     if (fields.size() > 0) {
       elmSegment.appendChild(elmSegmentStructure);
     }
-    
+
     String targetPosition = null;
     String reference = null;
     String secondReference = null;
     String referenceTableId = null;
     HashMap<String, Datatype> dm = new HashMap<String, Datatype>();
     HashMap<String, Datatype> dm2nd = new HashMap<String, Datatype>();
-    
-    if (segment.getName().equals("OBX") || segment.getName().equals("MFA") || segment.getName().equals("MFE")) {
+
+    if (segment.getName().equals("OBX") || segment.getName().equals("MFA")
+        || segment.getName().equals("MFE")) {
 
 
       if (segment.getName().equals("OBX")) {
@@ -536,14 +560,16 @@ public class XMLExportTool {
         reference = "5";
       }
 
-      if (segment.getCoConstraintsTable() != null && segment.getCoConstraintsTable().getIfColumnDefinition() != null) {
+      if (segment.getCoConstraintsTable() != null
+          && segment.getCoConstraintsTable().getIfColumnDefinition() != null) {
         if (segment.getCoConstraintsTable().getIfColumnDefinition().isPrimitive()) {
           secondReference = segment.getCoConstraintsTable().getIfColumnDefinition().getPath();
         } else {
-          secondReference = segment.getCoConstraintsTable().getIfColumnDefinition().getPath() + ".1";
+          secondReference =
+              segment.getCoConstraintsTable().getIfColumnDefinition().getPath() + ".1";
         }
       }
-      
+
       referenceTableId = this.findValueSetID(segment.getValueSetBindings(), reference);
 
       if (referenceTableId != null) {
@@ -565,20 +591,24 @@ public class XMLExportTool {
           }
         }
         if (segment.getDynamicMappingDefinition() != null) {
-          for (DynamicMappingItem item : segment.getDynamicMappingDefinition().getDynamicMappingItems()) {
+          for (DynamicMappingItem item : segment.getDynamicMappingDefinition()
+              .getDynamicMappingItems()) {
             if (item.getFirstReferenceValue() != null && item.getDatatypeId() != null)
               dm.put(item.getFirstReferenceValue(), datatypesMap.get(item.getDatatypeId()));
           }
         }
       }
       if (secondReference != null) {
-        for (CoConstraintColumnDefinition definition : segment.getCoConstraintsTable().getThenColumnDefinitionList()) {
+        for (CoConstraintColumnDefinition definition : segment.getCoConstraintsTable()
+            .getThenColumnDefinitionList()) {
           if (definition.isdMReference()) {
-            List<CoConstraintTHENColumnData> dataList = segment.getCoConstraintsTable().getThenMapData().get(definition.getId());
+            List<CoConstraintTHENColumnData> dataList =
+                segment.getCoConstraintsTable().getThenMapData().get(definition.getId());
 
             if (dataList != null && segment.getCoConstraintsTable().getIfColumnData() != null) {
               for (int i = 0; i < dataList.size(); i++) {
-                CoConstraintIFColumnData ref = segment.getCoConstraintsTable().getIfColumnData().get(i);
+                CoConstraintIFColumnData ref =
+                    segment.getCoConstraintsTable().getIfColumnData().get(i);
                 CoConstraintTHENColumnData data = dataList.get(i);
 
                 if (ref != null && data != null && ref.getValueData() != null
@@ -596,23 +626,24 @@ public class XMLExportTool {
     for (int i = 1; i < fields.size() + 1; i++) {
       String fieldPath = path + "." + i + "[1]";
       Field f = fields.get(i);
-      
-      if(dm.size() > 0 || dm2nd.size() > 0){
-        if(targetPosition.equals(i + "")){
+
+      if (dm.size() > 0 || dm2nd.size() > 0) {
+        if (targetPosition.equals(i + "")) {
           Element elmDynamicField = new Element("DynamicField");
           elmDynamicField.addAttribute(new Attribute("Name", this.str(f.getName())));
           elmDynamicField.addAttribute(new Attribute("Reference", reference));
-          if(secondReference != null){
+          if (secondReference != null) {
             elmDynamicField.addAttribute(new Attribute("SecondReference", secondReference));
           }
-          
+
           for (String key : dm.keySet()) {
             Element elmCase = new Element("Case");
             Datatype d = dm.get(key);
             if (d != null) {
               elmCase.addAttribute(new Attribute("Value", d.getName()));
-              this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()), elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);   
-              elmDynamicField.appendChild(elmCase);              
+              this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
+                  elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);
+              elmDynamicField.appendChild(elmCase);
             }
           }
 
@@ -622,38 +653,42 @@ public class XMLExportTool {
             if (d != null) {
               elmCase.addAttribute(new Attribute("Value", d.getName()));
               elmCase.addAttribute(new Attribute("SecondValue", key));
-              this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()), elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);   
+              this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
+                  elmCase, profile, message, segment, fieldPath, datatypesMap, tablesMap);
               elmDynamicField.appendChild(elmCase);
             }
           }
           elmSegmentStructure.appendChild(elmDynamicField);
-        }else {
-          this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()), elmSegmentStructure, profile, message, segment, fieldPath, datatypesMap, tablesMap);   
+        } else {
+          this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
+              elmSegmentStructure, profile, message, segment, fieldPath, datatypesMap, tablesMap);
         }
-      }else{
-        this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()), elmSegmentStructure, profile, message, segment, fieldPath, datatypesMap, tablesMap);    
+      } else {
+        this.serializeDisplayField(segment, f, datatypesMap.get(f.getDatatype().getId()),
+            elmSegmentStructure, profile, message, segment, fieldPath, datatypesMap, tablesMap);
       }
-      
+
     }
-    
+
     return elmSegment;
   }
+
   private void serializeDisplayField(Segment s, Field f, Datatype fieldDatatype, Element elmParent,
-      Profile profile, Message message, Segment segment, String fieldPath, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
+      Profile profile, Message message, Segment segment, String fieldPath,
+      Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
     Element elmField = new Element("Field");
     elmParent.appendChild(elmField);
 
     elmField.addAttribute(new Attribute("Name", this.str(f.getName())));
     elmField.addAttribute(new Attribute("Usage", this.str(f.getUsage().toString())));
-    elmField
-        .addAttribute(new Attribute("Datatype", this.str(fieldDatatype.getName())));
+    elmField.addAttribute(new Attribute("Datatype", this.str(fieldDatatype.getName())));
     elmField.addAttribute(new Attribute("Flavor", this.str(fieldDatatype.getLabel())));
     elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
     if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
       elmField.addAttribute(new Attribute("MaxLength", this.str(f.getMaxLength())));
     if (f.getConfLength() != null && !f.getConfLength().equals(""))
       elmField.addAttribute(new Attribute("ConfLength", this.str(f.getConfLength())));
-    
+
     List<ValueSetBinding> bindings = findBinding(s.getValueSetBindings(), f.getPosition());
     if (bindings.size() > 0) {
       String bindingString = "";
@@ -688,7 +723,8 @@ public class XMLExportTool {
         if (bindingStrength != null)
           elmField.addAttribute(new Attribute("BindingStrength", bindingStrength));
 
-        if (fieldDatatype != null && fieldDatatype.getComponents() != null && fieldDatatype.getComponents().size() > 0) {
+        if (fieldDatatype != null && fieldDatatype.getComponents() != null
+            && fieldDatatype.getComponents().size() > 0) {
           if (bindingLocation != null && !bindingLocation.equals("")) {
             bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
             elmField.addAttribute(new Attribute("BindingLocation", bindingLocation));
@@ -701,7 +737,8 @@ public class XMLExportTool {
 
     elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
     elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
-    if (f.getItemNo() != null && !f.getItemNo().equals("")) elmField.addAttribute(new Attribute("ItemNo", this.str(f.getItemNo())));
+    if (f.getItemNo() != null && !f.getItemNo().equals(""))
+      elmField.addAttribute(new Attribute("ItemNo", this.str(f.getItemNo())));
 
     Predicate fieldPredicate = this.findPredicate(segment.getPredicates(), f.getPosition() + "[1]",
         message.getPredicates(), fieldPath);
@@ -759,12 +796,15 @@ public class XMLExportTool {
     for (int j = 1; j < components.size() + 1; j++) {
       String componentPath = fieldPath + "." + j + "[1]";
       Component c = components.get(j);
-      this.serializeDisplayComponent(c, datatypesMap.get(c.getDatatype().getId()), elmFieldStructure, profile, message, fieldDatatype, componentPath, datatypesMap, tablesMap);
+      this.serializeDisplayComponent(c, datatypesMap.get(c.getDatatype().getId()),
+          elmFieldStructure, profile, message, fieldDatatype, componentPath, datatypesMap,
+          tablesMap);
     }
   }
-  private void serializeDisplayComponent(Component c, Datatype componentDatatype,
-      Element elmParent, Profile profile, Message message, Datatype fieldDatatype,
-      String componentPath, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
+
+  private void serializeDisplayComponent(Component c, Datatype componentDatatype, Element elmParent,
+      Profile profile, Message message, Datatype fieldDatatype, String componentPath,
+      Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
     Element elmComponent = new Element("Component");
     elmComponent.addAttribute(new Attribute("Name", this.str(c.getName())));
     elmComponent.addAttribute(new Attribute("Usage", this.str(c.getUsage().toString())));
@@ -774,8 +814,9 @@ public class XMLExportTool {
     if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
       elmComponent.addAttribute(new Attribute("MaxLength", this.str(c.getMaxLength())));
     if (c.getConfLength() != null && !c.getConfLength().equals(""))
-      elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));    
-    List<ValueSetBinding> bindings = findBinding(fieldDatatype.getValueSetBindings(), c.getPosition());
+      elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));
+    List<ValueSetBinding> bindings =
+        findBinding(fieldDatatype.getValueSetBindings(), c.getPosition());
     if (bindings.size() > 0) {
       String bindingString = "";
       String bindingStrength = null;
@@ -809,7 +850,8 @@ public class XMLExportTool {
         if (bindingStrength != null)
           elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
 
-        if (fieldDatatype != null && fieldDatatype.getComponents() != null && fieldDatatype.getComponents().size() > 0) {
+        if (fieldDatatype != null && fieldDatatype.getComponents() != null
+            && fieldDatatype.getComponents().size() > 0) {
           if (bindingLocation != null && !bindingLocation.equals("")) {
             bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
             elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
@@ -819,8 +861,8 @@ public class XMLExportTool {
         }
       }
     }
-    
-    
+
+
     Predicate componentPredicate = this.findPredicate(fieldDatatype.getPredicates(),
         c.getPosition() + "[1]", message.getPredicates(), componentPath);
     if (componentPredicate != null) {
@@ -879,23 +921,30 @@ public class XMLExportTool {
       String subComponentPath = componentPath + "." + k + "[1]";
       Component sc = subComponents.get(k);
       this.serializeDisplaySubComponent(sc, datatypesMap.get(sc.getDatatype().getId()),
-          elmComponentStructure, profile, message, componentDatatype, subComponentPath, datatypesMap, tablesMap);
+          elmComponentStructure, profile, message, componentDatatype, subComponentPath,
+          datatypesMap, tablesMap);
     }
     elmParent.appendChild(elmComponent);
   }
+
   private void serializeDisplaySubComponent(Component sc, Datatype subComponentDatatype,
       Element elmParent, Profile profile, Message message, Datatype componentDatatype,
       String subComponentPath, Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
     Element elmSubComponent = new Element("SubComponent");
     elmSubComponent.addAttribute(new Attribute("Name", this.str(sc.getName())));
     elmSubComponent.addAttribute(new Attribute("Usage", this.str(sc.getUsage().toString())));
-    elmSubComponent.addAttribute(new Attribute("Datatype", this.str(subComponentDatatype.getName())));
-    elmSubComponent.addAttribute(new Attribute("Flavor", this.str(subComponentDatatype.getLabel())));
+    elmSubComponent
+        .addAttribute(new Attribute("Datatype", this.str(subComponentDatatype.getName())));
+    elmSubComponent
+        .addAttribute(new Attribute("Flavor", this.str(subComponentDatatype.getLabel())));
     elmSubComponent.addAttribute(new Attribute("MinLength", "" + sc.getMinLength()));
-    if (sc.getMaxLength() != null && !sc.getMaxLength().equals("")) elmSubComponent.addAttribute(new Attribute("MaxLength", this.str(sc.getMaxLength())));
-    if (sc.getConfLength() != null && !sc.getConfLength().equals("")) elmSubComponent.addAttribute(new Attribute("ConfLength", this.str(sc.getConfLength())));
-    
-    List<ValueSetBinding> bindings = findBinding(componentDatatype.getValueSetBindings(), sc.getPosition());
+    if (sc.getMaxLength() != null && !sc.getMaxLength().equals(""))
+      elmSubComponent.addAttribute(new Attribute("MaxLength", this.str(sc.getMaxLength())));
+    if (sc.getConfLength() != null && !sc.getConfLength().equals(""))
+      elmSubComponent.addAttribute(new Attribute("ConfLength", this.str(sc.getConfLength())));
+
+    List<ValueSetBinding> bindings =
+        findBinding(componentDatatype.getValueSetBindings(), sc.getPosition());
     if (bindings.size() > 0) {
       String bindingString = "";
       String bindingStrength = null;
@@ -929,7 +978,8 @@ public class XMLExportTool {
         if (bindingStrength != null)
           elmSubComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
 
-        if (componentDatatype != null && componentDatatype.getComponents() != null && componentDatatype.getComponents().size() > 0) {
+        if (componentDatatype != null && componentDatatype.getComponents() != null
+            && componentDatatype.getComponents().size() > 0) {
           if (bindingLocation != null && !bindingLocation.equals("")) {
             bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
             elmSubComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
@@ -985,6 +1035,7 @@ public class XMLExportTool {
     }
     elmParent.appendChild(elmSubComponent);
   }
+
   private Predicate findPredicate(List<Predicate> predicates, String path,
       List<Predicate> messagePredicate, String messagePath) {
     if (predicates != null && path != null) {
@@ -1004,6 +1055,7 @@ public class XMLExportTool {
     }
     return null;
   }
+
   private List<ConformanceStatement> findConformanceStatements(
       List<ConformanceStatement> conformanceStatements, String path,
       List<ConformanceStatement> messageConformanceStatements, String messagePath) {
@@ -1025,6 +1077,7 @@ public class XMLExportTool {
     }
     return result;
   }
+
   private Constraints findAllConformanceStatement(Profile profile, Map<String, Segment> segmentsMap,
       Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
     Constraints constraints = new Constraints();
@@ -1089,6 +1142,7 @@ public class XMLExportTool {
     constraints.setMessages(mContext);
     return constraints;
   }
+
   private void generateConstraintsForDTMFormat(ByID byID, Datatype d) {
     DTMConstraints dtmConstraints = d.getDtmConstraints();
     IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
@@ -1440,6 +1494,7 @@ public class XMLExportTool {
 
 
   }
+
   private Set<ByNameOrByID> findAllConformanceStatementsForGroup(Group g,
       Set<ByNameOrByID> byNameOrByIDs) {
     ByID byID = new ByID();
@@ -1458,6 +1513,7 @@ public class XMLExportTool {
     return byNameOrByIDs;
 
   }
+
   private Element serializeConstaint(Constraint c, String type) {
     Element elmConstraint = new Element(type);
 
@@ -1502,6 +1558,7 @@ public class XMLExportTool {
 
     return elmConstraint;
   }
+
   private Node innerXMLHandler(String xml) {
     if (xml != null) {
       Builder builder = new Builder(new NodeFactory());
@@ -1518,6 +1575,7 @@ public class XMLExportTool {
     }
     return null;
   }
+
   private Element serializeByNameOrByID(ByNameOrByID byNameOrByIDObj) {
     if (byNameOrByIDObj instanceof ByName) {
       ByName byNameObj = (ByName) byNameOrByIDObj;
@@ -1559,6 +1617,7 @@ public class XMLExportTool {
 
     return null;
   }
+
   private Element serializeMain(Element e, Constraints predicates,
       Constraints conformanceStatements) {
     Element predicates_Elm = new Element("Predicates");
@@ -1634,6 +1693,7 @@ public class XMLExportTool {
 
     return e;
   }
+
   private Set<ByNameOrByID> findAllPredicatesForGroup(Group g, Set<ByNameOrByID> byNameOrByIDs) {
     ByID byID = new ByID();
     byID.setByID(g.getId());
@@ -1651,6 +1711,7 @@ public class XMLExportTool {
     return byNameOrByIDs;
 
   }
+
   private Constraints findAllPredicates(Profile profile, Map<String, Segment> segmentsMap,
       Map<String, Datatype> datatypesMap, Map<String, Table> tablesMap) {
     Constraints constraints = new Constraints();
@@ -1713,98 +1774,108 @@ public class XMLExportTool {
     constraints.setMessages(mContext);
     return constraints;
   }
+
   private Element serializeDatatypeForValidation(Datatype d, Map<String, Table> tablesMap,
       Map<String, Datatype> datatypesMap) {
-    Element elmDatatype = new Element("Datatype");
-    elmDatatype.addAttribute(new Attribute("ID",
-        this.str(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"))));
-    elmDatatype.addAttribute(new Attribute("Name", this.str(d.getName())));
-    elmDatatype.addAttribute(new Attribute("Label", this.str(d.getLabel())));
-    if (d.getDescription() == null || d.getDescription().equals("")) {
-      elmDatatype.addAttribute(new Attribute("Description", "NoDesc"));
-    } else {
-      elmDatatype.addAttribute(new Attribute("Description", this.str(d.getDescription())));
-    }
 
-
-    if (d.getComponents() != null) {
-
-      Map<Integer, Component> components = new HashMap<Integer, Component>();
-
-      for (Component c : d.getComponents()) {
-        components.put(c.getPosition(), c);
+    try {
+      System.out.println(d.getLabel());
+      System.out.println(d.getHl7Version());
+      Element elmDatatype = new Element("Datatype");
+      elmDatatype.addAttribute(new Attribute("ID",
+          this.str(d.getLabel() + "_" + d.getHl7Version().replaceAll("\\.", "-"))));
+      elmDatatype.addAttribute(new Attribute("Name", this.str(d.getName())));
+      elmDatatype.addAttribute(new Attribute("Label", this.str(d.getLabel())));
+      if (d.getDescription() == null || d.getDescription().equals("")) {
+        elmDatatype.addAttribute(new Attribute("Description", "NoDesc"));
+      } else {
+        elmDatatype.addAttribute(new Attribute("Description", this.str(d.getDescription())));
       }
 
-      for (int i = 1; i < components.size() + 1; i++) {
-        Component c = components.get(i);
-        Datatype componentDatatype = datatypesMap.get(c.getDatatype().getId());
-        Element elmComponent = new Element("Component");
-        elmComponent.addAttribute(new Attribute("Name", this.str(c.getName())));
-        elmComponent.addAttribute(new Attribute("Usage", this.str(c.getUsage().toString())));
-        elmComponent.addAttribute(new Attribute("Datatype", this.str(componentDatatype.getLabel()
-            + "_" + componentDatatype.getHl7Version().replaceAll("\\.", "-"))));
-        elmComponent.addAttribute(new Attribute("MinLength", this.str(c.getMinLength())));
-        elmComponent.addAttribute(new Attribute("MaxLength", this.str(c.getMaxLength())));
-        elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));
 
-        List<ValueSetBinding> bindings = findBinding(d.getValueSetBindings(), c.getPosition());
-        if (bindings.size() > 0) {
-          String bindingString = "";
-          String bindingStrength = null;
-          String bindingLocation = null;
+      if (d.getComponents() != null) {
 
-          for (ValueSetBinding binding : bindings) {
-            Table table = tablesMap.get(binding.getTableId());
-            bindingStrength = binding.getBindingStrength().toString();
-            bindingLocation = binding.getBindingLocation();
-            if (table != null && table.getBindingIdentifier() != null
-                && !table.getBindingIdentifier().equals("")) {
-              if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
-                if (table.getBindingIdentifier().startsWith("0396")
-                    || table.getBindingIdentifier().startsWith("HL70396")) {
-                  bindingString = bindingString + table.getBindingIdentifier() + ":";
-                } else {
-                  bindingString = bindingString + table.getBindingIdentifier() + "_"
-                      + table.getHl7Version().replaceAll("\\.", "-") + ":";
-                }
-              } else {
-                bindingString = bindingString + table.getBindingIdentifier() + ":";
-              }
-            }
-          }
+        Map<Integer, Component> components = new HashMap<Integer, Component>();
 
-          IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
-          DTComponent dtComponent = new DTComponent();
-          dtComponent.setDtName(componentDatatype.getName());
-          dtComponent.setLocation(c.getPosition());
-          if (config.getValueSetAllowedDTs().contains(componentDatatype.getName())
-              || config.getValueSetAllowedComponents().contains(dtComponent)) {
-            if (!bindingString.equals(""))
-              elmComponent.addAttribute(
-                  new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
-            if (bindingStrength != null)
-              elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
-
-            if (componentDatatype != null && componentDatatype.getComponents() != null
-                && componentDatatype.getComponents().size() > 0) {
-              if (bindingLocation != null && !bindingLocation.equals("")) {
-                bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
-                elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
-              } else {
-                elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
-              }
-            }
-          }
+        for (Component c : d.getComponents()) {
+          components.put(c.getPosition(), c);
         }
 
-        if (c.isHide())
-          elmComponent.addAttribute(new Attribute("Hide", "true"));
+        for (int i = 1; i < components.size() + 1; i++) {
+          Component c = components.get(i);
+          System.out.println(c.getPosition());
+          Datatype componentDatatype = datatypesMap.get(c.getDatatype().getId());
+          Element elmComponent = new Element("Component");
+          elmComponent.addAttribute(new Attribute("Name", this.str(c.getName())));
+          elmComponent.addAttribute(new Attribute("Usage", this.str(c.getUsage().toString())));
+          elmComponent.addAttribute(new Attribute("Datatype", this.str(componentDatatype.getLabel()
+              + "_" + componentDatatype.getHl7Version().replaceAll("\\.", "-"))));
+          elmComponent.addAttribute(new Attribute("MinLength", this.str(c.getMinLength())));
+          elmComponent.addAttribute(new Attribute("MaxLength", this.str(c.getMaxLength())));
+          elmComponent.addAttribute(new Attribute("ConfLength", this.str(c.getConfLength())));
 
-        elmDatatype.appendChild(elmComponent);
+          List<ValueSetBinding> bindings = findBinding(d.getValueSetBindings(), c.getPosition());
+          if (bindings.size() > 0) {
+            String bindingString = "";
+            String bindingStrength = null;
+            String bindingLocation = null;
+
+            for (ValueSetBinding binding : bindings) {
+              Table table = tablesMap.get(binding.getTableId());
+              bindingStrength = binding.getBindingStrength().toString();
+              bindingLocation = binding.getBindingLocation();
+              if (table != null && table.getBindingIdentifier() != null
+                  && !table.getBindingIdentifier().equals("")) {
+                if (table.getHl7Version() != null && !table.getHl7Version().equals("")) {
+                  if (table.getBindingIdentifier().startsWith("0396")
+                      || table.getBindingIdentifier().startsWith("HL70396")) {
+                    bindingString = bindingString + table.getBindingIdentifier() + ":";
+                  } else {
+                    bindingString = bindingString + table.getBindingIdentifier() + "_"
+                        + table.getHl7Version().replaceAll("\\.", "-") + ":";
+                  }
+                } else {
+                  bindingString = bindingString + table.getBindingIdentifier() + ":";
+                }
+              }
+            }
+
+            IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
+            DTComponent dtComponent = new DTComponent();
+            dtComponent.setDtName(componentDatatype.getName());
+            dtComponent.setLocation(c.getPosition());
+            if (config.getValueSetAllowedDTs().contains(componentDatatype.getName())
+                || config.getValueSetAllowedComponents().contains(dtComponent)) {
+              if (!bindingString.equals(""))
+                elmComponent.addAttribute(
+                    new Attribute("Binding", bindingString.substring(0, bindingString.length() - 1)));
+              if (bindingStrength != null)
+                elmComponent.addAttribute(new Attribute("BindingStrength", bindingStrength));
+
+              if (componentDatatype != null && componentDatatype.getComponents() != null
+                  && componentDatatype.getComponents().size() > 0) {
+                if (bindingLocation != null && !bindingLocation.equals("")) {
+                  bindingLocation = bindingLocation.replaceAll("\\s+", "").replaceAll("or", ":");
+                  elmComponent.addAttribute(new Attribute("BindingLocation", bindingLocation));
+                } else {
+                  elmComponent.addAttribute(new Attribute("BindingLocation", "1"));
+                }
+              }
+            }
+          }
+
+          if (c.isHide())
+            elmComponent.addAttribute(new Attribute("Hide", "true"));
+
+          elmDatatype.appendChild(elmComponent);
+        }
       }
+      return elmDatatype;
+    } catch (NullPointerException e) {
+      return null;
     }
-    return elmDatatype;
   }
+
   private Element serializeSegment(Segment s, Map<String, Table> tablesMap,
       Map<String, Datatype> datatypesMap) {
     Element elmSegment = new Element("Segment");
@@ -2012,6 +2083,7 @@ public class XMLExportTool {
 
     return elmSegment;
   }
+
   private Datatype findHL7DatatypeByNameAndVesion(Map<String, Datatype> datatypesMap, String value,
       String hl7Version) {
     for (String key : datatypesMap.keySet()) {
@@ -2022,6 +2094,7 @@ public class XMLExportTool {
     }
     return null;
   }
+
   private String findValueSetID(List<ValueSetOrSingleCodeBinding> valueSetBindings,
       String referenceLocation) {
     for (ValueSetOrSingleCodeBinding vsb : valueSetBindings) {
@@ -2030,6 +2103,7 @@ public class XMLExportTool {
     }
     return null;
   }
+
   private List<ValueSetBinding> findBinding(List<ValueSetOrSingleCodeBinding> valueSetBindings,
       Integer position) {
     List<ValueSetBinding> result = new ArrayList<ValueSetBinding>();
@@ -2046,6 +2120,7 @@ public class XMLExportTool {
     }
     return result;
   }
+
   private Element serializeMessage(Message m, Map<String, Segment> segmentsMap) {
     Element elmMessage = new Element("Message");
     elmMessage.addAttribute(new Attribute("ID", m.getId()));
@@ -2076,6 +2151,7 @@ public class XMLExportTool {
 
     return elmMessage;
   }
+
   private Element serializeGroup(Group group, Map<String, Segment> segmentsMap) {
     Element elmGroup = new Element("Group");
     elmGroup.addAttribute(new Attribute("ID", this.str(group.getId())));
@@ -2101,8 +2177,8 @@ public class XMLExportTool {
 
     return elmGroup;
   }
-  private Element serializeSegmentRef(SegmentRef segmentRef,
-      Map<String, Segment> segmentsMap) {
+
+  private Element serializeSegmentRef(SegmentRef segmentRef, Map<String, Segment> segmentsMap) {
     Segment s = segmentsMap.get(segmentRef.getRef().getId());
     Element elmSegment = new Element("Segment");
     elmSegment.addAttribute(new Attribute("Ref",
@@ -2112,18 +2188,20 @@ public class XMLExportTool {
     elmSegment.addAttribute(new Attribute("Max", this.str(segmentRef.getMax())));
     return elmSegment;
   }
+
   private String str(String value) {
     return value != null ? value : "";
   }
-  private void serializeProfileMetaData(Element e, Profile profile,
-      DocumentMetaData igMetaData, String type) {
-    
-    if(type.equals("Validation")){
+
+  private void serializeProfileMetaData(Element e, Profile profile, DocumentMetaData igMetaData,
+      String type) {
+
+    if (type.equals("Validation")) {
       Attribute schemaDecl = new Attribute("noNamespaceSchemaLocation",
           "https://raw.githubusercontent.com/Jungyubw/NIST_healthcare_hl7_v2_profile_schema/master/Schema/NIST%20Validation%20Schema/Profile.xsd");
       schemaDecl.setNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-      e.addAttribute(schemaDecl); 
-    }else if(type.equals("Display")){
+      e.addAttribute(schemaDecl);
+    } else if (type.equals("Display")) {
       Attribute schemaDecl = new Attribute("noNamespaceSchemaLocation",
           "https://raw.githubusercontent.com/Jungyubw/NIST_healthcare_hl7_v2_profile_schema/master/Schema/NIST%20Display%20Schema/Profile.xsd");
       schemaDecl.setNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -2159,6 +2237,7 @@ public class XMLExportTool {
 
     e.appendChild(elmMetaData);
   }
+
   private void generateProfileIS(ZipOutputStream out, String profileXML) throws IOException {
     byte[] buf = new byte[1024];
     out.putNextEntry(new ZipEntry("Profile.xml"));
@@ -2170,6 +2249,7 @@ public class XMLExportTool {
     out.closeEntry();
     inProfile.close();
   }
+
   private void generateValueSetIS(ZipOutputStream out, String valueSetXML) throws IOException {
     byte[] buf = new byte[1024];
     out.putNextEntry(new ZipEntry("ValueSets.xml"));
@@ -2181,6 +2261,7 @@ public class XMLExportTool {
     out.closeEntry();
     inValueSet.close();
   }
+
   private void generateConstraintsIS(ZipOutputStream out, String constraintsXML)
       throws IOException {
     byte[] buf = new byte[1024];
@@ -2193,6 +2274,7 @@ public class XMLExportTool {
     out.closeEntry();
     inConstraints.close();
   }
+
   private void normalizeProfile(Profile profile, Map<String, Segment> segmentsMap,
       Map<String, Datatype> datatypesMap) throws CloneNotSupportedException {
     Map<String, Datatype> toBeAddedDTs = new HashMap<String, Datatype>();
@@ -2287,6 +2369,7 @@ public class XMLExportTool {
       segmentsMap.put(key, toBeAddedSegs.get(key));
     }
   }
+
   private List<ValueSetBinding> findvalueSetBinding(
       List<ValueSetOrSingleCodeBinding> valueSetBindings, String location) {
     List<ValueSetBinding> resutls = new ArrayList<ValueSetBinding>();
@@ -2299,6 +2382,7 @@ public class XMLExportTool {
     }
     return resutls;
   }
+
   private void visitDatatype(List<String> pathList, Datatype datatype,
       Map<String, Datatype> datatypesMap, List<ValueSetBinding> valueSetBindings,
       Map<String, Datatype> toBeAddedDTs) throws CloneNotSupportedException {
@@ -2339,6 +2423,7 @@ public class XMLExportTool {
     }
 
   }
+
   private List<ValueSetOrSingleCodeBinding> findToBeDeletedValueSetBindinigsByLocation(
       List<ValueSetOrSingleCodeBinding> valueSetBindings, String location) {
 
@@ -2352,6 +2437,7 @@ public class XMLExportTool {
 
     return toBeDeleted;
   }
+
   private void visitGroupOrSegmentRef(List<String> pathList, SegmentRefOrGroup srog,
       Map<String, Segment> segmentsMap, Map<String, Datatype> datatypesMap,
       List<ValueSetBinding> valueSetBindings, Map<String, Datatype> toBeAddedDTs,
@@ -2410,9 +2496,11 @@ public class XMLExportTool {
       toBeAddedSegs.put(copyS.getId(), copyS);
     }
   }
+
   public InputStream exportXMLAsGazelleFormatForSelectedMessages(Profile profile,
       DocumentMetaData metadata, HashMap<String, Segment> segmentsMap,
-      HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) throws CloneNotSupportedException, IOException {
+      HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap)
+      throws CloneNotSupportedException, IOException {
     this.normalizeProfile(profile, segmentsMap, datatypesMap);
 
     ByteArrayOutputStream outputStream = null;
@@ -2420,7 +2508,9 @@ public class XMLExportTool {
     outputStream = new ByteArrayOutputStream();
     ZipOutputStream out = new ZipOutputStream(outputStream);
 
-    String profileXMLStr = this.serializeProfileGazelleToXML(profile, metadata, segmentsMap, datatypesMap, tablesMap).toXML();
+    String profileXMLStr =
+        this.serializeProfileGazelleToXML(profile, metadata, segmentsMap, datatypesMap, tablesMap)
+            .toXML();
     String valueSetXMLStr = this.serializeTablesMapToGazelleElement(tablesMap).toXML();
 
     this.generateProfileIS(out, profileXMLStr);
@@ -2430,6 +2520,7 @@ public class XMLExportTool {
     bytes = outputStream.toByteArray();
     return new ByteArrayInputStream(bytes);
   }
+
   private Document serializeProfileGazelleToXML(Profile profile, DocumentMetaData metadata,
       HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
       HashMap<String, Table> tablesMap) {
@@ -2438,12 +2529,15 @@ public class XMLExportTool {
         "https://raw.githubusercontent.com/Jungyubw/NIST_healthcare_hl7_v2_profile_schema/master/Schema/Gazelle%20Schema/HL7MessageProfile.xsd");
     schemaDecl.setNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
     e.addAttribute(schemaDecl);
-    e.addAttribute(new Attribute("HL7Version", this.str(profile.getMetaData().getHl7Version().replaceAll("\\.", "-"))));
+    e.addAttribute(new Attribute("HL7Version",
+        this.str(profile.getMetaData().getHl7Version().replaceAll("\\.", "-"))));
     e.addAttribute(new Attribute("ProfileType", this.str(profile.getMetaData().getType())));
     Element metadataElm = new Element("MetaData");
     metadataElm.addAttribute(new Attribute("Name", this.str(metadata.getTitle())));
-    metadataElm.addAttribute(new Attribute("OrgName", this.str(profile.getMetaData().getOrgName())));
-    metadataElm.addAttribute(new Attribute("Version", this.str(profile.getMetaData().getVersion())));
+    metadataElm
+        .addAttribute(new Attribute("OrgName", this.str(profile.getMetaData().getOrgName())));
+    metadataElm
+        .addAttribute(new Attribute("Version", this.str(profile.getMetaData().getVersion())));
     e.appendChild(metadataElm);
 
     Element impNoteElm = new Element("ImpNote");
@@ -2469,12 +2563,15 @@ public class XMLExportTool {
       Element hL7v2xStaticDefElm = new Element("HL7v2xStaticDef");
       hL7v2xStaticDefElm.addAttribute(new Attribute("MsgType", this.str(message.getMessageType())));
       hL7v2xStaticDefElm.addAttribute(new Attribute("EventType", this.str(message.getEvent())));
-      hL7v2xStaticDefElm.addAttribute(new Attribute("MsgStructID", this.str(message.getStructID())));
-      hL7v2xStaticDefElm.addAttribute(new Attribute("EventDesc", this.str(message.getDescription())));
+      hL7v2xStaticDefElm
+          .addAttribute(new Attribute("MsgStructID", this.str(message.getStructID())));
+      hL7v2xStaticDefElm
+          .addAttribute(new Attribute("EventDesc", this.str(message.getDescription())));
 
       Element metadataMessageElm = new Element("MetaData");
       metadataMessageElm.addAttribute(new Attribute("Name", this.str(message.getName())));
-      metadataMessageElm.addAttribute(new Attribute("OrgName", this.str(profile.getMetaData().getOrgName())));
+      metadataMessageElm
+          .addAttribute(new Attribute("OrgName", this.str(profile.getMetaData().getOrgName())));
       hL7v2xStaticDefElm.appendChild(metadataMessageElm);
 
       Map<Integer, SegmentRefOrGroup> segmentRefOrGroups =
@@ -2486,11 +2583,11 @@ public class XMLExportTool {
         String path = i + "[1]";
         SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
         if (segmentRefOrGroup instanceof SegmentRef) {
-          hL7v2xStaticDefElm.appendChild(
-              serializeGazelleSegment((SegmentRef) segmentRefOrGroup, profile, message, path, segmentsMap, datatypesMap, tablesMap));
+          hL7v2xStaticDefElm.appendChild(serializeGazelleSegment((SegmentRef) segmentRefOrGroup,
+              profile, message, path, segmentsMap, datatypesMap, tablesMap));
         } else if (segmentRefOrGroup instanceof Group) {
-          hL7v2xStaticDefElm.appendChild(
-              serializeGazelleGroup((Group) segmentRefOrGroup, profile, message, path, segmentsMap, datatypesMap, tablesMap));
+          hL7v2xStaticDefElm.appendChild(serializeGazelleGroup((Group) segmentRefOrGroup, profile,
+              message, path, segmentsMap, datatypesMap, tablesMap));
         }
       }
       e.appendChild(hL7v2xStaticDefElm);
@@ -2498,11 +2595,14 @@ public class XMLExportTool {
     Document doc = new Document(e);
     return doc;
   }
-  private Element serializeGazelleGroup(Group group, Profile profile, Message message, String path, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
+
+  private Element serializeGazelleGroup(Group group, Profile profile, Message message, String path,
+      HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
       HashMap<String, Table> tablesMap) {
     Element elmSegGroup = new Element("SegGroup");
     if (group.getName().contains(".")) {
-      elmSegGroup.addAttribute(new Attribute("Name", this.str(group.getName().substring(group.getName().lastIndexOf(".") + 1))));
+      elmSegGroup.addAttribute(new Attribute("Name",
+          this.str(group.getName().substring(group.getName().lastIndexOf(".") + 1))));
     } else {
       elmSegGroup.addAttribute(new Attribute("Name", this.str(group.getName())));
     }
@@ -2551,25 +2651,25 @@ public class XMLExportTool {
       String childPath = path + "." + i + "[1]";
       SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
       if (segmentRefOrGroup instanceof SegmentRef) {
-        elmSegGroup.appendChild(
-            serializeGazelleSegment((SegmentRef) segmentRefOrGroup, profile, message, childPath, segmentsMap, datatypesMap, tablesMap));
+        elmSegGroup.appendChild(serializeGazelleSegment((SegmentRef) segmentRefOrGroup, profile,
+            message, childPath, segmentsMap, datatypesMap, tablesMap));
       } else if (segmentRefOrGroup instanceof Group) {
-        elmSegGroup.appendChild(
-            serializeGazelleGroup((Group) segmentRefOrGroup, profile, message, childPath, segmentsMap, datatypesMap, tablesMap));
+        elmSegGroup.appendChild(serializeGazelleGroup((Group) segmentRefOrGroup, profile, message,
+            childPath, segmentsMap, datatypesMap, tablesMap));
       }
     }
 
     return elmSegGroup;
   }
-  private Element serializeGazelleSegment(SegmentRef segmentRef, Profile profile,
-      Message message, String path, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
+
+  private Element serializeGazelleSegment(SegmentRef segmentRef, Profile profile, Message message,
+      String path, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap,
       HashMap<String, Table> tablesMap) {
     Element elmSegment = new Element("Segment");
 
     Segment segment = segmentsMap.get(segmentRef.getRef().getId());
     elmSegment.addAttribute(new Attribute("Name", this.str(segment.getName())));
-    elmSegment
-        .addAttribute(new Attribute("LongName", this.str(segment.getDescription())));
+    elmSegment.addAttribute(new Attribute("LongName", this.str(segment.getDescription())));
     if (segmentRef.getUsage().value().equals("B")) {
       elmSegment.addAttribute(new Attribute("Usage", "X"));
     } else {
@@ -2612,15 +2712,16 @@ public class XMLExportTool {
     for (int i = 1; i < fields.size() + 1; i++) {
       String fieldPath = path + "." + i + "[1]";
       Field f = fields.get(i);
-      this.serializeGazelleField(f, datatypesMap.get(f.getDatatype().getId()), elmSegment,
-          profile, message, segment, fieldPath, datatypesMap, tablesMap);
+      this.serializeGazelleField(f, datatypesMap.get(f.getDatatype().getId()), elmSegment, profile,
+          message, segment, fieldPath, datatypesMap, tablesMap);
 
     }
     return elmSegment;
   }
+
   private void serializeGazelleField(Field f, Datatype fieldDatatype, Element elmParent,
-      Profile profile, Message message, Segment segment, String fieldPath, HashMap<String, Datatype> datatypesMap,
-      HashMap<String, Table> tablesMap) {
+      Profile profile, Message message, Segment segment, String fieldPath,
+      HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) {
     Element elmField = new Element("Field");
     elmParent.appendChild(elmField);
 
@@ -2647,8 +2748,8 @@ public class XMLExportTool {
       }
     }
     elmField.addAttribute(new Attribute("Datatype", this.str(fieldDatatype.getName())));
-    
-    
+
+
     List<ValueSetBinding> bindings = findBinding(segment.getValueSetBindings(), f.getPosition());
     if (bindings.size() > 0) {
       String bindingString = "";
@@ -2673,7 +2774,9 @@ public class XMLExportTool {
 
       IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
       if (config.getValueSetAllowedDTs().contains(fieldDatatype.getName())) {
-        if (!bindingString.equals("")) elmField.addAttribute(new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
+        if (!bindingString.equals(""))
+          elmField.addAttribute(
+              new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
       }
     }
 
@@ -2716,20 +2819,18 @@ public class XMLExportTool {
           profile, message, fieldDatatype, componentPath, datatypesMap, tablesMap);
     }
   }
-  private void serializeGazelleComponent(Component c, Datatype componentDatatype,
-      Element elmParent, Profile profile, Message message, Datatype fieldDatatype,
-      String componentPath, HashMap<String, Datatype> datatypesMap,
-      HashMap<String, Table> tablesMap) {
+
+  private void serializeGazelleComponent(Component c, Datatype componentDatatype, Element elmParent,
+      Profile profile, Message message, Datatype fieldDatatype, String componentPath,
+      HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) {
     Element elmComponent = new Element("Component");
     elmComponent.addAttribute(new Attribute("Name", this.str(c.getName())));
     if (c.getUsage().value().equals("B")) {
       elmComponent.addAttribute(new Attribute("Usage", "X"));
     } else {
-      elmComponent
-          .addAttribute(new Attribute("Usage", this.str(c.getUsage().value())));
+      elmComponent.addAttribute(new Attribute("Usage", this.str(c.getUsage().value())));
     }
-    elmComponent.addAttribute(
-        new Attribute("Datatype", this.str(componentDatatype.getName())));
+    elmComponent.addAttribute(new Attribute("Datatype", this.str(componentDatatype.getName())));
     if (c.getMaxLength() != null && !c.getMaxLength().equals("")) {
       if (c.getMaxLength().equals("*")) {
         elmComponent.addAttribute(new Attribute("Length", "" + 225));
@@ -2740,7 +2841,8 @@ public class XMLExportTool {
       }
     }
 
-    List<ValueSetBinding> bindings = findBinding(fieldDatatype.getValueSetBindings(), c.getPosition());
+    List<ValueSetBinding> bindings =
+        findBinding(fieldDatatype.getValueSetBindings(), c.getPosition());
     if (bindings.size() > 0) {
       String bindingString = "";
 
@@ -2764,7 +2866,9 @@ public class XMLExportTool {
 
       IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
       if (config.getValueSetAllowedDTs().contains(componentDatatype.getName())) {
-        if (!bindingString.equals("")) elmComponent.addAttribute(new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
+        if (!bindingString.equals(""))
+          elmComponent.addAttribute(
+              new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
       }
     }
 
@@ -2801,10 +2905,12 @@ public class XMLExportTool {
       String subComponentPath = componentPath + "." + k + "[1]";
       Component sc = subComponents.get(k);
       this.serializeGazelleSubComponent(sc, datatypesMap.get(sc.getDatatype().getId()),
-          elmComponent, profile, message, componentDatatype, subComponentPath, datatypesMap, tablesMap);
+          elmComponent, profile, message, componentDatatype, subComponentPath, datatypesMap,
+          tablesMap);
     }
     elmParent.appendChild(elmComponent);
   }
+
   private void serializeGazelleSubComponent(Component sc, Datatype subComponentDatatype,
       Element elmParent, Profile profile, Message message, Datatype componentDatatype,
       String subComponentPath, HashMap<String, Datatype> datatypesMap,
@@ -2814,23 +2920,22 @@ public class XMLExportTool {
     if (sc.getUsage().value().equals("B")) {
       elmSubComponent.addAttribute(new Attribute("Usage", "X"));
     } else {
-      elmSubComponent
-          .addAttribute(new Attribute("Usage", this.str(sc.getUsage().value())));
+      elmSubComponent.addAttribute(new Attribute("Usage", this.str(sc.getUsage().value())));
     }
-    elmSubComponent.addAttribute(
-        new Attribute("Datatype", this.str(subComponentDatatype.getName())));
+    elmSubComponent
+        .addAttribute(new Attribute("Datatype", this.str(subComponentDatatype.getName())));
     if (sc.getMaxLength() != null && !sc.getMaxLength().equals("")) {
       if (sc.getMaxLength().equals("*")) {
         elmSubComponent.addAttribute(new Attribute("Length", "" + 225));
       } else if (sc.getMaxLength().equals("0")) {
         elmSubComponent.addAttribute(new Attribute("Length", "" + 1));
       } else {
-        elmSubComponent
-            .addAttribute(new Attribute("Length", this.str(sc.getMaxLength())));
+        elmSubComponent.addAttribute(new Attribute("Length", this.str(sc.getMaxLength())));
       }
     }
 
-    List<ValueSetBinding> bindings = findBinding(componentDatatype.getValueSetBindings(), sc.getPosition());
+    List<ValueSetBinding> bindings =
+        findBinding(componentDatatype.getValueSetBindings(), sc.getPosition());
     if (bindings.size() > 0) {
       String bindingString = "";
 
@@ -2854,7 +2959,9 @@ public class XMLExportTool {
 
       IGDocumentConfiguration config = new XMLConfig().igDocumentConfig();
       if (config.getValueSetAllowedDTs().contains(subComponentDatatype.getName())) {
-        if (!bindingString.equals("")) elmSubComponent.addAttribute(new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
+        if (!bindingString.equals(""))
+          elmSubComponent.addAttribute(
+              new Attribute("Table", bindingString.substring(0, bindingString.length() - 1)));
       }
     }
 
@@ -2883,6 +2990,7 @@ public class XMLExportTool {
 
     elmParent.appendChild(elmSubComponent);
   }
+
   private Element serializeTablesMapToGazelleElement(Map<String, Table> tablesMap) {
     Element elmSpecification = new Element("Specification");
     Attribute schemaDecl = new Attribute("noNamespaceSchemaLocation",
@@ -2919,60 +3027,62 @@ public class XMLExportTool {
     Element elmHl7tables = new Element("hl7tables");
 
     for (String key : tablesMap.keySet()) {
-            Table t = tablesMap.get(key);
-            tableID = tableID + 1;
-            Element elmHl7table = new Element("hl7table");
-            elmHl7table.addAttribute(new Attribute("id", tableID + ""));
-            if (t.getHl7Version() != null && !t.getHl7Version().equals("")) {
-              if (t.getBindingIdentifier().startsWith("0396") || t.getBindingIdentifier().startsWith("HL70396")) {
-                elmHl7table.addAttribute(new Attribute("name", this.str(t.getBindingIdentifier())));
-              } else {
-                elmHl7table.addAttribute(new Attribute("name", this.str(t.getBindingIdentifier() + "_" + t.getHl7Version().replaceAll("\\.", "-"))));
-              }
-            } else {
-              elmHl7table.addAttribute(new Attribute("name", this.str(t.getBindingIdentifier())));
-            }
-            elmHl7table.addAttribute(new Attribute("type", "HL7"));
-            int order = 0;
-            List<String> codesysList = new ArrayList<String>();
+      Table t = tablesMap.get(key);
+      tableID = tableID + 1;
+      Element elmHl7table = new Element("hl7table");
+      elmHl7table.addAttribute(new Attribute("id", tableID + ""));
+      if (t.getHl7Version() != null && !t.getHl7Version().equals("")) {
+        if (t.getBindingIdentifier().startsWith("0396")
+            || t.getBindingIdentifier().startsWith("HL70396")) {
+          elmHl7table.addAttribute(new Attribute("name", this.str(t.getBindingIdentifier())));
+        } else {
+          elmHl7table.addAttribute(new Attribute("name",
+              this.str(t.getBindingIdentifier() + "_" + t.getHl7Version().replaceAll("\\.", "-"))));
+        }
+      } else {
+        elmHl7table.addAttribute(new Attribute("name", this.str(t.getBindingIdentifier())));
+      }
+      elmHl7table.addAttribute(new Attribute("type", "HL7"));
+      int order = 0;
+      List<String> codesysList = new ArrayList<String>();
 
-            for (Code c : t.getCodes()) {
-                    order = order + 1;
-                    if (c.getCodeSystem() != null && !codesysList.contains(c.getCodeSystem()))
-                            codesysList.add(c.getCodeSystem());
+      for (Code c : t.getCodes()) {
+        order = order + 1;
+        if (c.getCodeSystem() != null && !codesysList.contains(c.getCodeSystem()))
+          codesysList.add(c.getCodeSystem());
 
-                    Element elmTableElement = new Element("tableElement");
-                    elmTableElement.addAttribute(new Attribute("order", order + ""));
-                    elmTableElement.addAttribute(new Attribute("code", this.str(c.getValue())));
-                    elmTableElement.addAttribute(new Attribute("description", this.str(c.getLabel())));
-                    elmTableElement.addAttribute(new Attribute("displayName", this.str(c.getLabel())));
+        Element elmTableElement = new Element("tableElement");
+        elmTableElement.addAttribute(new Attribute("order", order + ""));
+        elmTableElement.addAttribute(new Attribute("code", this.str(c.getValue())));
+        elmTableElement.addAttribute(new Attribute("description", this.str(c.getLabel())));
+        elmTableElement.addAttribute(new Attribute("displayName", this.str(c.getLabel())));
 
-                    if (c.getCodeSystem() == null || c.getCodeSystem().equals(""))
-                            elmTableElement.addAttribute(new Attribute("source", "NOSource"));
-                    else
-                            elmTableElement.addAttribute(new Attribute("source", this.str(c.getCodeSystem())));
-                    elmTableElement.addAttribute(new Attribute("usage", "Optional"));
-                    elmTableElement.addAttribute(new Attribute("creator", ""));
-                    elmTableElement.addAttribute(new Attribute("date", ""));
-                    elmTableElement.addAttribute(new Attribute("instruction", ""));
-                    elmHl7table.appendChild(elmTableElement);
-            }
+        if (c.getCodeSystem() == null || c.getCodeSystem().equals(""))
+          elmTableElement.addAttribute(new Attribute("source", "NOSource"));
+        else
+          elmTableElement.addAttribute(new Attribute("source", this.str(c.getCodeSystem())));
+        elmTableElement.addAttribute(new Attribute("usage", "Optional"));
+        elmTableElement.addAttribute(new Attribute("creator", ""));
+        elmTableElement.addAttribute(new Attribute("date", ""));
+        elmTableElement.addAttribute(new Attribute("instruction", ""));
+        elmHl7table.appendChild(elmTableElement);
+      }
 
-            if (codesysList.size() == 0) {
-                    elmHl7table.addAttribute(new Attribute("codeSys", ""));
-            } else {
-                    String codeSysSet = "";
-                    for (String s : codesysList) {
-                            codeSysSet = codeSysSet + "," + s;
-                    }
-                    elmHl7table.addAttribute(new Attribute("codeSys", codeSysSet.substring(1)));
-            }
+      if (codesysList.size() == 0) {
+        elmHl7table.addAttribute(new Attribute("codeSys", ""));
+      } else {
+        String codeSysSet = "";
+        for (String s : codesysList) {
+          codeSysSet = codeSysSet + "," + s;
+        }
+        elmHl7table.addAttribute(new Attribute("codeSys", codeSysSet.substring(1)));
+      }
 
-            elmHl7tables.appendChild(elmHl7table);
+      elmHl7tables.appendChild(elmHl7table);
     }
 
     elmSpecification.appendChild(elmHl7tables);
 
     return elmSpecification;
-}
+  }
 }
