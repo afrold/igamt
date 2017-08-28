@@ -552,37 +552,35 @@ public class SerializationServiceImpl implements SerializationService {
     List<DatatypeLink> datatypeLinkList = new ArrayList<>(datatypeLibrary.getChildren());
     Collections.sort(datatypeLinkList);
     UsageConfig datatypeComponentsUsageConfig = this.exportConfig.getComponentExport();
-    if (!exportConfig.isIncludeVaries()) {
+    if (bindedDatatypes != null && !bindedDatatypes.isEmpty()) {
       Iterator<DatatypeLink> itr = bindedDatatypes.iterator();
       while (itr.hasNext()) {
         DatatypeLink entry = itr.next();
-        if (entry.getName().toLowerCase().equals("varies")) {
+        if (entry.getName().toLowerCase().equals("varies") && !exportConfig.isIncludeVaries()) {
           itr.remove();
-        }
-      }
-    }
-
-    if (bindedDatatypes != null && !bindedDatatypes.isEmpty()) {
-      for (DatatypeLink datatypeLink : bindedDatatypes) {
-        CompositeProfile compositeProfile = getDatatypeCompositeProfile(datatypeLink);
-        SerializableDatatype serializableDatatype = null;
-        if (compositeProfile != null) {
-          serializableDatatype = serializeDatatypeService.serializeDatatype(datatypeLink,
-              prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
-              datatypeLinkList.indexOf(datatypeLink), datatypeComponentsUsageConfig,
-              compositeProfile.getDatatypesMap());
         } else {
-          serializableDatatype = serializeDatatypeService.serializeDatatype(datatypeLink,
-              prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
-              datatypeLinkList.indexOf(datatypeLink), datatypeComponentsUsageConfig);
+          CompositeProfile compositeProfile = getDatatypeCompositeProfile(entry);
+          SerializableDatatype serializableDatatype = null;
+          if (compositeProfile != null) {
+            serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
+                prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
+                datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig,
+                compositeProfile.getDatatypesMap());
+          } else {
+            serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
+                prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
+                datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig);
+          }
+          // This "if" is only useful if we want to display only user datatypes
+          // if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
+          if (serializableDatatype != null) {
+            datatypeSection.addSection(serializableDatatype);
+          }
+
         }
-        // This "if" is only useful if we want to display only user datatypes
-        // if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
-        if (serializableDatatype != null) {
-          datatypeSection.addSection(serializableDatatype);
-        }
-        // }
+
       }
+
     }
     return datatypeSection;
   }
