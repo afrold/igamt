@@ -211,7 +211,8 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
   public InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids)
       throws IOException, CloneNotSupportedException {
     if (d != null) {
-      return profileSerializationService.serializeProfileGazelleToZip(d.getProfile(), mids, d.getMetaData());
+      return profileSerializationService.serializeProfileGazelleToZip(d.getProfile(), mids,
+          d.getMetaData());
     } else {
       return new NullInputStream(1L);
     }
@@ -237,7 +238,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       return new NullInputStream(1L);
     }
   }
-  
+
   @Override
   public InputStream exportAsGazelleForSelectedCompositeProfiles(IGDocument d, String[] cids)
       throws IOException, CloneNotSupportedException {
@@ -247,7 +248,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
       return new NullInputStream(1L);
     }
   }
-  
+
   @Override
   public InputStream exportAsDisplayForSelectedCompositeProfiles(IGDocument d, String[] cids)
       throws IOException, CloneNotSupportedException {
@@ -1623,7 +1624,7 @@ public class IGDocumentExportImpl implements IGDocumentExportService {
     wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle",
         "Subtitle " + igdoc.getMetaData().getSubTitle());
     wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1",
-        DateUtils.format(igdoc.getDateUpdated()));
+        DateUtils.formatCoverPageDate(igdoc.getDateUpdated()));
     addLineBreak(wordMLPackage, factory);
     addLineBreak(wordMLPackage, factory);
     wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1",
