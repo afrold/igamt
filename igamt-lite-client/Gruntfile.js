@@ -137,7 +137,6 @@ module.exports = function (grunt) {
               '/api',
               'mocks/api'
             ));
-
             // Static files
             middlewares.push(connect.static(options.base));
             middlewares.push(connect.static(__dirname));

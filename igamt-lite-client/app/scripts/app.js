@@ -473,7 +473,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     httpHeaders.common['Authorization'] = 'Basic ' + base64.encode(username + ':' + password);
 //        httpHeaders.common['withCredentials']=true;
 //        httpHeaders.common['Origin']="http://localhost:9000";
-    $http.get('api/accounts/login').success(function () {
+    $http.get('api/accounts/login').then(function () {
       //If we are here in this callback, login was successfull
       //Let's get user info now
       httpHeaders.common['Authorization'] = null;
