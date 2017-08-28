@@ -3066,3 +3066,37 @@ md-dialog .md-dialog-content {
 .col-fixed-comment{
     min-width: 85px !important;
 }
+.table-fixed-45>tbody>tr>td, .table-striped>tbody>tr>th {
+    height: 45px !important;
+}
+.input-search-border{
+    margin-bottom: 5px;
+    border-bottom-width: medium;
+    width: 100%;
+
+}md-select.margin-19 {
+     margin-top:-19px;
+ }
+md-checkbox{
+    margin-bottom: 0px;
+    white-space: nowrap;
+}
+.valueset-ext-label{
+    margin-top: 10px;
+}
+[disabled] md-input-container .md-input, md-input-container .md-input[disabled] {
+    background-position: bottom -1px left -2px;
+    background-size: 3px 1px;
+    background-repeat: repeat-x;
+    color: black;
+    border-bottom: none;
+}
+md-select[disabled] .md-select-value {
+    color: black;
+}
+.break-content>tbody>tr>td, .break-content>tbody>tr>th, .break-content>tfoot>tr>td, .break-content>tfoot>tr>th, .break-content>thead>tr>td, .break-content>thead>tr>th {
+    padding: 5px;
+    word-break: break-word !important;
+    height: 49px;
+    overflow: scroll;
+}
