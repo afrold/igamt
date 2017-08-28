@@ -2677,7 +2677,7 @@ angular.module('igl').controller('ProfileMetaDataCtrl', function ($scope, $rootS
     };
 });
 
-angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', function ($scope, $mdDialog, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $timeout, $window, toGVT) {
+angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', function ($scope, $mdDialog, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $timeout, $window, toGVT,StorageService) {
     $scope.igdocumentToSelect = igdocumentToSelect;
     $scope.toGVT = toGVT;
     $scope.exportStep = 0;
@@ -2686,7 +2686,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
     $scope.loading = false;
     $scope.info = {text: undefined, show: false, type: null, details: null};
     $scope.redirectUrl = null;
-    $scope.user = {username: null, password: null};
+    $scope.user = {username: StorageService.getGvtUsername(), password: StorageService.getGvtPassword()};
     $scope.appInfo = $rootScope.appInfo;
     $scope.selected = false;
 
@@ -2758,7 +2758,9 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
         $scope.info['details'] =null;
         $scope.generatedSelectedMessagesIDs();
         GVTSvc.login($scope.user.username, $scope.user.password).then(function (auth) {
-            GVTSvc.exportToGVTForCompositeProfile($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, auth).then(function (map) {
+          StorageService.setGvtUsername($scope.user.username);
+          StorageService.setGvtPassword($scope.user.password);
+          GVTSvc.exportToGVTForCompositeProfile($scope.igdocumentToSelect.id, $scope.selectedCompositeProfileIDs, auth).then(function (map) {
                 var response = angular.fromJson(map.data);
                 if (response.success === false) {
                     $scope.info.text = "gvtExportFailed";
@@ -2796,7 +2798,7 @@ angular.module('igl').controller('SelectCompositeProfilesForExportCtrl', functio
 
 });
 
-angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window, $mdDialog, toGVT) {
+angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope, igdocumentToSelect, $rootScope, $http, $cookies, ExportSvc, GVTSvc, $modal, $timeout, $window, $mdDialog, toGVT,StorageService) {
     $scope.igdocumentToSelect = igdocumentToSelect;
     $scope.toGVT = toGVT;
     $scope.exportStep = 0;
@@ -2805,7 +2807,7 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
     $scope.loading = false;
     $scope.info = {text: undefined, show: false, type: null, details: null};
     $scope.redirectUrl = null;
-    $scope.user = {username: null, password: null};
+    $scope.user = {username: StorageService.getGvtUsername(), password: StorageService.getGvtPassword()};
     $scope.appInfo = $rootScope.appInfo;
     $scope.selected = false;
 
@@ -2880,6 +2882,8 @@ angular.module('igl').controller('SelectMessagesForExportCtrl', function ($scope
         $scope.info['details'] = null;
         $scope.generatedSelectedMessagesIDs();
         GVTSvc.login($scope.user.username, $scope.user.password).then(function (auth) {
+            StorageService.setGvtUsername($scope.user.username);
+            StorageService.setGvtPassword($scope.user.password);
             GVTSvc.exportToGVT($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, auth).then(function (map) {
                 var response = angular.fromJson(map.data);
                 if (response.success === false) {

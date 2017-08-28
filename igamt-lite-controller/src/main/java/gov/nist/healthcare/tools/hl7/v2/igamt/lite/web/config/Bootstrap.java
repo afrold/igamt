@@ -287,7 +287,7 @@ public class Bootstrap implements InitializingBean {
     // fixCodeSysLOINC();
     //
     // fixAllConstraints();
-    SetTablePreText();
+    // SetTablePreText();
   }
 
   private void SetTablePreText() {
