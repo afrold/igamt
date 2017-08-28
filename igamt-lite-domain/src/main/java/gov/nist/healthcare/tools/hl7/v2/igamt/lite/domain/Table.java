@@ -35,6 +35,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   private boolean newTable;
 
 
+  @Deprecated
   private String description;
   private String version;
   private String oid;
@@ -120,10 +121,12 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     this.bindingIdentifier = bindingIdentifier;
   }
 
+  @Deprecated
   public String getDescription() {
     return description;
   }
 
+  @Deprecated
   public void setDescription(String description) {
     this.description = description;
   }
