@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -552,26 +553,34 @@ public class SerializationServiceImpl implements SerializationService {
     Collections.sort(datatypeLinkList);
     UsageConfig datatypeComponentsUsageConfig = this.exportConfig.getComponentExport();
     if (bindedDatatypes != null && !bindedDatatypes.isEmpty()) {
-      for (DatatypeLink datatypeLink : bindedDatatypes) {
-        CompositeProfile compositeProfile = getDatatypeCompositeProfile(datatypeLink);
-        SerializableDatatype serializableDatatype = null;
-        if (compositeProfile != null) {
-          serializableDatatype = serializeDatatypeService.serializeDatatype(datatypeLink,
-              prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
-              datatypeLinkList.indexOf(datatypeLink), datatypeComponentsUsageConfig,
-              compositeProfile.getDatatypesMap());
+      Iterator<DatatypeLink> itr = bindedDatatypes.iterator();
+      while (itr.hasNext()) {
+        DatatypeLink entry = itr.next();
+        if (entry.getName().toLowerCase().equals("varies") && !exportConfig.isIncludeVaries()) {
+          itr.remove();
         } else {
-          serializableDatatype = serializeDatatypeService.serializeDatatype(datatypeLink,
-              prefix + "." + String.valueOf(datatypeLinkList.indexOf(datatypeLink) + 1),
-              datatypeLinkList.indexOf(datatypeLink), datatypeComponentsUsageConfig);
+          CompositeProfile compositeProfile = getDatatypeCompositeProfile(entry);
+          SerializableDatatype serializableDatatype = null;
+          if (compositeProfile != null) {
+            serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
+                prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
+                datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig,
+                compositeProfile.getDatatypesMap());
+          } else {
+            serializableDatatype = serializeDatatypeService.serializeDatatype(entry,
+                prefix + "." + String.valueOf(datatypeLinkList.indexOf(entry) + 1),
+                datatypeLinkList.indexOf(entry), datatypeComponentsUsageConfig);
+          }
+          // This "if" is only useful if we want to display only user datatypes
+          // if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
+          if (serializableDatatype != null) {
+            datatypeSection.addSection(serializableDatatype);
+          }
+
         }
-        // This "if" is only useful if we want to display only user datatypes
-        // if(serializeMaster||!(serializableDatatype.getDatatype().getScope().equals(Constant.SCOPE.HL7STANDARD))){
-        if (serializableDatatype != null) {
-          datatypeSection.addSection(serializableDatatype);
-        }
-        // }
+
       }
+
     }
     return datatypeSection;
   }
