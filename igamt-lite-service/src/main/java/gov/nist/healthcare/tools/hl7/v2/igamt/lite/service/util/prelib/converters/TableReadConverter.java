@@ -11,11 +11,11 @@ import com.mongodb.DBObject;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 
 @ReadingConverter
 public class TableReadConverter extends AbstractReadConverter<DBObject, Table> {
@@ -44,6 +44,7 @@ public class TableReadConverter extends AbstractReadConverter<DBObject, Table> {
     }
     table.setName(((String) source.get(NAME)));
     table.setDescription(((String) source.get(DESCRIPTION)));
+    table.setDefPreText(((String) source.get(DESCRIPTION)));
     // Nullity tests added for retro compatibility
     if (source.get(DESCRIPTION) == null) {
       table.setDescription((String) source.get(NAME));
@@ -54,10 +55,10 @@ public class TableReadConverter extends AbstractReadConverter<DBObject, Table> {
     table.setOid(((String) source.get(OID)));
     table.setScope(Constant.SCOPE.valueOf((String) source.get(SCOPE_)));
     // Nullity tests added for retro compatibility
-    table.setStability(source.get(STABILITY) == null ? Stability.Dynamic : Stability
-        .fromValue((String) source.get(STABILITY)));
-    table.setExtensibility(source.get(EXTENSIBILITY) == null ? Extensibility.Open : Extensibility
-        .fromValue((String) source.get(EXTENSIBILITY)));
+    table.setStability(source.get(STABILITY) == null ? Stability.Dynamic
+        : Stability.fromValue((String) source.get(STABILITY)));
+    table.setExtensibility(source.get(EXTENSIBILITY) == null ? Extensibility.Open
+        : Extensibility.fromValue((String) source.get(EXTENSIBILITY)));
     table
         .setContentDefinition(source.get(CONTENT_DEFINITION) == null ? ContentDefinition.Intensional
             : ContentDefinition.fromValue((String) source.get(CONTENT_DEFINITION)));

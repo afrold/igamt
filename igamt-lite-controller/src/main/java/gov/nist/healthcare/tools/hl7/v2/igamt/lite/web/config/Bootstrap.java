@@ -283,11 +283,10 @@ public class Bootstrap implements InitializingBean {
     // fixProfielComponentConfLength();
     // updateGroupName();
     //
-    //
-    // fixCodeSysLOINC();
-    //
-    // fixAllConstraints();
-    // SetTablePreText();
+    // 2.0.5-beta
+    fixCodeSysLOINC();
+    fixAllConstraints();
+    SetTablePreText();
   }
 
   private void SetTablePreText() {

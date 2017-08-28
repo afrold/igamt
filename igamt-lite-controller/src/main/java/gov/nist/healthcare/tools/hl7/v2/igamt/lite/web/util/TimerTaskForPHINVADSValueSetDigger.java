@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.TimerTask;
 
 import org.slf4j.Logger;
@@ -18,9 +17,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.caucho.hessian.client.HessianProxyFactory;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import gov.cdc.vocab.service.VocabService;
@@ -143,19 +139,19 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
             needUpdate = true;
             log.info(oid + " Table has no change! however local PHINVADS codes are missing");
           } else {
-            
+
             ValueSetConceptResultDto vscByVSVid =
                 this.getService().getValueSetConceptsByValueSetVersionId(vsv.getId(), 1, 100000);
             List<ValueSetConcept> valueSetConcepts = vscByVSVid.getValueSetConcepts();
-            
-            if(valueSetConcepts.size() != table.getCodes().size()){
+
+            if (valueSetConcepts.size() != table.getCodes().size()) {
               needUpdate = true;
               log.info(oid + " Table has no change! hoever local codes size are diferenct.");
-            }else {
+            } else {
               needUpdate = false;
-              log.info(oid + " Table has no change! because same version number and date.");  
+              log.info(oid + " Table has no change! because same version number and date.");
             }
-            
+
           }
         } else {
           needUpdate = true;
@@ -180,7 +176,8 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
       List<ValueSetVersion> vsvByVSOid =
           this.getService().getValueSetVersionsByValueSetOid(vs.getOid()).getValueSetVersions();
       table.setBindingIdentifier(vs.getCode());
-      table.setDescription(vs.getDefinitionText());
+      // table.setDescription(vs.getDefinitionText());
+      table.setDefPreText(vs.getDefinitionText());
       table.setName(vs.getName());
       table.setOid(vs.getOid());
       table.setVersion("" + vsvByVSOid.get(0).getVersionNumber());
@@ -250,7 +247,8 @@ public class TimerTaskForPHINVADSValueSetDigger extends TimerTask {
 
   public List<Table> findAllpreloadedPHINVADSTablesBySearch(String searchValue) {
     List<Table> tables = new ArrayList<Table>();
-    tables = mongoOps.find(Query.query(Criteria.where("scope").is(Constant.SCOPE.PHINVADS).and("bindingIdentifier").regex(".*" + searchValue + ".*")), Table.class);
+    tables = mongoOps.find(Query.query(Criteria.where("scope").is(Constant.SCOPE.PHINVADS)
+        .and("bindingIdentifier").regex(".*" + searchValue + ".*")), Table.class);
 
     for (Table t : tables) {
       t.setCodes(null);
