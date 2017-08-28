@@ -585,7 +585,7 @@
                                 <div ng-show="!toGVT || toGVT === false">
                                     <h4 class="modal-title ">Select Export Format</h4>
                                 </div>
-                                <div ng-show="!toGVT || toGVT === false">
+                                <div ng-show="!toGVT || toGVT === false" style="margin-bottom:10px">
                                     <div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">
                                         <label class="btn btn-raised btn-primary btn-xs "
                                                ng-click="xmlFormat='Validation' "
@@ -644,18 +644,18 @@
                             </div>
                             <form name="gvtLoginForm" id="gvtLoginForm" novalidate ng-cloak
                                   style="padding:20px 0px 20px 0px">
-                                <div ng-class="{'has-success has-feedback': gvtLoginForm.username.$valid, 'igl-has-error has-feedback': !gvtLoginForm.username.$valid}">
+                                <div ng-class="{'has-success has-feedback': gvtLoginForm.gvtUsername.$valid, 'igl-has-error has-feedback': !gvtLoginForm.gvtUsername.$valid}">
                                     <md-input-container layout="row">
                                         <label>Username</label>
-                                        <input flex="100" type="text" autofocus id="username" name="username"
+                                        <input flex="100" type="text" autocomplete="off"  autofocus id="gvtUsername" name="gvtUsername"
                                                ng-model="user.username" ng-minlength="4" required>
                                     </md-input-container>
                                 </div>
-                                <div ng-class="{'has-success has-feedback': gvtLoginForm.password.$valid, 'igl-has-error has-feedback': !gvtLoginForm.password.$valid}">
+                                <div ng-class="{'has-success has-feedback': gvtLoginForm.gvtPassword.$valid, 'igl-has-error has-feedback': !gvtLoginForm.gvtPassword.$valid}">
                                     <md-input-container layout="row">
                                         <label>Password</label>
-                                        <input flex="100" type="password" autocomplete="off" id="password"
-                                               name="password" ng-model="user.password" ng-minlength="4" required>
+                                        <input flex="100" type="password" autocomplete="off" id="gvtPassword"
+                                               name="gvtPassword" ng-model="user.password" ng-minlength="4" required>
                                     </md-input-container>
                                 </div>
                                 <p>
@@ -859,7 +859,7 @@
                                 <div ng-show="!toGVT || toGVT === false">
                                     <h4 class="modal-title ">Select Export Format</h4>
                                 </div>
-                                <div ng-show="!toGVT || toGVT === false">
+                                <div ng-show="!toGVT || toGVT === false" style="margin-bottom:10px">
                                     <div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">
                                         <label class="btn btn-raised btn-primary btn-xs "
                                                ng-click="xmlFormat='Validation' "
@@ -920,21 +920,21 @@
                             </div>
                             <form name="gvtLoginForm" id="gvtLoginForm" novalidate ng-cloak
                                   style="padding:20px 0px 20px 0px">
-                                <div ng-class="{'has-success has-feedback': gvtLoginForm.username.$valid, 'igl-has-error has-feedback': !gvtLoginForm.username.$valid}">
+                                <div ng-class="{'has-success has-feedback': gvtLoginForm.gvtUsername.$valid, 'igl-has-error has-feedback': !gvtLoginForm.gvtUsername.$valid}">
 
                                     <md-input-container layout="row">
                                         <label>Username</label>
-                                        <input flex="100" type="text" autofocus id="username" name="username"
+                                        <input flex="100" type="text" autofocus id="gvtUsername" name="gvtUsername"
                                                ng-model="user.username" ng-minlength="4" required>
                                     </md-input-container>
 
 
                                 </div>
-                                <div ng-class="{'has-success has-feedback': gvtLoginForm.password.$valid, 'igl-has-error has-feedback': !gvtLoginForm.password.$valid}">
+                                <div ng-class="{'has-success has-feedback': gvtLoginForm.password.$valid, 'igl-has-error has-feedback': !gvtLoginForm.gvtPassword.$valid}">
                                     <md-input-container layout="row">
                                         <label>Password</label>
-                                        <input flex="100" type="password" autocomplete="off" id="password"
-                                               name="password" ng-model="user.password" ng-minlength="4" required>
+                                        <input flex="100" type="password" autocomplete="off" id="gvtPassword"
+                                               name="gvtPassword" ng-model="user.password" ng-minlength="4" required>
                                     </md-input-container>
                                 </div>
                                 <p>

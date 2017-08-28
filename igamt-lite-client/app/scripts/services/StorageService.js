@@ -12,8 +12,11 @@ angular.module('igl').factory('StorageService',
             TABLE_READONLY_SETTINGS:'TABLE_READONLY_SETTINGS',
             IG_DOCUMENT:'IG_DOCUMENT',
             GVT_BASIC_AUTH:'GVT_BASIC_AUTH',
+            GVT_USERNAME:'GVT_USERNAME',
+            GVT_PASSWORD:'GVT_PASSWORD',
 
-            remove: function (key) {
+
+          remove: function (key) {
                 return localStorageService.remove(key);
             },
 
@@ -53,7 +56,21 @@ angular.module('igl').factory('StorageService',
             },
             setGVTBasicAuth: function (value) {
                 this.set(this.GVT_BASIC_AUTH,value);
-            }
+            },
+          getGvtUsername: function () {
+            var value = this.get(this.GVT_USERNAME);
+            return  value != undefined ? value: null;
+          },
+          setGvtUsername: function (value) {
+            this.set(this.GVT_USERNAME,value);
+          },
+          getGvtPassword: function () {
+            var value =  this.get(this.GVT_PASSWORD);
+            return value != undefined ? value: null;
+          },
+          setGvtPassword: function (value) {
+            this.set(this.GVT_PASSWORD,value);
+          }
         };
         return service;
     }]
