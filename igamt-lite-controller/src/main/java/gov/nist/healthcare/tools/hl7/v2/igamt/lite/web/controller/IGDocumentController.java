@@ -1316,8 +1316,16 @@ public class IGDocumentController extends CommonController {
     log.info("Fetching all Tables for " + hl7Version);
     List<SCOPE> scopes = new ArrayList<SCOPE>();
     scopes.add(SCOPE.HL7STANDARD);
+    List<Table> res = tableService.findByScopesAndVersion(scopes, hl7Version);
+    Set<Table> toReturn = new HashSet<Table>();
+    for (Table t : res) {
+      if (!t.isDuplicated()) {
+        toReturn.add(t);
+      }
+    }
 
-    return new HashSet<Table>(tableService.findByScopesAndVersion(scopes, hl7Version));
+
+    return toReturn;
   }
 
   @RequestMapping(value = "/PHINVADS/tables", method = RequestMethod.GET,

@@ -3100,3 +3100,8 @@ md-select[disabled] .md-select-value {
     height: 49px;
     overflow: scroll;
 }
+.deprecated{
+    text-decoration: line-through;
+    background-color: yellow;
+
+}

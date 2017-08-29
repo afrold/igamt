@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
@@ -101,6 +102,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.TableCro
  * 
  *
  */
+@Service
 public class CrossReferenceServiceImpl implements CrossReferenceService {
   @Autowired
   private IGDocumentService igDocumentService;
@@ -747,7 +749,10 @@ public class CrossReferenceServiceImpl implements CrossReferenceService {
                 && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
               for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
 
-                if (coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets() != null
+                if (coconstraints.getThenMapData() != null
+                    && coconstraints.getThenMapData().get(thn.getId()) != null
+                    && coconstraints.getThenMapData().get(thn.getId()).get(i) != null
+                    && coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets() != null
                     && !coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets()
                         .isEmpty()) {
                   for (int j = 0; j < coconstraints.getThenMapData().get(thn.getId()).get(i)

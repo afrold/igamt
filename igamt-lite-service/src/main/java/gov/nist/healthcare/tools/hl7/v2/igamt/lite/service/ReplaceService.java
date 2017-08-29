@@ -11,7 +11,10 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.DatatypeCrossReference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.SegmentCrossReference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.ValueSetCrossReference;
 
@@ -19,14 +22,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.ValueSe
  * @author Abdelghani EL Ouakili (NIST)
  *
  */
-public interface replaceService {
+public interface ReplaceService {
 
-  public void replaceValueSet(ValueSetCrossReference refs, Table source, Table dest);
+  public void replace(ValueSetCrossReference refs, Table source, Table dest);
 
-  public void replaceValueSet(SegmentCrossReference refs, Segment source, Segment dest);
+  public void replace(SegmentCrossReference refs, Segment source, Segment dest);
 
-  public void replaceValueSet(ValueSetCrossReference refs, Table source, Table dest);
-
+  public void replace(DatatypeCrossReference refs, Datatype source, Datatype dest);
 
 
 }
