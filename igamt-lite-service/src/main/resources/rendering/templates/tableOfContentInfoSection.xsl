@@ -59,8 +59,8 @@
                                 <xsl:text>[Hide]</xsl:text>
                             </xsl:element>
                         </xsl:element>
-                        <xsl:element name="br"/>
                     </xsl:element>
+                    <xsl:element name="br"/>
                 </xsl:when>
             </xsl:choose>
         </xsl:if>

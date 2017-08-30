@@ -292,9 +292,12 @@ public class Bootstrap implements InitializingBean {
     // updateGroupName();
     //
     //
+
+    // 2.0.5-beta
     // fixCodeSysLOINC();
-    //
     // fixAllConstraints();
+    // SetTablePreText();
+    // fixCodeSysLOINC();
     // SetTablePreText();
     // fixDuplicatedVS();
 
