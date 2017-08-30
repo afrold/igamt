@@ -190,6 +190,25 @@ public class TableRepositoryImpl implements TableOperations {
 
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableOperations#updateCodeSystem(java.lang.
+   * String, java.util.Set)
+   */
+  @Override
+  public void updateCodeSystem(String id, Set<String> codesSystemtoAdd) {
+    // TODO Auto-generated method stub
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    query.fields().include("codeSystems");
+    Update update = new Update();
+    update.set("codeSystems", codesSystemtoAdd);
+    mongo.updateFirst(query, update, Table.class);
+
+  }
+
   // Query set4Brevis(Query qry) {
   // qry.fields().include("_id");
   // qry.fields().include("name");

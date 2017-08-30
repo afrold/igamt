@@ -48,6 +48,9 @@ public interface TableOperations {
 
   public void updateDescription(String id, String description);
 
+  public void updateCodeSystem(String id, Set<String> codesSystemtoAdd);
+
+
   Table findOneShortById(String id);
 
   List<Table> findByScope(String scope);

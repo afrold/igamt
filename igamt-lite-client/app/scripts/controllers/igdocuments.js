@@ -2009,8 +2009,17 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
             return $scope.viewSettings.tableReadonly||table.status == 'PUBLISHED';
         };
         $rootScope.definitionDisabled=function(table){
-           return $rootScope.isNonEditableValueSet(table)|| table.extensibility=='NA';
+           return $rootScope.isNonEditableValueSet(table)|| table.extensibility=='Not Defined';
         };
+        $rootScope.removeCodeSystem=function(table,code){
+                console.log(code);
+                angular.forEach(table.codes, function (code) {
+                    if(code.codeSystem==code){
+                        code.codeSystem=code;
+                    }
+
+                })
+        }
 
 
         $scope.selectTable = function (t) {

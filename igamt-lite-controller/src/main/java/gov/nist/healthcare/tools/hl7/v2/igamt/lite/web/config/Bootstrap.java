@@ -284,9 +284,10 @@ public class Bootstrap implements InitializingBean {
     // updateGroupName();
     //
     // 2.0.5-beta
-    fixCodeSysLOINC();
-    fixAllConstraints();
-    SetTablePreText();
+    // fixCodeSysLOINC();
+    // fixAllConstraints();
+    // SetTablePreText();
+    AddCodeSystemtoAllTables();
   }
 
   private void SetTablePreText() {
@@ -299,6 +300,26 @@ public class Bootstrap implements InitializingBean {
 
 
   }
+
+  private void AddCodeSystemtoAllTables() {
+    List<Table> allTables = tableService.findAll();
+    for (Table t : allTables) {
+      AddCodeSystemToTable(t);
+    }
+  }
+
+  private void AddCodeSystemToTable(Table t) {
+    Set<String> codesSystemtoAdd = new HashSet<String>();
+
+    for (Code c : t.getCodes()) {
+      if (c.getCodeSystem() != null && !c.getCodeSystem().isEmpty()) {
+        codesSystemtoAdd.add(c.getCodeSystem());
+
+      }
+    }
+    tableService.updateCodeSystem(t.getId(), codesSystemtoAdd);
+  }
+
 
 
   private void fixAllConstraints() {

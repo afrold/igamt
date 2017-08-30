@@ -66,4 +66,6 @@ public interface TableService {
 
   public void updateDescription(String id, String description);
 
+  void updateCodeSystem(String id, Set<String> codesSystemtoAdd);
+
 }

@@ -47,9 +47,10 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   private int order;
 
   private List<Code> codes = new ArrayList<Code>();
+  private Set<String> codeSystems = new HashSet<String>();
+
 
   private Constant.SCOPE scope;
-
   protected Long accountId;
 
   @Deprecated
@@ -358,6 +359,20 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 
   public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
     this.shareParticipantIds = shareParticipantIds;
+  }
+
+  /**
+   * @return the codeSystems
+   */
+  public Set<String> getCodeSystems() {
+    return codeSystems;
+  }
+
+  /**
+   * @param codeSystems the codeSystems to set
+   */
+  public void setCodeSystems(Set<String> codeSystems) {
+    this.codeSystems = codeSystems;
   }
 
 }

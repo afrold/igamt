@@ -205,4 +205,17 @@ public class TableServiceImpl implements TableService {
     // TODO Auto-generated method stub
     tableRepository.updateDescription(id, description);
   }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService#updateCodeSystem(java.lang.
+   * String, java.util.Set)
+   */
+  @Override
+  public void updateCodeSystem(String id, Set<String> codesSystemtoAdd) {
+    // TODO Auto-generated method stub
+    tableRepository.updateCodeSystem(id, codesSystemtoAdd);
+  }
 }
