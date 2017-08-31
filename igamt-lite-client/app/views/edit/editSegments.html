@@ -549,7 +549,7 @@
                                                                             <md-input-container flex="100">
                                                                                 <md-select placeholder="Select DT BaseName"
                                                                                            ng-model='segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value'
-                                                                                           ng-change="setDirty()"
+                                                                                           ng-change="setDirty();segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].datatypeId = null;"
                                                                                            ng-disabled="viewSettings.tableReadonly">
                                                                                     <md-option ng-repeat="c in dynamicMappingTable.codes | orderBy:'value'" ng-value="c.value">
                                                                                         {{c.value}}
