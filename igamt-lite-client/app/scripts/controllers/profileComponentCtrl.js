@@ -1980,7 +1980,7 @@ angular.module('igl').controller('AddCoConstraintCtrlInPc', function($scope, $md
         result.push('1');
 
 
-        if (!dtId) return result;
+        if(!dtId || !$rootScope.datatypesMap[dtId]) return result;
 
         if (_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT) {
                 return valueSetAllowedDT == $rootScope.datatypesMap[dtId].name;

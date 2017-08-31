@@ -437,7 +437,7 @@
 
                                                 <td class="col-md-4">
                                                     <md-select ng-model="cmpMsg.messageId" ng-change="setMsg2(cmpMsg.messageId)" ng-disabled="!ig2" no-dirty-check>
-                                                            <md-option ng-repeat="message in messages2 " ng-disabled="disableMsg(message,message1)" ng-hide="hideMsg(message,message1)" value='{{$index}}'> {{::message.name}}</md-option>
+                                                            <md-option ng-repeat="message in messages2" ng-disabled="disableMsg(message,message1)" ng-hide="hideMsg(message,message1)" value='{{$index}}'> {{::message.name}}</md-option>
                                                         </md-select>
                                                 </td>
                                             </tr>
@@ -510,7 +510,7 @@
                 <span id="segEditTree" class="label label-segment label-icon">S</span>
                 <a ng-show="editableSeg!==node.obj.id" ng-click="redirectSeg(node.obj.ref)" class="point">{{getSegmentRefNodeName(node.obj)}}</a>
                 <!--<select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%" class="form-control input-sm">
-                    <option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position"> {{child.position}}</option>
+                    <option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position"> {{child.position}}</option>
                 </select>-->
                 <select ng-show="editableSeg===node.obj.id" ng-model="segmentRef" ng-change="selectSeg(node,segmentRef)" style="width:40%" class="form-control input-sm">
                     <option ng-repeat="segmentRef in tmpResults" value="{{segmentRef}}"  ng-selected="node.obj.ref.id===segmentRef.id"> {{getSegmentLabel(segmentRef)}} {{::segmentRef.hl7Version}}</option>
@@ -520,7 +520,7 @@
 
 
                 <!--<md-select ng-show="editableSeg===node.obj.id" ng-model="position" ng-change="selectPos(node,position)" style="width:15%"">-->
-                    <!--<md-option ng-repeat="child in $root.segParent.children "  ng-selected="node.obj.position===child.position">-->
+                    <!--<md-option ng-repeat="child in $root.segParent.children"  ng-selected="node.obj.position===child.position">-->
                       <!--{{child.position}}-->
                     <!--</md-option>-->
                 <!--</md-select>-->
@@ -544,7 +544,7 @@
                             <!--ng-model="node.obj.usage" ng-options="usage for usage in config.usages"/>-->
                     <ng-form name="{{formName}}" class="form-inline">
                              <md-select placeholder="Select Usage" name="usage" id="usage" class="inside-table"
-                                       ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node); "
+                                       ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node);"
                                         ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
                                         required ng-model="node.obj.usage" >
 
@@ -721,7 +721,7 @@
                 <span ng-show="node.obj.usage !=='C' || (node.obj.usage==='C' && countPredicate(node.path)===0 )" ng-controller="FormRowCtrl">
                     <ng-form name="{{formName}}" class="form-inline">
                                 <md-select placeholder="Select Usage" name="usage" id="usage" class="inside-table"
-                                           ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node); "
+                                           ng-change="setCardinalities(node.obj); setDirty(); openPredicateDialog(node);"
                                            ng-class="{ 'has-error has-feedback' : {{formName}}.usage.$invalid}"
                                            required ng-model="node.obj.usage" >
 
@@ -818,7 +818,7 @@
         <td>
             <div>
                 <span ng-bind="node.obj.usage"></span>
-                <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) ">
+                <span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
                     ({{::p.trueUsage}}/{{::p.falseUsage}})
                 </span>
             </div>
@@ -833,7 +833,7 @@
         <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('singleElm')"></td>
         <td ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true) " tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
+                <p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)" tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true" tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)"
                    tooltip-trigger tooltip-animation="false" tooltip-placement="left">
                 </p>
             </div>
@@ -869,7 +869,7 @@
             <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0 && node.obj.minLength !== 'NA' && node.obj.maxLength !== 'NA'">[{{::node.obj.minLength}},{{::node.obj.maxLength}}]</span>
         </td>
         <td ng-class="{'emptyCol':datatypesMap[node.obj.datatype.id].components.length >0 || node.obj.confLength === 'NA' ,'has-validation-error':hasConfError(node.obj.id) && datatypesMap[node.obj.datatype.id].components.length===0}" ng-show="showConfLength() && viewSettings.isVisibleColumn('confLength')" data-toggle="tooltip" title="{{displayMessageError(node.obj.id,'CONFLENGTH')}}">
-            <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0 && node.obj.confLength !== 'NA' ">{{::node.obj.confLength}}</span>
+            <span ng-show="datatypesMap[node.obj.datatype.id].components.length  == 0 && node.obj.confLength !== 'NA'">{{::node.obj.confLength}}</span>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('datatype')" ng-class="{'has-validation-error':hasDatatypeError(node.obj.datatype.id)}" style="text-align:center">
             <span class="point" ng-click="redirectDT(node.obj.datatype)">
@@ -942,7 +942,7 @@
             </div>
         </td>
         <td class="emptyCol" ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">
-            <a ng-show="node.obj.text !=='' && node.obj.text !==null && node.obj.text !==undefined " ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
+            <a ng-show="node.obj.text !=='' && node.obj.text !==null && node.obj.text !==undefined" ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
@@ -1061,7 +1061,7 @@
             </div>
         </td>
         <td ng-show="viewSettings.isVisibleColumn('defText')" style="text-align:center">
-            <a ng-show="node.obj.text !=='' && node.obj.text !==null && node.obj.text !==undefined " ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
+            <a ng-show="node.obj.text !=='' && node.obj.text !==null && node.obj.text !==undefined" ng-click="openRichTextDlg(node.obj, 'text', 'Definition Text', true)" class="point">
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
@@ -1108,7 +1108,7 @@
                                             md-items="item in querySearch(searchText)"
                                             md-item-text="item.label"
                                             md-min-length="0"
-                                            placeholder="Search Segment "
+                                            placeholder="Search Segment"
                                             md-autofocus>
                                         <md-item-template>
                                             <display-label of="item" desc="true"></display-label>
