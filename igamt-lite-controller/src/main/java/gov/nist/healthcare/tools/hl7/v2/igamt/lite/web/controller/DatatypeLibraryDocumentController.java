@@ -45,12 +45,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontConfigService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.LibrarySaveResponse;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.LibraryCreateWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.LibraryCreateWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.ScopesAndVersionWrapper;
 
 @RestController
 @RequestMapping("/datatype-library-document")

@@ -360,4 +360,9 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     this.shareParticipantIds = shareParticipantIds;
   }
 
+  /**
+   * @param duplicated
+   */
+
+
 }
