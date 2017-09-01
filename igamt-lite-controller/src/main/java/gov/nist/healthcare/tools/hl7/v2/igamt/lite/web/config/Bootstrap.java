@@ -294,14 +294,48 @@ public class Bootstrap implements InitializingBean {
     //
 
     // 2.0.5-beta
-    // fixCodeSysLOINC();
-    // fixAllConstraints();
-    // SetTablePreText();
-    // fixCodeSysLOINC();
+ //    fixCodeSysLOINC();
+//    fixAllConstraints();
     // SetTablePreText();
     // fixDuplicatedVS();
+    fixCoConOBX2DT();
+    
+  }
 
-
+  private void fixCoConOBX2DT() {
+    List<Segment> segments = segmentService.findAll();
+    for (Segment s : segments) {
+      
+      CoConstraintsTable table = s.getCoConstraintsTable();
+      if(table != null && table.getThenColumnDefinitionList() != null){
+        for(CoConstraintColumnDefinition coConstraintColumnDefinition : table.getThenColumnDefinitionList()){
+          if(coConstraintColumnDefinition.getConstraintType().equals("dmr")){
+            List<CoConstraintTHENColumnData> dataList = table.getThenMapData().get(coConstraintColumnDefinition.getId());
+            if(dataList != null){
+              for(CoConstraintTHENColumnData data : dataList){
+                System.out.println("--------------------------");
+                if(data != null && data.getValueData() != null && data.getValueData().getValue() != null){
+                  System.out.println(data.getValueData().getValue());
+                  System.out.println(data.getDatatypeId());
+                  if(data.getDatatypeId() != null){
+                    Datatype dt = datatypeService.findById(data.getDatatypeId());
+                    if(dt != null) {
+                      System.out.println(dt.getName());
+                      
+                      if(!dt.getName().equals(data.getValueData().getValue())){
+                        System.out.println("========================================> Found error!!");
+                        data.getValueData().setValue(null);
+                      }
+                    }
+                  }                  
+                }
+              }
+            }
+          }
+        }
+      }
+      segmentService.save(s);
+    }
   }
 
   private void SetTablePreText() {
