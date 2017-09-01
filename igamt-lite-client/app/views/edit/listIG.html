@@ -40,7 +40,7 @@
 
                                 <div class="" style="min-height: 800px;">
 
-                                    <md-content class= "container">
+                                    <md-content class="container">
                                             <mdlist flex dnd-list="tmpIgs" class="container" style="padding: 39px; margin-top: 12px;">
                                                 <md-list-item ng-repeat="row in tmpIgs |filter:search" layout="row" dnd-draggable="row"
                                                               dnd-moved="tmpIgs.splice($index, 1);orderIgs(tmpIgs)"
@@ -65,7 +65,7 @@
                                                                           <i class="fa fa-calendar" aria-hidden="true"></i>
                                                                              Updated {{row.dateUpdated | date:dateFormat}}
                                                                             <span>,HL7 Version: {{row.profile.metaData.hl7Version}}</span>
-                                                                            <span ng-if="row.owner">, Author : <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(row.owner.email)}}"/> {{row.owner.fullname}}</span>
+                                                                            <span ng-if="row.owner">, Author : <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(row.owner.email)}}"/> {{row.owner.fullname}}</span>
                                                                             <span ng-if="row.metaData.orgName&&row.metaData.orgName!==''">, {{row.metaData.orgName}}</span>
                                                                 </div>
 
@@ -102,7 +102,7 @@
 
                                                         <div ng-show="showDetails">
                                                         <div flex class="row" style="margin-bottom: 10px;margin-left: auto;">
-                                                            <label style="color: black; " class="label-list" >Conformance Profiles:</label>
+                                                            <label style="color: black;" class="label-list" >Conformance Profiles:</label>
                                                             <span class="badge badge-cp-list"  ng-repeat="cp in row.profile.messages.children">{{cp.name}}-{{cp.identifier}}</span>
 
 
@@ -112,7 +112,7 @@
                                                         <div flex class="row" style="margin:0!important" ng-if="row.realUsers.length>0">
                                                             <label style="color: black;" class="label-list" >Participants:</label>                                                            <!--<md-chips flex="90" ng-model="row.realUsers"-->
 
-                                                                <span ng-repeat="user in row.realUsers"> <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(user.email)}}"/>
+                                                                <span ng-repeat="user in row.realUsers"> <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(user.email)}}"/>
                                                                     <span style="font-family: Source Sans Pro,Helvetica,Arial,sans-serif;
     font-style: italic;
     font-weight: bold;">{{user.fullname}}</span>

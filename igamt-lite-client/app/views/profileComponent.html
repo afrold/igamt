@@ -173,7 +173,7 @@
         </td>
         <td class="col-md-1">
         </td>
-        <td class="col-md-1 col-fixed-80 ">
+        <td class="col-md-1 col-fixed-80">
         </td>
         <td class="col-md-1" ng-style="commentWidth">
         </td>
@@ -242,7 +242,7 @@
         <div class="container" style="margin-bottom: 20px;margin-top: 10px">
             <div class="row" style="padding-top:10px">
                 <div class="col-md-6">
-                    <div class="btn-group btn-group-sm " data-toggle="buttons">
+                    <div class="btn-group btn-group-sm" data-toggle="buttons">
                         <label class="btn btn-raised btn-info btn-xs" ng-click="setVersion(vr)" ng-class="{ 'active':vr===version1}" ng-repeat="vr in versions">
                                                             <input type="radio" ng-value="vr" ng-model="version1">{{vr}}</input>
                                                         </label>
@@ -274,8 +274,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="field in fields | orderBy: 'position'| filter:searchF:strict" ">
-                                    <td><a class="pointer " ng-click="addField(field) "><i class="fa fa-plus fa-fw "></i></a>{{field.position}}.{{field.name}}
+                                <tr ng-repeat="field in fields | orderBy: 'position'| filter:searchF:strict"">
+                                    <td><a class="pointer" ng-click="addField(field)"><i class="fa fa-plus fa-fw"></i></a>{{field.position}}.{{field.name}}
                                     </td>
                                 </tr>
                             </tbody>
@@ -283,7 +283,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6 " ng-show="addedField.length> 0">
+                <div class="col-md-6" ng-show="addedField.length> 0">
                                     <div class="igl-table">
                                         <h5>Selected Fields</h5>
                                         <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">

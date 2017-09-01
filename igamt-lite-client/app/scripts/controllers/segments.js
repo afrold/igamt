@@ -778,9 +778,7 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
     $scope.findOptions = function(dtId) {
         var result = [];
         result.push('1');
-
-
-        if(!dtId) return result;
+        if(!dtId || !$rootScope.datatypesMap[dtId]) return result;
 
         if(_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT){
             return valueSetAllowedDT == $rootScope.datatypesMap[dtId].name;

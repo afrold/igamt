@@ -1778,7 +1778,6 @@ public class XMLExportTool {
   private Element serializeDatatypeForValidation(Datatype d, Map<String, Table> tablesMap,
       Map<String, Datatype> datatypesMap) {
 
-    try {
       System.out.println(d.getLabel());
       System.out.println(d.getHl7Version());
       Element elmDatatype = new Element("Datatype");
@@ -1871,9 +1870,7 @@ public class XMLExportTool {
         }
       }
       return elmDatatype;
-    } catch (NullPointerException e) {
-      return null;
-    }
+ 
   }
 
   private Element serializeSegment(Segment s, Map<String, Table> tablesMap,

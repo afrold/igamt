@@ -35,7 +35,7 @@
 
                         <span flex> <strong>HL7 Version:</strong> {{igdocument.profile.metaData.hl7Version}}</span>
                          <span flex ng-if="igdocument.owner" style="font-style: italic;">
-                             <span ng-if="igdocument.owner"> <strong>Author: </strong> <img style="max-width:30px !important;border-radius: 50% " src="{{generateHash(igdocument.owner.email)}}"/> {{igdocument.owner.fullname}}</span>
+                             <span ng-if="igdocument.owner"> <strong>Author: </strong> <img style="max-width:30px !important;border-radius: 50%" src="{{generateHash(igdocument.owner.email)}}"/> {{igdocument.owner.fullname}}</span>
                         </span>
                     </md-tooltip>
                     </span>
@@ -253,7 +253,7 @@
         </div>
 </div>
 
-<div ng-show="loadingIGDocument" style="text-align:center;padding-top:20px; padding-bottom:20px ">
+<div ng-show="loadingIGDocument" style="text-align:center;padding-top:20px; padding-bottom:20px">
     <div layout="row" layout-sm="column" layout-align="space-around">
         <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
     </div>
