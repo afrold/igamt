@@ -2956,7 +2956,7 @@ angular.module('igl').controller('AddHL7TableOpenCtrl', function ($scope, $mdDia
         }).then(function (response) {
             $scope.hl7Tables = [];
             angular.forEach(response.data, function (table) {
-                if (!$scope.isAlreadyIn(table)) {
+                if (!$scope.isAlreadyIn(table)&&!table.duplicated) {
                     $scope.hl7Tables.push(table);
                 }
             });

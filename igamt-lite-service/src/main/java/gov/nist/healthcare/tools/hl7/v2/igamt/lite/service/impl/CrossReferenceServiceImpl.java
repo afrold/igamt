@@ -7,9 +7,21 @@
  * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
  * used. This software can be redistributed and/or modified freely provided that any derivative
  * works bear some notice that they are derived from it, and any modified versions bear some notice
+ * that they have been modified. Abdelghani EL OUAKILI (NIST) Aug 28, 2017
+ */
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
+
+/**
+ * This software was developed at the National Institute of Standards and Technology by employees of
+ * the Federal Government in the course of their official duties. Pursuant to title 17 Section 105
+ * of the United States Code this software is not subject to copyright protection and is in the
+ * public domain. This is an experimental system. NIST assumes no responsibility whatsoever for its
+ * use by other parties, and makes no guarantees, expressed or implied, about its quality,
+ * reliability, or any other characteristic. We would appreciate acknowledgement if the software is
+ * used. This software can be redistributed and/or modified freely provided that any derivative
+ * works bear some notice that they are derived from it, and any modified versions bear some notice
  * that they have been modified. Abdelghani EL OUAKILI (NIST) Jun 6, 2017
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,13 +29,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -73,6 +80,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.S
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentPredicateFound;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.found.SegmentValueSetBindingFound;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CrossReferenceService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService;
@@ -91,20 +99,17 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.TableCro
 
 /**
  * @author Abdelghani EL Ouakili (NIST)
+ * 
  *
  */
-@RestController
-@RequestMapping("/crossRefs")
-
-public class CrossReferencesController {
+@Service
+public class CrossReferenceServiceImpl implements CrossReferenceService {
   @Autowired
   private IGDocumentService igDocumentService;
-  @Autowired
-  UserService userService;
+
   @Autowired
   ProfileService profileService;
-  @Autowired
-  AccountRepository accountRepository;
+
   @Autowired
   ExportConfigService exportConfigService;
   @Autowired
@@ -122,10 +127,10 @@ public class CrossReferencesController {
   @Autowired
   private DatatypeLibraryService datatypeLibrayService;
 
-  @RequestMapping(value = "/profilecomponent", method = RequestMethod.POST,
-      produces = "application/json")
+
+  @Override
   public ProfileComponentCrossReference findProfileComponentReferences(
-      @RequestBody ProfileComponentCrossRefWrapper wrapper) throws Exception {
+      ProfileComponentCrossRefWrapper wrapper) throws Exception {
     List<CompositeProfileFound> compositeProfileFounds = new ArrayList<CompositeProfileFound>();
     ProfileComponentCrossReference ret = new ProfileComponentCrossReference();
     IGDocument ig = igDocumentService.findById(wrapper.getIgDocumentId());
@@ -145,8 +150,8 @@ public class CrossReferencesController {
     return ret;
   }
 
-  @RequestMapping(value = "/message", method = RequestMethod.POST, produces = "application/json")
-  public MessageCrossReference findMessageReferences(@RequestBody MessageCrossRefWrapper wrapper)
+  @Override
+  public MessageCrossReference findMessageReferences(MessageCrossRefWrapper wrapper)
       throws Exception {
     List<ProfileComponentFound> profileComponentFounds = new ArrayList<ProfileComponentFound>();
     List<CompositeProfileFound> compositeProfileFounds = new ArrayList<CompositeProfileFound>();
@@ -199,8 +204,8 @@ public class CrossReferencesController {
     return ret;
   }
 
-  @RequestMapping(value = "/segment", method = RequestMethod.POST, produces = "application/json")
-  public SegmentCrossReference findSegmentReferences(@RequestBody SegmentCrossRefWrapper wrapper)
+  @Override
+  public SegmentCrossReference findSegmentReferences(SegmentCrossRefWrapper wrapper)
       throws Exception {
     List<MessageFound> messageFounds = new ArrayList<MessageFound>();
     List<ProfileComponentFound> profileComponentFounds = new ArrayList<ProfileComponentFound>();
@@ -308,9 +313,9 @@ public class CrossReferencesController {
     }
   }
 
-  @RequestMapping(value = "/datatype", method = RequestMethod.POST, produces = "application/json")
-  public DatatypeCrossReference findDatatypeCrossReference(
-      @RequestBody DatatypeCrossRefWrapper wrapper) throws Exception {
+  @Override
+  public DatatypeCrossReference findDatatypeCrossReference(DatatypeCrossRefWrapper wrapper)
+      throws Exception {
     List<FieldFound> fieldFounds = new ArrayList<FieldFound>();
     List<ComponentFound> componentFounds = new ArrayList<ComponentFound>();
     List<DynamicMappingFound> dynamicMappingFounds = new ArrayList<DynamicMappingFound>();;
@@ -572,10 +577,9 @@ public class CrossReferencesController {
     return ret;
   }
 
-  @RequestMapping(value = "/datatypeInLibrary", method = RequestMethod.POST,
-      produces = "application/json")
-  public DatatypeCrossReference findDatatypeCrossReferenceInLibrary(
-      @RequestBody DatatypeCrossRefWrapper wrapper) throws Exception {
+  @Override
+  public DatatypeCrossReference findDatatypeCrossReferenceInLibrary(DatatypeCrossRefWrapper wrapper)
+      throws Exception {
     List<FieldFound> fieldFounds = new ArrayList<FieldFound>();
     List<ComponentFound> componentFounds = new ArrayList<ComponentFound>();
     List<DynamicMappingFound> dynamicMappingFounds = new ArrayList<DynamicMappingFound>();;
@@ -620,9 +624,9 @@ public class CrossReferencesController {
     return ret;
   }
 
-  @RequestMapping(value = "/table", method = RequestMethod.POST, produces = "application/json")
-  public ValueSetCrossReference findValueSetsCrossReference(
-      @RequestBody TableCrossRefWrapper wrapper) throws Exception {
+  @Override
+  public ValueSetCrossReference findValueSetsCrossReference(TableCrossRefWrapper wrapper)
+      throws Exception {
     List<MessageValueSetBindingFound> messageValueSetBindingfounds =
         new ArrayList<MessageValueSetBindingFound>();
     List<SegmentValueSetBindingFound> segmentValueSetBindingfounds =
@@ -745,7 +749,10 @@ public class CrossReferencesController {
                 && !coconstraints.getThenMapData().get(thn.getId()).isEmpty()) {
               for (int i = 0; i < coconstraints.getThenMapData().get(thn.getId()).size(); i++) {
 
-                if (coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets() != null
+                if (coconstraints.getThenMapData() != null
+                    && coconstraints.getThenMapData().get(thn.getId()) != null
+                    && coconstraints.getThenMapData().get(thn.getId()).get(i) != null
+                    && coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets() != null
                     && !coconstraints.getThenMapData().get(thn.getId()).get(i).getValueSets()
                         .isEmpty()) {
                   for (int j = 0; j < coconstraints.getThenMapData().get(thn.getId()).get(i)
@@ -1074,3 +1081,5 @@ public class CrossReferencesController {
     return ret;
   }
 }
+
+

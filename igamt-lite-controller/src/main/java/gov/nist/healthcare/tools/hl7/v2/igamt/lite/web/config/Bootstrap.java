@@ -96,11 +96,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.ValueSetCrossReference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CrossReferenceService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DeltaService;
@@ -116,8 +118,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.VauleSetCorrection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.TableCrossRefWrapper;
 
 @Service
 public class Bootstrap implements InitializingBean {
@@ -176,6 +180,10 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   private DeltaService deltaService;
+  @Autowired
+  VauleSetCorrection valueSetCorrection;
+  @Autowired
+  CrossReferenceService crossReferences;
 
   /*
    * 
@@ -283,10 +291,13 @@ public class Bootstrap implements InitializingBean {
     // fixProfielComponentConfLength();
     // updateGroupName();
     //
+    //
+
     // 2.0.5-beta
-//    fixCodeSysLOINC();
+ //    fixCodeSysLOINC();
 //    fixAllConstraints();
-//    SetTablePreText();
+    // SetTablePreText();
+    // fixDuplicatedVS();
     fixCoConOBX2DT();
     
   }
@@ -333,11 +344,77 @@ public class Bootstrap implements InitializingBean {
       t.setDefPreText(t.getDescription());
       tableService.updateDescription(t.getId(), t.getDescription());
     }
-    // tableService.save(allPhinVades);
+  }
 
+
+  private void fixDuplicatedVS() throws Exception {
+
+    List<Table> unsedDuplicated = new ArrayList<Table>();
+
+    List<Table> all = new ArrayList<Table>();
+
+    HashMap<String, HashMap<String, List<Table>>> duplicated =
+        valueSetCorrection.groupAllDuplicated();
+    for (HashMap<String, List<Table>> s : duplicated.values()) {
+      for (List<Table> list : s.values()) {
+        all.addAll(list);
+      }
+    }
+    List<IGDocument> allIGs = documentService.findAll();
+    for (Table t : all) {
+      boolean used = false;
+      for (IGDocument d : allIGs) {
+        if (!findInIG(t, d.getId()).isEmpty()) {
+          used = true;
+          break;
+        }
+      }
+      if (!used) {
+        t.setDuplicated(true);
+        tableService.save(t);
+        unsedDuplicated.add(t);
+
+      }
+    }
+  }
+
+  private List<ValueSetCrossReference> findInAllIGs(String id) throws Exception {
+    Table t = tableService.findById(id);
+    List<ValueSetCrossReference> result = new ArrayList<ValueSetCrossReference>();
+    List<IGDocument> allIGs = documentService.findAll();
+    boolean used = false;
+    for (IGDocument d : allIGs) {
+      ValueSetCrossReference temp = findInIG(t, d.getId());
+      if (!temp.isEmpty()) {
+
+        result.add(temp);
+      }
+
+    }
+    System.out.println(result);
+    int i = result.size();
+    return result;
 
   }
 
+
+  private ValueSetCrossReference findInIG(Table t, String IGdocumentId) throws Exception {
+    TableCrossRefWrapper wrapper = new TableCrossRefWrapper();
+    wrapper.setAssertionId(getAssertionId(t));
+    wrapper.setIgDocumentId(IGdocumentId);
+    wrapper.setTableId(t.getId());
+    return crossReferences.findValueSetsCrossReference(wrapper);
+
+  }
+
+
+  private String getAssertionId(Table table) {
+    if (table.getHl7Version() != null && !table.getHl7Version().isEmpty()) {
+      return table.getBindingIdentifier() + "_" + table.getHl7Version().replace('.', '-');
+    } else {
+      return table.getBindingIdentifier();
+    }
+  }
 
   private void fixAllConstraints() {
     List<Message> messages = messageService.findAll();

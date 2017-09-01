@@ -19,6 +19,21 @@ import java.util.Date;
 public abstract class DataModel {
 
   protected Date dateUpdated;
+  protected boolean duplicated = false;
+
+  /**
+   * @return the duplicated
+   */
+  public boolean isDuplicated() {
+    return duplicated;
+  }
+
+  /**
+   * @param duplicated the duplicated to set
+   */
+  public void setDuplicated(boolean duplicated) {
+    this.duplicated = duplicated;
+  }
 
   protected String publicationDate;
   protected int publicationVersion = 0;
