@@ -44,17 +44,22 @@
                                         <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="name" ng-model="profileComponent.name" required ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
-                                        <label class="input-left igamt-label">Description</label>
+                                        <!--<label class="input-left igamt-label">Description</label>-->
 
-                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                            <input type="text" name="description" ng-model="profileComponent.description" ng-disabled="viewSettings.tableReadonly">
-                                        </md-input-container>
-                                        <label class="input-left igamt-label">Comment</label>
+                                        <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm>-->
+                                            <!--<input type="text" name="description" ng-model="profileComponent.description" ng-disabled="viewSettings.tableReadonly">-->
+                                        <!--</md-input-container>-->
 
-                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                            <textarea rows="3"  name="comment" id="comment" ng-model="profileComponent.comment" ng-disabled="viewSettings.tableReadonly"/>
-                                        </md-input-container>
-                                    </md-content>
+                                        <label class="input-left igamt-label" ng-show="!viewSettings.tableReadonly">Author Notes</label>
+
+                                        <div ng-if="!viewSettings.tableReadonly">
+                                            <textarea froala="froalaEditorOptions" ng-model="profileComponent.authorNotes" name="text" id="authorNotes"></textarea>
+                                        </div>
+                                        <div ng-if="viewSettings.tableReadonly">
+                                            <div class="fr-view">
+                                                <div froala-view="profileComponent.authorNotes"></div>
+                                            </div>
+                                        </div>
                                 </div>
                             </md-tab-body>
                         </md-tab>

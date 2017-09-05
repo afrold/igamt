@@ -1330,14 +1330,15 @@ angular
 
                                 $rootScope.openConfirmLeaveDlg().then(function(result) {
                                     if(result&&result!=='cancel') {
+                                      //  $rootScope.createValueSet($rootScope.igdocument.profile.tableLibrary);
 
                                         CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
                                     }
-
                                 });
                             } else {
+                               // $rootScope.createValueSet($rootScope.igdocument.profile.tableLibrary);
 
-                                CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                             CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
 
                             }
 
@@ -1950,6 +1951,20 @@ angular
                     });
                     modalInstance.then(function() {}, function() {});
                 };
+                $rootScope.createValueSet=function(selectedTableLibary) {
+                    var modalInstance = $mdDialog.show({
+                        templateUrl: 'CreateValueSet.html',
+                        controller: 'CreateValueSet',
+                        locals: {
+                            selectedTableLibary: selectedTableLibary
+
+                        }
+                    });
+                    modalInstance.then(function() {
+
+                    });
+                };
+
 
                 $rootScope.addPHINVADSTables = function(selectedTableLibary) {
 
@@ -3920,7 +3935,6 @@ angular.module('igl').controller('AddDatatypesFromLibtoLib',
             }
         };
 
-
         $scope.ok = function () {
             $mdDialog.hide($scope.selectedDatatypes);
         };
@@ -3929,3 +3943,56 @@ angular.module('igl').controller('AddDatatypesFromLibtoLib',
             $mdDialog.hide('cancel');
         };
     });
+
+angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$mdDialog','selectedTableLibary','TableService', function ($rootScope, $scope, $mdDialog,selectedTableLibary,TableService) {
+
+    $scope.newTable={};
+    $scope.newTable.shareParticipantIds = [];
+    $scope.newTable.scope = selectedTableLibary.scope;
+    $scope.newTable.id = null;
+    $scope.newTable.libIds = [];
+    $scope.newTable.codes = [];
+    $scope.newTable.newTable = true;
+
+    $scope.cancel = function () {
+        $mdDialog.hide('cancel');
+    };
+
+
+    $scope.add = function () {
+
+
+        // TableService.save(newTable).then(function (result) {
+        //     newTable = result;
+        //     var newLink = {};
+        //     newLink.bindingIdentifier = newTable.bindingIdentifier;
+        //     newLink.id = newTable.id;
+        //
+        //     TableLibrarySvc.addChild(tableLibrary.id, newLink).then(function (link) {
+        //         tableLibrary.children.splice(0, 0, newLink);
+        //         $rootScope.tables.splice(0, 0, newTable);
+        //         $rootScope.table = newTable;
+        //         $rootScope.tablesMap[newTable.id] = newTable;
+        //
+        //         $rootScope.codeSystems = [];
+        //
+        //         if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+        //             $rootScope.filteredTablesList.push(newTable);
+        //             $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+        //         }
+        //         $mdDialog.hide($scope.clonedIgDocument);
+        //         $rootScope.$broadcast('event:openTable', newTable);
+        //     }, function (error) {
+        //         $rootScope.msg().text = error.data.text;
+        //         $rootScope.msg().type = error.data.type;
+        //         $rootScope.msg().show = true;
+        //     });
+        //
+        // }, function (error) {
+        //     $rootScope.msg().text = error.data.text;
+        //     $rootScope.msg().type = error.data.type;
+        //     $rootScope.msg().show = true;
+        // });
+
+    };
+}]);

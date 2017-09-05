@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
@@ -114,36 +113,50 @@ public class MessageServiceImpl implements MessageService {
     return messageRepository.updateDate(id, date);
   }
 
-@Override
-public List<Message> findByNameAndScope(String name, String scope) {
-	return messageRepository.findByNameAndScope(name, scope);
-}
+  @Override
+  public List<Message> findByNameAndScope(String name, String scope) {
+    return messageRepository.findByNameAndScope(name, scope);
+  }
 
-@Override
-public List<Message> findByScope(String scope) {
-	return messageRepository.findByScope(scope);
-}
+  @Override
+  public List<Message> findByScope(String scope) {
+    return messageRepository.findByScope(scope);
+  }
 
-@Override
-public Message findByNameAndVersionAndScope(String name, String hl7Version, String scope) {
-	return messageRepository.findByNameAndVersionAndScope(name, hl7Version, scope);
-}
+  @Override
+  public Message findByNameAndVersionAndScope(String name, String hl7Version, String scope) {
+    return messageRepository.findByNameAndVersionAndScope(name, hl7Version, scope);
+  }
 
-@Override
-public List<Message> findByScopeAndVersion(String scope, String hl7Version) {
-	return messageRepository.findByScopeAndVersion(scope,hl7Version);
-}
+  @Override
+  public List<Message> findByScopeAndVersion(String scope, String hl7Version) {
+    return messageRepository.findByScopeAndVersion(scope, hl7Version);
+  }
 
-@Override
-public Message findByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
-    String hl7Version, String scope) {
-  return messageRepository.findByMessageTypeAndEventAndVersionAndScope(messageType, event,
-      hl7Version, scope);
-}
+  @Override
+  public Message findByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
+      String hl7Version, String scope) {
+    return messageRepository.findByMessageTypeAndEventAndVersionAndScope(messageType, event,
+        hl7Version, scope);
+  }
 
-  @Override public List<Message> findAllByMessageTypeAndEventAndVersionAndScope(String messageType,
+  @Override
+  public List<Message> findAllByMessageTypeAndEventAndVersionAndScope(String messageType,
       String event, String hl7Version, String scope) {
     return messageRepository.findAllByMessageTypeAndEventAndVersionAndScope(messageType, event,
         hl7Version, scope);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService#updateAttribute(java.lang.
+   * String, java.lang.String, java.lang.Object)
+   */
+  @Override
+  public void updateAttribute(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    messageRepository.updateAttribute(id, attributeName, value);
   }
 }

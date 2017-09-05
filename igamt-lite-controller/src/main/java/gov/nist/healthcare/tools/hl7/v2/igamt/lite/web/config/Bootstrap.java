@@ -40,9 +40,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
@@ -54,6 +56,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -71,6 +74,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
@@ -96,13 +100,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ValueSetData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.crossreference.ValueSetCrossReference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CrossReferenceService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DeltaService;
@@ -118,10 +121,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.VauleSetCorrection;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DataCorrectionSectionPosition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.TableCrossRefWrapper;
 
 @Service
 public class Bootstrap implements InitializingBean {
@@ -171,7 +172,9 @@ public class Bootstrap implements InitializingBean {
   private ProfileComponentLibraryService profileComponentLibraryService;
   @Autowired
   private ProfileComponentService profileComponentService;
+  @Autowired
 
+  private CompositeProfileStructureService compositeProfileStructureService;
   @Autowired
   private TableLibraryRepository tableLibraryRepository;
 
@@ -180,10 +183,6 @@ public class Bootstrap implements InitializingBean {
 
   @Autowired
   private DeltaService deltaService;
-  @Autowired
-  VauleSetCorrection valueSetCorrection;
-  @Autowired
-  CrossReferenceService crossReferences;
 
   /*
    * 
@@ -291,179 +290,108 @@ public class Bootstrap implements InitializingBean {
     // fixProfielComponentConfLength();
     // updateGroupName();
     //
-    //
-
     // 2.0.5-beta
- //    fixCodeSysLOINC();
-//    fixAllConstraints();
+    // fixCodeSysLOINC();
+    // fixAllConstraints();
     // SetTablePreText();
-    // fixDuplicatedVS();
-
-    fixCoConstraintsDTVS();
-    
-  }
-
-
-  private void fixCoConstraintsDTVS() {
-    List<IGDocument> allIGs = documentService.findAll();
-    int count = 0;
-    for(IGDocument ig:allIGs){
-      System.out.println("-----------" + count++);
-      Profile p = ig.getProfile();
-      
-      DatatypeLibrary dtLib = p.getDatatypeLibrary();
-      TableLibrary tLib = p.getTableLibrary();
-      SegmentLibrary sLib = p.getSegmentLibrary();
-      
-      for(SegmentLink sl:sLib.getChildren()){
-       if(sl != null && sl.getId() != null){
-         boolean flag = false;
-         Segment seg = segmentService.findById(sl.getId());
-         if(seg != null && seg.getName().equals("OBX")){
-           if(seg.getCoConstraintsTable() != null){
-
-             CoConstraintsTable coConstraintsTable = seg.getCoConstraintsTable();
-             List<CoConstraintColumnDefinition> thenDefinitions = coConstraintsTable.getThenColumnDefinitionList();
-             for(CoConstraintColumnDefinition thenDefinition : thenDefinitions){
-               if(thenDefinition != null){
-                 Map<String, List<CoConstraintTHENColumnData>> thenMapData = coConstraintsTable.getThenMapData();
-                 if(thenMapData != null){
-                   List<CoConstraintTHENColumnData> coConstraintTHENColumnData = thenMapData.get(thenDefinition.getId());
-                   
-                   for(CoConstraintTHENColumnData thenData:coConstraintTHENColumnData){
-                     
-                     if(thenData != null){
-                       if(thenData.getDatatypeId() != null){
-                         DatatypeLink dl = dtLib.findOne(thenData.getDatatypeId());
-                         
-                         if(dl == null) {
-                           System.out.println("==================>" + "found missing DT");
-                           thenData.setDatatypeId(null);
-                           
-                           flag = true;
-                           
-                         }else {
-                           System.out.println("==================>" + "Good DT");
-                         }
-                       }
-                       
-                       if(thenData.getValueSets() != null){
-                         List<ValueSetData> toBeDeletedVSDataList = new ArrayList<ValueSetData>();
-                         for(ValueSetData vsData : thenData.getValueSets()){
-                           if(vsData != null){
-                             if(vsData.getTableId() != null){
-                               TableLink tl = tLib.findOneTableById(vsData.getTableId());
-                               
-                               if(tl == null) {
-                                 System.out.println("==================>" + "found missing VS");
-                                 toBeDeletedVSDataList.add(vsData);
-                                 flag = true;
-                               }else {
-                                 System.out.println("==================>" + "Good VS");
-                               }
-                             }
-                           }
-                         }
-                         
-                         
-                         for(ValueSetData toBeDeletedVSData : toBeDeletedVSDataList){
-                           thenData.getValueSets().remove(toBeDeletedVSData);
-                         }
-                         
-                         thenData.getValueSets().remove(null);
-                       }                       
-                     }
-                   }
-                 }
-               }
-             }
-           }
-           
-           
-           if(flag) segmentService.save(seg);
-         } 
-       }
-      }
-    }
+    // AddCodeSystemtoAllTables();
+    // initializeAttributes();
+    changeCommentToAuthorNotes();
   }
 
   private void SetTablePreText() {
-    List<Table> allPhinVades = tableService.findAll();
-    for (Table t : allPhinVades) {
+    List<Table> all = tableService.findAll();
+    for (Table t : all) {
       t.setDefPreText(t.getDescription());
       tableService.updateDescription(t.getId(), t.getDescription());
     }
+    // tableService.save(allPhinVades);
   }
 
-
-  private void fixDuplicatedVS() throws Exception {
-
-    List<Table> unsedDuplicated = new ArrayList<Table>();
-
-    List<Table> all = new ArrayList<Table>();
-
-    HashMap<String, HashMap<String, List<Table>>> duplicated =
-        valueSetCorrection.groupAllDuplicated();
-    for (HashMap<String, List<Table>> s : duplicated.values()) {
-      for (List<Table> list : s.values()) {
-        all.addAll(list);
+  private void changeCommentToAuthorNotes() {
+    // for messages
+    List<Message> messages = messageService.findByScope(SCOPE.USER.toString());
+    for (Message m : messages) {
+      if (m.getComment() != null) {
+        messageService.updateAttribute(m.getId(), "authorNotes", m.getComment());
       }
     }
-    List<IGDocument> allIGs = documentService.findAll();
-    for (Table t : all) {
-      boolean used = false;
-      for (IGDocument d : allIGs) {
-        if (!findInIG(t, d.getId()).isEmpty()) {
-          used = true;
-          break;
-        }
+    // for Segment
+    List<Segment> segments = segmentService.findByScope(SCOPE.USER.toString());
+    for (Segment s : segments) {
+      if (s.getComment() != null) {
+        segmentService.updateAttribute(s.getId(), "authorNotes", s.getComment());
       }
-      if (!used) {
-        t.setDuplicated(true);
-        tableService.save(t);
-        unsedDuplicated.add(t);
+    }
+    // for Datatypes
+    List<Datatype> datatypes = datatypeService.findAll();
+    for (Datatype d : datatypes) {
+      if (d.getStatus().equals(STATUS.UNPUBLISHED) && d.getComment() != null) {
+        datatypeService.updateAttribute(d.getId(), "authorNotes", d.getComment());
+      }
+    }
+    // profile Components
+    List<ProfileComponent> profileComponents = profileComponentService.findAll();
+    for (ProfileComponent pc : profileComponents) {
 
+      if (pc.getComment() != null) {
+        profileComponentService.updateAttribute(pc.getId(), "authorNotes", pc.getComment());
+      }
+    }
+    List<CompositeProfileStructure> compositesPCs = compositeProfileStructureService.findAll();
+    for (CompositeProfileStructure c : compositesPCs) {
+      if (c.getComment() != null) {
+
+        compositeProfileStructureService.updateAttribute(c.getId(), "authorNotes", c.getComment());
       }
     }
   }
 
-  private List<ValueSetCrossReference> findInAllIGs(String id) throws Exception {
-    Table t = tableService.findById(id);
-    List<ValueSetCrossReference> result = new ArrayList<ValueSetCrossReference>();
-    List<IGDocument> allIGs = documentService.findAll();
-    boolean used = false;
-    for (IGDocument d : allIGs) {
-      ValueSetCrossReference temp = findInIG(t, d.getId());
-      if (!temp.isEmpty()) {
+  private void initializeAttributes() {
 
-        result.add(temp);
+    List<Table> allPH = tableService.findByScope(SCOPE.PHINVADS.toString());
+    for (Table t : allPH) {
+
+      tableService.updateAttributes(t.getId(), "stability", Stability.fromValue("Undefined"));
+      tableService.updateAttributes(t.getId(), "contentDefinition",
+          ContentDefinition.fromValue("Undefined"));
+      tableService.updateAttributes(t.getId(), "extensibility",
+          Extensibility.fromValue("Undefined"));
+
+    }
+    List<Table> allHl7 = tableService.findByScope(SCOPE.HL7STANDARD.toString());
+    for (Table t : allHl7) {
+
+      tableService.updateAttributes(t.getId(), "stability", Stability.fromValue("Undefined"));
+      tableService.updateAttributes(t.getId(), "contentDefinition",
+          ContentDefinition.fromValue("Undefined"));
+      tableService.updateAttributes(t.getId(), "extensibility",
+          Extensibility.fromValue("Undefined"));
+
+    }
+
+  }
+
+  private void AddCodeSystemtoAllTables() {
+    List<Table> allTables = tableService.findAll();
+    for (Table t : allTables) {
+      AddCodeSystemToTable(t);
+    }
+  }
+
+  private void AddCodeSystemToTable(Table t) {
+    Set<String> codesSystemtoAdd = new HashSet<String>();
+
+    for (Code c : t.getCodes()) {
+      if (c.getCodeSystem() != null && !c.getCodeSystem().isEmpty()) {
+        codesSystemtoAdd.add(c.getCodeSystem());
+
       }
-
     }
-    System.out.println(result);
-    int i = result.size();
-    return result;
-
+    tableService.updateCodeSystem(t.getId(), codesSystemtoAdd);
   }
 
 
-  private ValueSetCrossReference findInIG(Table t, String IGdocumentId) throws Exception {
-    TableCrossRefWrapper wrapper = new TableCrossRefWrapper();
-    wrapper.setAssertionId(getAssertionId(t));
-    wrapper.setIgDocumentId(IGdocumentId);
-    wrapper.setTableId(t.getId());
-    return crossReferences.findValueSetsCrossReference(wrapper);
-
-  }
-
-
-  private String getAssertionId(Table table) {
-    if (table.getHl7Version() != null && !table.getHl7Version().isEmpty()) {
-      return table.getBindingIdentifier() + "_" + table.getHl7Version().replace('.', '-');
-    } else {
-      return table.getBindingIdentifier();
-    }
-  }
 
   private void fixAllConstraints() {
     List<Message> messages = messageService.findAll();

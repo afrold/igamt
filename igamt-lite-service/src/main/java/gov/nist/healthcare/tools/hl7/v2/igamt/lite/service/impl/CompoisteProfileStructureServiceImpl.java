@@ -12,6 +12,8 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +47,33 @@ public class CompoisteProfileStructureServiceImpl implements CompositeProfileStr
   public void delete(String id) {
     compositeProfileRepository.delete(id);
 
+  }
+
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService#
+   * updateAttribute(java.lang.String, java.lang.String, java.lang.Object)
+   */
+  @Override
+  public void updateAttribute(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    compositeProfileRepository.updateAttribute(id, attributeName, value);
+  }
+
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService#findAll(
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure)
+   */
+  @Override
+  public List<CompositeProfileStructure> findAll() {
+    // TODO Auto-generated method stub
+    return compositeProfileRepository.findAll();
   }
 
 }

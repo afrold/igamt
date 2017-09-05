@@ -203,21 +203,21 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
     return result;
   }
 
-@Override
-public List<Datatype> findByScopeAndVersion(String scope, String hl7Version) {
-	Criteria where = Criteria.where("hl7Version").is(hl7Version)
-        .andOperator(Criteria.where("scope").is(scope));
+  @Override
+  public List<Datatype> findByScopeAndVersion(String scope, String hl7Version) {
+    Criteria where =
+        Criteria.where("hl7Version").is(hl7Version).andOperator(Criteria.where("scope").is(scope));
     Query qry = Query.query(where);
     return mongo.find(qry, Datatype.class);
-}
+  }
 
-@Override
-public Datatype findOneByNameAndVersionAndScope(String name, String version, String scope) {
-	Criteria where = Criteria.where("name").is(name).andOperator(
+  @Override
+  public Datatype findOneByNameAndVersionAndScope(String name, String version, String scope) {
+    Criteria where = Criteria.where("name").is(name).andOperator(
         Criteria.where("hl7Version").is(version).andOperator(Criteria.where("scope").is(scope)));
-	Query query = Query.query(where);
-	return mongo.findOne(query, Datatype.class);
-}
+    Query query = Query.query(where);
+    return mongo.findOne(query, Datatype.class);
+  }
 
   // Query set4Brevis(Query qry) {
   // qry.fields().include("_id");
@@ -230,4 +230,16 @@ public Datatype findOneByNameAndVersionAndScope(String name, String version, Str
   // qry.fields().include("ext");
   // return qry;
   // }
+
+  @Override
+  public void updateAttribute(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    query.fields().include(attributeName);
+    Update update = new Update();
+    update.set(attributeName, value);
+    mongo.updateFirst(query, update, Datatype.class);
+
+  }
 }

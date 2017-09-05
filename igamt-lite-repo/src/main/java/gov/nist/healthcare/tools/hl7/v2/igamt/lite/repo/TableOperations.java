@@ -48,6 +48,11 @@ public interface TableOperations {
 
   public void updateDescription(String id, String description);
 
+  public void updateCodeSystem(String id, Set<String> codesSystemtoAdd);
+
+  public void updateAttributes(String id, String attributeName, Object value);
+
+
   Table findOneShortById(String id);
 
   List<Table> findByScope(String scope);
@@ -55,5 +60,6 @@ public interface TableOperations {
   public List<Table> findByBindingIdentifierAndScope(String bindingIdentifier, String scope);
 
   public Table findOneByScopeAndBindingIdentifier(String scope, String bindingIdentifier);
+
 
 }

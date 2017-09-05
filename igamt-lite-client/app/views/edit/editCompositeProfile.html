@@ -148,12 +148,12 @@
                                             </div>
                                         </md-input-container>
 
-                                        <label class="input-left igamt-label">Description</label>
+                                        <!--<label class="input-left igamt-label">Description</label>-->
 
-                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
-                                            <input  ng-disabled="viewSettings.tableReadonly" type="text" name="description" ng-change="setDirty()" ng-model="compositeProfileStructure.description">
+                                        <!--<md-input-container class=" md-block igamt-input-block" flex-gt-sm>-->
+                                            <!--<input  ng-disabled="viewSettings.tableReadonly" type="text" name="description" ng-change="setDirty()" ng-model="compositeProfileStructure.description">-->
 
-                                        </md-input-container>
+                                        <!--</md-input-container>-->
 
                                         <label class="input-left igamt-label"> Type*</label>
 
@@ -184,27 +184,40 @@
                                         </md-input-container>
 
 
-                                        <label class="input-left igamt-label">Comment</label>
-                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm>
-                                            <textarea rows="3" ng-change="setDirty()" name="comment" id="comment" ng-model="compositeProfileStructure.comment" />
-                                        </md-input-container>
+                                        <!--<label class="input-left igamt-label">Comment</label>-->
+                                        <!--<md-input-container class=" md-block igamt-input-block" flex-gt-sm>-->
+                                            <!--<textarea rows="3" ng-change="setDirty()" name="comment" id="comment" ng-model="compositeProfileStructure.comment" />-->
+                                        <!--</md-input-container>-->
 
                                         <label  class="input-left igamt-label">Usage Note </label>
 
-                                        <md-input-container class=" md-block igamt-input-block" flex-gt-sm style="margin-top:20px">
-
-                                            <!--<textarea style="margin-top:40px" froala="froalaEditorOptions" md-select-on-focus ng-model="compositeProfileStructure.usageNote" name="usageNote" id="usageNote" ng-change="setDirty()"></textarea>-->
-
+                                        <div ng-if="!viewSettings.tableReadonly">
+                                            <textarea froala="froalaEditorOptions" ng-model="compositeProfileStructure.usageNote" name="text" id="usageNote"></textarea>
+                                        </div>
+                                        <div ng-if="viewSettings.tableReadonly">
                                             <div class="fr-view">
                                                 <div froala-view="compositeProfileStructure.usageNote"></div>
                                             </div>
-                                        </md-input-container>
+                                        </div>
 
                                         <label ng-show="compositeProfile.hl7Section != null && compositeProfile.hl7Section != ''" class="input-left igamt-label">HL7 Section</label>
 
                                         <md-input-container class=" md-block igamt-input-block" flex-gt-sm ng-show="compositeProfile.hl7Section != null && compositeProfile.hl7Section != ''">
                                             <input type="text" disabled name="hl7Section" id="hl7Section" ng-model="compositeProfile.hl7Section">
                                         </md-input-container>
+
+                                        <label class="input-left igamt-label" ng-show="!viewSettings.tableReadonly">Author Notes</label>
+
+                                        <div ng-if="!viewSettings.tableReadonly">
+                                            <textarea froala="froalaEditorOptions" ng-model="compositeProfileStructure.authorNotes" name="text" id="authorNotes"></textarea>
+                                        </div>
+                                        <div ng-if="viewSettings.tableReadonly">
+                                            <div class="fr-view">
+                                                <div froala-view="compositeProfileStructure.authorNotes"></div>
+                                            </div>
+                                        </div>
+
+
 
                                     </md-content>
                                 </div>

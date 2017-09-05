@@ -200,7 +200,8 @@ public class DatatypeServiceImpl implements DatatypeService {
 
     return null;
   }
-  
+
+  @Override
   public Datatype findOneByNameAndVersionAndScope(String name, String version, String scope) {
     return datatypeRepository.findOneByNameAndVersionAndScope(name, version, scope);
   }
@@ -240,13 +241,26 @@ public class DatatypeServiceImpl implements DatatypeService {
     return datatypeRepository.findByScopeAndVersionAndParentVersion(scope, hl7Version, id);
   }
 
-@Override
-public List<Datatype> findByNameAndScope(String name, String scope) {
-	return datatypeRepository.findByNameAndScope(name, scope);
-}
+  @Override
+  public List<Datatype> findByNameAndScope(String name, String scope) {
+    return datatypeRepository.findByNameAndScope(name, scope);
+  }
 
-@Override
-public List<Datatype> findByScopeAndVersion(String scope, String hl7Version) {
-	return datatypeRepository.findByScopeAndVersion(scope, hl7Version);
-}
+  @Override
+  public List<Datatype> findByScopeAndVersion(String scope, String hl7Version) {
+    return datatypeRepository.findByScopeAndVersion(scope, hl7Version);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService#updateAttribute(java.lang.
+   * String, java.lang.String, java.lang.Object)
+   */
+  @Override
+  public void updateAttribute(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    datatypeRepository.updateAttribute(id, attributeName, value);
+  }
 }

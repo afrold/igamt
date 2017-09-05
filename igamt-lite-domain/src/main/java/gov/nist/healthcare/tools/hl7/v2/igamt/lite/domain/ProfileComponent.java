@@ -30,6 +30,22 @@ public class ProfileComponent
   private List<SubProfileComponent> children = new ArrayList<SubProfileComponent>();
   private String type;
   private SCOPE scope;
+  protected String authorNotes = "";
+
+
+  /**
+   * @return the authorNotes
+   */
+  public String getAuthorNotes() {
+    return authorNotes;
+  }
+
+  /**
+   * @param authorNotes the authorNotes to set
+   */
+  public void setAuthorNotes(String authorNotes) {
+    this.authorNotes = authorNotes;
+  }
 
 
 
