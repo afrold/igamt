@@ -206,7 +206,7 @@
 
 
 
-                <div layout="row" layout-align="start center ">
+                <div layout="row" layout-align="start center">
                     <label style="color:black !important; margin-right:8px;">Select HL7 version:</label>
 
 
@@ -241,7 +241,7 @@
                                     <th flex="20"></th>
                                 </tr>
                             </thead>
-                            <tbody style="display: block; max-height:400px; overflow-y:scroll ">
+                            <tbody style="display: block; max-height:400px; overflow-y:scroll">
                                 <tr layout="row" ng-repeat="table in hl7Tables | orderBy: 'bindingIdentifier' | filter:search:strict">
                                     <td flex="40">{{table.bindingIdentifier}}</td>
                                     <td flex="40">{{table.name}}</td>
@@ -271,7 +271,7 @@
                                     <td>{{table.name}}</td>
                                     <td>{{table.hl7Version}}</td>
                                     <td>{{table.oid}}</td>
-                                    <td style="cursor:pointer" title="Delete Value Set "><a class="pointer" ng-click="deleteTable(table)"><i
+                                    <td style="cursor:pointer" title="Delete Value Set"><a class="pointer" ng-click="deleteTable(table)"><i
                                             class="fa fa-times fa-fw"></i></a></td>
                                 </tr>
                             </tbody>
@@ -374,7 +374,7 @@
                                     <th flex="10">Actions</th>
                                 </tr>
                                 </thead>
-                                <tbody style="display: block !important; max-height: 350px !important; overflow-y: scroll ">
+                                <tbody style="display: block !important; max-height: 350px !important; overflow-y: scroll">
                                 <tr ng-repeat="table in tablestoAdd| filter:searchText" layout="row" layout-align="start start">
                                     <td flex="30">
                                         {{table.bindingIdentifier}}
@@ -415,7 +415,7 @@
                                     <th flex="10">Actions</th>
                                 </tr>
                                 </thead>
-                                <tbody style="display: block; max-height: 350px !important; overflow-y: scroll ">
+                                <tbody style="display: block; max-height: 350px !important; overflow-y: scroll">
                                 <tr ng-repeat="table in selectedTables|filter:searchText2" layout="row" layout-align="start start" >
                                     <td flex="30">
                                         {{table.bindingIdentifier}}
@@ -504,7 +504,7 @@
                                 </tr>
                             </table>
 
-                            <div ng-show="!phinvadsTables || phinvadsTables.length === 0 ">
+                            <div ng-show="!phinvadsTables || phinvadsTables.length === 0">
                                 No table found.
                             </div>
                         </div>
@@ -542,7 +542,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <div ng-show="!selectedTables || selectedTables.length === 0 ">
+                            <div ng-show="!selectedTables || selectedTables.length === 0">
                                 No table selected.
                             </div>
                         </div>
@@ -556,7 +556,7 @@
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrlMd.html ">
+<script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrlMd.html">
     <md-dialog aria-label="confirmation">
         <form ng-cloak>
             <md-toolbar>
@@ -571,7 +571,7 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}} " ? This operation
+                    <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}}" ? This operation
                         is irreversible
                     </p>                    </div>
             </md-dialog-content>
@@ -582,49 +582,49 @@
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html ">
-    <div class="modal-header ">
-        <h3 class="modal-title ">Close Confirmation
+<script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Close Confirmation
         </h3>
     </div>
-    <div class="modal-body ">
+    <div class="modal-body">
         <p>You currently have unsaved changes. Are you sure you want to close the IG Document ? All unsaved changes will be lost</p>
     </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="discardChangesAndClose() "><span><i
-                class="fa fa-times-circle fa-fw ">&nbsp; </i>Discard Changes</span>
+        <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
+                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
         </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-disabled="loading " ng-click="saveChangesAndClose() "><span><i
-                class="fa fa-check-circle fa-fw ">&nbsp; </i>Apply Changes</span>
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
+                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
         </button>
-        <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
         </div>
     </div>
 </script>
-<script type="text/ng-template" id="ConfirmIGDocumentOpenCtrl.html ">
-    <div class="modal-header ">
-        <h3 class="modal-title ">Open Confirmation
+<script type="text/ng-template" id="ConfirmIGDocumentOpenCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Open Confirmation
         </h3>
     </div>
-    <div class="modal-body ">
+    <div class="modal-body">
         <p>You currently have an open IG document with unsaved changes. Are you sure you want to open the IG document ? All unsaved changes will be lost</p>
     </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="discardChangesAndOpen() "><span><i
-                class="fa fa-times-circle fa-fw ">&nbsp; </i>Discard Changes</span>
+        <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
+                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
         </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-disabled="loading " ng-click="saveChangesAndOpen() "><span><i
-                class="fa fa-check-circle fa-fw ">&nbsp; </i>Apply Changes</span>
+        <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
+                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
         </button>
-        <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
         </div>
     </div>
 </script>
@@ -643,11 +643,11 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <div ng-show="!editorTarget.disabled ">
-                        <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus ng-model="editorTarget.obj[editorTarget.key] " id="globalEditor " name="content "></textarea>
+                    <div ng-show="!editorTarget.disabled">
+                        <textarea rows="10" froala="froalaEditorOptions" style="width:100%;" autofocus ng-model="editorTarget.obj[editorTarget.key]" id="globalEditor" name="content"></textarea>
                       </div>
-                    <div ng-show="editorTarget.disabled " style="width:100%; ">
-                        <div froala-view="editorTarget.obj[editorTarget.key] "></div>
+                    <div ng-show="editorTarget.disabled" style="width:100%;">
+                        <div froala-view="editorTarget.obj[editorTarget.key]"></div>
                     </div>
 
                 </div>
@@ -660,18 +660,18 @@
     </md-dialog>
 
 </script>
-<script type="text/ng-template" id="InputTextCtrl.html ">
+<script type="text/ng-template" id="InputTextCtrl.html">
 
     <md-dialog aria-label="InputTextCtrl">
         <form ng-cloak>
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2 ng-show="editorTarget.obj.type==='segmentRef' ">
+                    <h2 ng-show="editorTarget.obj.type==='segmentRef'">
                         {{editorTarget.obj.position}}.{{segmentsMap[editorTarget.obj.ref].name}}:{{segmentsMap[editorTarget.obj.ref].description}}</h2>
 
-                    <h2 ng-show="editorTarget.obj.type==='group' ">{{editorTarget.obj.position}}.{{editorTarget.obj.name}}</h2>
+                    <h2 ng-show="editorTarget.obj.type==='group'">{{editorTarget.obj.position}}.{{editorTarget.obj.name}}</h2>
 
-                    <h2 ng-show="editorTarget.obj.type !='segmentRef' && editorTarget.obj.type !='group' " class="modal-title ">
+                    <h2 ng-show="editorTarget.obj.type !='segmentRef' && editorTarget.obj.type !='group'" class="modal-title">
                         {{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}
                     </h2> {{::editorTarget.obj.position}}.{{::segmentsMap[editorTarget.obj.ref].name}}:{{::segmentsMap[editorTarget.obj.ref].description}}
                     </h2>
@@ -684,7 +684,7 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <textarea rows="10 " type="text " ng-disabled="editorTarget.disabled " style="width:100%; " autofocus name="inputEditor " class="form-control " ng-change="recordChanged() " ng-model="editorTarget.obj[editorTarget.key] "></textarea>
+                    <textarea rows="10" type="text" ng-disabled="editorTarget.disabled" style="width:100%;" autofocus name="inputEditor" class="form-control" ng-change="recordChanged()" ng-model="editorTarget.obj[editorTarget.key]"></textarea>
 
 
                 </div>
@@ -697,10 +697,10 @@
     </md-dialog>
 </script>
 <script type="text/ng-template" id="EditUserData.html">
-    <div class="modal-header ">
+    <div class="modal-header">
         <h3>{{definition.title}}</h3>
     </div>
-    <div class="modal-body ">
+    <div class="modal-body">
         <form class="form-horizontal" novalidate>
             <div class="row">
                 <div class="col-md-12">
@@ -711,8 +711,8 @@
     </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span></button>
-        <button class="btn btn-raised btn-primary btn-sm" ng-show="!disabled" ng-click="close()"><span><i class="fa fa-floppy-o fa-fw ">&nbsp; </i>Save</span></button>
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
+        <button class="btn btn-raised btn-primary btn-sm" ng-show="!disabled" ng-click="close()"><span><i class="fa fa-floppy-o fa-fw">&nbsp; </i>Save</span></button>
     </div>
 </script>
 
@@ -734,10 +734,10 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <div class="col-md-12 ">
-                        <textarea rows="10 " type="text " ng-disabled="disabled" style="width:100%;" autofocus name="inputEditor" class="form-control" ng-model="descriptionText"></textarea>
+                    <div class="col-md-12">
+                        <textarea rows="10" type="text" ng-disabled="disabled" style="width:100%;" autofocus name="inputEditor" class="form-control" ng-model="descriptionText"></textarea>
                     </div>
-                    <div class="col-md-12 ">
+                    <div class="col-md-12">
                         <p ng-show="!currentComment" style="text-align: right">New Comments</p>
                         <p ng-show="currentComment" style="text-align: right">Last updated at {{currentComment.lastUpdatedDate|date:dateFormat}}</p>
                     </div>
@@ -752,27 +752,27 @@
     </md-dialog>
 </script>
 <script type="text/ng-template" id="EditDMSecondReference.html">
-    <div class="modal-header ">
+    <div class="modal-header">
         <h3>Select Second Reference</h3>
     </div>
-    <div class="modal-body ">
-        <form class="form-horizontal " novalidate>
-            <div class="row ">
-                <div class="col-md-4 ">
+    <div class="modal-body">
+        <form class="form-horizontal" novalidate>
+            <div class="row">
+                <div class="col-md-4">
                     <select class="form-control" ng-model='selectedFieldPosition' ng-change="updateField();">
                         <option ng-repeat="field in segment.fields" value="{{field.position}}">
                             {{field.position}}. {{field.name}}
                         </option>
                     </select>
                 </div>
-                <div class="col-md-4 ">
+                <div class="col-md-4">
                     <select class="form-control" ng-show="components" ng-model='selectedComponentPosition' ng-change="updateComponent();">
                         <option ng-repeat="component in components" value="{{component.position}}">
                             {{component.position}}. {{component.name}}
                         </option>
                     </select>
                 </div>
-                <div class="col-md-4 ">
+                <div class="col-md-4">
                     <select class="form-control" ng-show="subComponents" ng-model='selectedSubComponentPosition'>
                         <option ng-repeat="component in subComponents" value="{{component.position}}">
                             {{component.position}}. {{component.name}}
@@ -782,11 +782,11 @@
             </div>
         </form>
     </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+        <button class="btn btn-raised btn-primary btn-sm" ng-click="close()"><span><i class="fa fa-floppy-o fa-fw">
             &nbsp; </i>Save</span>
         </button>
     </div>
@@ -826,7 +826,7 @@
                     </div>
                 <md-dialog-actions layout="row" layout-align="end end">
 
-                    <md-button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+                    <md-button class="btn btn-raised btn-primary btn-sm" ng-click="close()"><span><i class="fa fa-floppy-o fa-fw">
             &nbsp; </i>Save</span>
                     </md-button>
                 </md-dialog-actions>
@@ -901,7 +901,7 @@
 
                 <md-dialog-actions layout="row" layout-align="end end">
 
-                    <md-button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+                    <md-button class="btn btn-raised btn-primary btn-sm" ng-click="close()"><span><i class="fa fa-floppy-o fa-fw">
             &nbsp; </i>Save</span>
                     </md-button>
                 </md-dialog-actions>
@@ -975,7 +975,7 @@
 
                 <md-dialog-actions layout="row" layout-align="end end">
 
-                <md-button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+                <md-button class="btn btn-raised btn-primary btn-sm" ng-click="close()"><span><i class="fa fa-floppy-o fa-fw">
             &nbsp; </i>Save</span>
             </md-button>
                 </md-dialog-actions>
@@ -986,14 +986,14 @@
 
 </script>
 <script type="text/ng-template" id="EditIFData.html">
-    <div class="modal-header ">
+    <div class="modal-header">
         <h3>Edit</h3>
 
     </div>
-    <div class="modal-body ">
-        <form class="form-horizontal " novalidate>
-            <div class="row ">
-                <div class="col-md-12 ">
+    <div class="modal-body">
+        <form class="form-horizontal" novalidate>
+            <div class="row">
+                <div class="col-md-12">
                     <table class="table table-striped table-condensed table-bordered">
                         <thead>
                             <tr class="tbl-header">
@@ -1022,11 +1022,11 @@
             </div>
         </form>
     </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+        <button class="btn btn-raised btn-primary btn-sm" ng-click="close()"><span><i class="fa fa-floppy-o fa-fw">
             &nbsp; </i>Save</span>
         </button>
     </div>
@@ -1045,7 +1045,7 @@
             </md-toolbar>
         <md-dialog-content>
             <div class="md-dialog-content">
-        <div class="row ">
+        <div class="row">
                 <div class="col-md-12">
                     <table class="table table-striped table-bordered normal-table">
                         <thead>
@@ -1144,24 +1144,24 @@
     </md-dialog>
 </script>
 <script type="text/ng-template" id="EditDescription.html">
-    <div class="modal-header ">
+    <div class="modal-header">
         <h3>Edit</h3>
 
     </div>
-    <div class="modal-body ">
-        <form class="form-horizontal " novalidate>
-            <div class="row ">
-                <div class="col-md-12 ">
+    <div class="modal-body">
+        <form class="form-horizontal" novalidate>
+            <div class="row">
+                <div class="col-md-12">
                     <input style="width:100%;" class="form-control" type="text" ng-model="data" required/>
                 </div>
             </div>
         </form>
     </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-click="cancel() "><span><i class="fa fa-times fa-fw ">
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-primary btn-sm " ng-click="close() "><span><i class="fa fa-floppy-o fa-fw ">
+        <button class="btn btn-raised btn-primary btn-sm" ng-click="close()"><span><i class="fa fa-floppy-o fa-fw">
             &nbsp; </i>Save</span>
         </button>
     </div>
@@ -1195,246 +1195,246 @@
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="tree_node ">
+<script type="text/ng-template" id="tree_node">
 
-    <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined) ">
-        <td class="col-md-1 " style="width:14% ">
-            <span ng-bind="node.position.element "></span>
+    <tr tt-node is-branch="node.fields!==undefined || node.segments!==undefined ||(node.components.length!==0 && node.components!==undefined)">
+        <td class="col-md-1" style="width:14%">
+            <span ng-bind="node.position.element"></span>
         </td>
-        <td class="col-md-2 " style="width:37% ">
-            <table class=" table-borderless " ng-show="(node.label.element && (node.ext.element||node.ext.element===null) )||(node.label.element && !node.ext) ">
+        <td class="col-md-2" style="width:37%">
+            <table class=" table-borderless" ng-show="(node.label.element && (node.ext.element||node.ext.element===null) )||(node.label.element && !node.ext)">
                 <tr>
-                    <td class="col-sm-1 ">
-                        <span ng-show="node.type.element==='segmentRef' " class="label label-segment label-icon lb-sm ">S</span>
-                        <span ng-show="node.type.element==='segment' " class="label label-segment label-icon lb-sm ">S</span>
-                        <span ng-show="node.type.element==='group' " class="label label-success label-icon lb-sm ">G</span>
-                        <span ng-show="node.type.element==='field' " class="label label-field label-icon lb-sm ">F</span>
-                        <span ng-show="node.type.element==='component' " class="label label-component label-icon lb-sm ">C</span>
-                        <span ng-bind="node.label.element "></span><span ng-show="node.description.element ">:<span ng-bind="node.description.element "></span></span>
+                    <td class="col-sm-1">
+                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment label-icon lb-sm">S</span>
+                        <span ng-show="node.type.element==='segment'" class="label label-segment label-icon lb-sm">S</span>
+                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
+                        <span ng-show="node.type.element==='component'" class="label label-component label-icon lb-sm">C</span>
+                        <span ng-bind="node.label.element"></span><span ng-show="node.description.element">:<span ng-bind="node.description.element"></span></span>
                     </td>
                 </tr>
             </table>
-            <table class=" table-borderless " ng-show="(node.label.element1 && node.label.element2) || (node.label.element && (node.ext.element1 || node.ext.element2)) ||(node.label.element1 || node.label.element2) ">
-                <tr style="background-color:#B5F7EC ">
-                    <td class="col-sm-1 ">
-                        <span ng-show="node.type.element==='segmentRef' " class="label label-segment label-icon lb-sm " align="center ">S</span>
-                        <span ng-show="node.type.element==='segment' " class="label label-segment label-icon lb-sm " align="center ">S</span>
-                        <span ng-show="node.type.element==='group' " class="label label-success label-icon lb-sm ">G</span>
-                        <span ng-show="node.type.element==='field' " class="label label-field label-icon lb-sm ">F</span>
-                        <span ng-show="node.type.element1==='field' " class="label label-field label-icon lb-sm ">F</span>
+            <table class=" table-borderless" ng-show="(node.label.element1 && node.label.element2) || (node.label.element && (node.ext.element1 || node.ext.element2)) ||(node.label.element1 || node.label.element2)">
+                <tr style="background-color:#B5F7EC">
+                    <td class="col-sm-1">
+                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment label-icon lb-sm" align="center">S</span>
+                        <span ng-show="node.type.element==='segment'" class="label label-segment label-icon lb-sm" align="center">S</span>
+                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
+                        <span ng-show="node.type.element1==='field'" class="label label-field label-icon lb-sm">F</span>
 
-                        <span ng-show="node.type.element==='component' " class="label label-component label-icon lb-sm ">C</span>
-                        <span ng-show="node.type.element1==='group' " class="label label-success label-icon lb-sm ">G</span>
-                        <span ng-show="node.type.element1==='segmentRef' " class="label label-segment label-icon lb-sm ">S</span>
-                        <span ng-bind="node.label.element "></span>
-                        <span ng-bind="node.label.element1 "></span>
-                        <span ng-show="node.ext.element1|| node.ext.element ">_
-                        <span ng-show="node.ext.element1 " ng-bind="node.ext.element1 "></span>
-                        <span ng-show="node.ext.element " ng-bind="node.ext.element "></span>
+                        <span ng-show="node.type.element==='component'" class="label label-component label-icon lb-sm">C</span>
+                        <span ng-show="node.type.element1==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element1==='segmentRef'" class="label label-segment label-icon lb-sm">S</span>
+                        <span ng-bind="node.label.element"></span>
+                        <span ng-bind="node.label.element1"></span>
+                        <span ng-show="node.ext.element1|| node.ext.element">_
+                        <span ng-show="node.ext.element1" ng-bind="node.ext.element1"></span>
+                        <span ng-show="node.ext.element" ng-bind="node.ext.element"></span>
                         </span>
-                        <span ng-show="node.description ">:
-                        <span ng-show="node.description.element1 " ng-bind="node.description.element1 "></span>
-                        <span ng-show="node.description.element " ng-bind="node.description.element "></span>
+                        <span ng-show="node.description">:
+                        <span ng-show="node.description.element1" ng-bind="node.description.element1"></span>
+                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
                         </span>
                     </td>
                 </tr>
-                <tr style="background-color:#EDE1AF ">
-                    <td class="col-sm-1 ">
-                        <span ng-show="node.type.element==='segmentRef' " class="label label-segment label-icon lb-sm " align="center ">S</span>
-                        <span ng-show="node.type.element==='segment' " class="label label-segment label-icon lb-sm " align="center ">S</span>
-                        <span ng-show="node.type.element==='group' " class="label label-success label-icon lb-sm ">G</span>
-                        <span ng-show="node.type.element==='field' " class="label label-field label-icon lb-sm ">F</span>
-                        <span ng-show="node.type.element2==='field' " class="label label-field label-icon lb-sm ">F</span>
+                <tr style="background-color:#EDE1AF">
+                    <td class="col-sm-1">
+                        <span ng-show="node.type.element==='segmentRef'" class="label label-segment label-icon lb-sm" align="center">S</span>
+                        <span ng-show="node.type.element==='segment'" class="label label-segment label-icon lb-sm" align="center">S</span>
+                        <span ng-show="node.type.element==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element==='field'" class="label label-field label-icon lb-sm">F</span>
+                        <span ng-show="node.type.element2==='field'" class="label label-field label-icon lb-sm">F</span>
 
-                        <span ng-show="node.type.element==='component' " class="label label-component label-icon lb-sm ">C</span>
-                        <span ng-show="node.type.element2==='group' " class="label label-success label-icon lb-sm ">G</span>
-                        <span ng-show="node.type.element2==='segmentRef'" class="label label-segment label-icon lb-sm ">S</span>
-                        <span ng-show="node.type.element2==='segment'" class="label label-segment label-icon lb-sm ">S</span>
+                        <span ng-show="node.type.element==='component'" class="label label-component label-icon lb-sm">C</span>
+                        <span ng-show="node.type.element2==='group'" class="label label-success label-icon lb-sm">G</span>
+                        <span ng-show="node.type.element2==='segmentRef'" class="label label-segment label-icon lb-sm">S</span>
+                        <span ng-show="node.type.element2==='segment'" class="label label-segment label-icon lb-sm">S</span>
                         <span ng-bind="node.label.element"></span>
-                        <span ng-bind="node.label.element2 "></span>
-                        <span ng-show="node.ext.element2||node.ext.element ">_
-                        <span ng-show="node.ext.element2" ng-bind="node.ext.element2 "></span>
-                        <span ng-show="node.ext.element " ng-bind="node.ext.element "></span>
+                        <span ng-bind="node.label.element2"></span>
+                        <span ng-show="node.ext.element2||node.ext.element">_
+                        <span ng-show="node.ext.element2" ng-bind="node.ext.element2"></span>
+                        <span ng-show="node.ext.element" ng-bind="node.ext.element"></span>
                         </span>
-                        <span ng-show="node.description ">:
-                        <span ng-show="node.description.element2 " ng-bind="node.description.element2 "></span>
-                        <span ng-show="node.description.element " ng-bind="node.description.element "></span>
+                        <span ng-show="node.description">:
+                        <span ng-show="node.description.element2" ng-bind="node.description.element2"></span>
+                        <span ng-show="node.description.element" ng-bind="node.description.element"></span>
                         </span>
                     </td>
                 </tr>
             </table>
         </td>
-        <td class="col-md-1 " ng-show="node.usage " style="width:2% ">
-            <div align="center ">
-                <table class=" table-borderless ">
+        <td class="col-md-1" ng-show="node.usage" style="width:2%">
+            <div align="center">
+                <table class=" table-borderless">
                     <tr>
-                        <td class="col-md-1 " style="background-color:#B5F7EC ">
-                            <div align="center "> <span ng-bind="node.usage.element1 "></span></div>
+                        <td class="col-md-1" style="background-color:#B5F7EC">
+                            <div align="center"> <span ng-bind="node.usage.element1"></span></div>
                         </td>
                     </tr>
                     <tr>
-                        <td class="col-md-1 " style="background-color:#EDE1AF ">
-                            <div align="center "> <span ng-bind="node.usage.element2 "></span></div>
+                        <td class="col-md-1" style="background-color:#EDE1AF">
+                            <div align="center"> <span ng-bind="node.usage.element2"></span></div>
                         </td>
                     </tr>
                 </table>
             </div>
         </td>
-        <td class="col-md-1 " ng-show="!node.usage " style="width:2% ">
-            <div align="center "> - </div>
+        <td class="col-md-1" ng-show="!node.usage" style="width:2%">
+            <div align="center"> - </div>
         </td>
-        <td class="col-md-1 " ng-show="node.minCard " style="width:2% ">
-            <table class=" table-borderless ">
+        <td class="col-md-1" ng-show="node.minCard" style="width:2%">
+            <table class=" table-borderless">
                 <tr>
-                    <td class="col-md-1 " style="background-color:#B5F7EC ">
-                        <div align="center "> <span ng-bind="node.minCard.element1 "></span></div>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.minCard.element1"></span></div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="col-md-1 " style="background-color:#EDE1AF ">
-                        <div align="center "> <span ng-bind="node.minCard.element2 "></span></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1 c " ng-show="!node.minCard " style="width:2% ">
-            <div align="center "> - </div>
-        </td>
-        <td class="col-md-1 " ng-show="node.maxCard " style="width:2% ">
-            <table class="table-borderless ">
-                <tr>
-                    <td class="col-md-1 " style="background-color:#B5F7EC ">
-                        <div align="center "> <span ng-bind="node.maxCard.element1 "></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-1 " style="background-color:#EDE1AF ">
-                        <div align="center "> <span ng-bind="node.maxCard.element2 "></span></div>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.minCard.element2"></span></div>
                     </td>
                 </tr>
             </table>
         </td>
-        <td class="col-md-1 " ng-show="!node.maxCard " style="width:2% ">
-            <div align="center "> - </div>
+        <td class="col-md-1 c" ng-show="!node.minCard" style="width:2%">
+            <div align="center"> - </div>
         </td>
-        <td class="col-md-1 " ng-show="node.minLength " style="width:2% ">
-            <table class=" table-borderless ">
+        <td class="col-md-1" ng-show="node.maxCard" style="width:2%">
+            <table class="table-borderless">
                 <tr>
-                    <td class="col-md-1 " style="background-color:#B5F7EC ">
-                        <div align="center "> <span ng-bind="node.minLength.element1 "></span></div>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.maxCard.element1"></span></div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="col-md-1 " style="background-color:#EDE1AF ">
-                        <div align="center "> <span ng-bind="node.minLength.element2 "></span></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1 " ng-show="!node.minLength " style="width:2% ">
-            <div align="center "> - </div>
-        </td>
-        <td class="col-md-1 " ng-show="node.maxLength " style="width:2% ">
-            <table class=" table-borderless ">
-                <tr>
-                    <td class="col-md-1 " style="background-color:#B5F7EC ">
-                        <div align="center "> <span ng-bind="node.maxLength.element1 "></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-1 " style="background-color:#EDE1AF ">
-                        <div align="center "> <span ng-bind="node.maxLength.element2 "></span></div>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.maxCard.element2"></span></div>
                     </td>
                 </tr>
             </table>
         </td>
-        <td class="col-md-1 " ng-show="!node.maxLength " style="width:2% ">
-            <div align="center "> - </div>
+        <td class="col-md-1" ng-show="!node.maxCard" style="width:2%">
+            <div align="center"> - </div>
         </td>
-        <td class="col-md-1 col-fixed-20 " ng-show="node.confLength " style="width:2% ">
-            <table class=" table-borderless ">
+        <td class="col-md-1" ng-show="node.minLength" style="width:2%">
+            <table class=" table-borderless">
                 <tr>
-                    <td class="col-md-1 " style="background-color:#B5F7EC ">
-                        <div align="center "> <span ng-bind="node.confLength.element1 "></span></div>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.minLength.element1"></span></div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="col-md-1 " style="background-color:#EDE1AF ">
-                        <div align="center "> <span ng-bind="node.confLength.element2 "></span></div>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="col-md-1 " ng-show="!node.confLength " style="width:2% ">
-            <div align="center "> - </div>
-        </td>
-        <td class="col-md-1 col-fixed-20 " ng-show="node.datatype " style="width:21% ">
-            <table class=" table-borderless ">
-                <tr>
-                    <td class="col-md-1 " style="background-color:#B5F7EC ">
-                        <div align="center "> <span ng-bind="node.datatype.element1 "></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-1 " style="background-color:#EDE1AF ">
-                        <div align="center "> <span ng-bind="node.datatype.element2 "></span></div>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.minLength.element2"></span></div>
                     </td>
                 </tr>
             </table>
         </td>
-        <td class="col-md-1 " ng-show="!node.datatype " style="width:21% ">
-            <div align="center "> - </div>
+        <td class="col-md-1" ng-show="!node.minLength" style="width:2%">
+            <div align="center"> - </div>
         </td>
-        <td class="col-md-1 " ng-show="node.valueset " style="width:16% ">
-            <table class=" table-borderless ">
+        <td class="col-md-1" ng-show="node.maxLength" style="width:2%">
+            <table class=" table-borderless">
                 <tr>
-                    <td class="col-md-1 " style="background-color:#B5F7EC ">
-                        <div align="center "> <span ng-bind="node.valueset.element1 "></span></div>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.maxLength.element1"></span></div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="col-md-1 " style="background-color:#EDE1AF ">
-                        <div align="center "> <span ng-bind="node.valueset.element2 "></span></div>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.maxLength.element2"></span></div>
                     </td>
                 </tr>
             </table>
         </td>
-        <td class="col-md-1 " ng-show="!node.valueset " style="width:16% ">
-            <div align="center "> - </div>
+        <td class="col-md-1" ng-show="!node.maxLength" style="width:2%">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-md-1 col-fixed-20" ng-show="node.confLength" style="width:2%">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.confLength.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.confLength.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1" ng-show="!node.confLength" style="width:2%">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-md-1 col-fixed-20" ng-show="node.datatype" style="width:21%">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.datatype.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.datatype.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1" ng-show="!node.datatype" style="width:21%">
+            <div align="center"> - </div>
+        </td>
+        <td class="col-md-1" ng-show="node.valueset" style="width:16%">
+            <table class=" table-borderless">
+                <tr>
+                    <td class="col-md-1" style="background-color:#B5F7EC">
+                        <div align="center"> <span ng-bind="node.valueset.element1"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1" style="background-color:#EDE1AF">
+                        <div align="center"> <span ng-bind="node.valueset.element2"></span></div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="col-md-1" ng-show="!node.valueset" style="width:16%">
+            <div align="center"> - </div>
         </td>
     </tr>
 </script>
-<script type="text/ng-template" id="ConfirmIGDocumentUnshareCtrl.html ">
-    <div class="modal-header ">
-        <h3 class="modal-title ">Remove Participant Confirmation
+<script type="text/ng-template" id="ConfirmIGDocumentUnshareCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Remove Participant Confirmation
         </h3>
     </div>
-    <div class="modal-body ">
-        <p ng-if="shareParticipant.id===g etAccountID() ">Are you sure you want to be removed from the IG Document:"{{::igdocumentSelected.metaData.title}} "?</p>
-        <p ng-if="shareParticipant.id !==g etAccountID() ">Are you sure you want to remove '{{shareParticipant.fullname}}' from the IG Document:"{{::igdocumentSelected.metaData.title}} "?</p>
+    <div class="modal-body">
+        <p ng-if="shareParticipant.id===g etAccountID()">Are you sure you want to be removed from the IG Document:"{{::igdocumentSelected.metaData.title}}"?</p>
+        <p ng-if="shareParticipant.id !==g etAccountID()">Are you sure you want to remove '{{shareParticipant.fullname}}' from the IG Document:"{{::igdocumentSelected.metaData.title}}"?</p>
 
-        <div class="row " ng-if="error !=null ">
-            <div class="col-md-12 ">
-                <span ng-bind="error " style="color: red; "></span>
+        <div class="row" ng-if="error !=null">
+            <div class="col-md-12">
+                <span ng-bind="error" style="color: red;"></span>
             </div>
         </div>
     </div>
     </div>
-    <div class="modal-footer ">
-        <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
+    <div class="modal-footer">
+        <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
-                class="fa fa-trash-o fa-fw ">&nbsp; </i>Remove</span>
+        <button class="btn btn-raised btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                class="fa fa-trash-o fa-fw">&nbsp; </i>Remove</span>
         </button>
-        <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-            <img class="ajax-loading " ng-src="images/ajax-loader.gif " alt="loading... " />
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..." />
         </div>
 
     </div>
     </div>
 </script>
-<script type="text/ng-template" id="GlobalPredicateCtrl.html ">
+<script type="text/ng-template" id="GlobalPredicateCtrl.html">
     <md-dialog aria-label="Conditional Predicate for Message/Group" style="{{getDialogStyle()}}">
         <form ng-cloak>
             <md-toolbar>
@@ -1537,7 +1537,7 @@
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">Message/Group Tree</div>
                                     <div class="panel-body" style="min-height:400px; max-height:400px;overflow-y: scroll;">
-                                        <table class="table table-striped ">
+                                        <table class="table table-striped">
                                             <tbody ng-repeat="data in treeDataForMessage" ng-include="'message_tree_Predicate_item.html'" />
                                         </table>
                                     </div>
@@ -1617,16 +1617,16 @@
                                             </md-nav-item>
                                         </md-nav-bar>
 
-                                        <table class="table table-striped table-bordered " ng-show="constraintType==='Free' ">
+                                        <table class="table table-striped table-bordered" ng-show="constraintType==='Free'">
                                             <thead>
-                                            <tr class="tbl-header ">
-                                                <th class="col-md-10 ">Free-Text (Not supported by validation tool)</th>
-                                                <th class="col-md-2 "></th>
+                                            <tr class="tbl-header">
+                                                <th class="col-md-10">Free-Text (Not supported by validation tool)</th>
+                                                <th class="col-md-2"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td class="col-md-10 ">
+                                                <td class="col-md-10">
                                                     <div layout="row">
                                                         <md-input-container flex="100" class="normal">
                                                             <input ng-model="newConstraint.freeText"
@@ -1634,33 +1634,33 @@
                                                         </md-input-container>
                                                     </div>
                                                 </td>
-                                                <td class="col-md-2 " align="center ">
-                                                    <button class="btn btn-raised btn-warning btn-xxs " ng-click="initPredicate() "><span><i class="fa fa-refresh fa-fw ">&nbsp; </i>Reset</span></button>
-                                                    <button class="btn btn-raised btn-primary btn-xxs " ng-click="addFreeTextPredicate(); "><span><i class="fa fa-plus fa-fw ">&nbsp; </i>Add</span></button>
+                                                <td class="col-md-2" align="center">
+                                                    <button class="btn btn-raised btn-warning btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
 
-                                        <table class="table table-striped table-bordered " ng-show="constraintType==='Plain' ">
+                                        <table class="table table-striped table-bordered" ng-show="constraintType==='Plain'">
                                             <thead>
-                                                <tr class="tbl-header ">
-                                                    <th class="col-md-2 ">If</th>
-                                                    <th class="col-md-2 ">Node</th>
-                                                    <th class="col-md-2 ">Verb</th>
-                                                    <th class="col-md-2 ">Constraint Pattern</th>
-                                                    <th class="col-md-2 ">Value</th>
-                                                    <th class="col-md-2 "></th>
+                                                <tr class="tbl-header">
+                                                    <th class="col-md-2">If</th>
+                                                    <th class="col-md-2">Node</th>
+                                                    <th class="col-md-2">Verb</th>
+                                                    <th class="col-md-2">Constraint Pattern</th>
+                                                    <th class="col-md-2">Value</th>
+                                                    <th class="col-md-2"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
                                                 <td class="col-md-2">If</td>
-                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true " data-jqyoui-options ng-model="firstNodeData " jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'} ">
-                                                    <div ng-show="newConstraint.location_1 ">
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'}">
+                                                    <div ng-show="newConstraint.location_1">
                                                         <span>
-                                                            <span ng-repeat="info in newConstraint.pathInfoSet_1 ">
-                                                                <span ng-show="$index===1 && info.isInstanceNumberEditable">{{info.locationName}}[<input class="form-control-veryshort " ng-model="info.instanceNumber " ng-change="generateFirstPositionAndLocationPath(); " type="text "/>]</span>
+                                                            <span ng-repeat="info in newConstraint.pathInfoSet_1">
+                                                                <span ng-show="$index===1 && info.isInstanceNumberEditable">{{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateFirstPositionAndLocationPath();" type="text"/>]</span>
                                                                 <span ng-show="$index===1 && !info.isInstanceNumberEditable">{{info.locationName}}[{{info.instanceNumber}}]</span>
                                                                 <span ng-show="$index >1 && info.isInstanceNumberEditable">.{{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateFirstPositionAndLocationPath();" type="text" />]</span>
                                                                 <span ng-show="$index > 1 && !info.isInstanceNumberEditable">.{{info.locationName}}[{{info.instanceNumber}}]</span>
@@ -1944,8 +1944,8 @@
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="message_tree_Predicate_item.html ">
-    <tr style="width:100% ">
+<script type="text/ng-template" id="message_tree_Predicate_item.html">
+    <tr style="width:100%">
         <td ng-if="data.folderClass">
             <div ng-if="data.type === 'message' || data.type === 'group'">
                 <i class="fa" ng-class="data.folderClass" ng-click="toggleChildren(data)"></i>
@@ -2484,9 +2484,9 @@
 
 
             <md-dialog-actions layout="row">
-                <md-button ng-show="dialogStep === 1 && mode !== 'pc'" class="btn btn-raised btn-primary btn-sm " ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
-                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm " ng-click="goNext()" ng-disabled="contextKey === null"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
-                <md-button ng-show="dialogStep === 1" class="btn btn-raised btn-success btn-sm " ng-click="saveClose()" ng-disabled="!changed" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
+                <md-button ng-show="dialogStep === 1 && mode !== 'pc'" class="btn btn-raised btn-primary btn-sm" ng-click="goBack()"><span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
+                <md-button ng-show="dialogStep === 0" class="btn btn-raised btn-primary btn-sm" ng-click="goNext()" ng-disabled="contextKey === null"><span><i class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
+                <md-button ng-show="dialogStep === 1" class="btn btn-raised btn-success btn-sm" ng-click="saveClose()" ng-disabled="!changed" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>
@@ -2628,8 +2628,8 @@
             <div ng-if="data.type === 'component'">
                 <span class="label label-component label-icon">C</span>
                 <span style="font-weight:bold;">&nbsp;{{::data.position}}. &nbsp;[{{::data.usage}}] {{::data.name}}</span>
-                <div id="expanded-data" ng-if="data.childrenVisible ">
-                    <table class="table table-striped " id="nested-table">
+                <div id="expanded-data" ng-if="data.childrenVisible">
+                    <table class="table table-striped" id="nested-table">
                         <div ng-repeat="data in data.child.components" ng-include="'context_tree_item.html'"></div>
                     </table>
                 </div>
@@ -3051,12 +3051,12 @@
                 </div>
             </md-dialog-content>
             <md-dialog-actions layout="row">
-                <md-button class="btn btn-raised btn-success btn-sm " ng-click="saveClose()" ng-disabled="!changed" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
+                <md-button class="btn btn-raised btn-success btn-sm" ng-click="saveClose()" ng-disabled="!changed" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="PredicateSegmentCtrl.html ">
+<script type="text/ng-template" id="PredicateSegmentCtrl.html">
     <md-dialog aria-label="Conditional Predicate for Segment" style="{{getDialogStyle()}}">
         <form ng-cloak>
             <md-toolbar>
@@ -3215,16 +3215,16 @@
                                             </md-nav-item>
                                         </md-nav-bar>
 
-                                        <table class="table table-striped table-bordered " ng-show="constraintType==='Free' ">
+                                        <table class="table table-striped table-bordered" ng-show="constraintType==='Free'">
                                             <thead>
-                                            <tr class="tbl-header ">
-                                                <th class="col-md-10 ">Free-Text (Not supported by validation tool)</th>
-                                                <th class="col-md-2 "></th>
+                                            <tr class="tbl-header">
+                                                <th class="col-md-10">Free-Text (Not supported by validation tool)</th>
+                                                <th class="col-md-2"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td class="col-md-10 ">
+                                                <td class="col-md-10">
                                                     <div layout="row">
                                                         <md-input-container flex="100" class="normal">
                                                             <input ng-model="newConstraint.freeText"
@@ -3232,33 +3232,33 @@
                                                         </md-input-container>
                                                     </div>
                                                 </td>
-                                                <td class="col-md-2 " align="center ">
-                                                    <button class="btn btn-raised btn-warning btn-xxs " ng-click="initPredicate() "><span><i class="fa fa-refresh fa-fw ">&nbsp; </i>Reset</span></button>
-                                                    <button class="btn btn-raised btn-primary btn-xxs " ng-click="addFreeTextPredicate(); "><span><i class="fa fa-plus fa-fw ">&nbsp; </i>Add</span></button>
+                                                <td class="col-md-2" align="center">
+                                                    <button class="btn btn-raised btn-warning btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
 
-                                        <table class="table table-striped table-bordered " ng-show="constraintType==='Plain' ">
+                                        <table class="table table-striped table-bordered" ng-show="constraintType==='Plain'">
                                             <thead>
-                                            <tr class="tbl-header ">
-                                                <th class="col-md-2 ">If</th>
-                                                <th class="col-md-2 ">Node</th>
-                                                <th class="col-md-2 ">Verb</th>
-                                                <th class="col-md-2 ">Constraint Pattern</th>
-                                                <th class="col-md-2 ">Value</th>
-                                                <th class="col-md-2 "></th>
+                                            <tr class="tbl-header">
+                                                <th class="col-md-2">If</th>
+                                                <th class="col-md-2">Node</th>
+                                                <th class="col-md-2">Verb</th>
+                                                <th class="col-md-2">Constraint Pattern</th>
+                                                <th class="col-md-2">Value</th>
+                                                <th class="col-md-2"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
                                                 <td class="col-md-2">If</td>
-                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true " data-jqyoui-options ng-model="firstNodeData " jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'} ">
-                                                    <div ng-show="newConstraint.location_1 ">
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'}">
+                                                    <div ng-show="newConstraint.location_1">
                                                         <span>
-                                                            <span ng-repeat="info in newConstraint.pathInfoSet_1 ">
-                                                                <span ng-show="$index===1 && info.isInstanceNumberEditable">{{info.locationName}}[<input class="form-control-veryshort " ng-model="info.instanceNumber " ng-change="generateFirstPositionAndLocationPath(); " type="text "/>]</span>
+                                                            <span ng-repeat="info in newConstraint.pathInfoSet_1">
+                                                                <span ng-show="$index===1 && info.isInstanceNumberEditable">{{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateFirstPositionAndLocationPath();" type="text"/>]</span>
                                                                 <span ng-show="$index===1 && !info.isInstanceNumberEditable">{{info.locationName}}[{{info.instanceNumber}}]</span>
                                                                 <span ng-show="$index >1 && info.isInstanceNumberEditable">.{{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateFirstPositionAndLocationPath();" type="text" />]</span>
                                                                 <span ng-show="$index > 1 && !info.isInstanceNumberEditable">.{{info.locationName}}[{{info.instanceNumber}}]</span>
@@ -4028,12 +4028,12 @@
                 </div>
             </md-dialog-content>
             <md-dialog-actions layout="row">
-                <md-button class="btn btn-raised btn-success btn-sm " ng-click="save()" ng-disabled="!changed" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
+                <md-button class="btn btn-raised btn-success btn-sm" ng-click="save()" ng-disabled="!changed" ><span><i class="fa fa-floppy-o fa-fw"></i>Save</span></md-button>
             </md-dialog-actions>
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="PredicateDatatypeCtrl.html ">
+<script type="text/ng-template" id="PredicateDatatypeCtrl.html">
     <md-dialog aria-label="Conditional Predicate for Datatype" style="{{getDialogStyle()}}">
         <form ng-cloak>
             <md-toolbar>
@@ -4192,16 +4192,16 @@
                                             </md-nav-item>
                                         </md-nav-bar>
 
-                                        <table class="table table-striped table-bordered " ng-show="constraintType==='Free' ">
+                                        <table class="table table-striped table-bordered" ng-show="constraintType==='Free'">
                                             <thead>
-                                            <tr class="tbl-header ">
-                                                <th class="col-md-10 ">Free-Text (Not supported by validation tool)</th>
-                                                <th class="col-md-2 "></th>
+                                            <tr class="tbl-header">
+                                                <th class="col-md-10">Free-Text (Not supported by validation tool)</th>
+                                                <th class="col-md-2"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td class="col-md-10 ">
+                                                <td class="col-md-10">
                                                     <div layout="row">
                                                         <md-input-container flex="100" class="normal">
                                                             <input ng-model="newConstraint.freeText"
@@ -4209,33 +4209,33 @@
                                                         </md-input-container>
                                                     </div>
                                                 </td>
-                                                <td class="col-md-2 " align="center ">
-                                                    <button class="btn btn-raised btn-warning btn-xxs " ng-click="initPredicate() "><span><i class="fa fa-refresh fa-fw ">&nbsp; </i>Reset</span></button>
-                                                    <button class="btn btn-raised btn-primary btn-xxs " ng-click="addFreeTextPredicate(); "><span><i class="fa fa-plus fa-fw ">&nbsp; </i>Add</span></button>
+                                                <td class="col-md-2" align="center">
+                                                    <button class="btn btn-raised btn-warning btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
 
-                                        <table class="table table-striped table-bordered " ng-show="constraintType==='Plain' ">
+                                        <table class="table table-striped table-bordered" ng-show="constraintType==='Plain'">
                                             <thead>
-                                            <tr class="tbl-header ">
-                                                <th class="col-md-2 ">If</th>
-                                                <th class="col-md-2 ">Node</th>
-                                                <th class="col-md-2 ">Verb</th>
-                                                <th class="col-md-2 ">Constraint Pattern</th>
-                                                <th class="col-md-2 ">Value</th>
-                                                <th class="col-md-2 "></th>
+                                            <tr class="tbl-header">
+                                                <th class="col-md-2">If</th>
+                                                <th class="col-md-2">Node</th>
+                                                <th class="col-md-2">Verb</th>
+                                                <th class="col-md-2">Constraint Pattern</th>
+                                                <th class="col-md-2">Value</th>
+                                                <th class="col-md-2"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr>
                                                 <td class="col-md-2">If</td>
-                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstNodeData " jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'} ">
-                                                    <div ng-show="newConstraint.location_1 ">
+                                                <td class="col-md-2 drop-zone" align="center" style="vertical-align:middle" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'}">
+                                                    <div ng-show="newConstraint.location_1">
                                                         <span>
-                                                            <span ng-repeat="info in newConstraint.pathInfoSet_1 ">
-                                                                <span ng-show="$index===1 && info.isInstanceNumberEditable">{{info.locationName}}[<input class="form-control-veryshort " ng-model="info.instanceNumber " ng-change="generateFirstPositionAndLocationPath(); " type="text "/>]</span>
+                                                            <span ng-repeat="info in newConstraint.pathInfoSet_1">
+                                                                <span ng-show="$index===1 && info.isInstanceNumberEditable">{{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateFirstPositionAndLocationPath();" type="text"/>]</span>
                                                                 <span ng-show="$index===1 && !info.isInstanceNumberEditable">{{info.locationName}}[{{info.instanceNumber}}]</span>
                                                                 <span ng-show="$index >1 && info.isInstanceNumberEditable">.{{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateFirstPositionAndLocationPath();" type="text" />]</span>
                                                                 <span ng-show="$index > 1 && !info.isInstanceNumberEditable">.{{info.locationName}}[{{info.instanceNumber}}]</span>
@@ -4550,7 +4550,7 @@
     </div>
 </script>
 <script type="text/ng-template" id="createDatatype.html">
-    <md-dialog aria-label="Create Data Type Library ">
+    <md-dialog aria-label="Create Data Type Library">
         <form ng-cloak name="addDT" id="addDT">
             <md-toolbar>
                 <div class="md-toolbar-tools">
@@ -5526,7 +5526,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="ref in referencesForMenu track by $index ">
+                    <tr ng-repeat="ref in referencesForMenu track by $index">
                         <td>
                             <span>
                             <span ng-show="ref.type === 'field'" class="label label-field label-icon">F</span>
@@ -5839,7 +5839,7 @@
                     <span>&nbsp;[{{::data.min}}..{{::data.max}},{{::data.usage}}]&nbsp;{{::segmentsMap[data.ref.id].name}}</span>
             </div>
 </script>
-<script type="text/ng-template" id="ConformanceStatementSegmentCtrlInPc.html ">
+<script type="text/ng-template" id="ConformanceStatementSegmentCtrlInPc.html">
     <md-dialog aria-label="Conformance Statements">
         <form ng-cloak>
             <md-toolbar>
@@ -5854,92 +5854,92 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content" style="overflow:scroll;">
-                    <div class="modal-body ">
-                        <form role="form ">
-                            <div class="col-md-3 ">
+                    <div class="modal-body">
+                        <form role="form">
+                            <div class="col-md-3">
                                 <div class="panel panel-primary">
-                                    <div class="panel-heading ">Segment Tree</div>
-                                    <div class="panel-body " style="min-height:200px; max-height:200px;overflow-y: scroll; ">
-                                        <table class="table table-striped ">
-                                            <tbody ng-repeat="data in treeDataForContext " ng-include=" 'segment_tree_itemInPc.html' ">
+                                    <div class="panel-heading">Segment Tree</div>
+                                    <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
+                                        <table class="table table-striped">
+                                            <tbody ng-repeat="data in treeDataForContext" ng-include=" 'segment_tree_itemInPc.html'">
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-9 ">
-                                <div class="panel panel-primary ">
-                                    <div class="panel-heading ">Conformance Statements Builder</div>
-                                    <div class="panel-body " style=" max-height:200px;overflow-y: scroll; ">
-                                        <span class="pull-right ">
-                                            <div class="btn-group btn-group-sm " data-toggle="buttons ">
-                                                <label class="btn btn-raised btn-primary btn-xs " ng-click="constraintType='Free' ; " ng-class="{ 'active':constraintType==='Free' } ">
+                            <div class="col-md-9">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">Conformance Statements Builder</div>
+                                    <div class="panel-body" style=" max-height:200px;overflow-y: scroll;">
+                                        <span class="pull-right">
+                                            <div class="btn-group btn-group-sm" data-toggle="buttons">
+                                                <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType='Free' ;" ng-class="{ 'active':constraintType==='Free' }">
                                                     Add new Free-Text Constraint
                                                 </label>
-                                                <label class="btn btn-raised btn-primary btn-xs " ng-click="constraintType='Plain' ; " ng-class="{ 'active':constraintType==='Plain' } ">
+                                                <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType='Plain' ;" ng-class="{ 'active':constraintType==='Plain' }">
                                                    Add new plain Constraint
                                                 </label>
-                                                <label class="btn btn-raised btn-primary btn-xs " ng-click="constraintType='Complex' ; " ng-class="{ 'active':constraintType==='Complex' } ">
+                                                <label class="btn btn-raised btn-primary btn-xs" ng-click="constraintType='Complex' ;" ng-class="{ 'active':constraintType==='Complex' }">
                                                    Add new complex Constraint
                                                 </label>
                                             </div>
                                     </span>
 
-                                        <table class="table table-striped table-bordered " ng-show="constraintType==='Free' ">
+                                        <table class="table table-striped table-bordered" ng-show="constraintType==='Free'">
                                             <thead>
-                                                <tr class="tbl-header ">
-                                                    <th class="col-md-2 ">ID</th>
-                                                    <th class="col-md-8 ">Free-Text (Not supported by validation tool)</th>
-                                                    <th class="col-md-2 "></th>
+                                                <tr class="tbl-header">
+                                                    <th class="col-md-2">ID</th>
+                                                    <th class="col-md-8">Free-Text (Not supported by validation tool)</th>
+                                                    <th class="col-md-2"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td class="col-md-2 ">
-                                                        <input class="form-control " ng-class="{ 'form-control-invalid': isEmptyConstraintID(newConstraint)} " ng-model="newConstraint.constraintId " type="text " />
-                                                        <span style="color:red; " ng-show="isEmptyConstraintID(newConstraint) ">ID Empty</span>
+                                                    <td class="col-md-2">
+                                                        <input class="form-control" ng-class="{ 'form-control-invalid': isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text" />
+                                                        <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
                                                     </td>
-                                                    <td class="col-md-8 ">
-                                                        <input class="form-control " ng-model="newConstraint.freeText " type="text " />
+                                                    <td class="col-md-8">
+                                                        <input class="form-control" ng-model="newConstraint.freeText" type="text" />
                                                     </td>
-                                                    <td class="col-md-2 " align="center ">
-                                                        <button class="btn btn-raised btn-info btn-xxs " ng-click="initConformanceStatement() "><span><i class="fa fa-refresh fa-fw ">&nbsp; </i>Reset</span></button>
-                                                        <button class="btn btn-raised btn-primary btn-xxs " ng-click="addFreeTextConformanceStatement(); "><span><i class="fa fa-plus fa-fw ">&nbsp; </i>Add</span></button>
+                                                    <td class="col-md-2" align="center">
+                                                        <button class="btn btn-raised btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
+                                                        <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
 
 
-                                        <table class="table table-striped table-bordered" ng-show="constraintType==='Plain' ">
+                                        <table class="table table-striped table-bordered" ng-show="constraintType==='Plain'">
                                             <thead>
                                                 <tr class="tbl-header">
-                                                    <th class="col-md-2 ">ID</th>
-                                                    <th class="col-md-2 ">Node</th>
-                                                    <th class="col-md-2 ">Verb</th>
-                                                    <th class="col-md-2 ">Constraint Pattern</th>
-                                                    <th class="col-md-2 ">Value</th>
-                                                    <th class="col-md-2 "></th>
+                                                    <th class="col-md-2">ID</th>
+                                                    <th class="col-md-2">Node</th>
+                                                    <th class="col-md-2">Verb</th>
+                                                    <th class="col-md-2">Constraint Pattern</th>
+                                                    <th class="col-md-2">Value</th>
+                                                    <th class="col-md-2"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td class="col-md-2 ">
-                                                        <input class="form-control" ng-class="{ 'form-control-invalid': isEmptyConstraintID(newConstraint)} " ng-model="newConstraint.constraintId " type="text " />
-                                                        <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint) ">ID Empty</span>
+                                                    <td class="col-md-2">
+                                                        <input class="form-control" ng-class="{ 'form-control-invalid': isEmptyConstraintID(newConstraint)}" ng-model="newConstraint.constraintId" type="text" />
+                                                        <span style="color:red;" ng-show="isEmptyConstraintID(newConstraint)">ID Empty</span>
                                                     </td>
-                                                    <td class="col-md-2 " data-drop="true " data-jqyoui-options ng-model="firstNodeData " jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'} ">
-                                                        <div ng-show="draggingStatus=='ContextTreeNodeDragging' ">
-                                                            <span style="color:red; " class="blink_me ">You can drop here!!</span>
+                                                    <td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstNodeData" jqyoui-droppable="{beforeDrop: 'beforeNodeDrop', onDrop: 'afterFirstNodeDrop'}">
+                                                        <div ng-show="draggingStatus=='ContextTreeNodeDragging'">
+                                                            <span style="color:red;" class="blink_me">You can drop here!!</span>
                                                         </div>
-                                                        <div ng-show="newConstraint.location_1 ">
+                                                        <div ng-show="newConstraint.location_1">
                                                             <span>{{::segment.name}}-</span>
                                                             <span>
-                                                <span ng-repeat="info in newConstraint.pathInfoSet_1 ">
-                                                    <span ng-show="$index==1 && info.isInstanceNumberEditable ">
-                                                        {{info.locationName}}[<input class="form-control-veryshort " ng-model="info.instanceNumber " ng-change="generateFirstPositionAndLocationPath(); " type="text "/>]
+                                                <span ng-repeat="info in newConstraint.pathInfoSet_1">
+                                                    <span ng-show="$index==1 && info.isInstanceNumberEditable">
+                                                        {{info.locationName}}[<input class="form-control-veryshort" ng-model="info.instanceNumber" ng-change="generateFirstPositionAndLocationPath();" type="text"/>]
                                                     </span>
-                                                            <span ng-show="$index==1 && !info.isInstanceNumberEditable ">
+                                                            <span ng-show="$index==1 && !info.isInstanceNumberEditable">
                                                         {{info.locationName}}[{{info.instanceNumber}}]
                                                     </span>
                                                             <span ng-show="$index> 1 && info.isInstanceNumberEditable"> .{{info.locationName}}[
@@ -6701,50 +6701,156 @@
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="CreateValueSet.html">
-    <md-dialog aria-label="confirmation">
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <h2> Add Value Set</h2>
-                    <span flex></span>
-                    <md-button class="md-icon-button" ng-click="cancel()">
-                        <i class="material-icons">clear</i>
-                    </md-button>
-                </div>
-            </md-toolbar>
-            <md-dialog-content>
-                <div class="md-dialog-content">
-                    <form id="addVs" name="addVs" class="form-horizontal" novalidate>
-                        <label class="input-left igamt-label">Mapping Identifier*</label>
 
-                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                            <input  type="text" name="tableIdentifier" ng-model="newTable.bindingIdentifier" required>
-                            <div ng-messages="addVs.tableIdentifier.$error">
-                                <div ng-message="required">Mapping Identifier is required.</div>
-                            </div>
-                        </md-input-container>
+<!--<script type="text/ng-template" id="hl7VersionsDlg.html">-->
+<!--<form id="hl7VersionsDlgForm" name="hl7VersionsDlgForm" class="form-horizontal">-->
 
-                        <label class="input-left igamt-label">Name*</label>
+<!--<div class="modal-header modal-wide">-->
+<!--<div class="form-inline">-->
+<!--<span class="header4" style="color:white;">Create IG Document</span>-->
 
-                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                            <input type="text" name="name"  ng-model="newTable.name" required>
-                            <div ng-messages="addVs.name.$error">
-                                <div ng-message="required">Name is required.</div>
-                            </div>
-                        </md-input-container>
+<!--<button ng-show="clickSource === 'btn'" class="btn btn-raised btn-info btn-xs pull-right" type="button" ng-click="ok()" ng-disabled="okDisabled || hl7VersionsDlgForm.$invalid">-->
+<!--<i class="fa fa-check"></i>Submit-->
+<!--</button>-->
+<!--<button ng-show="clickSource === 'ctx'" class="btn btn-raised btn-info btn-xs pull-right" type="button" ng-click="ok()" ng-disabled="okDisabled">-->
+<!--<i class="fa fa-check"></i>Submit-->
+<!--</button>-->
+<!--<button class="btn btn-raised btn-default btn-xs pull-right" type="button" ng-click="cancel()">-->
+<!--<i class="fa fa-times"></i>Cancel-->
+<!--</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
 
-                        <label class="input-left igamt-label">Source*</label>
+<!--<div class="col-md-12">-->
+<!--<div ng-show="clickSource === 'btn'" ng-class="{'igl-has-error has-feedback' : hl7VersionsDlgForm.hl7Version.$invalid}">-->
+<!--<label class="col-md-2 control-label" style="text-align: left">HL7 Version*:</label>-->
 
-                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                            <md-select ng-model="newTable.managedBy">
-                                <md-option></md-option>
-                            </md-select>
-                        </md-input-container>
-                    </form>
-                </div>
-            </md-dialog-content>
-            <md-dialog-actions layout="row">
-                <md-button class="btn btn-raised btn-success btn-sm" ng-click=""><span><i class="fa fa-check fa-fw">&nbsp; </i>Add</span></md-button>
-            </md-dialog-actions>
-    </md-dialog>
-</script>
+<!--<div class="col-md-3">-->
+<!--<select class="form-control" name="hl7Version" id="hl7Version" ng-change="loadIGDocumentsByVersion()" ng-disabled="loading || igdocument" required ng-model="hl7Version" ng-options="vr for vr in hl7Versions" />-->
+<!--</div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;<div class="col-md-12">&ndash;&gt;-->
+<!--&lt;!&ndash;<h4 class="modal-title">Select HL7 Version</h4>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="col-md-12">&ndash;&gt;-->
+<!--&lt;!&ndash;<div ng-show="!igdocument" class="btn-group btn-group-sm pull-left" data-toggle="buttons">&ndash;&gt;-->
+<!--&lt;!&ndash;<label class="btn btn-raised btn-primary btn-xs"&ndash;&gt;-->
+<!--&lt;!&ndash;ng-click="$parent.hl7Version = vr; loadIGDocumentsByVersion()"&ndash;&gt;-->
+<!--&lt;!&ndash;ng-class="{'active':vr === hl7Version}" ng-repeat="vr in hl7Versions">&ndash;&gt;-->
+<!--&lt;!&ndash;<input ng-disabled="loading" type="radio" ng-value="vr" ng-model="$parent.hl7Version">{{vr}}&ndash;&gt;-->
+<!--&lt;!&ndash;</label>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--</div>-->
+
+
+
+<!--<accordion ng-show="hl7Version">-->
+<!--<div accordion-group class="panel-primary" is-open="status.isFirstOpen" ng-show="clickSource==='btn'">-->
+<!--<accordion-heading>-->
+<!--<span style="color:white;"> IG Document Metadata</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isFirstOpen, 'fa-chevron-right': !status.isFirstOpen}"></i>-->
+<!--</accordion-heading>-->
+<!--<div class="row">-->
+<!--&lt;!&ndash;<div class="row">-->
+<!--<label for="example-version-input" class="col-xs-2 col-form-label">HL7 Version*</label>-->
+<!--<div class="col-xs-10">-->
+<!--<input class="form-control" type="text" ng-model="hl7Version" disabled>-->
+
+<!--</div>-->
+<!--</div>&ndash;&gt;-->
+<!--<div class=" row" style="padding-top:5px">-->
+<!--<label for="example-text-input" class="col-xs-2 col-form-label">Title*</label>-->
+<!--<div class="col-xs-10">-->
+<!--<input class="form-control form-control-xs" type="text" ng-model="hl7VersionsDlgForm.metaData.title" required>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class=" row">-->
+<!--<label for="example-search-input" class="col-xs-2 col-form-label">Sub-Title</label>-->
+<!--<div class="col-xs-10">-->
+<!--<input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.subTitle">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class=" row">-->
+<!--<label for="example-email-input" class="col-xs-2 col-form-label">Organization</label>-->
+<!--<div class="col-xs-10">-->
+<!--<input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.orgName">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<label for="example-url-input" class="col-xs-2 col-form-label">Extension</label>-->
+<!--<div class="col-xs-10">-->
+<!--<input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.ext">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<label for="example-tel-input" class="col-xs-2 col-form-label">Specification</label>-->
+<!--<div class="col-xs-10">-->
+<!--<input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.specificationName">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<label for="example-password-input" class="col-xs-2 col-form-label">Status</label>-->
+<!--<div class="col-xs-10">-->
+<!--<input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.status">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<label for="example-number-input" class="col-xs-2 col-form-label">Topics</label>-->
+<!--<div class="col-xs-10">-->
+<!--<input class="form-control" type="text" ng-model="hl7VersionsDlgForm.metaData.topics">-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+<!--</div>-->
+<!--<div accordion-group class="panel-primary" is-open="status.isSecondOpen">-->
+<!--<accordion-heading>-->
+<!--<span style="color:white;"> List of Events*</span> <i class="pull-left fa" style="color:white;" ng-class="{'fa-chevron-down': status.isSecondOpen, 'fa-chevron-right': !status.isSecondOpen}"></i>-->
+<!--</accordion-heading>-->
+<!--<div class="input-group">-->
+<!--<span class="input-group-addon">Selected Messages:</span>-->
+<!--<span ng-repeat="event in eventList" class="label label-primary">{{::event.name}}^{{::event.parentStructId}}</span>-->
+
+<!--</div>-->
+<!--<div class="row" style="margin-left:20px">-->
+<!--<div ng-show="loading" style="text-align:center">-->
+<!--<i class="fa fa-spinner fa-pulse fa-2x"></i>-->
+<!--</div>-->
+<!--<div ng-show="!loading">-->
+<!--<div class="table-responsive">-->
+<!--<table tt-table tt-params="messageEventsParams" ng-show="messageEventsParams" class="table table-striped table-bordered table-fix-header table-condensed hl7-versions-table">-->
+<!--<thead>-->
+<!--<tr class="tbl-header">-->
+<!--<td class="" style="width:300px">Struct ID</td>-->
+<!--<td class="" style="width:600px">Description</td>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody></tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</accordion>-->
+
+<!--</div>-->
+<!--<div class="modal-footer">-->
+
+<!--</div>-->
+<!--</form>-->
+<!--</script>-->
+<!--<script type="text/ng-template" id="MessageEventsNode.html">-->
+<!--<tr tt-node is-branch="node.type === 'message'">-->
+<!--<td class="" style="width:300px;color:black">-->
+
+<!--<input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-change="trackSelections(bool, node)">-->
+<!--</input><span ng-bind="::node.name" style="margin-left : 7px;"></span>-->
+<!--</td>-->
+<!--<td class="" style="width:585px;color:black" ng-bind="::node.description"></td>-->
+
+
+<!--</tr>-->
+
+<!--</script>-->

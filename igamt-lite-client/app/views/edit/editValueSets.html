@@ -485,7 +485,7 @@
                                                         <td class="col-md-4">
                                                             <select ng-model="cmp.tableId" class="form-control" ng-change="setTable2(cmp.tableId)" no-dirty-check>
                                                                 <option value='-1'></option>
-                                                                <option ng-repeat="table in tables2 " ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{table.bindingIdentifier}}</option>
+                                                                <option ng-repeat="table in tables2" ng-disabled="disableVS(table,table1)" ng-hide="hideVS(table,table1)" value='{{$index}}'> {{table.bindingIdentifier}}</option>
                                                             </select>
                                                         </td>
                                                     </tr>
@@ -634,7 +634,7 @@
                                     <i class="fa fa-link" aria-hidden="true"></i>Cross-References
                                 </md-tab-label>
                                 <md-tab-body>
-                                    <div class="el-def metadata-scroll " style="margin-top:20px">
+                                    <div class="el-def metadata-scroll" style="margin-top:20px">
 
                                         <div ng-if="crossRef.messageValueSetBindingfounds.length">
                                             <h4> Message Binding</h4>
@@ -1791,7 +1791,7 @@
     <div class="modal-body">
         <span class="pull-right" ng-if="igdocument">
             <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-raised btn-primary btn-xs" ng-click="switchTo('SEGMENT'); " ng-class="{'active':bindingTargetType === 'SEGMENT'}">
+                <button type="button" class="btn btn-raised btn-primary btn-xs" ng-click="switchTo('SEGMENT');" ng-class="{'active':bindingTargetType === 'SEGMENT'}">
                     To Segment
                 </button>
                 <button type="button" class="btn btn-raised btn-primary btn-xs" ng-click="switchTo('DATATYPE');" ng-class="{'active':bindingTargetType === 'DATATYPE'}">

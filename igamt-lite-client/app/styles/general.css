@@ -3104,4 +3104,8 @@ md-select[disabled] .md-select-value {
     margin-left: 10px;
     margin-right:60px;
     margin-top: 10px;
+.deprecated{
+    text-decoration: line-through;
+    background-color: yellow;
+
 }

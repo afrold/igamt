@@ -640,11 +640,11 @@ public class Segment extends DataModelWithConstraints
         if (isValueSetValid)
           return true;
       }
-      if (thenData.getValueData() != null && thenData.getValueData().getValue() != null) {
+      if (thenData.getValueData() != null && thenData.getValueData().getValue() != null && !thenData.getValueData().getValue().equals("")) {
         return true;
       }
     }else if (definitionThen.getConstraintType().equals("value") || definitionThen.getConstraintType().equals("dmr")) {
-      if (thenData.getValueData() != null && thenData.getValueData().getValue() != null) {
+      if (thenData.getValueData() != null && thenData.getValueData().getValue() != null && !thenData.getValueData().getValue().equals("")) {
         return true;
       }
     } else if (definitionThen.getConstraintType().equals("valueset")) {
