@@ -40,6 +40,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ColumnsConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Comment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
@@ -104,6 +105,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeMatrixRepository
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ExportConfigRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.UnchangedDataRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.CompositeProfileStructureService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DeltaService;
@@ -170,7 +172,9 @@ public class Bootstrap implements InitializingBean {
   private ProfileComponentLibraryService profileComponentLibraryService;
   @Autowired
   private ProfileComponentService profileComponentService;
+  @Autowired
 
+  private CompositeProfileStructureService compositeProfileStructureService;
   @Autowired
   private TableLibraryRepository tableLibraryRepository;
 
@@ -292,6 +296,7 @@ public class Bootstrap implements InitializingBean {
     // SetTablePreText();
     // AddCodeSystemtoAllTables();
     // initializeAttributes();
+    changeCommentToAuthorNotes();
   }
 
   private void SetTablePreText() {
@@ -301,6 +306,45 @@ public class Bootstrap implements InitializingBean {
       tableService.updateDescription(t.getId(), t.getDescription());
     }
     // tableService.save(allPhinVades);
+  }
+
+  private void changeCommentToAuthorNotes() {
+    // for messages
+    List<Message> messages = messageService.findByScope(SCOPE.USER.toString());
+    for (Message m : messages) {
+      if (m.getComment() != null) {
+        messageService.updateAttribute(m.getId(), "authorNotes", m.getComment());
+      }
+    }
+    // for Segment
+    List<Segment> segments = segmentService.findByScope(SCOPE.USER.toString());
+    for (Segment s : segments) {
+      if (s.getComment() != null) {
+        segmentService.updateAttribute(s.getId(), "authorNotes", s.getComment());
+      }
+    }
+    // for Datatypes
+    List<Datatype> datatypes = datatypeService.findAll();
+    for (Datatype d : datatypes) {
+      if (d.getStatus().equals(STATUS.UNPUBLISHED) && d.getComment() != null) {
+        datatypeService.updateAttribute(d.getId(), "authorNotes", d.getComment());
+      }
+    }
+    // profile Components
+    List<ProfileComponent> profileComponents = profileComponentService.findAll();
+    for (ProfileComponent pc : profileComponents) {
+
+      if (pc.getComment() != null) {
+        profileComponentService.updateAttribute(pc.getId(), "authorNotes", pc.getComment());
+      }
+    }
+    List<CompositeProfileStructure> compositesPCs = compositeProfileStructureService.findAll();
+    for (CompositeProfileStructure c : compositesPCs) {
+      if (c.getComment() != null) {
+
+        compositeProfileStructureService.updateAttribute(c.getId(), "authorNotes", c.getComment());
+      }
+    }
   }
 
   private void initializeAttributes() {

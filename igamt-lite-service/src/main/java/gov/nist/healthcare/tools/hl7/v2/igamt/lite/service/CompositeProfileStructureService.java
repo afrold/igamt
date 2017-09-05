@@ -12,6 +12,8 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import java.util.List;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 
 public interface CompositeProfileStructureService {
@@ -20,5 +22,11 @@ public interface CompositeProfileStructureService {
 
   CompositeProfileStructure save(CompositeProfileStructure compositeProfileStructure);
 
+  List<CompositeProfileStructure> findAll();
+
+
   void delete(String id);
+
+  void updateAttribute(String id, String attributeName, Object value);
+
 }

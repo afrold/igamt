@@ -4198,7 +4198,7 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
                 id: pc.id,
                 name: pc.name,
                 description: pc.description,
-                comment: pc.comment,
+                authorNotes: pc.authorNotes,
                 pcDate: pc.dateUpdated,
                 position: angular.copy($scope.position)
             }

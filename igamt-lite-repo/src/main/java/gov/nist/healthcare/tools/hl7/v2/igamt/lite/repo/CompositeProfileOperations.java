@@ -16,4 +16,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStruct
 
 public interface CompositeProfileOperations {
   public CompositeProfileStructure findById(String id);
+
+  void updateAttribute(String id, String attributeName, Object value);
+
 }

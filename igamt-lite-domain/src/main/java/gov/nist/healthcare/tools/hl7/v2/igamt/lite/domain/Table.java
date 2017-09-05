@@ -60,7 +60,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   protected String date;
 
   protected STATUS status;
-
+  @Deprecated
   protected String comment = "";
 
 
