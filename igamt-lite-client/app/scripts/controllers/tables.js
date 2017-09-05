@@ -102,10 +102,16 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     };
 
     $scope.applyAllCodeSys = function (applyCodeSysValue) {
-        for (var i = 0, len = $rootScope.table.codes.length; i < len; i++) {
-            $rootScope.table.codes[i].codeSystem = applyCodeSysValue;
+        // $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
+        // $rootScope.table.smallCodes = _.difference($rootScope.table.smallCodes, $scope.selectedCodes);
+
+
+        for (var i = 0, len = $scope.selectedCodes.length; i < len; i++) {
+            $scope.selectedCodes[i].codeSystem = applyCodeSysValue;
         }
-        $scope.setDirty();
+        $scope.selectedCodes = [];
+
+        // $scope.setDirty();
     };
 
     $scope.isBindingChanged = function() {

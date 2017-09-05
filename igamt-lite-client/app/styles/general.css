@@ -3100,3 +3100,8 @@ md-select[disabled] .md-select-value {
     height: 49px;
     overflow: scroll;
 }
+.inputLabel{
+    margin-left: 10px;
+    margin-right:60px;
+    margin-top: 10px;
+}

@@ -169,25 +169,18 @@
                                                                     </md-option>
                                                                 </md-select>
                                                             </md-input-container>
-                                                        <label class="input-left igamt-label valueset-ext-label"> Source Code Systems</label>
-
-                                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                            <input ng-model="codeSystems" type="text" disabled />
-                                                        </md-input-container>
                                                             </div>
-                                                            <h4 class="md-title">Source Code System</h4>
+                                                            <label class="input-left igamt-label valueset-ext-label">Source Code System</label>
 
                                                             <md-chips
                                                                     ng-model="table.codeSystems"
                                                                     readonly="false"
                                                                     md-removable="true"
-                                                                    md-on-remove="removeCodeSystem(table,$chip)"
+                                                                    md-on-remove="removeCodeSystem($chip)"
                                                                     placeholder="Add Code"
                                                                     delete-button-label="Remove code"
                                                                     delete-hint="Press Delete to remove code System"
-                                                                    secondary-placeholder="Click to add Code System"
-                                                                    md-enable-chip-edit="true"></md-chips>
-
+                                                                    secondary-placeholder="Click to add Code System"></md-chips>
                                                         </div>
 
                                                         <div ng-if="isNonEditableValueSet(table)">
@@ -195,25 +188,24 @@
                                                             <div class="inside-metadata" layout-gt-sm="row">
 
                                                                 <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
+                                                                <span class="inputLabel">{{table.extensibility}} </span>
 
-                                                                {{table.extensibility}}
                                                                 <label class="input-left igamt-label valueset-ext-label">Stability</label>
-                                                                {{table.stability}}
+                                                                <span class="inputLabel">{{table.stability}}</span>
 
                                                                 <label class="input-left igamt-label valueset-ext-label">Content Definition</label>
-
-                                                                {{table.contentDefinition}}
+                                                                <span class="inputLabel">{{table.contentDefinition}}</span>
 
 
                                                             </div>
-                                                            <h4 class="md-title">Source Code System</h4>
+                                                            <label class="input-left igamt-label valueset-ext-label">Source Code System</label>
 
-                                                            <md-chips>
-                                                                <md-chip ng-repeat="codeSystem in table.codeSystems">
-                                                                    {{codeSystem}}
-                                                                </md-chip>
-                                                            </md-chips>
-                                                            <br/>
+                                                                <md-chips
+                                                                        ng-model="table.codeSystems"
+                                                                        readonly="true"
+                                                                        md-removable="false"
+                                                                        placeholder="Add Code"></md-chips>
+                                                                </md-chips>
                                                             <md-divider></md-divider>
                                                         </div>
                                                             <div class="codes-container">
@@ -229,18 +221,35 @@
                                                                 </md-input-container>
                                                             </span>
                                                             <span class="pull-right" style="margin-bottom: 10px" ng-if="!definitionDisabled(table)">
-                                                                 <span class="btn-group btn-group-sm btn-warning" role="group" aria-label="..." style="margin-top:10px">
+                                                                        <md-input-container class="normal">
+                                                                   <md-select placeholder="Select CodeSys for all"
+                                                                              ng-change="applyAllCodeSys(applyCodeSysValue);"
+                                                                              ng-model="applyCodeSysValue">
+                                                                                        <md-option ng-repeat="cs in table.codeSystems" ng-value="cs">
+                                                                                            {{cs}}
+                                                                                        </md-option>
+                                                                                    </md-select>
+                                                                   </md-input-container>
+
+                                                                 <span  class="btn-group btn-group-sm btn-warning" role="group" aria-label="..." style="margin-top:10px">
                                                                                 <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'R'" type="button" ng-click="setSelectedCodesUsage(table, 'R')" class="btn btn-raised btn-sm btn-warning">R</button>
                                                                                 <button ng-disabled="selectedCodes.length===0"  title="Set selected codes usage to 'P'" type="button" ng-click="setSelectedCodesUsage(table, 'P')" class="btn btn-raised btn-sm btn-warning">P</button>
                                                                                 <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'E'" type="button" ng-click="setSelectedCodesUsage(table, 'E')" class="btn btn-raised btn-sm btn-warning">E</button>
                                                                  </span>
-
-                                                                <button title="Add New Code" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
-                                                                    <span><i class="fa fa-plus fa-fw"></i>Add Code</span>
-                                                                </button>
-                                                                <button title="Delete selected codes" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
+       <button  title="Delete selected codes" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
                                                                     <i class="fa fa-trash-o fa-fw"></i>Delete Codes <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
                                                                 </button>
+                                                                <button  title="Add New Code" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
+                                                                    <span><i class="fa fa-plus fa-fw"></i>Add Code</span>
+                                                                </button>
+
+
+
+
+
+
+
+
                                                             </span>
 
                                                             <div>
@@ -288,13 +297,8 @@
                                                                         <th>
                                                                             <div layout="row">
                                                                                 <md-input-container flex="100" class="normal">
-                                                                                    <md-select placeholder="Select CodeSys for all" class="margin-19"
-                                                                                               ng-change="applyAllCodeSys(applyCodeSysValue);"
-                                                                                               ng-model="applyCodeSysValue">
-                                                                                        <md-option ng-repeat="cs in codeSystems" ng-value="cs">
-                                                                                            {{::cs}}
-                                                                                        </md-option>
-                                                                                    </md-select>
+                                                                                    <label></label>
+                                                                                    <input st-search="'codeSystem'" placeholder="Search for Code System" type="search" />
                                                                                 </md-input-container>
                                                                             </div>
                                                                         </th>
@@ -342,7 +346,7 @@
                                                                                                    ng-disabled="definitionDisabled(table)"
                                                                                                    ng-model="c.codeSystem">
                                                                                             <md-option ng-repeat="cs in table.codeSystems" ng-value="cs">
-                                                                                                {{::cs}}
+                                                                                                {{cs}}
                                                                                             </md-option>
                                                                                         </md-select>
                                                                                     </md-input-container>
@@ -755,7 +759,6 @@
                                                 </tr>
 
                                                 </thead>
-
                                                 <tbody>
                                                 <tr ng-repeat="ref in crossRef.messageConformanceStatmentFounds track by $index">
                                                     <td st-ratio="5">{{$index + 1}}
@@ -773,8 +776,6 @@
                                                         {{::ref.conformanceStatement.constraintId}}
                                                     </td>
 
-
-
                                                 </tr>
                                                 </tbody>
 
@@ -786,7 +787,6 @@
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <th>Segment</th>
-
                                                     <th>Constraint Id </th>
                                                 </tr>
 
@@ -800,13 +800,9 @@
                                                     <td>
                                                         {{::ref.conformanceStatement.constraintId}}
                                                     </td>
-
-
                                                 </tr>
                                                 </tbody>
-
                                             </table>
-
                                         </div>
                                         <div ng-if="crossRef.datatypeConformanceStatmentFounds.length">
                                             <h4> Data Type Conformance Statements </h4>
@@ -817,9 +813,7 @@
 
                                                     <th>Constraint Id </th>
                                                 </tr>
-
                                                 </thead>
-
                                                 <tbody>
                                                 <tr ng-repeat="ref in crossRef.datatypeConformanceStatmentFounds track by $index">
                                                     <td>
@@ -828,11 +822,8 @@
                                                     <td>
                                                         {{::ref.conformanceStatement.constraintId}}
                                                     </td>
-
-
                                                 </tr>
                                                 </tbody>
-
                                             </table>
 
                                         </div>

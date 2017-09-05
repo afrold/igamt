@@ -218,4 +218,11 @@ public class TableServiceImpl implements TableService {
     // TODO Auto-generated method stub
     tableRepository.updateCodeSystem(id, codesSystemtoAdd);
   }
+
+
+  @Override
+  public void updateAttributes(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    tableRepository.updateAttributes(id, attributeName, value);
+  }
 }

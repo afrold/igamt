@@ -68,4 +68,7 @@ public interface TableService {
 
   void updateCodeSystem(String id, Set<String> codesSystemtoAdd);
 
+  void updateAttributes(String id, String attributeName, Object value);
+
+
 }

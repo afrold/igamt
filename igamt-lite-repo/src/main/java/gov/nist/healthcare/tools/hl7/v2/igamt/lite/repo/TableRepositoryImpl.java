@@ -209,6 +209,25 @@ public class TableRepositoryImpl implements TableOperations {
 
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableOperations#updateAttributes(java.lang.
+   * String, java.lang.String)
+   */
+  @Override
+  public void updateAttributes(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    query.fields().include(attributeName);
+    Update update = new Update();
+    update.set(attributeName, value);
+    mongo.updateFirst(query, update, Table.class);
+
+  }
+
   // Query set4Brevis(Query qry) {
   // qry.fields().include("_id");
   // qry.fields().include("name");

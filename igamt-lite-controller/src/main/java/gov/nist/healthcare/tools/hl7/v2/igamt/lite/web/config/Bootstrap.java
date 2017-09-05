@@ -43,6 +43,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
@@ -54,6 +55,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFont;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportFontConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -71,6 +73,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SubProfileComponentAttributes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
@@ -287,17 +290,41 @@ public class Bootstrap implements InitializingBean {
     // fixCodeSysLOINC();
     // fixAllConstraints();
     // SetTablePreText();
-    AddCodeSystemtoAllTables();
+    // AddCodeSystemtoAllTables();
+    // initializeAttributes();
   }
 
   private void SetTablePreText() {
-    List<Table> allPhinVades = tableService.findAll();
-    for (Table t : allPhinVades) {
+    List<Table> all = tableService.findAll();
+    for (Table t : all) {
       t.setDefPreText(t.getDescription());
       tableService.updateDescription(t.getId(), t.getDescription());
     }
     // tableService.save(allPhinVades);
+  }
 
+  private void initializeAttributes() {
+
+    List<Table> allPH = tableService.findByScope(SCOPE.PHINVADS.toString());
+    for (Table t : allPH) {
+
+      tableService.updateAttributes(t.getId(), "stability", Stability.fromValue("Undefined"));
+      tableService.updateAttributes(t.getId(), "contentDefinition",
+          ContentDefinition.fromValue("Undefined"));
+      tableService.updateAttributes(t.getId(), "extensibility",
+          Extensibility.fromValue("Undefined"));
+
+    }
+    List<Table> allHl7 = tableService.findByScope(SCOPE.HL7STANDARD.toString());
+    for (Table t : allHl7) {
+
+      tableService.updateAttributes(t.getId(), "stability", Stability.fromValue("Undefined"));
+      tableService.updateAttributes(t.getId(), "contentDefinition",
+          ContentDefinition.fromValue("Undefined"));
+      tableService.updateAttributes(t.getId(), "extensibility",
+          Extensibility.fromValue("Undefined"));
+
+    }
 
   }
 
