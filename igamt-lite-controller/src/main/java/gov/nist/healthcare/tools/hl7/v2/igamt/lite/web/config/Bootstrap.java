@@ -298,43 +298,92 @@ public class Bootstrap implements InitializingBean {
 //    fixAllConstraints();
     // SetTablePreText();
     // fixDuplicatedVS();
-    fixCoConOBX2DT();
+
+    fixCoConstraintsDTVS();
     
   }
 
-  private void fixCoConOBX2DT() {
-    List<Segment> segments = segmentService.findAll();
-    for (Segment s : segments) {
+
+  private void fixCoConstraintsDTVS() {
+    List<IGDocument> allIGs = documentService.findAll();
+    int count = 0;
+    for(IGDocument ig:allIGs){
+      System.out.println("-----------" + count++);
+      Profile p = ig.getProfile();
       
-      CoConstraintsTable table = s.getCoConstraintsTable();
-      if(table != null && table.getThenColumnDefinitionList() != null){
-        for(CoConstraintColumnDefinition coConstraintColumnDefinition : table.getThenColumnDefinitionList()){
-          if(coConstraintColumnDefinition.getConstraintType().equals("dmr")){
-            List<CoConstraintTHENColumnData> dataList = table.getThenMapData().get(coConstraintColumnDefinition.getId());
-            if(dataList != null){
-              for(CoConstraintTHENColumnData data : dataList){
-                System.out.println("--------------------------");
-                if(data != null && data.getValueData() != null && data.getValueData().getValue() != null){
-                  System.out.println(data.getValueData().getValue());
-                  System.out.println(data.getDatatypeId());
-                  if(data.getDatatypeId() != null){
-                    Datatype dt = datatypeService.findById(data.getDatatypeId());
-                    if(dt != null) {
-                      System.out.println(dt.getName());
-                      
-                      if(!dt.getName().equals(data.getValueData().getValue())){
-                        System.out.println("========================================> Found error!!");
-                        data.getValueData().setValue(null);
-                      }
-                    }
-                  }                  
-                }
-              }
-            }
-          }
-        }
+      DatatypeLibrary dtLib = p.getDatatypeLibrary();
+      TableLibrary tLib = p.getTableLibrary();
+      SegmentLibrary sLib = p.getSegmentLibrary();
+      
+      for(SegmentLink sl:sLib.getChildren()){
+       if(sl != null && sl.getId() != null){
+         boolean flag = false;
+         Segment seg = segmentService.findById(sl.getId());
+         if(seg != null && seg.getName().equals("OBX")){
+           if(seg.getCoConstraintsTable() != null){
+
+             CoConstraintsTable coConstraintsTable = seg.getCoConstraintsTable();
+             List<CoConstraintColumnDefinition> thenDefinitions = coConstraintsTable.getThenColumnDefinitionList();
+             for(CoConstraintColumnDefinition thenDefinition : thenDefinitions){
+               if(thenDefinition != null){
+                 Map<String, List<CoConstraintTHENColumnData>> thenMapData = coConstraintsTable.getThenMapData();
+                 if(thenMapData != null){
+                   List<CoConstraintTHENColumnData> coConstraintTHENColumnData = thenMapData.get(thenDefinition.getId());
+                   
+                   for(CoConstraintTHENColumnData thenData:coConstraintTHENColumnData){
+                     
+                     if(thenData != null){
+                       if(thenData.getDatatypeId() != null){
+                         DatatypeLink dl = dtLib.findOne(thenData.getDatatypeId());
+                         
+                         if(dl == null) {
+                           System.out.println("==================>" + "found missing DT");
+                           thenData.setDatatypeId(null);
+                           
+                           flag = true;
+                           
+                         }else {
+                           System.out.println("==================>" + "Good DT");
+                         }
+                       }
+                       
+                       if(thenData.getValueSets() != null){
+                         List<ValueSetData> toBeDeletedVSDataList = new ArrayList<ValueSetData>();
+                         for(ValueSetData vsData : thenData.getValueSets()){
+                           if(vsData != null){
+                             if(vsData.getTableId() != null){
+                               TableLink tl = tLib.findOneTableById(vsData.getTableId());
+                               
+                               if(tl == null) {
+                                 System.out.println("==================>" + "found missing VS");
+                                 toBeDeletedVSDataList.add(vsData);
+                                 flag = true;
+                               }else {
+                                 System.out.println("==================>" + "Good VS");
+                               }
+                             }
+                           }
+                         }
+                         
+                         
+                         for(ValueSetData toBeDeletedVSData : toBeDeletedVSDataList){
+                           thenData.getValueSets().remove(toBeDeletedVSData);
+                         }
+                         
+                         thenData.getValueSets().remove(null);
+                       }                       
+                     }
+                   }
+                 }
+               }
+             }
+           }
+           
+           
+           if(flag) segmentService.save(seg);
+         } 
+       }
       }
-      segmentService.save(s);
     }
   }
 
