@@ -136,11 +136,6 @@
                                 <xsl:text>Value Set</xsl:text>
                             </xsl:element>
                         </xsl:if>
-                        <xsl:if test="$columnDisplay.segment.comment = 'true'">
-                            <xsl:element name="th">
-                                <xsl:text>Comment</xsl:text>
-                            </xsl:element>
-                        </xsl:if>
                     </xsl:element>
                 </xsl:element>
                 <xsl:element name="tbody">
@@ -194,7 +189,9 @@
         <xsl:apply-templates select="./coconstraints"/>
         <xsl:apply-templates select="./ValueSetBindingList"/>
         <xsl:apply-templates select="./DynamicMapping"/>
-        <xsl:apply-templates select="./CommentList"/>
+        <xsl:if test="$columnDisplay.segment.comment = 'true'">
+        	<xsl:apply-templates select="./CommentList"/>
+       	</xsl:if>
 
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0 and ./Text[@Type='DefPostText']!='' ">
         	<xsl:element name="br"/>
