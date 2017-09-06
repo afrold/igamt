@@ -7,12 +7,14 @@
             	<xsl:text>Comments</xsl:text>
             </xsl:element>
         </xsl:element>
-        
+        <xsl:element name="br"/>
         <xsl:for-each select="Comment">
         	<xsl:sort select="@Location" data-type="number" order="ascending" />
-        	<xsl:element name="u">
-                <xsl:value-of select="@Location"/>
-                <xsl:text>:</xsl:text>
+        	<xsl:element name="span">
+                <xsl:element name="br"/>
+                <xsl:element name="b">
+            		<xsl:value-of select="concat(@Location,': ')"/>
+           		</xsl:element>
             </xsl:element>
             <xsl:value-of disable-output-escaping="yes" select="@Description"/>
         </xsl:for-each>
