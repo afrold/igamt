@@ -225,6 +225,9 @@ public class Segment extends DataModelWithConstraints
     for (ConformanceStatement cs : this.conformanceStatements) {
       clonedSegment.addConformanceStatement(cs.clone());
     }
+    
+    clonedSegment.setCoConstraintsTable(this.coConstraintsTable.clone());
+    clonedSegment.setDynamicMappingDefinition(this.dynamicMappingDefinition.clone());
 
     clonedSegment.setLabel(label);
     clonedSegment.setName(name);
