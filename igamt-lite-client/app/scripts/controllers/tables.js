@@ -287,6 +287,39 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         }
         $scope.setDirty();
     };
+
+    $scope.isValidTable = function () {
+        var valueCodeSystemList = [];
+        var labelCodeSystemList = [];
+
+        for (var i = 0; i < $rootScope.table.smallCodes.length; i++) {
+            var value = $rootScope.table.smallCodes[i].value;
+            var label = $rootScope.table.smallCodes[i].label;
+            var codeSystem = $rootScope.table.smallCodes[i].codeSystem;
+
+            if(!value || value === '') return false;
+            if(!label || label === '') return false;
+            if(!codeSystem || codeSystem === '') return false;
+
+            var valueCodeSystem = value + codeSystem;
+            var labelCodeSystem = label + codeSystem;
+
+
+            if ($.inArray(valueCodeSystem,valueCodeSystemList) === -1) {
+                valueCodeSystemList.push(valueCodeSystem);
+            }else {
+                return false;
+            }
+
+            if ($.inArray(labelCodeSystem,labelCodeSystemList) === -1) {
+                labelCodeSystemList.push(labelCodeSystem);
+            }else {
+                return false;
+            }
+        }
+        return true;
+    };
+
     $rootScope.checkAll = false;
     $scope.ProcessChecking = function(checkAll) {
         if (checkAll) {
