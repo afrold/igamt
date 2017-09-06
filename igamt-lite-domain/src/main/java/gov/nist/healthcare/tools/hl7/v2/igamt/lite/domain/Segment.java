@@ -56,7 +56,7 @@ public class Segment extends DataModelWithConstraints
   private String name;
 
   private String description;
-
+  @Deprecated
   protected String comment = "";
 
   private String text1 = "";
@@ -189,6 +189,7 @@ public class Segment extends DataModelWithConstraints
     this.dynamicMapping = dynamicMapping;
   }
 
+  @Override
   public Segment clone() throws CloneNotSupportedException {
     Segment clonedSegment = new Segment();
     clonedSegment.setComment(comment);
@@ -425,31 +426,42 @@ public class Segment extends DataModelWithConstraints
                 .getThenColumnDefinitionList()) {
               index = index + 1;
               if (definitionThen != null && definitionThen.getId() != null) {
-                CoConstraintTHENColumnData thenData = this.coConstraintsTable.getThenMapData().get(definitionThen.getId()).get(i);
+                CoConstraintTHENColumnData thenData =
+                    this.coConstraintsTable.getThenMapData().get(definitionThen.getId()).get(i);
                 String ifDescription = this.generateIFDescription(definitionIF, ifData);
                 String ifAssertion = this.generateIFAssertion(definitionIF, ifData);
                 String thenDescription = null;
                 String thenAssertion = null;
                 if (isValidData(thenData, definitionThen, tablesMap)) {
                   String constraintId = this.getLabel() + "-CoConstraint-" + (i + 1) + "-" + index;
-                  if(isOBX5(definitionThen.getPath())){
-                    if(thenData.getValueSets() != null && thenData.getValueSets().size() > 0){
-                      thenDescription = this.generateTHENDescirptionForValueSet(definitionThen, thenData, tablesMap);
-                      thenAssertion = this.generateTHENAssertionForValueSet(definitionThen, thenData, tablesMap);
-                    }else if (thenData.getValueData() != null && thenData.getValueData().getValue() != null){
-                      thenDescription = this.generateTHENDescirptionForValue(definitionThen, thenData);
-                      thenAssertion = this.generateTHENAssertionForValue(definitionThen, thenData);     
+                  if (isOBX5(definitionThen.getPath())) {
+                    if (thenData.getValueSets() != null && thenData.getValueSets().size() > 0) {
+                      thenDescription = this.generateTHENDescirptionForValueSet(definitionThen,
+                          thenData, tablesMap);
+                      thenAssertion = this.generateTHENAssertionForValueSet(definitionThen,
+                          thenData, tablesMap);
+                    } else if (thenData.getValueData() != null
+                        && thenData.getValueData().getValue() != null) {
+                      thenDescription =
+                          this.generateTHENDescirptionForValue(definitionThen, thenData);
+                      thenAssertion = this.generateTHENAssertionForValue(definitionThen, thenData);
                     }
-                  }else if (definitionThen.getConstraintType().equals("value") || definitionThen.getConstraintType().equals("dmr")) {
-                    thenDescription = this.generateTHENDescirptionForValue(definitionThen, thenData);
-                    thenAssertion = this.generateTHENAssertionForValue(definitionThen, thenData);                    
+                  } else if (definitionThen.getConstraintType().equals("value")
+                      || definitionThen.getConstraintType().equals("dmr")) {
+                    thenDescription =
+                        this.generateTHENDescirptionForValue(definitionThen, thenData);
+                    thenAssertion = this.generateTHENAssertionForValue(definitionThen, thenData);
                   } else if (definitionThen.getConstraintType().equals("valueset")) {
-                    thenDescription = this.generateTHENDescirptionForValueSet(definitionThen, thenData, tablesMap);
-                    thenAssertion = this.generateTHENAssertionForValueSet(definitionThen, thenData, tablesMap);
+                    thenDescription = this.generateTHENDescirptionForValueSet(definitionThen,
+                        thenData, tablesMap);
+                    thenAssertion =
+                        this.generateTHENAssertionForValueSet(definitionThen, thenData, tablesMap);
                   }
 
-                  String description = "[CoConstraint-" + (i + 1) + "-" + index + "]" + ifDescription + thenDescription;
-                  String assertion ="<Assertion><IMPLY>" + ifAssertion + thenAssertion + "</IMPLY></Assertion>";
+                  String description = "[CoConstraint-" + (i + 1) + "-" + index + "]"
+                      + ifDescription + thenDescription;
+                  String assertion =
+                      "<Assertion><IMPLY>" + ifAssertion + thenAssertion + "</IMPLY></Assertion>";
                   ConformanceStatement cs = new ConformanceStatement();
                   cs.setId(ObjectId.get().toString());
                   cs.setConstraintId(constraintId);
@@ -468,57 +480,50 @@ public class Segment extends DataModelWithConstraints
 
     return results;
   }
-  
-  private String generateTHENDescirptionForValue(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData){
-    return "then the value of " + this.getName() + "-"
-        + definitionThen.getConstraintPath() + " (" + definitionThen.getName()
-        + ") should be '" + thenData.getValueData().getValue() + "'.";
+
+  private String generateTHENDescirptionForValue(CoConstraintColumnDefinition definitionThen,
+      CoConstraintTHENColumnData thenData) {
+    return "then the value of " + this.getName() + "-" + definitionThen.getConstraintPath() + " ("
+        + definitionThen.getName() + ") should be '" + thenData.getValueData().getValue() + "'.";
   }
-  
-  private String generateTHENAssertionForValue(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData){
+
+  private String generateTHENAssertionForValue(CoConstraintColumnDefinition definitionThen,
+      CoConstraintTHENColumnData thenData) {
     if (definitionThen.isPrimitive()) {
-      return
-          "<PlainText Path=\"" + definitionThen.getConstraintPath() + "\" Text=\""
-              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
+      return "<PlainText Path=\"" + definitionThen.getConstraintPath() + "\" Text=\""
+          + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
     } else {
       if (thenData.getValueData().getBindingLocation() == null) {
-        return "<PlainText Path=\"" + definitionThen.getConstraintPath()
-            + ".1[1]" + "\" Text=\"" + thenData.getValueData().getValue()
-            + "\" IgnoreCase=\"false\"/>";
+        return "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\""
+            + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
       } else {
         // "1 or 4", "1 or 4 or 10"
         if (thenData.getValueData().getBindingLocation().equals("1 or 4")) {
-          return "<OR>" + "<PlainText Path=\""
-              + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\""
-              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]"
-              + "\" Text=\"" + thenData.getValueData().getValue()
-              + "\" IgnoreCase=\"false\"/>" + "</OR>";
-        } else if (thenData.getValueData().getBindingLocation()
-            .equals("1 or 4 or 10")) {
-          return "<OR><OR>" + "<PlainText Path=\""
-              + definitionThen.getConstraintPath() + ".1[1]" + "\" Text=\""
-              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]"
-              + "\" Text=\"" + thenData.getValueData().getValue()
-              + "\" IgnoreCase=\"false\"/>" + "</OR>" + "<PlainText Path=\""
-              + definitionThen.getConstraintPath() + ".10[1]" + "\" Text=\""
-              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
-              + "</OR>";
+          return "<OR>" + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".1[1]"
+              + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
+              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\" Text=\""
+              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>" + "</OR>";
+        } else if (thenData.getValueData().getBindingLocation().equals("1 or 4 or 10")) {
+          return "<OR><OR>" + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".1[1]"
+              + "\" Text=\"" + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>"
+              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".4[1]" + "\" Text=\""
+              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>" + "</OR>"
+              + "<PlainText Path=\"" + definitionThen.getConstraintPath() + ".10[1]" + "\" Text=\""
+              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>" + "</OR>";
         } else {
-          return "<PlainText Path=\"" + definitionThen.getConstraintPath()
-              + "." + thenData.getValueData().getBindingLocation() + "[1]"
-              + "\" Text=\"" + thenData.getValueData().getValue()
-              + "\" IgnoreCase=\"false\"/>";
+          return "<PlainText Path=\"" + definitionThen.getConstraintPath() + "."
+              + thenData.getValueData().getBindingLocation() + "[1]" + "\" Text=\""
+              + thenData.getValueData().getValue() + "\" IgnoreCase=\"false\"/>";
         }
       }
     }
   }
-  
-  private String generateTHENDescirptionForValueSet(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap){
-    String thenDescription = "then the value of " + this.getName() + "-"
-        + definitionThen.getConstraintPath() + " (" + definitionThen.getName()
-        + ") should be one of codes in ";
+
+  private String generateTHENDescirptionForValueSet(CoConstraintColumnDefinition definitionThen,
+      CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap) {
+    String thenDescription =
+        "then the value of " + this.getName() + "-" + definitionThen.getConstraintPath() + " ("
+            + definitionThen.getName() + ") should be one of codes in ";
     for (ValueSetData vs : thenData.getValueSets()) {
       Table t = tablesMap.get(vs.getTableId());
       if (t.getHl7Version() == null) {
@@ -529,27 +534,27 @@ public class Segment extends DataModelWithConstraints
       }
     }
     thenDescription = thenDescription + ".";
-    
+
     return thenDescription;
-    
+
   }
-  
-  private String generateTHENAssertionForValueSet(CoConstraintColumnDefinition definitionThen, CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap){
+
+  private String generateTHENAssertionForValueSet(CoConstraintColumnDefinition definitionThen,
+      CoConstraintTHENColumnData thenData, Map<String, Table> tablesMap) {
     if (thenData.getValueSets().size() == 1) {
       Table t = tablesMap.get(thenData.getValueSets().get(0).getTableId());
       String bid = t.getBindingIdentifier();
-      if (t.getHl7Version() != null) bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
+      if (t.getHl7Version() != null)
+        bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
       if (thenData.getValueSets().get(0).getBindingLocation() == null) {
-        return "<ValueSet Path=\"" + definitionThen.getConstraintPath()
-            + "\" ValueSetID=\"" + bid
+        return "<ValueSet Path=\"" + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid
             + "\" BindingLocation=\"1\" BindingStrength=\""
             + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
       } else {
-        String bindingLocation = thenData.getValueSets().get(0).getBindingLocation()
-            .replaceAll(" or ", ":");
-        return "<ValueSet Path=\"" + definitionThen.getConstraintPath()
-            + "\" ValueSetID=\"" + bid + "\" BindingLocation=\"" + bindingLocation
-            + "\" BindingStrength=\""
+        String bindingLocation =
+            thenData.getValueSets().get(0).getBindingLocation().replaceAll(" or ", ":");
+        return "<ValueSet Path=\"" + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid
+            + "\" BindingLocation=\"" + bindingLocation + "\" BindingStrength=\""
             + thenData.getValueSets().get(0).getBindingStrength() + "\"/>";
       }
     } else {
@@ -560,71 +565,78 @@ public class Segment extends DataModelWithConstraints
         if (t.getHl7Version() != null)
           bid = bid + "_" + t.getHl7Version().replaceAll("\\.", "-");
         String bindingLocation = null;
-        if (vs.getBindingLocation() == null){
+        if (vs.getBindingLocation() == null) {
           bindingLocation = "1";
-        }else {
-          bindingLocation = vs.getBindingLocation().replaceAll(" or ", ":");  
+        } else {
+          bindingLocation = vs.getBindingLocation().replaceAll(" or ", ":");
         }
-        thenAssertion = thenAssertion + "<ValueSet Path=\""
-            + definitionThen.getConstraintPath() + "\" ValueSetID=\"" + bid
-            + "\" BindingLocation=\"" + bindingLocation + "\" BindingStrength=\""
-            + vs.getBindingStrength() + "\"/>";
+        thenAssertion = thenAssertion + "<ValueSet Path=\"" + definitionThen.getConstraintPath()
+            + "\" ValueSetID=\"" + bid + "\" BindingLocation=\"" + bindingLocation
+            + "\" BindingStrength=\"" + vs.getBindingStrength() + "\"/>";
       }
       thenAssertion = thenAssertion + "</EXIST>";
-      
+
       return thenAssertion;
     }
   }
 
-  private String generateIFDescription(CoConstraintColumnDefinition definitionIF, CoConstraintIFColumnData ifData){
-    return "If the value of " + this.getName() + "-"
-        + definitionIF.getConstraintPath() + " (" + definitionIF.getName() + ") is '"
-        + ifData.getValueData().getValue() + "',";
+  private String generateIFDescription(CoConstraintColumnDefinition definitionIF,
+      CoConstraintIFColumnData ifData) {
+    return "If the value of " + this.getName() + "-" + definitionIF.getConstraintPath() + " ("
+        + definitionIF.getName() + ") is '" + ifData.getValueData().getValue() + "',";
   }
-  
-  private String generateIFAssertion(CoConstraintColumnDefinition definitionIF, CoConstraintIFColumnData ifData) {
+
+  private String generateIFAssertion(CoConstraintColumnDefinition definitionIF,
+      CoConstraintIFColumnData ifData) {
     if (definitionIF.isPrimitive()) {
-      return "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + "\" Text=\"" + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>";
+      return "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + "\"/><PlainText Path=\""
+          + definitionIF.getConstraintPath() + "\" Text=\"" + ifData.getValueData().getValue()
+          + "\" IgnoreCase=\"false\"/></AND>";
     } else {
       if (ifData.getValueData().getBindingLocation() == null) {
-        return "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".1[1]" + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath()
-            + ".1[1]" + "\" Text=\"" + ifData.getValueData().getValue()
-            + "\" IgnoreCase=\"false\"/></AND>";
+        return "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".1[1]"
+            + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + ".1[1]" + "\" Text=\""
+            + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>";
       } else {
         // "1 or 4", "1 or 4 or 10"
         if (ifData.getValueData().getBindingLocation().equals("1 or 4")) {
-          return "<OR><AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".1[1]" + "\"/><PlainText Path=\""
-              + definitionIF.getConstraintPath() + ".1[1]" + "\" Text=\""
+          return "<OR><AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".1[1]"
+              + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + ".1[1]" + "\" Text=\""
               + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>"
-              + "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".4[1]" + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + ".4[1]"
-              + "\" Text=\"" + ifData.getValueData().getValue()
-              + "\" IgnoreCase=\"false\"/></AND>" + "</OR>";
+              + "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".4[1]"
+              + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + ".4[1]" + "\" Text=\""
+              + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>" + "</OR>";
         } else if (ifData.getValueData().getBindingLocation().equals("1 or 4 or 10")) {
-          return
-              "<OR><OR><AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".1[1]" + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath()
-                  + ".1[1]" + "\" Text=\"" + ifData.getValueData().getValue()
-                  + "\" IgnoreCase=\"false\"/></AND>" + "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".4[1]" + "\"/><PlainText Path=\""
-                  + definitionIF.getConstraintPath() + ".4[1]" + "\" Text=\""
-                  + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>"
-                  + "</OR><AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".10[1]" + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath()
-                  + ".10[1]" + "\" Text=\"" + ifData.getValueData().getValue()
-                  + "\" IgnoreCase=\"false\"/></AND></OR>";
+          return "<OR><OR><AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".1[1]"
+              + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + ".1[1]" + "\" Text=\""
+              + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>"
+              + "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".4[1]"
+              + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + ".4[1]" + "\" Text=\""
+              + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>"
+              + "</OR><AND><Presence Path=\"" + definitionIF.getConstraintPath() + ".10[1]"
+              + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + ".10[1]"
+              + "\" Text=\"" + ifData.getValueData().getValue()
+              + "\" IgnoreCase=\"false\"/></AND></OR>";
         } else {
-          return "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + "." + ifData.getValueData().getBindingLocation() + "[1]" + "\"/><PlainText Path=\"" + definitionIF.getConstraintPath() + "."
-              + ifData.getValueData().getBindingLocation() + "[1]" + "\" Text=\""
-              + ifData.getValueData().getValue() + "\" IgnoreCase=\"false\"/></AND>";
+          return "<AND><Presence Path=\"" + definitionIF.getConstraintPath() + "."
+              + ifData.getValueData().getBindingLocation() + "[1]" + "\"/><PlainText Path=\""
+              + definitionIF.getConstraintPath() + "." + ifData.getValueData().getBindingLocation()
+              + "[1]" + "\" Text=\"" + ifData.getValueData().getValue()
+              + "\" IgnoreCase=\"false\"/></AND>";
         }
       }
     }
   }
+
   private boolean isOBX5(String path) {
     if (this.getName().equals("OBX") && path.equals("5"))
       return true;
     return false;
   }
 
-  private boolean isValidData(CoConstraintTHENColumnData thenData, CoConstraintColumnDefinition definitionThen, Map<String, Table> tablesMap) {
-    if(isOBX5(definitionThen.getPath())){
+  private boolean isValidData(CoConstraintTHENColumnData thenData,
+      CoConstraintColumnDefinition definitionThen, Map<String, Table> tablesMap) {
+    if (isOBX5(definitionThen.getPath())) {
       if (thenData.getValueSets() != null && thenData.getValueSets().size() > 0) {
         boolean isValueSetValid = true;
         for (ValueSetData vsd : thenData.getValueSets()) {
@@ -640,11 +652,14 @@ public class Segment extends DataModelWithConstraints
         if (isValueSetValid)
           return true;
       }
-      if (thenData.getValueData() != null && thenData.getValueData().getValue() != null && !thenData.getValueData().getValue().equals("")) {
+      if (thenData.getValueData() != null && thenData.getValueData().getValue() != null
+          && !thenData.getValueData().getValue().equals("")) {
         return true;
       }
-    }else if (definitionThen.getConstraintType().equals("value") || definitionThen.getConstraintType().equals("dmr")) {
-      if (thenData.getValueData() != null && thenData.getValueData().getValue() != null && !thenData.getValueData().getValue().equals("")) {
+    } else if (definitionThen.getConstraintType().equals("value")
+        || definitionThen.getConstraintType().equals("dmr")) {
+      if (thenData.getValueData() != null && thenData.getValueData().getValue() != null
+          && !thenData.getValueData().getValue().equals("")) {
         return true;
       }
     } else if (definitionThen.getConstraintType().equals("valueset")) {

@@ -114,22 +114,34 @@ public class SegmentServiceImpl implements SegmentService {
     segmentRepository.delete(segments);
   }
 
-@Override
-public List<Segment> findByScope(String scope) {
-	segmentRepository.findByScope(scope);
-	return null;
-}
+  @Override
+  public List<Segment> findByScope(String scope) {
+    return segmentRepository.findByScope(scope);
+  }
 
-@Override
-public List<Segment> findByNameAndScope(String name, String scope) {
-	
-	return segmentRepository.findByNameAndScope(name, scope);
-}
+  @Override
+  public List<Segment> findByNameAndScope(String name, String scope) {
 
-@Override
-public List<Segment> findByScopeAndVersion(String name, String hl7Version) {
-	return segmentRepository.findByScopeAndVersion(name,hl7Version);
-}
+    return segmentRepository.findByNameAndScope(name, scope);
+  }
+
+  @Override
+  public List<Segment> findByScopeAndVersion(String name, String hl7Version) {
+    return segmentRepository.findByScopeAndVersion(name, hl7Version);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService#updateAttribute(java.lang.
+   * String, java.lang.String, java.lang.Object)
+   */
+  @Override
+  public void updateAttribute(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    segmentRepository.updateAttribute(id, attributeName, value);
+  }
 
 
 

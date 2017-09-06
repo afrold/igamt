@@ -20,43 +20,47 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 
 public interface MessageService {
 
-	Message findById(String id);
+  Message findById(String id);
 
-	Message save(Message message);
+  Message save(Message message);
 
-	void delete(Message message);
+  void delete(Message message);
 
-	void delete(String id);
+  void delete(String id);
 
-	// Message save(Set<Message> messages);
+  // Message save(Set<Message> messages);
 
-	void save(Set<Message> messages);
+  void save(Set<Message> messages);
 
-	List<Message> findByIds(Set<String> ids);
+  List<Message> findByIds(Set<String> ids);
 
-	int findMaxPosition(Messages msgs);
+  int findMaxPosition(Messages msgs);
 
-	List<Message> findByNamesScopeAndVersion(String name, String structId, String scope, String hl7Version);
+  List<Message> findByNamesScopeAndVersion(String name, String structId, String scope,
+      String hl7Version);
 
-	Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version);
-	
-	List<Message> findAll();
+  Message findByStructIdAndScopeAndVersion(String structId, String scope, String hl7Version);
 
-	public Date updateDate(String id, Date date);
+  List<Message> findAll();
 
-	Message save(Message message, Date dateUpdated);
+  public Date updateDate(String id, Date date);
 
-	List<Message> findByNameAndScope(String name, String scope);
+  Message save(Message message, Date dateUpdated);
 
-	List<Message> findByScope(String scope);
+  List<Message> findByNameAndScope(String name, String scope);
 
-	Message findByNameAndVersionAndScope(String name, String hl7Version, String scope);
+  List<Message> findByScope(String scope);
 
-	List<Message> findByScopeAndVersion(String name, String hl7Version);
+  Message findByNameAndVersionAndScope(String name, String hl7Version, String scope);
 
-	Message findByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
+  List<Message> findByScopeAndVersion(String name, String hl7Version);
+
+  Message findByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
       String hl7Version, String scope);
 
-	List<Message> findAllByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
-		String hl7Version, String scope);
+  List<Message> findAllByMessageTypeAndEventAndVersionAndScope(String messageType, String event,
+      String hl7Version, String scope);
+
+  void updateAttribute(String id, String attributeName, Object value);
+
 }

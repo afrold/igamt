@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileComponent;
 
@@ -23,6 +24,25 @@ public class ProfileComponentRepositoryImpl implements ProfileComponentOperation
     Query qry = Query.query(where);
     List<ProfileComponent> profileComponents = mongo.find(qry, ProfileComponent.class);
     return profileComponents;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileComponentOperations#updateAttribute(
+   * java.lang.String, java.lang.String, java.lang.Object)
+   */
+  @Override
+  public void updateAttribute(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    query.fields().include(attributeName);
+    Update update = new Update();
+    update.set(attributeName, value);
+    mongo.updateFirst(query, update, ProfileComponent.class);
+
   }
 
 }

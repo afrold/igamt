@@ -22,6 +22,8 @@ public interface ProfileComponentService {
 
   void delete(List<ProfileComponent> profileComponents);
 
+  void updateAttribute(String id, String attributeName, Object value);
+
 
 
 }

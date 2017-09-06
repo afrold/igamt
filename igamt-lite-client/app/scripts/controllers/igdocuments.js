@@ -2009,18 +2009,24 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
             return $scope.viewSettings.tableReadonly||table.status == 'PUBLISHED';
         };
         $rootScope.definitionDisabled=function(table){
-           return $rootScope.isNonEditableValueSet(table)|| table.extensibility=='NA';
+           return $rootScope.isNonEditableValueSet(table)|| table.extensibility=='Not Defined';
+        };
+        $rootScope.removeCodeSystem=function(chip){
+
+                angular.forEach($rootScope.table.smallCodes, function (code) {
+                    if(code.codeSystem===chip){
+                        console.log("found");
+                        code.codeSystem=null;
+                    }
+                });
+
         };
 
 
         $scope.selectTable = function (t) {
             $rootScope.Activate(t.id);
             var table = angular.copy(t);
-            // if ($scope.viewSettings.tableReadonly || table.status == 'PUBLISHED') {
-            //     $rootScope.subview = "ReadValueSets.html";
-            // } else {
-                $rootScope.subview = "EditValueSets.html";
-           // }
+            $rootScope.subview = "EditValueSets.html";
             $scope.loadingSelection = true;
             blockUI.start();
             try {
@@ -2030,24 +2036,14 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                     $rootScope.currentData = $rootScope.table;
                     $rootScope.codeSystems = [];
                     console.log($rootScope.table);
-
-                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
-                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
-                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
-                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
-                            }
-                        }
-                    }
+                    $rootScope.codeSystems=$rootScope.table.codeSystems;
                     $rootScope.table.smallCodes = $rootScope.table.codes.slice(0, 1000);
                     $rootScope.table.smallCodes.sort($scope.codeCompare);
                     $rootScope.entireTable=angular.copy($rootScope.table);
-
                    // $rootScope.findValueSetBindings();
                     $scope.loadingSelection = false;
                     TableService.crossRef($rootScope.table,$rootScope.igdocument.id).then(function (result) {
                         $rootScope.crossRef = result;
-                        console.log($rootScope.crossRef);
-
                     }, function (error) {
                         $scope.loadingSelection = false;
                         $rootScope.msg().text = error.data.text;
@@ -3156,7 +3152,6 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
                 $rootScope.table = newTable;
                 $rootScope.tablesMap[newTable.id] = newTable;
 
-                $rootScope.codeSystems = [];
 
                 if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
                     $rootScope.filteredTablesList.push(newTable);
@@ -4203,7 +4198,7 @@ angular.module('igl').controller('addMorePcsToCompositeProfileCtrl',
                 id: pc.id,
                 name: pc.name,
                 description: pc.description,
-                comment: pc.comment,
+                authorNotes: pc.authorNotes,
                 pcDate: pc.dateUpdated,
                 position: angular.copy($scope.position)
             }

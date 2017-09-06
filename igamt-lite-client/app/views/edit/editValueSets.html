@@ -85,6 +85,7 @@
                                                        id="hl7Section"
                                                        ng-model="table.hl7Section" />
                                             </md-input-container>
+
                                             <label class="input-left igamt-label" ng-show="!isNonEditableValueSet(table)">Author Notes</label>
 
                                             <div ng-if="!isNonEditableValueSet(table)">
@@ -135,211 +136,258 @@
                                                     <md-tab-body>
 
                                             <div class="panel-primary">
-                                                <div class="">
-                                                        <div class="inside-metadata" layout-gt-sm="row">
-                                                                <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
+                                                    <div style="padding: 5px;">
 
-                                                                <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
-                                                                    <md-select  ng-disabled="isNonEditableValueSet(table)" ng-model="table.extensibility">
-                                                                        <md-option ng-repeat="extensibility in config.tableExtensibilities" ng-value="extensibility">
-                                                                            {{extensibility}}
-                                                                        </md-option>
-                                                                    </md-select>
-                                                                </md-input-container>
-                                                        <label class="input-left igamt-label valueset-ext-label">Stability</label>
+                                                        <div ng-if="!isNonEditableValueSet(table)">
+                                                        <md-subheader style="color:#1565c0;">Value Set Definition Attribute</md-subheader>
+                                                            <div class="inside-metadata" layout-gt-sm="row">
 
-                                                        <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
-                                                            <md-select  ng-disabled="isNonEditableValueSet(table)"  ng-model="table.stability">
-                                                                <md-option ng-repeat="stability in config.tableStabilities" ng-value="stability">
-                                                                    {{stability}}
-                                                                </md-option>
-                                                            </md-select>
-                                                        </md-input-container>
-                                                        <label class="input-left igamt-label valueset-ext-label">Content Definition</label>
+                                                                    <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
 
-                                                        <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
-                                                            <md-select  ng-disabled="isNonEditableValueSet(table)" ng-model="table.contentDefinition">
-                                                                <md-option ng-repeat="contentDefinition in config.tableContentDefinitions" ng-value="contentDefinition">
-                                                                    {{contentDefinition}}
-                                                                </md-option>
-                                                            </md-select>
-                                                        </md-input-container>
-                                                    <label class="input-left igamt-label valueset-ext-label">Code Systems</label>
+                                                                    <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
+                                                                        <md-select  ng-disabled="isNonEditableValueSet(table)" ng-model="table.extensibility">
+                                                                            <md-option ng-repeat="extensibility in config.tableExtensibilities" ng-value="extensibility">
+                                                                                {{extensibility}}
+                                                                            </md-option>
+                                                                        </md-select>
+                                                                    </md-input-container>
+                                                                <label class="input-left igamt-label valueset-ext-label">Stability</label>
 
-                                                    <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                        <input ng-model="codeSystems" type="text" disabled />
-                                                    </md-input-container>
+                                                             <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
+                                                                <md-select  ng-disabled="isNonEditableValueSet(table)"  ng-model="table.stability">
+                                                                    <md-option ng-repeat="stability in config.tableStabilities" ng-value="stability">
+                                                                        {{stability}}
+                                                                    </md-option>
+                                                                </md-select>
+                                                            </md-input-container>
+                                                            <label class="input-left igamt-label valueset-ext-label">Content Definition</label>
+
+                                                            <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
+                                                                <md-select  ng-disabled="isNonEditableValueSet(table)" ng-model="table.contentDefinition">
+                                                                    <md-option ng-repeat="contentDefinition in config.tableContentDefinitions" ng-value="contentDefinition">
+                                                                        {{contentDefinition}}
+                                                                    </md-option>
+                                                                </md-select>
+                                                            </md-input-container>
+                                                            </div>
+                                                            <label class="input-left igamt-label valueset-ext-label">Source Code System</label>
+
+                                                            <md-chips
+                                                                    ng-model="table.codeSystems"
+                                                                    readonly="false"
+                                                                    md-removable="true"
+                                                                    md-on-remove="removeCodeSystem($chip)"
+                                                                    placeholder="Add Code"
+                                                                    delete-button-label="Remove code"
+                                                                    delete-hint="Press Delete to remove code System"
+                                                                    secondary-placeholder="Click to add Code System"></md-chips>
                                                         </div>
 
-                                                        <span class="pull-left">
-                                                            <span>Codes Per Page : </span>
-                                                            <md-input-container class="normal">
-                                                                <label></label>
-                                                                <input type="number" ng-model="itemsByPage" no-dirty-check/>
-                                                            </md-input-container>
-                                                        </span>
-                                                        <span class="pull-right" style="margin-bottom: 10px" ng-if="!definitionDisabled(table)">
-											                 <span class="btn-group btn-group-sm btn-warning" role="group" aria-label="..." style="margin-top:10px">
-                                                                            <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'R'" type="button" ng-click="setSelectedCodesUsage(table, 'R')" class="btn btn-raised btn-sm btn-warning">R</button>
-                                                                            <button ng-disabled="selectedCodes.length===0"  title="Set selected codes usage to 'P'" type="button" ng-click="setSelectedCodesUsage(table, 'P')" class="btn btn-raised btn-sm btn-warning">P</button>
-                                                                            <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'E'" type="button" ng-click="setSelectedCodesUsage(table, 'E')" class="btn btn-raised btn-sm btn-warning">E</button>
-                                                             </span>
+                                                        <div ng-if="isNonEditableValueSet(table)">
+                                                            <md-subheader style="color:#1565c0;">Value Set Definition Attribute</md-subheader>
+                                                            <div class="inside-metadata" layout-gt-sm="row">
 
-                                                            <button title="Add New Code" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
-												                <span><i class="fa fa-plus fa-fw"></i>Add Code</span>
-                                                            </button>
-                                                            <button title="Delete selected codes" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
-                                                                <i class="fa fa-trash-o fa-fw"></i>Delete Codes <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
-                                                            </button>
-                                                        </span>
+                                                                <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
+                                                                <span class="inputLabel">{{table.extensibility}} </span>
 
-                                                        <div>
-                                                            <div ng-if="table.codes.length >= 1000" style="margin-bottom: 10px">
-                                                                <div class="alert alert-warning" role="alert">
-                                                                    Due to the large size of codes, only the first 1000 of {{table.codes.length}} will be displayed.
-                                                                </div>
+                                                                <label class="input-left igamt-label valueset-ext-label">Stability</label>
+                                                                <span class="inputLabel">{{table.stability}}</span>
+
+                                                                <label class="input-left igamt-label valueset-ext-label">Content Definition</label>
+                                                                <span class="inputLabel">{{table.contentDefinition}}</span>
+
+
                                                             </div>
-                                                            <table st-safe-src="table.smallCodes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
-                                                                <thead>
-                                                                <tr class="tbl-header">
-                                                                    <th class="col-md-1" style="text-align:center;" ng-if="!definitionDisabled(table)">
-                                                                        <md-checkbox ng-model="checkAll" title="select or unselect codes" ng-change="ProcessChecking(checkAll)" aria-label="selectCheckBox" ng-disabled="definitionDisabled(table)">
-                                                                        </md-checkbox>
-                                                                        <!---->
-                                                                        <!--<input type="checkbox" ng-model="checkAll" ng-change="ProcessChecking(checkAll)">-->
-                                                                        <!--<span ng-if="checkAll">UnCheck All</span>-->
-                                                                        <!--<span ng-if="!checkAll">Check All</span>-->
-                                                                        <!--</input>-->
-                                                                    </th>
-                                                                    <th st-sort="value" class="col-md-2"  ng-class="{'col-md-2': !definitionDisabled(table), 'col-md-3': definitionDisabled(table)}">Value</th>
-                                                                    <th st-sort="label" class="col-md-3">Description</th>
-                                                                    <th class="col-md-2">CodeSystem</th>
-                                                                    <th class="col-md-1">Usage</th>
-                                                                    <th class="col-md-3">Comments</th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th ng-if="!definitionDisabled(table)"></th>
-                                                                    <th>
-                                                                        <div layout="row">
-                                                                            <md-input-container flex="100" class="normal">
-                                                                                <label></label>
-                                                                                <input st-search="'value'" placeholder="Search for value" type="search" />
-                                                                            </md-input-container>
-                                                                        </div>
-                                                                    </th>
-                                                                    <th>
-                                                                        <div layout="row">
-                                                                            <md-input-container flex="100" class="normal">
-                                                                                <label></label>
-                                                                                <input st-search="'label'" placeholder="Search for description" type="search" />
-                                                                            </md-input-container>
-                                                                        </div>
-                                                                    </th>
-                                                                    <th>
-                                                                        <div layout="row">
-                                                                            <md-input-container flex="100" class="normal">
-                                                                                <md-select placeholder="Select CodeSys for all" class="margin-19"
-                                                                                           ng-change="applyAllCodeSys(applyCodeSysValue);"
-                                                                                           ng-model="applyCodeSysValue">
-                                                                                    <md-option ng-repeat="cs in codeSystems" ng-value="cs">
-                                                                                        {{::cs}}
-                                                                                    </md-option>
-                                                                                </md-select>
-                                                                            </md-input-container>
-                                                                        </div>
-                                                                    </th>
-                                                                    <th>
+                                                            <label class="input-left igamt-label valueset-ext-label">Source Code System</label>
 
-                                                                    </th>
-                                                                    <th/>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr ng-repeat="c in displayCollection">
-                                                                    <td class="col-md-1" align="center" ng-if="!definitionDisabled(table)">
-                                                                        <div layout="row" layout-align="center center">
-                                                                            <md-checkbox ng-model="c.selected" style="margin-top: 10px;" ng-change="addOrRemoveValue(c)" aria-label="selectCheckBox" no-dirty-check ng-disabled="definitionDisabled(table)">
+                                                                <md-chips
+                                                                        ng-model="table.codeSystems"
+                                                                        readonly="true"
+                                                                        md-removable="false"
+                                                                        placeholder="Add Code"></md-chips>
+                                                                </md-chips>
+                                                            <md-divider></md-divider>
+                                                        </div>
+                                                            <div class="codes-container">
+                                                                <div>
+                                                                    <md-subheader style="color:#1565c0;"> Value Set Codes</md-subheader>
+                                                                </div>
+
+                                                            <span class="pull-left">
+                                                                <span>Codes Per Page : </span>
+                                                                <md-input-container class="normal">
+                                                                    <label></label>
+                                                                    <input type="number" ng-model="itemsByPage" no-dirty-check/>
+                                                                </md-input-container>
+                                                            </span>
+                                                            <span class="pull-right" style="margin-bottom: 10px" ng-if="!definitionDisabled(table)">
+                                                                        <md-input-container class="normal">
+                                                                   <md-select placeholder="Select CodeSys for all"
+                                                                              ng-change="applyAllCodeSys(applyCodeSysValue);"
+                                                                              ng-model="applyCodeSysValue">
+                                                                                        <md-option ng-repeat="cs in table.codeSystems" ng-value="cs">
+                                                                                            {{cs}}
+                                                                                        </md-option>
+                                                                                    </md-select>
+                                                                   </md-input-container>
+
+                                                                 <span  class="btn-group btn-group-sm btn-warning" role="group" aria-label="..." style="margin-top:10px">
+                                                                                <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'R'" type="button" ng-click="setSelectedCodesUsage(table, 'R')" class="btn btn-raised btn-sm btn-warning">R</button>
+                                                                                <button ng-disabled="selectedCodes.length===0"  title="Set selected codes usage to 'P'" type="button" ng-click="setSelectedCodesUsage(table, 'P')" class="btn btn-raised btn-sm btn-warning">P</button>
+                                                                                <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'E'" type="button" ng-click="setSelectedCodesUsage(table, 'E')" class="btn btn-raised btn-sm btn-warning">E</button>
+                                                                 </span>
+       <button  title="Delete selected codes" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
+                                                                    <i class="fa fa-trash-o fa-fw"></i>Delete Codes <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
+                                                                </button>
+                                                                <button  title="Add New Code" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
+                                                                    <span><i class="fa fa-plus fa-fw"></i>Add Code</span>
+                                                                </button>
+
+
+
+
+
+
+
+
+                                                            </span>
+
+                                                            <div>
+                                                                <div ng-if="table.codes.length >= 1000" style="margin-bottom: 10px">
+                                                                    <div class="alert alert-warning" role="alert">
+                                                                        Due to the large size of codes, only the first 1000 of {{table.codes.length}} will be displayed.
+                                                                    </div>
+                                                                </div>
+                                                                <table st-safe-src="table.smallCodes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
+                                                                    <thead>
+                                                                    <tr class="tbl-header">
+                                                                        <th class="col-md-1" style="text-align:center;" ng-if="!definitionDisabled(table)">
+                                                                            <md-checkbox ng-model="checkAll" title="select or unselect codes" ng-change="ProcessChecking(checkAll)" aria-label="selectCheckBox" ng-disabled="definitionDisabled(table)">
                                                                             </md-checkbox>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="col-md-2" ng-class="{'col-md-2': !definitionDisabled(table), 'col-md-3': definitionDisabled(table)}">
-                                                                        <div layout="row">
-                                                                            <md-input-container flex="100" class="normal">
-                                                                                <input ng-model="c.value"
-                                                                                       ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'value', 'codeSystem' , table.codes)}"
-                                                                                       type="text"
-                                                                                       ng-disabled="definitionDisabled(table)"/>
-                                                                            </md-input-container>
-                                                                        </div>
-                                                                        <span ng-if="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)" style="color:red">Duplicated</span>
-                                                                    </td>
-                                                                    <td class="col-md-3">
-                                                                        <div layout="row">
-                                                                            <md-input-container flex="100" class="normal">
-                                                                                <input ng-model="c.label"
-                                                                                       ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)}"
-                                                                                       ng-disabled="definitionDisabled(table)"
-                                                                                       type="text"/>
-                                                                            </md-input-container>
-                                                                        </div>
-                                                                        <span ng-if="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)" style="color:red">Duplicated</span>
-                                                                    </td>
-                                                                    <td class="col-md-2">
+                                                                            <!---->
+                                                                            <!--<input type="checkbox" ng-model="checkAll" ng-change="ProcessChecking(checkAll)">-->
+                                                                            <!--<span ng-if="checkAll">UnCheck All</span>-->
+                                                                            <!--<span ng-if="!checkAll">Check All</span>-->
+                                                                            <!--</input>-->
+                                                                        </th>
+                                                                        <th st-sort="value" class="col-md-2"  ng-class="{'col-md-2': !definitionDisabled(table), 'col-md-3': definitionDisabled(table)}">Value</th>
+                                                                        <th st-sort="label" class="col-md-3">Description</th>
+                                                                        <th class="col-md-2">CodeSystem</th>
+                                                                        <th class="col-md-1">Usage</th>
+                                                                        <th class="col-md-3">Comments</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th ng-if="!definitionDisabled(table)"></th>
+                                                                        <th>
                                                                             <div layout="row">
-                                                                                <md-input-container ng-show="c.codeSystem !== 'New CodeSystem'" flex="100" class="normal">
-                                                                                    <md-select placeholder="Select CodeSystem"
+                                                                                <md-input-container flex="100" class="normal">
+                                                                                    <label></label>
+                                                                                    <input st-search="'value'" placeholder="Search for value" type="search" />
+                                                                                </md-input-container>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div layout="row">
+                                                                                <md-input-container flex="100" class="normal">
+                                                                                    <label></label>
+                                                                                    <input st-search="'label'" placeholder="Search for description" type="search" />
+                                                                                </md-input-container>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+                                                                            <div layout="row">
+                                                                                <md-input-container flex="100" class="normal">
+                                                                                    <label></label>
+                                                                                    <input st-search="'codeSystem'" placeholder="Search for Code System" type="search" />
+                                                                                </md-input-container>
+                                                                            </div>
+                                                                        </th>
+                                                                        <th>
+
+                                                                        </th>
+                                                                        <th/>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr ng-repeat="c in displayCollection">
+                                                                        <td class="col-md-1" align="center" ng-if="!definitionDisabled(table)">
+                                                                            <div layout="row" layout-align="center center">
+                                                                                <md-checkbox ng-model="c.selected" style="margin-top: 10px;" ng-change="addOrRemoveValue(c)" aria-label="selectCheckBox" no-dirty-check ng-disabled="definitionDisabled(table)">
+                                                                                </md-checkbox>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="col-md-2" ng-class="{'col-md-2': !definitionDisabled(table), 'col-md-3': definitionDisabled(table)}">
+                                                                            <div layout="row">
+                                                                                <md-input-container flex="100" class="normal">
+                                                                                    <input ng-model="c.value"
+                                                                                           ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'value', 'codeSystem' , table.codes)}"
+                                                                                           type="text"
+                                                                                           ng-disabled="definitionDisabled(table)"/>
+                                                                                </md-input-container>
+                                                                            </div>
+                                                                            <span ng-if="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)" style="color:red">Duplicated</span>
+                                                                        </td>
+                                                                        <td class="col-md-3">
+                                                                            <div layout="row">
+                                                                                <md-input-container flex="100" class="normal">
+                                                                                    <input ng-model="c.label"
+                                                                                           ng-class="{'form-control-warning': isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)}"
+                                                                                           ng-disabled="definitionDisabled(table)"
+                                                                                           type="text"/>
+                                                                                </md-input-container>
+                                                                            </div>
+                                                                            <span ng-if="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)" style="color:red">Duplicated</span>
+                                                                        </td>
+                                                                        <td class="col-md-2">
+                                                                                <div layout="row">
+                                                                                    <md-input-container flex="100" class="normal">
+                                                                                        <md-select placeholder="Select CodeSystem"
+                                                                                                   style="margin-top: 20px;"
+                                                                                                   ng-disabled="definitionDisabled(table)"
+                                                                                                   ng-model="c.codeSystem">
+                                                                                            <md-option ng-repeat="cs in table.codeSystems" ng-value="cs">
+                                                                                                {{cs}}
+                                                                                            </md-option>
+                                                                                        </md-select>
+                                                                                    </md-input-container>
+
+                                                                                </div>
+                                                                        </td>
+                                                                        <td class="col-md-1">
+                                                                            <div layout="row">
+                                                                                <md-input-container flex="100" class="normal">
+                                                                                    <md-select placeholder="Select CodeUsage"
                                                                                                style="margin-top: 20px;"
                                                                                                ng-disabled="definitionDisabled(table)"
-                                                                                               ng-model="c.codeSystem">
-                                                                                        <md-option value="New CodeSystem" style="color:red;">New CodeSystem</md-option>
-                                                                                        <md-option ng-repeat="cs in codeSystems" ng-value="cs">
-                                                                                            {{::cs}}
+                                                                                               ng-model="c.codeUsage">
+                                                                                        <md-option ng-repeat="codeUsage in config.codeUsages" ng-value="codeUsage">
+                                                                                            {{::codeUsage}}
                                                                                         </md-option>
                                                                                     </md-select>
                                                                                 </md-input-container>
-                                                                                <md-input-container ng-show="c.codeSystem === 'New CodeSystem'" flex="80" class="normal">
-                                                                                    <input ng-disabled="definitionDisabled(table)" placeholder="Type new CodeSystem" ng-model="tempCodeSys" type="text"/>
-                                                                                </md-input-container>
-
-                                                                                <button ng-show="c.codeSystem === 'New CodeSystem'&&!definitionDisabled(table)" title="Add new CodeSystem" type="button" class="btn btn-raised btn-sm btn-info" ng-click="submitNewCodeSystem(c, tempCodeSys);">
-                                                                                    <span><i class="fa fa-plus fa-fw"></i></span>
-                                                                                </button>
                                                                             </div>
-                                                                    </td>
-                                                                    <td class="col-md-1">
-                                                                        <div layout="row">
-                                                                            <md-input-container flex="100" class="normal">
-                                                                                <md-select placeholder="Select CodeUsage"
-                                                                                           style="margin-top: 20px;"
-                                                                                           ng-disabled="definitionDisabled(table)"
-                                                                                           ng-model="c.codeUsage">
-                                                                                    <md-option ng-repeat="codeUsage in config.codeUsages" ng-value="codeUsage">
-                                                                                        {{::codeUsage}}
-                                                                                    </md-option>
-                                                                                </md-select>
-                                                                            </md-input-container>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="col-md-3">
-                                                                        <div layout="row">
-                                                                            <md-input-container flex="100" class="normal">
-                                                                                <textarea ng-model="c.comments" ng-disabled="definitionDisabled(table)"
-                                                                                          style="margin-top: 5px;"
-                                                                                          rows="1"
-                                                                                          md-select-on-focus></textarea>
-                                                                            </md-input-container>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                </tbody>
-                                                                <tr style="float:center !important;" ng-show="table.smallCodes.length > itemsByPage">
-                                                                    <td colspan="6" class="text-center" style="float:center !important;">
-                                                                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7" style="float:center !important;"></div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
+                                                                        </td>
+                                                                        <td class="col-md-3">
+                                                                            <div layout="row">
+                                                                                <md-input-container flex="100" class="normal">
+                                                                                    <textarea ng-model="c.comments" ng-disabled="definitionDisabled(table)"
+                                                                                              style="margin-top: 5px;"
+                                                                                              rows="1"
+                                                                                              md-select-on-focus></textarea>
+                                                                                </md-input-container>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                    <tr style="float:center !important;" ng-show="table.smallCodes.length > itemsByPage">
+                                                                        <td colspan="6" class="text-center" style="float:center !important;">
+                                                                            <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7" style="float:center !important;"></div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                        </div>
+                                                            </div>
                                                     </div>
-                                                </div>
                                             </div>
                                                     </md-tab-body>
                                                  </md-tab>
@@ -711,7 +759,6 @@
                                                 </tr>
 
                                                 </thead>
-
                                                 <tbody>
                                                 <tr ng-repeat="ref in crossRef.messageConformanceStatmentFounds track by $index">
                                                     <td st-ratio="5">{{$index + 1}}
@@ -729,8 +776,6 @@
                                                         {{::ref.conformanceStatement.constraintId}}
                                                     </td>
 
-
-
                                                 </tr>
                                                 </tbody>
 
@@ -742,7 +787,6 @@
                                                 <thead>
                                                 <tr class="tbl-header">
                                                     <th>Segment</th>
-
                                                     <th>Constraint Id </th>
                                                 </tr>
 
@@ -756,13 +800,9 @@
                                                     <td>
                                                         {{::ref.conformanceStatement.constraintId}}
                                                     </td>
-
-
                                                 </tr>
                                                 </tbody>
-
                                             </table>
-
                                         </div>
                                         <div ng-if="crossRef.datatypeConformanceStatmentFounds.length">
                                             <h4> Data Type Conformance Statements </h4>
@@ -773,9 +813,7 @@
 
                                                     <th>Constraint Id </th>
                                                 </tr>
-
                                                 </thead>
-
                                                 <tbody>
                                                 <tr ng-repeat="ref in crossRef.datatypeConformanceStatmentFounds track by $index">
                                                     <td>
@@ -784,11 +822,8 @@
                                                     <td>
                                                         {{::ref.conformanceStatement.constraintId}}
                                                     </td>
-
-
                                                 </tr>
                                                 </tbody>
-
                                             </table>
 
                                         </div>

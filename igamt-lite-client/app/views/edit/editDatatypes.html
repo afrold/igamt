@@ -181,13 +181,16 @@
                                                      </div>
                                             </md-input-container>
 
-                                            <label class="input-left igamt-label">Comment</label>
-                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm >
-                                                        <textarea rows="3"  md-select-on-focus
-                                                          ng-disabled="viewSettings.tableReadonly || datatype.status==='PUBLISHED'"
-                                                          ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
-                                                          name="comment" id="comment" ng-model="datatype.comment"/>
-                                                </md-input-container>
+                                            <label class="input-left igamt-label" ng-show="!viewSettings.tableReadonly">Author Notes</label>
+
+                                            <div ng-if="!viewSettings.tableReadonly">
+                                                <textarea froala="froalaEditorOptions" ng-model="datatype.authorNotes" name="text" id="authorNotes"></textarea>
+                                            </div>
+                                            <div ng-if="viewSettings.tableReadonly">
+                                                <div class="fr-view">
+                                                    <div froala-view="datatype.authorNotes"></div>
+                                                </div>
+                                            </div>
 
 
                                             <label class="input-left igamt-label"  ng-show="datatype.scope === 'HL7STANDARD' && datatype.hl7Section != null && datatype.hl7Section != ''">HL7 Section</label>

@@ -73,6 +73,19 @@ public class ProfileComponentServiceImpl implements ProfileComponentService {
 
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentService#updateAttribute(
+   * java.lang.String, java.lang.String, java.lang.Object)
+   */
+  @Override
+  public void updateAttribute(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    profileComponentRepository.updateAttribute(id, attributeName, value);
+  }
+
 
 
 }
