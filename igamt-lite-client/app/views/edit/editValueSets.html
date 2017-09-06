@@ -139,7 +139,8 @@
                                                     <div style="padding: 5px;">
 
                                                         <div ng-if="!isNonEditableValueSet(table)">
-                                                        <md-subheader style="color:#1565c0;">Value Set Definition Attribute</md-subheader>
+                                                            <md-toolbar class="value-set-toolBar">Value Set Definition Attribute</md-toolbar>
+                                                            <div class="md-panelContent">
                                                             <div class="inside-metadata" layout-gt-sm="row">
 
                                                                     <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
@@ -180,11 +181,13 @@
                                                                     placeholder="Add Code"
                                                                     delete-button-label="Remove code"
                                                                     delete-hint="Press Delete to remove code System"
-                                                                    secondary-placeholder="Click to add Code System"></md-chips>
+                                                                    secondary-placeholder="type and hit enter"></md-chips>
+                                                            </div>
                                                         </div>
 
                                                         <div ng-if="isNonEditableValueSet(table)">
-                                                            <md-subheader style="color:#1565c0;">Value Set Definition Attribute</md-subheader>
+                                                            <md-toolbar class="value-set-toolBar">Value Set Definition Attribute</md-toolbar>
+                                                            <div class="md-panelContent" style="border: 1px solid">
                                                             <div class="inside-metadata" layout-gt-sm="row">
                                                                 <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
                                                                 <span class="inputLabel">{{table.extensibility}} </span>
@@ -200,12 +203,12 @@
                                                                     md-removable="false"
                                                                     placeholder="Add Code"></md-chips>
                                                             </md-chips>
-                                                            <md-divider/>
+                                                            </div>
                                                         </div>
-                                                            <div class="codes-container">
-                                                                <div>
-                                                                    <md-subheader style="color:#1565c0;"> Value Set Codes</md-subheader>
-                                                                </div>
+                                                        <br/>
+                                                            <md-toolbar class="value-set-toolBar"> Value Set Codes</md-toolbar>
+                                                        <div class="codes-container md-panelContent">
+
                                                                 <span class="pull-left">
                                                                     <span>Codes Per Page : </span>
                                                                     <md-input-container class="normal">
@@ -213,9 +216,10 @@
                                                                         <input type="number" ng-model="itemsByPage" no-dirty-check/>
                                                                     </md-input-container>
                                                                 </span>
-                                                                <span class="pull-right" style="margin-bottom: 10px" ng-if="!definitionDisabled(table)">
+                                                                <span class="pull-right" style="margin-bottom: 10px" ng-if="!isNonEditableValueSet(table)">
+                                                                    <span ng-if="selectedCodes.length>0">
                                                                     <md-input-container class="normal">
-                                                                        <md-select placeholder="Select CodeSys for all"
+                                                                        <md-select placeholder="Apply Code System for Selected "
                                                                                    ng-change="applyAllCodeSys(applyCodeSysValue);"
                                                                                    ng-model="applyCodeSysValue">
                                                                             <md-option ng-repeat="cs in table.codeSystems" ng-value="cs">{{cs}}</md-option>
@@ -229,6 +233,7 @@
                                                                     <button  title="Delete selected codes" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
                                                                         <i class="fa fa-trash-o fa-fw"></i>Delete Codes <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
                                                                     </button>
+                                                                    </span>
                                                                     <button  title="Add New Code" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
                                                                         <span><i class="fa fa-plus fa-fw"></i>Add Code</span>
                                                                     </button>
@@ -243,17 +248,17 @@
                                                                     <table ng-if="table.codes.length < 1000" st-safe-src="table.smallCodes" st-table="displayCollection" class="table table-striped table-condensed table-bordered">
                                                                         <thead>
                                                                         <tr class="tbl-header">
-                                                                            <th class="col-md-1" style="text-align:center;" ng-if="!definitionDisabled(table)">
-                                                                                <md-checkbox ng-model="checkAll" title="select or unselect codes" ng-change="ProcessChecking(checkAll)" aria-label="selectCheckBox" ng-disabled="definitionDisabled(table)" />
+                                                                            <th class="col-md-1" style="text-align:center;" ng-if="!isNonEditableValueSet(table)">
+                                                                                <md-checkbox ng-model="checkAll" title="select or unselect codes" ng-change="ProcessChecking(checkAll)" aria-label="selectCheckBox" ng-disabled="isNonEditableValueSet(table)" />
                                                                             </th>
-                                                                            <th st-sort="value" class="col-md-2"  ng-class="{'col-md-2': !definitionDisabled(table), 'col-md-3': definitionDisabled(table)}">Value</th>
+                                                                            <th st-sort="value" class="col-md-2"  ng-class="{'col-md-2': !isNonEditableValueSet(table), 'col-md-3': isNonEditableValueSet(table)}">Value</th>
                                                                             <th st-sort="label" class="col-md-3">Description</th>
                                                                             <th class="col-md-2">CodeSystem</th>
                                                                             <th class="col-md-1">Usage</th>
                                                                             <th class="col-md-3">Comments</th>
                                                                         </tr>
                                                                         <tr>
-                                                                            <th ng-if="!definitionDisabled(table)"></th>
+                                                                            <th ng-if="!isNonEditableValueSet(table)"></th>
                                                                             <th>
                                                                                 <div layout="row">
                                                                                     <md-input-container flex="100" class="normal">
@@ -286,19 +291,19 @@
                                                                         </thead>
                                                                         <tbody>
                                                                         <tr ng-repeat="c in displayCollection">
-                                                                            <td class="col-md-1" align="center" ng-if="!definitionDisabled(table)">
+                                                                            <td class="col-md-1" align="center" ng-if="!isNonEditableValueSet(table)">
                                                                                 <div layout="row" layout-align="center center">
-                                                                                    <md-checkbox ng-model="c.selected" style="margin-top: 10px;" ng-change="addOrRemoveValue(c)" aria-label="selectCheckBox" no-dirty-check ng-disabled="definitionDisabled(table)">
+                                                                                    <md-checkbox  style="margin-top: 10px;" ng-click="toggleCode(c)" aria-label="selectCheckBox"  ng-disabled="isNonEditableValueSet(table)" ng-checked="isSelected(c)">
                                                                                     </md-checkbox>
                                                                                 </div>
                                                                             </td>
-                                                                            <td class="col-md-2" ng-class="{'col-md-2': !definitionDisabled(table), 'col-md-3': definitionDisabled(table)}">
+                                                                            <td class="col-md-2" ng-class="{'col-md-2': !isNonEditableValueSet(table), 'col-md-3': isNonEditableValueSet(table)}">
                                                                                 <div layout="row">
                                                                                     <md-input-container flex="100" class="normal">
                                                                                         <input ng-model="c.value"
                                                                                                type="text"
                                                                                                ng-change="setDirty()"
-                                                                                               ng-disabled="definitionDisabled(table)"/>
+                                                                                               ng-disabled="isNonEditableValueSet(table)"/>
                                                                                         <span ng-if="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.smallCodes) && !isEmpty(c.value)" style="color:red">Duplicated</span>
                                                                                         <span ng-if="!isDuplicatedTwoContexts(c,'value', 'codeSystem', table.smallCodes) && isEmpty(c.value)" style="color:red">Value is required.</span>
                                                                                         <span ng-if="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.smallCodes) && isEmpty(c.value)" style="color:red">Value is required.</span>
@@ -310,7 +315,7 @@
                                                                                     <md-input-container flex="100" class="normal">
                                                                                         <input ng-model="c.label"
                                                                                                ng-change="setDirty()"
-                                                                                               ng-disabled="definitionDisabled(table)"
+                                                                                               ng-disabled="isNonEditableValueSet(table)"
                                                                                                type="text"/>
                                                                                         <span ng-if="isDuplicatedTwoContexts(c,'label', 'codeSystem', table.smallCodes) && !isEmpty(c.label)" style="color:red">Duplicated</span>
                                                                                         <span ng-if="!isDuplicatedTwoContexts(c,'label', 'codeSystem', table.smallCodes) && isEmpty(c.label)" style="color:red">Label is required.</span>
@@ -323,7 +328,7 @@
                                                                                     <md-input-container flex="100" class="normal">
                                                                                         <md-select placeholder="Select CodeSystem"
                                                                                                    style="margin-top: 20px;"
-                                                                                                   ng-disabled="definitionDisabled(table)"
+                                                                                                   ng-disabled="isNonEditableValueSet(table)"
                                                                                                    ng-change="setDirty()"
                                                                                                    ng-model="c.codeSystem">
                                                                                             <md-option ng-repeat="cs in table.codeSystems" ng-value="cs">
@@ -339,7 +344,7 @@
                                                                                     <md-input-container flex="100" class="normal">
                                                                                         <md-select placeholder="Select CodeUsage"
                                                                                                    style="margin-top: 20px;"
-                                                                                                   ng-disabled="definitionDisabled(table)"
+                                                                                                   ng-disabled="isNonEditableValueSet(table)"
                                                                                                    ng-model="c.codeUsage">
                                                                                             <md-option ng-repeat="codeUsage in config.codeUsages" ng-value="codeUsage">
                                                                                                 {{::codeUsage}}
@@ -351,7 +356,7 @@
                                                                             <td class="col-md-3">
                                                                                 <div layout="row">
                                                                                     <md-input-container flex="100" class="normal">
-                                                                                    <textarea ng-model="c.comments" ng-disabled="definitionDisabled(table)"
+                                                                                    <textarea ng-model="c.comments" ng-disabled="isNonEditableValueSet(table)"
                                                                                               style="margin-top: 5px;"
                                                                                               rows="1"
                                                                                               md-select-on-focus></textarea>

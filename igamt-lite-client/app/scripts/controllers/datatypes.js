@@ -1012,6 +1012,7 @@ angular.module('igl')
                 $scope.isChecked = function() {
                     return $scope.selected.length === $scope.tmpReferences.length;
                 };
+
                 $scope.toggleAll = function() {
                     if ($scope.selected.length === $scope.tmpReferences.length) {
                         $scope.selected = [];

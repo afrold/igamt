@@ -339,6 +339,34 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             }
         }
     };
+    $scope.isSelected=function(c){
+        var index = $scope.selectedCodes.indexOf(c);
+        if (index > -1) {
+           return true;
+
+        }else{
+            return false;
+        }
+    }
+    $scope.selectCode=function(c){
+
+            $scope.selectedCodes.push(c);
+
+    }
+    $scope.unSelectCode= function(c){
+        var index = $scope.selectedCodes.indexOf(c);
+        if (index > -1) {
+            $scope.selectedCodes.splice(index, 1);
+        }
+
+    };
+    $scope.toggleCode=function(c){
+       if($scope.isSelected(c)){
+           $scope.unSelectCode(c);
+        }else{
+           $scope.selectCode(c);
+       }
+    }
     $scope.deleteSlectedValues = function() {
         $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
         $rootScope.table.smallCodes = _.difference($rootScope.table.smallCodes, $scope.selectedCodes);

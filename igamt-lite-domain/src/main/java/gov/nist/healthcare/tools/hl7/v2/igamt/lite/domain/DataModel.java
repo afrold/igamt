@@ -13,6 +13,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.Date;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
+
 /**
  * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
  */
@@ -40,6 +42,7 @@ public abstract class DataModel {
   protected String createdFrom;
   private String hl7Section;
   protected String authorNotes = "";
+  protected SourceType sourceType = SourceType.INTERNAL;
 
 
   /**

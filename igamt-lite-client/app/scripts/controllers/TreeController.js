@@ -1330,15 +1330,15 @@ angular
 
                                 $rootScope.openConfirmLeaveDlg().then(function(result) {
                                     if(result&&result!=='cancel') {
-                                      //  $rootScope.createValueSet($rootScope.igdocument.profile.tableLibrary);
+                                       $rootScope.createValueSet($rootScope.igdocument.profile.tableLibrary);
 
-                                        CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                                        //CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
                                     }
                                 });
                             } else {
-                               // $rootScope.createValueSet($rootScope.igdocument.profile.tableLibrary);
+                               $rootScope.createValueSet($rootScope.igdocument.profile.tableLibrary);
 
-                             CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
+                             //CloneDeleteSvc.createNewTable('USER', $rootScope.igdocument.profile.tableLibrary);
 
                             }
 
@@ -3953,6 +3953,7 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
     $scope.newTable.libIds = [];
     $scope.newTable.codes = [];
     $scope.newTable.newTable = true;
+    $scope.newT
 
     $scope.cancel = function () {
         $mdDialog.hide('cancel');
@@ -3962,37 +3963,35 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
     $scope.add = function () {
 
 
-        // TableService.save(newTable).then(function (result) {
-        //     newTable = result;
-        //     var newLink = {};
-        //     newLink.bindingIdentifier = newTable.bindingIdentifier;
-        //     newLink.id = newTable.id;
-        //
-        //     TableLibrarySvc.addChild(tableLibrary.id, newLink).then(function (link) {
-        //         tableLibrary.children.splice(0, 0, newLink);
-        //         $rootScope.tables.splice(0, 0, newTable);
-        //         $rootScope.table = newTable;
-        //         $rootScope.tablesMap[newTable.id] = newTable;
-        //
-        //         $rootScope.codeSystems = [];
-        //
-        //         if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
-        //             $rootScope.filteredTablesList.push(newTable);
-        //             $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
-        //         }
-        //         $mdDialog.hide($scope.clonedIgDocument);
-        //         $rootScope.$broadcast('event:openTable', newTable);
-        //     }, function (error) {
-        //         $rootScope.msg().text = error.data.text;
-        //         $rootScope.msg().type = error.data.type;
-        //         $rootScope.msg().show = true;
-        //     });
-        //
-        // }, function (error) {
-        //     $rootScope.msg().text = error.data.text;
-        //     $rootScope.msg().type = error.data.type;
-        //     $rootScope.msg().show = true;
-        // });
+        TableService.save(newTable).then(function (result) {
+            newTable = result;
+            var newLink = {};
+            newLink.bindingIdentifier = newTable.bindingIdentifier;
+            newLink.id = newTable.id;
+
+            TableLibrarySvc.addChild(selectedTableLibary.id, newLink).then(function (link) {
+                selectedTableLibary.children.splice(0, 0, newLink);
+                $rootScope.tables.splice(0, 0, newTable);
+                $rootScope.table = newTable;
+                $rootScope.tablesMap[newTable.id] = newTable;
+
+                if ($rootScope.filteredTablesList && $rootScope.filteredTablesList != null) {
+                    $rootScope.filteredTablesList.push(newTable);
+                    $rootScope.filteredTablesList = _.uniq($rootScope.filteredTablesList);
+                }
+                $mdDialog.hide(result);
+                $rootScope.$broadcast('event:openTable', newTable);
+            }, function (error) {
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+
+        }, function (error) {
+            $rootScope.msg().text = error.data.text;
+            $rootScope.msg().type = error.data.type;
+            $rootScope.msg().show = true;
+        });
 
     };
 }]);
