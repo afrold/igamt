@@ -47,7 +47,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.IGDocumentServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PersistenceContextUnit.class})
+@ContextConfiguration(classes = {IntegrationTestApplicationConfig.class})
 public class IGExportTest {
 
 	Logger logger = LoggerFactory.getLogger(IGExportTest.class);

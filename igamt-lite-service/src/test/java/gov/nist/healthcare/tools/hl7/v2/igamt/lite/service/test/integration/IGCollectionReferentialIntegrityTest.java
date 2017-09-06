@@ -40,7 +40,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit.PersistenceContextUnit;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit.IntegrationTestApplicationConfig;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -61,7 +61,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PersistenceContextUnit.class})
+@ContextConfiguration(classes = {IntegrationTestApplicationConfig.class})
 public class IGCollectionReferentialIntegrityTest {
 
   private static final Logger log = LoggerFactory

@@ -48,17 +48,18 @@ public interface DatatypeService {
   public List<Datatype> findPendingShared(Long accountId);
 
   public List<Datatype> findByNameAndVersionAndScope(String name, String version, String scope);
-  
+
   public List<Datatype> findByNameAndScope(String name, String scope);
 
   public Datatype findByNameAndVesionAndScope(String name, String version, String scope);
+
   public Datatype findOneByNameAndVersionAndScope(String name, String version, String scope);
 
   public Datatype findByCompatibleVersion(String name, String version, String scope)
       throws Exception;
 
 
-  public Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
+  public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope);
 
   public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions,
       String string);
@@ -76,7 +77,7 @@ public interface DatatypeService {
   public List<Datatype> findByScopeAndVersionAndParentVersion(SCOPE scope, String hl7Version,
       String id);
 
-public List<Datatype> findByScopeAndVersion(String name, String hl7Version);
+  public List<Datatype> findByScopeAndVersion(String name, String hl7Version);
 
 
 }
