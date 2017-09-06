@@ -79,11 +79,6 @@
                     <xsl:value-of disable-output-escaping="yes" select="@BindingIdentifier" />
                 </xsl:element>
             </xsl:if>
-            <xsl:if test="$columnDisplay.dataType.comment = 'true'">
-                <xsl:element name="td">
-                    <xsl:value-of select="@Comment" />
-                </xsl:element>
-            </xsl:if>
         </xsl:element>
 
         <xsl:if test="normalize-space($inlineConstraints) = 'true'">

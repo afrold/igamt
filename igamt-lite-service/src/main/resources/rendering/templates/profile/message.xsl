@@ -6,7 +6,6 @@
     <xsl:include href="/rendering/templates/profile/valueSetBindingList.xsl"/>
     <xsl:include href="/rendering/templates/profile/commentList.xsl"/>
     <xsl:template match="Message">
-        <!--xsl:value-of select="@Comment"/-->
         <xsl:if test="count(./Text[@Type='DefPreText']) &gt; 0">
             <xsl:call-template name="definitionText">
                 <xsl:with-param name="type">
@@ -87,11 +86,6 @@
                             <xsl:text>Usage</xsl:text>
                         </xsl:element>
                     </xsl:if>
-                    <xsl:if test="$columnDisplay.message.comment = 'true'">
-                        <xsl:element name="th">
-                            <xsl:text>Description/Comments</xsl:text>
-                        </xsl:element>
-                    </xsl:if>
                 </xsl:element>
             </xsl:element>
             <xsl:element name="tbody">
@@ -109,7 +103,9 @@
             </xsl:with-param>
         </xsl:call-template>
         <xsl:apply-templates select="./ValueSetBindingList"/>
-        <xsl:apply-templates select="./CommentList"/>
+        <xsl:if test="$columnDisplay.message.comment = 'true'">
+            <xsl:apply-templates select="./CommentList"/>
+        </xsl:if>
         <xsl:if test="count(./Text[@Type='DefPostText']) &gt; 0">
             <xsl:element name="br"/>
             <xsl:call-template name="definitionText">
