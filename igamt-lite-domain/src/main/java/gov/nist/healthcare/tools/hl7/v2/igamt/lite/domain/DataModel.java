@@ -43,7 +43,22 @@ public abstract class DataModel {
   private String hl7Section;
   protected String authorNotes = "";
   protected SourceType sourceType = SourceType.INTERNAL;
+  protected String sourceUrl;
 
+
+  /**
+   * @return the sourceType
+   */
+  public SourceType getSourceType() {
+    return sourceType;
+  }
+
+  /**
+   * @param sourceType the sourceType to set
+   */
+  public void setSourceType(SourceType sourceType) {
+    this.sourceType = sourceType;
+  }
 
   /**
    * @return the authorNotes
