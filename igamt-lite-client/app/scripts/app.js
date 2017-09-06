@@ -360,11 +360,29 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
       $btn.toggleClass('fr-active',this.format.is('figcaption'))
     }
   });
+  
+  $.FroalaEditor.DefineIcon('message', {NAME: 'file-code-o'});
+  $.FroalaEditor.RegisterCommand('message', {
+    title: 'Message (BETA)',
+    focus: true,
+    undo: true,
+    refreshAfterCallback: false,
+    callback: function () {
+      if(this.format.is('pre')){
+        this.paragraphFormat.apply("p");
+      } else {
+        this.paragraphFormat.apply("pre style='line-height: 1; position: relative; overflow: hidden; background: white; color: black; font-family: monospace;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;'");
+      }
+    },
+    refresh: function ($btn) {
+      $btn.toggleClass('fr-active',this.format.is('pre'))
+    }
+  });
 
   // load app info
   AppInfo.get().then(function (appInfo) {
     $rootScope.appInfo = appInfo;
-    var buttons = ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'caption', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'html'];
+    var buttons = ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'inlineStyle', 'message', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'caption', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'html'];
     $rootScope.froalaEditorOptions = {
       placeholderText: '',
       toolbarButtons: buttons,
