@@ -361,21 +361,21 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     }
   });
   
-  $.FroalaEditor.DefineIcon('message', {NAME: 'file-code-o'});
+  $.FroalaEditor.DefineIcon('message', {NAME: 'HL7', template: 'text'});
   $.FroalaEditor.RegisterCommand('message', {
-    title: 'Message (BETA)',
+    title: 'HL7 Message (BETA)',
     focus: true,
     undo: true,
     refreshAfterCallback: false,
     callback: function () {
-      if(this.format.is('pre')){
-        this.paragraphFormat.apply("p");
+      if(this.format.is('div',{ class: 'message' })){
+        this.format.apply("p");
       } else {
-        this.paragraphFormat.apply("pre style='line-height: 1; position: relative; overflow: hidden; background: white; color: black; font-family: monospace;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;'");
+        this.format.apply("div style='line-height: 1;position: relative;overflow: hidden;color: black;font-family: monospace;border: 1px solid #ccc;display:block;'",{ class: 'message'});
       }
     },
     refresh: function ($btn) {
-      $btn.toggleClass('fr-active',this.format.is('pre'))
+      $btn.toggleClass('fr-active',this.format.is('div',{ class: 'message' }))
     }
   });
 
