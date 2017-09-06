@@ -1314,59 +1314,6 @@
         </div>
     </script>
 
-    <script type="text/ng-template" id="AddCSVTableOpenCtrl.html">
-        <div class="modal-header modal-wide">
-            <div class="form-inline">
-                <span class="header4">Add ValueSet From CSV file</span>
-            </div>
-        </div>
-        <div class="modal-body">
-            <form class="form-horizontal" novalidate>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <label for="csvValueSetFile" class="custom-file-upload">
-                            <i class="fa fa-cloud-upload"></i> Choose CSV File
-                        </label>
-                        <input id="csvValueSetFile" accept=".csv"
-                               onchange="angular.element(this).scope().validateForSelectedFile(this.files)" type="file"
-                               name="csvValueSetFile"/>
-
-                        <div id="csvFileName"></div>
-                        <div id="errorMessageForCSV"></div>
-                    </div>
-                </div>
-
-                <p style="color:blue;">How it works</p>
-                <ol style="color:blue;">
-                    <li style="color:blue;">Download 'ValueSet Empty Form (Excel)'</li>
-                    <li style="color:blue;">Edit sheets using MS Excel</li>
-                    <li style="color:blue;">Save as CSV file</li>
-                    <li style="color:blue;">Upload CSV file</li>
-                </ol>
-
-                <p style="color:blue;">Files</p>
-                <ul>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_EmptyForm_Excel.xlsx"
-                                               target="_blank"><i
-                            class="fa fa-file-excel-o fa-fw"></i>ValueSet Empty Form (Excel)</a></li>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_EmptyForm_csv.csv" target="_blank"><i
-                            class="fa fa-file-code-o fa-fw"></i>ValueSet Empty Form (CSV)</a></li>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_sample_excel.xlsx" target="_blank"><i
-                            class="fa fa-file-excel-o fa-fw"></i>ValueSet Sample Form (Excel)</a></li>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_sample_csv.csv" target="_blank"><i
-                            class="fa fa-file-code-o fa-fw"></i>ValueSet Sample Form (CSV)</a></li>
-                </ul>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-            &nbsp; </i>Cancel</span></button>
-            <button id="csvSaveButton" class="btn btn-raised btn-primary btn-sm" ng-click="save()" disabled><span><i
-                    class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-        </div>
-    </script>
-
-
     <script type="text/ng-template" id="AddPHINVADSTableOpenCtrl.html">
         <div class="modal-header modal-wide">
             <div class="form-inline">
