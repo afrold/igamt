@@ -3053,6 +3053,7 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
             $scope.importedTable.scope = 'USER';
             $scope.importedTable.codes = [];
             $scope.importedTable.libIds = [];
+            var duplicatedCodeSystems = [];
             angular.forEach($scope.data.data, function (row) {
                 index = index + 1;
 
@@ -3095,10 +3096,16 @@ angular.module('igl').controller('AddCSVTableOpenCtrl', function ($scope, $mdDia
                     code.codeSystem = row[2];
                     code.codeUsage = row[3];
                     code.comments = row[4];
-
+                    duplicatedCodeSystems.push(code.codeSystem);
                     if (code.value != null && code.value != "") $scope.importedTable.codes.push(code);
                 }
             });
+
+            var uniqueCodeSystems = [];
+            $.each(duplicatedCodeSystems, function(i, el){
+                if($.inArray(el, uniqueCodeSystems) === -1) uniqueCodeSystems.push(el);
+            });
+            $scope.importedTable.codeSystems = duplicatedCodeSystems;
 
             if ($scope.importedTable.bindingIdentifier == null || $scope.importedTable.bindingIdentifier == '') {
                 $scope.isInValild = true;
