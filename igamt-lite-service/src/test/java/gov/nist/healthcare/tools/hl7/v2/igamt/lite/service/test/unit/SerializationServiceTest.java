@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Created by Maxence Lefort on 12/7/16.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PersistenceContextUnit.class})
+@ContextConfiguration(classes = {IntegrationTestApplicationConfig.class})
 public class SerializationServiceTest {
 
     private static final String IG_DOCUMENT_TEST_ID = "57c8371a84ae6827fcec5488";

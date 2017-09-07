@@ -36,7 +36,6 @@ var app = angular
     'ngTagsInput',
     'nsPopover',
     'ngMaterial',
-    'pageslide-directive',
     'rzModule',
     'ui.select',
     'flow',

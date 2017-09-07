@@ -33,7 +33,7 @@ import java.io.IOException;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PersistenceContextUnit.class})
+@ContextConfiguration(classes = {IntegrationTestApplicationConfig.class})
 public class DataTypeLibraryExportTest  {
 
     Logger logger = LoggerFactory.getLogger(DataTypeLibraryExportTest.class);

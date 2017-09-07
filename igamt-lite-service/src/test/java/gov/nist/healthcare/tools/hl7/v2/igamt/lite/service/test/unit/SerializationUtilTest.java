@@ -29,7 +29,7 @@ import org.jsoup.nodes.Element;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PersistenceContextUnit.class})
+@ContextConfiguration(classes = {IntegrationTestApplicationConfig.class})
 public class SerializationUtilTest {
     @Autowired
     SerializationUtil serializationUtil;
