@@ -3948,12 +3948,12 @@ angular.module('igl').controller('AddDatatypesFromLibtoLib',
         };
     });
 
-angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$mdDialog','selectedTableLibary','TableService', function ($rootScope, $scope, $mdDialog,selectedTableLibary,TableService) {
+angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$mdDialog','selectedTableLibary','TableService','TableLibrarySvc', function ($rootScope, $scope, $mdDialog,selectedTableLibary,TableService,TableLibrarySvc) {
 
     $scope.newTable={};
     $scope.selectedTableLibary=selectedTableLibary;
     $scope.newTable.shareParticipantIds = [];
-    $scope.newTable.sourceType="EXTERNAL";
+    $scope.newTable.sourceType="INTERNAL";
     $scope.newTable.scope = selectedTableLibary.scope;
     $scope.newTable.id = null;
     $scope.newTable.libIds = [];
