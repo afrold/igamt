@@ -20,6 +20,7 @@ angular
             function($scope, $rootScope, $http, SectionSvc, CloneDeleteSvc, FilteringSvc, $cookies, DatatypeLibrarySvc, $modal, CompositeMessageService, PcService, CompositeProfileService,orderByFilter,$mdDialog,DatatypeService,TableService) {
 
                 $scope.collapsedata = false;
+                $scope.soureTypes=[{value:"INTERNAL",label:"IGAMT internaly managed"}, {value:"EXTERNAL",label:"Externally managed"}];
                 $scope.collapsePcs = true;
                 $scope.collapseprofilecomponent = false;
                 $scope.collapsemessage = false;
@@ -1955,6 +1956,9 @@ angular
                     var modalInstance = $mdDialog.show({
                         templateUrl: 'CreateValueSet.html',
                         controller: 'CreateValueSet',
+                        scope:$rootScope,
+                        preserveScope:true,
+
                         locals: {
                             selectedTableLibary: selectedTableLibary
 
@@ -3947,13 +3951,14 @@ angular.module('igl').controller('AddDatatypesFromLibtoLib',
 angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$mdDialog','selectedTableLibary','TableService', function ($rootScope, $scope, $mdDialog,selectedTableLibary,TableService) {
 
     $scope.newTable={};
+    $scope.selectedTableLibary=selectedTableLibary;
     $scope.newTable.shareParticipantIds = [];
+    $scope.newTable.sourceType="EXTERNAL";
     $scope.newTable.scope = selectedTableLibary.scope;
     $scope.newTable.id = null;
     $scope.newTable.libIds = [];
     $scope.newTable.codes = [];
     $scope.newTable.newTable = true;
-    $scope.newT
 
     $scope.cancel = function () {
         $mdDialog.hide('cancel');
@@ -3963,14 +3968,14 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
     $scope.add = function () {
 
 
-        TableService.save(newTable).then(function (result) {
-            newTable = result;
+        TableService.save($scope.newTable).then(function (result) {
+            var newTable = result;
             var newLink = {};
             newLink.bindingIdentifier = newTable.bindingIdentifier;
             newLink.id = newTable.id;
 
-            TableLibrarySvc.addChild(selectedTableLibary.id, newLink).then(function (link) {
-                selectedTableLibary.children.splice(0, 0, newLink);
+            TableLibrarySvc.addChild($scope.selectedTableLibary.id, newLink).then(function (link) {
+                $scope.selectedTableLibary.children.splice(0, 0, newLink);
                 $rootScope.tables.splice(0, 0, newTable);
                 $rootScope.table = newTable;
                 $rootScope.tablesMap[newTable.id] = newTable;

@@ -2,7 +2,7 @@
  * Created by Jungyub on 4/01/15.
  */
 
-angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc, blockUI, SegmentService, DatatypeService) {
+angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc, blockUI, SegmentService) {
     $scope.readonly = false;
     $scope.codeSysEditMode = false;
     $scope.codeSysForm = {};
@@ -439,6 +439,15 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
     $scope.isNewValue = function(id) {
         return $scope.isNewObject('value', 'add', id);
+    };
+    $scope.confirmSwitchSource=function (table) {
+        if(table.sourceType&&table.sourceType=='EXTERNAL'){
+            $scope.openConfirmToExternal(table);
+
+        }
+    };
+    $scope.openConfirmToExternal=function(table){
+
     };
 
     $scope.isNewTable = function(id) {

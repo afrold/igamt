@@ -296,7 +296,7 @@ public class Bootstrap implements InitializingBean {
     // SetTablePreText();
     // AddCodeSystemtoAllTables();
     // initializeAttributes();
-    changeCommentToAuthorNotes();
+    // changeCommentToAuthorNotes();
   }
 
   private void SetTablePreText() {

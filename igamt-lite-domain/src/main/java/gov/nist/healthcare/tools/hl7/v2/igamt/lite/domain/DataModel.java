@@ -47,6 +47,20 @@ public abstract class DataModel {
 
 
   /**
+   * @return the sourceUrl
+   */
+  public String getSourceUrl() {
+    return sourceUrl;
+  }
+
+  /**
+   * @param sourceUrl the sourceUrl to set
+   */
+  public void setSourceUrl(String sourceUrl) {
+    this.sourceUrl = sourceUrl;
+  }
+
+  /**
    * @return the sourceType
    */
   public SourceType getSourceType() {
