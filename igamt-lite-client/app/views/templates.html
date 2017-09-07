@@ -6746,7 +6746,7 @@
 
                     <label class="input-left igamt-label"> Type </label>
                     <md-select ng-model="newTable.sourceType">
-                        <md-option ng-repeat="opt in soureTypes" ng-value="opt.value">{{opt.label}}</md-option>
+                        <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.label}}</md-option>
                     </md-select>
 
                     <label class="input-left igamt-label"> Source URL </label>
@@ -6773,7 +6773,7 @@
 
 <script type="text/ng-template" id="confirmToExternal.html">
     <md-dialog aria-label="confirmation">
-        <form ng-cloak>
+        <form ng-cloak id="externalform" name="externalform">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2> Confirmation</h2>
@@ -6786,16 +6786,17 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <p>Warning: If you change this value set to external your codes will be deleted. do you want to continue?</p>
                     <label class="input-left igamt-label"> Source URL </label>
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                        <input type="text" name="externalUrl" required ng-model="newTable.externalUrl">
+                        <input type="text" name="externalUrl" required ng-model="url">
                     </md-input-container>
+                    <p>Warning: If you make this value set external, your codes will be deleted and you should provide a URL . Do you want to continue?</p>
+
                 </div>
             </md-dialog-content>
 
             <md-dialog-actions layout="row">
-                <md-button md-autofocus ng-click="confirm()">
+                <md-button md-autofocus class="md-primary md-raised" ng-disabled="externalform.$invalid" ng-click="confirm()">
                     Confirm
                 </md-button>
 

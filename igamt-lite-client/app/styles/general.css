@@ -3117,7 +3117,13 @@ md-select[disabled] .md-select-value {
 .md-panelContent{
     background: white;
     border-radius: 4px;
+    padding: 5px;
     box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2),
     0 13px 19px 2px rgba(0, 0, 0, 0.14),
     0 5px 24px 4px rgba(0, 0, 0, 0.12);
+}
+.value-set-toolBar{
+    background-color: rgb(45, 157, 231) !important;
+    min-height: 30px !important;
+    padding:5px;
 }

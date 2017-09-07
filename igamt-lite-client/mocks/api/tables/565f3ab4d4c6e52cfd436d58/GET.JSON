@@ -14,6 +14,7 @@
   "stability" : "Undefined",
   "extensibility" : "Undefined",
   "contentDefinition" : "Undefined",
+  "sourceType":"INTERNAL",
   "order" : 0,
   "codes" : [
     {

@@ -59,7 +59,6 @@
                                             </md-input-container>
 
                                             <label class="input-left igamt-label">Name*</label>
-
                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                 <input type="text"  ng-disabled="isNonEditableValueSet(table)" name="name"  ng-model="table.name" required ng-change="setDirty()">
                                                 <div ng-messages="editForm.name.$error">
@@ -86,13 +85,18 @@
                                                        ng-model="table.hl7Section" />
                                             </md-input-container>
                                             <label class="input-left igamt-label"> Type </label>
-                                            <md-select ng-model="table.sourceType">
-                                                <md-option ng-repeat="opt in soureTypes" ng-value="opt.value">{{opt.label}}</md-option>
+                                            <md-select ng-model="table.sourceType" ng-change="confirmSwitchSourceType(table)" ng-if="!isNonEditableValueSet(table)">
+                                                <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.label}}</md-option>
                                             </md-select>
+
+                                            <div ng-if="isNonEditableValueSet(table)">
+                                                {{table.sourceType}}
+                                            </div>
 
                                             <label class="input-left igamt-label" ng-if="table.sourceType!=='EXTERNAL'"> Source URL </label>
 
-                                            <pre ng-if="table.sourceType!=='EXTERNAL'">{{getElementUrl(table)}}</pre>
+                                            <a  ng-if="table.sourceType!=='EXTERNAL'" href="{{getElementUrl(table)}}" target="_blank" ng-if="table.sourceType!=='EXTERNAL'">{{getElementUrl(table)}}</a>
+                                            <br/>
 
 
                                             <label class="input-left igamt-label" ng-show="!isNonEditableValueSet(table)">Author Notes</label>
@@ -217,7 +221,7 @@
                                                         <br/>
                                                             <md-toolbar class="value-set-toolBar">Content</md-toolbar>
                                                         <div class="codes-container md-panelContent" ng-if="table.sourceType=='EXTERNAL'">
-                                                            <label class="input-left igamt-label">URL  </label>
+                                                            <label class="input-left igamt-label">URL</label>
 
                                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                                                 <input type="text" name="url" ng-disabled="isNonEditableValueSet(table)" ng-model="table.externalUrl" required>
@@ -226,9 +230,9 @@
                                                                 </div>
                                                             </md-input-container>
 
-                                                            <label class="input-left igamt-label">Notes </label>
+                                                            <label class="input-left igamt-label" ng-if="table.contentDefinition=='Intensional'">Notes </label>
 
-                                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm>
+                                                            <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-if="table.contentDefinition=='Intensional'">
                                                                 <textarea id="infoForExternal" type="text" name="infoForExternal" ng-disabled="isNonEditableValueSet(table)" ng-model="table.infoForExternal"></textarea>
                                                             </md-input-container>
                                                         </div>
@@ -314,7 +318,7 @@
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                        <tr ng-repeat="c in displayCollection">
+                                                                        <tr ng-repeat="c in displayCollection" ng-if="!isNonEditableValueSet(table)">
                                                                             <td class="col-md-1" align="center" ng-if="!isNonEditableValueSet(table)">
                                                                                 <div layout="row" layout-align="center center">
                                                                                     <md-checkbox  style="margin-top: 10px;" ng-click="toggleCode(c)" aria-label="selectCheckBox"  ng-disabled="isNonEditableValueSet(table)" ng-checked="isSelected(c)">
@@ -386,6 +390,42 @@
                                                                                               md-select-on-focus></textarea>
                                                                                     </md-input-container>
                                                                                 </div>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                        <tr ng-repeat="c in displayCollection" ng-if="isNonEditableValueSet(table)">
+
+                                                                            <td class="col-md-3">
+
+                                                                                        <span>{{c.value}}</span>
+
+                                                                                        <span ng-if="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.smallCodes) && !isEmpty(c.value)" style="color:red">Duplicated</span>
+                                                                                        <span ng-if="!isDuplicatedTwoContexts(c,'value', 'codeSystem', table.smallCodes) && isEmpty(c.value)" style="color:red">Value is required.</span>
+                                                                                        <span ng-if="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.smallCodes) && isEmpty(c.value)" style="color:red">Value is required.</span>
+
+                                                                            </td>
+                                                                            <td class="col-md-3">
+
+                                                                                        <span>{{c.label}}</span>
+                                                                                        <span ng-if="isDuplicatedTwoContexts(c,'label', 'codeSystem', table.smallCodes) && !isEmpty(c.label)" style="color:red">Duplicated</span>
+                                                                                        <span ng-if="!isDuplicatedTwoContexts(c,'label', 'codeSystem', table.smallCodes) && isEmpty(c.label)" style="color:red">Label is required.</span>
+                                                                                        <span ng-if="isDuplicatedTwoContexts(c,'label', 'codeSystem', table.smallCodes) && isEmpty(c.label)" style="color:red">Label is required.</span>
+
+                                                                            </td>
+                                                                            <td class="col-md-2">
+
+                                                                                        <span>{{c.codeSystem}}</span>
+                                                                                        <span ng-if="isEmpty(c.codeSystem)" style="color:red">CodeSystem is required.</span>
+                                                                            </td>
+                                                                            <td class="col-md-1">
+
+                                                                                        <span>{{c.codeUsage}}</span>
+
+                                                                            </td>
+                                                                            <td class="col-md-3">
+
+                                                                                    <span>{{c.comments}}</span>
+
                                                                             </td>
                                                                         </tr>
                                                                         </tbody>
@@ -1141,7 +1181,7 @@
 
                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm >
                                                 <textarea rows="3" disabled md-select-on-focus disabled
-                                                          ng-change="setDirty()" name="comment" id="comment" class="form-control" ng-model="table.comment"/>
+                                                          name="comment" id="comment" class="form-control" ng-model="table.comment"/>
                                             </md-input-container>
                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm
                                                                 ng-show="table.scope === 'HL7STANDARD' && table.hl7Section != null && table.hl7Section != '' && table.hl7Section != undefined">

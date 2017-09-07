@@ -50,7 +50,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     $rootScope.goNav = function(path){
         $location.url(path);
     };
-    $rootScope.soureTypes=[{value:"INTERNAL",label:"IGAMT internaly managed"}, {value:"EXTERNAL",label:"Externally managed"}];
+    $rootScope.sourceTypes=[{value:"INTERNAL",label:"Internal"}, {value:"EXTERNAL",label:"External"}];
 
 
     $rootScope.generateHash=function(string){
