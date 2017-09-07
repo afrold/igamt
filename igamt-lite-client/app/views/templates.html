@@ -6749,9 +6749,9 @@
                         <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.label}}</md-option>
                     </md-select>
 
-                    <label class="input-left igamt-label"> Source URL </label>
-                    <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                        <input type="text" name="externalUrl" ng-required="newTable.sourceType=='EXTERNAL'" ng-model="newTable.externalUrl">
+                    <label class="input-left igamt-label" ng-if="newTable.sourceType=='EXTERNAL'"> Source URL </label>
+                    <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-if="newTable.sourceType=='EXTERNAL'">
+                        <input type="url" name="externalUrl" ng-required="newTable.sourceType=='EXTERNAL'" ng-model="newTable.externalUrl">
                     </md-input-container>
 
                     <label class="input-left igamt-label"> Author Notes </label>
@@ -6788,9 +6788,9 @@
                 <div class="md-dialog-content">
                     <label class="input-left igamt-label"> Source URL </label>
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                        <input type="text" name="externalUrl" required ng-model="url">
+                        <input  type="url" name="externalUrl" required ng-model="url">
                     </md-input-container>
-                    <p>Warning: If you make this value set external, your codes will be deleted and you should provide a URL . Do you want to continue?</p>
+                    <p>Warning: If you make this value set external, your codes will be deleted and you should provide a valid  URL . Do you want to continue?</p>
 
                 </div>
             </md-dialog-content>
