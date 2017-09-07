@@ -1,11 +1,16 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CoConstraintsTable {
+public class CoConstraintsTable implements java.io.Serializable, Cloneable {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 5941308834247104133L;
   private CoConstraintColumnDefinition ifColumnDefinition;
   private List<CoConstraintColumnDefinition> thenColumnDefinitionList =
       new ArrayList<CoConstraintColumnDefinition>();
@@ -77,6 +82,57 @@ public class CoConstraintsTable {
 
   public void setUserMapData(Map<String, List<CoConstraintUSERColumnData>> userMapData) {
     this.userMapData = userMapData;
+  }
+
+  @Override
+  public CoConstraintsTable clone() throws CloneNotSupportedException {
+    CoConstraintsTable cloned = new CoConstraintsTable();
+    
+    cloned.setIfColumnDefinition(ifColumnDefinition.clone());
+    cloned.setThenColumnDefinitionList(new ArrayList<CoConstraintColumnDefinition>());
+    for(CoConstraintColumnDefinition def : this.thenColumnDefinitionList){
+      cloned.getThenColumnDefinitionList().add(def.clone());
+    }
+    cloned.setUserColumnDefinitionList(new ArrayList<CoConstraintUserColumnDefinition>());
+    for(CoConstraintUserColumnDefinition def : this.userColumnDefinitionList){
+      cloned.getUserColumnDefinitionList().add(def.clone());
+    }
+    cloned.setRowSize(rowSize);
+    cloned.setIfColumnData(new ArrayList<CoConstraintIFColumnData>());
+    for(CoConstraintIFColumnData data : this.ifColumnData){
+      cloned.getIfColumnData().add(data.clone());
+    }
+    
+    if(thenMapData == null) cloned.setThenMapData(null);
+    else {
+      cloned.setThenMapData(new HashMap<String, List<CoConstraintTHENColumnData>>());
+      
+      for(String key:this.thenMapData.keySet()){
+        List<CoConstraintTHENColumnData> dataList = thenMapData.get(key);
+        List<CoConstraintTHENColumnData> clonedList = new ArrayList<CoConstraintTHENColumnData>();
+        
+        for(CoConstraintTHENColumnData data : dataList){
+          clonedList.add(data.clone());
+        }
+        cloned.getThenMapData().put(key, clonedList);
+      }
+    }
+    
+    if(userMapData == null) cloned.setUserMapData(null);
+    else {
+      cloned.setUserMapData(new HashMap<String, List<CoConstraintUSERColumnData>>());
+      
+      for(String key:this.userMapData.keySet()){
+        List<CoConstraintUSERColumnData> dataList = userMapData.get(key);
+        List<CoConstraintUSERColumnData> clonedList = new ArrayList<CoConstraintUSERColumnData>();
+        
+        for(CoConstraintUSERColumnData data : dataList){
+          clonedList.add(data.clone());
+        }
+        cloned.getUserMapData().put(key, clonedList);
+      }
+    }
+    return cloned;
   }
 
 }

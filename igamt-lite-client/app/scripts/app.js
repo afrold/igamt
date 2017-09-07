@@ -36,7 +36,6 @@ var app = angular
     'ngTagsInput',
     'nsPopover',
     'ngMaterial',
-    'pageslide-directive',
     'rzModule',
     'ui.select',
     'flow',
@@ -360,11 +359,29 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
       $btn.toggleClass('fr-active',this.format.is('figcaption'))
     }
   });
+  
+  $.FroalaEditor.DefineIcon('message', {NAME: 'HL7', template: 'text'});
+  $.FroalaEditor.RegisterCommand('message', {
+    title: 'HL7 Message (BETA)',
+    focus: true,
+    undo: true,
+    refreshAfterCallback: false,
+    callback: function () {
+      if(this.format.is('div',{ class: 'message' })){
+        this.format.apply("p");
+      } else {
+        this.format.apply("div style='line-height: 1;position: relative;overflow: hidden;color: black;font-family: monospace;border: 1px solid #ccc;display:block;'",{ class: 'message'});
+      }
+    },
+    refresh: function ($btn) {
+      $btn.toggleClass('fr-active',this.format.is('div',{ class: 'message' }))
+    }
+  });
 
   // load app info
   AppInfo.get().then(function (appInfo) {
     $rootScope.appInfo = appInfo;
-    var buttons = ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'caption', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'html'];
+    var buttons = ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'inlineStyle', 'message', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'caption', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'html'];
     $rootScope.froalaEditorOptions = {
       placeholderText: '',
       toolbarButtons: buttons,

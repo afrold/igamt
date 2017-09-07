@@ -10,6 +10,7 @@
 module.exports = function (grunt) {
   var apiMocker = require('connect-api-mocker');
   grunt.loadNpmTasks('grunt-contrib-connect');  // Connect - Development server
+  grunt.loadNpmTasks('grunt-protractor-runner');
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -67,6 +68,13 @@ module.exports = function (grunt) {
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
+      },
+      protractor: {
+        options: {
+          livereload: '<%= connect.options.server %>'
+        },
+        files: ['app/scripts/**/*.js', 'test/e2e/**/*.js'],
+        tasks: ['protractor:e2e']
       }
     },
 
@@ -118,33 +126,57 @@ module.exports = function (grunt) {
           }
         }
       },
+      server: {
+        options: {
+          port: 9002,
+          middleware: function (connect) {
+            return [
+              connect.static('.tmp'),
+              connect.static('test'),
+              connect().use(
+                '/bower_components',
+                connect.static('./bower_components')
+              ),
+              connect.static(appConfig.app),
+              apiMocker(
+                '/api',
+                'mocks/api'
+              )
+            ];
+          }
+        }
+      },
       dist: {
         options: {
           open: true,
           base: '<%= yeoman.dist %>'
         }
-      },
-      server: {
-        options: {
-          base: './build',
-          port: 9001,
-          middleware: function(connect, options) {
-
-            var middlewares = [];
-
-            // mock/rest directory will be mapped to your fake REST API
-            middlewares.push(apiMocker(
-              '/api',
-              'mocks/api'
-            ));
-            // Static files
-            middlewares.push(connect.static(options.base));
-            middlewares.push(connect.static(__dirname));
-
-            return middlewares;
-          }
-        }
       }
+      // ,
+      // server: {
+      //   options: {
+      //     base: './build',
+      //     port: 9001,
+      //     middleware: function(connect, options) {
+      //       return [
+      //         connect.static('.tmp'),
+      //         connect().use(
+      //           '/bower_components',
+      //           connect.static('./bower_components')
+      //         ),
+      //         connect().use(
+      //           '/app/styles',
+      //           connect.static('./app/styles')
+      //         ),
+      //         connect.static(appConfig.app),
+      //         apiMocker(
+      //           '/api',
+      //           'mocks/api'
+      //         )
+      //       ];
+      //     }
+      //   }
+      //}
     },
 
     // Make sure there are no obvious mistakes
@@ -466,6 +498,33 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    protractor: {
+      options: {
+        // Location of your protractor config file
+        configFile: "test/protractor.conf.js",
+
+        // Do you want the output to use fun colors?
+        noColor: false,
+
+        // Set to true if you would like to use the Protractor command line debugging tool
+        // debug: true,
+
+        // Additional arguments that are passed to the webdriver command
+        args: { }
+      },
+      e2e: {
+        options: {
+          // Stops Grunt process if a test fails
+          keepAlive: false
+        }
+      },
+      continuous: {
+        options: {
+          keepAlive: true
+        }
+      }
     }
   });
 
@@ -492,7 +551,7 @@ module.exports = function (grunt) {
     grunt.task.run(['serve:' + target]);
   });
 
-  grunt.registerTask('test', [
+  grunt.registerTask('unit', [
     'clean:server',
     'wiredep',
     'concurrent:test',
@@ -502,6 +561,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'e2e',
     'clean:dist',
     'wiredep',
     'useminPrepare',
@@ -525,6 +585,8 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask('e2e', ['connect:server','protractor:e2e', 'watch:protractor']);
 
 
 };

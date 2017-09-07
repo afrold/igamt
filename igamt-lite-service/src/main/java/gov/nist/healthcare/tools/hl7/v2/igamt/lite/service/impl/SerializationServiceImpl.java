@@ -697,16 +697,20 @@ public class SerializationServiceImpl implements SerializationService {
         if (segment.getCoConstraintsTable() != null
             && segment.getCoConstraintsTable().getThenMapData() != null) {
           for (String key : segment.getCoConstraintsTable().getThenMapData().keySet()) {
-            for (CoConstraintTHENColumnData coConstraintTHENColumnData : segment
+            if(segment.getCoConstraintsTable().getThenMapData().get(key) != null){
+        	  for (CoConstraintTHENColumnData coConstraintTHENColumnData : segment
                 .getCoConstraintsTable().getThenMapData().get(key)) {
-              if (coConstraintTHENColumnData.getDatatypeId() != null) {
-                doBindDatatype(coConstraintTHENColumnData.getDatatypeId());
-              } else if (coConstraintTHENColumnData.getValueSets() != null
-                  && !coConstraintTHENColumnData.getValueSets().isEmpty()) {
-                for (ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()) {
-                  doBindTable(valueSetData.getTableId());
-                }
+              if(coConstraintTHENColumnData!=null){
+            	if (coConstraintTHENColumnData.getDatatypeId() != null) {
+            		doBindDatatype(coConstraintTHENColumnData.getDatatypeId());
+	              } else if (coConstraintTHENColumnData.getValueSets() != null
+	                  && !coConstraintTHENColumnData.getValueSets().isEmpty()) {
+	                for (ValueSetData valueSetData : coConstraintTHENColumnData.getValueSets()) {
+	                  doBindTable(valueSetData.getTableId());
+	                }
+	              }
               }
+            }
             }
           }
         }
