@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStructure;
 
@@ -46,5 +47,16 @@ public class CompositeProfileRepositoryImpl implements CompositeProfileOperation
     return compositeProfileStructure;
   }
 
+  @Override
+  public void updateAttribute(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    query.fields().include(attributeName);
+    Update update = new Update();
+    update.set(attributeName, value);
+    mongo.updateFirst(query, update, CompositeProfileStructure.class);
+
+  }
 
 }

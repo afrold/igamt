@@ -128,4 +128,22 @@ public class SegmentRepositoryImpl implements SegmentOperations {
     return segments;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentOperations#updateAttribute(java.lang.
+   * String, java.lang.String, java.lang.Object)
+   */
+  @Override
+  public void updateAttribute(String id, String attributeName, Object value) {
+    // TODO Auto-generated method stub
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    query.fields().include(attributeName);
+    Update update = new Update();
+    update.set(attributeName, value);
+    mongo.updateFirst(query, update, Segment.class);
+
+  }
 }

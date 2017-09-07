@@ -3981,16 +3981,23 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
     $rootScope.isDuplicatedTwoContexts = function(obj, context1, context2, list) {
-        if (obj == null || obj == undefined) return false;
+        if (obj === null || obj === undefined) return false;
 
         return _.find(_.without(list, obj), function(item) {
-            if (item[context1] == obj[context1]) {
-                return obj[context2] != null && obj[context2] != '' && item[context2] == obj[context2] && item.id != obj.id;
+            if (item[context1] === obj[context1]) {
+                return obj[context2] !== null && obj[context2] !== '' && item[context2] === obj[context2] && item.id !== obj.id;
             } else {
                 return false;
             }
         });
     };
+
+    $rootScope.isEmpty = function (value) {
+      if(!value) return true;
+      if(value === '') return true;
+      return false;
+    };
+
     $rootScope.mergeEmptyProperty = function(to, from) {
         Object.keys(to).forEach(function(key, index) {
             if (!to[key] && from[key])
@@ -3999,7 +4006,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
             // index: the ordinal position of the key within the object 
         });
 
-    }
+    };
     $scope.init = function() {
         if (userInfoService.isAuthenticated()) {
             VersionAndUseService.findAll().then(function(result) {
@@ -4879,8 +4886,7 @@ angular.module('igl').controller('EditThenDataCtrl', function($scope, $rootScope
         var result = [];
         result.push('1');
 
-
-        if (!dtId) return result;
+        if(!dtId || !$rootScope.datatypesMap[dtId]) return result;
 
         if (_.find($rootScope.config.codedElementDTs, function(valueSetAllowedDT) {
                 return valueSetAllowedDT == $rootScope.datatypesMap[dtId].name;

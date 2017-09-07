@@ -40,9 +40,9 @@ public interface SegmentService {
   List<Segment> findAll();
 
   List<Segment> findByIds(Set<String> ids);
-  
+
   List<Segment> findByScope(String scope);
-  
+
   public List<Segment> findByNameAndScope(String name, String scope);
 
   public Date updateDate(String id, Date date) throws IGDocumentException;
@@ -52,5 +52,8 @@ public interface SegmentService {
   void updateStatus(String id, STATUS unpublished);
 
   List<Segment> findByScopeAndVersion(String name, String hl7Version);
+
+  void updateAttribute(String id, String attributeName, Object value);
+
 
 }

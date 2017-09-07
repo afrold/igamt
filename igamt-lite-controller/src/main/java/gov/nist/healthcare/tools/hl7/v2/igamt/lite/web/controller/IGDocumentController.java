@@ -124,13 +124,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.SerializationLayout;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.EventWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.GVTExportException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.EventWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.IntegrationIGDocumentRequestWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.GVTService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.TimerTaskForPHINVADSValueSetDigger;
 
@@ -1316,8 +1316,16 @@ public class IGDocumentController extends CommonController {
     log.info("Fetching all Tables for " + hl7Version);
     List<SCOPE> scopes = new ArrayList<SCOPE>();
     scopes.add(SCOPE.HL7STANDARD);
+    List<Table> res = tableService.findByScopesAndVersion(scopes, hl7Version);
+    Set<Table> toReturn = new HashSet<Table>();
+    for (Table t : res) {
+      if (!t.isDuplicated()) {
+        toReturn.add(t);
+      }
+    }
 
-    return new HashSet<Table>(tableService.findByScopesAndVersion(scopes, hl7Version));
+
+    return toReturn;
   }
 
   @RequestMapping(value = "/PHINVADS/tables", method = RequestMethod.GET,

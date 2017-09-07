@@ -33,6 +33,9 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   private String bindingIdentifier;
   private String name;
   private boolean newTable;
+  private String managedBy = Constant.Internal;
+  private String externalUrl = "";
+  private String infoForExternal = "";
 
 
   @Deprecated
@@ -47,16 +50,17 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   private int order;
 
   private List<Code> codes = new ArrayList<Code>();
+  private Set<String> codeSystems = new HashSet<String>();
+
 
   private Constant.SCOPE scope;
-
   protected Long accountId;
 
   @Deprecated
   protected String date;
 
   protected STATUS status;
-
+  @Deprecated
   protected String comment = "";
 
 
@@ -283,6 +287,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     clonedTable.setDefPreText(defPreText);
     clonedTable.setDefPostText(defPostText);
     clonedTable.setAuthorNotes(super.getAuthorNotes());
+    clonedTable.setCodeSystems(codeSystems);
     return clonedTable;
   }
 
@@ -359,5 +364,62 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   public void setShareParticipantIds(Set<ShareParticipantPermission> shareParticipantIds) {
     this.shareParticipantIds = shareParticipantIds;
   }
+
+  /**
+   * @return the codeSystems
+   */
+  public Set<String> getCodeSystems() {
+    return codeSystems;
+  }
+
+  /**
+   * @param codeSystems the codeSystems to set
+   */
+  public void setCodeSystems(Set<String> codeSystems) {
+    this.codeSystems = codeSystems;
+  }
+
+  /**
+   * @return the managedBy
+   */
+  public String getManagedBy() {
+    return managedBy;
+  }
+
+  /**
+   * @param managedBy the managedBy to set
+   */
+  public void setManagedBy(String managedBy) {
+    this.managedBy = managedBy;
+  }
+
+  /**
+   * @return the externalUrl
+   */
+  public String getExternalUrl() {
+    return externalUrl;
+  }
+
+  /**
+   * @param externalUrl the externalUrl to set
+   */
+  public void setExternalUrl(String externalUrl) {
+    this.externalUrl = externalUrl;
+  }
+
+  /**
+   * @return the infoForExternal
+   */
+  public String getInfoForExternal() {
+    return infoForExternal;
+  }
+
+  /**
+   * @param infoForExternal the infoForExternal to set
+   */
+  public void setInfoForExternal(String infoForExternal) {
+    this.infoForExternal = infoForExternal;
+  }
+
 
 }

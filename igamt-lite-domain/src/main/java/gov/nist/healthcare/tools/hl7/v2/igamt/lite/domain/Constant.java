@@ -55,7 +55,9 @@ public class Constant {
 
   public final static String SINGLECODE = "singlecode";
   public final static String VALUESET = "valueset";
+  public final static String Internal = "Internal-IGAMT Manager";
 
+  public final static String External = "External-Exteranlly Managed";
 
 
   public final static SimpleDateFormat mdy = new SimpleDateFormat("MMMM dd, yyyy");
@@ -68,6 +70,7 @@ public class Constant {
   public enum QUANTUM {
     BREVIS, SUMMA
   };
+
 
   public final static String ORG_NAME = "NIST";
   public static final String DATATYPE_LIBRARY_DOCUMENT = "datatypeLibraryDocument";

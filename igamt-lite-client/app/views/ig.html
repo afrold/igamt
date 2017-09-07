@@ -262,13 +262,13 @@
             </td>
 
 
-            <td flex="40" style="width:585px;color:black" ng-bind="::node.description "></td>
+            <td flex="40" style="width:585px;color:black" ng-bind="::node.description"></td>
 
         </tr>
 
     </script>
 
-<script type="text/ng-template" id="DeleteProfileComponentCtrl.html ">
+<script type="text/ng-template" id="DeleteProfileComponentCtrl.html">
     <md-dialog aria-label="confirmation">
         <form ng-cloak>
             <md-toolbar>
@@ -281,20 +281,20 @@
                 <div class="md-dialog-content">
 
 
-        <p>Are you sure you want to delete the Profile Component:"{{profileComponentToDelete.name}} " ? This operation is irreversible</p>
+        <p>Are you sure you want to delete the Profile Component:"{{profileComponentToDelete.name}}" ? This operation is irreversible</p>
                 </div>
             </md-dialog-content>
 
             <md-dialog-actions layout="row">
-                <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
-                        class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
+                <button class="btn btn-raised btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                        class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
                 </button>
             </md-dialog-actions>
         </form>
     </md-dialog>
 </script>
 
-<script type="text/ng-template" id="DeleteCompositeMessageCtrl.html ">
+<script type="text/ng-template" id="DeleteCompositeMessageCtrl.html">
     <md-dialog aria-label="confirmation">
         <form ng-cloak>
             <md-toolbar>
@@ -307,15 +307,15 @@
             <md-dialog-content>
                 <div class="md-dialog-content">
 
-        <p>Are you sure you want to delete the Composite Message:"{{compositeMessageToDelete.name}} " ? This operation is irreversible</p>
+        <p>Are you sure you want to delete the Composite Message:"{{compositeMessageToDelete.name}}" ? This operation is irreversible</p>
             </div>
             </md-dialog-content>
 
             <md-dialog-actions layout="row">
-                <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
-                        class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
+                <button class="btn btn-raised btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                        class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
                 </button>
-                <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+                <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
                     <div layout="row" layout-sm="column" layout-align="space-around">
                         <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
                     </div>
@@ -337,13 +337,13 @@
             <md-dialog-content>
                 <div class="md-dialog-content">
 
-                    <p>Are you sure you want to delete the Composite Profile:"{{compositeMessageToDelete.name}} " ? This operation is irreversible            </md-dialog-content>
+                    <p>Are you sure you want to delete the Composite Profile:"{{compositeMessageToDelete.name}}" ? This operation is irreversible            </md-dialog-content>
 
             <md-dialog-actions layout="row">
-                <button class="btn btn-raised btn-danger btn-sm " ng-disabled="loading " ng-click="delete() "><span><i
-                        class="fa fa-trash-o fa-fw ">&nbsp; </i>Delete</span>
+                <button class="btn btn-raised btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                        class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
                 </button>
-                <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
+                <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
                     <div layout="row" layout-sm="column" layout-align="space-around">
                         <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
                     </div>
@@ -352,7 +352,7 @@
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="CantDeleteMsgCtrl.html ">
+<script type="text/ng-template" id="CantDeleteMsgCtrl.html">
     <md-dialog aria-label="confirmation">
         <form ng-cloak>
             <md-toolbar>
@@ -368,7 +368,7 @@
             <md-dialog-content>
                 <div class="md-dialog-content">
 <div ng-if="crossRefsForDelete.compositeProfileFound.length">
-            <p> Conformance Profile:"{{msg.name}} " cannot be deleted because it is used in the following Composite
+            <p> Conformance Profile:"{{msg.name}}" cannot be deleted because it is used in the following Composite
                 Profiles: </p>
             <table id="applyPcToTable" tt-table tt-params="cantDeleteMsgParams"
                    class="table table-bordered table-fix-header table-condensed profile-table">
@@ -428,7 +428,7 @@
         </form>
     </md-dialog>
 </script>
-<script type="text/ng-template" id="CantDeletePcCtrl.html ">
+<script type="text/ng-template" id="CantDeletePcCtrl.html">
     <md-dialog aria-label="confirmation">
         <form ng-cloak>
             <md-toolbar>
@@ -442,7 +442,7 @@
             </md-toolbar>
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <p>Profile Component:"{{profileComponent.name}} " cannot be deleted because it is applied in the Composite Profiles: </p>
+                    <p>Profile Component:"{{profileComponent.name}}" cannot be deleted because it is applied in the Composite Profiles: </p>
                     <table id="applyPcToTable" tt-table tt-params="cantDeletePcParams" class="table table-bordered table-fix-header table-condensed profile-table">
                         <thead>
                         <tr class="tbl-header" style="">
@@ -458,7 +458,7 @@
         </form>
     </md-dialog>
 </script>
- <script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html ">
+ <script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html">
         <md-dialog aria-label="confirmation">
             <form ng-cloak>
                 <md-toolbar>
@@ -473,7 +473,7 @@
 
                 <md-dialog-content>
                     <div class="md-dialog-content">
-                        <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}} " ? This operation
+                        <p>Are you sure you want to delete the IG Document:"{{igdocumentToDelete.metaData.title}}" ? This operation
                             is irreversible
                         </p>                    </div>
                 </md-dialog-content>
@@ -484,82 +484,82 @@
             </form>
         </md-dialog>
  </script>
-    <script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html ">
-        <div class="modal-header ">
-            <h3 class="modal-title ">Close Confirmation
-            </h3>
-        </div>
-        <div class="modal-body ">
-            <p>You currently have unsaved changes. Are you sure you want to close the igdocument ? All unsaved changes
-                will be lost</p>
-        </div>
-        <div class="modal-footer ">
-            <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                    class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading "
-                    ng-click="discardChangesAndClose() "><span><i
-                    class="fa fa-times-circle fa-fw ">&nbsp; </i>Discard Changes</span>
-            </button>
-            <button class="btn btn-raised btn-primary btn-sm " ng-disabled="loading " ng-click="saveChangesAndClose() "><span><i
-                    class="fa fa-check-circle fa-fw ">&nbsp; </i>Apply Changes</span>
-            </button>
-            <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                <div layout="row" layout-sm="column" layout-align="space-around">
-                    <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
-                </div>
-            </div>
-        </div>
-    </script>
-    <script type="text/ng-template " id="ConfirmIGDocumentOpenCtrl.html ">
-        <div class="modal-header ">
-            <h3 class="modal-title ">Open Confirmation
-            </h3>
-        </div>
-        <div class="modal-body ">
-            <p>You currently have an open IG document with unsaved changes. Are you sure you want to open the IG
-                document ? All unsaved changes will be lost</p>
-        </div>
-        <div class="modal-footer ">
-            <button class="btn btn-raised btn-default btn-sm " ng-disabled="loading " ng-click="cancel() "><span><i
-                    class="fa fa-times fa-fw ">&nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading "
-                    ng-click="discardChangesAndOpen() "><span><i
-                    class="fa fa-times-circle fa-fw ">&nbsp; </i>Discard Changes</span>
-            </button>
-            <button class="btn btn-raised btn-primary btn-sm " ng-disabled="loading "
-                    ng-click="saveChangesAndOpen() "><span><i
-                    class="fa fa-check-circle fa-fw ">&nbsp; </i>Apply Changes</span>
-            </button>
-            <div ng-show="loading " style="text-align:center;padding-top:20px; padding-bottom:20px ">
-                <div layout="row" layout-sm="column" layout-align="space-around">
-                    <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
-                </div>
-            </div>
-        </div>
-    </script>
-    <script type="text/ng-template " id="RichTextCtrl.html ">
-        <div class="modal-header modal-wide ">
-            <h3 class="modal-title ">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}
+    <script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Close Confirmation
             </h3>
         </div>
         <div class="modal-body">
-            <div class="row ">
+            <p>You currently have unsaved changes. Are you sure you want to close the igdocument ? All unsaved changes
+                will be lost</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                    class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            </button>
+            <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading"
+                    ng-click="discardChangesAndClose()"><span><i
+                    class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
+            </button>
+            <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
+                    class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
+            </button>
+            <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+                <div layout="row" layout-sm="column" layout-align="space-around">
+                    <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="ConfirmIGDocumentOpenCtrl.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Open Confirmation
+            </h3>
+        </div>
+        <div class="modal-body">
+            <p>You currently have an open IG document with unsaved changes. Are you sure you want to open the IG
+                document ? All unsaved changes will be lost</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-raised btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                    class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            </button>
+            <button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading"
+                    ng-click="discardChangesAndOpen()"><span><i
+                    class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
+            </button>
+            <button class="btn btn-raised btn-primary btn-sm" ng-disabled="loading"
+                    ng-click="saveChangesAndOpen()"><span><i
+                    class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
+            </button>
+            <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+                <div layout="row" layout-sm="column" layout-align="space-around">
+                    <md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="RichTextCtrl.html">
+        <div class="modal-header modal-wide">
+            <h3 class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}
+            </h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
                 <div class="col-md-12">
-                    <div ng-if="!editorTarget.disabled ">
-                        <textarea rows="10 " froala="froalaEditorOptions " style="width:100%; " autofocus
-                                  ng-model="editorTarget.obj[editorTarget.key] " id="globalEditor " name="content "
+                    <div ng-if="!editorTarget.disabled">
+                        <textarea rows="10" froala="froalaEditorOptions" style="width:100%;" autofocus
+                                  ng-model="editorTarget.obj[editorTarget.key]" id="globalEditor" name="content"
                                   ng-change="recordChanged()"></textarea>
                     </div>
-                    <div ng-if="editorTarget.disabled " style="width:100%; ">
-                        <div froala-view="editorTarget.obj[editorTarget.key] "></div>
+                    <div ng-if="editorTarget.disabled" style="width:100%;">
+                        <div froala-view="editorTarget.obj[editorTarget.key]"></div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal-footer ">
-            <button class="btn btn-raised btn-primary btn-md " ng-click="close() "><span><i class="fa fa-times fa-fw ">
+        <div class="modal-footer">
+            <button class="btn btn-raised btn-primary btn-md" ng-click="close()"><span><i class="fa fa-times fa-fw">
             &nbsp; </i>Close</span>
             </button>
         </div>
@@ -583,23 +583,23 @@
                         <div ng-show="exportStep === 0">
                             <form novalidate ng-cloak>
                                 <div ng-show="!toGVT || toGVT === false">
-                                    <h4 class="modal-title ">Select Export Format</h4>
+                                    <h4 class="modal-title">Select Export Format</h4>
                                 </div>
                                 <div ng-show="!toGVT || toGVT === false" style="margin-bottom:10px">
-                                    <div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">
-                                        <label class="btn btn-raised btn-primary btn-xs "
-                                               ng-click="xmlFormat='Validation' "
-                                               ng-class="{ 'active':xmlFormat==='Validation' } ">
+                                    <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                                        <label class="btn btn-raised btn-primary btn-xs"
+                                               ng-click="xmlFormat='Validation'"
+                                               ng-class="{ 'active':xmlFormat==='Validation' }">
                                             NIST Validation Format
                                         </label>
-                                        <label class="btn btn-raised btn-primary btn-xs "
-                                               ng-click="xmlFormat='Display' "
-                                               ng-class="{ 'active':xmlFormat==='Display' } ">
+                                        <label class="btn btn-raised btn-primary btn-xs"
+                                               ng-click="xmlFormat='Display'"
+                                               ng-class="{ 'active':xmlFormat==='Display' }">
                                             NIST Display Format
                                         </label>
-                                        <label class="btn btn-raised btn-primary btn-xs "
-                                               ng-click="xmlFormat='Gazelle' "
-                                               ng-class="{ 'active':xmlFormat==='Gazelle' } ">
+                                        <label class="btn btn-raised btn-primary btn-xs"
+                                               ng-click="xmlFormat='Gazelle'"
+                                               ng-class="{ 'active':xmlFormat==='Gazelle' }">
                                             Gazelle Format
                                         </label>
                                     </div>
@@ -622,12 +622,12 @@
                                         </tr>
                                         </thead>
                                         <tbody style="display:block; overflow-y: scroll;max-height: 400px;">
-                                        <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id "
+                                        <tr ng-repeat="message in igdocumentToSelect.profile.messages.children track by message.id"
                                             layout="row" layout-align="start start">
                                             <td flex="10">
                                                 <md-checkbox type="checkbox" ng-model="message.selected"
                                                              arial-label="message.id"
-                                                             ng-change="trackSelections() "></md-checkbox>
+                                                             ng-change="trackSelections()"></md-checkbox>
                                             </td>
                                             <td flex="20">{{message.identifier}}</td>
                                             <td flex="30">{{message.name}}</td>
@@ -819,26 +819,26 @@
                 </md-dialog-content>
                 <md-dialog-actions layout="row">
                     <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)"
-                               class="btn btn-raised btn-primary btn-sm "
-                               ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goBack() "><span><i
+                               class="btn btn-raised btn-primary btn-sm"
+                               ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goBack()"><span><i
                             class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
-                    <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm "
+                    <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm"
                                ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
-                               ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw "></i>Export as Zip</span>
+                               ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw"></i>Export as Zip</span>
                     </md-button>
-                    <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm "
-                               ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goNext() "><span><i
-                            class="fa fa fa-arrow-right fa-fw "></i>Next</span></md-button>
-                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm "
+                    <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm"
+                               ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goNext()"><span><i
+                            class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
+                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm"
                                ng-show="xmlFormat=== 'Validation'"
                                ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
-                               ng-click="exportAsZIPToGVT() "><span><i
-                            class="fa fa-paper-plane fa-fw "></i>Send</span></md-button>
+                               ng-click="exportAsZIPToGVT()"><span><i
+                            class="fa fa-paper-plane fa-fw"></i>Send</span></md-button>
                 </md-dialog-actions>
             </form>
         </md-dialog>
     </script>
-    <script type="text/ng-template " id="SelectCompositeProfilesForExportCtrlMd.html ">
+    <script type="text/ng-template" id="SelectCompositeProfilesForExportCtrlMd.html">
         <md-dialog aria-label="exportXml" style="min-width: 50%">
             <div ng-cloak>
                 <md-toolbar>
@@ -857,23 +857,23 @@
                         <div ng-show="exportStep === 0">
                             <form novalidate ng-cloak>
                                 <div ng-show="!toGVT || toGVT === false">
-                                    <h4 class="modal-title ">Select Export Format</h4>
+                                    <h4 class="modal-title">Select Export Format</h4>
                                 </div>
                                 <div ng-show="!toGVT || toGVT === false" style="margin-bottom:10px">
-                                    <div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">
-                                        <label class="btn btn-raised btn-primary btn-xs "
-                                               ng-click="xmlFormat='Validation' "
-                                               ng-class="{ 'active':xmlFormat==='Validation' } ">
+                                    <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                                        <label class="btn btn-raised btn-primary btn-xs"
+                                               ng-click="xmlFormat='Validation'"
+                                               ng-class="{ 'active':xmlFormat==='Validation' }">
                                             NIST Validation Format
                                         </label>
-                                        <label class="btn btn-raised btn-primary btn-xs "
-                                               ng-click="xmlFormat='Display' "
-                                               ng-class="{ 'active':xmlFormat==='Display' } ">
+                                        <label class="btn btn-raised btn-primary btn-xs"
+                                               ng-click="xmlFormat='Display'"
+                                               ng-class="{ 'active':xmlFormat==='Display' }">
                                             NIST Display Format
                                         </label>
-                                        <label class="btn btn-raised btn-primary btn-xs "
-                                               ng-click="xmlFormat='Gazelle' "
-                                               ng-class="{ 'active':xmlFormat==='Gazelle' } ">
+                                        <label class="btn btn-raised btn-primary btn-xs"
+                                               ng-click="xmlFormat='Gazelle'"
+                                               ng-class="{ 'active':xmlFormat==='Gazelle' }">
                                             Gazelle Format
                                         </label>
                                     </div>
@@ -896,7 +896,7 @@
                                         </tr>
                                         </thead>
                                         <tbody style="display:block; overflow-y: scroll;max-height: 400px;">
-                                        <tr ng-repeat="child in igdocumentToSelect.profile.compositeProfiles.children track by child.id  "
+                                        <tr ng-repeat="child in igdocumentToSelect.profile.compositeProfiles.children track by child.id"
                                             layout="row">
                                             <td flex="10">
                                                 <md-checkbox type="checkbox" ng-model="child.selected"
@@ -1103,47 +1103,47 @@
                 </md-dialog-content>
                 <md-dialog-actions layout="row">
                     <md-button ng-show="toGVT && (exportStep === 1 || exportStep === 2)"
-                               class="btn btn-raised btn-primary btn-sm "
+                               class="btn btn-raised btn-primary btn-sm"
                                ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goBack()">
                         <span><i class="fa fa-arrow-left fa-fw"></i>Back</span></md-button>
-                    <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm "
+                    <md-button ng-show="!toGVT || toGVT === false" class="btn btn-raised btn-primary btn-sm"
                                ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
                                ng-click="exportAsZIPforSelectedCompositeProfiles()"><span><i
-                            class="fa fa-download fa-fw "></i>Export as Zip</span></md-button>
-                    <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm "
-                               ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goNext() "><span><i
-                            class="fa fa fa-arrow-right fa-fw "></i>Next</span></md-button>
-                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm "
+                            class="fa fa-download fa-fw"></i>Export as Zip</span></md-button>
+                    <md-button ng-show="toGVT && exportStep === 0" class="btn btn-raised btn-primary btn-sm"
+                               ng-disabled="xmlFormat==='' || xmlFormat===null || !selected" ng-click="goNext()"><span><i
+                            class="fa fa fa-arrow-right fa-fw"></i>Next</span></md-button>
+                    <md-button ng-show="toGVT && exportStep === 1" class="btn btn-raised btn-success btn-sm"
                                ng-show="xmlFormat=== 'Validation'"
                                ng-disabled="xmlFormat==='' || xmlFormat===null || !selected"
                                ng-click="exportAsZIPToGVT()"><span><i
-                            class="fa fa-paper-plane fa-fw "></i>Send</span></md-button>
+                            class="fa fa-paper-plane fa-fw"></i>Send</span></md-button>
                 </md-dialog-actions>
             </div>
          </md-dialog>
     </script>
-    <!--<script type="text/ng-template " id="SelectCompositeProfilesForExportCtrl-backup.html ">-->
-        <!--<div class="page-header ">-->
-            <!--<h3 class="modal-title ">Export XML</h3>-->
+    <!--<script type="text/ng-template" id="SelectCompositeProfilesForExportCtrl-backup.html">-->
+        <!--<div class="page-header">-->
+            <!--<h3 class="modal-title">Export XML</h3>-->
         <!--</div>-->
-        <!--<div class="modal-body ">-->
-            <!--<form class="form-horizontal " novalidate>-->
-                <!--<div class="row ">-->
-                    <!--<div class="col-md-12 ">-->
-                        <!--<h4 class="modal-title ">Select Export Format</h4>-->
+        <!--<div class="modal-body">-->
+            <!--<form class="form-horizontal" novalidate>-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-12">-->
+                        <!--<h4 class="modal-title">Select Export Format</h4>-->
                     <!--</div>-->
-                    <!--<div class="col-md-12 ">-->
-                        <!--<div class="btn-group btn-group-sm pull-left " data-toggle="buttons ">-->
-                            <!--<label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Validation'"-->
-                                   <!--ng-class="{ 'active':xmlFormat==='Validation' } ">-->
+                    <!--<div class="col-md-12">-->
+                        <!--<div class="btn-group btn-group-sm pull-left" data-toggle="buttons">-->
+                            <!--<label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat='Validation'"-->
+                                   <!--ng-class="{ 'active':xmlFormat==='Validation' }">-->
                                 <!--NIST Validation Format-->
                             <!--</label>-->
-                            <!--<label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Display'"-->
-                                   <!--ng-class="{ 'active':xmlFormat==='Display' } ">-->
+                            <!--<label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat='Display'"-->
+                                   <!--ng-class="{ 'active':xmlFormat==='Display' }">-->
                                 <!--NIST Display Format-->
                             <!--</label>-->
-                            <!--<label class="btn btn-raised btn-primary btn-xs " ng-click="xmlFormat='Gazelle'"-->
-                                   <!--ng-class="{ 'active':xmlFormat==='Gazelle' } ">-->
+                            <!--<label class="btn btn-raised btn-primary btn-xs" ng-click="xmlFormat='Gazelle'"-->
+                                   <!--ng-class="{ 'active':xmlFormat==='Gazelle' }">-->
                                 <!--Gazelle Format-->
                             <!--</label>-->
                         <!--</div>-->
@@ -1161,10 +1161,10 @@
                                 <!--</tr>-->
                                 <!--</thead>-->
                                 <!--<tbody>-->
-                                <!--<tr ng-repeat="child in igdocumentToSelect.profile.compositeProfiles.children track by child.id ">-->
+                                <!--<tr ng-repeat="child in igdocumentToSelect.profile.compositeProfiles.children track by child.id">-->
                                     <!--<td style="width:30px">-->
                                         <!--<input type="checkbox" ng-model="bool"-->
-                                               <!--ng-change="trackSelections(bool, child.id) ">-->
+                                               <!--ng-change="trackSelections(bool, child.id)">-->
                                     <!--</td>-->
                                     <!--<td style="width:225px">{{child.name}}</td>-->
                                     <!--<td style="width:225px">{{child.ext}}</td>-->
@@ -1177,9 +1177,9 @@
                 <!--</div>-->
             <!--</form>-->
         <!--</div>-->
-        <!--<div class="modal-footer ">-->
-            <!--<div class="row ">-->
-                <!--<div class="col-md-12 ">-->
+        <!--<div class="modal-footer">-->
+            <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
                     <!--<div ng-class="'alert alert-'+ info.type" ng-show="info.show" id="ehrloginalert"-->
                          <!--style="margin-top:5px; text-align:center">-->
                         <!--<div ng-show="info.type === 'info'">-->
@@ -1198,18 +1198,18 @@
                         <!--</div>-->
                     <!--</div>-->
                 <!--</div>-->
-                <!--<div class="col-md-12 ">-->
-                    <!--<button class="btn btn-raised btn-primary btn-sm "-->
-                            <!--ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 "-->
-                            <!--ng-click="exportAsZIPforSelectedCompositeProfiles() "><span><i-->
-                            <!--class="fa fa-download fa-fw "></i>Download as Zip</span></button>-->
-                    <!--<button class="btn btn-raised btn-success btn-sm " ng-show="xmlFormat=== 'Validation'"-->
-                            <!--ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0 "-->
-                            <!--ng-click="exportAsZIPToGVT() "><span><i-->
-                            <!--class="fa fa-download fa-fw "></i>Export to GVT</span></button>-->
-                    <!--<button class="btn btn-raised btn-warning btn-sm " ng-disabled="loading " ng-click="cancel() ">-->
-                        <!--<span><i class="fa fa-times fa-fw ">&nbsp; </i>Close</span></button>-->
-                    <!--<div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px ">-->
+                <!--<div class="col-md-12">-->
+                    <!--<button class="btn btn-raised btn-primary btn-sm"-->
+                            <!--ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0"-->
+                            <!--ng-click="exportAsZIPforSelectedCompositeProfiles()"><span><i-->
+                            <!--class="fa fa-download fa-fw"></i>Download as Zip</span></button>-->
+                    <!--<button class="btn btn-raised btn-success btn-sm" ng-show="xmlFormat=== 'Validation'"-->
+                            <!--ng-disabled="xmlFormat==='' || xmlFormat===null || selectedCompositeProfileIDs===null || selectedCompositeProfileIDs.length===0"-->
+                            <!--ng-click="exportAsZIPToGVT()"><span><i-->
+                            <!--class="fa fa-download fa-fw"></i>Export to GVT</span></button>-->
+                    <!--<button class="btn btn-raised btn-warning btn-sm" ng-disabled="loading" ng-click="cancel()">-->
+                        <!--<span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>-->
+                    <!--<div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">-->
                         <!--<div layout="row" layout-sm="column" layout-align="space-around">-->
                             <!--<md-progress-circular class="md-hue-2" md-diameter="40px"></md-progress-circular>-->
                         <!--</div>-->
@@ -1219,62 +1219,62 @@
         <!--</div>-->
     <!--</script>-->
 
-    <script type="text/ng-template " id="AddHL7TableOpenCtrl.html ">
-        <div class="modal-header modal-wide ">
-            <div class="form-inline ">
-                <span class="header4 ">Add HL7 Tables</span>
+    <script type="text/ng-template" id="AddHL7TableOpenCtrl.html">
+        <div class="modal-header modal-wide">
+            <div class="form-inline">
+                <span class="header4">Add HL7 Tables</span>
             </div>
         </div>
-        <div class="modal-body ">
-            <form class="form-horizontal " novalidate>
-                <div class="row ">
-                    <div class="col-md-12 ">
-                        <div class="btn-group btn-group-sm pull-left " data-toggle="buttons">
-                            <label class="btn btn-raised btn-info btn-xs "
-                                   ng-click="selectedHL7Version=vr; loadTablesByVersion(vr) "
-                                   ng-class="{ 'active':vr===selectedHL7Version} " ng-repeat="vr in hl7Versions ">
-                                <input type="radio " ng-value="vr "
-                                       ng-model="$parent.selectedHL7Version ">{{vr}}</input>
+        <div class="modal-body">
+            <form class="form-horizontal" novalidate>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                            <label class="btn btn-raised btn-info btn-xs"
+                                   ng-click="selectedHL7Version=vr; loadTablesByVersion(vr)"
+                                   ng-class="{ 'active':vr===selectedHL7Version}" ng-repeat="vr in hl7Versions">
+                                <input type="radio" ng-value="vr"
+                                       ng-model="$parent.selectedHL7Version">{{vr}}</input>
                             </label>
                         </div>
                     </div>
-                    <div class="col-md-6 " ng-show="selectedHL7Version !=='' ">
-                        <div ng-show="loading " style="text-align:center ">
-                            <i class="fa fa-spinner fa-pulse fa-2x "></i>
+                    <div class="col-md-6" ng-show="selectedHL7Version !==''">
+                        <div ng-show="loading" style="text-align:center">
+                            <i class="fa fa-spinner fa-pulse fa-2x"></i>
                         </div>
-                        <div ng-show="!loading " class="igl-table ">
+                        <div ng-show="!loading" class="igl-table">
                             <h5>Tables for {{source}} {{selectedHL7Version}}</h5>
-                            <table class="table table-striped table-bordered table-condensed hl7-versions-valueset ">
+                            <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                                 <thead>
-                                <tr class="tbl-header ">
+                                <tr class="tbl-header">
                                     <th>Binding Identifier</th>
                                     <th>Name</th>
                                     <th/>
                                 </tr>
                                 <tr>
                                     <th>
-                                        <input ng-model="search.bindingIdentifier " class="form-control "
-                                               placeholder="by id ">
+                                        <input ng-model="search.bindingIdentifier" class="form-control"
+                                               placeholder="by id">
                                     </th>
                                     <th>
-                                        <input ng-model="search.name " class="form-control " placeholder="by name ">
+                                        <input ng-model="search.name" class="form-control" placeholder="by name">
                                     </th>
                                     <th/>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="table in hl7Tables | orderBy: 'bindingIdentifier' | filter:search:strict ">
+                                <tr ng-repeat="table in hl7Tables | orderBy: 'bindingIdentifier' | filter:search:strict">
                                     <td>{{table.bindingIdentifier}}</td>
                                     <td>{{table.name}}</td>
-                                    <td><a class="pointer " ng-click="addTable(table) "><i
-                                            class="fa fa-plus fa-fw "></i></a>
+                                    <td><a class="pointer" ng-click="addTable(table)"><i
+                                            class="fa fa-plus fa-fw"></i></a>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="col-md-6 " ng-show="selectedTables.length> 0">
+                    <div class="col-md-6" ng-show="selectedTables.length> 0">
                         <div class="igl-table">
                             <h5>Selected tables</h5>
                             <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
@@ -1313,59 +1313,6 @@
                     class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
         </div>
     </script>
-
-    <script type="text/ng-template" id="AddCSVTableOpenCtrl.html">
-        <div class="modal-header modal-wide">
-            <div class="form-inline">
-                <span class="header4">Add ValueSet From CSV file</span>
-            </div>
-        </div>
-        <div class="modal-body">
-            <form class="form-horizontal" novalidate>
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <label for="csvValueSetFile" class="custom-file-upload">
-                            <i class="fa fa-cloud-upload"></i> Choose CSV File
-                        </label>
-                        <input id="csvValueSetFile" accept=".csv"
-                               onchange="angular.element(this).scope().validateForSelectedFile(this.files)" type="file"
-                               name="csvValueSetFile"/>
-
-                        <div id="csvFileName"></div>
-                        <div id="errorMessageForCSV"></div>
-                    </div>
-                </div>
-
-                <p style="color:blue;">How it works</p>
-                <ol style="color:blue;">
-                    <li style="color:blue;">Download 'ValueSet Empty Form (Excel)'</li>
-                    <li style="color:blue;">Edit sheets using MS Excel</li>
-                    <li style="color:blue;">Save as CSV file</li>
-                    <li style="color:blue;">Upload CSV file</li>
-                </ol>
-
-                <p style="color:blue;">Files</p>
-                <ul>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_EmptyForm_Excel.xlsx"
-                                               target="_blank"><i
-                            class="fa fa-file-excel-o fa-fw"></i>ValueSet Empty Form (Excel)</a></li>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_EmptyForm_csv.csv" target="_blank"><i
-                            class="fa fa-file-code-o fa-fw"></i>ValueSet Empty Form (CSV)</a></li>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_sample_excel.xlsx" target="_blank"><i
-                            class="fa fa-file-excel-o fa-fw"></i>ValueSet Sample Form (Excel)</a></li>
-                    <li style="color:blue;"><a class="pointer" href="docs/ValueSet_sample_csv.csv" target="_blank"><i
-                            class="fa fa-file-code-o fa-fw"></i>ValueSet Sample Form (CSV)</a></li>
-                </ul>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-raised btn-warning btn-sm" ng-click="cancel()"><span><i class="fa fa-times fa-fw">
-            &nbsp; </i>Cancel</span></button>
-            <button id="csvSaveButton" class="btn btn-raised btn-primary btn-sm" ng-click="save()" disabled><span><i
-                    class="fa fa-plus fa-fw">&nbsp; </i>Save</span></button>
-        </div>
-    </script>
-
 
     <script type="text/ng-template" id="AddPHINVADSTableOpenCtrl.html">
         <div class="modal-header modal-wide">
@@ -1470,7 +1417,7 @@
 
 
                                 <div class="col-md-6">
-                                    <div class="btn-group btn-group-sm " data-toggle="buttons">
+                                    <div class="btn-group btn-group-sm" data-toggle="buttons">
                                         <label class="btn btn-raised btn-info btn-xs" ng-click="setVersion(vr)"
                                                ng-class="{ 'active':vr===version1}" ng-repeat="vr in versions">
                                             <input type="radio" ng-value="vr" ng-model="version1">{{vr}}</input>
@@ -2106,14 +2053,10 @@
                                 <input type="text" name="name" ng-model="name" required>
 
                             </md-input-container>
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label class="input-left">Description</label>
-                                <input type="text" name="description" ng-model="description">
-                            </md-input-container>
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label class="input-left">Comment</label>
-                                <textarea rows="3" name="comment" id="comment" ng-model="comment"/>
-                            </md-input-container>
+                            <!--<md-input-container class="md-block" flex-gt-sm>-->
+                                <!--<label class="input-left">Description</label>-->
+                                <!--<input type="text" name="description" ng-model="description">-->
+                            <!--</md-input-container>-->
                         </md-content>
 
                     </div>
@@ -2179,16 +2122,6 @@
 
                                             </div>
                                         </md-input-container>
-                                        <label class="input-left igamt-label">Description</label>
-
-                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                            <input type="text" name="description" ng-model="description">
-                                        </md-input-container>
-
-                                        <label class="input-left igamt-label">Comment</label>
-                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                            <textarea rows="3" name="comment" id="comment" ng-model="comment"/>
-                                        </md-input-container>
                                     </md-content>
 
 
@@ -2244,8 +2177,6 @@
                                                             <i class="material-icons">info_outline</i>
                                                         </md-icon>
                                                     </span>-->
-
-
                                                 <md-icon>
                                                     <i class="material-icons">info_outline</i>
                                                     <md-tooltip style="z-index: 99999999;">
@@ -2408,7 +2339,7 @@
 
                 <div class="col-md-6">
                     <h5>Base Profiles</h5>
-                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset ">
+                    <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
                         <thead>
                         <tr class="tbl-header">
                             <th>Choose Base Profile</th>

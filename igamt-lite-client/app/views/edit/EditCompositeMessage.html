@@ -99,11 +99,11 @@
                         </tab>
                         <tab>
                             <tab-heading>
-                                <i class="fa fa-info-circle fa-fw " aria-hidden="true "></i> Composite Profile Definition
+                                <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i> Composite Profile Definition
                             </tab-heading>
-                            <div style="margin-top: 20px ">
+                            <div style="margin-top: 20px">
 
-                                <div class="col-md-12 " ng-show="compositeMessage.children.length>0">
+                                <div class="col-md-12" ng-show="compositeMessage.children.length>0">
                                     <table id="compositeMessageTable" tt-table tt-params="compositeMessageParams" class="table table-bordered table-fix-header table-condensed profile-table">
                                         <thead>
                                             <tr class="tbl-header" style="">
@@ -222,7 +222,7 @@
         <td class="col-md-2 col-fixed-35 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
 
         </td>
-        <td class="col-md-2 col-fixed-35 " ng-if="node.type==='field' || node.type==='component'">
+        <td class="col-md-2 col-fixed-35" ng-if="node.type==='field' || node.type==='component'">
             <a class="point">
                  {{node.datatype.label}}
             </a>
@@ -250,7 +250,7 @@
 
         <td class="col-md-1 col-fixed-80 emptyCol" ng-if="node.type!=='field' && node.type!=='component'">
         </td>
-        <td class="col-md-1 col-fixed-80 " ng-if="node.type==='field' || node.type==='component'">
+        <td class="col-md-1 col-fixed-80" ng-if="node.type==='field' || node.type==='component'">
 
             <a ng-click="seeText(node)" class="point">
                 <i class="fa fa-eye"></i>

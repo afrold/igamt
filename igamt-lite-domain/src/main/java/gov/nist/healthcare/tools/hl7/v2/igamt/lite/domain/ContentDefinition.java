@@ -2,7 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 
 public enum ContentDefinition {
-  Extensional, Intensional;
+  Extensional, Intensional, Undefined;
 
   public String value() {
     return name();

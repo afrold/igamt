@@ -83,11 +83,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileComponentServi
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.DatatypeCrossRefWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.MessageCrossRefWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ProfileComponentCrossRefWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.SegmentCrossRefWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.TableCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.DatatypeCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.MessageCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.ProfileComponentCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.SegmentCrossRefWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.service.wrappers.TableCrossRefWrapper;
 
 /**
  * @author Abdelghani EL Ouakili (NIST)

@@ -44,26 +44,31 @@
                                         <md-input-container class="md-block igamt-input-block" flex-gt-sm>
                                             <input type="text" name="name" ng-model="profileComponent.name" required ng-disabled="viewSettings.tableReadonly">
                                         </md-input-container>
-                                        <label class="input-left igamt-label">Description</label>
+                                        <!--<label class="input-left igamt-label">Description</label>-->
 
-                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                            <input type="text" name="description" ng-model="profileComponent.description" ng-disabled="viewSettings.tableReadonly">
-                                        </md-input-container>
-                                        <label class="input-left igamt-label">Comment</label>
+                                        <!--<md-input-container class="md-block igamt-input-block" flex-gt-sm>-->
+                                            <!--<input type="text" name="description" ng-model="profileComponent.description" ng-disabled="viewSettings.tableReadonly">-->
+                                        <!--</md-input-container>-->
 
-                                        <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                            <textarea rows="3"  name="comment" id="comment" ng-model="profileComponent.comment" ng-disabled="viewSettings.tableReadonly"/>
-                                        </md-input-container>
-                                    </md-content>
+                                        <label class="input-left igamt-label" ng-show="!viewSettings.tableReadonly">Author Notes</label>
+
+                                        <div ng-if="!viewSettings.tableReadonly">
+                                            <textarea froala="froalaEditorOptions" ng-model="profileComponent.authorNotes" name="text" id="authorNotes"></textarea>
+                                        </div>
+                                        <div ng-if="viewSettings.tableReadonly">
+                                            <div class="fr-view">
+                                                <div froala-view="profileComponent.authorNotes"></div>
+                                            </div>
+                                        </div>
                                 </div>
                             </md-tab-body>
                         </md-tab>
                         <md-tab>
                             <md-tab-label>
-                                <i class="fa fa-table fa-fw " aria-hidden="true "></i>Definition
+                                <i class="fa fa-table fa-fw" aria-hidden="true"></i>Definition
                             </md-tab-label>
                             <md-tab-body>
-                                <div style="margin-top: 20px " class="">
+                                <div style="margin-top: 20px" class="">
 
                                     <md-tabs md-dynamic-height md-border-bottom md-selected="defTabStatus.active">
                                         <md-tab>
@@ -118,7 +123,7 @@
 
                                             <div class="panel-body">
                                                 <div>
-                                                    <div class="col-md-12 " ng-show="profileComponent.children.length>0" style="overflow-y:auto;">
+                                                    <div class="col-md-12" ng-show="profileComponent.children.length>0" style="overflow-y:auto;">
                                                         <table class="table table-bordered table-fix-header table-condensed profile-table">
                                                             <thead>
                                                             <tr class="tbl-header">
@@ -279,8 +284,8 @@
                                                                                        ng-pattern="/^\d+$|^\*?$/"
                                                                                        ng-model="node.maxLength">
                                                                             </md-input-container>
-                                                                            <a title="Reset to base values" ng-show="node.attributes.minLength || node.attributes.maxLength " ng-click="cancelL(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
-                                                                            <a title="Set to NA" ng-show="!node.attributes.minLength && !node.attributes.maxLength " ng-click="clearL(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
+                                                                            <a title="Reset to base values" ng-show="node.attributes.minLength || node.attributes.maxLength" ng-click="cancelL(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
+                                                                            <a title="Set to NA" ng-show="!node.attributes.minLength && !node.attributes.maxLength" ng-click="clearL(node)" ng-if="!viewSettings.tableReadonly"><i class="fa fa-remove fa-fw"></i></a>
                                                                         </div>
                                                                         <div ng-if="node.attributes.minLength === 'NA' || node.attributes.maxLength === 'NA' || node.minLength === 'NA' || node.attributes.maxLength === 'NA'">
                                                                             <span ng-if="!viewSettings.tableReadonly" ng-click="editL(node)" class="point">NA <i class="fa fa-pencil fa-fw edit-icon"></i></span>
@@ -387,7 +392,7 @@
                                                                                 <p class="warning">Need predicate</p>
                                                                             </a>
                                                                         </div>
-                                                                        <div ng-show="node.usage==='C' && findPredicate(node) ">
+                                                                        <div ng-show="node.usage==='C' && findPredicate(node)">
                                                                             <span title="{{getPredicateAsString(findPredicate(node))}}" class="badge label-white">
                                                                                 <span ng-class="{'label-message-icon' : findPredicate(node).context.type === 'message', 'label-field-icon' : findPredicate(node).context.type === 'segment','label-component-icon':findPredicate(node).context.type === 'field', 'label-sub-component-icon' : findPredicate(node).context.type === 'component'}">
                                                                                     <i class="fa fa-circle fa-fw"></i>
@@ -446,7 +451,7 @@
                                                                 </td>
                                                                 <td class="col-md-1 col-fixed-80" ng-class="{'input-change':(node.attributes.text && node.attributes.text !== '' && node.attributes.text !== null)}" ng-if="node.type==='field' || node.type==='component'">
                                                                     <a ng-click="addDefText(node)" class="point" ng-if="!viewSettings.tableReadonly">
-                                                                        <i class="fa fa-pencil fa-fw" ng-if="node.attributes.text && node.attributes.text !== '' && node.attributes.text !== null "></i>
+                                                                        <i class="fa fa-pencil fa-fw" ng-if="node.attributes.text && node.attributes.text !== '' && node.attributes.text !== null"></i>
                                                                         <i class="fa fa-plus fa-fw" ng-if="!node.attributes.text || node.attributes.text === '' || node.attributes.text === null"></i>
                                                                     </a>
                                                                     <a ng-click="cancelDefText(node)" ng-show="node.attributes.text && node.attributes.text !== '' && node.attributes.text !== null&&!viewSettings.tableReadonly">
@@ -616,7 +621,7 @@
         </td>
 
         <td ng-class="{'col-md-2 col-fixed-80 select-change':node.attributes.usage,'col-md-2 col-fixed-80':!node.attributes.usage}">
-            <!--<a ng-click="edit=true;" ng-hide="edit || node.attributes.usage "><i class="fa fa-plus fa-fw"></i></a>-->
+            <!--<a ng-click="edit=true;" ng-hide="edit || node.attributes.usage"><i class="fa fa-plus fa-fw"></i></a>-->
             <!--<select ng-change="recordChanged()" class="form-control input-sm" ng-model="node.attributes.usage" name="usage" ng-options="usage for usage in config.usages" ng-selected="node.attributes.oldUsage" style="width: auto;">-->
             <!--</select> ng-selected="node.attributes.usage===null && node.attributes.oldUsage===usage"-->
             <select ng-init="initUsage(node)" name="usage" ng-change="updateUsage(node);"
@@ -675,7 +680,7 @@
             </div>
         </td>
 
-        <td class="col-md-2 col-fixed-350 " ng-if="node.type==='field' || node.type==='component'">
+        <td class="col-md-2 col-fixed-350" ng-if="node.type==='field' || node.type==='component'">
             <a class="point" ng-show="editableDT!==node.id" ng-click="redirectDT(node.attributes.datatype)">
                 {{getDatatypeLabel(datatypesMap[node.attributes.datatype.id])}}
             </a>
@@ -702,7 +707,7 @@
 
             <div ng-if="node.type==='field' || node.type==='component'">
 
-                <div ng-if="node.attributes.tables && node.attributes.tables.length!==0 ">
+                <div ng-if="node.attributes.tables && node.attributes.tables.length!==0">
                     <a class="point" ng-repeat="table in node.attributes.tables">
                         <span ng-click="redirectVS(table)">{{getTableLabel(tablesMap[table.id])}}</span>
                     </a>
@@ -711,7 +716,7 @@
                     </a>
 
                 </div>
-                <div ng-if="!node.attributes.tables || node.attributes.tables.length===0 ">
+                <div ng-if="!node.attributes.tables || node.attributes.tables.length===0">
                     <a ng-click="editVSModal(node)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
                     </a>
@@ -726,11 +731,11 @@
         <td class="col-md-1">
         </td>
 
-        <td class="col-md-1 col-fixed-80 " ng-class="{'emptyCol': node.type!=='field' && node.type!=='component'}">
+        <td class="col-md-1 col-fixed-80" ng-class="{'emptyCol': node.type!=='field' && node.type!=='component'}">
             <div ng-if="node.type==='field' || node.type==='component'">
                 <a ng-click="addDefText(node)" class="point">
                     <i class="fa fa-pencil fa-fw"
-                       ng-if="node.attributes.text && node.attributes.text !== '' && node.attributes.text !== null "></i>
+                       ng-if="node.attributes.text && node.attributes.text !== '' && node.attributes.text !== null"></i>
                     <i class="fa fa-plus fa-fw"
                        ng-if="!node.attributes.text || node.attributes.text === '' || node.attributes.text === null"></i>
                 </a>
@@ -747,7 +752,7 @@
                tooltip-append-to-body="true" tooltip-class="constraints-tooltip" tooltip-trigger
                tooltip-animation="false" tooltip-placement="left">
                 <i class="fa fa-pencil fa-fw"
-                   ng-if="node.attributes.comment && node.attributes.comment !== '' && node.attributes.comment !== null "></i>
+                   ng-if="node.attributes.comment && node.attributes.comment !== '' && node.attributes.comment !== null"></i>
                 <i class="fa fa-plus fa-fw"
                    ng-if="!node.attributes.comment || node.attributes.comment === '' || node.attributes.comment === null"></i>
             </a>
@@ -805,7 +810,7 @@
             <md-dialog-content>
                 <div class="md-dialog-content">
                     <div>
-                    <textarea ng-if="!viewSettings.tableReadonly" rows="10 " froala="froalaEditorOptions" style="width:100%;" autofocus ng-model="field.attributes.text" id="globalEditor" name="content"></textarea>
+                    <textarea ng-if="!viewSettings.tableReadonly" rows="10" froala="froalaEditorOptions" style="width:100%;" autofocus ng-model="field.attributes.text" id="globalEditor" name="content"></textarea>
                         <div class="fr-view" ng-if="viewSettings.tableReadonly">
                             <div froala-view="field.attributes.text"></div>
                         </div>
@@ -827,7 +832,7 @@
                     <select class="form-control input-sm" ng-model="applyTo" ng-options="message as message.name for message in msgs" />
                 </div>
 
-                <div class="col-md-6 " ng-show="addedField.length> 0">
+                <div class="col-md-6" ng-show="addedField.length> 0">
 
                 </div>
 
@@ -856,7 +861,7 @@
             </div>
 
 
-            <div class="col-md-6 " ng-show="applyToList.length> 0">
+            <div class="col-md-6" ng-show="applyToList.length> 0">
                 <div class="igl-table">
                     <h5>Selected Conformance Profiles</h5>
                     <table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
@@ -909,7 +914,7 @@
     <tr tt-node is-branch="false">
 
         <td>
-            <a class="pointer " ng-click="addApplyToMsg(node) "><i class="fa fa-plus fa-fw "></i></a>
+            <a class="pointer" ng-click="addApplyToMsg(node)"><i class="fa fa-plus fa-fw"></i></a>
 
 
             <span ng-bind="node.name"></span>
@@ -1127,7 +1132,7 @@
 
         <td>
             <a ng-if="node.type==='group'||node.type==='segmentRef'||node.type==='field'||node.type==='component'|| node.type==='message'"
-               class="pointer " ng-click="addElementPc(node,$event) "><i class="fa fa-plus fa-fw "></i></a>
+               class="pointer" ng-click="addElementPc(node,$event)"><i class="fa fa-plus fa-fw"></i></a>
 
             <span ng-if="node.type==='group'" class="label label-success label-icon">G</span>
             <span ng-if="node.type==='segmentRef'" class="label label-segment label-icon">S</span>
@@ -1147,7 +1152,7 @@
     <tr tt-node is-branch="node.fields!==undefined && node.fields.length>0">
 
         <td>
-            <a class="pointer " ng-click="addElementPc(node,$event) "><i class="fa fa-plus fa-fw "></i></a>
+            <a class="pointer" ng-click="addElementPc(node,$event)"><i class="fa fa-plus fa-fw"></i></a>
             <span ng-if="node.type=='segment'" class="label label-segment label-icon">S</span>
 
             <span ng-if="node.type=='field'" class="label label-field label-icon">F</span>
@@ -1167,15 +1172,15 @@
     <tr tt-node is-branch="node.components!==undefined && node.components.length>0">
 
         <td>
-            <a class="pointer " ng-click="addElementPc(node,$event) "><i class="fa fa-plus fa-fw "></i></a>
-            <span ng-if="node.type=='datatype' " class="label label-default label-icon ">D</span>
+            <a class="pointer" ng-click="addElementPc(node,$event)"><i class="fa fa-plus fa-fw"></i></a>
+            <span ng-if="node.type=='datatype'" class="label label-default label-icon">D</span>
 
-            <span ng-if="node.type=='component' " class="label label-component label-icon ">C</span>
+            <span ng-if="node.type=='component'" class="label label-component label-icon">C</span>
 
-            <span ng-if="node.position " ng-bind="node.position "></span><span ng-if="node.position ">.</span>
+            <span ng-if="node.position" ng-bind="node.position"></span><span ng-if="node.position">.</span>
 
-            <span ng-if="node.label && node.name " ng-bind="node.label "></span>
-            <span ng-if="node.name && !node.label " ng-bind="node.name "></span>
+            <span ng-if="node.label && node.name" ng-bind="node.label"></span>
+            <span ng-if="node.name && !node.label" ng-bind="node.name"></span>
         </td>
 
     </tr>
@@ -1261,7 +1266,7 @@
                                     </div>
                                 </td>
 
-                                <td style="font-weight: bold;overflow: hidden;width: 200px;text-align:center;background-color: #b1daff !important; " ng-show="coConstraintsTable.ifColumnDefinition">
+                                <td style="font-weight: bold;overflow: hidden;width: 200px;text-align:center;background-color: #b1daff !important;" ng-show="coConstraintsTable.ifColumnDefinition">
                                     <div layout="row" layout-align="start center">
                                         <md-input-container flex="100" ng-show="coConstraintsTable.ifColumnDefinition.primitive" style="margin:17px;font-weight: bold;">
                                             <input ng-model="coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value"
@@ -1288,7 +1293,7 @@
 
                                 <td ng-show="!coConstraintsTable.ifColumnDefinition" style="font-weight: bold;overflow: hidden;width: 200px;background-color: #b1daff !important;"/>
 
-                                <td ng-repeat="columnDefinition in coConstraintsTable.thenColumnDefinitionListForDisplay" colspan="4" style="overflow: hidden;width: 200px;text-align:center; ">
+                                <td ng-repeat="columnDefinition in coConstraintsTable.thenColumnDefinitionListForDisplay" colspan="4" style="overflow: hidden;width: 200px;text-align:center;">
                                     <div ng-show="isDual(columnDefinition)">
                                         <div ng-hide="viewSettings.tableReadonly" ng-if="(!coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets || coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueSets.length === 0) &&
                                                                                     (!coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData || !coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex].valueData.value)">
@@ -1401,7 +1406,7 @@
 
                                 <td style=""/>
 
-                                <td ng-repeat="columnDefinition in coConstraintsTable.userColumnDefinitionList" colspan="4" style="overflow: hidden;width: 200px;text-align:center;background-color: #a7d6a9 !important; " >
+                                <td ng-repeat="columnDefinition in coConstraintsTable.userColumnDefinitionList" colspan="4" style="overflow: hidden;width: 200px;text-align:center;background-color: #a7d6a9 !important;" >
                                     <div ng-show="coConstraintsTable.userMapData[columnDefinition.id][rowObject.rowIndex].text && coConstraintsTable.userMapData[columnDefinition.id][rowObject.rowIndex].text !== ''">
                                         <span title="{{coConstraintsTable.userMapData[columnDefinition.id][rowObject.rowIndex].text}}" class="badge" style="background-color: #a7d6a9; color:black;">
                                             <span>{{root.getTextAsTruncatedString(coConstraintsTable.userMapData[columnDefinition.id][rowObject.rowIndex].text, 20)}}</span>
@@ -1414,9 +1419,9 @@
                                     </div>
                                 </td>
 
-                                <td style="background-color: #a7d6a9 !important; "/>
+                                <td style="background-color: #a7d6a9 !important;"/>
 
-                                <td style="overflow: hidden;width: 50px;text-align:center; ">
+                                <td style="overflow: hidden;width: 50px;text-align:center;">
                                     <span ng-hide="viewSettings.tableReadonly"ng-click="cloneCoConstraintRow(rowObject.rowIndex);" title="Clone Row data" style="color:#2d9de7;"><i class="fa fa-plus fa-fw"></i></span>
                                     <span ng-hide="viewSettings.tableReadonly" ng-click="delCoConstraintRow(rowObject.rowIndex);" title="Del Row data" style="color:red"><i class="fa fa-times fa-fw"></i></span>
                                 </td>
@@ -1426,9 +1431,9 @@
                     </div>
 
                     <div class="row" ng-show="ifAddCoCon">
-                        <div class="panel panel-primary ">
+                        <div class="panel panel-primary">
                             <div class="panel-heading">Edit IF Column Definition</div>
-                            <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                            <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
                                 <form class="form-horizontal" novalidate>
                                     <div layout="row" style="margin-top:15px;margin-left:15px;">
                                         <md-input-container>
@@ -1477,7 +1482,7 @@
                             <div class="panel-heading">
                                 Edit/Add THEN Column Definition
                             </div>
-                            <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                            <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
                                 <form class="form-horizontal" novalidate>
                                     <div class="row" style="margin-top:15px;margin-left:15px;">
                                         <md-input-container>
@@ -1529,7 +1534,7 @@
                             <div class="panel-heading">
                                 Edit/Add USER Column Definition
                             </div>
-                            <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                            <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
                                 <form class="form-horizontal" novalidate>
                                     <md-input-container layout="row" style="margin-top:15px;margin-left:15px;">
                                         <label flex="30" class="input-left">Title</label>
@@ -1545,7 +1550,7 @@
                             <div class="panel-heading">
                                 Edit/Add USER Data
                             </div>
-                            <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll; ">
+                            <div class="panel-body" style="min-height:200px; max-height:200px;overflow-y: scroll;">
                                 <form class="form-horizontal" novalidate>
                                     <md-input-container class="md-block">
                                         <textarea ng-model="data.text" rows="3" md-select-on-focus></textarea>
@@ -1556,11 +1561,11 @@
                     </div>
 
                     <div class="row" ng-show="thenData">
-                        <div class="panel panel-primary ">
-                            <div class="panel-heading ">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
                                 Edit Value Set Data
                             </div>
-                            <div class="panel-body" style="min-height:200px; max-height:400px; ">
+                            <div class="panel-body" style="min-height:200px; max-height:400px;">
                                 <form class="form-horizontal" novalidate>
                                     <div class="row" style="min-height:200px; max-height:300px;overflow-y: scroll;">
                                         <div class="col-md-12">

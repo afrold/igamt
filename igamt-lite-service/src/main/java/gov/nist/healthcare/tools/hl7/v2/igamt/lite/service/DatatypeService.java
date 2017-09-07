@@ -59,7 +59,7 @@ public interface DatatypeService {
       throws Exception;
 
 
-  public Datatype findByNameAndVersionsAndScope(String name, String[] versions, String scope);
+  public Datatype findByNameAndVersionsAndScope(String name, String[] string, String string2);
 
   public List<Datatype> findAllByNameAndVersionsAndScope(String name, List<String> versions,
       String string);
@@ -78,6 +78,9 @@ public interface DatatypeService {
       String id);
 
   public List<Datatype> findByScopeAndVersion(String name, String hl7Version);
+
+  void updateAttribute(String id, String attributeName, Object value);
+
 
 
 }

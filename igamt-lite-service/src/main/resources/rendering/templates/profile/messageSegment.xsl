@@ -69,11 +69,6 @@
 					</xsl:if>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:if test="$columnDisplay.message.comment = 'true'">
-				<xsl:element name="td">
-					<xsl:value-of select="@Comment" />
-				</xsl:element>
-			</xsl:if>
 		</xsl:element>
 	</xsl:template>
 </xsl:stylesheet>
