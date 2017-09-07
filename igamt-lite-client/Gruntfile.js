@@ -561,7 +561,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'e2e',
+    'e2e-nowatch',
     'clean:dist',
     'wiredep',
     'useminPrepare',
@@ -587,6 +587,8 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('e2e', ['connect:server','protractor:e2e', 'watch:protractor']);
+
+  grunt.registerTask('e2e-nowatch', ['connect:server','protractor:e2e']);
 
 
 };
