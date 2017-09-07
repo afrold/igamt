@@ -44,6 +44,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CompositeProfileStruct
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataElement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -297,6 +298,14 @@ public class Bootstrap implements InitializingBean {
     // AddCodeSystemtoAllTables();
     // initializeAttributes();
     changeCommentToAuthorNotes();
+    // addInternal();
+  }
+
+  private void addInternal() {
+    List<Table> all = tableService.findAll();
+    for (Table t : all) {
+      tableService.updateAttributes(t.getId(), "sourceType", SourceType.INTERNAL);
+    }
   }
 
   private void SetTablePreText() {
@@ -336,6 +345,8 @@ public class Bootstrap implements InitializingBean {
 
       if (pc.getComment() != null) {
         profileComponentService.updateAttribute(pc.getId(), "authorNotes", pc.getComment());
+      } else {
+        profileComponentService.updateAttribute(pc.getId(), "authorNotes", "");
       }
     }
     List<CompositeProfileStructure> compositesPCs = compositeProfileStructureService.findAll();
@@ -343,6 +354,9 @@ public class Bootstrap implements InitializingBean {
       if (c.getComment() != null) {
 
         compositeProfileStructureService.updateAttribute(c.getId(), "authorNotes", c.getComment());
+      } else {
+        compositeProfileStructureService.updateAttribute(c.getId(), "authorNotes", "");
+
       }
     }
   }

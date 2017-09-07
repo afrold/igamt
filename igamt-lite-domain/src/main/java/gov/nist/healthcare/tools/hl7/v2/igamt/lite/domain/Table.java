@@ -55,6 +55,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 
   private Constant.SCOPE scope;
   protected Long accountId;
+  private String intensionalComment;
 
   @Deprecated
   protected String date;
@@ -419,6 +420,20 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
    */
   public void setInfoForExternal(String infoForExternal) {
     this.infoForExternal = infoForExternal;
+  }
+
+  /**
+   * @return the intensionalComment
+   */
+  public String getIntensionalComment() {
+    return intensionalComment;
+  }
+
+  /**
+   * @param intensionalComment the intensionalComment to set
+   */
+  public void setIntensionalComment(String intensionalComment) {
+    this.intensionalComment = intensionalComment;
   }
 
 

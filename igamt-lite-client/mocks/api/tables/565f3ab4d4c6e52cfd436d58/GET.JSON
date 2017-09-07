@@ -1,0 +1,63 @@
+{
+  "id" : "565f3ab4d4c6e52cfd436d58",
+  "hl7Version" : "2.7",
+  "libIds" : [
+    "57450d07d4c6f57e694c43e1",
+    "57a2366384ae5af0417bffe2",
+    "57a2379a84ae5af0417c42a0",
+    "57bdb54884aee03ae1472fed"
+  ],
+  "bindingIdentifier" : "0000aTest",
+  "name" : "Specimen Child Role",
+  "newTable" : false,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Undefined",
+  "extensibility" : "Undefined",
+  "contentDefinition" : "Undefined",
+  "sourceType":"INTERNAL",
+  "order" : 0,
+  "codes" : [
+    {
+      "id" : "58c1ad71dffe7ef91ba4c2d7",
+      "value" : "M",
+      "label" : "Modified from original specimen",
+      "codeSystem" : "HL70494",
+      "codeUsage" : "P",
+      "dateUpdated" : "2017-03-09T19:30:57.862Z",
+      "publicationVersion" : 0,
+      "type" : "code"
+    },
+    {
+      "id" : "58c1ad71dffe7ef91ba4c2d8",
+      "value" : "A",
+      "label" : "Aliquot",
+      "codeSystem" : "HL70494",
+      "codeUsage" : "P",
+      "dateUpdated" : "2017-03-09T19:30:57.862Z",
+      "publicationVersion" : 0,
+      "type" : "code"
+    },
+    {
+      "id" : "58c1ad71dffe7ef91ba4c2d9",
+      "value" : "C",
+      "label" : "Component",
+      "codeSystem" : "HL70494",
+      "codeUsage" : "P",
+      "dateUpdated" : "2017-03-09T19:30:57.862Z",
+      "publicationVersion" : 0,
+      "type" : "code"
+    }
+  ],
+  "scope" : "USER",
+  "status" : "UNPUBLISHED",
+  "comment" : "",
+  "defPreText" : null,
+  "defPostText" : "",
+  "shareParticipantIds" : [],
+  "dateUpdated" : "2017-01-12T23:00:39.450Z",
+  "publicationVersion" : 0,
+  "type" : "table",
+  "codeSystems" : [
+    "HL70494"
+  ]
+}
