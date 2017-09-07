@@ -2177,8 +2177,35 @@
                                                 <tr class="tbl-header">
                                                     <th st-sort="value" class="col-md-3">Code</th>
                                                     <th st-sort="label" class="col-md-5">Description</th>
-                                                    <th st-sort="label" class="col-md-3">CodeSystem</th>
+                                                    <th class="col-md-3">CodeSystem</th>
                                                     <th class="col-md-1" style="text-align:left">Status</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        <div layout="row">
+                                                            <md-input-container flex="100" class="normal">
+                                                                <label></label>
+                                                                <input st-search="'value'" placeholder="Search for Code" type="search" />
+                                                            </md-input-container>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div layout="row">
+                                                            <md-input-container flex="100" class="normal">
+                                                                <label></label>
+                                                                <input st-search="'label'" placeholder="Search for description" type="search" />
+                                                            </md-input-container>
+                                                        </div>
+                                                    </th>
+                                                    <th>
+                                                        <div layout="row">
+                                                            <md-input-container flex="100" class="normal">
+                                                                <label></label>
+                                                                <input st-search="'codeSystem'" placeholder="Search for CodeSystem" type="search" />
+                                                            </md-input-container>
+                                                        </div>
+                                                    </th>
+                                                    <th/>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
