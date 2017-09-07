@@ -10,9 +10,11 @@ Running `grunt test` will run the unit tests with karma.
 
 ## E2E Testing 
 
-`npm install protractor -g`
-`webdriver-manager update`
-`grunt e2e-test`
+### Run just one time 
+`./node_modules/protractor/bin/webdriver-manager update`
+
+### start test
+`grunt e2e`
 
 
 

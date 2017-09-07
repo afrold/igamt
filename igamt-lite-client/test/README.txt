@@ -5,4 +5,5 @@ Unit testing:
 E2E testing:
 - https://docs.angularjs.org/guide/e2e-testing
 - http://www.protractortest.org/#/tutorial
+- http://www.protractortest.org/#/api
 

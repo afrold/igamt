@@ -68,6 +68,13 @@ module.exports = function (grunt) {
           '.tmp/styles/{,*/}*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
+      },
+      protractor: {
+        options: {
+          livereload: '<%= connect.options.server %>'
+        },
+        files: ['app/scripts/**/*.js', 'test/e2e/**/*.js'],
+        tasks: ['protractor:e2e']
       }
     },
 
@@ -119,6 +126,26 @@ module.exports = function (grunt) {
           }
         }
       },
+      server: {
+        options: {
+          port: 9002,
+          middleware: function (connect) {
+            return [
+              connect.static('.tmp'),
+              connect.static('test'),
+              connect().use(
+                '/bower_components',
+                connect.static('./bower_components')
+              ),
+              connect.static(appConfig.app),
+              apiMocker(
+                '/api',
+                'mocks/api'
+              )
+            ];
+          }
+        }
+      },
       dist: {
         options: {
           open: true,
@@ -131,22 +158,25 @@ module.exports = function (grunt) {
       //     base: './build',
       //     port: 9001,
       //     middleware: function(connect, options) {
-      //
-      //       var middlewares = [];
-      //
-      //       // mock/rest directory will be mapped to your fake REST API
-      //       middlewares.push(apiMocker(
-      //         '/api',
-      //         'mocks/api'
-      //       ));
-      //       // Static files
-      //       middlewares.push(connect.static(options.base));
-      //       middlewares.push(connect.static(__dirname));
-      //
-      //       return middlewares;
+      //       return [
+      //         connect.static('.tmp'),
+      //         connect().use(
+      //           '/bower_components',
+      //           connect.static('./bower_components')
+      //         ),
+      //         connect().use(
+      //           '/app/styles',
+      //           connect.static('./app/styles')
+      //         ),
+      //         connect.static(appConfig.app),
+      //         apiMocker(
+      //           '/api',
+      //           'mocks/api'
+      //         )
+      //       ];
       //     }
       //   }
-      // }
+      //}
     },
 
     // Make sure there are no obvious mistakes
@@ -556,7 +586,7 @@ module.exports = function (grunt) {
     'build'
   ]);
 
-  grunt.registerTask('e2e', ['protractor:e2e']);
+  grunt.registerTask('e2e', ['connect:server','protractor:e2e', 'watch:protractor']);
 
 
 };
