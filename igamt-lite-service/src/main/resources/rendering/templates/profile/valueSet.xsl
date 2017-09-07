@@ -31,6 +31,9 @@
         <xsl:choose>
         	<xsl:when test="@SourceType='EXTERNAL'">
         		<xsl:if test="normalize-space(@ExternalUrl)!=''">
+        			<xsl:if test="$documentTargetFormat='word'">
+        				<xsl:element name="br"/>
+        			</xsl:if>
         			<xsl:element name="p">
         				<xsl:element name="b">
         					<xsl:text>URL: </xsl:text>
@@ -47,6 +50,9 @@
         			</xsl:element>
        			</xsl:if>
        			<xsl:if test="@ContentDefinition='Intensional' and normalize-space(@InfoForExternal)!=''">
+		   			<xsl:if test="$documentTargetFormat='word'">
+        				<xsl:element name="br"/>
+        			</xsl:if>
 		   			<xsl:element name="p">
 		   				<xsl:element name="b">
 		   					<xsl:text>Notes: </xsl:text>

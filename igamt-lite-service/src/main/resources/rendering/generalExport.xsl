@@ -12,6 +12,7 @@
     <xsl:param name="inlineConstraints" select="'false'"/>
     <xsl:param name="includeTOC" select="'false'"/>
     <xsl:param name="targetFormat" select="'html'"/>
+    <xsl:variable name="documentTargetFormat" select="$targetFormat"/>
     <xsl:param name="documentTitle" select="'Implementation Guide'"/>
     <xsl:param name="imageLogo" select="''"/>
     <xsl:variable name="inlineConstraintsVar" select="$inlineConstraints"/>
