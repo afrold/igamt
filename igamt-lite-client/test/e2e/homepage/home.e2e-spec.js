@@ -18,7 +18,6 @@ describe('IGAMT home page', function() {
     var EC = protractor.ExpectedConditions;
     var welcome = element.all(by.css('.igamt-home'));
     browser.wait(EC.presenceOf(welcome), 5000);
-    console.log(welcome.get(0).getText());
     expect(welcome.get(0).getText()).toContain('Welcome to the Implementation Guide Authoring and Management Tool');
    });
 
