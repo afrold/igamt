@@ -38,10 +38,10 @@ public class DynamicMappingDefinition implements java.io.Serializable, Cloneable
     DynamicMappingDefinition cloned = new DynamicMappingDefinition();
     cloned.setDynamicMappingItems(new ArrayList<DynamicMappingItem>());
     for(DynamicMappingItem item:dynamicMappingItems){
-      cloned.getDynamicMappingItems().add(item.clone()); 
+      if(item != null) cloned.getDynamicMappingItems().add(item.clone()); 
     }
    
-    cloned.setMappingStructure(this.mappingStructure.clone());
+    if(mappingStructure != null) cloned.setMappingStructure(this.mappingStructure.clone());
     return cloned;
   }
 
