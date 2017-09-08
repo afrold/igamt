@@ -157,6 +157,8 @@ public class ExportParameters {
             params.put("valueSetMetadataStability",String.valueOf(valueSetMetadataConfig.isStability()));
             params.put("valueSetMetadataExtensibility",String.valueOf(valueSetMetadataConfig.isExtensibility()));
             params.put("valueSetMetadataContentDefinition",String.valueOf(valueSetMetadataConfig.isContentDefinition()));
+            params.put("valueSetMetadataOid",String.valueOf(valueSetMetadataConfig.isOid()));
+            params.put("valueSetMetadataType",String.valueOf(valueSetMetadataConfig.isType()));
         }
         if(exportFontConfig!=null) {
             params.put("userFontFamily", exportFontConfig.getExportFont().getValue());

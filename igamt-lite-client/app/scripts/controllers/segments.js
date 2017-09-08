@@ -179,6 +179,48 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
         $scope.setDirty();
     };
 
+    $scope.checkIfDataDuplicated = function (value, list) {
+        var count = 0;
+        for (var i = 0; i < list.length; i++) {
+            if(list[i].valueData.value === value){
+                count = count + 1;
+                if(count === 2) return true;
+            }
+        }
+        return false;
+    };
+
+    $scope.checkThenData = function (def, data, dynamicMappingTableCodes, dtLib, tablesMap){
+        if(def.path=='2'){
+            if(def.constraintType === "dmr"){
+                if(!data.valueData.value || data.valueData.value === '') return 'Missing OBX-2 value';
+                var found = _.find(dynamicMappingTableCodes, function(code){ return code.value === data.valueData.value; });
+                if(!found) return 'Missing OBX-2 value';
+            }else if(def.constraintType === "dmf"){
+                if(!data.datatypeId || data.datatypeId === '') return 'Missing OBX-5 datatype definition';
+                var found = _.find(dtLib, function(link){ return link.id === data.datatypeId; });
+                if(!found) return 'Missing OBX-5 datatype definition';
+            }
+        }else if (def.path=='5'){
+            if((!data.valueSets || data.valueSets.length === 0) &&
+                (!data.valueData || !data.valueData.value)){
+                return 'OBX-5 value or valueset is required';
+            }
+
+            if(data.valueSets && data.valueSets.length > 0) {
+                for (var i = 0; i < data.valueSets.length; i++) {
+                    if(!tablesMap[data.valueSets[i].tableId]) return 'OBX-5 valueset binding is wrong';
+                }
+            }
+        }else {
+            if(def.constraintType === 'valueset' && data.valueSets && data.valueSets.length > 0) {
+                for (var i = 0; i < data.valueSets.length; i++) {
+                    if(!tablesMap[data.valueSets[i].tableId]) return 'OBX-5 valueset binding is wrong';
+                }
+            }
+        }
+    };
+
     $scope.delCoConstraintUSERDefinition = function (columnDefinition) {
         var index = $rootScope.segment.coConstraintsTable.userColumnDefinitionList.indexOf(columnDefinition);
 

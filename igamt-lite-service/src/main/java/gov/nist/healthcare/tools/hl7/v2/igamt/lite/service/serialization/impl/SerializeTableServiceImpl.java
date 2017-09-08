@@ -1,7 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.CodeUsageConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
@@ -38,6 +40,9 @@ public class SerializeTableServiceImpl implements SerializeTableService {
 
     @Autowired
     SerializationUtil serializationUtil;
+    
+    @Autowired
+    private AppInfo appInfo;
 
     @Override public SerializableTable serializeTable(TableLink tableLink, String prefix,
         Integer position, CodeUsageConfig valueSetCodesUsageConfig, ValueSetMetadataConfig valueSetMetadataConfig) {
@@ -89,8 +94,19 @@ public class SerializeTableServiceImpl implements SerializeTableService {
 					}
 				}
 				table.setCodes(toBeExportedCodes);
+				String referenceUrl = "";
+				if (table.getScope().equals(SCOPE.PHINVADS)) {
+					String phinvads = appInfo.getProperties().get("PHINVADS");
+					if (phinvads!=null && table.getOid()!=null && !table.getOid().isEmpty()) {
+						referenceUrl = phinvads+table.getOid();
+					}
+				} else {
+					if (table.getReferenceUrl() !=null) {
+						referenceUrl = table.getReferenceUrl();
+					}
+				}
 				serializedTable = new SerializableTable(id, prefix, String.valueOf(position), headerLevel, title, table,
-						table.getBindingIdentifier(), defPreText, defPostText, valueSetMetadataConfig);
+						table.getBindingIdentifier(), defPreText, defPostText, valueSetMetadataConfig,referenceUrl);
 			}
 			return serializedTable;
 		}
