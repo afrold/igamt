@@ -1,6 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.serialization;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetMetadataConfig;
 import nu.xom.Attribute;
@@ -46,6 +48,17 @@ public class SerializableTable extends SerializableSection {
                 (this.bindingIdentifier == null) ? "" : table.getBindingIdentifier()));
             if((this.table.getName() != null && !this.table.getName().isEmpty())){
               valueSetDefinitionElement.addAttribute(new Attribute("Name", this.table.getName()));
+            }
+            if(this.table.getSourceType()!=null){
+            	valueSetDefinitionElement.addAttribute(new Attribute("SourceType",this.table.getSourceType().name()));
+            	if(this.table.getSourceType().equals(Constant.SourceType.EXTERNAL)){
+            		if(this.table.getExternalUrl() != null && !this.table.getExternalUrl().isEmpty()){
+            			valueSetDefinitionElement.addAttribute(new Attribute("ReferenceUrl",this.table.getExternalUrl()));
+            		}
+            		if(this.table.getContentDefinition().equals(ContentDefinition.Intensional) && this.table.getInfoForExternal() != null && !this.table.getInfoForExternal().isEmpty()){
+                    	valueSetDefinitionElement.addAttribute(new Attribute("InfoForExternal",this.table.getInfoForExternal()));
+                    }
+            	}
             }
             valueSetDefinitionElement.addAttribute(new Attribute("Description",
                 (this.table.getDescription() == null) ? "" : this.table.getDescription()));
