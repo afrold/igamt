@@ -3476,8 +3476,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
         if (newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')) {
-            cs.assertion = cs.assertion.replace("<Assertion>", "<Assertion><NOT>");
-            cs.assertion = cs.assertion.replace("</Assertion>", "</NOT></Assertion>");
+            cs.assertion = cs.assertion.replace("<Assertion>", "<Assertion><NOT><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
+            cs.assertion = cs.assertion.replace("</Assertion>", "</AND></NOT></Assertion>");
+        }else {
+            cs.assertion = cs.assertion.replace("<Assertion>", "<Assertion><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
+            cs.assertion = cs.assertion.replace("</Assertion>", "</AND></Assertion>");
         }
         cs.description = cs.description.split('[1]').join('');
 
@@ -3729,8 +3732,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         if (newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')) {
-            cp.assertion = cp.assertion.replace("<Condition>", "<Condition><NOT>");
-            cp.assertion = cp.assertion.replace("</Condition>", "</NOT></Condition>");
+            cs.assertion = cs.assertion.replace("<Condition>", "<Condition><NOT><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
+            cs.assertion = cs.assertion.replace("</Condition>", "</AND></NOT></Condition>");
+        }else {
+            cs.assertion = cs.assertion.replace("<Condition>", "<Condition><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
+            cs.assertion = cs.assertion.replace("</Condition>", "</AND></Condition>");
         }
 
         cp.description = cp.description.split('[1]').join('');
