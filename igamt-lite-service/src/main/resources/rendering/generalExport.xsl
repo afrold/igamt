@@ -12,6 +12,7 @@
     <xsl:param name="inlineConstraints" select="'false'"/>
     <xsl:param name="includeTOC" select="'false'"/>
     <xsl:param name="targetFormat" select="'html'"/>
+    <xsl:variable name="documentTargetFormat" select="$targetFormat"/>
     <xsl:param name="documentTitle" select="'Implementation Guide'"/>
     <xsl:param name="imageLogo" select="''"/>
     <xsl:variable name="inlineConstraintsVar" select="$inlineConstraints"/>
@@ -122,6 +123,10 @@
     <xsl:variable name="valueSetMetadata.extensibility" select="$valueSetMetadataExtensibility"/>
     <xsl:param name="valueSetMetadataContentDefinition" select="'true'"/>
     <xsl:variable name="valueSetMetadata.contentDefinition" select="$valueSetMetadataContentDefinition"/>
+    <xsl:param name="valueSetMetadataOid" select="'true'"/>
+    <xsl:variable name="valueSetMetadata.oid" select="$valueSetMetadataOid"/>
+    <xsl:param name="valueSetMetadataType" select="'true'"/>
+    <xsl:variable name="valueSetMetadata.type" select="$valueSetMetadataType"/>
     
 <!--     <xsl:output method="html" doctype-system="http://www.w3.org/TR/html4/loose.dtd"
    doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" />

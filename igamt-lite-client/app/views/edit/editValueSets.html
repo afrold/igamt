@@ -93,11 +93,10 @@
                                                 {{table.sourceType}}
                                             </div>
 
-                                            <label class="input-left igamt-label" ng-if="table.sourceType!=='EXTERNAL'"> Source URL </label>
+                                            <label class="input-left igamt-label" ng-if="table.sourceType!=='EXTERNAL'"> Object URL </label>
 
                                             <a  ng-if="table.sourceType!=='EXTERNAL'" href="{{getElementUrl(table)}}" target="_blank" ng-if="table.sourceType!=='EXTERNAL'">{{getElementUrl(table)}}</a>
                                             <br/>
-
 
                                             <label class="input-left igamt-label" ng-show="!isNonEditableValueSet(table)">Author Notes</label>
 
@@ -222,23 +221,41 @@
                                                         <br/>
                                                             <md-toolbar class="value-set-toolBar">Content</md-toolbar>
                                                         <div class="codes-container md-panelContent" ng-if="table.sourceType=='EXTERNAL'">
-                                                            <label class="input-left igamt-label">URL</label>
+                                                            <label class="input-left igamt-label">Reference URL</label>
 
                                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                                <input type="url" name="url" ng-disabled="isNonEditableValueSet(table)" ng-model="table.externalUrl" required>
-                                                                <div ng-messages="editForm.url.$error" ng-messages-multiple>
-                                                                    <div ng-message="required">URL is required.</div>
-                                                                </div>
+                                                                <input type="url" name="url" ng-disabled="isNonEditableValueSet(table)" ng-model="table.referenceUrl" required>
+                                                                <span ng-if="!editForm.url.$valid" style="color :red;">
+                                                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please Enter a Valid URL
+                                                                </span>
                                                             </md-input-container>
                                                             <!--<span class="url-error" ng-if="!editForm.url.valid"> Invalid URL </span>-->
 
-                                                            <label class="input-left igamt-label" ng-if="table.contentDefinition=='Intensional'">Notes </label>
+                                                            <label class="input-left igamt-label" ng-if="table.contentDefinition=='Intensional'">Definition Text </label>
 
                                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-if="table.contentDefinition=='Intensional'">
                                                                 <textarea id="infoForExternal" type="text" name="infoForExternal" ng-disabled="isNonEditableValueSet(table)" ng-model="table.infoForExternal"></textarea>
                                                             </md-input-container>
                                                         </div>
                                                         <div class="codes-container md-panelContent" ng-if="table.sourceType!=='EXTERNAL'">
+                                                            <div ng-if="table.status=='UNPUBLISHED'&&table.referenceUrl!==null&&table.scope!=='PHINVADS'">
+                                                            <label class="input-left igamt-label">Reference URL* </label>
+                                                            <md-input-container  class="md-block igamt-input-block" flex-gt-sm>
+                                                                <input type="url" name="url" ng-model="table.referenceUrl" required>
+                                                                <span ng-if="!editForm.url.$valid" style="color :red;">
+                                                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please Enter a Valid URL
+                                                                </span>
+                                                                </md-input-container>
+                                                            </div>
+                                                            <div ng-if="table.scope=='PHINVADS'">
+                                                                    <label class="input-left igamt-label" > Reference URL </label>
+
+                                                                    <a href="{{getPhinvadsURL(table)}}" target="_blank" ng-if="table.sourceType!=='EXTERNAL'">{{getPhinvadsURL(table)}}</a>
+                                                            </div>
+
+
+
+
                                                                 <span class="pull-left">
                                                                     <span>Codes Per Page : </span>
                                                                     <md-input-container class="normal">
@@ -247,25 +264,29 @@
                                                                     </md-input-container>
                                                                 </span>
                                                                 <span class="pull-right" style="margin-bottom: 10px" ng-if="!isNonEditableValueSet(table)">
-                                                                    <span ng-if="selectedCodes.length>0">
-                                                                    <md-input-container class="normal">
-                                                                        <md-select placeholder="Apply Code System for Selected "
+
+                                                                    <md-input-container class="normal" >
+                                                                        <md-select placeholder="Apply Code System for Selected " ng-hide="selectedCodes.length===0" ng-disabled="selectedCodes.length===0"
                                                                                    ng-change="applyAllCodeSys(applyCodeSysValue);"
                                                                                    ng-model="applyCodeSysValue">
                                                                             <md-option ng-repeat="cs in table.codeSystems" ng-value="cs">{{cs}}</md-option>
                                                                         </md-select>
                                                                     </md-input-container>
+                                                                    <md-input-container class="normal" ng-if="selectedCodes.length===0" >
+                                                                        <md-select placeholder="Apply Code System for Selected " disabled
+                                                                                   ng-model="placeholderModel">
+                                                                        </md-select>
+                                                                    </md-input-container>
                                                                     <span class="btn-group btn-group-sm btn-warning" role="group" aria-label="..." style="margin-top:10px">
-                                                                        <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'R'" type="button" ng-click="setSelectedCodesUsage(table, 'R')" class="btn btn-raised btn-sm btn-warning">R</button>
-                                                                        <button ng-disabled="selectedCodes.length===0"  title="Set selected codes usage to 'P'" type="button" ng-click="setSelectedCodesUsage(table, 'P')" class="btn btn-raised btn-sm btn-warning">P</button>
-                                                                        <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'E'" type="button" ng-click="setSelectedCodesUsage(table, 'E')" class="btn btn-raised btn-sm btn-warning">E</button>
+                                                                        <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'R'" type="button" ng-click="setSelectedCodesUsage(table, 'R')" class="btn btn-raised btn-sm btn-warning" style="color:black !important">R</button>
+                                                                        <button ng-disabled="selectedCodes.length===0"  title="Set selected codes usage to 'P'" type="button" ng-click="setSelectedCodesUsage(table, 'P')" class="btn btn-raised btn-sm btn-warning" style="color:black !important">P</button>
+                                                                        <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'E'" type="button" ng-click="setSelectedCodesUsage(table, 'E')" class="btn btn-raised btn-sm btn-warning" style="color:black !important"> E</button>
                                                                     </span>
-                                                                    <button  title="Delete selected codes" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
+                                                                    <button  title="Delete selected codes" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0" style="color:black !important">
                                                                         <i class="fa fa-trash-o fa-fw"></i>Delete Codes <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
                                                                     </button>
-                                                                    </span>
                                                                     <button  title="Add New Code" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
-                                                                        <span><i class="fa fa-plus fa-fw"></i>Add Code</span>
+                                                                        <span><i class="fa fa-plus fa-fw"></i>Add Code System</span>
                                                                     </button>
                                                                 </span>
                                                                 <div>
