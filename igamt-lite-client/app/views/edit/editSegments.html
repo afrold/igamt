@@ -366,10 +366,10 @@
                                                                 <th bgcolor="white" rowspan="2" style="overflow: hidden;width: 20px;text-align:center;border:0;">
                                                                 </th>
                                                                 <th ng-show="!segment.coConstraintsTable.ifColumnDefinition" bgcolor="#1565c0" style="font-weight: bold;color:white;text-align:center;overflow: hidden;width: 200px;">
-                                                                    If Column
+                                                                    If Column<sup>*</sup>
                                                                 </th>
                                                                 <th ng-show="segment.coConstraintsTable.ifColumnDefinition" bgcolor="#1565c0" style="font-weight: bold;color:white;text-align:center;border:0;overflow: hidden;width: 200px;">
-                                                                    If Column
+                                                                    If Column<sup>*</sup>
                                                                 </th>
                                                                 <th ng-show="!segment.coConstraintsTable.thenColumnDefinitionListForDisplay || segment.coConstraintsTable.thenColumnDefinitionListForDisplay.length == 0" bgcolor="#efefef" style="text-align:center;color:black;overflow: hidden;width: 50px;">
                                                                     Then Column
@@ -392,6 +392,7 @@
                                                                     <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='component'" class="label label-component label-icon">C</span>
                                                                     <span ng-show="segment.coConstraintsTable.ifColumnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
                                                                     <span style="font-weight: bold;color:white">{{segment.name}}-{{segment.coConstraintsTable.ifColumnDefinition.path}}</span>
+                                                                    <span style="font-weight: bold;color:white"><sup>*</sup></span>
                                                                     <span ng-show="segment.coConstraintsTable.ifColumnDefinition.constraintType=='value'" class="label label-icon">Value</span>
                                                                     <span ng-show="segment.coConstraintsTable.ifColumnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
                                                                     <span style="font-weight: bold;color:white" ng-click="openDialogForEditCoConstraintIFDefinition(segment.coConstraintsTable.ifColumnDefinition);" ng-hide="viewSettings.tableReadonly"><i class="fa fa-pencil" aria-hidden="true"></i></span>
@@ -404,6 +405,7 @@
                                                                     <span ng-show="columnDefinition.type=='component'" class="label label-component label-icon">C</span>
                                                                     <span ng-show="columnDefinition.type=='subcomponent'" class="label label-sub-component-icon label-icon">C</span>
                                                                     <span style="color:black">{{segment.name}}-{{columnDefinition.path}}</span>
+                                                                    <span ng-show="columnDefinition.path=='2' || columnDefinition.path=='5'" style="color:black"><sup>*</sup></span>
                                                                     <span ng-show="columnDefinition.constraintType=='value'" class="label label-icon">Value</span>
                                                                     <span ng-show="columnDefinition.constraintType=='valueset'" class="label label-icon">ValueSet</span>
                                                                     <span ng-show="columnDefinition.constraintType=='dmr'" class="label label-icon">Value</span>
@@ -442,7 +444,6 @@
                                                                                    style="font-weight: bold;"
                                                                                    ng-disabled="viewSettings.tableReadonly">
                                                                         </md-input-container>
-
                                                                         <md-input-container flex="70" ng-show="!segment.coConstraintsTable.ifColumnDefinition.primitive" style="margin:17px;font-weight: bold;">
                                                                             <input ng-model="segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value"
                                                                                    ng-change="setDirty();"
@@ -457,6 +458,9 @@
                                                                             </md-select>
                                                                         </md-input-container>
                                                                     </div>
+                                                                    <span ng-if="checkIfDataDuplicated(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value, segment.coConstraintsTable.ifColumnData) && !isEmpty(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value)" style="color:red">Duplicated</span>
+                                                                    <span ng-if="!checkIfDataDuplicated(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value, segment.coConstraintsTable.ifColumnData) && isEmpty(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value)" style="color:red">Required</span>
+                                                                    <span ng-if="checkIfDataDuplicated(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value, segment.coConstraintsTable.ifColumnData) && isEmpty(segment.coConstraintsTable.ifColumnData[rowObject.rowIndex].valueData.value)" style="color:red">Required</span>
                                                                 </td>
 
                                                                 <td ng-show="!segment.coConstraintsTable.ifColumnDefinition" style="font-weight: bold;overflow: hidden;width: 200px;background-color: #b1daff !important;"/>
@@ -504,9 +508,6 @@
                                                                                 <span ng-click="openDialogForEditValueSetThenMapData(columnDefinition.id, rowObject.rowIndex)"><i class="fa fa-plus fa-fw edit-icon"></i></span>
                                                                             </a>
                                                                         </div>
-
-
-
                                                                     </div>
                                                                     <div ng-show="columnDefinition.constraintType === 'value' && !isDual(columnDefinition)">
                                                                         <div layout="row" layout-align="start center">
@@ -574,6 +575,9 @@
                                                                             </md-input-container>
                                                                         </div>
                                                                     </div>
+                                                                    <span ng-if="checkThenData(columnDefinition, segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex], dynamicMappingTable.codes, igdocument.profile.datatypeLibrary.children, tablesMap)" style="color:red">
+                                                                        {{checkThenData(columnDefinition, segment.coConstraintsTable.thenMapData[columnDefinition.id][rowObject.rowIndex], dynamicMappingTable.codes, igdocument.profile.datatypeLibrary.children, tablesMap)}}
+                                                                    </span>
                                                                 </td>
 
                                                                 <td style=""/>
