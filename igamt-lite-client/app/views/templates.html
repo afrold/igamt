@@ -6794,7 +6794,11 @@
                             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please Enter a Valid URL
                         </span>
                     </md-input-container>
-                    <p>Warning: If you make this value set external, your codes will be deleted and you should provide a valid  URL . Do you want to continue?</p>
+
+
+                    <div ng-class="'alert alert-warning'" ng-show="igDocumentMsg.show" id="ehralert">
+                        <p>Warning: Making this value set externally managed will remove all the codes. Do you want to continue?</p>
+                    </div>
 
                 </div>
             </md-dialog-content>

@@ -167,11 +167,11 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         });
     };
     $scope.getAttributeSelectLabel=function(label){
-        // if(label=='Undefined'){
-        //     return "Not Defined";
-        // }else{
+        if(label=='Undefined'){
+             return "Not Defined";
+        }else{
             return label;
-       // }
+       }
     };
 
     $scope.save = function() {
@@ -455,7 +455,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             });
 
         function ConfirmToExternal($scope,$rootScope, $mdDialog,TableService) {
-            $scope.url=null;
+            $scope.url=$rootScope.table.referenceUrl;
 
             $scope.cancel=function(){
                 $rootScope.table.sourceType="INTERNAL";

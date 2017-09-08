@@ -36,8 +36,8 @@
                     </div>
                     <div class="static_info" >
                         <i class="fa fa-calendar" aria-hidden="true"></i>Updated :{{table.dateUpdated | date:dateFormat}}<span ng-if="table.owner" style="font-style: italic;"><i class="fa fa-user" aria-hidden="true"></i>{{table.owner}}</span>
-                        <span>HL7 Version: {{table.hl7Version}}</span>
-                        <span ng-if="table.publicationVersion">Version: {{table.publicationVersion}}</span>
+                        <span ng-if="table.hl7Version&&table.hl7Version!==''">, HL7 Version: {{table.hl7Version}}</span>
+                        <span ng-if="table.publicationVersion">, Version: {{table.publicationVersion}}</span>
                     </div>
 
                     <div class="" ng-controller="cmpTableCtrl">
@@ -93,9 +93,9 @@
                                                 {{table.sourceType}}
                                             </div>
 
-                                            <label class="input-left igamt-label" ng-if="table.sourceType!=='EXTERNAL'"> Object URL </label>
+                                            <label class="input-left igamt-label"> Object URL </label>
 
-                                            <a  ng-if="table.sourceType!=='EXTERNAL'" href="{{getElementUrl(table)}}" target="_blank" ng-if="table.sourceType!=='EXTERNAL'">{{getElementUrl(table)}}</a>
+                                            <a href="{{getElementUrl(table)}}" target="_blank">{{getElementUrl(table)}}</a>
                                             <br/>
 
                                             <label class="input-left igamt-label" ng-show="!isNonEditableValueSet(table)">Author Notes</label>
@@ -160,7 +160,7 @@
                                                                     <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                                         <md-select  ng-disabled="isNonEditableValueSet(table)" ng-model="table.extensibility">
                                                                             <md-option ng-repeat="extensibility in config.tableExtensibilities" ng-value="extensibility">
-                                                                                {{extensibility}}
+                                                                                {{getAttributeSelectLabel(extensibility)}}
                                                                             </md-option>
                                                                         </md-select>
                                                                     </md-input-container>
@@ -169,7 +169,7 @@
                                                              <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                                 <md-select  ng-disabled="isNonEditableValueSet(table)"  ng-model="table.stability">
                                                                     <md-option ng-repeat="stability in config.tableStabilities" ng-value="stability">
-                                                                        {{stability}}
+                                                                        {{getAttributeSelectLabel(stability)}}
                                                                     </md-option>
                                                                 </md-select>
                                                             </md-input-container>
@@ -178,7 +178,7 @@
                                                             <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                                 <md-select  ng-disabled="isNonEditableValueSet(table)" ng-model="table.contentDefinition">
                                                                     <md-option ng-repeat="contentDefinition in config.tableContentDefinitions" ng-value="contentDefinition">
-                                                                        {{contentDefinition}}
+                                                                        {{getAttributeSelectLabel(contentDefinition)}}
                                                                     </md-option>
                                                                 </md-select>
                                                             </md-input-container>
@@ -203,11 +203,11 @@
                                                             <div class="md-panelContent">
                                                             <div class="inside-metadata divide" layout-gt-sm="row">
                                                                 <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
-                                                                <span class="inputLabel">{{table.extensibility}} </span>
+                                                                <span class="inputLabel">{{getAttributeSelectLabel(table.extensibility)}} </span>
                                                                 <label class="input-left igamt-label valueset-ext-label">Stability</label>
-                                                                <span class="inputLabel">{{table.stability}}</span>
+                                                                <span class="inputLabel">{{getAttributeSelectLabel(table.stability)}}</span>
                                                                 <label class="input-left igamt-label valueset-ext-label">Content Definition</label>
-                                                                <span class="inputLabel">{{table.contentDefinition}}</span>
+                                                                <span class="inputLabel">{{getAttributeSelectLabel(table.contentDefinition)}}</span>
                                                             </div>
                                                             <label class="input-left igamt-label valueset-ext-label">Source Code System</label>
                                                             <md-chips
@@ -1261,7 +1261,7 @@
                                                                 <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                                     <md-select ng-model="table.extensibility">
                                                                         <md-option ng-repeat="extensibility in config.tableExtensibilities" ng-value="extensibility">
-                                                                            {{extensibility}}
+                                                                            {{getAttributeSelectLabel(extensibility)}}
                                                                         </md-option>
                                                                     </md-select>
                                                                 </md-input-container>
@@ -1270,7 +1270,7 @@
                                                                 <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                                     <md-select   ng-model="table.stability">
                                                                         <md-option ng-repeat="stability in config.tableStabilities" ng-value="stability">
-                                                                            {{stability}}
+                                                                            {{getAttributeSelectLabel(stability)}}
                                                                         </md-option>
                                                                     </md-select>
                                                                 </md-input-container>
@@ -1280,7 +1280,7 @@
                                                                 <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
                                                                     <md-select ng-model="table.contentDefinition">
                                                                         <md-option ng-repeat="contentDefinition in config.tableContentDefinitions" ng-value="contentDefinition">
-                                                                            {{contentDefinition}}
+                                                                            {{getAttributeSelectLabel(contentDefinition)}}
                                                                         </md-option>
                                                                     </md-select>
                                                                 </md-input-container>
