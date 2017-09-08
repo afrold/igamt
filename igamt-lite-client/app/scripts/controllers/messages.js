@@ -702,6 +702,8 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         $mdDialog.show({
             templateUrl: 'GlobalConformanceStatementCtrl.html',
             controller: 'GlobalConformanceStatementCtrl',
+            scope:$scope,
+            preserveScope:true,
             locals: {
                 selectedMessage: message,
                 contextPath: null,
@@ -714,7 +716,7 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
         }).then(function(message) {
             if (message) {
                 $rootScope.message = message;
-               $scope.findAllGlobalConstraints();
+                $scope.findAllGlobalConstraints();
                 $scope.setDirty();
             }
         });
@@ -726,6 +728,8 @@ angular.module('igl').controller('MessageListCtrl', function($scope, $rootScope,
             parent: angular.element(document).find('body'),
             templateUrl: 'GlobalPredicateCtrl.html',
             controller: 'GlobalPredicateCtrl',
+            scope:$scope,
+            preserveScope:true,
             locals: {
                 selectedMessage: message,
                 currentPredicate : null,
@@ -2842,7 +2846,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
             freeText: null,
             verb: null,
             ignoreCase: false,
-            constraintId: null,
+            constraintId: $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, null),
             contraintType: null,
             value: null,
             value2: null,
@@ -2850,6 +2854,8 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
             bindingStrength: 'R',
             bindingLocation: '1'
         });
+
+
     };
 
     $scope.initComplexStatement = function() {
@@ -2858,7 +2864,7 @@ angular.module('igl').controller('GlobalConformanceStatementCtrl', function($sco
         $scope.secondConstraint = null;
         $scope.compositeType = null;
         $scope.complexConstraint = null;
-        $scope.newComplexConstraintId = null;
+        $scope.newComplexConstraintId = $rootScope.calNextCSID($rootScope.igdocument.metaData.ext, null);
     };
 
     $scope.addConformanceStatement = function() {

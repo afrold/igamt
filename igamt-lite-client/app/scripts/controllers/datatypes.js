@@ -829,6 +829,8 @@ angular.module('igl')
                 parent: angular.element(document).find('body'),
                 templateUrl: 'PredicateDatatypeCtrl.html',
                 controller: 'PredicateDatatypeCtrl',
+                scope:$scope,
+                preserveScope:true,
                 locals: {
                     selectedDatatype: $rootScope.datatype,
                     selectedNode: node,
@@ -849,6 +851,8 @@ angular.module('igl')
                 parent: angular.element(document).find('body'),
                 templateUrl: 'ConformanceStatementDatatypeCtrl.html',
                 controller: 'ConformanceStatementDatatypeCtrl',
+                scope:$scope,
+                preserveScope:true,
                 locals: {
                     selectedDatatype : $rootScope.datatype,
                     config : $rootScope.config,

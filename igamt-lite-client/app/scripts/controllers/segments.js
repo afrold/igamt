@@ -1022,6 +1022,8 @@ angular.module('igl').controller('SegmentListCtrl', function($scope, $rootScope,
             parent: angular.element(document).find('body'),
             templateUrl: 'PredicateSegmentCtrl.html',
             controller: 'PredicateSegmentCtrl',
+            scope:$scope,
+            preserveScope:true,
             locals: {
                 selectedSegment: $rootScope.segment,
                 currentPredicate: null,
