@@ -3735,11 +3735,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         if (newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')) {
-            cs.assertion = cs.assertion.replace("<Condition>", "<Condition><NOT><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
-            cs.assertion = cs.assertion.replace("</Condition>", "</AND></NOT></Condition>");
+            cp.assertion = cp.assertion.replace("<Condition>", "<Condition><NOT><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
+            cp.assertion = cp.assertion.replace("</Condition>", "</AND></NOT></Condition>");
         }else {
-            cs.assertion = cs.assertion.replace("<Condition>", "<Condition><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
-            cs.assertion = cs.assertion.replace("</Condition>", "</AND></Condition>");
+            cp.assertion = cp.assertion.replace("<Condition>", "<Condition><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
+            cp.assertion = cp.assertion.replace("</Condition>", "</AND></Condition>");
         }
 
         cp.description = cp.description.split('[1]').join('');
@@ -3773,6 +3773,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
         return false;
     };
+
     $rootScope.erorrForPredicate = function(newConstraint, type, selectedNode) {
         if (!selectedNode) return true;
         if ($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
@@ -3804,8 +3805,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         return false;
-    }
-
+    };
 
     $rootScope.erorrForConfStatement = function(newConstraint, targetId, type, selectedNode) {
         if ($rootScope.isEmptyConstraintID(newConstraint)) return true;
@@ -3879,7 +3879,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         if (type == 'datatype') {
             if (newConstraint && newConstraint.component_1 === null) return true;
         } else if (type == 'segment') {
-            if (newConstraint && newConstraint.field_1 === null) return true;
+            if (newConstraint && newConstraint.location_1 === null) return true;
         } else if (type == 'message') {
             if (newConstraint && newConstraint.position_1 === null) return true;
         }

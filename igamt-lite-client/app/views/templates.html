@@ -1634,11 +1634,12 @@
                                                             <input ng-model="newConstraint.freeText"
                                                                    type="text"/>
                                                         </md-input-container>
+                                                        <span style="color:red;" ng-show="!newConstraint.freeText || newConstraint.freeText === ''">Empty text</span>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2" align="center">
                                                     <button class="btn btn-raised btn-warning btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();" ng-disabled="!newConstraint.freeText || newConstraint.freeText === ''"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -1714,6 +1715,7 @@
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                        type="text"/>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
                                                         <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
                                                             <md-input-container flex="100" class="normal">
@@ -1722,7 +1724,6 @@
                                                                 </md-checkbox>
                                                             </md-input-container>
                                                         </div>
-                                                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                     </span>
 
                                                     <span ng-show="newConstraint.contraintType == 'one of list values'">
@@ -1847,8 +1848,8 @@
                                                                 <md-option value="EXIST">EXIST(True, if one of assertions is true)</md-option>
                                                             </md-select>
                                                         </md-input-container>
+                                                        <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                     </div>
-                                                    <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                 </td>
                                                 <td class="col-md-1" align="center">
                                                     <span ng-show="compositeType == 'IFTHEN'">IF</span>
@@ -2195,10 +2196,11 @@
                                                                    type="text"/>
                                                         </md-input-container>
                                                     </div>
+                                                    <span style="color:red;" ng-show="!newConstraint.freeText || newConstraint.freeText === ''">Text required</span>
                                                 </td>
                                                 <td class="col-md-2" align="center">
                                                     <button class="btn btn-raised btn-warning btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();" ng-disabled="isEmptyConstraintID(newConstraint) || !newConstraint.freeText || newConstraint.freeText === ''"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -2293,6 +2295,7 @@
                                                                    ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                    type="text"/>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
                                                         <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
                                                             <md-input-container flex="100" class="normal">
@@ -2301,7 +2304,6 @@
                                                                 </md-checkbox>
                                                             </md-input-container>
                                                         </div>
-                                                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                     </span>
 
                                                     <span ng-show="newConstraint.contraintType == 'one of list values'">
@@ -2441,8 +2443,8 @@
                                                                 <md-option value="EXIST">EXIST(True, if one of assertions is true)</md-option>
                                                             </md-select>
                                                         </md-input-container>
+                                                        <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                     </div>
-                                                    <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                 </td>
                                                 <td class="col-md-1" align="center" style="width: 4.1667%">
                                                     <span ng-show="compositeType == 'IFTHEN'">IF</span>
@@ -2765,10 +2767,11 @@
                                                                type="text"/>
                                                     </md-input-container>
                                                 </div>
+                                                <span style="color:red;" ng-show="!newConstraint.freeText || newConstraint.freeText === ''">Empty text</span>
                                             </td>
                                             <td class="col-md-2" align="center">
                                                 <button class="btn btn-raised btn-warning btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();" ng-disabled="isEmptyConstraintID(newConstraint) || !newConstraint.freeText || newConstraint.freeText === ''"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -2863,6 +2866,7 @@
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                        type="text"/>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
                                                         <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
                                                             <md-input-container flex="100" class="normal">
@@ -2871,7 +2875,6 @@
                                                                 </md-checkbox>
                                                             </md-input-container>
                                                         </div>
-                                                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                     </span>
 
                                                 <span ng-show="newConstraint.contraintType == 'one of list values'">
@@ -3010,9 +3013,9 @@
                                                             <md-option value="FORALL">FORALL(True, if all assertions are true)</md-option>
                                                             <md-option value="EXIST">EXIST(True, if one of assertions is true)</md-option>
                                                         </md-select>
+                                                        <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                     </md-input-container>
                                                 </div>
-                                                <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                             </td>
                                             <td class="col-md-1" align="center" style="width: 4.1667%">
                                                 <span ng-show="compositeType == 'IFTHEN'">IF</span>
@@ -3236,7 +3239,7 @@
                                                 </td>
                                                 <td class="col-md-2" align="center">
                                                     <button class="btn btn-raised btn-warning btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();" ng-disabled="!newConstraint.freeText || newConstraint.freeText === ''"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -3312,6 +3315,7 @@
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                        type="text"/>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
                                                         <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
                                                             <md-input-container flex="100" class="normal">
@@ -3320,7 +3324,6 @@
                                                                 </md-checkbox>
                                                             </md-input-container>
                                                         </div>
-                                                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                     </span>
 
                                                     <span ng-show="newConstraint.contraintType == 'one of list values'">
@@ -3330,9 +3333,9 @@
                                                                        placeholder="Comma-Separated Values(CSV)"
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                        type="text"/>
+                                                                <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
                                                             </md-input-container>
                                                         </div>
-                                                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
                                                     </span>
 
                                                     <span ng-show="newConstraint.contraintType == 'formatted value'">
@@ -3413,7 +3416,7 @@
                                                 </td>
                                                 <td class="col-md-2" align="center">
                                                     <button class="btn btn-raised btn-warning btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addPredicate();" ng-disabled="erorrForPredicate(newConstraint, 'message', selectedNode)"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addPredicate()" ng-disabled="erorrForPredicate(newConstraint, 'segment', selectedNode);"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -3445,8 +3448,8 @@
                                                                 <md-option value="EXIST">EXIST(True, if one of assertions is true)</md-option>
                                                             </md-select>
                                                         </md-input-container>
+                                                        <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                     </div>
-                                                    <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                 </td>
                                                 <td class="col-md-1" align="center">
                                                     <span ng-show="compositeType == 'IFTHEN'">IF</span>
@@ -3739,13 +3742,15 @@
                                                 <div layout="row">
                                                     <md-input-container flex="100" class="normal">
                                                         <input ng-model="newConstraint.freeText"
+                                                               ng-class="{ 'form-control-invalid' : !newConstraint.freeText || newConstraint.freeText === ''}"
                                                                type="text"/>
                                                     </md-input-container>
                                                 </div>
+                                                <span style="color:red;" ng-show="!newConstraint.freeText || newConstraint.freeText === ''">ID Empty</span>
                                             </td>
                                             <td class="col-md-2" align="center">
                                                 <button class="btn btn-raised btn-warning btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                                <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextConformanceStatement();" ng-disabled="isEmptyConstraintID(newConstraint) || !newConstraint.freeText || newConstraint.freeText === ''"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -4209,11 +4214,12 @@
                                                             <input ng-model="newConstraint.freeText"
                                                                    type="text"/>
                                                         </md-input-container>
+                                                        <span style="color:red;" ng-show="!newConstraint.freeText || newConstraint.freeText === ''">Text required</span>
                                                     </div>
                                                 </td>
                                                 <td class="col-md-2" align="center">
                                                     <button class="btn btn-raised btn-warning btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
-                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+                                                    <button class="btn btn-raised btn-primary btn-xxs" ng-click="addFreeTextPredicate();" ng-disabled="!newConstraint.freeText || newConstraint.freeText === ''"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -4289,6 +4295,7 @@
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                        type="text"/>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                         </div>
                                                         <div layout="row" ng-show="newConstraint.contraintType == 'a literal value'">
                                                             <md-input-container flex="100" class="normal">
@@ -4297,7 +4304,6 @@
                                                                 </md-checkbox>
                                                             </md-input-container>
                                                         </div>
-                                                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty value</span>
                                                     </span>
 
                                                     <span ng-show="newConstraint.contraintType == 'one of list values'">
@@ -4308,8 +4314,8 @@
                                                                        ng-class="{ 'form-control-invalid' : isEmptyConstraintValue(newConstraint)}"
                                                                        type="text"/>
                                                             </md-input-container>
+                                                            <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
                                                         </div>
-                                                        <span style="color:red;" ng-show="isEmptyConstraintValue(newConstraint)">Empty list value</span>
                                                     </span>
 
                                                     <span ng-show="newConstraint.contraintType == 'formatted value'">
@@ -4422,8 +4428,8 @@
                                                                 <md-option value="EXIST">EXIST(True, if one of assertions is true)</md-option>
                                                             </md-select>
                                                         </md-input-container>
+                                                        <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                     </div>
-                                                    <span style="color:red;" ng-show="isEmptyCompositeType(compositeType)">Empty composite type</span>
                                                 </td>
                                                 <td class="col-md-1" align="center">
                                                     <span ng-show="compositeType == 'IFTHEN'">IF</span>
