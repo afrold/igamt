@@ -1,6 +1,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template name="valueSetMetadata">
+       <xsl:if test="($valueSetMetadata.oid = 'true' and @Oid != '' and @Oid != 'UNSPECIFIED') or ($valueSetMetadata.type = 'true' and @SourceType != '' and @SourceType != 'UNSPECIFIED')">
+      
         <xsl:element name="span">
         	<xsl:attribute name="class">
 	     		<xsl:text>contentHeader</xsl:text>
@@ -32,6 +34,7 @@
             </xsl:element>
         </xsl:if>     
         <xsl:element name="p"/>
+        </xsl:if>
     </xsl:template>
 
 </xsl:stylesheet>
