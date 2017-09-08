@@ -23,7 +23,7 @@ public class CoConstraintIFColumnData implements java.io.Serializable, Cloneable
   @Override
   public CoConstraintIFColumnData clone() throws CloneNotSupportedException {
     CoConstraintIFColumnData cloned = new CoConstraintIFColumnData();
-    cloned.setValueData(valueData.clone());
+    if(valueData != null) cloned.setValueData(valueData.clone());
     return cloned;
   }
 }

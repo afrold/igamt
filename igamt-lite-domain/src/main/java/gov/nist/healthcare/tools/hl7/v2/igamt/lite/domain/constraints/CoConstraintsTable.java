@@ -87,20 +87,19 @@ public class CoConstraintsTable implements java.io.Serializable, Cloneable {
   @Override
   public CoConstraintsTable clone() throws CloneNotSupportedException {
     CoConstraintsTable cloned = new CoConstraintsTable();
-    
-    cloned.setIfColumnDefinition(ifColumnDefinition.clone());
+    if(ifColumnDefinition != null) cloned.setIfColumnDefinition(ifColumnDefinition.clone());
     cloned.setThenColumnDefinitionList(new ArrayList<CoConstraintColumnDefinition>());
     for(CoConstraintColumnDefinition def : this.thenColumnDefinitionList){
-      cloned.getThenColumnDefinitionList().add(def.clone());
+      if(def != null) cloned.getThenColumnDefinitionList().add(def.clone());
     }
     cloned.setUserColumnDefinitionList(new ArrayList<CoConstraintUserColumnDefinition>());
     for(CoConstraintUserColumnDefinition def : this.userColumnDefinitionList){
-      cloned.getUserColumnDefinitionList().add(def.clone());
+      if(def != null)  cloned.getUserColumnDefinitionList().add(def.clone());
     }
     cloned.setRowSize(rowSize);
     cloned.setIfColumnData(new ArrayList<CoConstraintIFColumnData>());
     for(CoConstraintIFColumnData data : this.ifColumnData){
-      cloned.getIfColumnData().add(data.clone());
+      if(data != null) cloned.getIfColumnData().add(data.clone());
     }
     
     if(thenMapData == null) cloned.setThenMapData(null);
@@ -112,7 +111,7 @@ public class CoConstraintsTable implements java.io.Serializable, Cloneable {
         List<CoConstraintTHENColumnData> clonedList = new ArrayList<CoConstraintTHENColumnData>();
         
         for(CoConstraintTHENColumnData data : dataList){
-          clonedList.add(data.clone());
+          if(data != null) clonedList.add(data.clone());
         }
         cloned.getThenMapData().put(key, clonedList);
       }
@@ -127,7 +126,7 @@ public class CoConstraintsTable implements java.io.Serializable, Cloneable {
         List<CoConstraintUSERColumnData> clonedList = new ArrayList<CoConstraintUSERColumnData>();
         
         for(CoConstraintUSERColumnData data : dataList){
-          clonedList.add(data.clone());
+          if(data != null) clonedList.add(data.clone());
         }
         cloned.getUserMapData().put(key, clonedList);
       }

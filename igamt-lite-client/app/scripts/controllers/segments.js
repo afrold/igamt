@@ -2468,6 +2468,8 @@ angular.module('igl').controller('PredicateSegmentCtrl', function($scope, config
     $scope.initComplexPredicate();
     $scope.existingPredicate = $scope.findExistingPredicate();
 
+    if(!$scope.existingPredicate) $scope.dialogStep = 1;
+
 });
 
 angular.module('igl').controller('ConformanceStatementSegmentCtrl', function($scope, config, tables, selectedSegment, currentConformanceStatements, mode, $rootScope, $q, $mdDialog) {
