@@ -466,6 +466,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
                 $rootScope.table.externalUrl=$scope.url;
                 $rootScope.table.sourceType="EXTERNAL";
                 $rootScope.table.codes=[];
+                $rootScope.table.smallCodes=[];
                 $rootScope.recordChanged();
                 $mdDialog.hide();
 

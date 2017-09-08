@@ -14,8 +14,7 @@ Running `grunt test` will run the unit tests with karma.
 `./node_modules/protractor/bin/webdriver-manager update`
 
 ### start test
-`grunt e2e`
-
+`grunt e2e` node
 
 
 

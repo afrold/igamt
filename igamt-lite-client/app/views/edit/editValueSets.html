@@ -154,7 +154,7 @@
                                                         <div ng-if="!isNonEditableValueSet(table)">
                                                             <md-toolbar class="value-set-toolBar"> Attributes</md-toolbar>
                                                             <div class="md-panelContent">
-                                                            <div class="inside-metadata" layout-gt-sm="row">
+                                                            <div class="inside-metadata divide" layout-gt-sm="row">
 
                                                                     <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
 
@@ -184,7 +184,8 @@
                                                                 </md-select>
                                                             </md-input-container>
                                                             </div>
-                                                            <label class="input-left igamt-label valueset-ext-label">Source Code System</label>
+
+                                                            <label class="input-left igamt-label valueset-ext-label">Source Code Systems</label>
 
                                                             <md-chips
                                                                     ng-model="table.codeSystems"
@@ -200,8 +201,8 @@
 
                                                         <div ng-if="isNonEditableValueSet(table)">
                                                             <md-toolbar class="value-set-toolBar">Value Set Definition Attribute</md-toolbar>
-                                                            <div class="md-panelContent" style="border: 1px solid">
-                                                            <div class="inside-metadata" layout-gt-sm="row">
+                                                            <div class="md-panelContent">
+                                                            <div class="inside-metadata divide" layout-gt-sm="row">
                                                                 <label class="input-left igamt-label valueset-ext-label">Extensibility</label>
                                                                 <span class="inputLabel">{{table.extensibility}} </span>
                                                                 <label class="input-left igamt-label valueset-ext-label">Stability</label>
@@ -224,11 +225,12 @@
                                                             <label class="input-left igamt-label">URL</label>
 
                                                             <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                                                                <input type="text" name="url" ng-disabled="isNonEditableValueSet(table)" ng-model="table.externalUrl" required>
-                                                                <div ng-messages="editForm.url.$error">
-                                                                    <div ng-message="required">Url is required.</div>
+                                                                <input type="url" name="url" ng-disabled="isNonEditableValueSet(table)" ng-model="table.externalUrl" required>
+                                                                <div ng-messages="editForm.url.$error" ng-messages-multiple>
+                                                                    <div ng-message="required">URL is required.</div>
                                                                 </div>
                                                             </md-input-container>
+                                                            <!--<span class="url-error" ng-if="!editForm.url.valid"> Invalid URL </span>-->
 
                                                             <label class="input-left igamt-label" ng-if="table.contentDefinition=='Intensional'">Notes </label>
 
