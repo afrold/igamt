@@ -3932,6 +3932,8 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
     $scope.newTable.libIds = [];
     $scope.newTable.codes = [];
     $scope.newTable.newTable = true;
+    $scope.newTable.authorNotes="";
+
 
     $scope.cancel = function () {
         $mdDialog.hide('cancel');
@@ -3939,9 +3941,15 @@ angular.module('igl').controller('CreateValueSet', ['$rootScope', '$scope', '$md
 
 
     $scope.add = function () {
+        $scope.newTable.extensibility="Undefined";
+        $scope.newTable.stability="Undefined";
+        $scope.newTable.contentDefinition="Undefined";
 
 
         TableService.save($scope.newTable).then(function (result) {
+            console.log($scope.newTable);
+            console.log(result);
+
             var newTable = result;
             var newLink = {};
             newLink.bindingIdentifier = newTable.bindingIdentifier;

@@ -9,6 +9,7 @@ public enum Stability {
 	
 
   public static Stability fromValue(String v) {
+
     return !"".equals(v) && v != null ? valueOf(v) : Stability.Dynamic;
   }
 }

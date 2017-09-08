@@ -74,6 +74,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
         });
     };
+
     $scope.redirectDT = function(datatype) {
         console.log(datatype);
         DatatypeService.getOne(datatype.id).then(function(datatype) {
@@ -164,6 +165,13 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
         modalInstance.result.then(function() {
             $scope.setDirty();
         });
+    };
+    $scope.getAttributeSelectLabel=function(label){
+        if(label=='Undefined'){
+             return "Not Defined";
+        }else{
+            return label;
+       }
     };
 
     $scope.save = function() {
@@ -447,7 +455,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             });
 
         function ConfirmToExternal($scope,$rootScope, $mdDialog,TableService) {
-            $scope.url=null;
+            $scope.url=$rootScope.table.referenceUrl;
 
             $scope.cancel=function(){
                 $rootScope.table.sourceType="INTERNAL";
