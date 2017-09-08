@@ -272,13 +272,13 @@ public class XMLExportTool {
           elmValueSetDefinition.addAttribute(new Attribute("Oid", this.str(t.getOid())));
         if (t.getStability() != null && !t.getStability().equals(""))
           elmValueSetDefinition
-              .addAttribute(new Attribute("Stability", this.str(t.getStability().value())));
+              .addAttribute(new Attribute("Stability", this.str(t.getStability().name())));
         if (t.getExtensibility() != null && !t.getExtensibility().equals(""))
           elmValueSetDefinition
-              .addAttribute(new Attribute("Extensibility", this.str(t.getExtensibility().value())));
+              .addAttribute(new Attribute("Extensibility", this.str(t.getExtensibility().name())));
         if (t.getContentDefinition() != null && !t.getContentDefinition().equals(""))
           elmValueSetDefinition.addAttribute(
-              new Attribute("ContentDefinition", this.str(t.getContentDefinition().value())));
+              new Attribute("ContentDefinition", this.str(t.getContentDefinition().name())));
 
 
         if (t.getScope().equals(SCOPE.HL7STANDARD)) {

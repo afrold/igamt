@@ -293,13 +293,13 @@ public class TableSerializationImpl implements TableSerialization {
               .addAttribute(new Attribute("Oid", serializationUtil.str(t.getOid())));
         if (t.getStability() != null && !t.getStability().equals(""))
           elmValueSetDefinition.addAttribute(
-              new Attribute("Stability", serializationUtil.str(t.getStability().value())));
+              new Attribute("Stability", serializationUtil.str(t.getStability().name())));
         if (t.getExtensibility() != null && !t.getExtensibility().equals(""))
           elmValueSetDefinition.addAttribute(
-              new Attribute("Extensibility", serializationUtil.str(t.getExtensibility().value())));
+              new Attribute("Extensibility", serializationUtil.str(t.getExtensibility().name())));
         if (t.getContentDefinition() != null && !t.getContentDefinition().equals(""))
           elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition",
-              serializationUtil.str(t.getContentDefinition().value())));
+              serializationUtil.str(t.getContentDefinition().name())));
 
         nu.xom.Element elmValueSetDefinitions = null;
         if (t.getGroup() != null && !t.getGroup().equals("")) {
@@ -561,13 +561,13 @@ public class TableSerializationImpl implements TableSerialization {
               .addAttribute(new Attribute("Oid", serializationUtil.str(t.getOid())));
         if (t.getStability() != null && !t.getStability().equals(""))
           elmValueSetDefinition.addAttribute(
-              new Attribute("Stability", serializationUtil.str(t.getStability().value())));
+              new Attribute("Stability", serializationUtil.str(t.getStability().name())));
         if (t.getExtensibility() != null && !t.getExtensibility().equals(""))
           elmValueSetDefinition.addAttribute(
-              new Attribute("Extensibility", serializationUtil.str(t.getExtensibility().value())));
+              new Attribute("Extensibility", serializationUtil.str(t.getExtensibility().name())));
         if (t.getContentDefinition() != null && !t.getContentDefinition().equals(""))
           elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition",
-              serializationUtil.str(t.getContentDefinition().value())));
+              serializationUtil.str(t.getContentDefinition().name())));
 
         nu.xom.Element elmValueSetDefinitions = null;
         if (t.getGroup() != null && !t.getGroup().equals("")) {
