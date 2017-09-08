@@ -13,6 +13,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.regex.Pattern;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -34,6 +38,11 @@ public class AppInfo implements Serializable {
   @Value("${app.date}")
   private String date;
 
+  @Value("${wsEndpoints}")
+  private String wsEndpoints;
+
+  HashMap<String, String> properties = new HashMap<String, String>();
+
   private String uploadedImagesUrl;
 
   @Value("${admin.email}")
@@ -45,6 +54,41 @@ public class AppInfo implements Serializable {
 
   @Value("${gvt.uploadTokenContext}")
   private String gvtUploadTokenContext;
+
+
+
+  /**
+   * 
+   */
+  @PostConstruct
+  public void init() throws Exception {
+    String[] urls = this.wsEndpoints.split(",");
+    if (urls != null)
+      for (String url : urls) {
+        String[] parts = url.split(Pattern.quote("|"));
+        properties.put(parts[0], parts[1]);
+      }
+  }
+
+
+
+  /**
+   * @return the properties
+   */
+  public HashMap<String, String> getProperties() {
+    return properties;
+  }
+
+
+
+  /**
+   * @param properties the properties to set
+   */
+  public void setProperties(HashMap<String, String> properties) {
+    this.properties = properties;
+  }
+
+
 
   public String getVersion() {
     return version;
