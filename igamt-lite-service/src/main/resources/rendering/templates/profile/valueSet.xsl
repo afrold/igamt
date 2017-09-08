@@ -2,6 +2,7 @@
 
     <xsl:import href="/rendering/templates/profile/valueSetContent.xsl"/>
     <xsl:import href="/rendering/templates/profile/valueSetMetadata.xsl"/>
+    <xsl:import href="/rendering/templates/profile/valueSetAttributes.xsl"/>
     <xsl:template match="ValueSetDefinition" mode="toc">
         <xsl:element name="a">
             <xsl:attribute name="href">
@@ -28,24 +29,25 @@
             <xsl:element name="br"/>
         </xsl:if>
         <xsl:call-template name="valueSetMetadata"/>
+        <xsl:call-template name="valueSetAttributes"/>
         <xsl:choose>
         	<xsl:when test="@SourceType='EXTERNAL'">
-        		<xsl:if test="normalize-space(@ExternalUrl)!=''">
+        		<xsl:if test="normalize-space(@ReferenceUrl)!=''">
         			<xsl:if test="$documentTargetFormat='word'">
         				<xsl:element name="br"/>
         			</xsl:if>
         			<xsl:element name="p">
         				<xsl:element name="b">
-        					<xsl:text>URL: </xsl:text>
+        					<xsl:text>Reference URL: </xsl:text>
         				</xsl:element>
         				<xsl:element name="a">
         					<xsl:attribute name="href">
-        						<xsl:value-of select="@ExternalUrl"/>
+        						<xsl:value-of select="@ReferenceUrl"/>
         					</xsl:attribute>
         					<xsl:attribute name="target">
         						<xsl:text>_blank</xsl:text>
         					</xsl:attribute>
-        					<xsl:value-of select="@ExternalUrl"/>
+        					<xsl:value-of select="@ReferenceUrl"/>
         				</xsl:element>
         			</xsl:element>
        			</xsl:if>
@@ -55,8 +57,9 @@
         			</xsl:if>
 		   			<xsl:element name="p">
 		   				<xsl:element name="b">
-		   					<xsl:text>Notes: </xsl:text>
+		   					<xsl:text>Definition text</xsl:text>
 		   				</xsl:element>
+		   				<xsl:element name="br"/>
 		   				<xsl:value-of select="@InfoForExternal"/>
 		   			</xsl:element>
 		   		</xsl:if>
