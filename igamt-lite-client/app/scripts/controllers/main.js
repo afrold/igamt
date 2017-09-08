@@ -71,6 +71,9 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         var base=$location.absUrl().substring(0,$location.absUrl().length - ($location.url().length+1));
         return base+SearchService.getExportUrl(element,'html');
     };
+    $rootScope.getPhinvadsURL=function(table){
+        return $rootScope.appInfo.properties["PHINVADS"]+table.oid;
+    };
     $rootScope.versionAndUseMap = {};
     $rootScope.validationMap = {};
     userInfoService.loadFromServer();

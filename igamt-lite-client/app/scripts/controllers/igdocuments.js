@@ -2031,6 +2031,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
             blockUI.start();
             try {
                 TableService.getOne(table.id).then(function (tbl) {
+
                     $rootScope.table = tbl;
                     $rootScope.$emit("event:initTable");
                     $rootScope.currentData = $rootScope.table;
@@ -2066,34 +2067,6 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                 $rootScope.msg().show = true;
                 blockUI.stop();
             }
-
-            //            $timeout(
-            //                function() {
-            //                    $rootScope.table = table;
-            //                    $rootScope.$emit("event:initTable");
-            //                    $rootScope.currentData = $rootScope.table;
-            //                    $rootScope.codeSystems = [];
-            //                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
-            //                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
-            //                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
-            //                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
-            //                            }
-            //                        }
-            //                    }
-            //                    $rootScope.references = [];
-            //                    angular.forEach($rootScope.segments, function(segment) {
-            //                        $rootScope.findTableRefs($rootScope.table, segment, $rootScope.getSegmentLabel(segment));
-            //                    });
-            //                    angular.forEach($rootScope.datatypes, function(dt) {
-            //                        $rootScope.findTableRefs($rootScope.table, dt, $rootScope.getDatatypeLabel(dt));
-            //                    });
-            //                    $rootScope.tmpReferences = [].concat($rootScope.references);
-            //                    $scope.loadingSelection = false;
-            //                    $rootScope.$emit("event:initEditArea");
-            //                    blockUI.stop();
-            //                }, 100);
-
-
         };
 
         $scope.selectSection = function (section) {

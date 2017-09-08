@@ -15,6 +15,7 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     $scope.isDeltaCalled = false;
     $scope.itemsByPage = 30;
     $scope.tempCodeSys = '';
+    $scope.applyCodeSysValue=null;
     $scope.tabStatus = {
         active: 1
     };
@@ -102,17 +103,15 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     };
 
     $scope.applyAllCodeSys = function (applyCodeSysValue) {
-        // $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
-        // $rootScope.table.smallCodes = _.difference($rootScope.table.smallCodes, $scope.selectedCodes);
-
-
         for (var i = 0, len = $scope.selectedCodes.length; i < len; i++) {
-            $scope.selectedCodes[i].codeSystem = applyCodeSysValue;
+            $scope.selectedCodes[i].codeSystem = angular.copy(applyCodeSysValue);
         }
         $scope.selectedCodes = [];
-
+        applyCodeSysValue=null;
         // $scope.setDirty();
     };
+
+
 
     $scope.isBindingChanged = function() {
         for (var i = 0; i < $rootScope.references.length; i++) {
@@ -180,20 +179,13 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             }
 
             TableService.save(table).then(function(result) {
+                $rootScope.entireTable=angular.copy(result);
+
                 var oldLink = TableLibrarySvc.findOneChild(result.id, $rootScope.tableLibrary.children);
 
                 $rootScope.table.dateUpdated = result.dateUpdated;
                 $rootScope.$emit("event:updateIgDate");
                 TableService.merge($rootScope.tablesMap[result.id], result);
-                // remove unnecessary variables for toc
-                delete $rootScope.tablesMap[result.id].codes;
-                delete $rootScope.tablesMap[result.id].contentDefinition;
-                delete $rootScope.tablesMap[result.id].extensibility;
-                delete $rootScope.tablesMap[result.id].stability;
-                delete $rootScope.tablesMap[result.id].comment;
-                delete $rootScope.tablesMap[result.id].defPreText;
-                delete $rootScope.tablesMap[result.id].defPostText;
-
                 var newLink = TableService.getTableLink(result);
                 newLink.bindingIdentifier = bindingIdentifier;
                 TableLibrarySvc.updateChild($rootScope.tableLibrary.id, newLink).then(function(link) {
@@ -463,17 +455,31 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
             }
             $scope.confirm= function () {
-                $rootScope.table.externalUrl=$scope.url;
+                $rootScope.table.referenceUrl=$scope.url;
                 $rootScope.table.sourceType="EXTERNAL";
                 $rootScope.table.codes=[];
                 $rootScope.table.smallCodes=[];
                 $rootScope.recordChanged();
-                $mdDialog.hide();
+                $mdDialog.hide("OK");
 
 
             }
         }
-            modalInstance.then(function() {}, function() {});
+            modalInstance.then(function(result) {
+                if(result==='OK'){
+
+                    $scope.tabStatus = {
+                        active: 1
+                    };
+                    $scope.defTabStatus = {
+                        active: 1
+                    };
+
+                    $scope.deltaTabStatus = {
+                        active: 0
+                    };
+                }
+            }, function() {});
 
     };
 

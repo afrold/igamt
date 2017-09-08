@@ -339,6 +339,11 @@ angular.module('igl').factory(
                 newTable.status="UNPUBLISHED";
                 newTable.id = null;
                 newTable.libIds = [];
+                newTable.referenceUrl=table.referenceUrl;
+
+                if(table.scope=='PHINVADS'){
+                    newTable.referenceUrl= $rootScope.getPhinvadsURL(table);
+                }
                 newTable.libIds.push($rootScope.tableLibrary.id);
                 if($rootScope.igdocument){
                     newTable.bindingIdentifier = $rootScope.createNewFlavorName(newTable.bindingIdentifier);

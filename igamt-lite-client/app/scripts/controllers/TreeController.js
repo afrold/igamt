@@ -712,33 +712,6 @@ angular
 
 
                 $scope.TableOptionsForPublished = [
-                    ['Create New Version',
-                        function($itemScope) {
-                            console.log($rootScope.versionAndUseMap[$itemScope.table.id]);
-                            if ($rootScope.hasChanges()) {
-
-                                $rootScope.openConfirmLeaveDlg().then(function(result) {
-                                    if(result&&result!=='cancel') {
-
-                                        if ($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.table.id])) {
-                                            CloneDeleteSvc.upgradeTable($itemScope.table);
-                                        } else {
-                                            $scope.showCannotPublish($itemScope.table);
-                                        }
-                                    }
-                                });
-                            } else {
-
-                                if ($rootScope.readyForNewVersion($rootScope.versionAndUseMap[$itemScope.table.id])) {
-                                    CloneDeleteSvc.upgradeTable($itemScope.table);
-                                } else {
-
-                                    $scope.showCannotPublish($itemScope.table);
-                                }
-                            }
-                        }
-                    ],
-
                     ['Export CSV',
                         function($itemScope) {
                             $scope.exportCSVForTable($itemScope.table);

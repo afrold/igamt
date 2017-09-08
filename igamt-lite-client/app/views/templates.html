@@ -5726,7 +5726,6 @@
                             </td>
                         </tr>
                     </table>
-
                 </div>
             </md-dialog-content>
 
@@ -6743,9 +6742,12 @@
                         <md-option ng-repeat="opt in sourceTypes" ng-value="opt.value">{{opt.label}}</md-option>
                     </md-select>
 
-                    <label class="input-left igamt-label" ng-if="newTable.sourceType=='EXTERNAL'"> Source URL </label>
+                    <label class="input-left igamt-label" ng-if="newTable.sourceType=='EXTERNAL'"> Reference URL* </label>
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-if="newTable.sourceType=='EXTERNAL'">
-                        <input type="url" name="externalUrl" ng-required="newTable.sourceType=='EXTERNAL'" ng-model="newTable.externalUrl">
+                        <input type="url" name="url" ng-required="newTable.sourceType=='EXTERNAL'" ng-model="newTable.ext" id="url">
+                        <span ng-if="newTableForm.url.$invalid" style="color :red;">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please Enter a Valid URL
+                        </span>
                     </md-input-container>
 
                     <label class="input-left igamt-label"> Author Notes </label>
@@ -6779,9 +6781,12 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <label class="input-left igamt-label"> Source URL </label>
+                    <label class="input-left igamt-label"> Reference URL </label>
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm>
-                        <input  type="url" name="externalUrl" required ng-model="url">
+                        <input  type="url" name="url" required ng-model="url" id="url">
+                        <span ng-if="externalform.url.$invalid" style="color :red;">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please Enter a Valid URL
+                        </span>
                     </md-input-container>
                     <p>Warning: If you make this value set external, your codes will be deleted and you should provide a valid  URL . Do you want to continue?</p>
 

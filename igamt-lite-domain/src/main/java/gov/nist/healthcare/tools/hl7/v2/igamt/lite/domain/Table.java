@@ -34,7 +34,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   private String name;
   private boolean newTable;
   private String managedBy = Constant.Internal;
-  private String externalUrl = "";
+  private String referenceUrl;
   private String infoForExternal = "";
 
 
@@ -75,6 +75,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   public Table() {
     super();
     this.type = Constant.TABLE;
+    managedBy = Constant.Internal;
     this.status = STATUS.UNPUBLISHED;
   }
 
@@ -289,6 +290,8 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
     clonedTable.setDefPostText(defPostText);
     clonedTable.setAuthorNotes(super.getAuthorNotes());
     clonedTable.setCodeSystems(codeSystems);
+    clonedTable.setSourceType(sourceType);
+
     return clonedTable;
   }
 
@@ -397,15 +400,15 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
   /**
    * @return the externalUrl
    */
-  public String getExternalUrl() {
-    return externalUrl;
+  public String getReferenceUrl() {
+    return referenceUrl;
   }
 
   /**
    * @param externalUrl the externalUrl to set
    */
-  public void setExternalUrl(String externalUrl) {
-    this.externalUrl = externalUrl;
+  public void setReferenceUrl(String externalUrl) {
+    this.referenceUrl = externalUrl;
   }
 
   /**
