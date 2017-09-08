@@ -9,7 +9,7 @@
                 <xsl:text>Metadata</xsl:text>
             </xsl:element>
         </xsl:element>
-        <xsl:if test="@Oid != '' and @Oid != 'UNSPECIFIED'">
+        <xsl:if test="$valueSetMetadata.oid = 'true' and @Oid != '' and @Oid != 'UNSPECIFIED'">
             <xsl:if test="$documentTargetFormat='word'">
    				<xsl:element name="br"/>
    			</xsl:if>
@@ -20,7 +20,7 @@
 	            <xsl:value-of select="@Oid"/>
             </xsl:element>
         </xsl:if>
-        <xsl:if test="@SourceType != '' and @SourceType != 'UNSPECIFIED'">
+        <xsl:if test="$valueSetMetadata.type = 'true' and @SourceType != '' and @SourceType != 'UNSPECIFIED'">
             <xsl:if test="$documentTargetFormat='word'">
      			<xsl:element name="br"/>
       		</xsl:if>
