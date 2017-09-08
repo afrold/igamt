@@ -3114,3 +3114,22 @@ md-select[disabled] .md-select-value {
     background-color: yellow;
 
 }
+.md-panelContent{
+    background: white;
+    border-radius: 4px;
+    padding: 5px;
+    border: 1px solid;
+    border-color: #f0f0f0;
+
+}
+.value-set-toolBar{
+    background-color: rgb(240, 240, 240) !important;
+    min-height: 30px !important;
+    padding:5px;
+    color: black !important;
+    font-weight: bold;
+}
+.divide{
+    border-bottom: 1px solid;
+    border-bottom-color: #f0f0f0;
+}

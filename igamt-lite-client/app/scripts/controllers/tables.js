@@ -2,7 +2,7 @@
  * Created by Jungyub on 4/01/15.
  */
 
-angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc, blockUI, SegmentService, DatatypeService) {
+angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc, TableService, TableLibrarySvc, blockUI, SegmentService,$mdDialog) {
     $scope.readonly = false;
     $scope.codeSysEditMode = false;
     $scope.codeSysForm = {};
@@ -339,6 +339,34 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
             }
         }
     };
+    $scope.isSelected=function(c){
+        var index = $scope.selectedCodes.indexOf(c);
+        if (index > -1) {
+           return true;
+
+        }else{
+            return false;
+        }
+    }
+    $scope.selectCode=function(c){
+
+            $scope.selectedCodes.push(c);
+
+    }
+    $scope.unSelectCode= function(c){
+        var index = $scope.selectedCodes.indexOf(c);
+        if (index > -1) {
+            $scope.selectedCodes.splice(index, 1);
+        }
+
+    };
+    $scope.toggleCode=function(c){
+       if($scope.isSelected(c)){
+           $scope.unSelectCode(c);
+        }else{
+           $scope.selectCode(c);
+       }
+    }
     $scope.deleteSlectedValues = function() {
         $rootScope.table.codes = _.difference($rootScope.table.codes, $scope.selectedCodes);
         $rootScope.table.smallCodes = _.difference($rootScope.table.smallCodes, $scope.selectedCodes);
@@ -411,6 +439,42 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
 
     $scope.isNewValue = function(id) {
         return $scope.isNewObject('value', 'add', id);
+    };
+    $scope.confirmSwitchSourceType=function (table) {
+        if(table.sourceType&&table.sourceType=='EXTERNAL'){
+            $scope.openConfirmToExternal(table);
+
+        }
+    };
+    $scope.openConfirmToExternal=function(table){
+
+            var modalInstance = $mdDialog.show({
+                templateUrl: 'confirmToExternal.html',
+                controller: ConfirmToExternal,
+                preserveScope: true
+            });
+
+        function ConfirmToExternal($scope,$rootScope, $mdDialog,TableService) {
+            $scope.url=null;
+
+            $scope.cancel=function(){
+                $rootScope.table.sourceType="INTERNAL";
+                $mdDialog.hide();
+
+            }
+            $scope.confirm= function () {
+                $rootScope.table.externalUrl=$scope.url;
+                $rootScope.table.sourceType="EXTERNAL";
+                $rootScope.table.codes=[];
+                $rootScope.table.smallCodes=[];
+                $rootScope.recordChanged();
+                $mdDialog.hide();
+
+
+            }
+        }
+            modalInstance.then(function() {}, function() {});
+
     };
 
     $scope.isNewTable = function(id) {

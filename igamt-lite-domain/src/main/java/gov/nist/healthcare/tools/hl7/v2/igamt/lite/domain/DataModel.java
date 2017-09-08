@@ -13,6 +13,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.Date;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SourceType;
+
 /**
  * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
  */
@@ -40,7 +42,37 @@ public abstract class DataModel {
   protected String createdFrom;
   private String hl7Section;
   protected String authorNotes = "";
+  protected SourceType sourceType = SourceType.INTERNAL;
+  protected String sourceUrl;
 
+
+  /**
+   * @return the sourceUrl
+   */
+  public String getSourceUrl() {
+    return sourceUrl;
+  }
+
+  /**
+   * @param sourceUrl the sourceUrl to set
+   */
+  public void setSourceUrl(String sourceUrl) {
+    this.sourceUrl = sourceUrl;
+  }
+
+  /**
+   * @return the sourceType
+   */
+  public SourceType getSourceType() {
+    return sourceType;
+  }
+
+  /**
+   * @param sourceType the sourceType to set
+   */
+  public void setSourceType(SourceType sourceType) {
+    this.sourceType = sourceType;
+  }
 
   /**
    * @return the authorNotes

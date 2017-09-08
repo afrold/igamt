@@ -2579,6 +2579,8 @@ angular.module('igl').controller('GlobalPredicateCtrl', function($scope, segment
     $scope.findAllGlobalPredicates();
     $scope.generatePathInfo($scope.selectedMessage, ".", ".", "1", false, null, 'default');
     $scope.selectedMessage.childrenVisible = true;
+
+    if(!$scope.existingPredicate) $scope.dialogStep = 1;
 });
 /*
  contextPath: ".",

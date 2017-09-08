@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc', 'VersionAndUseService', '$q', 'DatatypeLibrarySvc', 'CloneDeleteSvc', 'TableService', 'TableLibrarySvc', '$mdDialog','PcService', 'md5','$mdSidenav',function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc, VersionAndUseService, $q, DatatypeLibrarySvc, CloneDeleteSvc, TableService, TableLibrarySvc, $mdDialog,PcService,md5,$mdSidenav) {
+angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'IdleService', 'AutoSaveService', 'StorageService', 'ViewSettings', 'DatatypeService', 'SegmentService', 'MessageService', 'ElementUtils', 'SectionSvc', 'VersionAndUseService', '$q', 'DatatypeLibrarySvc', 'CloneDeleteSvc', 'TableService', 'TableLibrarySvc', '$mdDialog','PcService', 'md5','$mdSidenav','SearchService',function($document, $scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle, IdleService, AutoSaveService, StorageService, ViewSettings, DatatypeService, SegmentService, MessageService, ElementUtils, SectionSvc, VersionAndUseService, $q, DatatypeLibrarySvc, CloneDeleteSvc, TableService, TableLibrarySvc, $mdDialog,PcService,md5,$mdSidenav,SearchService) {
     // This line fetches the info from the server if the user is currently
     // logged in.
     // If success, the app is updated according to the role.
@@ -50,6 +50,8 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     $rootScope.goNav = function(path){
         $location.url(path);
     };
+    $rootScope.sourceTypes=[{value:"INTERNAL",label:"Internal"}, {value:"EXTERNAL",label:"External"}];
+
 
     $rootScope.generateHash=function(string){
          var hash = md5.createHash(string);
@@ -65,6 +67,10 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         return hash;
 
     }
+    $rootScope.getElementUrl=function (element) {
+        var base=$location.absUrl().substring(0,$location.absUrl().length - ($location.url().length+1));
+        return base+SearchService.getExportUrl(element,'html');
+    };
     $rootScope.versionAndUseMap = {};
     $rootScope.validationMap = {};
     userInfoService.loadFromServer();
@@ -3470,8 +3476,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
 
 
         if (newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')) {
-            cs.assertion = cs.assertion.replace("<Assertion>", "<Assertion><NOT>");
-            cs.assertion = cs.assertion.replace("</Assertion>", "</NOT></Assertion>");
+            cs.assertion = cs.assertion.replace("<Assertion>", "<Assertion><NOT><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
+            cs.assertion = cs.assertion.replace("</Assertion>", "</AND></NOT></Assertion>");
+        }else {
+            cs.assertion = cs.assertion.replace("<Assertion>", "<Assertion><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
+            cs.assertion = cs.assertion.replace("</Assertion>", "</AND></Assertion>");
         }
         cs.description = cs.description.split('[1]').join('');
 
@@ -3723,8 +3732,11 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
         }
 
         if (newConstraint.verb.includes('NOT') || newConstraint.verb.includes('not')) {
-            cp.assertion = cp.assertion.replace("<Condition>", "<Condition><NOT>");
-            cp.assertion = cp.assertion.replace("</Condition>", "</NOT></Condition>");
+            cs.assertion = cs.assertion.replace("<Condition>", "<Condition><NOT><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
+            cs.assertion = cs.assertion.replace("</Condition>", "</AND></NOT></Condition>");
+        }else {
+            cs.assertion = cs.assertion.replace("<Condition>", "<Condition><AND><Presence Path=\"" + newConstraint.position_1 + "\"/>");
+            cs.assertion = cs.assertion.replace("</Condition>", "</AND></Condition>");
         }
 
         cp.description = cp.description.split('[1]').join('');

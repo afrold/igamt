@@ -1012,6 +1012,7 @@ angular.module('igl')
                 $scope.isChecked = function() {
                     return $scope.selected.length === $scope.tmpReferences.length;
                 };
+
                 $scope.toggleAll = function() {
                     if ($scope.selected.length === $scope.tmpReferences.length) {
                         $scope.selected = [];
@@ -2469,6 +2470,8 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function($scope, confi
     $scope.initPredicate();
     $scope.initComplexPredicate();
     $scope.existingPredicate = $scope.findExistingPredicate();
+
+    if(!$scope.existingPredicate) $scope.dialogStep = 1;
 });
 
 angular.module('igl').controller('AddComponentCtrl', function($scope, $modalInstance, datatypes, datatype, valueSets, $rootScope, $http, ngTreetableParams, SegmentService, DatatypeLibrarySvc, MessageService, blockUI) {

@@ -44,10 +44,10 @@ public class CoConstraintTHENColumnData implements java.io.Serializable, Cloneab
   public CoConstraintTHENColumnData clone() throws CloneNotSupportedException {
     CoConstraintTHENColumnData cloned = new CoConstraintTHENColumnData();
     cloned.setDatatypeId(datatypeId);
-    cloned.setValue(valueData.clone());
+    if(this.valueData != null) cloned.setValue(valueData.clone());
     cloned.setValueSets(new ArrayList<ValueSetData>());
     for (ValueSetData data : valueSets) {
-      cloned.getValueSets().add(data.clone());
+      if(data != null) cloned.getValueSets().add(data.clone());
     }
     return cloned;
   }
