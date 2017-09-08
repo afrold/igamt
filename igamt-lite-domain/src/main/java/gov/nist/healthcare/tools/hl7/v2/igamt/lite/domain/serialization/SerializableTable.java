@@ -26,15 +26,17 @@ public class SerializableTable extends SerializableSection {
     private Table table;
     private String bindingIdentifier, defPreText, defPostText;
     private ValueSetMetadataConfig valueSetMetadataConfig;
+    private String referenceUrl;
 
     public SerializableTable(String id, String prefix, String position, String headerLevel, String title, Table table,
-        String bindingIdentifier, String defPreText, String defPostText, ValueSetMetadataConfig valueSetMetadataConfig) {
+        String bindingIdentifier, String defPreText, String defPostText, ValueSetMetadataConfig valueSetMetadataConfig, String referenceUrl) {
         super(id, prefix, position, headerLevel, title);
         this.table = table;
         this.bindingIdentifier = bindingIdentifier;
         this.defPreText = defPreText;
         this.defPostText = defPostText;
         this.valueSetMetadataConfig = valueSetMetadataConfig;
+        this.referenceUrl = referenceUrl;
     }
 
     @Override public Element serializeElement() {
@@ -50,15 +52,15 @@ public class SerializableTable extends SerializableSection {
               valueSetDefinitionElement.addAttribute(new Attribute("Name", this.table.getName()));
             }
             if(this.table.getSourceType()!=null){
-            	valueSetDefinitionElement.addAttribute(new Attribute("SourceType",this.table.getSourceType().name()));
-            	if(this.table.getSourceType().equals(Constant.SourceType.EXTERNAL)){
-            		if(this.table.getExternalUrl() != null && !this.table.getExternalUrl().isEmpty()){
-            			valueSetDefinitionElement.addAttribute(new Attribute("ReferenceUrl",this.table.getExternalUrl()));
-            		}
-            		if(this.table.getContentDefinition().equals(ContentDefinition.Intensional) && this.table.getInfoForExternal() != null && !this.table.getInfoForExternal().isEmpty()){
-                    	valueSetDefinitionElement.addAttribute(new Attribute("InfoForExternal",this.table.getInfoForExternal()));
-                    }
-            	}
+            	
+        		valueSetDefinitionElement.addAttribute(new Attribute("SourceType",table.getSourceType().value));
+            	
+        		if(this.referenceUrl != null && !this.referenceUrl.isEmpty()){
+        			valueSetDefinitionElement.addAttribute(new Attribute("ReferenceUrl",this.referenceUrl));
+        		}
+        		if(this.table.getContentDefinition().equals(ContentDefinition.Intensional) && this.table.getInfoForExternal() != null && !this.table.getInfoForExternal().isEmpty()){
+                	valueSetDefinitionElement.addAttribute(new Attribute("InfoForExternal",this.table.getInfoForExternal()));
+                }
             }
             valueSetDefinitionElement.addAttribute(new Attribute("Description",
                 (this.table.getDescription() == null) ? "" : this.table.getDescription()));
