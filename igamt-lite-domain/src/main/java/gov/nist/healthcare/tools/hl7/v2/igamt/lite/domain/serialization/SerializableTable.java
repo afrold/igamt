@@ -52,11 +52,9 @@ public class SerializableTable extends SerializableSection {
               valueSetDefinitionElement.addAttribute(new Attribute("Name", this.table.getName()));
             }
             if(this.table.getSourceType()!=null){
-            	if(this.table.getSourceType().equals(Constant.SourceType.INTERNAL)){
-            		valueSetDefinitionElement.addAttribute(new Attribute("SourceType",Constant.Internal));
-            	} else if(this.table.getSourceType().equals(Constant.SourceType.EXTERNAL)){
-            		valueSetDefinitionElement.addAttribute(new Attribute("SourceType",Constant.External));
-            	}
+            	
+        		valueSetDefinitionElement.addAttribute(new Attribute("SourceType",table.getSourceType().value));
+            	
         		if(this.referenceUrl != null && !this.referenceUrl.isEmpty()){
         			valueSetDefinitionElement.addAttribute(new Attribute("ReferenceUrl",this.referenceUrl));
         		}
