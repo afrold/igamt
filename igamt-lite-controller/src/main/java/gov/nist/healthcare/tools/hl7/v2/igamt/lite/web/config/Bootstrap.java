@@ -1733,7 +1733,7 @@ public class Bootstrap implements InitializingBean {
 
     defaultConfiguration.setValueSetsExport(displaySelectives);
 
-    ValueSetMetadataConfig valueSetMetadataConfig = new ValueSetMetadataConfig(true, true, true);
+    ValueSetMetadataConfig valueSetMetadataConfig = new ValueSetMetadataConfig(true, true, true,true,true);
     defaultConfiguration.setValueSetsMetadata(valueSetMetadataConfig);
 
     // Default column
