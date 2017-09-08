@@ -191,10 +191,10 @@
                                                                     readonly="false"
                                                                     md-removable="true"
                                                                     md-on-remove="removeCodeSystem($chip)"
-                                                                    placeholder="Add Code"
-                                                                    delete-button-label="Remove code"
-                                                                    delete-hint="Press Delete to remove code System"
-                                                                    secondary-placeholder="type and hit enter"></md-chips>
+                                                                    placeholder="Type and hit <Enter>"
+                                                                    delete-button-label="Remove code system"
+                                                                    delete-hint="Press Delete to remove code system"
+                                                                    secondary-placeholder="Type and hit <Enter>"></md-chips>
                                                             </div>
                                                         </div>
 
@@ -239,13 +239,13 @@
                                                         </div>
                                                         <div class="codes-container md-panelContent" ng-if="table.sourceType!=='EXTERNAL'">
                                                             <div ng-if="table.status=='UNPUBLISHED'&&table.referenceUrl!==null&&table.scope!=='PHINVADS'">
-                                                            <label class="input-left igamt-label">Reference URL* </label>
+                                                            <label class="input-left igamt-label">Reference URL</label>
                                                             <md-input-container  class="md-block igamt-input-block" flex-gt-sm>
-                                                                <input type="url" name="url" ng-model="table.referenceUrl" required>
+                                                                <input type="url" name="url" ng-model="table.referenceUrl">
                                                                 <span ng-if="!editForm.url.$valid" style="color :red;">
                                                                     <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please Enter a Valid URL
                                                                 </span>
-                                                                </md-input-container>
+                                                            </md-input-container>
                                                             </div>
                                                             <div ng-if="table.scope=='PHINVADS'">
                                                                     <label class="input-left igamt-label" > Reference URL </label>
@@ -1259,8 +1259,8 @@
                                                                 <label class="input-left igamt-label">Extensibility</label>
 
                                                                 <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
-                                                                    <md-select disabled ng-change="setDirty()" ng-model="table.extensibility">
-                                                                        <md-option ng-repeat="extensibility in config.tableExtensibilities" value="{{extensibility}}">
+                                                                    <md-select ng-model="table.extensibility">
+                                                                        <md-option ng-repeat="extensibility in config.tableExtensibilities" ng-value="extensibility">
                                                                             {{extensibility}}
                                                                         </md-option>
                                                                     </md-select>
@@ -1268,8 +1268,8 @@
                                                                 <label class="input-left igamt-label">Stability</label>
 
                                                                 <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
-                                                                    <md-select disabled ng-change="setDirty()" ng-model="table.stability">
-                                                                        <md-option ng-repeat="stability in config.tableStabilities" value="{{stability}}">
+                                                                    <md-select   ng-model="table.stability">
+                                                                        <md-option ng-repeat="stability in config.tableStabilities" ng-value="stability">
                                                                             {{stability}}
                                                                         </md-option>
                                                                     </md-select>
@@ -1278,8 +1278,8 @@
                                                                 <label class="input-left igamt-label">Content Definition</label>
 
                                                                 <md-input-container class="md-block igamt-input-block igamt-vs-meta-input" flex-gt-sm>
-                                                                    <md-select ng-change="setDirty()" disabled ng-model="table.contentDefinition">
-                                                                        <md-option ng-repeat="contentDefinition in config.tableContentDefinitions" value="{{contentDefinition}}">
+                                                                    <md-select ng-model="table.contentDefinition">
+                                                                        <md-option ng-repeat="contentDefinition in config.tableContentDefinitions" ng-value="contentDefinition">
                                                                             {{contentDefinition}}
                                                                         </md-option>
                                                                     </md-select>

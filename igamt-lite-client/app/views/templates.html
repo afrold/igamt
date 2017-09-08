@@ -6744,7 +6744,7 @@
 
                     <label class="input-left igamt-label" ng-if="newTable.sourceType=='EXTERNAL'"> Reference URL* </label>
                     <md-input-container class="md-block igamt-input-block" flex-gt-sm ng-if="newTable.sourceType=='EXTERNAL'">
-                        <input type="url" name="url" ng-required="newTable.sourceType=='EXTERNAL'" ng-model="newTable.ext" id="url">
+                        <input type="url" name="url" ng-required="newTable.sourceType=='EXTERNAL'" ng-model="newTable.sourceUrl" id="url">
                         <span ng-if="newTableForm.url.$invalid" style="color :red;">
                             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please Enter a Valid URL
                         </span>

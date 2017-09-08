@@ -8,6 +8,9 @@ public enum Extensibility {
   }
 
   public static Extensibility fromValue(String v) {
+    if (v.equals("Not Defined")) {
+      return Extensibility.Undefined;
+    }
     return !"".equals(v) && v != null ? valueOf(v) : Extensibility.Open;
   }
 }

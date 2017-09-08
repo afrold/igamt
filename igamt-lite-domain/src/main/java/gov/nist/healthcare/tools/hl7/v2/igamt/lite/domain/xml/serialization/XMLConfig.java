@@ -35,10 +35,10 @@ public class XMLConfig {
     config.setConditionalUsage(toSet(new String[] {"R", "RE", "O", "X"}));
     config.setCodeUsages(toSet(new String[] {"R", "P", "E"}));
     config.setCodeSources(toSet(new String[] {"HL7", "Local", "Redefined", "SDO"}));
-    config.setTableStabilities(toSet(new String[] {"Static", "Dynamic", "Not Defined"}));
+    config.setTableStabilities(toSet(new String[] {"Static", "Dynamic", "Undefined"}));
     config.setTableContentDefinitions(
-        toSet(new String[] {"Extensional", "Intensional", "Not Defined"}));
-    config.setTableExtensibilities(toSet(new String[] {"Open", "Closed", "Not Defined"}));
+        toSet(new String[] {"Extensional", "Intensional", "Undefined"}));
+    config.setTableExtensibilities(toSet(new String[] {"Open", "Closed", "Undefined"}));
     config.setConstraintVerbs(toSet(new String[] {"SHALL be", "SHALL NOT be", "should be",
         "should not be", "may be", "may not be", "is", "is not"}));
     config.setConditionalConstraintVerbs(toSet(new String[] {"is", "is not"}));
