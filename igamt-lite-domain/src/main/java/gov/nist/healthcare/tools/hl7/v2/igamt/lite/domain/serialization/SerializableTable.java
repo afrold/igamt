@@ -71,19 +71,19 @@ public class SerializableTable extends SerializableSection {
             if(this.valueSetMetadataConfig!=null){
 	            if(valueSetMetadataConfig.isStability()){
 	            	valueSetDefinitionElement.addAttribute(new Attribute("Stability",
-		                (this.table.getStability() == null) ? "" : this.table.getStability().value()));
+		                (this.table.getStability() == null) ? "" : this.table.getStability().value));
 	            }
 	            if(valueSetMetadataConfig.isExtensibility()){
 		            valueSetDefinitionElement.addAttribute(new Attribute("Extensibility",
 		                (this.table.getExtensibility() == null) ?
 		                    "" :
-		                    this.table.getExtensibility().value()));
+		                    this.table.getExtensibility().value));
 	            }
 	            if(valueSetMetadataConfig.isContentDefinition()){
 		            valueSetDefinitionElement.addAttribute(new Attribute("ContentDefinition",
 		                (this.table.getContentDefinition() == null) ?
 		                    "" :
-		                    this.table.getContentDefinition().value()));
+		                    this.table.getContentDefinition().value));
 	            }
             }
             valueSetDefinitionElement.addAttribute(new Attribute("id", this.table.getId()));
