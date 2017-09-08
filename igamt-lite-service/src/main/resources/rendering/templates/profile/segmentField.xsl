@@ -72,7 +72,7 @@
                 <xsl:if test="$showConfLength='true'">
                     <xsl:element name="td">
                         <xsl:choose>
-                        	<xsl:when test="@ConfLength = 'NA' or @Usage = 'X'">
+                        	<xsl:when test="@complex='true' or @ConfLength = 'NA' or @Usage = 'X'">
                         		<xsl:attribute name="class"><xsl:text>greyCell</xsl:text></xsl:attribute>
                         	</xsl:when>
                         	<xsl:otherwise>
