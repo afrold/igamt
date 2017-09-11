@@ -209,6 +209,8 @@
     <script src="bower_components/crypto-js/index.js"></script>
     <script src="bower_components/angular-md5/angular-md5.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-clipboard/angular-clipboard.js"></script>
+
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -224,6 +226,7 @@
     <script src="lib/lrDragNDrop.js"></script>
     <script src="lib/ng-grid-csv-export-custom.js"></script>
     <script src="lib/utils.js"></script>
+    <script src="scripts/app.module.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/services/userInfoService.js"></script>
     <script src="scripts/services/AccountLoader.js"></script>
@@ -307,32 +310,100 @@
     <script src="scripts/directives/stRatio.js"></script>
     <script src="scripts/directives/validLabel.js"></script>
     <script src="scripts/directives/validTrustDocument.js"></script>
-    <script src="scripts/controllers/CompositeProfileCtrl.js"></script>
-    <script src="scripts/controllers/ContextMenuCtl.js"></script>
-    <script src="scripts/controllers/DocumentationCtrl.js"></script>
-    <script src="scripts/controllers/EditAreaCtrl.js"></script>
-    <script src="scripts/controllers/EditSectionsCtl.js"></script>
-    <script src="scripts/controllers/ErrorsCtrl.js"></script>
-    <script src="scripts/controllers/FilteringCtl.js"></script>
-    <script src="scripts/controllers/GVTCtrl.js"></script>
+    <script src="scripts/controllers/composite-profile/co-constraint/co-constraint.component.js"></script>
+    <script src="scripts/controllers/composite-profile/conf-statement/conf-statement.component.js"></script>
+    <script src="scripts/controllers/composite-profile/dynamic-mapping/dynamic-mapping.component.js"></script>
+    <script src="scripts/controllers/composite-profile/composite-profile-list/composite-profile-list.component.js"></script>
+    <script src="scripts/controllers/composite-profile/add-profile-component/add-profile-component.component.js"></script>
+    <script src="scripts/controllers/composite-profile/composite-profile-create/composite-profile-create.component.js"></script>
+
+    <script src="scripts/controllers/context-menu/context-menu.component.js"></script>
+
+    <script src="scripts/controllers/documentation/documentation.component.js"></script>
+    <script src="scripts/controllers/documentation/documentation-delete/documentation-delete.component.js"></script>
+    <script src="scripts/controllers/edit-area/edit-area.component.js"></script>
+    <script src="scripts/controllers/section/section-list/section-list.component.js"></script>
+    <script src="scripts/controllers/error/error.component.js"></script>
+    <script src="scripts/controllers/error/failure/failure.component.js"></script>
+    <script src="scripts/controllers/error/error-detail/error-detail.component.js"></script>
+    <script src="scripts/controllers/filtering/filtering.component.js"></script>
+    <script src="scripts/controllers/gvt/gvt-login/gvt-login.component.js"></script>
     <script src="scripts/controllers/LibraryDt.js"></script>
     <script src="scripts/controllers/MastermapCtl.js"></script>
     <script src="scripts/controllers/SearchController.js"></script>
     <script src="scripts/controllers/ToCCtl.js"></script>
     <script src="scripts/controllers/TreeController.js"></script>
     <script src="scripts/controllers/about.js"></script>
-    <script src="scripts/controllers/account.js"></script>
-    <script src="scripts/controllers/compareCtrl.js"></script>
-    <script src="scripts/controllers/compositeMessageCtrl.js"></script>
-    <script src="scripts/controllers/configuration.js"></script>
-    <script src="scripts/controllers/constraints.js"></script>
-    <script src="scripts/controllers/dataTaypeLibraryControl.js"></script>
-    <script src="scripts/controllers/datatypes.js"></script>
-    <script src="scripts/controllers/doc.js"></script>
-    <script src="scripts/controllers/forgotten.js"></script>
-    <script src="scripts/controllers/hl7VersionsMessages.js"></script>
-    <script src="scripts/controllers/idle.js"></script>
-    <script src="scripts/controllers/igdocuments.js"></script>
+    <script src="scripts/controllers/account/account-list/account-list.component.js"></script>
+    <script src="scripts/controllers/account/account-delete/account-delete.component.js"></script>
+    <script src="scripts/controllers/account/user-account/user-account.component.js"></script>
+    <script src="scripts/controllers/account/user-profile/user-profile.component.js"></script>
+    <script src="scripts/controllers/compare/compare.component.js"></script>
+    <script src="scripts/controllers/composite-message/list/list.component.js"></script>
+    <script src="scripts/controllers/configuration/configuration.component.js"></script>
+    <script src="scripts/controllers/constraints/constraint-list.component.js"></script>
+    <script src="scripts/controllers/datatype-library/add-datatype/add-datatype.component.js"></script>
+    <script src="scripts/controllers/datatype-library/add-datatype-template/add-datatype-template.component.js"></script>
+    <script src="scripts/controllers/datatype-library/add-table-open/add-table-open.component.js"></script>
+    <script src="scripts/controllers/datatype-library/confirm-datatype-delete/confirm-datatype-delete.component.js"></script>
+    <script src="scripts/controllers/datatype-library/confirm-datatype-library-delete/confirm-datatype-library-delete.component.js"></script>
+    <script src="scripts/controllers/datatype-library/confirm-redirect/confirm-redirect.component.js"></script>
+    <script src="scripts/controllers/datatype-library/confirm-table-delete/confirm-table-delete.component.js"></script>
+    <script src="scripts/controllers/datatype-library/datatype-evolution/datatype-evolution.component.js"></script>
+    <script src="scripts/controllers/datatype-library/datatype-library-predicate/datatype-library-predicate.component.js"></script>
+    <script src="scripts/controllers/datatype-library/datatype-library-richtext/datatype-library-richtext.component.js"></script>
+    <script src="scripts/controllers/datatype-library/datatype-list-instance/datatype-list-instance.component.js"></script>
+    <script src="scripts/controllers/datatype-library/prevent-datatype-delete/prevent-datatype-delete.component.js"></script>
+    <script src="scripts/controllers/datatype-library/standard-datatype-library/standard-datatype-library.component.js"></script>
+    <script src="scripts/controllers/datatype-library/datatype-library.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-abort-publish/datatype-abort-publish.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-add-binding/datatype-add-binding.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-add-component/datatype-delete-component.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-compare/datatype-compare.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-conf-statement/datatype-conf-statement.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-confim-delete/datatype-confim-delete.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-delete-component/datatype-add-component.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-delete-predicate/datatype-delete-predicate.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-form-row/datatype-form-row.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-list/datatype-list.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-predicate/datatype-predicate.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-publish-confirm/datatype-publish-confirm.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-references/datatype-references.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-select-flavor/datatype-select-flavor.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-share/datatype-share.component.js"></script>
+    <script src="scripts/controllers/datatype/datatype-table-mapping/datatype-table-mapping.component.js"></script>
+    <script src="scripts/controllers/account/forgotten/forgotten.component.js"></script>
+    <script src="scripts/controllers/hl7-versions/hl7-versions.component.js"></script>
+    <script src="scripts/controllers/hl7-versions/hl7-versions-instance/hl7-versions-instance.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-metadata/conformance-profile-metadata.component.js"></script>
+
+    <script src="scripts/controllers/igdocument/igdocument-add-csv-open-table/igdocument-add-csv-open-table.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-add-datatype/igdocument-add-datatype.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-add-hl7-open-table/igdocument-add-open-hl7-table.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-add-master-datatypes/igdocument-add-master-datatypes.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-add-phinvads-open-table/igdocument-add-phinvads-open-table.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-add-segment/igdocument-add-segment.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-after-clone/igdocument-after-clone.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-comformance-profile-export/igdocument-conformance-profile-export.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-composite-profile-delete/igdocument-composite-profile-delete.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-composite-profile-export/igdocument-composite-profile-export.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-confirm-close/igdocument-confirm-close.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-confirm-delete/igdocument-confirm-delete.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-confirm-open/igdocument-confirm-open.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-custom-export/igdocument-custom-export.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-list/igdocument-list.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-message-cant-delete/igdocument-message-cant-delete.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-metadata/igdocument-metadata.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-newig-alert/igdocument-newig-alert.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-profile-component-cant-delete/igdocument-profile-component-cant-delete.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-profile-component-create/igdocument-profile-component-create.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-profile-component-delete"></script>
+    <script src="scripts/controllers/igdocument/igdocument-share/igdocument-share.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-unshare/igdocument-unshare.component.js"></script>
+    <script src="scripts/controllers/igdocument/igdocument-view-changes/igdocument-view-changes.component.js"></script>
+
+
+
     <script src="scripts/controllers/issue.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/messages.js"></script>

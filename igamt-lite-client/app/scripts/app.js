@@ -8,41 +8,6 @@
  *
  * Main module oƒf the application.
  */
-var app = angular
-  .module('igl', [
-    'ngAnimate',
-    'LocalStorageModule',
-    'ngCookies',
-    'ngMessages',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch',
-    'ngIdle',
-    'ui.bootstrap',
-    'smart-table',
-    'lrDragNDrop',
-    'ngTreetable',
-    'restangular',
-    'ui.bootstrap.contextMenu',
-    'angularjs-dropdown-multiselect',
-    'dndLists',
-    'froala',
-    'ui-notification',
-    'ngDragDrop',
-    'ui.tree',
-    'blockUI',
-    'ds.objectDiff',
-    'ngTagsInput',
-    'nsPopover',
-    'ngMaterial',
-    'rzModule',
-    'ui.select',
-    'flow',
-    'ui.sortable',
-    'angular-md5'
-  ]);
-
 var
 //the HTTP headers to be used by all requests
   httpHeaders,
@@ -59,7 +24,7 @@ var
 //the message to be shown to the user
 var msg = {};
 
-app.config(function ($routeProvider, RestangularProvider, $mdAriaProvider, $httpProvider, KeepaliveProvider, IdleProvider, NotificationProvider,blockUIConfig, flowFactoryProvider,$locationProvider) {
+angular.module('igl').config(function ($routeProvider, RestangularProvider, $mdAriaProvider, $httpProvider, KeepaliveProvider, IdleProvider, NotificationProvider,blockUIConfig, flowFactoryProvider,$locationProvider) {
   $mdAriaProvider.disableWarnings();
   $locationProvider.hashPrefix('');
   $httpProvider.defaults.useXDomain = true;
@@ -335,7 +300,7 @@ app.config(function ($routeProvider, RestangularProvider, $mdAriaProvider, $http
 });
 
 
-app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http, AppInfo, StorageService, $templateCache, $window, Notification) {
+angular.module('igl').run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http, AppInfo, StorageService, $templateCache, $window, Notification) {
   $rootScope.froalaDocLink = "https://www.froala.com/wysiwyg-editor/examples";
   $rootScope.appInfo = {};
   //Check if the login dialog is already displayed.
@@ -359,7 +324,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
       $btn.toggleClass('fr-active',this.format.is('figcaption'))
     }
   });
-  
+
   $.FroalaEditor.DefineIcon('message', {NAME: 'HL7', template: 'text'});
   $.FroalaEditor.RegisterCommand('message', {
     title: 'HL7 Message (BETA)',
