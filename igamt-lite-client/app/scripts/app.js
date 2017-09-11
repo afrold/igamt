@@ -40,7 +40,8 @@ var app = angular
     'ui.select',
     'flow',
     'ui.sortable',
-    'angular-md5'
+    'angular-md5',
+    'angular-clipboard'
   ]);
 
 var

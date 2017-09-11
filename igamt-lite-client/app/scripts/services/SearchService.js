@@ -66,6 +66,8 @@ angular.module('igl').factory('SearchService',function($http, $q,$sce) {
                 case 'table':
                     url+="valueSet";
                     break;
+                case 'document':
+                    url+="igDocument"
             }
             return url += "/"+entity.id+"/"+type;
         },
