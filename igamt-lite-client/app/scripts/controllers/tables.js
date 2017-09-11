@@ -103,15 +103,20 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
       code.codeSystem = codeSys;
     };
 
-    $scope.applyAllCodeSys = function (applyCodeSysValue) {
+    $scope.applyAllCodeSys = function (newValue) {
+
         for (var i = 0, len = $scope.selectedCodes.length; i < len; i++) {
-            $scope.selectedCodes[i].codeSystem = angular.copy(applyCodeSysValue);
+            $scope.selectedCodes[i].codeSystem = newValue;
         }
         $scope.selectedCodes = [];
-        applyCodeSysValue=null;
         // $scope.setDirty();
     };
 
+    $scope.codeSystemToApply = {
+        label: function() {
+            return "Apply Code system for selected codes";
+        }
+    };
 
 
     $scope.isBindingChanged = function() {
@@ -321,14 +326,19 @@ angular.module('igl').controller('TableListCtrl', function($scope, $rootScope, R
     };
 
     $rootScope.checkAll = false;
-    $scope.ProcessChecking = function(checkAll) {
-        if (checkAll) {
+    $scope.toggleAll = function() {
+        if ($scope.selectedCodes.length===0) {
+
             $scope.checkAllValues();
         } else {
             $scope.uncheckAllValues();
         }
 
     };
+    $scope.isAllSelected=function () {
+        return $scope.selectedCodes.length===$rootScope.table.codes.length;
+    }
+
     $scope.addOrRemoveValue = function(c) {
         if (c.selected === true) {
             $scope.selectedCodes.push(c);

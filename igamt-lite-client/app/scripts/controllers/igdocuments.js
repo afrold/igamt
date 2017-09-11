@@ -2038,6 +2038,8 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
                     $rootScope.codeSystems = [];
                     console.log($rootScope.table);
                     $rootScope.codeSystems=$rootScope.table.codeSystems;
+                    $rootScope.codeToSelect=null;
+                    $scope.selectedCodes=[];
                     $rootScope.table.smallCodes = $rootScope.table.codes.slice(0, 1000);
                     $rootScope.table.smallCodes.sort($scope.codeCompare);
                     $rootScope.entireTable=angular.copy($rootScope.table);
