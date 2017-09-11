@@ -294,12 +294,12 @@ public class Bootstrap implements InitializingBean {
     // 2.0.5-beta
     // fixCodeSysLOINC();
     // fixAllConstraints();
-    setTablePreText();
-    addCodeSystemtoAllTables();
-    initializeAttributes();
-    changeCommentToAuthorNotes();
-    addInternal();
-    fixCoConstraintsDTVS();
+    // setTablePreText();
+    // addCodeSystemtoAllTables();
+    // initializeAttributes();
+    // changeCommentToAuthorNotes();
+    // addInternal();
+    // fixCoConstraintsDTVS();
 
   }
 
