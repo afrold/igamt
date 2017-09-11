@@ -328,11 +328,23 @@
     <script src="scripts/controllers/filtering/filtering.component.js"></script>
     <script src="scripts/controllers/gvt/gvt-login/gvt-login.component.js"></script>
     <script src="scripts/controllers/LibraryDt.js"></script>
-    <script src="scripts/controllers/MastermapCtl.js"></script>
-    <script src="scripts/controllers/SearchController.js"></script>
-    <script src="scripts/controllers/ToCCtl.js"></script>
-    <script src="scripts/controllers/TreeController.js"></script>
-    <script src="scripts/controllers/about.js"></script>
+    <script src="scripts/controllers/master-map/master-map.component.js"></script>
+    <script src="scripts/controllers/search/search.component.js"></script>
+    <script src="scripts/controllers/table-of-content/table-of-content.component.js"></script>
+    <script src="scripts/controllers/table-of-content/tree/tree.component.js"></script>
+    <script src="scripts/controllers/table-of-content/add-user-library-datatype/add-user-library-datatype.component.js"></script>
+    <script src="scripts/controllers/table-of-content/add-shared-datatypes/add-shared-datatypes.component.js"></script>
+    <script src="scripts/controllers/table-of-content/add-master-datatype/add-master-datatype.component.js"></script>
+    <script src="scripts/controllers/table-of-content/cannot-publish/cannot-publish.component.js"></script>
+    <script src="scripts/controllers/table-of-content/table-publish-confirm/table-publish-confirm.component.js"></script>
+    <script src="scripts/controllers/table-of-content/add-share-datatype/add-share-datatype.component.js"></script>
+    <script src="scripts/controllers/table-of-content/add-datatypes-from-lib-to-lib/add-datatypes-from-lib-to-lib.component.js"></script>
+    <script src="scripts/controllers/table-of-content/valueset-create/valueset-create.component.js"></script>
+    <script src="scripts/controllers/table-of-content/tree/"></script>
+    <script src="scripts/controllers/table-of-content/tree/"></script>
+
+
+    <script src="scripts/controllers/about/about.component.js"></script>
     <script src="scripts/controllers/account/account-list/account-list.component.js"></script>
     <script src="scripts/controllers/account/account-delete/account-delete.component.js"></script>
     <script src="scripts/controllers/account/user-account/user-account.component.js"></script>
@@ -375,7 +387,6 @@
     <script src="scripts/controllers/hl7-versions/hl7-versions.component.js"></script>
     <script src="scripts/controllers/hl7-versions/hl7-versions-instance/hl7-versions-instance.component.js"></script>
     <script src="scripts/controllers/conformance-profile/conformance-profile-metadata/conformance-profile-metadata.component.js"></script>
-
     <script src="scripts/controllers/igdocument/igdocument-add-csv-open-table/igdocument-add-csv-open-table.component.js"></script>
     <script src="scripts/controllers/igdocument/igdocument-add-datatype/igdocument-add-datatype.component.js"></script>
     <script src="scripts/controllers/igdocument/igdocument-add-hl7-open-table/igdocument-add-open-hl7-table.component.js"></script>
@@ -400,18 +411,56 @@
     <script src="scripts/controllers/igdocument/igdocument-share/igdocument-share.component.js"></script>
     <script src="scripts/controllers/igdocument/igdocument-unshare/igdocument-unshare.component.js"></script>
     <script src="scripts/controllers/igdocument/igdocument-view-changes/igdocument-view-changes.component.js"></script>
+    <script src="scripts/controllers/issue/issue.component.js"></script>
+    <script src="scripts/controllers/main/main.component.js"></script>
+    <script src="scripts/controllers/login/login.component.js"></script>
+
+    <script src="scripts/controllers/rich-text/rich-text.component.js"></script>
+    <script src="scripts/controllers/input-text/input-text.component.js"></script>
+    <script src="scripts/controllers/logout/logout-confirm/logout-confirm.component.js"></script>
+    <script src="scripts/controllers/leave-confirm/leave-confirm.component.js"></script>
+
+    <script src="scripts/controllers/switch-confirm/switch-confirm.component.js"></script>
+    <script src="scripts/controllers/single-element-edit/single-element-edit.component.js"></script>
+    <script src="scripts/controllers/edit-then-data/edit-then-data.component.js"></script>
+    <script src="scripts/controllers/edit-user-data/edit-user-data.component.js"></script>
+    <script src="scripts/controllers/edit-comment/edit-comment.component.js"></script>
+    <script src="scripts/controllers/single-element-duplicated-confirm/single-element-duplicated-confirm.component.js"></script>
+    <script src="scripts/controllers/label/label.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-list/conformance-profile-list.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-row/conformance-profile-row.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-select-segment-flavor/conformance-profile-select-segment-flavor.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-view/conformance-profile-view.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-delete/conformance-profile-delete.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-add-segment/conformance-profile-add-segment.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-add-group/conformance-profile-add-group.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-delete-segment-or-group/conformance-profile-delete-segment-or-group.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-o-to-x/conformance-profile-o-to-x.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-redirect/conformance-profile-redirect.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-compare/conformance-profile-compare.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-predicate/conformance-profile-predicate.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-conf-statement/conformance-profile-conf-statement.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-predicate/conformance-profile-predicate-delete/conformance-profile-predicate-delete.component.js"></script>
+    <script src="scripts/controllers/conformance-profile/conformance-profile-table-mapping/conformance-profile-table-mapping.component.js"></script>
+
+    <script src="scripts/controllers/profile-component/profile-component-list/profile-component-list.component.js"></script>
+    <script src="scripts/controllers/profile-component/profile-component-coconstraint/profile-component-coconstraint-add/profile-component-coconstraint-add.component.js"></script>
+    <script src="scripts/controllers/profile-component/profile-component-dynamic-mapping/profile-component-dynamic-mapping-add/profile-component-dynamic-mapping-add.component.js"></script>
+    <script src="scripts/controllers/profile-component/profile-component-def-text-add/profile-component-def-text-add.component.js"></script>
+    <script src="scripts/controllers/profile-component/profile-component-apply/profile-component-apply.component.js"></script>
+    <script src="scripts/controllers/profile-component/profile-component-items-add/profile-component-items-add.js"></script>
+    <script src="scripts/controllers/profile-component/profile-component-single-element-edit/profile-component-single-element-edit.component.js"></script>
+    <script src="scripts/controllers/profile-component/profile-component-comment/profile-component-comment.component.js"></script>
+    <script src="scripts/controllers/profile-component/profile-component-table-binding/profile-component-table-binding.component.js"></script>
 
 
-
-    <script src="scripts/controllers/issue.js"></script>
-    <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/messages.js"></script>
-    <script src="scripts/controllers/profileComponentCtrl.js"></script>
-    <script src="scripts/controllers/registerResetPassword.js"></script>
-    <script src="scripts/controllers/registration.js"></script>
+    <script src="scripts/controllers/account/account-reset-password/account-reset-password.component.js"></script>
+    <script src="scripts/controllers/account/account-registration/account-registration.component.js"></script>
     <script src="scripts/controllers/segments.js"></script>
-    <script src="scripts/controllers/shared.js"></script>
-    <script src="scripts/controllers/tabesForLib.js"></script>
+    <script src="scripts/controllers/sharing/shared.component.js"></script>
+    <script src="scripts/controllers/sharing/confirm-unshare/confirm-unshare.component.js"></script>
+    <script src="scripts/controllers/sharing/abort-unshare/abort-unshare.component.js"></script>
+
     <script src="scripts/controllers/tables.js"></script>
         <!-- endbuild -->
 </body>
