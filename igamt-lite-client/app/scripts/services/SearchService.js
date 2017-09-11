@@ -22,18 +22,20 @@ angular.module('igl').factory('SearchService',function($http, $q,$sce) {
             return getParameters;
         },
 
-        search:function(searchParameters,callback){
+        search:function(searchParameters,successCallback,errorCallback){
             var getParameters = this.generateParameters(searchParameters.fields);
             console.log('params: '+getParameters);
             $http({
                 method: 'GET',
                 url: 'api/export/'+searchParameters.value+getParameters
-            }).success(function(data){
-                if(data.html != ''){
-                    data.html = $sce.trustAsHtml(data.html);
+            }).then(function (success){
+                if(success.data.html != ''){
+                    success.data.html = $sce.trustAsHtml(success.data.html);
                 }
-                callback(data);
-            });
+                successCallback(success.data);
+             },function (error){
+                errorCallback();
+             });
         },
 
         listHL7Versions : function(callback) {
