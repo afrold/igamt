@@ -3949,7 +3949,7 @@ angular.module('igl').controller('AddSegmentDlg',
         };
     });
 
-angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $mdDialog, $http, igdocumentSelected, userList, IgDocumentService, $rootScope) {
+angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $location, $mdDialog, $http, igdocumentSelected, userList, IgDocumentService, $rootScope, clipboard, SearchService) {
 
     $scope.igdocumentSelected = igdocumentSelected;
     $scope.userList = userList;
@@ -3960,7 +3960,14 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $mdDia
 
         }
     });
-
+    $scope.clipboardSupported = clipboard.supported;
+    $scope.shareUrlCopiedToClipboard = false;
+    var basePath = $scope.url = $location.absUrl().substring(0,$location.absUrl().length - ($location.url().length+1));
+    $scope.shareURL = basePath + SearchService.getExportUrl(igdocumentSelected,'html');
+    $scope.copyUrlToClipboard = function(){
+        clipboard.copyText($scope.shareURL);
+        $scope.shareUrlCopiedToClipboard = true;
+    };
     console.log($scope.igdocumentSelected);
     $scope.ok = function () {
         var idsTab = $scope.tags.map(function (user) {
@@ -4000,6 +4007,7 @@ angular.module('igl').controller('ShareIGDocumentCtrl', function ($scope, $mdDia
             return user.username.toLowerCase().indexOf($query.toLowerCase()) != -1;
         });
     };
+
 
     $scope.unshare = function (shareParticipant) {
         $scope.loading = false;
