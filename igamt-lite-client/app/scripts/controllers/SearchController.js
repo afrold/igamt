@@ -112,6 +112,11 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
         }
     }
 
+    $scope.searchError = function(error){
+        console.log("Error while searching: "+error);
+        $scope.showErrorMessage = true;
+    }
+
     $scope.doSearch = function(){
         delete $scope.data;
         $scope.showErrorMessage = false;

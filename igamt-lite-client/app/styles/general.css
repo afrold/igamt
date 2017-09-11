@@ -3133,3 +3133,9 @@ md-select[disabled] .md-select-value {
     border-bottom: 1px solid;
     border-bottom-color: #f0f0f0;
 }
+.btn.disabled, .btn[disabled]{
+    background-color: #f0f0f0 !important;
+    color: rgba(0, 0, 0, 0.61) !important;
+
+
+}

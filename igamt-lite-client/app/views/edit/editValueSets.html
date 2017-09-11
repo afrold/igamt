@@ -264,29 +264,33 @@
                                                                     </md-input-container>
                                                                 </span>
                                                                 <span class="pull-right" style="margin-bottom: 10px" ng-if="!isNonEditableValueSet(table)">
+                                                                    <md-input-container class="normal" ng-if="selectedCodes.length>0"">
 
-                                                                    <md-input-container class="normal" >
-                                                                        <md-select placeholder="Apply Code System for Selected " ng-hide="selectedCodes.length===0" ng-disabled="selectedCodes.length===0"
-                                                                                   ng-change="applyAllCodeSys(applyCodeSysValue);"
-                                                                                   ng-model="applyCodeSysValue">
-                                                                            <md-option ng-repeat="cs in table.codeSystems" ng-value="cs">{{cs}}</md-option>
+                                                                        <md-select  ng-model-options="{ getterSetter: true }" placeholder="Apply Code System For Selected Codes"
+                                                                                 ng-model="codeSystemToApply.label" ng-if="selectedCodes.length>0">
+                                                                            <md-option ng-repeat="cs in table.codeSystems" ng-click="applyAllCodeSys(cs)" ng-value="cs">{{cs}}</md-option>
                                                                         </md-select>
+
                                                                     </md-input-container>
-                                                                    <md-input-container class="normal" ng-if="selectedCodes.length===0" >
-                                                                        <md-select placeholder="Apply Code System for Selected " disabled
-                                                                                   ng-model="placeholderModel">
+
+                                                                    <md-input-container class="normal" ng-if="selectedCodes.length===0">
+
+                                                                        <md-select disabled  ng-model-options="{ getterSetter: true }" placeholder="Apply Code System For Selected Codes"
+                                                                                   ng-model="codeSystemToApply.label">
+                                                                            <md-option ng-repeat="cs in table.codeSystems" ng-click="applyAllCodeSys(cs)" ng-value="cs">{{cs}}</md-option>
                                                                         </md-select>
+
                                                                     </md-input-container>
                                                                     <span class="btn-group btn-group-sm btn-warning" role="group" aria-label="..." style="margin-top:10px">
-                                                                        <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'R'" type="button" ng-click="setSelectedCodesUsage(table, 'R')" class="btn btn-raised btn-sm btn-warning" style="color:black !important">R</button>
-                                                                        <button ng-disabled="selectedCodes.length===0"  title="Set selected codes usage to 'P'" type="button" ng-click="setSelectedCodesUsage(table, 'P')" class="btn btn-raised btn-sm btn-warning" style="color:black !important">P</button>
-                                                                        <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'E'" type="button" ng-click="setSelectedCodesUsage(table, 'E')" class="btn btn-raised btn-sm btn-warning" style="color:black !important"> E</button>
+                                                                        <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'R'" type="button" ng-click="setSelectedCodesUsage(table, 'R')" class="btn btn-raised btn-sm btn-warning">R</button>
+                                                                        <button ng-disabled="selectedCodes.length===0"  title="Set selected codes usage to 'P'" type="button" ng-click="setSelectedCodesUsage(table, 'P')" class="btn btn-raised btn-sm btn-warning" >P</button>
+                                                                        <button ng-disabled="selectedCodes.length===0" title="Set selected codes usage to 'E'" type="button" ng-click="setSelectedCodesUsage(table, 'E')" class="btn btn-raised btn-sm btn-warning" > E</button>
                                                                     </span>
-                                                                    <button  title="Delete selected codes" type="button" class="btn btn-raised btn-xs btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0" style="color:black !important">
+                                                                    <button  title="Delete selected codes" type="button" class="btn btn-raised btn-sm btn-danger" ng-click="deleteSlectedValues()" ng-disabled="selectedCodes.length===0">
                                                                         <i class="fa fa-trash-o fa-fw"></i>Delete Codes <span class="badge" ng-if="selectedCodes.length>0">{{selectedCodes.length}}</span>
                                                                     </button>
                                                                     <button  title="Add New Code" type="button" class="btn btn-raised btn-sm btn-info" ng-click="addValue();">
-                                                                        <span><i class="fa fa-plus fa-fw"></i>Add Code System</span>
+                                                                        <i class="fa fa-plus fa-fw"></i>Add Code
                                                                     </button>
                                                                 </span>
                                                                 <div>
@@ -300,7 +304,7 @@
                                                                         <thead>
                                                                         <tr class="tbl-header">
                                                                             <th class="col-md-1" style="text-align:center;" ng-if="!isNonEditableValueSet(table)">
-                                                                                <md-checkbox ng-model="checkAll" title="select or unselect codes" ng-change="ProcessChecking(checkAll)" aria-label="selectCheckBox" ng-disabled="isNonEditableValueSet(table)" />
+                                                                                <md-checkbox  title="select or unselect codes" ng-click="toggleAll()" aria-label="selectCheckBox" ng-disabled="isNonEditableValueSet(table)" ng-checked="isAllSelected()"/>
                                                                             </th>
                                                                             <th st-sort="value" class="col-md-2" ng-class="{'col-md-2': !isNonEditableValueSet(table), 'col-md-3': isNonEditableValueSet(table)}">Value</th>
                                                                             <th st-sort="label" class="col-md-3">Description</th>

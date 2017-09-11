@@ -1753,6 +1753,20 @@
             <md-dialog-content>
                 <div class="md-dialog-content medium-dialog">
                     <div class="container" style="margin-bottom: 20px;margin-top: 20px">
+                        <div layout="row"  layout-align="center center"  style="min-height: 26px">
+                            <div flex="80">
+                                <md-input-container layout="row">
+                                    <label>Share URL</label>
+                                    <input flex="100" ng-model="shareURL" readonly="readonly" type="text" aria-label="Share URL" style="width:100%">
+                                </md-input-container>
+                            </div>
+                            <div flex="20">
+                                <md-button class="md-raised" ng-click="copyUrlToClipboard()" ng-show="clipboardSupported">Copy to clipboard</md-button>
+                            </div>
+                        </div>
+                        <div layout="row" ng-show="shareUrlCopiedToClipboard">
+                            <p>Share URL successfully copied to clipboard.</p>
+                        </div>
                         <div class="row" ng-if="error != null">
                             <div class="col-md-12">
                                 <span ng-bind="error" style="color: red;"></span>
