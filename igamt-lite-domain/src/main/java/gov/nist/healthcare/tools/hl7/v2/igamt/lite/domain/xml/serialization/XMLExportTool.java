@@ -22,6 +22,7 @@ import org.apache.commons.io.IOUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DTComponent;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DTMComponentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DTMConstraints;
@@ -29,6 +30,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DTMPredicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMappingItem;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
@@ -38,6 +40,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ValueSetBinding;
@@ -270,17 +273,27 @@ public class XMLExportTool {
           elmValueSetDefinition.addAttribute(new Attribute("Version", this.str(t.getVersion())));
         if (t.getOid() != null && !t.getOid().equals(""))
           elmValueSetDefinition.addAttribute(new Attribute("Oid", this.str(t.getOid())));
-        if (t.getStability() != null && !t.getStability().equals(""))
-          elmValueSetDefinition
-              .addAttribute(new Attribute("Stability", this.str(t.getStability().name())));
-        if (t.getExtensibility() != null && !t.getExtensibility().equals(""))
-          elmValueSetDefinition
-              .addAttribute(new Attribute("Extensibility", this.str(t.getExtensibility().name())));
-        if (t.getContentDefinition() != null && !t.getContentDefinition().equals(""))
-          elmValueSetDefinition.addAttribute(
-              new Attribute("ContentDefinition", this.str(t.getContentDefinition().name())));
-
-
+        if (t.getStability() != null && !t.getStability().equals("")){
+          if(t.getStability().equals(Stability.Undefined)) {
+            elmValueSetDefinition.addAttribute(new Attribute("Stability", this.str(Stability.Static.name())));
+          }else {
+            elmValueSetDefinition.addAttribute(new Attribute("Stability", this.str(t.getStability().name())));
+          }
+        }
+        if (t.getExtensibility() != null && !t.getExtensibility().equals("")){
+          if(t.getExtensibility().equals(Extensibility.Undefined)) {
+            elmValueSetDefinition.addAttribute(new Attribute("Extensibility", this.str(Extensibility.Closed.name())));
+          }else {
+            elmValueSetDefinition.addAttribute(new Attribute("Extensibility", this.str(t.getExtensibility().name())));
+          }
+        }
+        if (t.getContentDefinition() != null && !t.getContentDefinition().equals("")){
+          if(t.getContentDefinition().equals(ContentDefinition.Undefined)) {
+            elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", this.str(ContentDefinition.Extensional.name())));
+          }else {
+            elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", this.str(t.getContentDefinition().name())));
+          }
+        }
         if (t.getScope().equals(SCOPE.HL7STANDARD)) {
           elmValueSetDefinitionsHL7Base.appendChild(elmValueSetDefinition);
         } else if (t.getScope().equals(SCOPE.USER)) {
