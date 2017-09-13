@@ -42,7 +42,7 @@ module.exports = function (grunt) {
         tasks: ['wiredep']
       },
       js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+        files: ['<%= yeoman.app %>/core/{,*/}*.js','<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all', 'newer:jscs:all'],
         options: {
           livereload: '<%= connect.options.livereload %>'
@@ -73,7 +73,7 @@ module.exports = function (grunt) {
         options: {
           livereload: '<%= connect.options.server %>'
         },
-        files: ['app/scripts/**/*.js', 'test/e2e/**/*.js'],
+        files: ['app/core/**/*.js', 'app/scripts/**/*.js', 'test/e2e/**/*.js'],
         tasks: ['protractor:e2e']
       }
     },
@@ -188,6 +188,7 @@ module.exports = function (grunt) {
       all: {
         src: [
           'Gruntfile.js',
+          '<%= yeoman.app %>/core/{,*/}*.js',
           '<%= yeoman.app %>/scripts/{,*/}*.js'
         ]
       },
@@ -208,6 +209,7 @@ module.exports = function (grunt) {
       all: {
         src: [
           'Gruntfile.js',
+          '<%= yeoman.app %>/core/{,*/}*.js',
           '<%= yeoman.app %>/scripts/{,*/}*.js'
         ]
       },
@@ -225,6 +227,7 @@ module.exports = function (grunt) {
             '<%= yeoman.dist %>/fonts',
             '<%= yeoman.dist %>/images',
             '<%= yeoman.dist %>/lib',
+            '<%= yeoman.dist %>/core',
             '<%= yeoman.dist %>/scripts',
             '<%= yeoman.dist %>/styles',
             '<%= yeoman.dist %>/views',
@@ -295,6 +298,7 @@ module.exports = function (grunt) {
     filerev: {
       dist: {
         src: [
+          '<%= yeoman.dist %>/core/{,*/}*.js',
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
@@ -326,7 +330,7 @@ module.exports = function (grunt) {
     usemin: {
       html: ['<%= yeoman.dist %>/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-      js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'],
+      js: ['<%= yeoman.dist %>/core/{,*/}*.js','<%= yeoman.dist %>/scripts/{,*/}*.js'],
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>',
