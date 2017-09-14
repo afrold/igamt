@@ -37,8 +37,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportFontService;
  *
  */
 @RestController
-@RequestMapping("/ExportConfiguration")
-public class ExportConfigController {
+@RequestMapping("/exportConfiguration")
+public class ExportConfigurationController {
 
 
   @Autowired
@@ -57,7 +57,7 @@ public class ExportConfigController {
   ExportFontConfigService exportFontConfigService;
 
   @Autowired
-  static final private Logger logger = LoggerFactory.getLogger(ExportConfigController.class);
+  static final private Logger logger = LoggerFactory.getLogger(ExportConfigurationController.class);
 
   @RequestMapping(value = "/override", method = RequestMethod.POST, produces = "application/json")
   public ExportConfig override(@RequestBody ExportConfig exportConfig) {
@@ -102,7 +102,7 @@ public class ExportConfigController {
 
   }
 
-  @RequestMapping(value = "/findCurrent", method = RequestMethod.POST,
+  @RequestMapping(value = "/findCurrent", method = RequestMethod.GET,
       produces = "application/json")
   public ExportConfig findCurrent(@RequestBody String type) {
     ExportConfig currentConfig = null;
