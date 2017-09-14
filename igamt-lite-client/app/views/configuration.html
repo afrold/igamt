@@ -3,79 +3,36 @@
         <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
 </div>
 
+<section layout="row" flex ng-if="isAuthenticated()">
+    <md-sidenav class="md-sidenav-left" md-component-id="left"
+                md-disable-backdrop md-whiteframe="4" md-is-locked-open="true">
 
+        <md-toolbar class="md-theme-indigo">
+            <h1 class="md-toolbar-tools">Export Configuration</h1>
+        </md-toolbar>
 
-<div class="row" style="margin-top:20px;" ng-if="isAuthenticated()">
-    <div class="col-md-2" style="margin:25px;">
-        <accordion>
-            <div accordion-group="" ng-init="isOpen1=true"
-                 class="panel panel-default" is-open="isOpen1">
-                <accordion-heading style="color:white !important;">
-                    <i class="pull-left fa" style="color: black;"
-                       ng-class="{'fa-chevron-down': isOpen1, 'fa-chevron-right': !isOpen1}"></i>
-                    Export Configuration
-                </accordion-heading>
-                <div style="margin-bottom: 25px;">
-                </div>
-                <div class="container">
-                    <ul class="nav nav-pills nav-stacked"
-                        style="margin-left: 5px !important;">
+        <md-content layout-margin>
+            <ul class="nav nav-pills nav-stacked"
+                style="margin-left: 5px !important;">
+                <li ng-class="{'current':activeId=='content'}"
+                    ng-click="setActive('content')"><a><strong>Styles</strong></a>
+                </li>
+                <li ng-class="{'current':activeId=='Font'}" ng-click="setActive('Font')"><a>
+                    <strong>Fonts</strong></a>
+                </li>
+            </ul>
+        </md-content>
 
-                        <li ng-class="{'current':activeId=='content'}"
-                            ng-click="setActive('content')"><a><strong>Styles</strong></a>
-                        </li>
-                        <li ng-class="{'current':activeId=='Font'}" ng-click="setActive('Font')"><a>
-                            <strong>Fonts</strong></a>
-                        </li>
-                    </ul>
+    </md-sidenav>
 
-                </div>
-            </div>
-        </accordion>
-    </div>
-
-
-    <div class="col-md-9" ng-if="isActive('content')">
-
-        <div style="width:100%" ng-include="'views/edit/editExportConfiguration.html'" onLoad="init()"></div>
-
-        <!--tabset style="width:100%" ng-init="init()">
-            <tab style="width:19%" active="tabActivity[0]" ng-style="getStyle(tabActivity[0])">
-                <tab-heading style="color:black;"> IG Style</tab-heading>
-                <div style="width:100%" ng-include="'views/edit/exportConfig/IGStyle.html'"></div>
-            </tab>
-            <tab style="width:19%" active="tabActivity[1]" ng-style="getStyle(tabActivity[1])">
-                <tab-heading style="color:black;"> Profile Style</tab-heading>
-                <div style="width:100%"
-                     ng-include="'views/edit/exportConfig/ProfileStyle.html'"></div>
-
-            </tab>
-            <tab style="width:19%" active="tabActivity[2]" ng-style="getStyle(tabActivity[2])">
-                <tab-heading style="color:black;">Table Style</tab-heading>
-                <div style="width:100%"
-                     ng-include="'views/edit/exportConfig/TableStyle.html'"></div>
-
-            </tab>
-            <tab style="width:19%" active="tabActivity[3]" ng-style="getStyle(tabActivity[3])">
-                <tab-heading style="color:black;">Datatype Library</tab-heading>
-                <div style="width:100%"
-                     ng-include="'views/edit/exportConfig/DatatypeLibrary.html'"></div>
-            </tab>
-            <tab style="width:19%" active="tabActivity[4]" ng-style="getStyle(tabActivity[4])">
-                <tab-heading style="color:black;">Delta Style</tab-heading>
-                Coming Soon
-            </tab>
-
-        </tabset-->
-
-    </div>
-
-    <div class="col-md-9" ng-if="isActive('Font')">
-        <div class="container" style="margin-top:24px;">
-            <div style="width:100%">
-                <ng-include onLoad="initExportFont()"
-                            src="'views/edit/exportConfig/exportFont.html'"></ng-include>
-            </div>
+    <md-content style="margin-left:15px;">
+        <div ng-if="isActive('content')">
+            <div style="width:100%" ng-include="'views/edit/editExportConfiguration.html'" onLoad="init()"></div>
         </div>
-    </div>
-</div>
+        <div ng-if="isActive('Font')">
+            <div style="width:100%" ng-include onLoad="initExportFont()" src="'views/edit/exportConfig/exportFont.html'"></div>
+        </div>
+    </md-content>
+
+
+</section>
