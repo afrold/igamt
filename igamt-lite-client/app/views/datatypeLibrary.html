@@ -465,16 +465,16 @@ if (self === top) {
                          <i class="icon-search"></i>
                         <input type="search" class="form-control" placeholder="Search Datatypes" ng-model="search.name" />
                          </div>
-                                <table class="fixed_headers table-bordered">
+                                <table class="table-bordered">
                                     <thead>
-                                        <tr class="tbl-header">
+                                        <tr class="tbl-header" style="display: block">
                                             <th ng-repeat="v in vrs" style="min-width:60px !important; width:60px !important;">{{v}}</th>
                                         </tr>
                                     </thead>
                                     <tbody style="max-height: 337px; overflow:scroll; display: block;">
                                         <tr ng-repeat="dt in matrix | orderBy: 'name'|filter:search">
                                             <td style="min-width:60px !important; width:60px !important;"><strong>{{dt.name}}</strong></td>
-                                            <td ng-disabled="true" style="color:{{getColor(dt.links[va])}}; width:60px!important; cursor:pointer !important" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1]), 'grey':!dt.links[va]&& dt.links[va]!==0}"
+                                            <td ng-disabled="true" style="color:{{getColor(dt.links[va])}};min-width:60px !important; width:60px!important; cursor:pointer !important" ng-class="{'selected1': isSelected1(dt, vrs[$index+1]), 'selected2':isSelected2(dt,vrs[$index+1]), 'grey':!dt.links[va]&& dt.links[va]!==0}"
                                                 ng-repeat='va in adjusted' ng-click="selectCell(dt,vrs[$index+1])"><strong>{{dt.links[va]}}</strong></td>
                                         </tr>
                                     </tbody>
