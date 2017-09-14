@@ -7,7 +7,7 @@
   "latedef": false,
   "noarg": true,
   "node": true,
-  "strict": true,
+  "strict": false,
   "undef": true,
   "unused": true,
   "globals": {
