@@ -1,18 +1,40 @@
-<!-- Information panel -->
-<div flex ng-include="'views/edit/exportConfig/exportConfigurationInformation.html'"></div>
+<!-- Information panel>
+<div flex ng-include="'views/edit/exportConfig/exportConfigurationInformation.html'"></div-->
+<!-- Buttons bar -->
+<md-content flex layout="row" layout-margin layout-align="end center">
+    <md-content>
+        <button title="Save Changes" type="button" class="btn btn-raised btn-sm btn-success"
+                ng-disabled="!changed"
+                ng-click="saveExportConfig(); ">
+            <span><i class="fa fa-check fa-fw"></i>Apply</span>
+        </button>
+    </md-content>
+    <md-content>
+        <button title="Reset Changes" type="button" class="btn btn-raised btn-sm btn-warning" ng-disabled="!changed"
+                ng-click="resetExportConfig()">
+            <span><i class="fa fa-times fa-fw"></i> Reset</span>
+        </button>
+    </md-content>
+    <md-content>
+        <button title="Restore Default" type="button" class="btn btn-raised btn-sm btn-default"
+                ng-click="restoreDefaultExportFontConfig()">
+            <span><i class="fa fa-refresh" aria-hidden="true"></i> Restore Default</span>
+        </button>
+    </md-content>
+</md-content>
 <!-- Configuration cards -->
-<div layout="column">
-    <div layout-xs="column" layout="row">
-        <div flex ng-include="'views/edit/exportConfig/messageConfiguration.html'"></div>
-        <div flex ng-include="'views/edit/exportConfig/segmentConfiguration.html'"></div>
-    </div>
+<md-content layout="column">
+    <md-content layout-fill layout-xs="column" layout="row">
+        <md-content flex="50" ng-include="'views/edit/exportConfig/messageConfiguration.html'"></md-content>
+        <md-content flex="50" ng-include="'views/edit/exportConfig/segmentConfiguration.html'"></md-content>
+    </md-content>
+    <md-content layout-xs="column" layout="row">
+        <md-content flex ng-include="'views/edit/exportConfig/datatypeConfiguration.html'"></md-content>
+        <md-content flex ng-include="'views/edit/exportConfig/valuesetsConfiguration.html'"></md-content>
+    </md-content>
     <!--div layout-xs="column" layout="row">
         <div flex ng-include="'views/edit/exportConfig/messageConfiguration.html'"></div>
         <div flex ng-include="'views/edit/exportConfig/messageConfiguration.html'"></div>
-    </div>
-    <div layout-xs="column" layout="row">
-        <div flex ng-include="'views/edit/exportConfig/messageConfiguration.html'"></div>
-        <div flex ng-include="'views/edit/exportConfig/messageConfiguration.html'"></div>
     </div-->
-</div>
+</md-content>
 

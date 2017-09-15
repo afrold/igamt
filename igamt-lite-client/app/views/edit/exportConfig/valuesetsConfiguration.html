@@ -1,0 +1,101 @@
+<md-content>
+    <md-card>
+        <md-card-content>
+            <h2><md-checkbox class="md-primary" ng-model="config.includeValueSetsTable" ng-change="setChanged()" /> Value Sets Table Options</h2>
+            <hr/>
+            <div layout="row" layout-align="center start" style="width: 100%">
+                <!-- Usages card -->
+                <div flex style="min-width:60%">
+                    <md-content>
+                        <md-card>
+                            <md-card-content>
+                                <h4>Usages</h4>
+                                <hr/>
+                                <p>Value Sets to Export:</p>
+                                <md-content layout="column">
+                                    <md-content layout="row" layout-align="center start" style="width: 100%">
+                                        <md-content flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.valueSetsExport.r"
+                                                         ng-change="setChanged()" disabled><label style="color: black">R</label></md-checkbox>
+                                        </md-content>
+                                        <md-content flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.valueSetsExport.re"
+                                                         ng-change="setChanged()" disabled><label style="color: black">RE</label></md-checkbox>
+                                        </md-content>
+                                        <md-content flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.valueSetsExport.c"
+                                                         ng-change="setChanged()" disabled><label style="color: black">C</label></md-checkbox>
+                                        </md-content>
+                                        <md-content flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.valueSetsExport.o"
+                                                         ng-change="setChanged()"><label style="color: black">O</label></md-checkbox>
+                                        </md-content>
+                                        <md-content flex>
+                                            <md-checkbox class="md-primary"
+                                                         ng-model="config.valueSetsExport.x"
+                                                         ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
+                                        </md-content>
+                                    </md-content>
+                                    <md-content>
+                                        <md-checkbox class="md-primary"
+                                                     ng-model="config.unboundHL7"
+                                                     ng-change="setChanged()"> <label
+                                                style="color: black">All HL7 Unbound </label></md-checkbox>
+                                    </md-content>
+                                    <md-content>
+                                        <md-checkbox class="md-primary"
+                                                     ng-model="config.unboundCustom"
+                                                     ng-change="setChanged()"> <label
+                                                style="color: black">All Custom Unbound </label></md-checkbox>
+                                    </md-content>
+                                </md-content>
+                                <hr/>
+                                <p>Codes to Export:</p>
+                                <md-content layout="row" layout-align="start center" style="width: 100%">
+                                    <md-content flex>
+                                        <md-checkbox class="md-primary"
+                                                     ng-model="config.codesExport.r"
+                                                     ng-change="setChanged()" disabled><label style="color: black">R</label></md-checkbox>
+                                    </md-content>
+                                    <md-content flex>
+                                        <md-checkbox class="md-primary"
+                                                     ng-model="config.codesExport.p"
+                                                     ng-change="setChanged()" disabled><label style="color: black">P</label></md-checkbox>
+                                    </md-content>
+                                    <md-content flex>
+                                        <md-checkbox class="md-primary"
+                                                     ng-model="config.codesExport.e"
+                                                     ng-change="setChanged()" disabled><label style="color: black">E</label></md-checkbox>
+                                    </md-content>
+                                </md-content>
+                            </md-card-content>
+                        </md-card>
+                    </md-content>
+                </div>
+                <!-- Columns card-->
+                <div flex>
+                    <md-content>
+                        <md-card>
+                            <md-card-content>
+                                <h4>Columns</h4>
+                                <hr/>
+                                <div layout="column" layout-align="center start" style="width: 100%">
+                                    <div flex ng-repeat="column in config.datatypeColumn.columns">
+                                        <md-checkbox class="md-primary" ng-model="column.present" ng-disabled="column.disabled" ng-change="setChanged()">
+                                            <label style="color: black">{{column.name}} </label>
+                                        </md-checkbox>
+                                    </div>
+                                </div>
+                            </md-card-content>
+                        </md-card>
+                    </md-content>
+                </div>
+            </div>
+
+        </md-card-content>
+    </md-card>
+</md-content>

@@ -8,7 +8,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         $scope.configMap = {};
         $scope.changed = false;
         $scope.activeId = "content";
-        ConfigurationService.findCurrent().then(function (response) {
+        ConfigurationService.getUserExportConfig().then(function (response) {
             var copy = response;
             $scope.config = angular.copy(response);
             $scope.configCopy = copy;
@@ -70,14 +70,14 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     $scope.setActive = function (str) {
         $scope.activeId = str;
     }
-    $scope.override = function (config, type) {
-        config.defaultType = false;
-        config.type = type;
+    $scope.saveExportConfig = function () {
+        var configuration = $scope.exportConfig;
+        configuration.defaultType = false;
         $scope.resetChanged();
 
-        ConfigurationService.override(config).then(function (response) {
+        ConfigurationService.saveExportConfig(configuration).then(function (response) {
 
-            $scope.exportConfig = response;
+            $scope.config = response;
 
             $scope.resetChanged();
             $rootScope.msg().text = "ConfigurationSaved";
@@ -90,10 +90,8 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         })
     }
 
-    $scope.restoreDefault = function (config, type) {
-        config.defaultType = false;
-        config.type = type;
-        ConfigurationService.restoreDefault(config).then(function (response) {
+    $scope.restoreDefaultExportConfig = function () {
+        ConfigurationService.restoreDefault($scope.config).then(function (response) {
             console.log(response);
             $scope.config = response;
             $scope.resetChanged();
@@ -108,7 +106,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         });
     };
 
-    $scope.reset = function () {
+    $scope.resetExportConfig = function () {
         $scope.config = angular.copy($scope.configCopy);
         $scope.resetChanged();
     }

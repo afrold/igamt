@@ -59,8 +59,8 @@ public class ExportConfigurationController {
   @Autowired
   static final private Logger logger = LoggerFactory.getLogger(ExportConfigurationController.class);
 
-  @RequestMapping(value = "/override", method = RequestMethod.POST, produces = "application/json")
-  public ExportConfig override(@RequestBody ExportConfig exportConfig) {
+  @RequestMapping(value = "/saveExportConfig", method = RequestMethod.POST, produces = "application/json")
+  public ExportConfig saveExportConfig(@RequestBody ExportConfig exportConfig) {
     ExportConfig currentConfig;
     User u = userService.getCurrentUser();
     try {
@@ -80,9 +80,9 @@ public class ExportConfigurationController {
     return exportConfig;
   }
 
-  @RequestMapping(value = "/restoreDefault", method = RequestMethod.POST,
+  @RequestMapping(value = "/restoreDefaultExportConfig", method = RequestMethod.POST,
       produces = "application/json")
-  public ExportConfig restoreDefault(@RequestBody ExportConfig exportConfig) {
+  public ExportConfig restoreDefaultExportConfig(@RequestBody ExportConfig exportConfig) {
     ExportConfig currentConfig;
     User u = userService.getCurrentUser();
     try {
@@ -102,9 +102,9 @@ public class ExportConfigurationController {
 
   }
 
-  @RequestMapping(value = "/findCurrent", method = RequestMethod.GET,
+  @RequestMapping(value = "/getUserExportConfig", method = RequestMethod.GET,
       produces = "application/json")
-  public ExportConfig findCurrent(@RequestBody String type) {
+  public ExportConfig getUserExportConfig(@RequestBody String type) {
     ExportConfig currentConfig = null;
     User u = userService.getCurrentUser();
     try {

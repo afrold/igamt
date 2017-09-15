@@ -3,11 +3,11 @@ angular.module('igl').factory('ConfigurationService',
 
         var ConfigurationService = {
 
-            override: function (configuration) {
+            saveExportConfig: function (configuration) {
                 var delay = $q.defer();
                 //datatype.accountId = userInfoService.getAccountID();
 
-                $http.post('api/exportConfiguration/override', configuration).then(function (response) {
+                $http.post('api/exportConfiguration/saveExportConfig', configuration).then(function (response) {
                     var conf = angular.fromJson(response.data);
                     delay.resolve(conf);
 
@@ -18,9 +18,9 @@ angular.module('igl').factory('ConfigurationService',
                 return delay.promise;
 
             },
-            restoreDefault: function (configuration) {
+            restoreDefaultExportConfig: function (configuration) {
                 var delay = $q.defer();
-                $http.post('api/exportConfiguration/restoreDefault', configuration).then(function (response) {
+                $http.post('api/exportConfiguration/restoreDefaultExportConfig', configuration).then(function (response) {
                     console.log("resopense");
                     console.log(response);
                     var conf = angular.fromJson(response.data);
@@ -32,10 +32,10 @@ angular.module('igl').factory('ConfigurationService',
                 return delay.promise;
             },
 
-            findCurrent: function () {
+            getUserExportConfig: function () {
                 var delay = $q.defer();
                 //datatype.accountId = userInfoService.getAccountID();
-                $http.get('api/exportConfiguration/findCurrent').then(function (response) {
+                $http.get('api/exportConfiguration/getUserExportConfig').then(function (response) {
                     console.log(response);
                     var conf = angular.fromJson(response.data);
                     console.log(response)
