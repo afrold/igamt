@@ -1,9 +1,7 @@
 /**
  * Created by haffo on 9/11/17.
  */
-
 'use strict';
-
 /**
  * @ngdoc overview
  * @name clientApp
@@ -12,8 +10,10 @@
  *
  * Main module oƒf the application.
  */
+
+'use strict';
 angular
-  .module('igl', [
+    .module('igl', [
     'ngAnimate',
     'LocalStorageModule',
     'ngCookies',
@@ -46,4 +46,5 @@ angular
     'ui.sortable',
     'angular-md5',
     'angular-clipboard'
-  ]);
+]);
+//# sourceMappingURL=app.module.js.map
