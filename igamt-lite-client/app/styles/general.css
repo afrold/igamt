@@ -3139,3 +3139,11 @@ md-select[disabled] .md-select-value {
 
 
 }
+
+.menuItem {
+    font-weight: bold;
+}
+
+.selectedMenuItem {
+    background-color: #ffcc00;
+}

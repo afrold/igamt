@@ -11,16 +11,13 @@
             <h1 class="md-toolbar-tools">Export Configuration</h1>
         </md-toolbar>
 
-        <md-content layout-margin>
-            <ul class="nav nav-pills nav-stacked"
-                style="margin-left: 5px !important;">
-                <li ng-class="{'current':activeId=='content'}"
-                    ng-click="setActive('content')"><a><strong>Styles</strong></a>
-                </li>
-                <li ng-class="{'current':activeId=='Font'}" ng-click="setActive('Font')"><a>
-                    <strong>Fonts</strong></a>
-                </li>
-            </ul>
+        <md-content layout-margin layout="column">
+            <md-content layout-padding flex class="menuItem" ng-class="{'selectedMenuItem':activeId=='content'}" ng-click="setActive('content')">
+                Styles
+            </md-content>
+            <md-content layout-padding flex class="menuItem" ng-class="{'selectedMenuItem':activeId=='font'}" ng-click="setActive('font')">
+                Fonts
+            </md-content>
         </md-content>
 
     </md-sidenav>
@@ -29,7 +26,7 @@
         <div ng-if="isActive('content')">
             <div ng-include="'views/edit/exportConfig/editExportConfiguration.html'" onLoad="init()"></div>
         </div>
-        <div ng-if="isActive('Font')">
+        <div ng-if="isActive('font')">
             <div ng-include="'views/edit/exportConfig/exportFont.html'" onLoad="initExportFont()"></div>
         </div>
     </md-content>
