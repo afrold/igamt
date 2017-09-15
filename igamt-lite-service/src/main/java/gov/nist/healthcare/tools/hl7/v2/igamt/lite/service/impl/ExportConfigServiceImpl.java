@@ -44,60 +44,24 @@ public class ExportConfigServiceImpl implements ExportConfigService {
   @Autowired
   static final Logger logger = LoggerFactory.getLogger(ExportConfigService.class);
 
-  @Override
-  public List<ExportConfig> findByType(String type) {
-    // TODO Auto-generated method stub
-    return exportConfigRepository.findByType(type);
 
+
+  @Override public ExportConfig findOneByAccountId(Long accountId) {
+    return exportConfigRepository.findOneByAccountId(accountId);
   }
 
   /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService#findByTypeAndAccountId(
-   * java.lang.String, java.lang.Long)
-   */
+     * (non-Javadoc)
+     *
+     * @see
+     * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService#findDefault(java.lang.
+     * String)
+     */
   @Override
-  public List<ExportConfig> findByTypeAndAccountId(String type, Long accountId) {
-    // TODO Auto-generated method stub
-    return exportConfigRepository.findByTypeAndAccountId(type, accountId);
+  public ExportConfig findDefault(Boolean setAllTrue) {
+    return ExportConfig.getBasicExportConfig(setAllTrue);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService#findByAccountId(java.
-   * lang.Long)
-   */
-  @Override
-  public List<ExportConfig> findByAccountId(Long accountId) {
-    // TODO Auto-generated method stub
-    return exportConfigRepository.findByAccountId(accountId);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ExportConfigService#findDefault(java.lang.
-   * String)
-   */
-  @Override
-  public ExportConfig findDefault(String type) {
-    return ExportConfig.getBasicExportConfig(type, false);
-  }
-
-  @Override public ExportConfig findOneByTypeAndAccountId(String type, Long accountId) {
-    ExportConfig exportConfig = null;
-    try{
-      exportConfig = exportConfigRepository.findOneByTypeAndAccountId(type,accountId);
-    } catch (Exception e){
-      logger.warn("Could not find a configuration for account "+accountId+" with the type "+type);
-    }
-    return exportConfig;
-  }
   /*
    * (non-Javadoc)
    * 

@@ -20,15 +20,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ExportConfig;
  *
  */
 public interface ExportConfigService {
-  public List<ExportConfig> findByType(String type);
 
-  public List<ExportConfig> findByTypeAndAccountId(String type, Long accountId);
+  public ExportConfig findOneByAccountId(Long accountId);
 
-  public ExportConfig findOneByTypeAndAccountId(String type, Long accountId);
-
-  public List<ExportConfig> findByAccountId(Long accountId);
-
-  public ExportConfig findDefault(String type);
+  public ExportConfig findDefault(Boolean setAllTrue);
 
   public void delete(ExportConfig exportConfig);
 
