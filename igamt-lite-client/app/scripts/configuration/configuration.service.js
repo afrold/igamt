@@ -50,7 +50,7 @@ angular.module('igl').factory('ConfigurationService',
 
             findFonts: function () {
                 var delay = $q.defer();
-                $http.post('api/exportConfiguration/findFonts').then(function (response) {
+                $http.get('api/exportConfiguration/findFonts').then(function (response) {
                     var fonts = angular.fromJson(response.data);
                     delay.resolve(fonts);
                 }, function (error) {
@@ -61,7 +61,7 @@ angular.module('igl').factory('ConfigurationService',
 
             getUserExportFontConfig: function () {
                 var delay = $q.defer();
-                $http.post('api/exportConfiguration/getUserExportFontConfig').then(function (response) {
+                $http.get('api/exportConfiguration/getUserExportFontConfig').then(function (response) {
                     var userExportFontConfig = angular.fromJson(response.data);
                     delay.resolve(userExportFontConfig);
                 }, function (error) {

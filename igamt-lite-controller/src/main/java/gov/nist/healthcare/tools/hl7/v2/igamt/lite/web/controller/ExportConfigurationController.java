@@ -122,13 +122,13 @@ public class ExportConfigurationController {
   }
 
 
-  @RequestMapping(value = "/findFonts", method = RequestMethod.POST, produces = "application/json")
+  @RequestMapping(value = "/findFonts", method = RequestMethod.GET, produces = "application/json")
   public List<ExportFont> findFonts() {
     List<ExportFont> exportFonts = exportFontService.findAll();
     return exportFonts;
   }
 
-  @RequestMapping(value = "/getUserExportFontConfig", method = RequestMethod.POST,
+  @RequestMapping(value = "/getUserExportFontConfig", method = RequestMethod.GET,
       produces = "application/json")
   public ExportFontConfig getUserExportFontConfig() throws Exception {
     ExportFontConfig exportFontConfig = null;

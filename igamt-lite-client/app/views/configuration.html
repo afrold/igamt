@@ -25,12 +25,12 @@
 
     </md-sidenav>
 
-    <md-content style="margin-left:15px;">
+    <md-content style="margin-left:15px; width:100%; height:100%;">
         <div ng-if="isActive('content')">
-            <div style="width:100%" ng-include="'views/edit/editExportConfiguration.html'" onLoad="init()"></div>
+            <div ng-include="'views/edit/editExportConfiguration.html'" onLoad="init()"></div>
         </div>
         <div ng-if="isActive('Font')">
-            <div style="width:100%" ng-include onLoad="initExportFont()" src="'views/edit/exportConfig/exportFont.html'"></div>
+            <div ng-include="'views/edit/exportConfig/exportFont.html'" onLoad="initExportFont()"></div>
         </div>
     </md-content>
 
