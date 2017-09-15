@@ -27,7 +27,7 @@
 
     <md-content style="margin-left:15px; width:100%; height:100%;">
         <div ng-if="isActive('content')">
-            <div ng-include="'views/edit/editExportConfiguration.html'" onLoad="init()"></div>
+            <div ng-include="'views/edit/exportConfig/editExportConfiguration.html'" onLoad="init()"></div>
         </div>
         <div ng-if="isActive('Font')">
             <div ng-include="'views/edit/exportConfig/exportFont.html'" onLoad="initExportFont()"></div>
