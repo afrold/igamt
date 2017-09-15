@@ -4,8 +4,9 @@
             <h2><md-checkbox class="md-primary" ng-model="config.includeValueSetsTable" ng-change="setChanged()" /> Value Sets Table Options</h2>
             <hr/>
             <div layout="row" layout-align="center start" style="width: 100%">
-                <!-- Usages card -->
-                <div flex style="min-width:60%">
+                <!-- Usages and metadata cards -->
+                <div layout="column" flex style="min-width:60%">
+                    <!-- Usages card -->
                     <md-content>
                         <md-card>
                             <md-card-content>
@@ -55,7 +56,7 @@
                                 </md-content>
                                 <hr/>
                                 <p>Codes to Export:</p>
-                                <md-content layout="row" layout-align="start center" style="width: 100%">
+                                <md-content layout="row" style="width: 100%">
                                     <md-content flex>
                                         <md-checkbox class="md-primary"
                                                      ng-model="config.codesExport.r"
@@ -75,6 +76,47 @@
                             </md-card-content>
                         </md-card>
                     </md-content>
+                    <!-- Metadata card -->
+                    <md-content>
+                        <md-card>
+                            <md-card-content>
+                                <h4>Metadata</h4>
+                                <hr/>
+                                <md-content layout="column">
+                                    <md-content flex>
+                                        <md-checkbox class="md-primary"
+                                                 ng-model="config.valueSetsMetadata.stability"
+                                                 ng-change="setChanged()"> <label
+                                            style="color: black">Stability</label></md-checkbox>
+                                    </md-content>
+                                    <md-content flex>
+                                        <md-checkbox class="md-primary"
+                                             ng-model="config.valueSetsMetadata.extensibility"
+                                             ng-change="setChanged()"> <label
+                                             style="color: black">Extensibility</label></md-checkbox>
+                                    </md-content>
+                                    <md-content flex>
+                                        <md-checkbox class="md-primary"
+                                            ng-model="config.valueSetsMetadata.contentDefinition"
+                                            ng-change="setChanged()"> <label
+                                            style="color: black">Content Definition</label></md-checkbox>
+                                    </md-content>
+                                    <md-content flex>
+                                        <md-checkbox class="md-primary"
+                                             ng-model="config.valueSetsMetadata.oid"
+                                             ng-change="setChanged()"> <label
+                                             style="color: black">OID</label></md-checkbox>
+                                    </md-content>
+                                    <md-content flex>
+                                        <md-checkbox class="md-primary"
+                                             ng-model="config.valueSetsMetadata.type"
+                                             ng-change="setChanged()"> <label
+                                             style="color: black">Type</label></md-checkbox>
+                                    </md-content>
+                                </md-content>
+                            </md-card-content>
+                        </md-card>
+                    </md-content>
                 </div>
                 <!-- Columns card-->
                 <div flex>
@@ -84,7 +126,7 @@
                                 <h4>Columns</h4>
                                 <hr/>
                                 <div layout="column" layout-align="center start" style="width: 100%">
-                                    <div flex ng-repeat="column in config.datatypeColumn.columns">
+                                    <div flex ng-repeat="column in config.valueSetColumn.columns">
                                         <md-checkbox class="md-primary" ng-model="column.present" ng-disabled="column.disabled" ng-change="setChanged()">
                                             <label style="color: black">{{column.name}} </label>
                                         </md-checkbox>
