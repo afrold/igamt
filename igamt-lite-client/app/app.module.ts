@@ -1,20 +1,12 @@
 import { NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { UpgradeModule } from '@angular/upgrade/static';
-import { RouterModule, UrlHandlingStrategy, UrlTree, Routes } from '@angular/router';
+import { RouterModule} from '@angular/router';
 
 import { AppComponent } from './app.component';
-
-class HybridUrlHandlingStrategy implements UrlHandlingStrategy {
-  // use only process the `/bar` url
-  shouldProcessUrl(url: UrlTree) {
-    return url.toString().startsWith('/bar');
-  }
-  extract(url: UrlTree) { return url; }
-  merge(url: UrlTree, whole: UrlTree) { return url; }
-}
+import { FooterComponent } from './scripts/footer/footer.component';
 
 @NgModule({
   imports: [
@@ -25,12 +17,14 @@ class HybridUrlHandlingStrategy implements UrlHandlingStrategy {
     RouterModule.forRoot([], { initialNavigation: false })
    ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
-    { provide: UrlHandlingStrategy, useClass: HybridUrlHandlingStrategy }
-  ],
-  declarations: [ AppComponent ],
+   ],
+  declarations: [ AppComponent,FooterComponent ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
-  ngDoBootstrap() {}
+  ngDoBootstrap() {
+
+
+  }
 }
+

@@ -1,0 +1,18 @@
+
+
+
+<div id="wrapper" flow-prevent-drop ng-controller="MainCtrl" ng-init="init()" window-exit confirm-on-leave block-ui="main">
+
+  <div ng-include="'app/views/header.html'"></div>
+
+  <!--[if lte IE 8]>
+  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <div ng-view></div>
+
+  <igamt-footer [fullScreen]="fullScreen"></igamt-footer>
+
+</div>
+
+

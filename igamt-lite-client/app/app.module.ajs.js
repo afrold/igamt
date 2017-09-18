@@ -47,4 +47,5 @@ angular
     'angular-md5',
     'angular-clipboard'
 ]);
+
 //# sourceMappingURL=app.module.js.map
