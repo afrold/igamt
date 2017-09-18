@@ -57,7 +57,7 @@ angular.module('igl')
 //                keyboard: true,
 //                backdropClick: false,
 //                controller: 'AgreementCtrl',
-//                templateUrl: 'views/account/agreement.html'
+//                templateUrl: 'app/views/account/agreement.html'
 //            });
 //
 //            modalInstance.result.then(function(result) {

@@ -1,22 +1,34 @@
-/**
- * Created by haffo on 9/15/17.
- */
 import { NgModule } from '@angular/core';
+import { HashLocationStrategy, LocationStrategy, CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { UpgradeModule } from '@angular/upgrade/static';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { RouterModule, UrlHandlingStrategy, UrlTree, Routes } from '@angular/router';
+
+import { AppComponent } from './app.component';
+
+class HybridUrlHandlingStrategy implements UrlHandlingStrategy {
+  // use only process the `/bar` url
+  shouldProcessUrl(url: UrlTree) {
+    return url.toString().startsWith('/bar');
+  }
+  extract(url: UrlTree) { return url; }
+  merge(url: UrlTree, whole: UrlTree) { return url; }
+}
 
 @NgModule({
   imports: [
+    CommonModule,
     BrowserModule,
-    UpgradeModule
-  ]
+    UpgradeModule,
+    RouterModule.forRoot([], { initialNavigation: false })
+   ],
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: UrlHandlingStrategy, useClass: HybridUrlHandlingStrategy }
+  ],
+  declarations: [ AppComponent ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule {
-  constructor(private upgrade: UpgradeModule) { }
-  ngDoBootstrap() {
-    this.upgrade.bootstrap(document.body, ['igl'], { strictDi: true });
-  }
+  ngDoBootstrap() {}
 }
-
-platformBrowserDynamic().bootstrapModule(AppModule);

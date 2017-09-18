@@ -21,7 +21,7 @@
                         <i class="fa fa-list fa-fw"></i> IG Documents List
                     </md-tab-label>
                     <md-tab-body class="root">
-                        <div ng-include="'views/edit/listIG.html'"></div>
+                        <div ng-include="'app/views/edit/listIG.html'"></div>
                     </md-tab-body>
                 </md-tab>
                 <md-tab md-active="accordi.igDetails" md-on-select="selectIgTab(1)"
@@ -31,13 +31,13 @@
                         <span ng-if="viewSettings.tableReadonly"> <i class="fa fa-search fa-fw"></i>Current IG Document</span>
                     </md-tab-label>
                     <md-tab-body class="root">
-                        <div ng-include="'views/edit/editIG.html'"></div>
+                        <div ng-include="'app/views/edit/editIG.html'"></div>
                     </md-tab-body>
                 </md-tab>
 
             </md-tabs>
 
-            <div ng-if="fullScreen" ng-include="'views/edit/editIG.html'"></div>
+            <div ng-if="fullScreen" ng-include="'app/views/edit/editIG.html'"></div>
 
         </div>
         <div style="font-size: 18px;text-align: center" ng-show="isPending()">

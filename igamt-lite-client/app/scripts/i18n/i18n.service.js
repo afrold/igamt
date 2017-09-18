@@ -9,7 +9,7 @@ angular.module('igl').factory('i18n', function() {
   var setLanguage = function (theLanguage) {
     $.i18n.properties({
       name: 'messages',
-      path: 'lang/',
+      path: 'app/lang/',
       mode: 'map',
       language: theLanguage,
       callback: function () {

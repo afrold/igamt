@@ -451,7 +451,7 @@ angular.module('igl').controller('MainCtrl', ['$document', '$scope', '$rootScope
     $rootScope.loginDialog = $mdDialog.show({
       controller: 'LoginCtrl',
       parent: angular.element(document).find('body'),
-      templateUrl: 'views/account/login.html',
+      templateUrl: 'app/views/account/login.html',
       locals: {
         user: { username: $scope.username, password: $scope.password },
       }

@@ -4,7 +4,7 @@
 
 angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, Notification, DatatypeService, SegmentService, PcLibraryService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc, MessageService, FilteringSvc, blockUI, PcService, CompositeMessageService, VersionAndUseService, ValidationService, orderByFilter, $mdDialog) {
   $scope.loading = false;
-  $scope.tocView = 'views/toc.html';
+  $scope.tocView = 'app/views/toc.html';
   $scope.uiGrid = {};
   $rootScope.igs = [];
   $rootScope.currentData = null;
@@ -14,7 +14,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
   $rootScope.chipsReadOnly = true;
   $scope.loadingTree = false;
   $scope.filtering = false;
-  $scope.tocView = 'views/toc.html';
+  $scope.tocView = 'app/views/toc.html';
   $scope.print = function (param) {
     //console.log(param);
   }
@@ -459,7 +459,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     console.log("IN Filterd");
     //$rootScope.loadingTree =! $rootScope.loadingTree;
     $scope.ready = false;
-    $scope.tocView = 'views/tocFilterMd.html';
+    $scope.tocView = 'app/views/tocFilterMd.html';
   }
 
   $scope.ready = false;
@@ -503,7 +503,7 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
     console.log("IN REGULAR")
     //$rootScope.loadingTree =! $rootScope.loadingTree;
     $scope.ready = false;
-    $scope.tocView = 'views/toc.html';
+    $scope.tocView = 'app/views/toc.html';
     blockUI.stop();
 
   }
@@ -527,13 +527,13 @@ angular.module('igl').controller('IGDocumentListCtrl', function (TableService, $
 
   $scope.edit = function (igdocument) {
     $scope.viewSettings.setTableReadonly(false);
-    $scope.tocView = 'views/toc.html';
+    $scope.tocView = 'app/views/toc.html';
     $scope.show(igdocument);
   };
 
   $scope.view = function (igdocument) {
     $scope.viewSettings.setTableReadonly(true);
-    $scope.tocView = 'views/tocReadOnly.html';
+    $scope.tocView = 'app/views/tocReadOnly.html';
     $scope.show(igdocument);
   };
 

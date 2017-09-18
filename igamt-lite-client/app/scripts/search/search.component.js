@@ -158,7 +158,7 @@ angular.module('igl').controller('SearchController', function ($scope, SearchSer
     $scope.selectedEntity = entity;
     $mdDialog.show({
       controller: SearchContentDialogController,
-      templateUrl: 'views/searchContentDialog.html',
+      templateUrl: 'app/views/searchContentDialog.html',
       parent: angular.element(document.body),
       clickOutsideToClose:true,
       locals : {

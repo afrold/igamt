@@ -40,24 +40,24 @@
         <tabset style="width:100%" ng-init="init()">
             <tab style="width:19%" active="tabActivity[0]" ng-style="getStyle(tabActivity[0])">
                 <tab-heading style="color:black;"> IG Style</tab-heading>
-                <div style="width:100%" ng-include="'views/edit/exportConfig/IGStyle.html'"></div>
+                <div style="width:100%" ng-include="'app/views/edit/exportConfig/IGStyle.html'"></div>
             </tab>
             <tab style="width:19%" active="tabActivity[1]" ng-style="getStyle(tabActivity[1])">
                 <tab-heading style="color:black;"> Profile Style</tab-heading>
                 <div style="width:100%"
-                     ng-include="'views/edit/exportConfig/ProfileStyle.html'"></div>
+                     ng-include="'app/views/edit/exportConfig/ProfileStyle.html'"></div>
 
             </tab>
             <tab style="width:19%" active="tabActivity[2]" ng-style="getStyle(tabActivity[2])">
                 <tab-heading style="color:black;">Table Style</tab-heading>
                 <div style="width:100%"
-                     ng-include="'views/edit/exportConfig/TableStyle.html'"></div>
+                     ng-include="'app/views/edit/exportConfig/TableStyle.html'"></div>
 
             </tab>
             <tab style="width:19%" active="tabActivity[3]" ng-style="getStyle(tabActivity[3])">
                 <tab-heading style="color:black;">Datatype Library</tab-heading>
                 <div style="width:100%"
-                     ng-include="'views/edit/exportConfig/DatatypeLibrary.html'"></div>
+                     ng-include="'app/views/edit/exportConfig/DatatypeLibrary.html'"></div>
             </tab>
             <tab style="width:19%" active="tabActivity[4]" ng-style="getStyle(tabActivity[4])">
                 <tab-heading style="color:black;">Delta Style</tab-heading>
@@ -72,7 +72,7 @@
         <div class="container" style="margin-top:24px;">
             <div style="width:100%">
                 <ng-include onLoad="initExportFont()"
-                            src="'views/edit/exportConfig/exportFont.html'"></ng-include>
+                            src="'app/views/edit/exportConfig/exportFont.html'"></ng-include>
             </div>
         </div>
     </div>
