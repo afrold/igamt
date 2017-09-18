@@ -71,7 +71,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
         $scope.activeId = str;
     }
     $scope.saveExportConfig = function () {
-        var configuration = $scope.exportConfig;
+        var configuration = $scope.config;
         configuration.defaultType = false;
         $scope.resetChanged();
 
