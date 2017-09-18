@@ -1156,9 +1156,9 @@ public class Bootstrap implements InitializingBean {
   private void updateUserExportConfigs() {
     List<ExportConfig> exportConfigs = exportConfig.findAll();
     for (ExportConfig exportConfig : exportConfigs) {
-      if (exportConfig != null && exportConfig.getType() != null) {
+      if (exportConfig != null) {
         ExportConfig defaultConfig =
-            ExportConfig.getBasicExportConfig(exportConfig.getType(), false);
+            ExportConfig.getBasicExportConfig(false);
         if (exportConfig.getCodesExport() == null) {
           exportConfig.setCodesExport(defaultConfig.getCodesExport());
         }
@@ -1696,7 +1696,6 @@ public class Bootstrap implements InitializingBean {
     ExportConfig defaultConfiguration = new ExportConfig();
     defaultConfiguration.setDefaultType(true);
     defaultConfiguration.setAccountId(null);
-    defaultConfiguration.setType(type);
     defaultConfiguration.setIncludeMessageTable(true);
     defaultConfiguration.setIncludeSegmentTable(true);
     defaultConfiguration.setIncludeDatatypeTable(true);
