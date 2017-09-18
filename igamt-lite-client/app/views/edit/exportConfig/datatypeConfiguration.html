@@ -37,6 +37,9 @@
                                              ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
                             </div>
                         </div>
+                        <md-checkbox class="md-primary"
+                                     ng-model="config.includeVaries"
+                                     ng-change="setChanged()"><label style="color: black">Include varies</label></md-checkbox>
                         <hr/>
                         <p>Components to export</p>
                         <div layout="row" layout-align="center start" style="width: 100%">
@@ -66,10 +69,6 @@
                                              ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
                             </div>
                         </div>
-                        <hr/>
-                        <md-checkbox class="md-primary"
-                                     ng-model="config.includeVaries"
-                                     ng-change="setChanged()"><label style="color: black">Include varies</label></md-checkbox>
                     </md-card-content>
                 </md-card>
             </md-content>
