@@ -9,7 +9,7 @@
                     <md-card-content>
                         <h4>Usages</h4>
                         <hr/>
-                        <p>Components to Export:</p>
+                        <p>Datatypes to Export:</p>
                         <div layout="row" layout-align="center start" style="width: 100%">
                             <div flex>
                                 <md-checkbox class="md-primary"
@@ -37,6 +37,39 @@
                                              ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
                             </div>
                         </div>
+                        <hr/>
+                        <p>Components to export</p>
+                        <div layout="row" layout-align="center start" style="width: 100%">
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.componentExport.r"
+                                             ng-change="setChanged()" disabled><label style="color: black">R</label></md-checkbox>
+                            </div>
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.componentExport.re"
+                                             ng-change="setChanged()" disabled><label style="color: black">RE</label></md-checkbox>
+                            </div>
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.componentExport.c"
+                                             ng-change="setChanged()" disabled><label style="color: black">C</label></md-checkbox>
+                            </div>
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.componentExport.o"
+                                             ng-change="setChanged()"><label style="color: black">O</label></md-checkbox>
+                            </div>
+                            <div flex>
+                                <md-checkbox class="md-primary"
+                                             ng-model="config.componentExport.x"
+                                             ng-change="setChanged()"><label style="color: black">X</label></md-checkbox>
+                            </div>
+                        </div>
+                        <hr/>
+                        <md-checkbox class="md-primary"
+                                     ng-model="config.includeVaries"
+                                     ng-change="setChanged()"><label style="color: black">Include varies</label></md-checkbox>
                     </md-card-content>
                 </md-card>
             </md-content>
