@@ -185,6 +185,9 @@ public class Bootstrap implements InitializingBean {
   @Autowired
   private DeltaService deltaService;
 
+  @Autowired
+  private ExportConfigRepository exportConfigRepository;
+
   /*
    * 
    */
@@ -301,6 +304,12 @@ public class Bootstrap implements InitializingBean {
     // addInternal();
     // fixCoConstraintsDTVS();
 
+    clearUserExportConfigurations();
+
+  }
+
+  private void clearUserExportConfigurations() {
+    exportConfigRepository.deleteAll();
   }
 
 
