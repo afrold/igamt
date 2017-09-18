@@ -275,7 +275,7 @@ import io.swagger.annotations.ApiResponses;
             try {
                 return IOUtils.toString(exportService
                     .exportIGDocumentAsHtml(igDocument, SerializationLayout.IGDOCUMENT,
-                        ExportConfig.getBasicExportConfig("table", true),
+                        ExportConfig.getBasicExportConfig(true),
                         exportFontConfigService.getDefaultExportFontConfig()));
             } catch (Exception e) {
                 e.printStackTrace();

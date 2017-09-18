@@ -342,9 +342,9 @@ public class DatatypeLibraryDocumentController {
       throw new UserAccountNotFoundException();
     }
     ExportConfig exportConfig = exportConfigService
-        .findOneByTypeAndAccountId(DATATYPE_LIBRARY_EXPORT_CONFIG_TYPE, account.getId());
+        .findOneByAccountId(account.getId());
     if (exportConfig == null) {
-      exportConfig = ExportConfig.getBasicExportConfig(DATATYPE_LIBRARY_EXPORT_CONFIG_TYPE, false);
+      exportConfig = ExportConfig.getBasicExportConfig(false);
     }
     ExportFontConfig exportFontConfig = null;
     List<ExportFontConfig> existing = exportFontConfigService.findOneByAccountId(account.getId());
