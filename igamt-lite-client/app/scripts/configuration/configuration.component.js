@@ -33,7 +33,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
         }, function (error) {
-            $rootScope.msg().text = "ConfigurationSavedFaild";
+            $rootScope.msg().text = "ConfigurationSavedFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
         });
@@ -44,6 +44,13 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
             $scope.userExportFontConfig = response;
             $scope.updateUserFontRadio();
             $scope.resetChanged();
+            $rootScope.msg().text = "ConfigurationResetSuccess";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+        }, function (error) {
+            $rootScope.msg().text = "ConfigurationResetFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
         });
     }
 
@@ -53,6 +60,13 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
             $scope.userExportFontConfig = response;
             $scope.updateUserFontRadio();
             $scope.resetChanged();
+            $rootScope.msg().text = "DefaultRestored";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+        }, function (error) {
+            $rootScope.msg().text = "DefaultRestoredFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
         });
     }
 
@@ -84,7 +98,7 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
         }, function (error) {
-            $rootScope.msg().text = "ConfigurationSavedFaild";
+            $rootScope.msg().text = "ConfigurationSavedFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
         })
@@ -95,20 +109,31 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
             console.log(response);
             $scope.config = response;
             $scope.resetChanged();
-
             $rootScope.msg().text = "DefaultRestored";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
         }, function (error) {
-            $rootScope.msg().text = "DefaultRestoredFaild";
+            $rootScope.msg().text = "DefaultRestoredFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
         });
     };
 
     $scope.resetExportConfig = function () {
-        $scope.config = angular.copy($scope.configCopy);
-        $scope.resetChanged();
+        ConfigurationService.getUserExportConfig().then(function (response) {
+            $scope.resetChanged();
+            var copy = response;
+            $scope.config = angular.copy(response);
+            $scope.configCopy = copy;
+            $scope.configMap[response.id] = response;
+            $rootScope.msg().text = "ConfigurationResetSuccess";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+        }, function (error) {
+            $rootScope.msg().text = "ConfigurationResetFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+        });
     }
 
     $scope.setChanged = function () {
