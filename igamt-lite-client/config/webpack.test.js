@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var helpers = require('./helpers');
+var apiMocker = require('connect-api-mocker');
 
 module.exports = {
   devtool: 'inline-source-map',
@@ -15,8 +16,8 @@ module.exports = {
         loaders: [
           {
             loader: 'awesome-typescript-loader',
-            options: { configFileName: 'tsconfig.json' }
-          } , 'angular2-template-loader'
+            options: { configFileName: helpers.root('./', 'tsconfig.json') }
+           } , 'angular2-template-loader'
         ]
       },
       {
@@ -44,9 +45,19 @@ module.exports = {
   plugins: [
     new webpack.ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
+      // /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
       /angular(\\|\/)core(\\|\/)@angular/,
       helpers.root('./', 'app'), // location of your src
       {} // a map of your routes
     )
-  ]
+  ],
+
+  devServer: {
+    historyApiFallback: true,
+    stats: 'minimal',
+    setup: function(app) {
+      app.use(apiMocker('/api', 'mocks/api'));
+    }
+  }
 }
+
