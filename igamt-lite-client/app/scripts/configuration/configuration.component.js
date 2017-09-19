@@ -4,15 +4,12 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     $scope.activeId = "content";
     $scope.includePC = false;
     $scope.init = function () {
-
-        $scope.configMap = {};
         $scope.changed = false;
         $scope.activeId = "content";
         ConfigurationService.getUserExportConfig().then(function (response) {
             var copy = response;
             $scope.config = angular.copy(response);
             $scope.configCopy = copy;
-            $scope.configMap[response.id] = response;
         });
 
     }
@@ -125,7 +122,6 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
             var copy = response;
             $scope.config = angular.copy(response);
             $scope.configCopy = copy;
-            $scope.configMap[response.id] = response;
             $rootScope.msg().text = "ConfigurationResetSuccess";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
@@ -141,31 +137,6 @@ angular.module('igl').controller('ConfigurationController', function ($scope, $r
     }
     $scope.resetChanged = function () {
         $scope.changed = false;
-    }
-
-    $scope.getStyle = function (bool) {
-        var beige = {
-            'background': '#ffcc00'
-        };
-        var gray = {
-            'background': 'gainsboro'
-        };
-
-        if (bool) {
-            return beige;
-        } else {
-            return gray;
-        }
-    }
-
-    $scope.updateWidth = function (felxwidth) {
-        if (felxwidth) {
-            $scope.felxwidth = 100 / 3;
-
-        } else {
-            $scope.felxwidth = 100 / 2;
-        }
-
     }
 
 });
