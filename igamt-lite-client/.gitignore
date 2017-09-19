@@ -6,4 +6,4 @@
 /bin/
 /target/
 /app/bower_components
-
+!index.html
