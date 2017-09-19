@@ -5,9 +5,9 @@ var helpers = require('./helpers');
 
 module.exports = {
   entry: {
-    'polyfills': './app/polyfills.ts',
-    'vendor': './app/vendor.ts',
-    'app': './app/main.ts'
+    'polyfills': './src/polyfills.ts',
+    'vendor': './src/vendor.ts',
+    'app': './src/main.ts'
   },
 
   resolve: {
@@ -21,7 +21,7 @@ module.exports = {
         loaders: [
           {
             loader: 'awesome-typescript-loader',
-            options: { configFileName: helpers.root('./', 'tsconfig.json') }
+            options: { configFileName: helpers.root('src', 'tsconfig.json') }
            } , 'angular2-template-loader'
         ]
       },
@@ -35,12 +35,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: helpers.root('./', 'app'),
+        exclude: helpers.root('src', 'app'),
         loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' })
       },
       {
         test: /\.css$/,
-        include: helpers.root('./', 'app'),
+        include: helpers.root('src', 'app'),
         loader: 'raw-loader'
     }
    ],
@@ -54,7 +54,8 @@ module.exports = {
       // /angular(\\|\/)core(\\|\/)(esm(\\|\/)app|app)(\\|\/)linker/,
       /angular(\\|\/)core(\\|\/)@angular/,
       // helpers.root('./src'), // location of your src
-      helpers.root('./', 'app'), // location of your src
+      // /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      helpers.root('./src'), // location of your src
       {} // a map of your routes
     ),
 
@@ -63,7 +64,7 @@ module.exports = {
     }),
 
     new HtmlWebpackPlugin({
-      template: 'index.html'
+      template: 'src/index.html'
     })
   ]
 };

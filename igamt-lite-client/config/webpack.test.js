@@ -16,7 +16,7 @@ module.exports = {
         loaders: [
           {
             loader: 'awesome-typescript-loader',
-            options: { configFileName: helpers.root('./', 'tsconfig.json') }
+            options: { configFileName: helpers.root('src', 'tsconfig.json') }
            } , 'angular2-template-loader'
         ]
       },
@@ -31,12 +31,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: helpers.root('./', 'app'),
+        exclude: helpers.root('src', 'app'),
         loader: 'null-loader'
       },
       {
         test: /\.css$/,
-        include: helpers.root('./', 'app'),
+        include: helpers.root('src', 'app'),
         loader: 'raw-loader'
       }
     ]
@@ -47,7 +47,8 @@ module.exports = {
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       // /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
       /angular(\\|\/)core(\\|\/)@angular/,
-      helpers.root('./', 'app'), // location of your src
+      // /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      helpers.root('src', 'app'), // location of your src
       {} // a map of your routes
     )
   ],
