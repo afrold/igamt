@@ -7,3 +7,4 @@
 /target/
 /app/bower_components
 !index.html
+!.bowerrc
