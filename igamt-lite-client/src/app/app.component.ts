@@ -49,4 +49,6 @@ import './lib/angular-treetable/style/jquery.treetable.theme.default.css'
   selector: 'igamt-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent { }
+export class AppComponent {
+
+}
